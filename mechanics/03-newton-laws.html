@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 牛顿定律与受力分析 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 3 · 第3章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>牛顿定律与受力分析 <span class="en-title">Newton's Laws &amp; Free-Body Diagrams</span></h1>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- 1. 学习目标                                                   -->
+    <!-- ============================================================ -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>准确表述牛顿三大定律 (Newton's three laws)，并理解惯性参考系 (inertial reference frame) 在定律成立条件中的核心地位。</li>
+        <li>对任意物体独立、完整地画出受力分析图 (free-body diagram, FBD)——这是本章最关键的技能。</li>
+        <li>区分并计算常见力：重力 (weight \(mg\))、法向力 (normal force \(N\))、张力 (tension \(T\))、静/动摩擦力 (static/kinetic friction)、流体阻力 (drag)、弹簧弹力 (Hooke's law)。</li>
+        <li>用牛顿第二定律在合适坐标轴上建立分量方程，求解斜面 (incline)、连接体 (connected objects) 与阿特伍德机 (Atwood machine) 等系统。</li>
+        <li>把匀速圆周运动当作受力问题处理，分析倾斜弯道 (banked curve) 与锥摆 (conical pendulum)。</li>
+        <li>推导并计算线性与二次阻力下的收尾速度 (terminal velocity)，解释表观重量 (apparent weight) 与失重 (weightlessness)。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. 核心概念                                                   -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>3.1 牛顿三大定律与惯性参考系 Newton's Three Laws &amp; Inertial Frames</h3>
+      <p><strong>第一定律（惯性定律 / Law of Inertia）：</strong>在惯性参考系中，不受外力（或合外力为零）的物体保持静止或匀速直线运动。</p>
+      <p>惯性参考系 (inertial reference frame) 是指相对远方恒星（或牛顿绝对空间）不作加速运动、也不旋转的参考系。第一定律实际上<strong>定义</strong>了惯性系，并断言：在该系中力的效果——加速度——才会显现。地面实验室近似为惯性系（忽略地球自转的微小非惯性效应）；加速的车厢、旋转的转台则是非惯性系 (non-inertial frame)，需引入惯性力 (inertial force / fictitious force) 才能套用牛顿第二定律。</p>
+      <p><strong>第二定律（运动定律 / \(\vec F = m\vec a\)）：</strong>物体所受合外力等于质量乘加速度，方向相同：</p>
+      <div class="formula">\[ \vec{F}_{\text{net}} = \sum_i \vec{F}_i = m\,\vec{a} \]</div>
+      <p>这是矢量方程：在任意一条方向 \(e\) 上的投影给出分量式 \(\sum F_e = m\,a_e\)。质量 \(m\) 是物体惯性 (inertia) 的量度，单位为千克 \((\mathrm{kg})\)；力的单位为牛顿 \((\mathrm{N}=\mathrm{kg\,m/s^2})\)。</p>
+      <p><strong>第三定律（作用与反作用 / Action–Reaction）：</strong>若物体 A 对物体 B 施力 \(\vec{F}_{A\to B}\)，则 B 对 A 必同时施力</p>
+      <div class="formula">\[ \vec{F}_{B\to A} = -\vec{F}_{A\to B} \]</div>
+      <p>两力<strong>大小相等、方向相反、作用在两个不同物体上</strong>，故绝不抵消（它们不出现在同一张 FBD 中）。第三定律不依赖平衡——无论两物体静止、匀速还是加速，它都成立。</p>
+
+      <h3>3.2 受力分析图（FBD）——核心方法 Free-Body Diagrams</h3>
+      <p>受力分析图是把物体从环境中"隔离"出来，画出所有作用在它上面的外力。这是用牛顿第二定律解题的核心方法，几乎所有动力学题的第一步都是画 FBD。规范步骤：</p>
+      <ul>
+        <li><strong>① 选隔离体 (isolate the body)：</strong>选定一个物体（或把几个物体当作一个整体），想象把它从环境中"取走"。</li>
+        <li><strong>② 标重力 \(m\vec g\)：</strong>从重心画向下的 \(mg\)。</li>
+        <li><strong>③ 标所有接触力 (contact forces)：</strong>凡隔离体与外界接触处（桌面、绳、地面、手……），逐一画上对应的法向力、张力、摩擦力等。</li>
+        <li><strong>④ 标场力 (field forces)：</strong>如电磁力、万有引力等非接触力。</li>
+        <li><strong>⑤ 建坐标、列方程：</strong>选一个坐标轴沿加速度方向（或运动方向），对每个轴投影 \(\sum F = ma\)。</li>
+      </ul>
+      <p>注意：\(m\vec a\) <strong>不是力</strong>，它是合力的效果。永远不要把 "\(ma\)" 当作一力画进 FBD——它属于方程式的右边。</p>
+
+      <h3>3.3 常见力一览 Common Forces</h3>
+      <p><strong>重力 / 重量 (weight)：</strong>地球对质量 \(m\) 的引力，方向指向地心（局部近似竖直向下），大小</p>
+      <div class="formula">\[ \vec{W} = m\vec{g}, \qquad |\vec{W}| = mg,\quad g\approx 9.8\,\mathrm{m/s^2} \]</div>
+      <p><strong>法向力 (normal force \(N\))：</strong>两接触面相互排斥的弹力，方向垂直于接触面、指向受力物体。<em>关键</em>：法向力的大小由牛顿方程决定，<strong>不一定</strong>等于 \(mg\)（斜面上 \(N=mg\cos\theta\)，电梯中 \(N=m(g\pm a)\)）。</p>
+      <p><strong>张力 (tension \(T\))：</strong>绳、索、链沿绳方向对所系物体施加的拉力。理想绳（无质量、不可伸长）中张力沿绳处处相等，方向沿绳背离物体。</p>
+      <p><strong>摩擦力 (friction)：</strong>两接触面间阻碍相对滑动（或相对滑动趋势）的切向力。</p>
+      <ul>
+        <li>静摩擦 (static friction)：大小可变，由平衡条件决定，上限为
+          <div class="formula">\[ f_s \le \mu_s\,N, \qquad f_{s,\max} = \mu_s N \]</div>
+        </li>
+        <li>动摩擦 (kinetic friction)：一旦发生相对滑动，
+          <div class="formula">\[ f_k = \mu_k\,N \]</div>
+          方向与相对速度相反。一般 \(\mu_k \le \mu_s\)。</li>
+      </ul>
+      <p><strong>流体阻力 (drag)：</strong>物体在流体（空气、水）中运动时受到的反向力。低速（层流）下为线性阻力 \(F_d = -bv\)；高速（湍流）下为二次阻力 \(F_d = -c\,v|v|\)，常写作 \(c v^2\)（大小）。两系数 \(b\)（单位 \(\mathrm{kg/s}\)）和 \(c\)（单位 \(\mathrm{kg/m}\)）取决于流体与物体几何。</p>
+      <p><strong>弹簧弹力 (Hooke's law)：</strong>理想弹簧对所系物体施加的恢复力与形变量 \(x\)（偏离自然长的位移）成正比、方向指向平衡位置：</p>
+      <div class="formula">\[ \vec{F}_{\text{spring}} = -k\,\vec{x}, \qquad F = -kx \]</div>
+      <p>\(k\) 为弹簧劲度系数 (spring constant, \(\mathrm{N/m}\))。负号保证弹力总是指向平衡位置。</p>
+
+      <h3>3.4 斜面与坐标选取 Inclined Planes &amp; Choosing Coordinates</h3>
+      <p>斜面问题中，重力按<strong>沿斜面</strong>与<strong>垂直斜面</strong>两个方向分解最方便（坐标轴沿斜面与垂直斜面，而非水平/竖直）。设斜面倾角为 \(\theta\)：</p>
+      <div class="formula">\[ \text{沿斜面（下坡为正）:}\quad mg\sin\theta - f = ma, \qquad \text{垂直斜面:}\quad N - mg\cos\theta = 0 \]</div>
+      <p>由此 \(N = mg\cos\theta\)（小于 \(mg\)！），这是判断"会不会滑"的基石：物体静止当且仅当所需静摩擦 \(mg\sin\theta \le \mu_s N = \mu_s mg\cos\theta\)，即</p>
+      <div class="formula">\[ \tan\theta \le \mu_s \quad\text{（静止条件）} \]</div>
+      <p>一旦 \(\tan\theta &gt; \mu_s\)，物体加速下滑，加速度</p>
+      <div class="formula">\[ a = g\bigl(\sin\theta - \mu_k\cos\theta\bigr) \]</div>
+
+      <h3>3.5 连接体与阿特伍德机 Connected Objects &amp; the Atwood Machine</h3>
+      <p>用轻绳连接多个物体时，<strong>张力是系统内部传递力的媒介</strong>。对每个物体分别画 FBD、分别列牛顿第二定律方程，再以"绳不可伸长"给出的运动学约束（各物体加速度大小相等）联立求解。</p>
+      <p>阿特伍德机 (Atwood machine)：两质量 \(m_1&gt;m_2\) 经理想绳跨过理想滑轮，\(m_1\) 下降、\(m_2\) 上升。对二者分别列方程：</p>
+      <div class="formula">\[ m_1 g - T = m_1 a,\qquad T - m_2 g = m_2 a \]</div>
+      <p>联立得</p>
+      <div class="formula">\[ a = \frac{m_1 - m_2}{m_1 + m_2}\,g, \qquad T = \frac{2m_1 m_2}{m_1 + m_2}\,g \]</div>
+
+      <h3>3.6 圆周运动作为受力问题 Circular Motion as a Force Problem</h3>
+      <p>匀速圆周运动必有向心加速度 \(a_c = v^2/r\)，因此在径向（指向圆心方向）上 \(\sum F_r = m v^2/r\)。这是牛顿第二定律在圆周问题中的直接应用——向心力 (centripetal force) 并非新的力，而是某些真实力（法向力、张力、摩擦力、引力……）的合力。</p>
+      <p><strong>倾斜弯道 (banked curve)：</strong>公路/铁路弯道外侧抬高的设计使法向力提供向心力分量，理想（无摩擦）速度下完全不需要摩擦：</p>
+      <div class="formula">\[ v_0 = \sqrt{rg\,\tan\theta} \quad\text{（理想车速，无摩擦）} \]</div>
+      <p><strong>锥摆 (conical pendulum)：</strong>摆球在水平面内做圆周运动，摆线扫出一个圆锥。设摆长 \(L\)、摆线与竖直方向夹角 \(\theta\)，则 \(T\cos\theta = mg\)，\(T\sin\theta = m v^2/r\)，\(r = L\sin\theta\)，解出</p>
+      <div class="formula">\[ v = \sqrt{r g \tan\theta} = \sqrt{L g\,\sin\theta\tan\theta}, \qquad \text{周期}\;\mathcal{T} = 2\pi\sqrt{\frac{L\cos\theta}{g}} \]</div>
+
+      <h3>3.7 表观重量、约束力与坐标策略 Apparent Weight &amp; Constraint Forces</h3>
+      <p><strong>表观重量 (apparent weight)：</strong>人站在电梯秤上读到的支持力 \(N\)。电梯加速度 \(\vec a\)（向上为正）时：</p>
+      <div class="formula">\[ N - mg = ma \;\Rightarrow\; N = m(g+a) \]</div>
+      <p>向上加速时 \(N&gt;mg\)（超重），向下加速时 \(N&lt;mg\)（失重），自由下落 \(a=-g\) 时 \(N=0\)（完全失重 / weightlessness）。</p>
+      <p><strong>约束力 (constraint forces)：</strong>法向力、张力等"几何约束"产生的力，其大小不事先给定，需由"不脱离接触""绳不伸长"等运动学约束通过牛顿方程联立求出。选择坐标时，<strong>让一个坐标轴沿加速度方向</strong>，可使方程最简：斜面取沿斜面/垂直斜面，圆周取径向/切向，电梯取竖直方向。</p>
+
+      <div class="key-terms">inertial reference frame (惯性参考系), Newton's three laws (牛顿三大定律), inertia (惯性), free-body diagram / FBD (受力分析图), weight (重力/重量), normal force (法向力), tension (张力), static friction (静摩擦), kinetic friction (动摩擦), coefficient of friction (摩擦系数), drag (流体阻力), Hooke's law (胡克定律), spring constant (劲度系数), inclined plane (斜面), connected objects (连接体), Atwood machine (阿特伍德机), banked curve (倾斜弯道), conical pendulum (锥摆), centripetal force (向心力), apparent weight (表观重量), weightlessness (失重), constraint force (约束力)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. 推导                                                       -->
+    <!-- ============================================================ -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导一：倾斜弯道理想车速 Banked-Curve Ideal Speed</h3>
+      <p>弯道路面倾角 \(\theta\)（外侧抬高），曲率半径 \(r\)，汽车速率 \(v\)，<strong>暂不考虑摩擦</strong>。路面只能给汽车法向支持力 \(N\)，方向垂直路面向上偏内（指向圆心一侧）。</p>
+      <p>取坐标：径向（水平、指向圆心为 \(+x\)）和竖直（\(+y\) 向上）。把 \(N\) 沿此二方向分解：</p>
+      <div class="formula">\[ N_x = N\sin\theta \;\text{(向心)}, \qquad N_y = N\cos\theta \;\text{(向上)} \]</div>
+      <p>汽车在水平圆周上匀速运动，竖直方向无加速度、径向有向心加速度 \(v^2/r\)：</p>
+      <div class="formula">\[ \text{径向:}\ N\sin\theta = m\frac{v^2}{r},\qquad \text{竖直:}\ N\cos\theta = mg \]</div>
+      <p>两式相除消去 \(N\)：</p>
+      <div class="formula">\[ \tan\theta = \frac{v^2}{rg} \;\Rightarrow\; v_0 = \sqrt{rg\tan\theta} \]</div>
+      <p>这就是<strong>理想车速</strong>：以 \(v_0\) 行驶时，无需任何摩擦即可安全过弯。当路面有摩擦时（推导留作练习），可求得允许速度的上下限：</p>
+      <div class="formula">\[ v_{\max}^2 = rg\,\frac{\tan\theta + \mu_s}{1 - \mu_s\tan\theta}, \qquad v_{\min}^2 = rg\,\frac{\tan\theta - \mu_s}{1 + \mu_s\tan\theta} \]</div>
+
+      <h3>推导二：线性与二次阻力的收尾速度 Terminal Velocity (Linear &amp; Quadratic Drag)</h3>
+      <p>考虑下落物体，取向下为正。重力 \(mg\) 向下，阻力向上（与速度反向）。</p>
+      <p><strong>（a）线性阻力 \(F_d = -bv\)：</strong>牛顿第二定律</p>
+      <div class="formula">\[ m\frac{\mathrm dv}{\mathrm dt} = mg - bv \]</div>
+      <p>分离变量后积分（\(v(0)=0\)）：</p>
+      <div class="formula">\[ \int_0^v \frac{\mathrm dv'}{mg - bv'} = \int_0^t \frac{\mathrm dt'}{m} \;\Rightarrow\; -\frac{1}{b}\ln\!\Bigl(\frac{mg-bv}{mg}\Bigr) = \frac{t}{m} \]</div>
+      <p>解出</p>
+      <div class="formula">\[ v(t) = \frac{mg}{b}\bigl(1 - e^{-t/\tau}\bigr), \qquad \tau = \frac{m}{b} \]</div>
+      <p>当 \(t\to\infty\)，\(v\) 趋于收尾速度</p>
+      <div class="formula">\[ \boxed{\,v_t = \frac{mg}{b}\,} \quad\text{（线性阻力）} \]</div>
+      <p><strong>（b）二次阻力 \(F_d = -cv^2\)（下落，\(v&gt;0\)）：</strong></p>
+      <div class="formula">\[ m\frac{\mathrm dv}{\mathrm dt} = mg - cv^2 \]</div>
+      <p>令 \(v_t^2 = mg/c\)（即令左端导数为零得到），方程改写为</p>
+      <div class="formula">\[ \frac{\mathrm dv}{\mathrm dt} = g\Bigl(1 - \frac{v^2}{v_t^2}\Bigr) = \frac{g}{v_t^2}\,(v_t^2 - v^2) \]</div>
+      <p>分离变量积分 \(\displaystyle\int_0^v \frac{\mathrm dv'}{v_t^2 - v'^2} = \frac{g}{v_t^2}\int_0^t \mathrm dt'\)。左端用 \(\displaystyle\int \frac{\mathrm dx}{a^2-x^2} = \frac{1}{a}\tanh^{-1}\!\frac{x}{a}\)：</p>
+      <div class="formula">\[ \frac{1}{v_t}\tanh^{-1}\!\Bigl(\frac{v}{v_t}\Bigr) = \frac{g t}{v_t^2} \;\Rightarrow\; v(t) = v_t \tanh\!\Bigl(\frac{gt}{v_t}\Bigr) \]</div>
+      <p>收尾速度（\(t\to\infty,\ \tanh\to 1\)）：</p>
+      <div class="formula">\[ \boxed{\,v_t = \sqrt{\frac{mg}{c}}\,} \quad\text{（二次阻力）} \]</div>
+      <p>两模型的特征时间也不同：线性模型的弛豫时间为 \(\tau=m/b\)；二次模型的特征时间为 \(v_t/g\)。</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. 例题                                                       -->
+    <!-- ============================================================ -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 斜面上的物块（先无摩擦，后有摩擦）</h4>
+        <p class="example-statement">质量 \(m = 5.0\,\mathrm{kg}\) 的物块置于倾角 \(\theta = 30^\circ\) 的斜面上，静摩擦系数 \(\mu_s = 0.40\)，动摩擦系数 \(\mu_k = 0.30\)。取 \(g=9.8\,\mathrm{m/s^2}\)。<br>(a) 若斜面光滑，求物块加速度；<br>(b) 若斜面有如上摩擦，物块是否会下滑？若下滑，加速度多大？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取坐标轴沿斜面（下坡为正）和垂直斜面。重力分量：沿坡 \(mg\sin\theta\)（下），垂直坡 \(mg\cos\theta\)（压入斜面）。</p>
+          <p class="step"><strong>(a) 无摩擦：</strong>垂直方向 \(N = mg\cos\theta\)；沿坡方向只有重力分量，
+            \[ a = \frac{mg\sin\theta}{m} = g\sin\theta = 9.8\times\sin 30^\circ = 9.8\times 0.5 = 4.9\,\mathrm{m/s^2}. \]</p>
+          <p class="step"><strong>(b) 先判断是否滑动。</strong>需比较 \(mg\sin\theta\) 与最大静摩擦 \(\mu_s N = \mu_s mg\cos\theta\)，即比较 \(\tan\theta\) 与 \(\mu_s\)：</p>
+          <p class="step">\(\tan 30^\circ = 0.5774 &gt; \mu_s = 0.40\)，故物块下滑。</p>
+          <p class="step"><strong>求加速度：</strong>此时摩擦为动摩擦 \(f_k = \mu_k N = \mu_k mg\cos\theta\)，沿坡向上。沿坡方程：
+            \[ mg\sin\theta - \mu_k mg\cos\theta = ma \;\Rightarrow\; a = g(\sin\theta - \mu_k\cos\theta). \]</p>
+          <p class="step">代入：\(a = 9.8\bigl(\sin 30^\circ - 0.30\cos 30^\circ\bigr) = 9.8(0.5 - 0.30\times 0.8660) = 9.8(0.5 - 0.2598) = 9.8\times 0.2402 \approx 2.35\,\mathrm{m/s^2}\)。</p>
+          <p class="step">验证：\(N = mg\cos\theta = 5.0\times 9.8\times 0.866 = 42.4\,\mathrm{N}\)；\(f_k = 0.30\times 42.4 = 12.7\,\mathrm{N}\)；沿坡净力 \(= 5.0\times 9.8\times 0.5 - 12.7 = 24.5 - 12.7 = 11.8\,\mathrm{N}\)；\(a = 11.8/5.0 = 2.36\,\mathrm{m/s^2}\) ✓。</p>
+          <p><span class="ans">(a) \(a = 4.9\,\mathrm{m/s^2}\)；(b) 下滑，\(a \approx 2.35\,\mathrm{m/s^2}\)，\(N \approx 42.4\,\mathrm{N}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 阿特伍德机 Atwood Machine</h4>
+        <p class="example-statement">两质量 \(m_1 = 6.0\,\mathrm{kg}\)、\(m_2 = 4.0\,\mathrm{kg}\) 经轻绳跨过理想滑轮。求：(a) 系统加速度大小 \(a\)；(b) 绳中张力 \(T\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>因 \(m_1&gt;m_2\)，\(m_1\) 下降、\(m_2\) 上升，二者加速度大小相同（绳不可伸长）。分别画 FBD 并取各自加速度方向为正。</p>
+          <p class="step">对 \(m_1\)（向下为正）：\(m_1 g - T = m_1 a\)。</p>
+          <p class="step">对 \(m_2\)（向上为正）：\(T - m_2 g = m_2 a\)。</p>
+          <p class="step">两式相加消去 \(T\)：\((m_1 - m_2)g = (m_1 + m_2)a\)，故
+            \[ a = \frac{m_1 - m_2}{m_1 + m_2}\,g = \frac{6.0 - 4.0}{6.0 + 4.0}\times 9.8 = \frac{2.0}{10.0}\times 9.8 = 1.96\,\mathrm{m/s^2}. \]</p>
+          <p class="step">代入任一方程求 \(T\)：\(T = m_1(g - a) = 6.0(9.8 - 1.96) = 6.0\times 7.84 = 47.04\,\mathrm{N}\)。用 \(m_2\) 验证：\(T = m_2(g+a) = 4.0(9.8+1.96) = 4.0\times 11.76 = 47.04\,\mathrm{N}\) ✓。</p>
+          <p class="step">特例检验：若 \(m_1=m_2=m\)，则 \(a=0,\ T=mg\)，符合直觉（平衡）。若 \(m_2\to 0\)，则 \(a\to g,\ T\to 0\)（自由下落）✓。</p>
+          <p><span class="ans">\(a = 1.96\,\mathrm{m/s^2}\)；\(T \approx 47.0\,\mathrm{N}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 叠放两木块：不发生相对滑动的力范围 Two Stacked Blocks</h4>
+        <p class="example-statement">如图，下块 \(M = 6.0\,\mathrm{kg}\) 放在<strong>光滑水平面</strong>上，上块 \(m = 2.0\,\mathrm{kg}\) 叠放在 \(M\) 上，两块之间静摩擦系数 \(\mu_s = 0.40\)。用水平力 \(F\) 推下块 \(M\)。求：\(F\) 在什么范围内，上块 \(m\) 不会相对 \(M\) 滑动？取 \(g=9.8\,\mathrm{m/s^2}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>关键洞察——上块只能靠它与下块之间的静摩擦被带动。若不发生滑动，两块以共同加速度 \(a\) 运动。对上块而言，水平方向唯一外力就是静摩擦：\(f_s = m a\)，而 \(f_s \le \mu_s m g\)。</p>
+          <p class="step">于是共同加速度有上限：\(a \le \mu_s g = 0.40\times 9.8 = 3.92\,\mathrm{m/s^2}\)。</p>
+          <p class="step">把两块作为整体（地面光滑，水平方向只有 \(F\)）：\(F = (M+m)\,a\)。</p>
+          <p class="step">所以
+            \[ F \le (M+m)\,\mu_s g = (6.0+2.0)\times 0.40\times 9.8 = 8.0\times 3.92 = 31.36\,\mathrm{N}. \]</p>
+          <p class="step">即 \(F\) 不能超过约 \(31\,\mathrm{N}\)。当 \(F\) 超过此值，所需静摩擦超过 \(\mu_s mg\)，上块相对下块向后滑动。</p>
+          <p class="step"><strong>验证临界态：</strong>取 \(F=31.36\,\mathrm{N}\)，整体 \(a = F/(M+m)=3.92\,\mathrm{m/s^2}\)；上块所需摩擦 \(f = m a = 2.0\times 3.92 = 7.84\,\mathrm{N}\)，恰等于 \(\mu_s m g = 0.40\times 2.0\times 9.8 = 7.84\,\mathrm{N}\) ✓。</p>
+          <p><span class="ans">\(0 \le F \le 31.4\,\mathrm{N}\)（约 \(31\,\mathrm{N}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 倾斜弯道：理想车速与有摩擦的最大车速 Banked Curve</h4>
+        <p class="example-statement">一段公路弯道曲率半径 \(r = 60\,\mathrm{m}\)，路面倾角 \(\theta = 15^\circ\)。取 \(g=9.8\,\mathrm{m/s^2}\)。<br>(a) 若忽略摩擦，求理想车速 \(v_0\)；<br>(b) 若轮胎与路面静摩擦系数 \(\mu_s = 0.30\)，求不侧滑的最大车速 \(v_{\max}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>由推导一，\(v_0 = \sqrt{rg\tan\theta}\)。</p>
+          <p class="step">\(\tan 15^\circ = 0.2679\)，故
+            \[ v_0 = \sqrt{60\times 9.8\times 0.2679} = \sqrt{157.5} \approx 12.55\,\mathrm{m/s} \approx 45.2\,\mathrm{km/h}. \]</p>
+          <p class="step"><strong>解 (b)：</strong>高速时车有向外（上坡方向）滑的趋势，摩擦沿斜面向下（指向圆心一侧），帮助提供向心力。由推导一公式：
+            \[ v_{\max}^2 = rg\,\frac{\tan\theta + \mu_s}{1 - \mu_s\tan\theta}. \]</p>
+          <p class="step">代入：
+            \[ v_{\max}^2 = 60\times 9.8\times\frac{0.2679 + 0.30}{1 - 0.30\times 0.2679} = 588\times\frac{0.5679}{1 - 0.0804} = 588\times\frac{0.5679}{0.9196} = 588\times 0.6176 \approx 363.1. \]</p>
+          <p class="step">\(v_{\max} = \sqrt{363.1} \approx 19.06\,\mathrm{m/s} \approx 68.6\,\mathrm{km/h}\)。</p>
+          <p class="step">可见摩擦把允许速度从 \(45\,\mathrm{km/h}\) 提到约 \(69\,\mathrm{km/h}\)，这与日常驾驶经验相符。</p>
+          <p><span class="ans">(a) \(v_0 \approx 12.6\,\mathrm{m/s}\)（\(45.2\,\mathrm{km/h}\)）；(b) \(v_{\max} \approx 19.1\,\mathrm{m/s}\)（\(68.6\,\mathrm{km/h}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 跳伞员的收尾速度 Skydiver Terminal Velocity</h4>
+        <p class="example-statement">一跳伞员质量 \(m = 75\,\mathrm{kg}\)，展开四肢时受到的空气阻力很好地用二次阻力模型 \(F_d = c v^2\)（大小）描述，实测收尾速度 \(v_t \approx 54\,\mathrm{m/s}\)（约 \(194\,\mathrm{km/h}\)，自由下落姿势的典型值）。取 \(g=9.8\,\mathrm{m/s^2}\)。<br>(a) 求阻力系数 \(c\)；<br>(b) 若改用线性模型 \(F_d = bv\) 拟合同一收尾速度，相应的 \(b\) 应为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>收尾时加速度为零，重力与阻力平衡：
+            \[ mg = c v_t^2 \;\Rightarrow\; c = \frac{mg}{v_t^2} = \frac{75\times 9.8}{(54)^2} = \frac{735}{2916} \approx 0.252\,\mathrm{kg/m}. \]</p>
+          <p class="step"><strong>解 (b)：</strong>线性模型收尾时同样 \(mg = b v_t\)，故
+            \[ b = \frac{mg}{v_t} = \frac{735}{54} \approx 13.6\,\mathrm{kg/s}. \]</p>
+          <p class="step">讨论：两模型的 \(v(t)\) 形态不同（指数渐近 vs \(\tanh\) 渐近），但收尾速度公式 \(v_t = mg/b\) 与 \(v_t = \sqrt{mg/c}\) 给出相同的"长时极限"。对真实跳伞员（高速、湍流），二次模型远比线性模型准确；线性模型适用于油滴、小球在黏油中的低速下落（如密立根实验）。</p>
+          <p><span class="ans">(a) \(c \approx 0.252\,\mathrm{kg/m}\)；(b) \(b \approx 13.6\,\mathrm{kg/s}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. 常见误区                                                   -->
+    <!-- ============================================================ -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把 \(ma\) 当成力画进 FBD。</strong> \(ma\) 是合外力的<strong>效果</strong>，不是力。FBD 只画真实存在的力（重力、法向力、张力、摩擦……），\(ma\) 永远出现在方程的右边。</li>
+        <li><strong>遗漏力或多画力。</strong> 每个接触处都要检查有无相应的法向力/张力/摩擦；同时不要画"内力"或"另一个物体受到的力"——FBD 只关心隔离体本身受到的外力。</li>
+        <li><strong>默认法向力 \(N=mg\)。</strong> 这是斜面和电梯题最常见的错。斜面上 \(N = mg\cos\theta\)（小于 \(mg\)）；加速电梯中 \(N = m(g\pm a)\)。\(\,N\) 应由垂直于接触面方向的牛顿方程求出，而非事先假定。</li>
+        <li><strong>摩擦力方向标错。</strong> 摩擦力方向总是与<strong>相对运动</strong>（动摩擦）或<strong>相对运动趋势</strong>（静摩擦）相反。判断静摩擦方向可问："若无摩擦，物体会往哪边滑？"——摩擦指向相反那边。</li>
+        <li><strong>误以为作用力与反作用力相互抵消。</strong> 它们大小相等方向相反，但作用在<strong>不同</strong>物体上，所以绝不在同一 FBD 中出现、绝不相消。把哪个物体当隔离体，就只画那个物体受到的力。</li>
+        <li><strong>混淆静摩擦公式与动摩擦公式。</strong> \(f_s \le \mu_s N\) 是不等式（实际值由平衡决定），\(f_k = \mu_k N\) 是等式。解题第一步常是判断"究竟在哪种状态"：比较 \(\tan\theta\) 与 \(\mu_s\)，或比较所需静摩擦与 \(\mu_s N\)。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. 练习题                                                     -->
+    <!-- ============================================================ -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 电梯中的表观重量。质量 \(m=70\,\mathrm{kg}\) 的人站在电梯秤上。<br>(a) 电梯以 \(a=2.0\,\mathrm{m/s^2}\) 向上加速时，秤读多少牛顿？相当于多少"公斤"？<br>(b) 以同样大小的加速度向下加速呢？<br>(c) 电梯缆绳断裂自由下落时呢？</summary>
+        <div class="hint">人受到两个力：重力 \(mg\) 向下，秤的支持力 \(N\) 向上。取向上为正，由 \(N - mg = ma\) 解 \(N\)。秤读数就是 \(N\)。</div>
+        <div class="solution">
+          \(N = m(g+a)\)，取 \(g=9.8\,\mathrm{m/s^2}\)。<br>
+          (a) 向上加速：\(N = 70\times(9.8+2.0) = 70\times 11.8 = 826\,\mathrm{N}\)；折合 \(826/9.8 \approx 84.3\,\mathrm{kg}\)（"超重"）。<br>
+          (b) 向下加速（\(a=-2.0\)）：\(N = 70\times(9.8-2.0) = 70\times 7.8 = 546\,\mathrm{N}\)；折合约 \(55.7\,\mathrm{kg}\)（"失重"）。<br>
+          (c) 自由下落（\(a=-g\)）：\(N = 70\times(9.8-9.8) = 0\)，完全失重。<br>
+          <span class="ans">(a) \(826\,\mathrm{N}\)（\(84.3\,\mathrm{kg}\)）；(b) \(546\,\mathrm{N}\)（\(55.7\,\mathrm{kg}\)）；(c) \(0\)（失重）</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 锥摆。一根长 \(L=1.2\,\mathrm{m}\) 的轻绳一端系质量 \(m=0.50\,\mathrm{kg}\) 的小球，另一端固定。小球在水平面内做匀速圆周运动，绳与竖直方向夹角 \(\theta=30^\circ\)。求：(a) 绳中张力 \(T\)；(b) 小球速率 \(v\)；(c) 周期 \(\mathcal{T}\)。取 \(g=9.8\,\mathrm{m/s^2}\)。</summary>
+        <div class="hint">竖直方向平衡 \(T\cos\theta = mg\)；径向 \(T\sin\theta = mv^2/r\)；圆心半径 \(r = L\sin\theta\)。</div>
+        <div class="solution">
+          (a) \(T = \dfrac{mg}{\cos\theta} = \dfrac{0.50\times 9.8}{\cos 30^\circ} = \dfrac{4.9}{0.866} \approx 5.66\,\mathrm{N}\)。<br>
+          (b) \(r = L\sin\theta = 1.2\times 0.5 = 0.60\,\mathrm{m}\)。两式相除 \(\tan\theta = \dfrac{v^2}{rg}\)，故
+          \(v = \sqrt{rg\tan\theta} = \sqrt{0.60\times 9.8\times 0.5774} = \sqrt{3.395} \approx 1.84\,\mathrm{m/s}\)。<br>
+          (c) \(\mathcal{T} = \dfrac{2\pi r}{v} = \dfrac{2\pi\times 0.60}{1.84} \approx 2.05\,\mathrm{s}\)。<br>
+          注：周期公式 \(\mathcal{T}=2\pi\sqrt{L\cos\theta/g}\) 给出同样结果：\(2\pi\sqrt{1.2\times 0.866/9.8}=2\pi\sqrt{0.1060}=2\pi\times 0.3256\approx 2.05\,\mathrm{s}\) ✓。<br>
+          <span class="ans">(a) \(T\approx 5.66\,\mathrm{N}\)；(b) \(v\approx 1.84\,\mathrm{m/s}\)；(c) \(\mathcal{T}\approx 2.05\,\mathrm{s}\)</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 斜面—滑轮系统。质量 \(m_1 = 3.0\,\mathrm{kg}\) 的物块放在光滑 \(30^\circ\) 斜面上，经轻绳跨过斜面顶端的理想滑轮与竖直悬挂的 \(m_2 = 2.0\,\mathrm{kg}\) 物块相连。开始时两者均静止。求加速度大小与绳中张力。取 \(g=9.8\,\mathrm{m/s^2}\)。</summary>
+        <div class="hint">先判断运动方向：比较 \(m_2 g\) 与 \(m_1 g\sin\theta\)。再分别列两物体的牛顿第二定律方程联立。</div>
+        <div class="solution">
+          \(m_2 g = 2.0\times 9.8 = 19.6\,\mathrm{N}\)；\(m_1 g\sin 30^\circ = 3.0\times 9.8\times 0.5 = 14.7\,\mathrm{N}\)。因 \(19.6 &gt; 14.7\)，\(m_2\) 下降、\(m_1\) 沿斜面上滑。<br>
+          对 \(m_2\)（向下为正）：\(m_2 g - T = m_2 a\)。<br>
+          对 \(m_1\)（沿斜面上行方向为正）：\(T - m_1 g\sin\theta = m_1 a\)。<br>
+          相加：\(m_2 g - m_1 g\sin\theta = (m_1+m_2)a\)，故
+          \(a = \dfrac{m_2 g - m_1 g\sin\theta}{m_1+m_2} = \dfrac{19.6 - 14.7}{5.0} = \dfrac{4.9}{5.0} = 0.98\,\mathrm{m/s^2}\)。<br>
+          张力：\(T = m_2(g-a) = 2.0(9.8-0.98) = 2.0\times 8.82 = 17.64\,\mathrm{N}\)。<br>
+          用 \(m_1\) 验证：\(T - m_1 g\sin\theta = 17.64 - 14.7 = 2.94 = 3.0\times 0.98\) ✓。<br>
+          <span class="ans">\(a = 0.98\,\mathrm{m/s^2}\)（\(m_2\) 下、\(m_1\) 上行）；\(T\approx 17.6\,\mathrm{N}\)</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 胡克弹簧与瞬时加速度。劲度系数 \(k=250\,\mathrm{N/m}\) 的轻弹簧下挂质量 \(m=2.0\,\mathrm{kg}\) 的物块，在平衡位置静止。(a) 弹簧伸长量 \(x_0\) 多大？(b) 用手把物块再向下拉 \(5.0\,\mathrm{cm}\) 然后松手，松手瞬间物块的加速度大小和方向？取 \(g=9.8\,\mathrm{m/s^2}\)。</summary>
+        <div class="hint">(a) 平衡时弹簧弹力等于重力 \(kx_0 = mg\)。(b) 平衡位置处弹力已经等于重力，额外下拉 \(\Delta x\) 引起额外弹力 \(k\Delta x\)，这就是净力。</div>
+        <div class="solution">
+          (a) \(x_0 = \dfrac{mg}{k} = \dfrac{2.0\times 9.8}{250} = \dfrac{19.6}{250} = 0.0784\,\mathrm{m} = 7.84\,\mathrm{cm}\)。<br>
+          (b) 在平衡位置，\(kx_0 = mg\) 已抵消。再下拉 \(\Delta x = 0.050\,\mathrm{m}\)，总伸长 \(x_0 + \Delta x\)，净力（向上）为
+          \(F_{\text{net}} = k(x_0+\Delta x) - mg = k\Delta x = 250\times 0.050 = 12.5\,\mathrm{N}\)（向上）。<br>
+          加速度 \(a = \dfrac{F_{\text{net}}}{m} = \dfrac{12.5}{2.0} = 6.25\,\mathrm{m/s^2}\)，方向竖直向上。<br>
+          注：这就是简谐运动在最低点的瞬时加速度，与第 8 章结果一致。<br>
+          <span class="ans">(a) \(x_0 = 7.84\,\mathrm{cm}\)；(b) \(a = 6.25\,\mathrm{m/s^2}\) 向上</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 线性阻力下的收尾速度。质量 \(m=1.5\,\mathrm{g}\) 的小球在黏性油中下落，受到线性阻力 \(F_d = bv\)，\(b = 3.0\times 10^{-3}\,\mathrm{kg/s}\)。求收尾速度 \(v_t\) 与弛豫时间 \(\tau\)。取 \(g=9.8\,\mathrm{m/s^2}\)。</summary>
+        <div class="hint">线性阻力模型 \(v_t = mg/b\)，\(\tau = m/b\)。注意单位：质量用千克。</div>
+        <div class="solution">
+          \(m = 1.5\,\mathrm{g} = 1.5\times 10^{-3}\,\mathrm{kg}\)。<br>
+          \(v_t = \dfrac{mg}{b} = \dfrac{(1.5\times 10^{-3})(9.8)}{3.0\times 10^{-3}} = \dfrac{0.0147}{0.0030} = 4.9\,\mathrm{m/s}\)。<br>
+          \(\tau = \dfrac{m}{b} = \dfrac{1.5\times 10^{-3}}{3.0\times 10^{-3}} = 0.50\,\mathrm{s}\)。<br>
+          即小球释放后约 \(\tau\) 量级时间就接近收尾速度：\(v(t)=v_t(1-e^{-t/\tau})\)，\(t=2\,\mathrm{s}\) 时已达 \(1-e^{-4}\approx 98.2\%\)。<br>
+          <span class="ans">\(v_t = 4.9\,\mathrm{m/s}\)；\(\tau = 0.50\,\mathrm{s}\)</span>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. 互动仿真                                                   -->
+    <!-- ============================================================ -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">斜面与摩擦：受力分析实验室 (free-body diagram lab)。调节斜面倾角 \(\theta\)、静摩擦系数 \(\mu_s\)、动摩擦系数 \(\mu_k\) 与物块质量 \(m\)，实时观察完整的受力分析图——重力 \(mg\)（红）、法向力 \(N\)（绿）、摩擦力 \(f\)（蓝）均按比例画出。仿真自动判断物块保持静止（静摩擦恰好平衡）还是加速下滑，并显示对应的加速度数值。试试 \(\tan\theta = \mu_s\) 这一临界条件。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+          var g = 9.8;
+          var params = { theta: 30, mus: 0.40, muk: 0.30, m: 5.0 };
+
+          // Geometry: incline with slope rising to the right.
+          // Low end (bottom of slope) at A = (mL, baseY). Slope length L (px).
+          var mL = 60, baseY = H - 70;
+          var L = 320;   // slope length in pixels
+
+          // Force scale: pixels per Newton (chosen so typical mg ~ 50 N -> ~80 px)
+          var forceScale = 1.6;
+
+          // Slope length in "physics meters" for displaying block motion along slope.
+          // We treat the slope as ~ 8 m long so motion is visible.
+          var Lmeters = 8.0;
+          var pxPerMeter = L / Lmeters;
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { s: 0.5, vs: 0.0, sliding: false, settled: 0 }; },
+            step: function (dt, t, s) {
+              var th = params.theta * Math.PI / 180;
+              var m = params.m;
+              var sinT = Math.sin(th), cosT = Math.cos(th);
+              var fgravPar = m * g * sinT;      // gravity along slope (down-slope)
+              var N = m * g * cosT;
+              if (!s.sliding) {
+                // Static: does static friction hold?
+                if (fgravPar > params.mus * N + 1e-9) {
+                  s.sliding = true;             // begins to slide
+                } else {
+                  s.vs = 0;                     // held in place
+                }
+              }
+              if (s.sliding) {
+                var a = g * (sinT - params.muk * cosT);
+                // guard: if a <= 0 somehow (mu_k huge), keep from creeping backward
+                if (a < 0) a = 0;
+                s.vs += a * dt;
+                s.s += s.vs * dt;
+                if (s.s >= Lmeters - 0.2) {
+                  // reached bottom: pause briefly then reset to top
+                  s.settled += dt;
+                  if (s.settled > 0.6) { s.s = 0.4; s.vs = 0; s.sliding = false; s.settled = 0; }
+                }
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var th = params.theta * Math.PI / 180;
+              var sinT = Math.sin(th), cosT = Math.cos(th);
+              var m = params.m;
+
+              // Geometry of slope corners
+              var Ax = mL, Ay = baseY;                                  // bottom of slope
+              var Tx = Ax + L * cosT, Ty = Ay - L * sinT;               // top of slope
+              var Bx = Tx, By = Ay;                                     // bottom-right
+
+              // Ground line + hatch
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(0, Ay); ctx.lineTo(W, Ay); ctx.stroke();
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.5;
+              for (var gx = 10; gx < W; gx += 14) {
+                ctx.beginPath(); ctx.moveTo(gx, Ay); ctx.lineTo(gx - 8, Ay + 9); ctx.stroke();
+              }
+              ctx.restore();
+
+              // Filled incline triangle
+              ctx.save();
+              ctx.fillStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.35;
+              ctx.beginPath();
+              ctx.moveTo(Ax, Ay); ctx.lineTo(Bx, By); ctx.lineTo(Tx, Ty); ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+              // Slope edge
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(Ax, Ay); ctx.lineTo(Tx, Ty); ctx.stroke();
+              ctx.restore();
+
+              // Angle arc + label theta
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.5;
+              var arcR = 38;
+              ctx.beginPath();
+              ctx.arc(Ax, Ay, arcR, -th, 0, false);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'θ', Ax + arcR + 6, Ay - 6,
+                { color: PS.colors.accent2, font: '13px system-ui, sans-serif' });
+
+              // Block position along slope: s meters from top.
+              var sClamped = Math.min(s.s, Lmeters);
+              // direction from top T toward A (down-slope): (-cosT, +sinT)
+              var cx = Tx - sClamped * pxPerMeter * cosT;
+              var cy = Ty + sClamped * pxPerMeter * sinT;
+
+              // Draw block as a small square rotated by theta, centered at (cx, cy)
+              var bw = 26;
+              ctx.save();
+              ctx.translate(cx, cy);
+              ctx.rotate(-th);                  // canvas rotate CCW by th => matches slope rising right
+              // offset block so it sits ON the slope (its bottom face on the slope)
+              ctx.fillStyle = PS.colors.primary;
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 1.5;
+              ctx.fillRect(-bw / 2, -bw - 1, bw, bw);
+              ctx.strokeRect(-bw / 2, -bw - 1, bw, bw);
+              ctx.restore();
+
+              // Block center (slightly above slope surface, at the geometric center)
+              var bx = cx + (bw / 2) * sinT;    // outward normal direction (-sinT,-cosT) * (bw/2)
+              var by = cy - (bw / 2) * cosT;
+
+              // Compute forces (magnitudes) for FBD
+              var mg = m * g;
+              var N = mg * cosT;
+              var fgravPar = mg * sinT;
+              var fMag, fLabel, status, aVal;
+              var slidingNow = s.sliding && s.settled === 0;
+              if (!slidingNow) {
+                // Static: friction balances gravity component along slope (down-slope)
+                fMag = fgravPar;
+                fLabel = 'f_s';
+                status = 'STATIC  静止  (静摩擦平衡)';
+                aVal = 0;
+              } else {
+                fMag = params.muk * N;
+                fLabel = 'f_k';
+                aVal = g * (sinT - params.muk * cosT);
+                status = 'SLIDING  下滑  a = ' + aVal.toFixed(2) + ' m/s²';
+              }
+
+              // FBD vectors (all to common scale)
+              // Weight: straight DOWN (canvas +y). endpoint = (bx, by + mg*scale)
+              PS.drawArrow(ctx, bx, by, bx, by + mg * forceScale, PS.colors.accent, 'mg');
+              // Normal: outward from slope, direction n_hat = (-sinT, -cosT) in canvas
+              var nx = -sinT, ny = -cosT;
+              PS.drawArrow(ctx, bx, by, bx + N * forceScale * nx, by + N * forceScale * ny,
+                PS.colors.accent2, 'N');
+              // Friction: along slope. Here gravity pulls down-slope, so friction points UP-slope
+              // Up-slope unit vector t_hat = (cosT, -sinT) in canvas
+              var tx = cosT, ty = -sinT;
+              // Avoid drawing zero-length arrow when fMag is tiny
+              if (fMag * forceScale > 2) {
+                PS.drawArrow(ctx, bx, by, bx + fMag * forceScale * tx, by + fMag * forceScale * ty,
+                  PS.colors.primary, fLabel);
+              }
+
+              // Header: parameters
+              PS.drawText(ctx,
+                'θ = ' + params.theta + '°,   μ_s = ' + params.mus.toFixed(2) +
+                ',   μ_k = ' + params.muk.toFixed(2) + ',   m = ' + params.m.toFixed(1) + ' kg',
+                mL, 22, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+
+              // Status line
+              var statusColor = slidingNow ? PS.colors.accent : PS.colors.accent2;
+              PS.drawText(ctx, status, mL, 44, { font: 'bold 14px system-ui, sans-serif', color: statusColor });
+
+              // Critical condition hint
+              var tanT = Math.tan(th);
+              var crit = '临界: tan θ = ' + tanT.toFixed(3) + '   μ_s = ' + params.mus.toFixed(3) +
+                '   → ' + (tanT > params.mus ? 'tan θ > μ_s （下滑）' : 'tan θ ≤ μ_s （静止）');
+              PS.drawText(ctx, crit, mL, 64, { font: '12px system-ui, sans-serif', color: PS.colors.text });
+
+              // Force legend (right side)
+              var legX = W - 18, legY = 90;
+              PS.drawText(ctx, '受力 Forces (按比例 to scale):', legX, legY,
+                { font: 'bold 12px system-ui, sans-serif', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, 'mg = ' + mg.toFixed(1) + ' N  (red)', legX, legY + 20,
+                { font: '12px system-ui, sans-serif', color: PS.colors.accent, align: 'right' });
+              PS.drawText(ctx, 'N = ' + N.toFixed(1) + ' N  (green)', legX, legY + 38,
+                { font: '12px system-ui, sans-serif', color: PS.colors.accent2, align: 'right' });
+              PS.drawText(ctx, fLabel + ' = ' + fMag.toFixed(1) + ' N  (blue)', legX, legY + 56,
+                { font: '12px system-ui, sans-serif', color: PS.colors.primary, align: 'right' });
+              PS.drawText(ctx, 'μ_s N = ' + (params.mus * N).toFixed(1) + ' N  (静摩擦上限)',
+                legX, legY + 74, { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'right' });
+
+              // Footer note
+              PS.drawText(ctx,
+                '滑块 Slider 调节 θ 与 μ，观察 mg、N、f 如何变化；N = mg cos θ，绝不等于 mg。',
+                mL, H - 12, { font: '12px system-ui, sans-serif', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'theta', label: '倾角 θ (°)',     min: 0, max: 80, step: 1,    value: 30 },
+            { type: 'slider', key: 'mus',   label: '静摩擦 μ_s',     min: 0, max: 1,  step: 0.01, value: 0.40 },
+            { type: 'slider', key: 'muk',   label: '动摩擦 μ_k',     min: 0, max: 1,  step: 0.01, value: 0.30 },
+            { type: 'slider', key: 'm',     label: '质量 m (kg)',    min: 1, max: 8,  step: 0.5,  value: 5.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('theta', function (v) { params.theta = v; });
+          ctl.on('mus',   function (v) { params.mus = v; });
+          ctl.on('muk',   function (v) { params.muk = v; });
+          ctl.on('m',     function (v) { params.m = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. 小结                                                       -->
+    <!-- ============================================================ -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>牛顿动力学把第 2 章的运动学与"为什么这样运动"联系起来。掌握本章的关键是：</p>
+      <ul>
+        <li>三大定律的适用前提是<strong>惯性参考系</strong>；第二定律 \(\vec F_{\text{net}}=m\vec a\) 是矢量方程，需在每个独立坐标轴上分量求解。</li>
+        <li><strong>受力分析图 (FBD)</strong> 是所有动力学问题的入口：隔离物体→画重力→画所有接触力→画场力→沿加速度方向建坐标列方程。\(ma\) 不是力，绝不画进 FBD。</li>
+        <li>法向力、张力等<strong>约束力的大小由方程决定</strong>，不可先入为主地写成 \(N=mg\)。斜面上 \(N=mg\cos\theta\)；电梯里 \(N=m(g\pm a)\)。</li>
+        <li>静摩擦 \(f_s\le\mu_s N\) 是不等式，动摩擦 \(f_k=\mu_k N\) 是等式；判断"会不会滑"通常是比较 \(\tan\theta\) 与 \(\mu_s\)。</li>
+        <li>圆周运动就是受力问题：径向 \(\sum F_r = mv^2/r\)，倾斜弯道、锥摆都是它的应用。</li>
+      </ul>
+      <div class="formula">\[ \vec{F}_{\text{net}} = m\vec{a} \quad;\quad \vec{F}_{B\to A} = -\vec{F}_{A\to B} \quad;\quad \vec{W}=m\vec{g} \]</div>
+      <div class="formula">\[ f_s \le \mu_s N \;\;(f_{s,\max}=\mu_s N) \quad;\quad f_k = \mu_k N \quad;\quad F_{\text{spring}} = -kx \]</div>
+      <div class="formula">\[ \text{斜面:}\ \ N = mg\cos\theta,\ \ a = g(\sin\theta - \mu_k\cos\theta)\ \ (\tan\theta &gt; \mu_s) \]</div>
+      <div class="formula">\[ \text{Atwood:}\ \ a = \frac{m_1-m_2}{m_1+m_2}\,g,\ \ T = \frac{2m_1 m_2}{m_1+m_2}\,g \]</div>
+      <div class="formula">\[ \text{理想弯道:}\ \ v_0 = \sqrt{rg\tan\theta} \quad;\quad \text{锥摆周期:}\ \ \mathcal{T}=2\pi\sqrt{\frac{L\cos\theta}{g}} \]</div>
+      <div class="formula">\[ \text{表观重量:}\ \ N = m(g+a) \quad;\quad \text{收尾速度:}\ \ v_t = \frac{mg}{b}\ \text{(linear)},\ \ v_t = \sqrt{\frac{mg}{c}}\ \text{(quadratic)} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

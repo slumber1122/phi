@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第14章 · 相对论基础与洛伦兹变换 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="14">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 14 · 第14章 · 第三部分 狭义相对论 Part III Special Relativity</p>
+      <h1>相对论基础与洛伦兹变换 <span class="en-title">Foundations &amp; Lorentz Transformations</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>说明<b>伽利略相对性原理</b> (Galilean relativity) 与麦克斯韦电磁学预言光速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\) 之间的根本冲突。</li>
+        <li>解释<b>迈克耳孙–莫雷实验</b> (Michelson–Morley experiment) 的零结果如何终结"以太" (luminiferous ether) 假说。</li>
+        <li>准确叙述爱因斯坦的两条<b>假设</b> (postulates)，并指出它们在何处违反牛顿时空观。</li>
+        <li>由两条假设<b>推导洛伦兹变换</b> (Lorentz transformation) \(x'=\gamma(x-vt),\; t'=\gamma(t-vx/c^{2})\)。</li>
+        <li>运用<b>时间膨胀</b> (time dilation) \(\Delta t=\gamma\Delta\tau_{0}\) 与<b>长度收缩</b> (length contraction) \(L=L_{0}/\gamma\) 解决含数值的问题。</li>
+        <li>应用<b>相对论速度合成</b> (relativistic velocity addition) \(u=(u'+v)/(1+u'v/c^{2})\)，并理解为何两束以 \(0.7c\) 相向而行的光不会合成 \(1.4c\)。</li>
+        <li>计算<b>不变间隔</b> (invariant interval) \(s^{2}=(c\Delta t)^{2}-(\Delta x)^{2}-\)…，体会 \(c\) 作为宇宙速度上限的几何含义。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 伽利略相对性 vs. 麦克斯韦电磁学 Galilean Relativity vs. Maxwell</h3>
+      <p>牛顿力学中，若两惯性系 (inertial frames) \(S\) 与 \(S'\) 以相对速度 \(v\) 沿 \(x\) 方向运动，坐标按<b>伽利略变换</b> (Galilean transformation) 联系：</p>
+      <div class="formula">\[ x'=x-vt,\qquad t'=t,\qquad y'=y,\qquad z'=z. \]</div>
+      <p>由此导出<b>伽利略速度合成</b> \(u'=u-v\)。在该框架下，力学定律在所有惯性系中形式相同（伽利略相对性原理），但<b>麦克斯韦方程组</b> (Maxwell's equations) 却预言真空中的光速为</p>
+      <div class="formula">\[ c \;=\; \frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}} \;\approx\; 3.0\times10^{8}\,\mathrm{m/s}, \]</div>
+      <p>这是一个<b>仅由电磁学常数决定</b>的确定值，与参考系无关。若伽利略变换成立，则对以速度 \(v\) 追光的人而言光速应为 \(c-v\)——这与麦克斯韦方程矛盾。这是 19 世纪末物理学的核心危机。</p>
+
+      <h3>2. 迈克耳孙–莫雷实验 Michelson–Morley Experiment</h3>
+      <p>1887 年，迈克耳孙与莫雷用<b>干涉仪</b> (interferometer) 试图探测地球相对"以太"的运动。如果光速相对于以太为 \(c\)，而地球以约 \(30\,\mathrm{km/s}\) 绕日运动，那么顺着/逆着以太风传播的光束之间应当存在可测的时差，干涉条纹应随地球转向而移动。实验给出<b>零结果</b> (null result)：从未观察到预期的条纹移动。这动摇了以太的存在，并为爱因斯坦的假设铺平道路。</p>
+
+      <h3>3. 爱因斯坦的两条假设 Einstein's Two Postulates (1905)</h3>
+      <p>爱因斯坦在 1905 年提出<b>狭义相对论</b> (special relativity)，其基础是两条假设：</p>
+      <ul>
+        <li><b>相对性原理</b> (relativity principle)：物理定律在所有惯性系中具有相同的形式。</li>
+        <li><b>光速不变原理</b> (invariance of \(c\))：真空中的光速 \(c\) 对所有惯性观察者都相同，与光源或观察者的运动无关。</li>
+      </ul>
+      <p>第二条假设直接否定了伽利略速度合成，迫使时间和空间概念被重写。</p>
+
+      <h3>4. 同时性的相对性 Relativity of Simultaneity</h3>
+      <p>这是关键的概念跃迁。若一束光在车厢中点发出，向前后两端传播：在车厢参考系 (train frame) 中光<b>同时</b>到达前后壁；但在地面参考系 (ground frame) 中，车的前壁在逃离光脉冲、后壁在迎上光脉冲，又因光速对所有观察者都为 \(c\)，所以光<b>先到后壁、后到前壁</b>。"同时"不再是绝对的——它依赖于参考系。一旦接受了这一点，时间膨胀与长度收缩就水到渠成。</p>
+
+      <h3>5. 洛伦兹变换 Lorentz Transformation</h3>
+      <p>由两条假设可导出 (见推导 1) 两个惯性系之间坐标的正确变换——<b>洛伦兹变换</b>：</p>
+      <div class="formula">\[ x'=\gamma\,(x-vt),\qquad y'=y,\qquad z'=z,\qquad t'=\gamma\!\left(t-\frac{v\,x}{c^{2}}\right), \]</div>
+      <p>其中</p>
+      <div class="formula">\[ \beta\equiv\frac{v}{c},\qquad \gamma=\frac{1}{\sqrt{1-\beta^{2}}}=\frac{1}{\sqrt{1-v^{2}/c^{2}}}\ge 1. \]</div>
+      <p>当 \(v\ll c\) 时 \(\gamma\to 1\)，洛伦兹变换退化为伽利略变换。逆变换由对称性 (将 \(v\to -v\)) 得到：\(x=\gamma(x'+vt'),\ t=\gamma(t'+vx'/c^{2})\)。</p>
+
+      <h3>6. 时间膨胀 Time Dilation</h3>
+      <p><b>固有时</b> (proper time) \(\Delta\tau_{0}\) 是同一地点发生的两事件的时间间隔（用随系统一起运动的钟测量）。在实验室系中测量，钟在运动，所以时间间隔被拉长：</p>
+      <div class="formula">\[ \Delta t \;=\; \gamma\,\Delta\tau_{0}. \]</div>
+      <p>"运动的钟走得慢"。注意这是<b>对称</b>的：每个观察者看对方的钟都慢，这是同时性的相对性所允许的。</p>
+
+      <h3>7. 长度收缩 Length Contraction</h3>
+      <p><b>固有长度</b> (proper length) \(L_{0}\) 是在物体静止的参考系中测得的长度。当物体以 \(v\) 沿其长度方向运动时，实验室系测得的长度为</p>
+      <div class="formula">\[ L \;=\; \frac{L_{0}}{\gamma}. \]</div>
+      <p>收缩<b>仅沿运动方向</b>，垂直方向无变化。注意：要"测一个运动物体的长度"，必须<b>同时</b>记录两端坐标——而"同时"是相对的，这正是收缩的来源。</p>
+
+      <h3>8. 相对论速度合成 Relativistic Velocity Addition</h3>
+      <p>对洛伦兹变换取微分 (见推导 3)，得速度合成公式。若 \(S'\) 以 \(v\) 相对 \(S\) 沿 \(x\) 方向运动，一物体在 \(S'\) 中速度为 \(u'=(u'_{x},u'_{y},u'_{z})\)，则在 \(S\) 中：</p>
+      <div class="formula">\[ u_{x}=\frac{u'_{x}+v}{1+u'_{x}v/c^{2}},\qquad u_{y}=\frac{u'_{y}/\gamma}{1+u'_{x}v/c^{2}},\qquad u_{z}=\frac{u'_{z}/\gamma}{1+u'_{x}v/c^{2}}. \]</div>
+      <p>若 \(u'_{x}=c\)（光），则 \(u_{x}=c\)——光速不变。当 \(v\ll c\) 时退化为伽利略合成 \(u=u'+v\)。两个都小于 \(c\) 的速度合成后仍小于 \(c\)。</p>
+
+      <h3>9. 不变间隔 The Invariant Interval</h3>
+      <p>尽管时间和空间分量分别依赖于参考系，它们组合成的<b>时空间隔</b> (spacetime interval) 是参考系不变的：</p>
+      <div class="formula">\[ s^{2} \;=\; (c\,\Delta t)^{2}-(\Delta x)^{2}-(\Delta y)^{2}-(\Delta z)^{2}. \]</div>
+      <p>对所有惯性观察者，\(s^{2}\) 取相同值。按 \(s^{2}\) 的正负分为<b>类时</b> (timelike, \(s^{2}>0\))、<b>类空</b> (spacelike, \(s^{2}<0\))、<b>类光</b> (lightlike / null, \(s^{2}=0\)) 三种。这是通往闵可夫斯基几何的桥梁，第 15 章将深入展开。</p>
+
+      <h3>10. 光速作为速度上限 \(c\) as the Universal Speed Limit</h3>
+      <p>由速度合成公式可知，无论怎样叠加小于 \(c\) 的速度，结果永远小于 \(c\)。同时 \(\gamma\to\infty\)（当 \(v\to c\)）意味着任何有质量的物体加速到 \(c\) 需要无限能量——故 \(c\) 是有质点的速度上限，也是信息传递的上限（因果性要求）。</p>
+
+      <div class="key-terms">
+        inertial frame (惯性系), Galilean transformation (伽利略变换), luminiferous ether (光以太), Michelson–Morley experiment (迈克耳孙–莫雷实验), postulates (假设), relativity principle (相对性原理), invariance of \(c\) (光速不变), relativity of simultaneity (同时性的相对性), Lorentz transformation (洛伦兹变换), Lorentz factor \(\gamma\) (洛伦兹因子), proper time \(\tau_{0}\) (固有时), time dilation (时间膨胀), proper length \(L_{0}\) (固有长度), length contraction (长度收缩), relativistic velocity addition (相对论速度合成), invariant interval \(s^{2}\) (不变间隔), timelike / spacelike / lightlike (类时 / 类空 / 类光).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：由两条假设导出洛伦兹变换</h3>
+      <p>设两惯性系 \(S\)、\(S'\) 在 \(t=t'=0\) 时坐标原点重合，\(S'\) 以速度 \(v\hat{x}\) 相对 \(S\) 运动。由空间各向同性与惯性等效，变换必须是<b>线性</b>的：</p>
+      <p class="step"><strong>步骤 1（线性）：</strong> 设 \(x'=A(x-vt)\)、\(t'=B(t-\alpha x)\)，其中 \(A,B,\alpha\) 仅依赖于 \(v\)。选取 \(x-vt\) 形式是因为 \(S'\) 的原点 \(x'=0\) 在 \(S\) 中正是 \(x=vt\)。</p>
+      <p class="step"><strong>步骤 2（逆变换对称性）：</strong> 由相对性原理，从 \(S'\) 看 \(S\) 以 \(-v\) 运动，故 \(x=A(x'+vt')\)。展开代入得
+      \[ x=A\bigl[A(x-vt)+v\,B(t-\alpha x)\bigr]=A^{2}x-A^{2}vt+ABv\,t-ABv\alpha\,x. \]
+      对比 \(x\) 系数：\(1=A^{2}-ABv\alpha\)；对比 \(t\) 系数：\(0=-A^{2}v+ABv\)，即 \(A=B\)。代回前式：\(1=A^{2}(1-v\alpha)\)。</p>
+      <p class="step"><strong>步骤 3（光速不变）：</strong> 在 \(t=t'=0\) 时一束光从重合的原点沿 \(+x\) 发出。两参考系中光均以 \(c\) 传播，故 \(x=ct\iff x'=ct'\)。代入 \(x'=A(x-vt)\)、\(t'=A(t-\alpha x)\)：
+      \[ A(ct-vt)=c\cdot A(t-\alpha\,ct)\ \Rightarrow\ ct-vt=ct-c\alpha\,ct \ \Rightarrow\ v=c^{2}\alpha, \]
+      所以 \(\alpha=v/c^{2}\)。</p>
+      <p class="step"><strong>步骤 4（确定 \(\gamma\)）：</strong> 由 \(1=A^{2}(1-v\alpha)=A^{2}(1-v^{2}/c^{2})\)，得
+      \[ A=\frac{1}{\sqrt{1-v^{2}/c^{2}}}\equiv\gamma. \]
+      最终：
+      \[ \boxed{\,x'=\gamma(x-vt),\quad t'=\gamma(t-vx/c^{2}),\quad y'=y,\quad z'=z\,}. \]</p>
+
+      <h3>推导 2：时间膨胀与长度收缩</h3>
+      <p class="step"><strong>时间膨胀：</strong> 设一只钟静止于 \(S'\)（\(x'=x'_{0}\) 固定），两次"滴答"在 \(S\) 中分别为事件 \((t_{1},x_{1})\)、\((t_{2},x_{2})\)。由逆变换 \(t=\gamma(t'+vx'/c^{2})\)，因 \(x'_{0}\) 不变：
+      \[ \Delta t=t_{2}-t_{1}=\gamma\,\Delta t'=\gamma\,\Delta\tau_{0}. \]
+      故在 \(S\) 中观察到的周期更长（钟"走得慢"）。</p>
+      <p class="step"><strong>长度收缩：</strong> 要在 \(S\) 中测一个运动杆的长度，必须在<b>同一 \(t\)</b> 同时记录两端坐标 \((x_{1},t)\)、\((x_{2},t)\)，得 \(L=x_{2}-x_{1}\)。在杆静止系 \(S'\) 中两端坐标 \(x'_{1}\)、\(x'_{2}\) 之差为固有长度 \(L_{0}=x'_{2}-x'_{1}\)。由 \(x'=\gamma(x-vt)\)：
+      \[ x'_{2}-x'_{1}=\gamma\bigl[(x_{2}-vt)-(x_{1}-vt)\bigr]=\gamma(x_{2}-x_{1})=\gamma L, \]
+      所以 \(L=L_{0}/\gamma\)。注意关键：\(S\) 中的"同时"在 \(S'\) 中并不同时（\(\Delta t'= -\gamma v\Delta x/c^{2}\neq 0\)），这正是收缩的根源。</p>
+
+      <h3>推导 3：相对论速度合成</h3>
+      <p>对洛伦兹变换微分：\(dx'=\gamma(dx-v\,dt)\)、\(dt'=\gamma(dt-v\,dx/c^{2})\)。两式相除：</p>
+      <p class="step">\[ u'_{x}=\frac{dx'}{dt'}=\frac{dx-v\,dt}{dt-v\,dx/c^{2}}=\frac{u_{x}-v}{1-u_{x}v/c^{2}},\qquad u_{x}=\frac{u'_{x}+v}{1+u'_{x}v/c^{2}}. \]</p>
+      <p class="step">横向分量 \(u'_{y}=dy'/dt'\)，注意 \(dy'=dy\) 但 \(dt'\neq dt\)：
+      \[ u_{y}=\frac{dy}{dt}=\frac{dy'}{\gamma(dt-v\,dx/c^{2})}=\frac{u'_{y}\,dt'}{\gamma\,dt'(1-v\,u'_{x}/c^{2})\cdot 1}=\frac{u'_{y}/\gamma}{1+u'_{x}v/c^{2}}. \]
+      （最后一行用 \(dt=\gamma(dt'+v\,dx'/c^{2})=\gamma dt'(1+vu'_{x}/c^{2})\)。）</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 14.1 大气 μ 子的旅程 (Atmospheric Muons)</h4>
+        <p class="example-statement">宇宙射线在距地面 \(h_{0}=10\,\mathrm{km}\) 高处产生的 μ 子，平均<b>固有寿命</b> \(\tau_{0}=2.2\,\mathrm{\mu s}\)。若 μ 子以 \(v=0.999c\) 垂直向地飞行，问它在衰变前能否到达地面？取 \(c=3.0\times10^{8}\,\mathrm{m/s}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（实验室系视角，时间膨胀）：</strong> 计算 \(\gamma\)：
+          \[ \gamma=\frac{1}{\sqrt{1-0.999^{2}}}=\frac{1}{\sqrt{1-0.998\,001}}=\frac{1}{\sqrt{0.001\,999}}\approx\frac{1}{0.04471}\approx 22.37. \]</p>
+          <p class="step">μ 子在实验室系中的平均寿命：
+          \[ \tau=\gamma\tau_{0}=22.37\times 2.2\,\mathrm{\mu s}\approx 49.2\,\mathrm{\mu s}. \]</p>
+          <p class="step">在此期间它在实验室系中飞行的距离：
+          \[ d=v\tau=0.999\times(3.0\times10^{8})\times(49.2\times10^{-6})\approx 1.47\times10^{4}\,\mathrm{m}=14.7\,\mathrm{km}. \]</p>
+          <p class="step"><strong>μ 子静止系视角（长度收缩）：</strong> 在 μ 子自身参考系中它的寿命仍是 \(2.2\,\mathrm{\mu s}\)，但大气厚度被收缩：
+          \[ h=h_{0}/\gamma=\frac{10\,\mathrm{km}}{22.37}\approx 0.447\,\mathrm{km}=447\,\mathrm{m}. \]
+          飞过此距离所需时间 \(t=h/v=447/(0.999\times 3.0\times10^{8})\approx 1.49\,\mathrm{\mu s}<2.2\,\mathrm{\mu s}\)。</p>
+          <p>两种视角给出同一结论：μ 子能到达地面。<span class="ans">能到达；实验室系中可飞行约 \(14.7\,\mathrm{km}>10\,\mathrm{km}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.2 飞船时序 (A Trip at 0.8c)</h4>
+        <p class="example-statement">一飞船以 \(v=0.8c\) 飞向距地球 \(D_{0}=8.0\) 光年的恒星（地球系测得）。求 (a) 地球系中单程所需时间 \(T_{\oplus}\)；(b) 飞船系中单程所需时间 \(T_{\text{ship}}\)；(c) 飞船系中地球到恒星的距离 \(D_{\text{ship}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 先算 \(\gamma\)：
+          \[ \beta=0.8,\quad \beta^{2}=0.64,\quad \gamma=\frac{1}{\sqrt{1-0.64}}=\frac{1}{0.6}=\frac{5}{3}\approx 1.667. \]</p>
+          <p class="step">(a) 地球系：1 光年 \(\mathrm{ly}=c\cdot(1\,\mathrm{yr})\)，故
+          \[ T_{\oplus}=\frac{D_{0}}{v}=\frac{8.0\,\mathrm{ly}}{0.8c}=10.0\,\mathrm{yr}. \]</p>
+          <p class="step">(b) 飞船上的钟是固有时（出发、到达两事件对飞船同地点），故
+          \[ T_{\text{ship}}=\frac{T_{\oplus}}{\gamma}=10.0\,\mathrm{yr}\times\frac{3}{5}=6.0\,\mathrm{yr}. \]</p>
+          <p class="step">(c) 在飞船系中，地球–恒星间距被收缩：
+          \[ D_{\text{ship}}=\frac{D_{0}}{\gamma}=\frac{8.0}{5/3}=4.8\,\mathrm{ly}. \]
+          校验：\(T_{\text{ship}}=D_{\text{ship}}/v=4.8/0.8=6.0\,\mathrm{yr}\)，与 (b) 一致。</p>
+          <p><span class="ans">\(T_{\oplus}=10.0\,\mathrm{yr},\ T_{\text{ship}}=6.0\,\mathrm{yr},\ D_{\text{ship}}=4.8\,\mathrm{ly}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.3 飞船的长度收缩 (Contracted Spaceship)</h4>
+        <p class="example-statement">一飞船在自身静止系中的<b>固有长度</b> \(L_{0}=100\,\mathrm{m}\)。当它以 \(v=0.6c\) 飞越一站台观察者时，该观察者测得的飞船长度 \(L\) 是多少？若以 \(v=0.99c\) 飞过，又如何？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(v=0.6c\) 时 \(\beta=0.6\)，\(\gamma=1/\sqrt{1-0.36}=1/0.8=1.25\)。所以
+          \[ L=\frac{L_{0}}{\gamma}=\frac{100\,\mathrm{m}}{1.25}=80\,\mathrm{m}. \]</p>
+          <p class="step">当 \(v=0.99c\) 时，\(\beta^{2}=0.9801\)，\(\gamma=1/\sqrt{0.0199}\approx 7.089\)，故
+          \[ L=\frac{100}{7.089}\approx 14.1\,\mathrm{m}. \]</p>
+          <p><span class="ans">\(L(0.6c)=80\,\mathrm{m};\ L(0.99c)\approx 14.1\,\mathrm{m}\)</span>。可见 \(\gamma\) 在接近 \(c\) 时迅速发散，收缩极显著。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.4 相向而行的两艘飞船 (Velocity Addition)</h4>
+        <p class="example-statement">在地球参考系中，飞船 A 以 \(+0.7c\) 向右飞行，飞船 B 以 \(-0.7c\) 向左飞行。求飞船 B 在飞船 A 静止系中的速度。问它是否超过 \(c\)？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 取 \(S=\) 地球系，\(S'=\) A 静止系（即 \(S'\) 以 \(v=+0.7c\) 相对 \(S\) 运动）。B 在 \(S\) 中的速度为 \(u_{x}=-0.7c\)。由速度变换：
+          \[ u'_{x}=\frac{u_{x}-v}{1-u_{x}v/c^{2}}=\frac{-0.7c-0.7c}{1-(-0.7)(+0.7)}=\frac{-1.4c}{1+0.49}=\frac{-1.4}{1.49}c\approx -0.940c. \]</p>
+          <p class="step">伽利略合成会错误给出 \(-1.4c\)（超光速），但正确的相对论合成给出 \(|u'_{x}|\approx 0.940c<c\)。</p>
+          <p><span class="ans">在 A 系中 B 的速度约 \(-0.940c\)（速率为 \(0.940c\)），不超光速</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.5 双生子佯谬之设定 (Twin Paradox Setup)</h4>
+        <p class="example-statement">双胞胎甲留在地球，乙以 \(v=0.6c\) 飞往 \(6\,\mathrm{ly}\) 外的恒星，到达后<b>瞬时反向</b>以同样的速率返回地球。求重逢时甲、乙各自的年龄增量，并指明为何乙更年轻。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（地球系视角）：</strong> 单程在地球系耗时 \(T_{\oplus}=D/v=6\,\mathrm{ly}/0.6c=10\,\mathrm{yr}\)，往返 \(20\,\mathrm{yr}\)。故甲 <span class="ans">老了 20 岁</span>。</p>
+          <p class="step">乙的钟为固有时：单程 \(T_{\text{ship}}=T_{\oplus}/\gamma=10/(1/0.8)=8\,\mathrm{yr}\)；往返 \(16\,\mathrm{yr}\)。故乙 <span class="ans">老了 16 岁</span>，比甲小 4 岁。</p>
+          <p class="step"><strong>对称性为何被打破：</strong> 表面佯谬在于"运动是相对的，为何不是甲更年轻？" 关键在于乙在恒星处<b>经历了加速</b>（瞬时反向），从" outbound 惯性系"切换到"inbound 惯性系"。在这段非惯性过程中，乙所在参考系对"哪些地球事件与自己同时"的判定发生跳跃，导致乙的总固有时更短。甲始终留在单一惯性系中，没有这种跳跃——故乙更年轻是绝对的、双方都同意的事实。<b>完整分析（含闵可夫斯基图与非惯性系处理）留待第 16 章</b>。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>"运动的钟走得慢"是对称的，但有些人误以为它绝对。</strong> 实际上：甲看乙的钟慢，乙看甲的钟也慢——两者都正确。表面矛盾由同时性的相对性化解：所谓"比较两只钟"必须约定同时面，而同时面在不同参考系中不同。仅在双生子情形下（其中一方加速）才会出现绝对差异。</li>
+        <li><strong>把"运动的钟"理解为钟坏了。</strong> 不是。所有钟（机械、原子、生物老化…）按同一 \(\gamma\) 慢下来。这是时空本身的性质，不是仪器故障。</li>
+        <li><strong>长度收缩方向搞错。</strong> 收缩<b>仅沿运动方向</b>。垂直于运动方向的尺寸不变。一艘高速球状飞船在实验室系中看起来仍是球形（仅在运动方向被压扁），但要注意：肉眼"看到"的光学形象还涉及光程差 (Terrell 旋转)，与几何上的长度收缩不同。</li>
+        <li><strong>误以为 \(\gamma\) 在 \(v=c\) 时有限。</strong> 实际 \(\gamma=1/\sqrt{1-v^{2}/c^{2}}\) 在 \(v\to c\) 时发散到无穷，故任何有质点物体不可被加速到 \(c\)（需要无限能量）。"接近 \(c\)" 在数学上是 \(\gamma\to\infty\) 的奇点。</li>
+        <li><strong>速度像牛顿那样直接相加。</strong> 错。两束 \(0.7c\) 相向而行的物体相对速度不是 \(1.4c\)，而是 \(0.940c\)。任何 \(<c\) 的两个速度合成后仍 \(<c\)。</li>
+        <li><strong>混淆固有时与坐标时。</strong> 固有时 \(\Delta\tau_{0}\) 是<b>同一只钟</b>记录的两事件时间（同地）；坐标时 \(\Delta t\) 是某惯性系中<b>两只已对准的钟</b>记录的时间。前者是路径不变的（沿世界线积分），后者依赖参考系。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. π 介子寿命：一束 π 介子以 \(v=0.90c\) 运动，固有寿命 \(\tau_{0}=26\,\mathrm{ns}\)。求它在实验室系中的平均寿命与衰变前平均飞行的距离。</summary>
+        <div class="hint">先算 \(\gamma=1/\sqrt{1-0.9^{2}}\)，再用 \(\tau=\gamma\tau_{0}\)、\(d=v\tau\)。</div>
+        <div class="solution">\(\gamma=1/\sqrt{1-0.81}=1/\sqrt{0.19}\approx 2.294\)。<br>\(\tau=2.294\times 26\,\mathrm{ns}\approx 59.6\,\mathrm{ns}\)。<br>\(d=0.90\times(3.0\times10^{8})\times(59.6\times10^{-9})\approx 16.1\,\mathrm{m}\)。<br><span class="ans">\(\tau\approx 59.6\,\mathrm{ns},\ d\approx 16.1\,\mathrm{m}\)</span>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 长度收缩反推：一飞船在实验室系中测得长 \(60\,\mathrm{m}\)，固有长度 \(L_{0}=100\,\mathrm{m}\)。求它的速率 \(v\)。</summary>
+        <div class="hint">\(L=L_{0}/\gamma\) 先求 \(\gamma\)，再用 \(\gamma=1/\sqrt{1-\beta^{2}}\) 求 \(\beta\)。</div>
+        <div class="solution">\(\gamma=L_{0}/L=100/60=5/3\approx 1.667\)。<br>\(\beta=\sqrt{1-1/\gamma^{2}}=\sqrt{1-0.36}=\sqrt{0.64}=0.80\)。<br><span class="ans">\(v=0.80c\)</span>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 三级速度合成：飞船 A 相对地球以 \(0.6c\) 运动，飞船 B 相对 A 以 \(0.6c\)（同向）运动。求 B 相对地球的速度。若是伽利略合成会得到多少？</summary>
+        <div class="hint">用 \(u=(u'+v)/(1+u'v/c^{2})\)，取 \(v=0.6c\)、\(u'=0.6c\)。</div>
+        <div class="solution">\(u=\dfrac{0.6c+0.6c}{1+(0.6)(0.6)}=\dfrac{1.2c}{1.36}\approx 0.882c\)。<br>伽利略合成错误地给出 \(1.2c\)（超光速，违背第二条假设）。<br><span class="ans">\(u\approx 0.882c\)；伽利略错为 \(1.2c\)</span>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 不变间隔：在实验室系中两事件坐标差 \(\Delta x=3.0\times10^{8}\,\mathrm{m}\)、\(\Delta t=2.0\,\mathrm{s}\)。求时空间隔 \(s^{2}\)，判断类时/类空/类光，并说明是否有惯性系能使两事件发生在同一地点。</summary>
+        <div class="hint">\(s^{2}=(c\Delta t)^{2}-(\Delta x)^{2}\)。若 \(s^{2}>0\) 为类时，存在使两事件同地的惯性系。</div>
+        <div class="solution">\(c\Delta t=(3.0\times10^{8})(2.0)=6.0\times10^{8}\,\mathrm{m}\)。<br>\(s^{2}=(6.0\times10^{8})^{2}-(3.0\times10^{8})^{2}=(36-9)\times10^{16}=2.7\times10^{17}\,\mathrm{m^{2}}>0\)。<br>类时 (timelike)，存在惯性系使两事件同地（该系中 \(\Delta x'=0\)、\(\Delta\tau=\sqrt{s^{2}}/c=\sqrt{2.7\times10^{17}}/(3\times10^{8})\approx 1.73\,\mathrm{s}\)）。<br><span class="ans">\(s^{2}\approx 2.7\times10^{17}\,\mathrm{m^{2}}\)，类时，存在</span>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 钟差航行：宇航员以 \(v=0.95c\) 飞往 \(D_{0}=20\,\mathrm{ly}\) 外的行星（地球系测得），到达后立刻以同样速率返回。求地球等待的时间与宇航员经历的固有时。</summary>
+        <div class="hint">\(\gamma=1/\sqrt{1-0.95^{2}}\)；地球耗时 \(2D_{0}/v\)，宇航员固有时为地球耗时除以 \(\gamma\)。</div>
+        <div class="solution">\(\gamma=1/\sqrt{1-0.9025}=1/\sqrt{0.0975}\approx 3.203\)。<br>地球耗时 \(T_{\oplus}=2\times 20/0.95\approx 42.1\,\mathrm{yr}\)。<br>宇航员固有时 \(T_{0}=T_{\oplus}/\gamma=42.1/3.203\approx 13.1\,\mathrm{yr}\)。<br><span class="ans">地球约 \(42.1\) 年；宇航员约 \(13.1\) 年</span>。</div>
+      </details>
+    </section>
+
+    <!-- ============================================================ Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><b>长度收缩与时钟膨胀可视化器</b>。一根固有长度为 \(L_{0}\) 的杆以可调速度 \(v\)（滑块，\(0\)–\(0.98c\)）相对实验室系运动：上半部分显示杆的<b>实验室测得长度</b> \(L=L_{0}/\gamma\)（实心矩形）与固有长度 \(L_{0}\)（虚线外框，可在控件中切换）。下半部分显示随杆一同运动的<b>光子钟</b> (light clock)——两面平行反射镜，一只光子在其间往返。在杆静止系中光子竖直上下；在实验室系中钟在动，光子相对于实验室走折线 (zigzag)，因此实验室观察到的周期被拉长 \(\gamma\) 倍——即时间膨胀。顶部实时显示 \(\beta\)、\(\gamma\)、\(L/L_{0}\)、\(T/T_{0}\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-14" width="720" height="400"></canvas>
+        <div class="sim-controls" id="controls-14"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-14');
+          var W = canvas.width, H = canvas.height;
+
+          // Parameters
+          var params = {
+            beta: 0.6,         // v/c
+            showGhost: true,   // overlay L0 outline
+          };
+
+          // Visual constants (canvas px)
+          var visualC = 200;        // px/s representing c (rod drift speed scale)
+          var L0_px = 180;          // proper length of rod in pixels
+          var LC_topY = 60;         // length-contraction panel top
+          var LC_h = 26;            // rod bar height
+          var CC_topY = 220;        // light clock top mirror y
+          var CC_botY = 360;        // light clock bottom mirror y
+          var CC_H = CC_botY - CC_topY;
+          var CC_mw = 40;           // mirror width
+          var CC_offX = 60;         // light-clock center offset from rod's left edge
+          var photonV = 320;        // px/s vertical (schematic "c" in rod frame)
+
+          function drawHBar(ctx, x, y, w, h, fill, stroke, dashed) {
+            ctx.save();
+            if (dashed) { ctx.setLineDash([5, 4]); ctx.globalAlpha = 0.55; }
+            if (fill && !dashed) { ctx.fillStyle = fill; ctx.globalAlpha = 0.45; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; }
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, w, h);
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return {
+                rodX: 60,
+                photonY: 0,         // 0..CC_H, 0 = at top mirror
+                photonDir: 1,       // +1 = moving down
+                trail: [],
+                bounces: 0,
+                t: 0,
+              };
+            },
+            step: function (dt, t, s) {
+              var beta = params.beta;
+              var v = beta * visualC;
+
+              // Drift rod rightward (wrap around)
+              s.rodX += v * dt;
+              if (s.rodX > W - 30) s.rodX = 30;
+
+              // Photon bounces vertically (in rod frame)
+              s.photonY += s.photonDir * photonV * dt;
+              if (s.photonY >= CC_H) { s.photonY = CC_H; s.photonDir = -1; s.bounces++; }
+              else if (s.photonY <= 0) { s.photonY = 0; s.photonDir = 1; s.bounces++; }
+
+              // Record lab-frame photon position (for diagonal trail)
+              var labX = s.rodX + CC_offX + CC_mw / 2;
+              var labY = CC_topY + s.photonY;
+              s.trail.push({ x: labX, y: labY });
+              if (s.trail.length > 110) s.trail.shift();
+
+              s.t += dt;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var beta = params.beta;
+              var oneMinusB2 = 1 - beta * beta;
+              var gamma = 1 / Math.sqrt(Math.max(1e-6, oneMinusB2));
+
+              // -------- Top info bar --------
+              var info = 'β = v/c = ' + beta.toFixed(2) +
+                         '     γ = ' + gamma.toFixed(3) +
+                         '     L/L₀ = ' + (1 / gamma).toFixed(3) +
+                         '     T/T₀ = ' + gamma.toFixed(3);
+              PS.drawText(ctx, info, W / 2, 22, {
+                font: '14px system-ui, sans-serif', color: PS.colors.text, align: 'center',
+              });
+
+              // ============ LENGTH CONTRACTION PANEL ============
+              PS.drawText(ctx, '长度收缩 Length contraction — lab view', 20, LC_topY - 14, {
+                font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'bottom',
+              });
+
+              // Stationary lab ruler below the rod
+              var rulerY = LC_topY + LC_h + 28;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(20, rulerY); ctx.lineTo(W - 20, rulerY); ctx.stroke();
+              for (var xr = 30; xr <= W - 30; xr += 30) {
+                ctx.beginPath(); ctx.moveTo(xr, rulerY); ctx.lineTo(xr, rulerY + 5); ctx.stroke();
+              }
+              ctx.restore();
+              PS.drawText(ctx, 'Lab ruler 实验室标尺 (stationary)', W / 2, rulerY + 20, {
+                font: '11px system-ui, sans-serif', color: PS.colors.axis, align: 'center',
+              });
+
+              var L = L0_px / gamma;
+              var rodCx = s.rodX + L / 2;
+
+              // Ghost outline of L0 (centered on rod center)
+              if (params.showGhost) {
+                drawHBar(ctx, rodCx - L0_px / 2, LC_topY - 12, L0_px, LC_h, null, PS.colors.axis, true);
+                PS.drawText(ctx, 'L₀ = ' + L0_px + ' px (proper 固有)', rodCx, LC_topY - 20, {
+                  font: '11px system-ui, sans-serif', color: PS.colors.axis, align: 'center',
+                });
+              }
+
+              // Contracted rod
+              drawHBar(ctx, s.rodX, LC_topY, L, LC_h, PS.colors.primary, PS.colors.primary, false);
+              PS.drawText(ctx, 'L = L₀/γ = ' + L.toFixed(0) + ' px', rodCx, LC_topY + LC_h + 12, {
+                font: '12px system-ui, sans-serif', color: PS.colors.primary, align: 'center', baseline: 'top',
+              });
+
+              // Velocity arrow above rod
+              PS.drawArrow(ctx, rodCx, LC_topY - 4, rodCx + 55 * beta, LC_topY - 4, PS.colors.accent, 'v');
+
+              // ============ LIGHT CLOCK PANEL ============
+              PS.drawText(ctx, '光子钟 Light clock — lab view: photon traces a zigzag (⇒ time dilation)',
+                20, 200, { font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'bottom' });
+
+              // Photon trail (diagonal in lab frame)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.globalAlpha = 0.75;
+              ctx.lineWidth = 1.6;
+              ctx.beginPath();
+              for (var i = 0; i < s.trail.length; i++) {
+                var p = s.trail[i];
+                if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Mirrors (move with rod)
+              var mx = s.rodX + CC_offX;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 3;
+              ctx.beginPath(); ctx.moveTo(mx, CC_topY); ctx.lineTo(mx + CC_mw, CC_topY); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(mx, CC_botY); ctx.lineTo(mx + CC_mw, CC_botY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'mirror', mx + CC_mw + 6, CC_topY, {
+                font: '10px system-ui, sans-serif', color: PS.colors.text, baseline: 'middle',
+              });
+              PS.drawText(ctx, 'mirror', mx + CC_mw + 6, CC_botY, {
+                font: '10px system-ui, sans-serif', color: PS.colors.text, baseline: 'middle',
+              });
+
+              // Faint vertical reference line = rod-frame photon path
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.7;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(mx + CC_mw / 2, CC_topY);
+              ctx.lineTo(mx + CC_mw / 2, CC_botY);
+              ctx.stroke();
+              ctx.restore();
+
+              // Photon
+              var px = mx + CC_mw / 2;
+              var py = CC_topY + s.photonY;
+              PS.drawCircle(ctx, px, py, 5, { fill: PS.colors.accent, stroke: PS.colors.bg, lineWidth: 1 });
+
+              // Bounce count
+              PS.drawText(ctx, 'Bounces 摆动: ' + s.bounces, W - 14, 200, {
+                font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'right', baseline: 'bottom',
+              });
+
+              // Caption
+              PS.drawText(ctx,
+                '在实验室系中光子走折线 (zigzag)，单程距离 > d，故周期被拉长 γ 倍。杆越快，γ 越大，杆也越短。',
+                W / 2, H - 6, {
+                  font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'center', baseline: 'bottom',
+                });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-14'), [
+            { type: 'slider', key: 'beta', label: '速率 v/c (β)', min: 0, max: 0.98, step: 0.01, value: 0.6 },
+            { type: 'toggle', key: 'showGhost', label: '显示 L₀ 固有长度 Show L₀', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('beta', function (v) { params.beta = v; });
+          ctl.on('showGhost', function (v) { params.showGhost = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>狭义相对论建立于两条假设（相对性原理 + 光速不变），用洛伦兹变换取代伽利略变换。同时性的相对性是概念核心：所谓"两事件同时"依赖于参考系。由此自然导出运动的钟变慢 (\(\Delta t=\gamma\Delta\tau_{0}\))、运动的杆变短 (\(L=L_{0}/\gamma\))。速度合成公式保证任何 \(\le c\) 的速度合成后仍 \(\le c\)，故 \(c\) 为宇宙速度上限。时空统一为<b>不变间隔</b> \(s^{2}=(c\Delta t)^{2}-(\Delta\vec{r})^{2}\)，所有惯性系一致——这是第 15 章闵可夫斯基几何的起点。</p>
+      <div class="formula">\[ \beta=\frac{v}{c},\qquad \gamma=\frac{1}{\sqrt{1-\beta^{2}}}. \]</div>
+      <div class="formula">\[ x'=\gamma(x-vt),\qquad t'=\gamma\!\left(t-\frac{vx}{c^{2}}\right),\qquad y'=y,\quad z'=z. \]</div>
+      <div class="formula">\[ \Delta t=\gamma\,\Delta\tau_{0}\quad(\text{时间 dilation});\qquad L=\frac{L_{0}}{\gamma}\quad(\text{length contraction}). \]</div>
+      <div class="formula">\[ u_{x}=\frac{u'_{x}+v}{1+u'_{x}v/c^{2}},\qquad u_{y}=\frac{u'_{y}/\gamma}{1+u'_{x}v/c^{2}}. \]</div>
+      <div class="formula">\[ s^{2}=(c\,\Delta t)^{2}-(\Delta x)^{2}-(\Delta y)^{2}-(\Delta z)^{2}\quad(\text{invariant}). \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

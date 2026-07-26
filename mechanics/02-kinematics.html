@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 运动学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 2 · 第2章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>运动学 <span class="en-title">Kinematics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用导数与积分严格定义位置、速度、加速度 (position, velocity, acceleration) 三者之间的微分关系。</li>
+        <li>对匀变速直线运动 (uniformly accelerated motion) 与非匀变速运动（\(a(t),\,a(v),\,a(x)\)）选择恰当的分离变量积分法求解。</li>
+        <li>推导抛体运动 (projectile motion) 的轨迹方程，并能计算射程、最高点与飞行时间。</li>
+        <li>区分切向加速度 (tangential acceleration) 与法向（向心）加速度 (normal/centripetal acceleration)，并理解曲率半径 (radius of curvature) 的意义。</li>
+        <li>应用伽利略速度合成 (Galilean velocity addition) 解决参考系变换 (change of reference frame) 中的相对运动问题。</li>
+        <li>推导并运用极坐标 (polar coordinates) 形式下的速度与加速度表达式。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>2.1 位置、位移、速度、加速度 Position, Displacement, Velocity, Acceleration</h3>
+      <p>质点 (particle) 在空间中的位置由位矢 (position vector) \(\vec{r}(t)\) 描述。在一维情形下，它简化为标量函数 \(x(t)\)；在三维下可写成 \(\vec r = x\,\hat{\imath} + y\,\hat{\jmath} + z\,\hat{k}\)。</p>
+      <p>位移 (displacement) 是位矢的增量，与路径无关：</p>
+      <div class="formula">\[ \Delta \vec r = \vec r(t_2) - \vec r(t_1) \]</div>
+      <p>平均速度 (average velocity) 与瞬时速度 (instantaneous velocity) 定义为</p>
+      <div class="formula">\[ \vec{\bar v} = \frac{\Delta \vec r}{\Delta t}, \qquad \vec v(t) = \lim_{\Delta t \to 0}\frac{\Delta \vec r}{\Delta t} = \frac{\mathrm d \vec r}{\mathrm d t} \]</div>
+      <p>注意：平均速率 (average speed) 是路径长度与时间之比，是标量，与平均速度的大小一般不相等（除非沿直线单方向运动）。瞬时速度的大小 \(|\vec v|\) 称为瞬时速率 (speed)。</p>
+      <p>加速度 (acceleration) 同样有平均与瞬时之分：</p>
+      <div class="formula">\[ \vec{\bar a} = \frac{\Delta \vec v}{\Delta t}, \qquad \vec a(t) = \frac{\mathrm d \vec v}{\mathrm d t} = \frac{\mathrm d^2 \vec r}{\mathrm d t^2} \]</div>
+      <p>反过来，由加速度求速度与位矢则需要积分：</p>
+      <div class="formula">\[ \vec v(t) = \vec v_0 + \int_0^t \vec a(t')\,\mathrm d t', \qquad \vec r(t) = \vec r_0 + \int_0^t \vec v(t')\,\mathrm d t' \]</div>
+
+      <h3>2.2 匀变速直线运动 1D Motion with Constant Acceleration</h3>
+      <p>当加速度 \(a\) 为常数时，对时间积分立刻得到三大公式（取 \(x_0=0\)）：</p>
+      <div class="formula">\[ v = v_0 + at, \qquad x = x_0 + v_0 t + \tfrac{1}{2} a t^2, \qquad v^2 = v_0^{\,2} + 2 a \,\Delta x \]</div>
+      <p>第三个公式消去了时间 \(t\)，特别适合「已知起止速度与位移求加速度」的问题。自由落体 (free fall) 是匀变速运动的特例：取向下为正时 \(a = g \approx 9.8\,\mathrm{m/s^2}\)。</p>
+
+      <h3>2.3 非匀变速运动：分离变量积分 Non-constant Acceleration</h3>
+      <p>当加速度不是常数时，必须按其依赖的变量分别处理（链式法则的妙用）：</p>
+      <ul>
+        <li><strong>\(a = a(t)\)</strong>：直接对 \(t\) 积分。
+          \[ v(t) = v_0 + \int_0^t a(t')\,\mathrm d t' \]</li>
+        <li><strong>\(a = a(v)\)</strong>：把 \(\mathrm d t = \mathrm d v / a(v)\) 分离变量，得
+          \[ t - t_0 = \int_{v_0}^{v} \frac{\mathrm d v'}{a(v')} \]</li>
+        <li><strong>\(a = a(x)\)</strong>：利用 \(a = \dfrac{\mathrm d v}{\mathrm d t} = v\,\dfrac{\mathrm d v}{\mathrm d x}\)，分离变量得
+          \[ \int_{x_0}^{x} a(x')\,\mathrm d x' = \int_{v_0}^{v} v'\,\mathrm d v' = \tfrac{1}{2}(v^2 - v_0^{\,2}) \]</li>
+      </ul>
+      <p>掌握这三种「分离变量」模式，几乎可以解析处理所有一维变加速问题。</p>
+
+      <h3>2.4 二维与三维运动学 2D &amp; 3D Kinematics</h3>
+      <p>位矢、速度、加速度的矢量定义在任意维空间都成立。一个深刻的事实是：<strong>相互正交方向上的运动彼此独立 (independence of perpendicular motions)</strong>。例如，水平方向的匀速运动与竖直方向的匀加速运动可以同时发生而不互相干扰——这正是抛体运动的物理基础。</p>
+
+      <h3>2.5 抛体运动 Projectile Motion</h3>
+      <p>设初速度大小为 \(v_0\)，发射角 (launch angle) 为 \(\theta\)（相对水平面）。取 \(y\) 轴向上，则</p>
+      <div class="formula">\[ v_x = v_0 \cos\theta, \quad v_y(t) = v_0 \sin\theta - g t, \quad x(t) = v_0 \cos\theta \cdot t, \quad y(t) = v_0 \sin\theta \cdot t - \tfrac{1}{2} g t^2 \]</div>
+      <p>消去 \(t\) 得轨迹方程 (trajectory equation)：</p>
+      <div class="formula">\[ y(x) = x \tan\theta - \frac{g\,x^2}{2 v_0^{\,2} \cos^2 \theta} \]</div>
+      <p>令 \(y=0\) 解得射程 (range)；令 \(v_y=0\) 解得最高点 (apex)：</p>
+      <div class="formula">\[ R = \frac{v_0^{\,2} \sin 2\theta}{g}, \qquad H = \frac{v_0^{\,2} \sin^2 \theta}{2g}, \qquad T = \frac{2 v_0 \sin\theta}{g} \]</div>
+      <p>当 \(\theta = 45^\circ\) 时 \(\sin 2\theta = 1\) 取最大，故 \(R_{\max} = v_0^{\,2}/g\)。</p>
+
+      <h3>2.6 匀速圆周运动 Uniform Circular Motion</h3>
+      <p>质点以恒定速率 \(v\) 沿半径 \(r\) 的圆周运动时，速度方向不断改变，因而存在加速度。该加速度指向圆心，称为向心加速度 (centripetal acceleration)：</p>
+      <div class="formula">\[ a_c = \frac{v^2}{r} = \omega^2 r, \qquad T = \frac{2\pi}{\omega} = \frac{2\pi r}{v} \]</div>
+      <p>其中 \(\omega = \mathrm d\theta/\mathrm d t\) 为角速度 (angular velocity)，\(T\) 为周期 (period)。</p>
+
+      <h3>2.7 一般曲线运动：切向与法向分量 Tangential and Normal Components</h3>
+      <p>对于任意平面曲线运动，把加速度沿<strong>切向单位矢量 \(\hat{t}\)</strong> 与<strong>法向单位矢量 \(\hat{n}\)</strong> 分解：</p>
+      <div class="formula">\[ \vec a = a_t\,\hat{t} + a_n\,\hat{n}, \qquad a_t = \frac{\mathrm d v}{\mathrm d t}, \qquad a_n = \frac{v^2}{\rho} \]</div>
+      <p>\(\rho\) 为曲率半径 (radius of curvature)。切向分量改变速率大小，法向分量改变速度方向。直线可视为 \(\rho \to \infty\) 的极限，此时 \(a_n = 0\)。</p>
+
+      <h3>2.8 相对速度与伽利略速度合成 Relative Velocity &amp; Galilean Addition</h3>
+      <p>设参考系 B 相对参考系 C 以速度 \(\vec v_{BC}\) 平动，物体 A 相对 B 的速度为 \(\vec v_{AB}\)，则</p>
+      <div class="formula">\[ \vec v_{AC} = \vec v_{AB} + \vec v_{BC} \]</div>
+      <p>这就是伽利略速度合成 (Galilean velocity addition)，是经典力学假设（\(t\) 绝对、长度绝对）下的精确结果。它是后续狭义相对论 (special relativity) 中洛伦兹速度合成在低速下的极限形式。</p>
+
+      <h3>2.9 极坐标系下的运动学 Kinematics in Polar Coordinates</h3>
+      <p>在平面内用极坐标 \((r,\theta)\) 描述位置：\(\vec r = r\,\hat r\)。注意 \(\hat r\) 与 \(\hat\theta\) 随质点运动而改变方向。速度与加速度为（推导见下节）：</p>
+      <div class="formula">\[ \vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta \]</div>
+      <div class="formula">\[ \vec a = \bigl(\ddot r - r \dot\theta^{\,2}\bigr)\hat r + \bigl(r\ddot\theta + 2\dot r\dot\theta\bigr)\hat\theta \]</div>
+      <p>径向项中的 \(-r\dot\theta^{\,2}\) 即向心加速度，横向项中的 \(2\dot r\dot\theta\) 称为<strong>科里奥利项 (Coriolis term)</strong>，是径向运动与角运动耦合产生的。</p>
+
+      <div class="key-terms">position (位置), displacement (位移), velocity (速度), speed (速率), acceleration (加速度), free fall (自由落体), projectile motion (抛体运动), trajectory (轨迹), range (射程), centripetal acceleration (向心加速度), angular velocity (角速度), period (周期), tangential (切向), normal/centripetal (法向/向心), radius of curvature (曲率半径), reference frame (参考系), Galilean velocity addition (伽利略速度合成), polar coordinates (极坐标), Coriolis term (科里奥利项)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导一：抛体轨迹方程 Trajectory Equation</h3>
+      <p>从参数方程消去时间 \(t\)。由 \(x = v_0\cos\theta\cdot t\) 解出</p>
+      <div class="formula">\[ t = \frac{x}{v_0 \cos\theta} \]</div>
+      <p>代入 \(y = v_0 \sin\theta \cdot t - \tfrac{1}{2} g t^2\)：</p>
+      <div class="formula">\[ y = v_0 \sin\theta \cdot \frac{x}{v_0 \cos\theta} - \tfrac{1}{2} g \cdot \frac{x^2}{v_0^{\,2}\cos^2\theta} = x\tan\theta - \frac{g\,x^2}{2 v_0^{\,2}\cos^2\theta} \]</div>
+      <p>这正是开口向下的抛物线 (parabola)。令 \(y = 0\) 并解出非零根：</p>
+      <div class="formula">\[ x\Bigl(\tan\theta - \frac{g\,x}{2 v_0^{\,2}\cos^2\theta}\Bigr) = 0 \;\Rightarrow\; R = \frac{2 v_0^{\,2}\sin\theta\cos\theta}{g} = \frac{v_0^{\,2}\sin 2\theta}{g} \]</div>
+      <p>由 \(R\) 表达式可见：当 \(v_0, g\) 固定时，\(R\) 在 \(\sin 2\theta = 1\)，即 \(\theta = 45^\circ\) 时取最大值 \(v_0^{\,2}/g\)。</p>
+
+      <h3>推导二：极坐标下的加速度 Acceleration in Polar Form</h3>
+      <p>关键事实：单位矢量随时间变化。由几何关系（或对 \(\hat r = \cos\theta\,\hat\imath + \sin\theta\,\hat\jmath\) 求导）得</p>
+      <div class="formula">\[ \frac{\mathrm d \hat r}{\mathrm d t} = \dot\theta\,\hat\theta, \qquad \frac{\mathrm d \hat\theta}{\mathrm d t} = -\dot\theta\,\hat r \]</div>
+      <p>对位矢 \(\vec r = r\,\hat r\) 求一次导数：</p>
+      <div class="formula">\[ \vec v = \frac{\mathrm d}{\mathrm d t}(r\,\hat r) = \dot r\,\hat r + r\,\frac{\mathrm d \hat r}{\mathrm d t} = \dot r\,\hat r + r\dot\theta\,\hat\theta \]</div>
+      <p>再求一次导数，逐项应用乘积法则：</p>
+      <div class="formula">\[ \vec a = \frac{\mathrm d}{\mathrm d t}\bigl(\dot r\,\hat r + r\dot\theta\,\hat\theta\bigr) \]</div>
+      <div class="formula">\[ = \ddot r\,\hat r + \dot r\bigl(\dot\theta\,\hat\theta\bigr) + (\dot r\dot\theta + r\ddot\theta)\,\hat\theta + r\dot\theta\bigl(-\dot\theta\,\hat r\bigr) \]</div>
+      <p>合并同类项（\(\hat r\) 与 \(\hat\theta\)）：</p>
+      <div class="formula">\[ \vec a = \bigl(\ddot r - r\dot\theta^{\,2}\bigr)\,\hat r + \bigl(r\ddot\theta + 2\dot r\dot\theta\bigr)\,\hat\theta \]</div>
+      <p>验证：对匀速圆周运动，\(r\) 为常数 (\(\dot r = \ddot r = 0\))，\(\dot\theta = \omega\) 常数 (\(\ddot\theta = 0\))，得 \(\vec a = -r\omega^2\,\hat r\)，恰好指向圆心，与 \(a_c = v^2/r\) 一致（\(v = r\omega\)）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 紧急刹车 Emergency Braking</h4>
+        <p class="example-statement">一辆汽车以 \(v_0 = 30\,\mathrm{m/s}\)（约 \(108\,\mathrm{km/h}\)）行驶，紧急刹车后在 \(\Delta x = 60\,\mathrm{m}\) 内停下。求刹车的加速度大小与刹车时间。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>末速度 \(v = 0\)，由消时公式 \(v^2 = v_0^{\,2} + 2a\,\Delta x\)：</p>
+          <p>\[ 0 = (30)^2 + 2 a \cdot 60 \;\Rightarrow\; 120 a = -900 \;\Rightarrow\; a = -7.5\,\mathrm{m/s^2} \]</p>
+          <p>负号表示加速度与运动方向相反（减速）。刹车时间由 \(v = v_0 + at\)：</p>
+          <p>\[ t = \frac{0 - 30}{-7.5} = 4.0\,\mathrm{s} \]</p>
+          <p>刹车加速度大小为 <span class="ans">\(7.5\,\mathrm{m/s^2}\)（约 \(0.77g\)）</span>，刹车时间 <span class="ans">\(4.0\,\mathrm{s}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 抛体三种角度对比 Projectile: Range, Height, Time</h4>
+        <p class="example-statement">以 \(v_0 = 25\,\mathrm{m/s}\)、发射角 \(\theta = 40^\circ\) 抛出一石子（\(g = 9.8\,\mathrm{m/s^2}\)）。求射程、最高点高度、飞行时间。再与 \(\theta = 45^\circ\) 比较，验证 \(45^\circ\) 给出最大射程。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>代入抛体公式：</p>
+          <p>\[ R = \frac{v_0^{\,2}\sin 2\theta}{g} = \frac{625 \cdot \sin 80^\circ}{9.8} = \frac{625 \times 0.9848}{9.8} \approx 62.81\,\mathrm{m} \]</p>
+          <p>\[ H = \frac{v_0^{\,2}\sin^2\theta}{2g} = \frac{625 \cdot \sin^2 40^\circ}{19.6} = \frac{625 \times 0.4132}{19.6} \approx 13.18\,\mathrm{m} \]</p>
+          <p>\[ T = \frac{2 v_0 \sin\theta}{g} = \frac{50 \times 0.6428}{9.8} \approx 3.28\,\mathrm{s} \]</p>
+          <p>当 \(\theta = 45^\circ\) 时：</p>
+          <p>\[ R_{45^\circ} = \frac{625 \cdot \sin 90^\circ}{9.8} = \frac{625}{9.8} \approx 63.78\,\mathrm{m} \;>\; 62.81\,\mathrm{m} \;\;\checkmark \]</p>
+          <p>射程 <span class="ans">\(R \approx 62.8\,\mathrm{m}\)</span>，最高点 <span class="ans">\(H \approx 13.2\,\mathrm{m}\)</span>，飞行时间 <span class="ans">\(T \approx 3.28\,\mathrm{s}\)</span>；\(45^\circ\) 射程 \(63.8\,\mathrm{m}\) 大于 \(40^\circ\) 的射程，验证了 \(45^\circ\) 最优。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 两球相遇 When and Where Do They Meet?</h4>
+        <p class="example-statement">从高 \(h = 80\,\mathrm{m}\) 的塔顶于 \(t = 0\) 时刻由静止释放小球 A；与此同时，从地面以 \(v_{B0} = 25\,\mathrm{m/s}\) 竖直向上抛出小球 B。求两球相遇的时刻与高度（取 \(g = 9.8\,\mathrm{m/s^2}\)，忽略空气阻力）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取地面为 \(y=0\)，向上为正。两球的 \(y(t)\) 分别为：</p>
+          <p>\[ y_A(t) = 80 - \tfrac{1}{2} g t^2, \qquad y_B(t) = 25 t - \tfrac{1}{2} g t^2 \]</p>
+          <p>相遇条件 \(y_A = y_B\)：</p>
+          <p>\[ 80 - \tfrac{1}{2} g t^2 = 25 t - \tfrac{1}{2} g t^2 \;\Rightarrow\; 80 = 25 t \;\Rightarrow\; t = 3.20\,\mathrm{s} \]</p>
+          <p>代入得相遇高度：</p>
+          <p>\[ y = 25 \times 3.20 - 4.9 \times (3.20)^2 = 80.0 - 50.18 \approx 29.82\,\mathrm{m} \]</p>
+          <p><strong>物理洞察：</strong>两球加速度同为 \(-g\)，相对加速度为零，故二者间的「相对速度」恒为 \(25\,\mathrm{m/s}\)。初始高度差 \(80\,\mathrm{m}\) 以 \(25\,\mathrm{m/s}\) 闭合，恰好 \(80/25 = 3.2\,\mathrm{s}\)。</p>
+          <p>相遇时刻 <span class="ans">\(t = 3.20\,\mathrm{s}\)</span>，相遇高度 <span class="ans">\(y \approx 29.8\,\mathrm{m}\)</span>（离地）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 渡河问题 River-Boat Relative Velocity</h4>
+        <p class="example-statement">河宽 \(W = 200\,\mathrm{m}\)，水流（相对河岸）以 \(v_c = 3\,\mathrm{m/s}\) 向下游（取为 \(+x\)）匀速流动。船在静水中速率 \(v_b = 4\,\mathrm{m/s}\)。<strong>(a)</strong> 若船头始终正对对岸（\(+y\)），求船的合速度大小、方向，过河时间，及到对岸时被冲到下游多远。<strong>(b)</strong> 若要正好抵达正对岸，船头应朝上游偏多少度？过河时间变为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>船相对水的速度 \(\vec v_{b,\text{水}} = (0,\,4)\,\mathrm{m/s}\)，水相对岸的速度 \(\vec v_{\text{水},\text{岸}} = (3,\,0)\,\mathrm{m/s}\)。由伽利略速度合成：</p>
+          <p>\[ \vec v_{b,\text{岸}} = (0,\,4) + (3,\,0) = (3,\,4)\,\mathrm{m/s} \]</p>
+          <p>合速度大小 \(|\vec v| = \sqrt{3^2 + 4^2} = 5\,\mathrm{m/s}\)，方向与正北（\(+y\)）夹角 \(\phi = \tan^{-1}(3/4) \approx 36.9^\circ\) 偏下游。</p>
+          <p>过河时间仅取决于船横向分量 \(v_y = 4\,\mathrm{m/s}\)：\(t = W/v_y = 200/4 = 50\,\mathrm{s}\)。</p>
+          <p>下游漂移 \(\Delta x = v_c \cdot t = 3 \times 50 = 150\,\mathrm{m}\)。</p>
+          <p class="step"><strong>解 (b)：</strong>设船头朝上游偏离正北 \(\alpha\) 角，则船相对水的速度分量为 \((-v_b\sin\alpha,\, v_b\cos\alpha)\)。要正好抵达正对岸，需 \(x\) 分量为零：</p>
+          <p>\[ -v_b\sin\alpha + v_c = 0 \;\Rightarrow\; \sin\alpha = \frac{v_c}{v_b} = \frac{3}{4} \;\Rightarrow\; \alpha \approx 48.6^\circ \]</p>
+          <p>此时横向分量 \(v_y = v_b\cos\alpha = 4\cos 48.6^\circ = \sqrt{4^2 - 3^2} = \sqrt{7} \approx 2.65\,\mathrm{m/s}\)，过河时间：</p>
+          <p>\[ t' = \frac{200}{2.65} \approx 75.6\,\mathrm{s} \]</p>
+          <p>(a) 合速度 <span class="ans">\(5\,\mathrm{m/s}\)，偏下游 \(36.9^\circ\)，过河 \(50\,\mathrm{s}\)，下游 \(150\,\mathrm{m}\)</span>；(b) 船头朝上游偏 <span class="ans">\(48.6^\circ\)，过河时间增至 \(75.6\,\mathrm{s}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 圆周运动的向心加速度 Centripetal Acceleration: Car and Earth</h4>
+        <p class="example-statement"><strong>(a)</strong> 一辆汽车以 \(60\,\mathrm{km/h}\) 的速率通过半径 \(r = 50\,\mathrm{m}\) 的水平弯道，求向心加速度，并与 \(g\) 比较。<strong>(b)</strong> 计算赤道处由于地球自转的向心加速度（地球半径 \(R_E = 6.378\times 10^6\,\mathrm{m}\)，用恒星日 \(T = 86164\,\mathrm{s}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>先把速率化为国际单位：\(v = 60/3.6 = 16.67\,\mathrm{m/s}\)。</p>
+          <p>\[ a_c = \frac{v^2}{r} = \frac{(16.67)^2}{50} = \frac{277.8}{50} \approx 5.56\,\mathrm{m/s^2} \approx 0.57\,g \]</p>
+          <p>相当于半重力加速度，已足以显著影响轮胎侧向抓地力。</p>
+          <p class="step"><strong>解 (b)：</strong>地球自转角速度</p>
+          <p>\[ \omega = \frac{2\pi}{T} = \frac{2\pi}{86164} \approx 7.292\times 10^{-5}\,\mathrm{rad/s} \]</p>
+          <p>赤道处的线速度 \(v = \omega R_E \approx 7.292\times 10^{-5} \times 6.378\times 10^6 \approx 465\,\mathrm{m/s}\)。</p>
+          <p>\[ a_c = \omega^2 R_E = \frac{v^2}{R_E} \approx \frac{(465)^2}{6.378\times 10^6} \approx 0.0339\,\mathrm{m/s^2} \approx \frac{g}{289} \]</p>
+          <p>地球自转向心加速度仅约 \(g/289\)，所以日常感受不到；但精密实验（如傅科摆、重力随纬度的变化）能测出它。</p>
+          <p>(a) <span class="ans">\(a_c \approx 5.56\,\mathrm{m/s^2}\)（约 \(0.57g\)）</span>；(b) <span class="ans">\(a_c \approx 0.0339\,\mathrm{m/s^2}\)（约 \(g/289\)）</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>混淆平均与瞬时：</strong>平均速度 \(\Delta \vec r/\Delta t\) 仅在时间段上定义；瞬时速度是它在 \(\Delta t \to 0\) 的极限。绕跑道一整圈回到起点的「平均速度」为零（位移为零），但瞬时速度从不为零。</li>
+        <li><strong>\(g\) 的正负号：</strong>\(g\) 本身是正常数 \(9.8\,\mathrm{m/s^2}\)。是否带负号取决于坐标轴方向：取向上为正时，重力加速度写作 \(-g\)。常见错误是把 \(+g\) 与「向下」混用。</li>
+        <li><strong>抛体的水平速度不恒为零：</strong>水平方向无外力时 \(v_x\) 守恒。不要因为「物体在落地」就以为水平方向也减速——只有竖直分量 \(v_y\) 受重力影响。</li>
+        <li><strong>把加速度当作速率：</strong>加速度是速度的<strong>时间变化率</strong>。速度大不代表加速度大（匀速圆周运动速率恒定，但 \(a_c \ne 0\)）；速度为零时加速度可以很大（如竖直上抛至最高点时 \(v=0\) 但 \(a=-g\)）。</li>
+        <li><strong>单位与有效数字：</strong>混用 \(\mathrm{km/h}\) 与 \(\mathrm{m/s}\) 是最常见错误（\(1\,\mathrm{m/s} = 3.6\,\mathrm{km/h}\)）。在数值计算前，先把所有量统一到 SI 单位。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 从悬崖竖直上抛 Vertical throw from a cliff</summary>
+        <div class="hint">提示：取向上为正，落地时 \(y = -h\)；或分段计算上升与下落。</div>
+        <div class="solution">
+          <p>以 \(v_0 = 18\,\mathrm{m/s}\) 从 \(h = 25\,\mathrm{m}\) 高的悬崖边竖直上抛一石子。求：(a) 它能上升到的离地最高高度；(b) 上升到最高点的时间；(c) 落到崖底的总时间；(d) 落地速度。</p>
+          <p>(a) 离抛出点高度 \(v_0^{\,2}/(2g) = 324/19.6 \approx 16.53\,\mathrm{m}\)，离地总高 \(25 + 16.53 = 41.53\,\mathrm{m}\)。</p>
+          <p>(b) \(t_{\text{up}} = v_0/g = 18/9.8 \approx 1.84\,\mathrm{s}\)。</p>
+          <p>(c) 由 \(-25 = 18 t - 4.9 t^2\)，即 \(4.9 t^2 - 18 t - 25 = 0\)，解得 \(t = \dfrac{18 + \sqrt{324 + 490}}{9.8} = \dfrac{18 + 28.53}{9.8} \approx 4.75\,\mathrm{s}\)。</p>
+          <p>(d) \(v = v_0 - g t = 18 - 9.8 \times 4.75 \approx -28.5\,\mathrm{m/s}\)（向下），或由 \(v^2 = v_0^{\,2} + 2 g h = 324 + 490 = 814\) 得 \(|v| \approx 28.5\,\mathrm{m/s}\)。</p>
+          <p>答案：<span class="ans">(a) \(41.5\,\mathrm{m}\)；(b) \(1.84\,\mathrm{s}\)；(c) \(4.75\,\mathrm{s}\)；(d) \(28.5\,\mathrm{m/s}\) 向下</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 抛体综合 Projectile at 53°</summary>
+        <div class="hint">提示：\(\sin 53^\circ \approx 0.799\)，\(\cos 53^\circ \approx 0.602\)。直接套射程、最高点、飞行时间公式。</div>
+        <div class="solution">
+          <p>以 \(v_0 = 35\,\mathrm{m/s}\)、\(\theta = 53^\circ\) 抛出一球（\(g = 9.8\,\mathrm{m/s^2}\)）。求射程、最高点高度、飞行时间。</p>
+          <p>\[ R = \frac{35^2 \sin 106^\circ}{9.8} = \frac{1225 \times 0.9613}{9.8} \approx 120.2\,\mathrm{m} \]</p>
+          <p>\[ H = \frac{35^2 \sin^2 53^\circ}{2 \times 9.8} = \frac{1225 \times 0.6378}{19.6} \approx 39.9\,\mathrm{m} \]</p>
+          <p>\[ T = \frac{2 \times 35 \times 0.799}{9.8} \approx 5.70\,\mathrm{s} \]</p>
+          <p>答案：<span class="ans">\(R \approx 120\,\mathrm{m}\)，\(H \approx 39.9\,\mathrm{m}\)，\(T \approx 5.70\,\mathrm{s}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 三段加速 Three-stage motion</summary>
+        <div class="hint">提示：分三段计算位移再相加。注意第二段匀速、第三段匀减速到停。</div>
+        <div class="solution">
+          <p>一辆车从静止开始以 \(a_1 = 3\,\mathrm{m/s^2}\) 加速 \(5\,\mathrm{s}\)，然后匀速行驶 \(10\,\mathrm{s}\)，最后以 \(|a_3| = 4\,\mathrm{m/s^2}\) 匀减速到停止。求总位移。</p>
+          <p>最大速度 \(v_{\max} = a_1 t_1 = 3 \times 5 = 15\,\mathrm{m/s}\)。</p>
+          <p>第一段：\(d_1 = \tfrac{1}{2} a_1 t_1^2 = \tfrac{1}{2} \times 3 \times 25 = 37.5\,\mathrm{m}\)。</p>
+          <p>第二段：\(d_2 = v_{\max} \times 10 = 150\,\mathrm{m}\)。</p>
+          <p>第三段：\(t_3 = v_{\max}/|a_3| = 15/4 = 3.75\,\mathrm{s}\)，\(d_3 = \tfrac{1}{2} |a_3| t_3^2 = \tfrac{1}{2} \times 4 \times 3.75^2 = 28.125\,\mathrm{m}\)。</p>
+          <p>总位移 \(d = 37.5 + 150 + 28.125 = 215.625\,\mathrm{m}\)。</p>
+          <p>答案：<span class="ans">总位移约 \(216\,\mathrm{m}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 追赶问题 Pursuit: when does B catch A?</summary>
+        <div class="hint">提示：设相遇时刻 \(t\)，令 \(x_A(t) = x_B(t)\) 解二次方程。</div>
+        <div class="solution">
+          <p>车 A 在 \(t = 0\) 时位于 \(x = 200\,\mathrm{m}\)，以恒定速度 \(v_A = 20\,\mathrm{m/s}\) 沿 \(+x\) 行驶。同一时刻车 B 从 \(x = 0\) 由静止以 \(a_B = 3\,\mathrm{m/s^2}\) 匀加速出发追赶 A。求 B 追上 A 的时刻与位置。</p>
+          <p>\(x_A(t) = 200 + 20 t\)，\(x_B(t) = \tfrac{1}{2} \cdot 3 \cdot t^2 = 1.5 t^2\)。</p>
+          <p>令二者相等：\(1.5 t^2 = 200 + 20 t \;\Rightarrow\; 1.5 t^2 - 20 t - 200 = 0\)。</p>
+          <p>\[ t = \frac{20 + \sqrt{400 + 1200}}{3} = \frac{20 + 40}{3} = 20\,\mathrm{s} \]</p>
+          <p>位置 \(x = 1.5 \times 20^2 = 600\,\mathrm{m}\)。</p>
+          <p>答案：<span class="ans">\(t = 20\,\mathrm{s}\) 时在 \(x = 600\,\mathrm{m}\) 处追上</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 速度相关阻力 Speed-dependent drag: a(v) = −kv²</summary>
+        <div class="hint">提示：用 \(a = v\,\mathrm d v/\mathrm d x\) 消去时间，再分离变量积分。</div>
+        <div class="solution">
+          <p>一艘船以 \(v_0 = 10\,\mathrm{m/s}\) 行驶时关闭发动机，水对船的阻力产生加速度 \(a(v) = -k v^2\)，其中 \(k = 0.05\,\mathrm{m^{-1}}\)（\(v\) 以 \(\mathrm{m/s}\) 计）。求：(a) \(v\) 作为位移 \(x\) 的函数；(b) 船速降到 \(5\,\mathrm{m/s}\) 时滑行的距离；(c) 船速是否能在有限距离内降到零？</p>
+          <p>(a) 由 \(a = v\,\dfrac{\mathrm d v}{\mathrm d x} = -k v^2\)，对 \(v \neq 0\) 有 \(\dfrac{\mathrm d v}{\mathrm d x} = -k v\)，分离变量积分：</p>
+          <p>\[ \int_{v_0}^{v} \frac{\mathrm d v'}{v'} = -k \int_0^x \mathrm d x' \;\Rightarrow\; \ln\frac{v}{v_0} = -k x \;\Rightarrow\; v(x) = v_0\,e^{-k x} \]</p>
+          <p>(b) 令 \(v = 5\,\mathrm{m/s}\)：\(0.5 = e^{-0.05 x}\)，\(x = \ln 2 / 0.05 \approx 13.86\,\mathrm{m}\)。</p>
+          <p>(c) \(v(x)\) 随 \(x\) 指数衰减，只有 \(x \to \infty\) 时 \(v \to 0\)。<strong>不能在有限距离内停止</strong>——这是平方阻力 (quadratic drag) 与线性阻力不同的特征。</p>
+          <p>答案：<span class="ans">(a) \(v(x) = 10\,e^{-0.05 x}\,\mathrm{m/s}\)；(b) \(x \approx 13.9\,\mathrm{m}\)；(c) 否，理论需无穷远</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">抛体运动模拟器 (projectile motion simulator)：调节初速度 \(v_0\)、发射角 \(\theta\)、重力加速度 \(g\)，实时观察轨迹、最高点、射程，以及沿路径上的速度矢量分布。尝试 \(\theta = 45^\circ\) 与不同角度对比，验证 \(45^\circ\) 让射程最大。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+          var params = { v0: 25, angle: 45, g: 9.8 };
+
+          // Recompute trajectory from current params (analytical solution)
+          function traj() {
+            var v0 = params.v0;
+            var ang = params.angle * Math.PI / 180;
+            var g = Math.max(params.g, 0.001);
+            var vx = v0 * Math.cos(ang);
+            var vy = v0 * Math.sin(ang);
+            var T = 2 * vy / g;                 // flight time, level ground
+            var R = v0 * v0 * Math.sin(2 * ang) / g;  // range
+            var Hmax = vy * vy / (2 * g);       // apex height
+            return { vx: vx, vy: vy, T: T, R: R, Hmax: Hmax, g: g };
+          }
+
+          // Pick a "nice" grid step (in meters) so each cell is at least ~32 px
+          function chooseStep(scale) {
+            var cands = [1, 2, 5, 10, 20, 50, 100, 200, 500];
+            for (var i = 0; i < cands.length; i++) {
+              if (cands[i] * scale >= 32) return cands[i];
+            }
+            return 500;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) {
+              s.t += dt;
+              var T = traj().T;
+              if (s.t > T + 0.5) s.t = 0;   // pause briefly, then re-launch
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var tr = traj();
+              var v0 = params.v0, angDeg = params.angle, g = tr.g;
+
+              // Margins / viewport
+              var mL = 48, mR = 24, mT = 32, mB = 56;
+              // Scale so trajectory fits (handles degenerate angle=0/90 gracefully)
+              var maxR = Math.max(tr.R, 5);
+              var maxH = Math.max(tr.Hmax * 1.25, 5);
+              var scaleX = (W - mL - mR) / maxR;
+              var scaleY = (H - mT - mB) / maxH;
+              var scale = Math.min(scaleX, scaleY);
+              var originX = mL;
+              var originY = H - mB;
+              var stepM = chooseStep(scale);
+
+              // Grid + axes
+              PS.drawGrid(ctx, { originX: originX, originY: originY, scale: scale, step: stepM });
+
+              // Faint full trajectory (analytical)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              var N = 140;
+              for (var i = 0; i <= N; i++) {
+                var tt = (i / N) * tr.T;
+                var x = tr.vx * tt;
+                var y = tr.vy * tt - 0.5 * g * tt * tt;
+                var px = originX + x * scale;
+                var py = originY - y * scale;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Sample velocity vectors along path (show v at 4 interior points)
+              var nSamples = 5;
+              var vScale = 0.85;   // m/s -> pixels (display)
+              for (var j = 1; j < nSamples; j++) {
+                var tj = (j / nSamples) * tr.T;
+                var xj = tr.vx * tj;
+                var yj = tr.vy * tj - 0.5 * g * tj * tj;
+                var pxj = originX + xj * scale;
+                var pyj = originY - yj * scale;
+                var vxj = tr.vx;
+                var vyj = tr.vy - g * tj;
+                ctx.save(); ctx.globalAlpha = 0.55;
+                PS.drawArrow(ctx, pxj, pyj, pxj + vxj * vScale, pyj - vyj * vScale, PS.colors.accent2);
+                ctx.restore();
+              }
+
+              // Apex marker
+              var apexX = originX + (tr.R / 2) * scale;
+              var apexY = originY - tr.Hmax * scale;
+              PS.drawCircle(ctx, apexX, apexY, 4, { fill: PS.colors.accent2 });
+              PS.drawText(ctx, 'Apex  H = ' + tr.Hmax.toFixed(2) + ' m', apexX + 8, apexY - 6,
+                          { color: PS.colors.accent2, font: '12px system-ui, sans-serif' });
+
+              // Range marker on ground
+              var rx = originX + tr.R * scale;
+              PS.drawText(ctx, 'R = ' + tr.R.toFixed(2) + ' m', Math.max(originX + 4, rx - 70), originY + 22,
+                          { color: PS.colors.text, font: '12px system-ui, sans-serif' });
+
+              // Current projectile position + total velocity vector
+              var tt = Math.min(s.t, tr.T);
+              var x = tr.vx * tt;
+              var y = tr.vy * tt - 0.5 * g * tt * tt;
+              var px = originX + x * scale;
+              var py = originY - y * scale;
+              var vxt = tr.vx;
+              var vyt = tr.vy - g * tt;
+              PS.drawArrow(ctx, px, py, px + vxt * vScale, py - vyt * vScale, PS.colors.primary, 'v');
+              PS.drawCircle(ctx, px, py, 6, { fill: PS.colors.primary });
+
+              // Header
+              PS.drawText(ctx,
+                'v₀ = ' + v0.toFixed(1) + ' m/s,  θ = ' + angDeg + '°,  g = ' + g.toFixed(2) + ' m/s²',
+                mL, 20, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+
+              // 45-degree hint (max range at fixed v0 and g)
+              var Rmax = v0 * v0 / g;
+              PS.drawText(ctx,
+                '最大射程 R_max(v₀²/g) = ' + Rmax.toFixed(2) + ' m  (θ = 45°)',
+                W - mR, 20, { font: '12px system-ui, sans-serif', color: PS.colors.accent, align: 'right' });
+
+              // Footer: numeric readout
+              PS.drawText(ctx,
+                '射程 Range R = ' + tr.R.toFixed(2) + ' m   |   ' +
+                '最高点 Max height H = ' + tr.Hmax.toFixed(2) + ' m   |   ' +
+                '飞行时间 Flight time T = ' + tr.T.toFixed(2) + ' s',
+                mL, H - 14, { font: '12px system-ui, sans-serif', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'v0',    label: '初速度 v₀ (m/s)', min: 1,  max: 50, step: 0.5, value: 25 },
+            { type: 'slider', key: 'angle', label: '发射角 θ (°)',  min: 0,  max: 90, step: 1,   value: 45 },
+            { type: 'slider', key: 'g',     label: '重力 g (m/s²)',          min: 1,  max: 25, step: 0.1, value: 9.8 },
+            { type: 'button', key: 'reset', label: '↺ 重新发射 Reset' },
+          ]);
+          ctl.on('v0',    function (v) { params.v0 = v; });
+          ctl.on('angle', function (v) { params.angle = v; });
+          ctl.on('g',     function (v) { params.g = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>运动学只用<strong>几何语言</strong>（位置、速度、加速度）描述运动，暂时不涉及「为什么运动」（动力学，第 3 章主题）。掌握本章的关键是：</p>
+      <ul>
+        <li>三个核心矢量 \(\vec r,\vec v,\vec a\) 通过求导/积分相互联系；遇到非匀变速问题时按 \(a\) 依赖的变量 (\(t, v, x\)) 选择分离变量方式。</li>
+        <li>正交方向上的运动彼此独立——抛体运动就是「水平匀速 + 竖直匀加速」的合成。</li>
+        <li>曲线运动的加速度天然分为切向（改大小）与法向（改方向）；法向分量 \(v^2/\rho\) 是直线与圆周的统一描述。</li>
+        <li>相对运动用伽利略速度合成 \(\vec v_{AC} = \vec v_{AB} + \vec v_{BC}\)，是参考系变换的核心工具。</li>
+      </ul>
+      <div class="formula">\[ v = v_0 + at \quad;\quad x = x_0 + v_0 t + \tfrac{1}{2} a t^2 \quad;\quad v^2 = v_0^{\,2} + 2a\,\Delta x \]</div>
+      <div class="formula">\[ y(x) = x\tan\theta - \frac{g x^2}{2 v_0^{\,2}\cos^2\theta} \quad;\quad R = \frac{v_0^{\,2}\sin 2\theta}{g} \quad;\quad H = \frac{v_0^{\,2}\sin^2\theta}{2g} \]</div>
+      <div class="formula">\[ a_c = \frac{v^2}{r} = \omega^2 r \quad;\quad \vec a = \dot v\,\hat t + \frac{v^2}{\rho}\,\hat n \]</div>
+      <div class="formula">\[ \vec v_{AC} = \vec v_{AB} + \vec v_{BC} \quad\text{(Galilean)} \]</div>
+      <div class="formula">\[ \vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta \quad;\quad \vec a = (\ddot r - r\dot\theta^{\,2})\,\hat r + (r\ddot\theta + 2\dot r\dot\theta)\,\hat\theta \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

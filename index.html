@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物理学教程 / Physics Tutorial — 大一物理 上学期 (Freshman Physics, First Semester)</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/math-config.js" defer></script>
+  <script src="js/sims/physics-sims.js" defer></script>
+  <script src="js/nav.js" defer></script>
+</head>
+<body>
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="content">
+    <header class="index-hero">
+      <h1>藤校大一物理 · 上学期 <span class="en-title">Ivy-League Freshman Physics — First Semester</span></h1>
+      <p class="subtitle">
+        一套交互式、双语（中文 + English）的荣誉级大一物理上学期教程，覆盖牛顿力学、分析力学、狭义相对论、流体力学与进阶专题，配以可运行的互动仿真。
+        <br>
+        An interactive, bilingual (中文 + English), honors-level first-semester physics tutorial covering Newtonian &amp; analytical mechanics, special relativity, fluids, and advanced topics — each chapter pairs rigorous derivations with runnable interactive simulations.
+      </p>
+      <div class="how-to-use">
+        <h2>如何使用本教程 / How to use this tutorial</h2>
+        <p>
+          每一章都包含：<strong>学习目标</strong>、<strong>核心概念</strong>、<strong>推导</strong>、<strong>典型例题</strong>、<strong>常见误区</strong>、<strong>练习题</strong>，以及一个<strong>可调节参数的互动仿真</strong>。
+          使用左侧的 <strong>侧边栏</strong> 在 20 章 + 附录之间导航；点击 <strong>☾ 深色 / ☀ 浅色</strong> 切换深色模式。
+        </p>
+        <p>
+          Each chapter includes <em>learning objectives</em>, <em>core concepts</em>, <em>derivations</em>, <em>worked examples</em>, <em>common pitfalls</em>, <em>practice problems</em>, and a <em>runnable interactive simulation</em>.
+          Use the <strong>sidebar</strong> to navigate all 20 chapters and the appendix; toggle <strong>dark mode</strong> from the sidebar.
+        </p>
+      </div>
+    </header>
+
+    <section class="full-toc">
+
+      <div class="toc-part-heading">第一部分 · 牛顿力学 Newtonian Mechanics</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="mechanics/01-vectors.html">
+          <div class="tc-num">1</div>
+          <div class="tc-title">数学基础与矢量</div>
+          <div class="tc-en">Math Foundations &amp; Vectors</div>
+        </a>
+        <a class="toc-card" href="mechanics/02-kinematics.html">
+          <div class="tc-num">2</div>
+          <div class="tc-title">运动学</div>
+          <div class="tc-en">Kinematics</div>
+        </a>
+        <a class="toc-card" href="mechanics/03-newton-laws.html">
+          <div class="tc-num">3</div>
+          <div class="tc-title">牛顿定律与受力分析</div>
+          <div class="tc-en">Newton's Laws &amp; FBDs</div>
+        </a>
+        <a class="toc-card" href="mechanics/04-work-energy.html">
+          <div class="tc-num">4</div>
+          <div class="tc-title">功、能量与守恒</div>
+          <div class="tc-en">Work, Energy &amp; Conservation</div>
+        </a>
+        <a class="toc-card" href="mechanics/05-momentum.html">
+          <div class="tc-num">5</div>
+          <div class="tc-title">动量与碰撞</div>
+          <div class="tc-en">Momentum &amp; Collisions</div>
+        </a>
+        <a class="toc-card" href="mechanics/06-rotation.html">
+          <div class="tc-num">6</div>
+          <div class="tc-title">转动动力学</div>
+          <div class="tc-en">Rotational Dynamics</div>
+        </a>
+        <a class="toc-card" href="mechanics/07-statics.html">
+          <div class="tc-num">7</div>
+          <div class="tc-title">静力学与平衡</div>
+          <div class="tc-en">Statics &amp; Equilibrium</div>
+        </a>
+        <a class="toc-card" href="mechanics/08-oscillations.html">
+          <div class="tc-num">8</div>
+          <div class="tc-title">振动</div>
+          <div class="tc-en">Oscillations</div>
+        </a>
+        <a class="toc-card" href="mechanics/09-gravitation.html">
+          <div class="tc-num">9</div>
+          <div class="tc-title">引力</div>
+          <div class="tc-en">Gravitation</div>
+        </a>
+      </div>
+
+      <div class="toc-part-heading">第二部分 · 分析力学 Analytical Mechanics</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="analytical/10-constraints.html">
+          <div class="tc-num">10</div>
+          <div class="tc-title">约束、广义坐标与虚功</div>
+          <div class="tc-en">Constraints &amp; Virtual Work</div>
+        </a>
+        <a class="toc-card" href="analytical/11-lagrangian.html">
+          <div class="tc-num">11</div>
+          <div class="tc-title">拉格朗日方程与最小作用量</div>
+          <div class="tc-en">Lagrange's Equations</div>
+        </a>
+        <a class="toc-card" href="analytical/12-noether.html">
+          <div class="tc-num">12</div>
+          <div class="tc-title">守恒律与诺特定理</div>
+          <div class="tc-en">Noether's Theorem</div>
+        </a>
+        <a class="toc-card" href="analytical/13-hamiltonian.html">
+          <div class="tc-num">13</div>
+          <div class="tc-title">哈密顿力学初步</div>
+          <div class="tc-en">Hamiltonian Mechanics</div>
+        </a>
+      </div>
+
+      <div class="toc-part-heading">第三部分 · 狭义相对论 Special Relativity</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="relativity/14-lorentz.html">
+          <div class="tc-num">14</div>
+          <div class="tc-title">相对论基础与洛伦兹变换</div>
+          <div class="tc-en">Lorentz Transformations</div>
+        </a>
+        <a class="toc-card" href="relativity/15-spacetime.html">
+          <div class="tc-num">15</div>
+          <div class="tc-title">时空几何与四维矢量</div>
+          <div class="tc-en">Spacetime &amp; Four-vectors</div>
+        </a>
+        <a class="toc-card" href="relativity/16-relativistic-dynamics.html">
+          <div class="tc-num">16</div>
+          <div class="tc-title">相对论动力学</div>
+          <div class="tc-en">Relativistic Dynamics</div>
+        </a>
+      </div>
+
+      <div class="toc-part-heading">第四部分 · 流体力学 Fluid Mechanics</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="fluids/17-statics.html">
+          <div class="tc-num">17</div>
+          <div class="tc-title">流体静力学</div>
+          <div class="tc-en">Fluid Statics</div>
+        </a>
+        <a class="toc-card" href="fluids/18-dynamics.html">
+          <div class="tc-num">18</div>
+          <div class="tc-title">流体动力学</div>
+          <div class="tc-en">Fluid Dynamics</div>
+        </a>
+      </div>
+
+      <div class="toc-part-heading">第五部分 · 进阶专题 Advanced Topics</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="advanced/19-chaos.html">
+          <div class="tc-num">19</div>
+          <div class="tc-title">非线性动力学与混沌</div>
+          <div class="tc-en">Nonlinear Dynamics &amp; Chaos</div>
+        </a>
+        <a class="toc-card" href="advanced/20-numerical.html">
+          <div class="tc-num">20</div>
+          <div class="tc-title">物理中的数值方法</div>
+          <div class="tc-en">Numerical Methods</div>
+        </a>
+      </div>
+
+      <div class="toc-part-heading">附录 Appendix</div>
+      <div class="toc-grid">
+        <a class="toc-card" href="appendix/formulas.html">
+          <div class="tc-num">★</div>
+          <div class="tc-title">公式速查表</div>
+          <div class="tc-en">Formula Sheets</div>
+        </a>
+        <a class="toc-card" href="appendix/math-review.html">
+          <div class="tc-num">★</div>
+          <div class="tc-title">数学回顾</div>
+          <div class="tc-en">Math Review</div>
+        </a>
+        <a class="toc-card" href="appendix/constants.html">
+          <div class="tc-num">★</div>
+          <div class="tc-title">物理常数与单位</div>
+          <div class="tc-en">Constants &amp; Units</div>
+        </a>
+      </div>
+
+    </section>
+  </main>
+</body>
+</html>

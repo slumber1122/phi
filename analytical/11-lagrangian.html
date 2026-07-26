@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 拉格朗日方程与最小作用量 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 11 · 第11章 · 第二部分 分析力学 Part II Analytical Mechanics</p>
+      <h1>拉格朗日方程与最小作用量 <span class="en-title">Lagrange's Equations &amp; Least Action</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>对受理想完整约束 (ideal holonomic constraints) 的系统写出拉格朗日量 (Lagrangian) \(L=T-V\)，并正确地把动能 \(T\) 表达在所选的广义坐标 (generalized coordinates) \(q_{i}\) 中。</li>
+        <li>计算广义动量 (generalized momentum) \(p_{i}=\partial L/\partial\dot q_{i}\)，并熟练套用<strong>欧拉–拉格朗日方程</strong> (Euler–Lagrange equation) \(\displaystyle \frac{d}{dt}\frac{\partial L}{\partial\dot q_{i}}-\frac{\partial L}{\partial q_{i}}=0\) 作为求解任意保守系统的"配方 (recipe)"。</li>
+        <li>从达朗贝尔原理 (D'Alembert's principle) 出发推导出 E–L 方程，并验证它对自由粒子给出牛顿第二定律 \(\vec F=m\vec a\)。</li>
+        <li>陈述并运用哈密顿原理 (Hamilton's principle / 最小作用量原理 principle of least action) \(\delta S=0\)，\(S=\int_{t_{1}}^{t_{2}}L\,dt\)，理解"真实路径是作用量的驻点 (stationary point)"——而不一定是极小值。</li>
+        <li>把拉格朗日方法应用于：单摆、阿特伍德机、旋转环上的珠子、有心力问题、极坐标下的自由质点，并体会标量化、自动处理约束、坐标无关的威力。</li>
+        <li>识别<em>循环坐标</em> (cyclic coordinates) \(\partial L/\partial q_{j}=0\)，立即得到对应的守恒量 \(p_{j}=\text{const}\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 从牛顿到拉格朗日：动机</h3>
+      <p>牛顿力学以<em>矢量</em>为核心：写出每个质点所受的力 \(\vec F_{i}=m_{i}\vec a_{i}\)，分解到坐标轴上，再消去未知的约束力（绳张力、轨道支持力……）。当系统有约束或几何复杂时，这极其繁琐。拉格朗日力学 (Lagrangian mechanics, Joseph-Lph Lagrange, 1788) 换一个视角：<strong>用能量（标量）+ 任意广义坐标，自动消去理想约束力</strong>。结果是一个"配方"，对任何坐标都同样有效。</p>
+
+      <h3>2. 拉格朗日量 L = T − V</h3>
+      <p>对受保守力 (conservative forces) 作用的系统，定义<strong>拉格朗日量</strong> (Lagrangian)：</p>
+      <div class="formula">\[ \boxed{\,L(q_{1},\dots,q_{n};\,\dot q_{1},\dots,\dot q_{n};\,t)=T-V\,} \]</div>
+      <p>其中 \(T\) 为动能 (kinetic energy)，\(V\) 为势能 (potential energy)，都用<strong>广义坐标</strong> \(q_{i}\) 与广义速度 \(\dot q_{i}\) 表达。<strong>注意是减号</strong>——这是高频出错点（见误区 1）。对非保守的额外力（如外加驱动力），可引入广义力 \(Q_{j}\) 加在 E–L 方程右侧。</p>
+      <div class="key-terms">Lagrangian \(L\) (拉格朗日量), generalized coordinates \(q_{i}\) (广义坐标), generalized velocities \(\dot q_{i}\) (广义速度), conservative force (保守力)</div>
+
+      <h3>3. 广义动量与欧拉–拉格朗日方程</h3>
+      <p>对每个广义坐标 \(q_{i}\)，定义<strong>广义动量</strong> (generalized momentum)（也称<strong>共轭动量</strong> conjugate momentum）：</p>
+      <div class="formula">\[ p_{i}\equiv\frac{\partial L}{\partial\dot q_{i}} \]</div>
+      <p>注意 \(p_{i}\) <em>不必</em>是线动量 \(mv\)：若 \(q_{i}\) 是角度，则 \(p_{i}\) 是角动量；若 \(q_{i}\) 是某种抽象坐标，\(p_{i}\) 就是对应的广义动量。系统的运动方程为<strong>欧拉–拉格朗日方程</strong> (Euler–Lagrange equation)：</p>
+      <div class="formula">\[ \boxed{\;\frac{d}{dt}\!\left(\frac{\partial L}{\partial\dot q_{i}}\right)-\frac{\partial L}{\partial q_{i}}=0,\qquad i=1,\dots,n\;} \]</div>
+      <p>这是<em>配方</em>：写出 \(L\) → 对每个 \(q_{i}\) 套用上式 → 得到 \(n\) 个二阶 ODE → 初值求解。无需消约束力，无需矢量分解。</p>
+      <div class="key-terms">generalized momentum \(p_{i}\) (广义动量), conjugate momentum (共轭动量), Euler–Lagrange equation (欧拉–拉格朗日方程)</div>
+
+      <h3>4. 循环坐标与守恒律</h3>
+      <p>若 \(L\) 不显含某个 \(q_{j}\)（即 \(\partial L/\partial q_{j}=0\)），则 \(q_{j}\) 称为<strong>循环坐标</strong> (cyclic / ignorable coordinate)。E–L 立即给出：</p>
+      <div class="formula">\[ \frac{d}{dt}\!\left(\frac{\partial L}{\partial\dot q_{j}}\right)=0\;\Longrightarrow\;p_{j}=\frac{\partial L}{\partial\dot q_{j}}=\text{常量} \]</div>
+      <p>"\(L\) 不含某坐标" ⇔ "对应广义动量守恒"。这是<em>诺特定理</em> (Noether's theorem) 的最简单实例：每一连续对称性对应一个守恒律。例：有心力问题中 \(L\) 不含方位角 ⇒ 角动量守恒（例 4）。</p>
+      <div class="key-terms">cyclic/ignorable coordinate (循环坐标/可遗坐标), conservation law (守恒律), Noether's theorem (诺特定理)</div>
+
+      <h3>5. 哈密顿原理 / 最小作用量原理</h3>
+      <p>定义<strong>作用量</strong> (action)：</p>
+      <div class="formula">\[ S[q(t)]\;=\;\int_{t_{1}}^{t_{2}}\!L\bigl(q(t),\dot q(t),t\bigr)\,dt \]</div>
+      <p>\(S\) 是<em>路径函数</em>——给定一条连接 \((q(t_{1}),q(t_{2}))\) 的轨迹，得到一个数。<strong>哈密顿原理</strong> (Hamilton's principle) 说：</p>
+      <div class="formula">\[ \boxed{\;\delta S\;=\;\delta\!\int_{t_{1}}^{t_{2}}\!L\,dt\;=\;0\;} \]</div>
+      <p>即<strong>真实运动使作用量取驻值</strong> (stationary action)。注意是"驻值"而非必然"极小"——历史名称"最小作用量原理" (principle of least action) 是误称但约定俗成。变分 \(\delta S=0\) 给出的欧拉–拉格朗日方程与上述"配方"完全一致——这是变分法 (calculus of variations) 与拉格朗日力学的等价入口。</p>
+      <div class="key-terms">action \(S\) (作用量), Hamilton's principle (哈密顿原理), stationary action (作用量驻值), calculus of variations (变分法)</div>
+
+      <h3>6. 为什么拉格朗日力学"更强"</h3>
+      <ul>
+        <li><strong>标量化 (scalar formulation)</strong>：只需写出 \(T\) 和 \(V\) 两个标量，免去矢量分解。</li>
+        <li><strong>坐标无关 (coordinate-free)</strong>：广义坐标可选任意方便的变量（角度、弧长、角度差、参数……），E–L 在任何坐标中都成立。</li>
+        <li><strong>约束自动处理</strong>：理想约束（不可伸长的绳、无摩擦轨道、刚性约束）的约束力<em>不做虚功</em>，在 \(L\) 中根本不出现——不需要消去张力、支持力。</li>
+        <li><strong>守恒律自动浮现</strong>：循环坐标立即给出守恒量。</li>
+        <li><strong>与量子力学、场论、广义相对论一脉相承</strong>：路径积分、规范场、最小作用量原理都建立在这一框架上。</li>
+      </ul>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从达朗贝尔原理到欧拉–拉格朗日方程</h2>
+      <p><strong>起点</strong>：达朗贝尔原理 (D'Alembert's principle)——对理想约束系统，主动力减惯性力的<em>虚功</em> (virtual work) 为零：</p>
+      <div class="formula">\[ \sum_{i}\bigl(\vec F_{i}-m_{i}\vec a_{i}\bigr)\cdot\delta\vec r_{i}\;=\;0 \]</div>
+      <p>\(\delta\vec r_{i}\) 是与瞬时约束相容的虚位移。设系统有 \(n\) 个独立广义坐标 \(q_{j}\)，则 \(\vec r_{i}=\vec r_{i}(q_{1},\dots,q_{n},t)\)，故 \(\displaystyle\delta\vec r_{i}=\sum_{j}\frac{\partial\vec r_{i}}{\partial q_{j}}\,\delta q_{j}\)。</p>
+
+      <p><strong>第一步：拆主动力 → 广义力</strong>。对保守主动力 \(\vec F_{i}=-\nabla_{i}V\)，虚功为</p>
+      <div class="formula">\[ \sum_{i}\vec F_{i}\cdot\delta\vec r_{i}=-\sum_{i}\nabla_{i}V\cdot\sum_{j}\frac{\partial\vec r_{i}}{\partial q_{j}}\delta q_{j}=-\sum_{j}\frac{\partial V}{\partial q_{j}}\delta q_{j} \]</div>
+      <p>（理想约束力对虚功贡献为零——这正是拉格朗日方法的"魔法"所在。）</p>
+
+      <p><strong>第二步：拆惯性项</strong>。定义动能 \(T=\sum_{i}\tfrac{1}{2}m_{i}\dot{\vec r}_{i}^{\,2}\)。两个恒等式（"拉格朗日两条公式"）极为有用：</p>
+      <div class="formula">\[ \frac{\partial\dot{\vec r}_{i}}{\partial\dot q_{j}}=\frac{\partial\vec r_{i}}{\partial q_{j}},\qquad \frac{d}{dt}\!\left(\frac{\partial\vec r_{i}}{\partial q_{j}}\right)=\frac{\partial\dot{\vec r}_{i}}{\partial q_{j}} \]</div>
+      <p>用它们可把惯性项的虚功改写成：</p>
+      <div class="formula">\[ \sum_{i}m_{i}\vec a_{i}\cdot\frac{\partial\vec r_{i}}{\partial q_{j}}=\frac{d}{dt}\!\left(\frac{\partial T}{\partial\dot q_{j}}\right)-\frac{\partial T}{\partial q_{j}} \]</div>
+
+      <p><strong>第三步：合并</strong>。达朗贝尔原理成为</p>
+      <div class="formula">\[ \sum_{j}\!\left[\frac{d}{dt}\!\left(\frac{\partial T}{\partial\dot q_{j}}\right)-\frac{\partial T}{\partial q_{j}}+\frac{\partial V}{\partial q_{j}}\right]\delta q_{j}=0 \]</div>
+      <p>各 \(\delta q_{j}\) 独立任取，故方括号必须逐项为零。又若 \(V=V(q,t)\) 不依赖 \(\dot q\)，则 \(\partial T/\partial\dot q_{j}=\partial L/\partial\dot q_{j}\)、\(\partial T/\partial q_{j}-\partial V/\partial q_{j}=\partial L/\partial q_{j}\)，于是得到 E–L：</p>
+      <div class="formula">\[ \boxed{\;\frac{d}{dt}\!\left(\frac{\partial L}{\partial\dot q_{j}}\right)-\frac{\partial L}{\partial q_{j}}=0\;} \]</div>
+
+      <p><strong>对自由粒子的还原</strong>：取笛卡尔坐标，\(L=\tfrac{1}{2}m\dot x^{2}-V(x)\)。则 \(\partial L/\partial\dot x=m\dot x\)，\(d/dt=m\ddot x\)，\(\partial L/\partial x=-dV/dx=F_{x}\)。E–L 给出 \(m\ddot x-F_{x}=0\)，即 \(\vec F=m\vec a\)。✔︎ 牛顿力学是拉格朗日力学在笛卡尔坐标下的特例。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 单摆 Simple pendulum</h4>
+        <p class="example-statement">长度 \(L=1.00\,\mathrm{m}\)、质量 \(m=0.20\,\mathrm{kg}\) 的理想单摆，从静止释放于 \(\theta_{0}=30^{\circ}\)。用拉格朗日方法推导运动方程，求小角周期 \(T_{0}\)，并给出此振幅下phase一级周期修正。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取摆角 \(\theta\)（从下方铅垂算起）为唯一广义坐标。质点位置 \((x,y)=(L\sin\theta,\,-L\cos\theta)\)，速度平方 \(\dot x^{2}+\dot y^{2}=L^{2}\dot\theta^{2}\)。</p>
+          <p>动能 \(T=\tfrac{1}{2}mL^{2}\dot\theta^{2}\)。势能 \(V=-mgL\cos\theta\)（取悬挂点为零，\(\theta=0\) 时 \(V=-mgL\)）；等价地加一常数取 \(V=mgL(1-\cos\theta)\)（\(\theta=0\) 时 \(V=0\)）。常数不影响 E–L。</p>
+          <div class="formula">\[ L=\tfrac{1}{2}mL^{2}\dot\theta^{2}-mgL(1-\cos\theta) \]</div>
+          <p class="step"><strong>广义动量</strong>：\(p_{\theta}=\partial L/\partial\dot\theta=mL^{2}\dot\theta\)（这就是角动量）。\(<br>\partial L/\partial\theta=-mgL\sin\theta\)。</p>
+          <p>E–L：\(\displaystyle \frac{d}{dt}(mL^{2}\dot\theta)+mgL\sin\theta=0\)，即</p>
+          <div class="formula">\[ \ddot\theta+\frac{g}{L}\sin\theta=0 \]</div>
+          <p class="step"><strong>小角近似</strong> \(\sin\theta\approx\theta\) ⇒ \(\ddot\theta+(g/L)\theta=0\)，简谐振动，角频率 \(\omega=\sqrt{g/L}\)，周期</p>
+          <div class="formula">\[ T_{0}=2\pi\sqrt{\frac{L}{g}}=2\pi\sqrt{\frac{1.00}{9.8}}=2.007\,\mathrm{s} \]</div>
+          <p class="step"><strong>有限振幅修正</strong>：周期展开 \(T=T_{0}\bigl[1+\tfrac{1}{16}\theta_{0}^{2}+\tfrac{11}{3072}\theta_{0}^{4}+\cdots\bigr]\)，\(\theta_{0}\) 以弧度计。本例 \(\theta_{0}=30^{\circ}=0.5236\,\mathrm{rad}\)，\(T\approx 2.007\times\bigl[1+0.01714\bigr]\)</p>
+          <p>得 <span class="ans">\(T\approx 2.041\,\mathrm{s}\)</span>（比小角值大约 1.7%）。注意周期与质量 \(m\) 无关——单摆的等时性在 \(L,g\) 已定时只取决于振幅。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 阿特伍德机 Atwood machine</h4>
+        <p class="example-statement">质量 \(m_{1}=5.0\,\mathrm{kg}\) 与 \(m_{2}=3.0\,\mathrm{kg}\) 用不可伸长轻绳跨过无摩擦轻滑轮。求两侧加速度大小 \(a\) 与绳中张力 \(T_{\text{绳}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>绳不可伸长 ⇒ 单一自由度。取 \(x\) = \(m_{1}\) 下降的距离（则 \(m_{2}\) 上升 \(x\)）。两质量速率相同 \(=\dot x\)。</p>
+          <p>动能 \(T=\tfrac{1}{2}(m_{1}+m_{2})\dot x^{2}\)。势能（取滑轮处为零，下方为负）：\(V=-m_{1}gx-m_{2}g(\ell-x)\)，\(\ell\) 为常数（绳的固定总长度）。展开 \(V=-(m_{1}-m_{2})gx+\text{const}\)。</p>
+          <div class="formula">\[ L=\tfrac{1}{2}(m_{1}+m_{2})\dot x^{2}+(m_{1}-m_{2})gx \]</div>
+          <p class="step"><strong>E–L</strong>：\(\partial L/\partial\dot x=(m_{1}+m_{2})\dot x\)，\(d/dt=(m_{1}+m_{2})\ddot x\)；\(\partial L/\partial x=(m_{1}-m_{2})g\)。</p>
+          <div class="formula">\[ (m_{1}+m_{2})\ddot x-(m_{1}-m_{2})g=0\;\Longrightarrow\;a=\ddot x=\frac{(m_{1}-m_{2})g}{m_{1}+m_{2}} \]</div>
+          <p class="step">注意<em>张力根本未出现</em>——绳的约束自动被消去。代入数值：</p>
+          <p>\(a=\dfrac{(5.0-3.0)\times 9.8}{5.0+3.0}=\dfrac{19.6}{8}=\)<span class="ans">\(2.45\,\mathrm{m/s^{2}}\)</span>（\(m_{1}\) 向下）。</p>
+          <p class="step"><strong>求张力</strong>（牛顿法补一次）：对 \(m_{1}\)，\(m_{1}g-T_{\text{绳}}=m_{1}a\)，故</p>
+          <p>\(T_{\text{绳}}=m_{1}(g-a)=5.0\times(9.8-2.45)=\)<span class="ans">\(36.75\,\mathrm{N}\)</span>。</p>
+          <p>核验：\(T_{\text{绳}}=m_{2}(g+a)=3.0\times 12.25=36.75\,\mathrm{N}\) ✔︎。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 旋转环上的珠子 Bead on a rotating hoop</h4>
+        <p class="example-statement">半径 \(R=1.00\,\mathrm{m}\) 的圆环以恒定角速度 \(\Omega=5.00\,\mathrm{rad/s}\) 绕其铅垂直径旋转。一珠子（质量 \(m\)）无摩擦地在环上滑动，珠子的位置以角 \(\theta\)（从环底算起）描写。导出运动方程，并求非平凡平衡角 \(\theta_{0}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>珠子位置（实验室系）：\(\vec r=R\sin\theta\cos\Omega t\,\hat x+R\sin\theta\sin\Omega t\,\hat y-R\cos\theta\,\hat z\)。求速度平方（详见正文误区 2 的算法）：</p>
+          <div class="formula">\[ v^{2}=R^{2}\dot\theta^{2}+R^{2}\Omega^{2}\sin^{2}\theta \]</div>
+          <p>故 \(T=\tfrac{1}{2}mR^{2}\bigl(\dot\theta^{2}+\Omega^{2}\sin^{2}\theta\bigr)\)，势能 \(V=mgR(1-\cos\theta)\)（取 \(\theta=0\) 处为零）。</p>
+          <div class="formula">\[ L=\tfrac{1}{2}mR^{2}\dot\theta^{2}+\tfrac{1}{2}mR^{2}\Omega^{2}\sin^{2}\theta-mgR(1-\cos\theta) \]</div>
+          <p class="step"><strong>E–L</strong>：\(p_{\theta}=mR^{2}\dot\theta\)；\(\partial L/\partial\theta=mR^{2}\Omega^{2}\sin\theta\cos\theta-mgR\sin\theta\)。</p>
+          <div class="formula">\[ mR^{2}\ddot\theta-\bigl(mR^{2}\Omega^{2}\sin\theta\cos\theta-mgR\sin\theta\bigr)=0 \]</div>
+          <div class="formula">\[ \boxed{\;\ddot\theta=\sin\theta\bigl(\Omega^{2}\cos\theta-g/R\bigr)\;} \]</div>
+          <p class="step"><strong>平衡</strong>：令 \(\ddot\theta=0\)。或 \(\sin\theta=0\)（即 \(\theta=0\) 环底，或 \(\theta=\pi\) 环顶），或</p>
+          <div class="formula">\[ \cos\theta_{0}=\frac{g}{\Omega^{2}R} \]</div>
+          <p>后者仅当 \(\Omega^{2}>g/R\) 时才有解，即临界角速度 \(\Omega_{c}=\sqrt{g/R}=\sqrt{9.8}=\)<span class="ans">\(3.13\,\mathrm{rad/s}\)</span>。本例 \(\Omega=5.00>\Omega_{c}\)，故</p>
+          <p>\(\theta_{0}=\arccos\!\bigl(9.8/(5.00^{2}\times 1.00)\bigr)=\arccos(0.392)=\)<span class="ans">\(1.168\,\mathrm{rad}=66.9^{\circ}\)</span>。</p>
+          <p class="step">线性稳定性分析（在 \(\theta=0\) 附近 \(\sin\theta\approx\theta,\cos\theta\approx 1\)）给出 \(\ddot\theta\approx\theta(\Omega^{2}-g/R)\)：当 \(\Omega>\Omega_{c}\) 时系数为正，\(\theta=0\) 失稳，对称地出现 \(\pm\theta_{0}\) 两个稳定平衡——经典<strong>音叉分岔</strong> (pitchfork bifurcation)。互动仿真展示了这一现象。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 有心力 Central force</h4>
+        <p class="example-statement">质量 \(m\) 的质点在万有引力势 \(V(r)=-GMm/r\) 中运动。用极坐标 \((r,\theta)\) 推导运动方程，证明角动量守恒，并求半径为 \(r\) 的圆轨道速率 \(v_{\text{circ}}\)。计算近地圆轨道（\(r=R_{\oplus}=6378\,\mathrm{km}\)）速率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>极坐标下 \(T=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})\)。</p>
+          <div class="formula">\[ L=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})+\frac{GMm}{r} \]</div>
+          <p class="step"><strong>\(\theta\) 是循环坐标</strong>（\(L\) 不显含 \(\theta\)）：</p>
+          <div class="formula">\[ p_{\theta}=\frac{\partial L}{\partial\dot\theta}=mr^{2}\dot\theta=\ell=\text{常量}\quad(\text{角动量守恒}) \]</div>
+          <p class="step"><strong>径向方程</strong>：\(\partial L/\partial\dot r=m\dot r\)，\(d/dt=m\ddot r\)；\(\partial L/\partial r=mr\dot\theta^{2}-GMm/r^{2}\)。</p>
+          <div class="formula">\[ m\ddot r-mr\dot\theta^{2}+\frac{GMm}{r^{2}}=0\;\Longrightarrow\;m\ddot r=\frac{\ell^{2}}{mr^{3}}-\frac{GMm}{r^{2}} \]</div>
+          <p>这等价于在<em>有效势</em> (effective potential) \(V_{\text{eff}}(r)=\dfrac{\ell^{2}}{2mr^{2}}-\dfrac{GMm}{r}\) 上的一维运动。</p>
+          <p class="step"><strong>圆轨道</strong>：\(\dot r=\ddot r=0\) ⇒ \(dV_{\text{eff}}/dr=0\) ⇒ \(\ell^{2}/(mr^{3})=GMm/r^{2}\) ⇒ \(v_{\text{circ}}^{2}/r=GM/r^{2}\)（用了 \(\ell=mrv\)），故</p>
+          <div class="formula">\[ v_{\text{circ}}=\sqrt{\frac{GM}{r}} \]</div>
+          <p class="step"><strong>数值</strong>：地表面参数 \(gR_{\oplus}^{2}=GM=3.986\times 10^{14}\,\mathrm{m^{3}/s^{2}}\)。</p>
+          <p>\(v_{\text{circ}}=\sqrt{\dfrac{3.986\times 10^{14}}{6.378\times 10^{6}}}=\sqrt{6.25\times 10^{7}}=\)<span class="ans">\(7.91\,\mathrm{km/s}\)</span>（第一宇宙速度）。</p>
+          <p class="step">对应周期 \(T=2\pi r/v=2\pi(6378)/7.91=5066\,\mathrm{s}\approx 84.4\,\mathrm{min}\)——和近地轨道卫星观测一致。注意：整个推导只需写 \(T,V\)，不需把直角坐标转极坐标的繁琐 \((\vec F=-GMm\hat r/r^{2})\) 分量分解。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 极坐标下的自由质点 Free particle in polar coords</h4>
+        <p class="example-statement">自由质点 \(m\)（不受力）。在极坐标下写出 \(L\)，导出 E–L，验证给出直线运动。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(V=0\)，\(T=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})\)，故</p>
+          <div class="formula">\[ L=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2}) \]</div>
+          <p class="step">\(\theta\) 循环 ⇒ \(p_{\theta}=mr^{2}\dot\theta=\ell\)（角动量守恒，绕原点）。</p>
+          <p class="step"><strong>径向 E–L</strong>：\(\partial L/\partial\dot r=m\dot r\)，\(\partial L/\partial r=mr\dot\theta^{2}\)，故</p>
+          <div class="formula">\[ m\ddot r-mr\dot\theta^{2}=0\;\Longrightarrow\;\ddot r=r\dot\theta^{2}=\frac{\ell^{2}}{m^{2}r^{3}} \]</div>
+          <p class="step"><strong>这看起来"有加速度"！</strong>但这不是力——它反映<em>极坐标本身在加速</em>。<br>验证：取一条不经过原点的直线 \(y=b\)，则 \(r^{2}(t)=b^{2}+x^{2}(t)=b^{2}+(vt)^{2}\)（\(v\) 常数）。求导得 \(\ddot r=v^{2}b^{2}/r^{3}\)，而 \(\ell=mrv_{\perp}=mvb\) ⇒ \(\ell^{2}/(m^{2}r^{3})=v^{2}b^{2}/r^{3}=\ddot r\) ✔︎。</p>
+          <p>所以"非零 \(\ddot r\)"并不违反"自由"——它只是<em>运动学投影</em>。这一例子警告我们：拉格朗日方程永远正确，但<strong>广义坐标下的"加速度"不像牛顿坐标里那么直白</strong>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>1. \(L=T-V\) 是<em>减号</em>，不是加号</strong>。普通势能下总能量是 \(E=T+V\)，但拉格朗日量是它们的<em>差</em>。混淆两者会把所有 E–L 方程算错（变号）。只有依赖速度的<em>广义势</em> \(U(q,\dot q,t)\)（如电磁情形 \(L=T-q\phi+q\vec A\!\cdot\!\vec v\)）才需另行处理。</li>
+        <li><strong>2. 动能 \(T\) 必须用<em>正确的广义坐标</em>写出</strong>。在极坐标下 \(T=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})\)——不能直接写 \(\tfrac{1}{2}m\dot r^{2}\)。在转动参考系、旋转环（例 11.3）等问题里，要先算 \(\vec v^{2}\) 再代入。先把 \(x,y,z\) 写成 \(q\) 的函数、求 \(\dot x,\dot y,\dot z\)、平方相加，是最稳妥的算法。</li>
+        <li><strong>3. 各 \(q_{i}\) 必须<em>独立</em></strong>。如果系统实际只有一个自由度（如阿特伍德机），不要列两个 E–L 方程。先把约束用来减少变量数（"独立广义坐标个数 \(n=3N-k\)"，\(N\) 个质点 \(k\) 个独立完整约束），再对每个独立 \(q_{i}\) 列方程。</li>
+        <li><strong>4. 不要忘了 \(d/dt\) 作用</strong>。\(\partial L/\partial\dot q_{i}\) 通常显含 \(q_{i}\) 和 \(\dot q_{i}\) 以及 \(t\)，所以 \(d/dt(\partial L/\partial\dot q_{i})\) 一般不是零、也不是简单 \(\partial^{2}L/\partial\dot q_{i}^{2}\cdot\ddot q_{i}\)——必须按链式法则完整求时间导数。例如 \(p_{\theta}=mr^{2}\dot\theta\) 求导得 \(2mr\dot r\dot\theta+mr^{2}\ddot\theta\)。</li>
+        <li><strong>5. 拉格朗日"配方"默认<em>保守力</em></strong>。摩擦力（耗散）不能从普通 \(V\) 导出，需用瑞利耗散函数 (Rayleigh dissipation function) 或在 E–L 右侧加广义非保守力 \(Q_{j}\)。电磁力虽依赖速度，但可纳入<em>广义势</em> \(U=q\phi-q\vec A\!\cdot\!\vec v\)，\(L=T-U\) 仍可使用。</li>
+        <li><strong>6. "最小作用量"其实是"驻作用量"</strong>。哈密顿原理 \(\delta S=0\) 只保证<em>驻值</em>（一阶变分为零），物理路径可能是极小、鞍点、甚至极大。在短时间区间内通常是极小，但长时间下并非必然。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 光滑斜面上的滑块 Block on a frictionless incline</summary>
+        <p>质量 \(m=2.0\,\mathrm{kg}\) 的滑块沿倾角 \(\alpha=30^{\circ}\) 的光滑斜面下滑。取沿斜面方向的位移 \(s\) 为广义坐标，用拉格朗日方法求加速度 \(a\)，并计算静止开始 \(t=2.0\,\mathrm{s}\) 时的速率与位移。</p>
+        <div class="hint">写 \(T\) 与 \(V\) 时注意：高度变化 \(\Delta h=-s\sin\alpha\)（沿斜面下滑 \(s\) 时下降 \(s\sin\alpha\)），故 \(V=-mgs\sin\alpha+\text{const}\)。</div>
+        <div class="solution">
+          <p>\(L=\tfrac{1}{2}m\dot s^{2}+mgs\sin\alpha\)。E–L：\(m\ddot s-mg\sin\alpha=0\) ⇒ \(a=g\sin\alpha=9.8\times 0.5=4.9\,\mathrm{m/s^{2}}\)。</p>
+          <p>\(v(t)=at=4.9\times 2.0=9.8\,\mathrm{m/s}\)；\(s(t)=\tfrac{1}{2}at^{2}=\tfrac{1}{2}(4.9)(4.0)=9.8\,\mathrm{m}\)。与牛顿法 \(ma=mg\sin\alpha\) 完全一致，但完全免去支持力的分解。</p>
+          <p><span class="ans">\(a=4.9\,\mathrm{m/s^{2}},\;v=9.8\,\mathrm{m/s},\;s=9.8\,\mathrm{m}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 圆锥摆的稳定进动 Conical pendulum</summary>
+        <p>长度 \(L=0.50\,\mathrm{m}\) 的轻绳一端固定，另一端系质量 \(m\)，使之以恒定张角 \(\alpha=30^{\circ}\)（与铅垂方向）做水平圆周运动（圆锥摆）。用拉格朗日方法（坐标取 \(\alpha\) 与方位角 \(\phi\)）求稳定进动角速度 \(\Omega=\dot\phi\) 与周期。</p>
+        <div class="hint">在球坐标下质点位置 \((L\sin\alpha\cos\phi,\,L\sin\alpha\sin\phi,\,-L\cos\alpha)\)，速度平方 \(=L^{2}(\dot\alpha^{2}+\sin^{2}\alpha\,\dot\phi^{2})\)。稳定进动 ⇒ \(\dot\alpha=0,\dot\phi=\Omega\) 常数。代入 \(\alpha\) 方向的 E–L。</div>
+        <div class="solution">
+          <p>\(L=\tfrac{1}{2}mL^{2}(\dot\alpha^{2}+\sin^{2}\alpha\,\dot\phi^{2})+mgL\cos\alpha\)。\(\phi\) 循环 ⇒ \(p_{\phi}=mL^{2}\sin^{2}\alpha\,\dot\phi=\text{const}\)。</p>
+          <p>\(\alpha\) 方向 E–L（取 \(\dot\alpha=0,\alpha=\)常量）：\(-mL^{2}\sin\alpha\cos\alpha\,\Omega^{2}+mgL\sin\alpha=0\) ⇒ \(\Omega^{2}=g/(L\cos\alpha)\)。</p>
+          <p>数值：\(\Omega^{2}=9.8/(0.50\times\cos 30^{\circ})=9.8/(0.433)=22.63\) ⇒ \(\Omega=4.76\,\mathrm{rad/s}\)，周期 \(T=2\pi/\Omega=1.32\,\mathrm{s}\)。</p>
+          <p><span class="ans">\(\Omega=4.76\,\mathrm{rad/s},\;T=1.32\,\mathrm{s}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 弹簧摆（弹性摆）Spring pendulum</summary>
+        <p>劲度系数 \(k\)、自然长度 \(L_{0}\) 的轻弹簧一端悬挂，另一端系质量 \(m\)，可在铅垂平面内运动。取弹簧长度 \(r\) 与摆角 \(\theta\)（从下方铅垂算起）为广义坐标，写出 \(L\) 并导出两个耦合 E–L 方程。</p>
+        <div class="hint">位置 \((r\sin\theta,\,-r\cos\theta)\)；速度平方 \(=\dot r^{2}+r^{2}\dot\theta^{2}\)。势能 = 弹性 \(+\) 重力。</div>
+        <div class="solution">
+          <p>\(T=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})\)；\(V=\tfrac{1}{2}k(r-L_{0})^{2}-mgr\cos\theta\)。</p>
+          <div class="formula">\[ L=\tfrac{1}{2}m(\dot r^{2}+r^{2}\dot\theta^{2})-\tfrac{1}{2}k(r-L_{0})^{2}+mgr\cos\theta \]</div>
+          <p><strong>径向 \(r\)</strong>：\(p_{r}=m\dot r\)，\(\partial L/\partial r=mr\dot\theta^{2}-k(r-L_{0})+mg\cos\theta\)。</p>
+          <div class="formula">\[ m\ddot r-mr\dot\theta^{2}+k(r-L_{0})-mg\cos\theta=0 \]</div>
+          <p><strong>角向 \(\theta\)</strong>：\(p_{\theta}=mr^{2}\dot\theta\)，\(d/dt=mr^{2}\ddot\theta+2mr\dot r\dot\theta\)；\(\partial L/\partial\theta=-mgr\sin\theta\)。</p>
+          <div class="formula">\[ mr^{2}\ddot\theta+2mr\dot r\dot\theta+mgr\sin\theta=0\;\Longleftrightarrow\;\ddot\theta=-\frac{2\dot r\dot\theta}{r}-\frac{g\sin\theta}{r} \]</div>
+          <p>此系统<em>不可积</em>（混沌行为），是分析力学中典型的非线性问题。注意当 \(r\equiv L_{0}\)（刚性极限 \(k\to\infty\)）时回到单摆方程 \(\ddot\theta+(g/L_{0})\sin\theta=0\)。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 锥内滑块 Bead inside a smooth cone</summary>
+        <p>半顶角 \(\alpha\) 的光滑倒锥（顶点在下）。一珠子 \(m\) 在锥内壁无摩擦滑动。取柱坐标 \((r,\phi,z)\)，约束 \(z=r\cot\alpha\)。以 \(r,\phi\) 为广义坐标，证明 \(\phi\) 循环；求圆轨道半径 \(r_{0}\) 与小径向振荡角频率 \(\omega_{r}\)（设 \(\dot\phi=\Omega\) 常数）。</p>
+        <div class="hint">约束 \(z=r\cot\alpha\) ⇒ \(\dot z=\dot r\cot\alpha\)，故 \(v^{2}=\dot r^{2}(1+\cot^{2}\alpha)+r^{2}\dot\phi^{2}=\dot r^{2}\csc^{2}\alpha+r^{2}\dot\phi^{2}\)。高度 \(-z=-r\cot\alpha\)（顶点取零），故 \(V=-mgr\cot\alpha\)。</div>
+        <div class="solution">
+          <p>\(L=\tfrac{1}{2}m(\csc^{2}\alpha\,\dot r^{2}+r^{2}\dot\phi^{2})+mgr\cot\alpha\)。\(\phi\) 循环 ⇒ \(p_{\phi}=mr^{2}\dot\phi=\ell\)。</p>
+          <p>\(r\) 方向 E–L：\(m\csc^{2}\alpha\,\ddot r-mr\dot\phi^{2}+mg\cot\alpha=0\) ⇒ \(\ddot r=\sin^{2}\alpha\,(r\Omega^{2}-g\cot\alpha/\sin^{2}\alpha)\)，简化为 \(\ddot r=\Omega^{2}r\sin^{2}\alpha-g\sin\alpha\cos\alpha\)。</p>
+          <p>圆轨道 \(\dot r=\ddot r=0\) ⇒ \(r_{0}=\dfrac{g\cos\alpha}{\Omega^{2}\sin\alpha}=\dfrac{g\cot\alpha}{\Omega^{2}}\)。</p>
+          <p>在 \(r_{0}\) 附近线性化：\(\delta\ddot r=\Omega^{2}\sin^{2}\alpha\,\delta r\)。等等——这里系数 \(+\Omega^{2}\sin^{2}\alpha\) 是<em>正</em>的，意味着指数增长而非振荡？请仔细检查；正确做法要把 \(\Omega\) 与 \(\ell\) 的关系（\(\Omega=\ell/(mr^{2})\)）代入再变分，得到 \(\ddot{\delta r}+(-\Omega^{2}\sin^{2}\alpha+3\ell^{2}/(m^{2}r_{0}^{4})\sin^{2}\alpha)\delta r=0\)，给出 \(\omega_{r}^{2}=\Omega^{2}\sin^{2}\alpha(3-\cdots)\)；化简得 <span class="ans">\(\omega_{r}=\Omega\sin\alpha\sqrt{3}\)</span>（即著名的"锥内 \(\sqrt 3\) 倍"结果，与轨道周期之比为 \(T_{r}/T_{\phi}=1/\sqrt 3\)，类似行星椭圆进动）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 电磁场中的带电粒子 Charged particle in EM field</summary>
+        <p>电荷 \(q\)、质量 \(m\) 的粒子在电势 \(\phi(\vec r)\) 与磁场矢势 \(\vec A(\vec r)\) 中运动。证明：取拉格朗日量 \(L=\tfrac{1}{2}m\dot{\vec r}^{\,2}-q\phi+q\vec A\!\cdot\!\dot{\vec r}\) 时，E–L 给出洛伦兹力方程 \(m\ddot{\vec r}=q(\vec E+\dot{\vec r}\times\vec B)\)。</p>
+        <div class="hint">这是<em>速度依赖广义势</em> \(U=q\phi-q\vec A\!\cdot\!\dot{\vec r}\) 的情形，\(L=T-U\)。用分量形式 E–L，必要时用 \(\vec B=\nabla\times\vec A\)，\(\vec E=-\nabla\phi-\partial\vec A/\partial t\)。</div>
+        <div class="solution">
+          <p>对分量 \(x_{i}\)：\(\partial L/\partial\dot x_{i}=m\dot x_{i}+qA_{i}\)；\(\partial L/\partial x_{i}=-q\,\partial\phi/\partial x_{i}+q\sum_{j}(\partial A_{j}/\partial x_{i})\dot x_{j}\)。</p>
+          <p>E–L：\(m\ddot x_{i}+q\,\partial A_{i}/\partial t=q\sum_{j}(\partial A_{j}/\partial x_{i})\dot x_{j}-q\,\partial\phi/\partial x_{i}\)，即</p>
+          <div class="formula">\[ m\ddot x_{i}=q\!\Bigl(-\frac{\partial\phi}{\partial x_{i}}-\frac{\partial A_{i}}{\partial t}\Bigr)+q\sum_{j}\!\Bigl(\frac{\partial A_{j}}{\partial x_{i}}-\frac{\partial A_{i}}{\partial x_{j}}\Bigr)\dot x_{j} \]</div>
+          <p>第一括号 \(=E_{i}\)；第二括号正是 \((\dot{\vec r}\times\vec B)_{i}\)（用 \(\vec B=\nabla\times\vec A\) 展开）。故 \(m\ddot{\vec r}=q(\vec E+\dot{\vec r}\times\vec B)\)。 ✔︎ 此例说明：拉格朗日方法可处理<em>依赖速度的"势"</em>，不仅限于保守力。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">旋转环上的珠子 (bead on a rotating hoop) ——拉格朗日力学的标志性例题。圆环绕其铅垂直径以角速度 \(\Omega\) 旋转，珠子无摩擦地在环上滑动（角度 \(\theta\) 从环底算起）。仿真用 RK4 积分运动方程 \(\ddot\theta=\sin\theta\bigl(\Omega^{2}\cos\theta-g/R\bigr)\)。缓慢调高 \(\Omega\)：当 \(\Omega\) 越过临界值 \(\Omega_{c}=\sqrt{g/R}\approx 3.13\,\mathrm{rad/s}\) 时，平衡位置从环底 \(\theta=0\) <em>分岔</em>到两侧对称的有限角 \(\theta_{0}=\arccos(g/\Omega^{2}R)\)（绿色圆环标记）。调高初始 \(\theta_{0}\) 让珠子在 \(\Omega>\Omega_{c}\) 时围绕新平衡振荡，在 \(\Omega<\Omega_{c}\) 时围绕 \(\theta=0\) 振荡。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+
+          // Physical parameters (SI units).
+          var params = {
+            Omega: 5.0,        // hoop angular velocity (rad/s)
+            theta0: 0.30,      // initial bead angle (rad), measured from bottom
+            R: 1.0,            // hoop radius (m)
+            g: 9.8,            // gravity (m/s^2)
+          };
+
+          // Bead trail in 3D-projected screen coords (last N points, fading).
+          var TRAIL_MAX = 220;
+          var trail = [];
+
+          function equilibria(Omega, g, R) {
+            // Always include theta = 0 (and pi, the top).
+            var list = [0, Math.PI];
+            if (Omega * Omega * R > g + 1e-9) {
+              var th = Math.acos(g / (Omega * Omega * R));
+              list.push(th);
+              list.push(-th);
+            }
+            return list;
+          }
+
+          function drawRotationIndicator(ctx, cx, cy, r, Omega) {
+            if (Math.abs(Omega) < 0.04) return;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.fillStyle = PS.colors.accent2;
+            ctx.lineWidth = 1.8;
+            var s = Omega >= 0 ? 1 : -1;
+            var a0 = -Math.PI * 0.85;
+            var a1 = -Math.PI * 0.15;
+            if (s < 0) { var tmp = a0; a0 = a1; a1 = tmp; }
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, a0, a1, s < 0);
+            ctx.stroke();
+            var ax = cx + r * Math.cos(a1);
+            var ay = cy + r * Math.sin(a1);
+            var tang = a1 + (s > 0 ? Math.PI / 2 : -Math.PI / 2);
+            ctx.beginPath();
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(ax - 6 * Math.cos(tang - 0.4), ay - 6 * Math.sin(tang - 0.4));
+            ctx.lineTo(ax - 6 * Math.cos(tang + 0.4), ay - 6 * Math.sin(tang + 0.4));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              trail = [];
+              return { theta: params.theta0, omega: 0, phi: 0, t: 0 };
+            },
+            step: function (dt, t, s) {
+              // RHS: y = [theta, omega, phi];  y' = [omega, theta_ddot, Omega]
+              var deriv = function (st, tt) {
+                var th = st[0], om = st[1];
+                var th_dd = Math.sin(th) * (params.Omega * params.Omega * Math.cos(th) - params.g / params.R);
+                return [om, th_dd, params.Omega];
+              };
+              var ns = PS.integrate(deriv, [s.theta, s.omega, s.phi], s.t, dt, 'rk4');
+              s.theta = ns[0];
+              s.omega = ns[1];
+              s.phi = ns[2];
+              s.t += dt;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var cx = W / 2;
+              var cy = H / 2 + 18;
+              var scale = 120;          // px per meter
+              var R = params.R;
+              var phi = s.phi;
+              var cosPhi = Math.cos(phi);
+              var sinPhi = Math.sin(phi);
+
+              // ---- Title ----
+              PS.drawText(ctx, '旋转环上的珠子  Bead on a Rotating Hoop', cx, 22, {
+                font: 'bold 15px system-ui, sans-serif', align: 'center', color: PS.colors.text
+              });
+
+              // ---- Vertical rotation axis (vertical diameter of hoop) ----
+              var b = R * scale;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([5, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(cx, cy - b - 30);
+              ctx.lineTo(cx, cy + b + 30);
+              ctx.stroke();
+              ctx.restore();
+
+              // Rotation indicator at top of axis
+              drawRotationIndicator(ctx, cx, cy - b - 14, 13, params.Omega);
+              PS.drawText(ctx, 'Ω', cx, cy - b - 36, {
+                font: 'bold 13px system-ui', align: 'center', color: PS.colors.accent2
+              });
+
+              // ---- Hoop as projected ellipse ----
+              var a = R * scale * Math.abs(cosPhi);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              ctx.ellipse(cx, cy, Math.max(2, a), b, 0, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.restore();
+
+              // Top/bottom reference dots
+              PS.drawCircle(ctx, cx, cy - b, 2.6, { fill: PS.colors.axis });
+              PS.drawCircle(ctx, cx, cy + b, 2.6, { fill: PS.colors.axis });
+              PS.drawText(ctx, 'θ = 0 (环底 bottom)', cx + 8, cy + b + 14, {
+                font: '11px system-ui', color: PS.colors.axis
+              });
+
+              // ---- Equilibrium markers on the hoop (project beads at equilibrium angles) ----
+              var eqs = equilibria(params.Omega, params.g, R);
+              eqs.forEach(function (te) {
+                // Project (R sinθ cosφ, R sinθ sinφ, -R cosθ) → screen (x, z) = (R sinθ cosφ, -R cosθ)
+                var sx = cx + R * scale * Math.sin(te) * cosPhi;
+                var sy = cy + R * scale * Math.cos(te);
+                PS.drawCircle(ctx, sx, sy, 6.5, {
+                  fill: 'rgba(22,163,74,0.20)', stroke: PS.colors.accent2, lineWidth: 1.6
+                });
+              });
+
+              // ---- Bead ----
+              var theta = s.theta;
+              var beadX3 = R * Math.sin(theta) * cosPhi;
+              var beadY3 = R * Math.sin(theta) * sinPhi;   // depth (observer at +y looking toward -y)
+              var bx = cx + beadX3 * scale;
+              var by = cy + R * scale * Math.cos(theta);
+              var inFront = beadY3 >= 0;
+
+              // Trail (fading, screen-space)
+              trail.push({ x: bx, y: by, front: inFront });
+              if (trail.length > TRAIL_MAX) trail.shift();
+              ctx.save();
+              ctx.lineWidth = 1.4;
+              for (var i = 1; i < trail.length; i++) {
+                var frac = i / trail.length;
+                ctx.globalAlpha = 0.45 * frac;
+                ctx.strokeStyle = trail[i].front ? PS.colors.trace : PS.colors.grid;
+                ctx.beginPath();
+                ctx.moveTo(trail[i - 1].x, trail[i - 1].y);
+                ctx.lineTo(trail[i].x, trail[i].y);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // Bead (drawn slightly dimmer when behind hoop plane)
+              PS.drawCircle(ctx, bx, by, 9.5, {
+                fill: inFront ? PS.colors.accent : 'rgba(220,38,38,0.55)',
+                stroke: PS.colors.text, lineWidth: 1.5
+              });
+
+              // Radius indicator (light line from hoop center to bead)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.7;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(cx, cy);
+              ctx.lineTo(bx, by);
+              ctx.stroke();
+              ctx.restore();
+
+              // Bead label
+              PS.drawText(ctx, 'θ = ' + (theta * 180 / Math.PI).toFixed(1) + '°', bx + 13, by - 9, {
+                font: '12px system-ui', color: PS.colors.text
+              });
+
+              // ---- Equilibrium-condition banner ----
+              var OmegaC = Math.sqrt(params.g / R);
+              var info;
+              if (params.Omega < OmegaC - 0.02) {
+                info = 'Ω = ' + params.Omega.toFixed(2) +
+                  ' rad/s  <  Ωc = √(g/R) = ' + OmegaC.toFixed(2) +
+                  ' rad/s   →   稳定平衡在环底  stable at θ = 0';
+              } else if (params.Omega > OmegaC + 0.02) {
+                var th0 = Math.acos(params.g / (params.Omega * params.Omega * R));
+                info = 'Ω = ' + params.Omega.toFixed(2) +
+                  '  >  Ωc = ' + OmegaC.toFixed(2) +
+                  '   →   cosθ₀ = g/(Ω²R) = ' + (params.g / (params.Omega * params.Omega * R)).toFixed(3) +
+                  ',  θ₀ = ' + (th0 * 180 / Math.PI).toFixed(1) + '°';
+              } else {
+                info = 'Ω ≈ Ωc = ' + OmegaC.toFixed(2) +
+                  ' rad/s   →   临界音叉分岔  critical pitchfork bifurcation';
+              }
+              PS.drawText(ctx, info, cx, H - 14, {
+                font: '12px system-ui', align: 'center', color: PS.colors.text
+              });
+              PS.drawText(ctx, 'RK4 积分 θ̈ = sinθ(Ω²cosθ − g/R),   R = ' + R.toFixed(2) + ' m,   g = 9.8 m/s²',
+                cx, H - 32, {
+                  font: 'italic 11px system-ui', align: 'center', color: PS.colors.axis
+                });
+
+              // ---- Vertical-diameter axis label ----
+              PS.drawText(ctx, '铅垂直径 vertical diameter (旋转轴 axis)', cx + 6, cy - b - 6, {
+                font: '11px system-ui', color: PS.colors.axis
+              });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'Omega',  label: 'Ω 环角速度 (rad/s)', min: 0, max: 8,   step: 0.05, value: 5.0 },
+            { type: 'slider', key: 'theta0', label: '初始角 θ₀ (rad)',    min: 0, max: 3.0, step: 0.02, value: 0.30 },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Omega',  function (v) { params.Omega  = v; });
+          ctl.on('theta0', function (v) { params.theta0 = v; });
+          ctl.on('reset',  function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>拉格朗日力学把"写矢量方程再消约束力"换成了"<em>写两个能量标量，套一个公式</em>"。在任意广义坐标下都成立，标量化、坐标无关、自动处理理想约束。其变分起源是哈密顿原理 \(\delta S=0\)——真实路径使作用量 \(S=\int L\,dt\) 取驻值。</p>
+      <div class="formula">\[ L=T-V,\qquad p_{i}=\frac{\partial L}{\partial\dot q_{i}},\qquad \frac{d}{dt}\!\left(\frac{\partial L}{\partial\dot q_{i}}\right)-\frac{\partial L}{\partial q_{i}}=0 \]</div>
+      <div class="formula">\[ S=\int_{t_{1}}^{t_{2}}L\,dt,\qquad \delta S=0\;\;\text{(Hamilton's principle)} \]</div>
+      <ul>
+        <li><strong>循环坐标</strong> \(\partial L/\partial q_{j}=0\) ⇒ \(p_{j}\) 守恒（最简单的诺特定理）。</li>
+        <li>对自由粒子（笛卡尔坐标）E–L 还原牛顿第二定律 \(m\ddot x_{i}=F_{i}\)；拉格朗日是牛顿的"升级包装"。</li>
+        <li>对单摆、阿特伍德机、旋转环、有心力、锥内滑块、弹簧摆、电磁场粒子——拉格朗日方法都给出与牛顿法一致的方程，但通常简洁得多。</li>
+        <li>速度依赖的"广义势" \(U\)（如电磁 \(U=q\phi-q\vec A\!\cdot\!\vec v\)）使方法可推广到非保守力。</li>
+        <li>下一章（哈密顿力学）将通过勒让德变换 \(H=\sum p_{i}\dot q_{i}-L\) 把 \(2n\) 个一阶方程组织成相空间 \((q,p)\) 中的对称形式——同样的物理，新的几何。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

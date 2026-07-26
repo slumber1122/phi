@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 约束、广义坐标与虚功 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 10 · 第10章 · 第二部分 分析力学 Part II Analytical Mechanics</p>
+      <h1>约束、广义坐标与虚功 <span class="en-title">Constraints, Generalized Coordinates &amp; Virtual Work</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>说明为何牛顿矢量力学在处理受约束系统 (constrained systems) 时会变得笨拙，并指出标量化、坐标无关的分析方法 (analytical mechanics) 的动机。</li>
+        <li>对约束 (constraint) 进行分类：完整 (holonomic) 与非完整 (non-holonomic)、定常 (scleronomic) 与非定常 (rheonomic)，并能判断给定物理系统属于哪一类。</li>
+        <li>对 \(N\) 个质点、\(k\) 个<strong>独立</strong>完整约束的系统，运用 \(\;\mathrm{DOF}=3N-k\;\) 计算自由度 (degrees of freedom)。</li>
+        <li>为给定系统选取一组独立且完备的广义坐标 (generalized coordinates) \(q_i\)，并理解位形空间 (configuration space) 的概念。</li>
+        <li>定义虚位移 (virtual displacement) \(\delta\vec r\)，强调 \(\delta t=0\)，并与实位移 \(d\vec r\) 严格区分。</li>
+        <li>陈述理想约束 (ideal constraints) 下静力学虚功原理 (principle of virtual work) \(\Sigma\vec F\cdot\delta\vec r=0\)，并用以求解平衡问题。</li>
+        <li>陈述达朗贝尔原理 (D'Alembert's principle) \(\sum_i(\vec F_i-m_i\vec a_i)\cdot\delta\vec r_i=0\)，并理解它为何把约束力“自动消去”，为下一章拉格朗日方程 (Lagrange's equations) 奠基。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 动机：为什么要超越牛顿矢量力学？ Motivation</h3>
+      <p>对于带<strong>约束</strong>的系统——珠子穿在铁丝上、摆锤由轻杆悬挂、轮子在地面纯滚动、刚体由铰链连接——牛顿第二定律 \(\vec F=m\vec a\) 会立刻遇到两个困难：</p>
+      <ul>
+        <li><strong>约束力未知。</strong> 绳的张力、铁丝的法向力、铰链的反力都是未知的事后量。要对每个粒子写 \(\vec F=m\vec a\)，必须连同这些约束力一起求解，方程数膨胀。</li>
+        <li><strong>坐标耦合。</strong> 笛卡尔坐标 \((x,y,z)\) 之间被约束方程联立，加速度不再是独立的；矢量方程要投影到约束允许的方向上才有效。</li>
+      </ul>
+      <p>分析力学 (analytical mechanics) 的策略是：把动力学写成<strong>标量</strong>（功、能）形式，并<strong>挑选一组天生满足约束的独立坐标</strong>，让约束力从一开始就不出现。本章铺设这套方法的地基——约束、广义坐标、虚位移、虚功，并以达朗贝尔原理作为通往拉格朗日方程的桥梁。</p>
+
+      <h3>2. 约束及其分类 Constraints and Their Classification</h3>
+      <p>所谓<strong>约束</strong> (constraint)，是对系统位形（位置）或速度预先施加的几何或运动学限制。形式上用约束方程描述。设系统由 \(N\) 个质点组成，位形为 \(\vec r_1,\vec r_2,\dots,\vec r_N\)。</p>
+
+      <p><strong>(a) 完整约束 (holonomic constraint)：</strong> 可写成只含坐标与时间的方程</p>
+      <div class="formula">\[ f(\vec r_1,\vec r_2,\dots,\vec r_N,\,t)=0 \]</div>
+      <p>典型例子：珠子穿在固定铁丝上（曲线方程）；刚杆两端距离恒定 \(\,|\vec r_1-\vec r_2|=L\,\)；质点被限制在曲面 \(g(\vec r,t)=0\) 上滑动。</p>
+
+      <p><strong>(b) 非完整约束 (non-holonomic constraint)：</strong> 一切<strong>不能</strong>写成上述完整形式的约束，包括：</p>
+      <ul>
+        <li><em>不等式</em>：如质点被关在容器内 \(x^2+y^2+z^2\le R^2\)（带壁容器）；</li>
+        <li><em>不可积的微分约束</em>：如圆盘在平面上纯滚动 \(\,dx-R\,d\varphi=0\,\)（无法积分为只含坐标的关系）；</li>
+        <li><em>涉及速度的方程</em>：如某些黏性约束。</li>
+      </ul>
+
+      <p><strong>(c) 定常 / 非定常 (scleronomic / rheonomic)：</strong> 若约束方程<strong>不明显</strong>含时间 \(t\)，称为<strong>定常</strong>（如固定的铁丝）；否则称为<strong>非定常</strong>（如外部以已知方式驱动运动的铁丝、铰链被强迫转动）。</p>
+      <div class="note">区分这两类的关键物理后果：定常完整约束下，约束力的<strong>实</strong>功可以为零（机械能守恒）；非定常约束下，即便“理想”约束也会对系统做实功、改变机械能——但<strong>虚</strong>功仍然为零（因为虚位移固定时间）。</div>
+
+      <h3>3. 自由度 Degrees of Freedom</h3>
+      <p>系统的<strong>自由度</strong> (number of degrees of freedom, DOF) 等于<strong>独立描述其位形所需的最少坐标数</strong>。对 \(N\) 个质点（共 \(3N\) 个笛卡尔坐标），若存在 \(k\) 个<strong>独立</strong>的完整约束，则</p>
+      <div class="formula">\[ \boxed{\;\mathrm{DOF} \;=\; 3N-k\;} \]</div>
+      <p>注意两个要点：（i）约束必须<strong>独立</strong>——若一个约束可由其它约束代数推出，则不计入；（ii）该公式仅适用于完整约束；非完整约束不减少位形空间的维数（但仍限制可达的速度）。</p>
+      <p>例：单个自由质点 \(N=1,k=0\)：DOF = 3；珠子穿在曲线上（两个独立约束 \(f_1=0,f_2=0\)）：DOF = 1；质点被限制在曲面上（一个约束）：DOF = 2；双摆（两质点、两刚杆，平面运动 \(2N=4\)、两约束）：DOF = 2。</p>
+
+      <h3>4. 广义坐标与位形空间 Generalized Coordinates &amp; Configuration Space</h3>
+      <p><strong>广义坐标</strong> (generalized coordinates) \(q_1,q_2,\dots,q_n\)（\(n=\mathrm{DOF}\)）是<strong>任意一组能唯一确定系统位形、且彼此独立的参数</strong>。它们不必是长度，可以是角度、面积、甚至抽象量；不必正交；只要 \(n\) 个就能完备描述位形即可。</p>
+      <p>一旦选定，每个粒子的笛卡尔位置就是 \(q_i\) 与时间 \(t\) 的函数：</p>
+      <div class="formula">\[ \vec r_\alpha = \vec r_\alpha(q_1,q_2,\dots,q_n,\,t), \qquad \alpha=1,\dots,N \]</div>
+      <p>这组方程自动满足所有完整约束（因为 \(q_i\) 已经“吸收”了约束）。所有合法位形的集合构成<strong>位形空间</strong> (configuration space)，是一个 \(n\) 维流形；动力学在此空间中表现为一条轨迹 \(q_i(t)\)。</p>
+      <div class="note">广义坐标的选取不唯一。例如平面单摆可选弧长 \(s=L\theta\)，也可选角度 \(\theta\)；但二者一一对应。灵活选取能让动能、势能的表达式大大简化——这是下一章拉格朗日方法的核心技巧。</div>
+
+      <h3>5. 虚位移 \(\delta\vec r\) Virtual Displacement</h3>
+      <p><strong>虚位移</strong> (virtual displacement) \(\delta\vec r_\alpha\) 是<strong>想象中的、无穷小的、与瞬时约束相容的</strong>位置变化，且在<strong>固定时刻</strong>进行：</p>
+      <div class="formula">\[ \delta t \;=\; 0, \qquad \sum_\alpha \frac{\partial f}{\partial \vec r_\alpha}\cdot\delta\vec r_\alpha = 0 \;\;\text{(对每个完整约束)} \]</div>
+      <p>对比<strong>实位移</strong> \(d\vec r\)：它是粒子在时间 \(dt\) 内<strong>实际经历</strong>的位移，\(dt\ne 0\)。对<strong>非定常</strong>约束两者迥然不同：珠子在被动转动的铁丝上，\(d\vec r\) 包含铁丝本身运动带来的牵连分量，而 \(\delta\vec r\) 只在“冻结”铁丝位置后取。</p>
+      <p>符号 \(\delta\) 而非 \(d\)，正是为了强调<strong>与时间无关的变分</strong>含义——这一思想在变分原理 (variational principles) 与下一章拉格朗日方程中反复出现。</p>
+
+      <h3>6. 虚功与理想约束 Virtual Work; Ideal Constraints</h3>
+      <p>所有力（外力与约束力）对虚位移所作的功称<strong>虚功</strong> (virtual work)：</p>
+      <div class="formula">\[ \delta W \;=\; \sum_\alpha \vec F_\alpha\cdot\delta\vec r_\alpha \]</div>
+      <p>把力分为<strong>主动力</strong> (applied forces) \(\vec F_\alpha^{(a)}\)（重力、电磁力、弹簧等已知外力）与<strong>约束力</strong> (constraint forces) \(\vec f_\alpha\)（绳张力、法向力、铰链反力）。若约束是<strong>理想</strong>的 (ideal)，则所有约束力的<strong>总虚功为零</strong>：</p>
+      <div class="formula">\[ \boxed{\;\sum_\alpha \vec f_\alpha\cdot\delta\vec r_\alpha \;=\; 0\;} \qquad \text{(理想约束)} \]</div>
+      <p>典型理想约束：光滑曲面（\(\vec f\parallel\nabla f\) 与 \(\delta\vec r\) 均在切平面）、刚性细杆（成对内力沿杆，两端的相对虚位移垂直于杆）、不可伸长轻绳。摩擦存在时一般不再理想（摩擦力沿虚位移方向作负功）。</p>
+      <p>静力学中 \(\vec a_\alpha=\vec 0\)，由 \(\Sigma\vec F=\vec 0\) 得 \(\sum_\alpha(\vec F_\alpha^{(a)}+\vec f_\alpha)\cdot\delta\vec r_\alpha=0\)；利用理想约束条件，便得到<strong>虚功原理</strong>：</p>
+      <div class="formula">\[ \boxed{\;\sum_\alpha \vec F_\alpha^{(a)}\cdot\delta\vec r_\alpha \;=\; 0\;} \qquad \text{(平衡的充要条件)} \]</div>
+      <p>因为约束力被自动消除，我们只需考虑主动力——这是虚功原理胜过牛顿方程的关键优势。</p>
+
+      <h3>7. 达朗贝尔原理 D'Alembert's Principle</h3>
+      <p>把虚功原理从静力学推广到动力学的方法由达朗贝尔 (d'Alembert) 给出。引入<strong>惯性力</strong> \(-m_\alpha\vec a_\alpha\)，把牛顿方程改写为 \(\vec F_\alpha^{(a)}+\vec f_\alpha-m_\alpha\vec a_\alpha=\vec 0\)（“动态平衡”）。两端点乘 \(\delta\vec r_\alpha\) 求和，并应用理想约束条件 \(\Sigma\vec f_\alpha\cdot\delta\vec r_\alpha=0\)：</p>
+      <div class="formula">\[ \boxed{\;\sum_{\alpha=1}^{N}\bigl(\vec F_\alpha^{(a)} \;-\; m_\alpha\vec a_\alpha\bigr)\cdot\delta\vec r_\alpha \;=\; 0\;} \qquad \text{(达朗贝尔原理)} \]</div>
+      <p>这一条标量方程把<strong>静力学（虚功原理）</strong>与<strong>动力学</strong>统一在同一个框架内，并<strong>自动消去所有理想约束力</strong>。再通过把 \(\vec r_\alpha\) 用广义坐标 \(q_i\) 表达、并把 \(\delta\vec r_\alpha=\sum_i(\partial\vec r_\alpha/\partial q_i)\,\delta q_i\) 代入，即可导出拉格朗日方程（见第 11 章）。因此，达朗贝尔原理是<strong>整个分析力学的逻辑起点</strong>。</p>
+
+      <div class="key-terms">constraint (约束), holonomic constraint (完整约束), non-holonomic constraint (非完整约束), scleronomic (定常的), rheonomic (非定常的), degrees of freedom DOF (自由度), generalized coordinate (广义坐标), configuration space (位形空间), virtual displacement (虚位移), real displacement (实位移), virtual work (虚功), applied force (主动力), constraint force (约束力), ideal constraint (理想约束), principle of virtual work (虚功原理), D'Alembert's principle (达朗贝尔原理), mechanical advantage (机械利益)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：理想约束力虚功为零 ⟹ 达朗贝尔原理</h2>
+      <p>我们严格证明两件事：（A）几类常见约束确实满足 \(\Sigma\vec f_\alpha\cdot\delta\vec r_\alpha=0\)；（B）由此从牛顿方程导出达朗贝尔原理。</p>
+
+      <p class="step"><strong>步骤 1 · 光滑曲面上的质点。</strong> 设质点受完整定常约束 \(f(\vec r)=0\)（一光滑曲面）。约束力 \(\vec f\) 沿曲面法向，即 \(\vec f=\lambda\,\nabla f\)（\(\lambda\) 由具体物理决定）。而虚位移必须满足“在固定时刻仍躺在曲面上”，即 \(\delta f=\nabla f\cdot\delta\vec r=0\)。于是</p>
+      <div class="formula">\[ \vec f\cdot\delta\vec r \;=\; \lambda\,\nabla f\cdot\delta\vec r \;=\; \lambda\cdot 0 \;=\; 0 \]</div>
+
+      <p class="step"><strong>步骤 2 · 刚性细杆连接两质点。</strong> 质点 1、2 由长 \(L\) 的轻刚杆连接，约束为 \(|\vec r_1-\vec r_2|=L\)。杆对两端的力等大反向沿杆方向：\(\vec f_1=+\mu(\vec r_1-\vec r_2)\)，\(\vec f_2=-\mu(\vec r_1-\vec r_2)\)（取 \(\mu\) 由物理确定）。约束的微分形式（固定时间）：</p>
+      <div class="formula">\[ \delta\bigl(|\vec r_1-\vec r_2|^2\bigr)=0 \;\Longrightarrow\; 2(\vec r_1-\vec r_2)\cdot(\delta\vec r_1-\delta\vec r_2)=0 \]</div>
+      <p>即 \((\vec r_1-\vec r_2)\cdot(\delta\vec r_1-\delta\vec r_2)=0\)。两约束力所作总虚功为</p>
+      <div class="formula">\[ \vec f_1\cdot\delta\vec r_1+\vec f_2\cdot\delta\vec r_2 = \mu(\vec r_1-\vec r_2)\cdot\delta\vec r_1-\mu(\vec r_1-\vec r_2)\cdot\delta\vec r_2 = \mu(\vec r_1-\vec r_2)\cdot(\delta\vec r_1-\delta\vec r_2)=0 \]</div>
+
+      <p class="step"><strong>步骤 3 · 不可伸长轻绳（无摩擦滑轮）。</strong> 张力 \(T\) 沿绳方向。绳两端点的虚位移沿绳方向分量大小相等、符号相反（绳长不变），故两段张力作功之和 \(T\,\delta s_1+T\,\delta s_2=T(\delta s_1+\delta s_2)=0\)。</p>
+
+      <p class="step"><strong>步骤 4 · 由牛顿方程到达朗贝尔原理。</strong> 对每个质点 \(\alpha\)，牛顿第二定律为</p>
+      <div class="formula">\[ m_\alpha\vec a_\alpha \;=\; \vec F_\alpha^{(a)}+\vec f_\alpha \]</div>
+      <p>移项得 \(\vec F_\alpha^{(a)}+\vec f_\alpha-m_\alpha\vec a_\alpha=\vec 0\)。两端点乘该质点的虚位移 \(\delta\vec r_\alpha\)，并对所有质点求和：</p>
+      <div class="formula">\[ \sum_\alpha\bigl(\vec F_\alpha^{(a)}-m_\alpha\vec a_\alpha\bigr)\cdot\delta\vec r_\alpha \;+\; \sum_\alpha\vec f_\alpha\cdot\delta\vec r_\alpha \;=\; 0 \]</div>
+      <p>由步骤 1–3，第二项（理想约束的总虚功）为零。剩下的正是达朗贝尔原理：</p>
+      <div class="formula">\[ \boxed{\;\sum_\alpha\bigl(\vec F_\alpha^{(a)}-m_\alpha\vec a_\alpha\bigr)\cdot\delta\vec r_\alpha=0\;} \]</div>
+      <p class="step"><strong>结论：</strong> 在理想约束下，主动力与惯性力 \(-m\vec a\) 合成的“总有效力”对任意虚位移的总虚功为零。这条标量方程组与原矢量方程组完全等价，但<strong>不含任何约束力</strong>。把 \(\vec r_\alpha=\vec r_\alpha(q,t)\) 代入、利用 \(\delta q_i\) 的任意性，即得到 \(n=\mathrm{DOF}\) 个独立方程——这就是下一章拉格朗日方程的雏形。\(\blacksquare\)</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 穿在铁丝上的小珠——单一广义坐标</h4>
+        <p class="example-statement">一质点（小珠）被穿在三维空间中一条任意形状的固定光滑铁丝上。说明它的自由度，并选取合适的广义坐标。</p>
+        <div class="example-solution">
+          <p class="step"><strong>分析：</strong> 单个自由质点在三维空间有 3 个坐标 \((x,y,z)\)。铁丝是空间中一条一维曲线，由两个独立的曲面方程联立定义，例如 \(f_1(x,y,z)=0\) 与 \(f_2(x,y,z)=0\)。这两个方程就是两个独立的完整定常约束。</p>
+          <p class="step"><strong>自由度：</strong></p>
+          <div class="formula">\[ \mathrm{DOF}=3N-k = 3(1)-2 = 1 \]</div>
+          <p class="step"><strong>广义坐标：</strong> 沿铁丝的弧长 \(s\)（从某固定参考点量起）是自然选择：\(q_1=s\)。也可选用曲线本身的参数（如螺旋线 \(x=a\cos\varphi,\;y=a\sin\varphi,\;z=b\varphi\) 中的 \(\varphi\)）。任何与 \(s\) 一一对应的量都合法。</p>
+          <p class="step"><strong>虚位移方向：</strong> 由 \(\delta\vec r=\dfrac{\partial\vec r}{\partial s}\,\delta s=\hat t\,\delta s\)，其中 \(\hat t\) 是铁丝切向单位矢量。<strong>约束力</strong>（铁丝对小珠的法向反力，可能有两个分量，垂直于切向）\(\vec N\perp\hat t\)，所以 \(\vec N\cdot\delta\vec r=0\)。这就是“铁丝不作虚功”的几何含义。</p>
+          <p>故 <span class="ans">DOF \(=1\)，广义坐标可选弧长 \(s\) 或等价的曲线参数</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 双摆——两个广义坐标</h4>
+        <p class="example-statement">两质点 \(m_1,m_2\) 由两根长 \(L_1,L_2\) 的轻刚杆串联：第一根杆上端悬挂于固定点 \(O\)，下端连 \(m_1\)；第二根杆上端连 \(m_1\)，下端连 \(m_2\)。整个系统在某竖直平面内运动。求自由度并选取广义坐标。</p>
+        <div class="example-solution">
+          <p class="step"><strong>坐标数：</strong> 在<strong>平面</strong>运动中，每个质点 2 个坐标，共 \(2N=4\) 个笛卡尔坐标 \((x_1,y_1,x_2,y_2)\)。</p>
+          <p class="step"><strong>约束：</strong> 两根刚杆各施加一个完整定常约束：</p>
+          <div class="formula">\[ f_1:\;\; x_1^2+y_1^2=L_1^2 \qquad (\text{设 }O\text{ 为原点}) \]</div>
+          <div class="formula">\[ f_2:\;\; (x_2-x_1)^2+(y_2-y_1)^2=L_2^2 \]</div>
+          <p class="step"><strong>自由度：</strong> 这两个约束互相独立（\(f_1\) 涉及 \(m_1\) 与固定点，\(f_2\) 涉及两质点相对位置），故</p>
+          <div class="formula">\[ \mathrm{DOF}=4-2=2 \]</div>
+          <p class="step"><strong>广义坐标：</strong> 自然选取两杆与竖直方向（向下为正）的夹角：</p>
+          <div class="formula">\[ q_1=\theta_1,\qquad q_2=\theta_2 \]</div>
+          <p>坐标变换为：\(x_1=L_1\sin\theta_1,\;y_1=L_1\cos\theta_1\)；\(x_2=L_1\sin\theta_1+L_2\sin\theta_2,\;y_2=L_1\cos\theta_1+L_2\cos\theta_2\)。两杆的张力（沿杆方向）为理想约束力，其总虚功为零（步骤 2 的论证分别应用于两杆），不进入达朗贝尔方程。</p>
+          <p>故 <span class="ans">DOF \(=2\)，广义坐标 \(q_1=\theta_1,\;q_2=\theta_2\)（两杆与竖直方向夹角）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 阿特伍德机——用达朗贝尔原理求加速度</h4>
+        <p class="example-statement">两物体 \(m_1=2.0\,\mathrm{kg}\)、\(m_2=3.0\,\mathrm{kg}\) 通过一根不可伸长的轻绳跨过一无摩擦的轻质定滑轮悬挂。重力加速度 \(g=9.8\,\mathrm{m/s^2}\)。用达朗贝尔原理求：（a）两物的加速度大小；（b）绳中张力 \(T\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>系统分析：</strong> 两质点在竖直方向运动，绳长不可伸长给出约束 \(y_1+y_2=\text{const}\)（取滑轮为参考）。两物的实位移大小相等、方向相反：若 \(m_2\) 下降 \(q\)，则 \(m_1\) 上升 \(q\)。系统只有 <strong>1 个自由度</strong>：\(\mathrm{DOF}=2-1=1\)，广义坐标 \(q=m_2\text{ 的下降量}\)。</p>
+          <p class="step"><strong>运动学：</strong> 取向上为正。则 \(y_1\) 增加 \(q\)、\(y_2\) 减少 \(q\)：\(\vec a_1=+\ddot q\,\hat\jmath\)，\(\vec a_2=-\ddot q\,\hat\jmath\)。</p>
+          <p class="step"><strong>虚位移：</strong> \(\delta\vec r_1=+\delta q\,\hat\jmath\)，\(\delta\vec r_2=-\delta q\,\hat\jmath\)（\(\delta q\) 任意，方向已编码在符号中）。</p>
+          <p class="step"><strong>主动力：</strong> 重力 \(\vec F_1^{(a)}=-m_1 g\,\hat\jmath\)，\(\vec F_2^{(a)}=-m_2 g\,\hat\jmath\)。绳张力 \(\vec T_1=+T\,\hat\jmath\)、\(\vec T_2=+T\,\hat\jmath\) 是理想约束力，自动消去（也可显式验证）。</p>
+          <p class="step"><strong>代入达朗贝尔原理</strong> \(\Sigma(\vec F^{(a)}-m\vec a)\cdot\delta\vec r=0\)：</p>
+          <div class="formula">\[ \bigl(-m_1 g-m_1\ddot q\bigr)(+\delta q)+\bigl(-m_2 g-(-m_2\ddot q)\bigr)(-\delta q)=0 \]</div>
+          <div class="formula">\[ \Longrightarrow\quad \bigl[(m_2-m_1)g-(m_1+m_2)\ddot q\bigr]\delta q=0 \]</div>
+          <p>因 \(\delta q\) 任意，方括号必须为零：</p>
+          <div class="formula">\[ \boxed{\;\ddot q=\frac{m_2-m_1}{m_1+m_2}\,g\;} \]</div>
+          <p class="step"><strong>(a) 数值：</strong> \(\ddot q=\dfrac{3.0-2.0}{3.0+2.0}(9.8)=\dfrac{9.8}{5}=1.96\,\mathrm{m/s^2}\)。即 \(m_2\) 以 \(1.96\,\mathrm{m/s^2}\) 向下加速，\(m_1\) 以同值向上加速。</p>
+          <p class="step"><strong>(b) 张力：</strong> 对 \(m_1\) 单独应用牛顿定律（或等价地，从达朗贝尔方程组里取一项）：\(T-m_1 g=m_1\ddot q\)，所以</p>
+          <div class="formula">\[ T=m_1(g+\ddot q)=2.0\times(9.8+1.96)=2.0\times 11.76=23.52\,\mathrm{N} \]</div>
+          <p>验证：对 \(m_2\)，\(m_2 g-T=m_2\ddot q\Rightarrow T=m_2(g-\ddot q)=3.0\times 7.84=23.52\,\mathrm{N}\;\checkmark\)。</p>
+          <p>故 <span class="ans">加速度大小 \(|\ddot q|=1.96\,\mathrm{m/s^2}\)（\(m_2\) 向下）；张力 \(T=23.5\,\mathrm{N}\)</span>。注意：达朗贝尔原理只用<strong>一个</strong>广义坐标就给出了运动，张力在求解运动时根本不必出现——求出 \(\ddot q\) 后才用牛顿定律“事后”算出约束力 \(T\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 杠杆平衡——虚功原理与机械利益</h4>
+        <p class="example-statement">一根长 \(L=L_1+L_2=2.4\,\mathrm{m}\) 的刚性轻杆，在距左端 \(L_1=2.0\,\mathrm{m}\) 处用光滑铰链支承（支点 \(O\)）；左端 \(A\) 施加向下的输入力 \(F_{\text{in}}=50\,\mathrm{N}\)，右端 \(B\)（\(O\) 的右侧 \(L_2=0.40\,\mathrm{m}\)）挂重物 \(W\)。求：（a）能平衡的最大 \(W\)；（b）机械利益 (mechanical advantage)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>系统分析：</strong> 杆为刚体，受铰链约束（支点固定，杆只能绕 \(O\) 在竖直平面内转动），自由度 \(\mathrm{DOF}=1\)，广义坐标 \(q=\) 杆的角位移 \(\theta\)（从水平算起）。</p>
+          <p class="step"><strong>虚位移：</strong> 给杆一个微小转角 \(\delta\theta\)（取逆时针为正）。则 \(A\) 端（支点左侧）向下移动 \(\delta y_A=-L_1\,\delta\theta\)（取向上为 \(+y\)），\(B\) 端（右侧）向上移动 \(\delta y_B=+L_2\,\delta\theta\)。</p>
+          <p class="step"><strong>主动力虚功：</strong> 铰链反力经过支点不作虚功；只剩两个主动力。设平衡时 \(W\) 向下作用于 \(B\)：</p>
+          <div class="formula">\[ \delta W = (-F_{\text{in}})(-L_1\delta\theta)+(-W)(+L_2\delta\theta)=\bigl(F_{\text{in}}L_1-W L_2\bigr)\delta\theta \]</div>
+          <p class="step"><strong>由虚功原理</strong> \(\delta W=0\)，且 \(\delta\theta\) 任意：</p>
+          <div class="formula">\[ F_{\text{in}}L_1-W L_2=0 \;\Longrightarrow\; \boxed{\;W=\frac{L_1}{L_2}F_{\text{in}}\;} \]</div>
+          <p class="step"><strong>(a) 数值：</strong> \(W=\dfrac{2.0}{0.40}\times 50=5.0\times 50=250\,\mathrm{N}\)。</p>
+          <p class="step"><strong>(b) 机械利益：</strong></p>
+          <div class="formula">\[ \mathrm{MA}=\frac{\text{输出力}}{\text{输入力}}=\frac{W}{F_{\text{in}}}=\frac{L_1}{L_2}=\frac{2.0}{0.40}=5.0 \]</div>
+          <p>故 <span class="ans">能平衡 \(W=250\,\mathrm{N}\)；机械利益 \(\mathrm{MA}=5\)</span>。注意：\(\delta y_A\ne\delta y_B\)——虚位移<strong>不</strong>相等，正因为杆是刚性的（绕支点转动）。这是“虚功原理巧妙消去未知支点反力”的典型范例。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 限制在球面上的质点——单个完整约束</h4>
+        <p class="example-statement">一质点被约束在半径 \(R\) 的固定球面上运动（如珠子穿在球面网线上）。求约束方程、自由度，并选取广义坐标。</p>
+        <div class="example-solution">
+          <p class="step"><strong>约束方程：</strong> 取球心为原点，球面方程</p>
+          <div class="formula">\[ f(x,y,z)=x^2+y^2+z^2-R^2=0 \]</div>
+          <p>这是<strong>一个</strong>完整、定常约束（\(f\) 不含 \(t\)）。</p>
+          <p class="step"><strong>自由度：</strong> 单质点 \(N=1\)，约束数 \(k=1\)：</p>
+          <div class="formula">\[ \mathrm{DOF}=3(1)-1=2 \]</div>
+          <p class="step"><strong>广义坐标：</strong> 自然选取球面上的两个角度——通常的球坐标角度：</p>
+          <div class="formula">\[ q_1=\theta\;(\text{极角，自 }+z\text{ 轴量起}),\qquad q_2=\varphi\;(\text{方位角，在 }xy\text{ 平面内量起}) \]</div>
+          <p>逆变换：\(x=R\sin\theta\cos\varphi,\;y=R\sin\theta\sin\varphi,\;z=R\cos\theta\)。任意 \((\theta,\varphi)\) 都自动满足 \(x^2+y^2+z^2=R^2\)。</p>
+          <p class="step"><strong>约束力方向：</strong> 约束力沿径向 \(\hat r\)（球面法向），而虚位移 \(\delta\vec r\) 在球面切平面内（\(\hat r\cdot\delta\vec r=0\)），故 \(\vec f\cdot\delta\vec r=0\)，约束理想。</p>
+          <p>故 <span class="ans">约束 \(x^2+y^2+z^2=R^2\)；\(\mathrm{DOF}=2\)；广义坐标 \((\theta,\varphi)\)</span>。注意：若把条件改为 \(x^2+y^2+z^2\le R^2\)（质点被关在球内），则成为不等式——非完整约束，公式 \(\mathrm{DOF}=3N-k\) 不再适用，位形空间仍是三维的。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把虚位移 \(\delta\vec r\) 当作实位移 \(d\vec r\)。</strong> 实位移经历时间 \(dt\ne 0\)，可能包含非定常约束本身的运动；虚位移<strong>冻结时间</strong>（\(\delta t=0\)）。对非定常约束两者方向不同，只有定常约束下二者才重合。</li>
+        <li><strong>以为“理想约束 = 约束力为零”。</strong> 错。约束力在 \(\vec F=m\vec a\) 中<strong>确实存在</strong>且数值可能很大（如阿特伍德机的张力、过山车在底部的法向力）。它只是<strong>不作虚功</strong>，因而被达朗贝尔原理从运动方程中自动消除——这是“看不见”而非“不存在”。</li>
+        <li><strong>把不独立的约束都计入 \(k\)。</strong> 公式 \(\mathrm{DOF}=3N-k\) 中的 \(k\) 是<strong>独立</strong>约束的个数。若一个约束可由其他约束代数推出（如已规定 \(x=0,y=0\) 后再写 \(x+y=0\)），它不减少自由度，不能重复计入。</li>
+        <li><strong>选的广义坐标数目 ≠ DOF。</strong> 选多了则彼此不独立（出现冗余方程或矛盾）；选少了则不能完备描述位形。正确做法：先算 DOF，再选正好等于 DOF 数目的独立参数。</li>
+        <li><strong>对非完整约束滥用 \(\mathrm{DOF}=3N-k\)。</strong> 该公式仅适用于完整约束。非完整约束（如纯滚动）不减少位形空间的维数，但限制可达的速度方向，需要用拉格朗日乘子法或其它专门技巧处理。</li>
+        <li><strong>忘记“理想约束”前提。</strong> 虚功原理与达朗贝尔原理<strong>仅在理想约束下</strong>自动消除约束力。一旦存在摩擦（沿虚位移方向有分量），约束不再理想，必须把摩擦力作为主动力（或非理想约束力）显式纳入虚功。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 刚杆连接的双质点（三维）。 Two particles in 3D are connected by a rigid rod of length \(L\). How many degrees of freedom does the system have? Choose a set of generalized coordinates.</summary>
+        <div class="hint">两个质点共 \(3N=6\) 个坐标；刚杆提供一个完整约束 \(|\vec r_1-\vec r_2|=L\)。</div>
+        <div class="solution">
+          <p>\(3N-k=6-1=5\)。<strong>广义坐标</strong>：质心位置 \(\vec R_{\text{cm}}=(X,Y,Z)\)（3 个），加上杆方向的单位矢量 \(\hat n\)（球面上一点，2 个角度 \(\theta,\varphi\)）。共 5 个独立坐标。注意杆绕自身轴的“转动”无意义（杆无粗细，绕轴转动不改变位形）。</p>
+          <p><span class="ans">\(\mathrm{DOF}=5\)；可选 \((X,Y,Z,\theta,\varphi)\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 阿特伍德机数值计算。 For an Atwood machine with \(m_1=5.0\,\mathrm{kg}\) and \(m_2=2.0\,\mathrm{kg}\), use D'Alembert's principle to find the acceleration magnitude and the tension. Take \(g=9.8\,\mathrm{m/s^2}\).</summary>
+        <div class="hint">用例 10.3 的结果 \(\ddot q=\dfrac{m_1-m_2}{m_1+m_2}g\)（这里 \(m_1\) 较重，下降），\(T=\dfrac{2m_1m_2}{m_1+m_2}g\)。</div>
+        <div class="solution">
+          <p>本题 \(m_1>m_2\)，所以 \(m_1\) 下降。加速度大小：</p>
+          <div class="formula">\[ |\ddot q|=\frac{m_1-m_2}{m_1+m_2}g=\frac{3.0}{7.0}\times 9.8=4.2\,\mathrm{m/s^2} \]</div>
+          <p>张力：</p>
+          <div class="formula">\[ T=\frac{2m_1m_2}{m_1+m_2}g=\frac{2(5.0)(2.0)}{7.0}\times 9.8=\frac{20}{7}\times 9.8=28.0\,\mathrm{N} \]</div>
+          <p><span class="ans">\(|a|=4.2\,\mathrm{m/s^2}\)（\(m_1\) 向下）；\(T=28.0\,\mathrm{N}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 三角形三杆系统。 Three particles form a rigid triangle (three rods of fixed lengths). The system moves freely in a plane. How many degrees of freedom? Choose generalized coordinates.</summary>
+        <div class="hint">三个质点在平面内共 6 个坐标；三个杆（三条边）给出三个独立完整约束。</div>
+        <div class="solution">
+          <p>\(3N=6\)，三个独立的固定距离约束（每条边一个），\(k=3\)。</p>
+          <div class="formula">\[ \mathrm{DOF}=6-3=3 \]</div>
+          <p>物理上对应：三角形的<strong>整体平动</strong>（2 个，如顶点 1 的坐标 \(x_1,y_1\)）加上<strong>整体转动</strong>（1 个，如某边的方向角 \(\theta\)）。故可选 \((x_1,y_1,\theta)\)。</p>
+          <p><span class="ans">\(\mathrm{DOF}=3\)；可选 \((X,Y,\theta)\)，即刚体的平面运动自由度</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 楔形杠杆。 A light rigid bar is hinged at \(O\). An input force \(F_{\text{in}}=80\,\mathrm{N}\) acts downward at \(L_1=1.5\,\mathrm{m}\) to the left of \(O\). What load \(W\) (downward, at \(L_2=0.30\,\mathrm{m}\) to the right of \(O\)) can be balanced? Find the mechanical advantage.</summary>
+        <div class="hint">用例 10.4 的虚功结果 \(F_{\text{in}}L_1=W L_2\)。</div>
+        <div class="solution">
+          <div class="formula">\[ W=\frac{L_1}{L_2}F_{\text{in}}=\frac{1.5}{0.30}\times 80=5.0\times 80=400\,\mathrm{N} \]</div>
+          <div class="formula">\[ \mathrm{MA}=\frac{W}{F_{\text{in}}}=\frac{L_1}{L_2}=5.0 \]</div>
+          <p><span class="ans">\(W=400\,\mathrm{N}\)；机械利益 \(\mathrm{MA}=5\)</span>。注意支点反力（向上，大小 \(=F_{\text{in}}+W=480\,\mathrm{N}\)）经过支点，不作虚功，因此不必求解即可得到输入-输出关系。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 平面单摆与三维单摆。 Compare a simple pendulum (bob on a massless rod of length \(L\)) constrained to swing in a vertical plane versus one free to swing in 3D. Find the DOF and generalized coordinates in each case.</summary>
+        <div class="hint">三维情形下，杆长 \(L\) 给出一个完整约束（质点在半径 \(L\) 的球面上）；平面约束再加一个完整约束。</div>
+        <div class="solution">
+          <p><strong>(a) 三维单摆：</strong> 单质点 \(N=1\)，杆的长度约束 \(x^2+y^2+z^2=L^2\) 是一个完整约束。\(\mathrm{DOF}=3-1=2\)。可选球面角度 \((\theta,\varphi)\)：杆与竖直方向夹角 \(\theta\) 与方位角 \(\varphi\)。质点在半径 \(L\) 的球面上运动。</p>
+          <p><strong>(b) 平面单摆：</strong> 额外要求“摆动固定在一个竖直平面内”，例如 \(y=0\)，再加一个完整约束。\(\mathrm{DOF}=3-2=1\)。广义坐标 \(q=\theta\)（杆与竖直方向夹角）。这是大家熟悉的情形。</p>
+          <p><span class="ans">三维：\(\mathrm{DOF}=2\)，\((\theta,\varphi)\)；平面：\(\mathrm{DOF}=1\)，\(\theta\)</span>。每加一个独立的完整约束，自由度减少 1。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <h3>约束 / 广义坐标 / 虚功演示 <span style="font-weight:400">Bead on an Adjustable Wire — DOF, Virtual Displacement &amp; Constraint Force</span></h3>
+      <p class="sim-desc">小珠被穿在一条无摩擦的固定铁丝上，铁丝形状可在<strong>斜面</strong>（incline）与<strong>圆环</strong>（circular hoop）之间切换。无论哪种形状，小珠都只有<strong>一个自由度</strong>（\(\mathrm{DOF}=1\)），由单一广义坐标 \(q\) 描述：斜面情形取弧长 \(q=s\)（沿铁丝从顶端量起），圆环情形取角度 \(q=\varphi\)（从最低点量起）。画布在每个时刻都标注：(a) 广义坐标 \(q\) 的当前值；(b) <strong>虚位移</strong>矢量 \(\delta\vec r\)（紫色），始终沿铁丝<strong>切向</strong>；(c) <strong>约束法向力</strong> \(\vec N\)（绿色），始终<strong>垂直于</strong>铁丝——因此 \(\vec N\cdot\delta\vec r\equiv 0\)，理想约束不作虚功。同时画出重力 \(m\vec g\)（红色）以资对比。小珠的真实运动由 RK4 数值积分得到（能量守恒，定常约束）。试试看：圆环顶端附近 \(\vec N\) 可能反向（指向圆外），这对应“铁丝必须向外拉住小珠”。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="600" height="420"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+          var g = 9.8;          // m/s^2
+          var m = 0.10;         // kg, bead mass
+          var SCALE = 140;      // px per meter (hoop radius 1 m -> 140 px)
+
+          var DEFAULTS = { shape: 'incline', alpha: 30, phi0: 140, v0: 0 };
+          var params = Object.assign({}, DEFAULTS);
+
+          // Geometry (pixels)
+          var inclineTop = { x: 90, y: 70 };
+          var inclineLenPx = 460;
+          var hoopC = { x: 300, y: 230 };
+          var hoopRpx = 140;
+          var hoopR = hoopRpx / SCALE;       // 1.0 m
+
+          // Initial state factory: depends on shape and parameters.
+          function initState() {
+            if (params.shape === 'incline') {
+              return { s: 0.05, v: params.v0 };   // s in meters, v = ds/dt
+            } else {
+              var phi0 = params.phi0 * Math.PI / 180;
+              // omega chosen so that |v| = R|omega| = v0
+              return { phi: phi0, omega: params.v0 / hoopR };
+            }
+          }
+
+          function drawInfoPanel(ctx, rows) {
+            var x0 = 14, y0 = 14, lineH = 17, pad = 10;
+            var w = 250, h = rows.length * lineH + 2 * pad + 16;
+            ctx.save();
+            ctx.fillStyle = PS.colors.bg;
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.fillRect(x0, y0, w, h);
+            ctx.strokeRect(x0 + 0.5, y0 + 0.5, w, h);
+            PS.drawText(ctx, 'STATE 状态', x0 + pad, y0 + pad + 11,
+              { color: PS.colors.text, font: 'bold 11px system-ui' });
+            rows.forEach(function (row, i) {
+              var yL = y0 + pad + 11 + (i + 1) * lineH;
+              PS.drawText(ctx, row[0], x0 + pad, yL,
+                { color: PS.colors.text, font: '12px system-ui' });
+              PS.drawText(ctx, row[1], x0 + w - pad, yL,
+                { color: PS.colors.primary, font: 'bold 12px system-ui', align: 'right' });
+            });
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: initState,
+            step: function (dt, t, s) {
+              if (params.shape === 'incline') {
+                var alpha = params.alpha * Math.PI / 180;
+                // ds/dt = v,  dv/dt = g sin(alpha)  (bead slides downhill)
+                var deriv = function (st, tt) {
+                  return [st[1], g * Math.sin(alpha)];
+                };
+                var res = PS.integrate(deriv, [s.s, s.v], t, dt, 'rk4');
+                s.s = res[0]; s.v = res[1];
+                // Clamp at end of wire
+                var sMaxPx = inclineLenPx;                  // displayed length
+                var sMax = (sMaxPx / Math.cos(alpha)) / SCALE - 0.05;
+                if (s.s > sMax) { s.s = sMax; s.v = 0; }
+                if (s.s < 0) { s.s = 0; s.v = Math.abs(s.v); }
+              } else {
+                // dphi/dt = omega,  domega/dt = -(g/R) sin(phi)
+                var deriv2 = function (st, tt) {
+                  return [st[1], -(g / hoopR) * Math.sin(st[0])];
+                };
+                var res2 = PS.integrate(deriv2, [s.phi, s.omega], t, dt, 'rk4');
+                s.phi = res2[0]; s.omega = res2[1];
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var Fscale = 60 / (m * g);    // px per Newton (so mg = 60 px)
+              var drLen = 55;               // virtual-displacement display length (px)
+
+              if (params.shape === 'incline') {
+                var alpha = params.alpha * Math.PI / 180;
+                var cosA = Math.cos(alpha), sinA = Math.sin(alpha);
+
+                // Wire endpoints
+                var x0w = inclineTop.x, y0w = inclineTop.y;
+                var x1w = x0w + inclineLenPx;
+                var y1w = y0w + inclineLenPx * Math.tan(alpha);
+                if (y1w > H - 30) y1w = H - 30;     // keep inside canvas
+
+                // Ground hatch (visual support under wire)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.7;
+                for (var i = 0; i <= 20; i++) {
+                  var gx = x0w + (x1w - x0w) * (i / 20);
+                  ctx.beginPath();
+                  ctx.moveTo(gx, y1w);
+                  ctx.lineTo(gx - 8, y1w + 10);
+                  ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+                ctx.restore();
+
+                // The wire
+                ctx.save();
+                ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 4; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(x0w, y0w); ctx.lineTo(x1w, y1w); ctx.stroke();
+                ctx.restore();
+
+                // Bead position along wire (px)
+                var sLen = s.s * SCALE;
+                var bx = x0w + sLen * cosA;
+                var by = y0w + sLen * sinA;
+
+                // Tangent (downhill) and normal (perpendicular, "up-left" away from surface)
+                var tx = cosA, ty = sinA;
+                var nx = sinA, ny = -cosA;
+
+                var W_ = m * g;
+                var Nmag = m * g * cosA;     // normal-force magnitude (N)
+
+                // δr (violet) tangent
+                PS.drawArrow(ctx, bx, by, bx + drLen * tx, by + drLen * ty,
+                  PS.colors.trace, 'δr');
+                // N (green) perpendicular to wire
+                PS.drawArrow(ctx, bx, by, bx + Nmag * Fscale * nx, by + Nmag * Fscale * ny,
+                  PS.colors.accent2, 'N');
+                // mg (red) downward
+                PS.drawArrow(ctx, bx, by, bx, by + W_ * Fscale,
+                  PS.colors.accent, 'mg');
+
+                // Right-angle marker between δr and N (small square)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.text; ctx.lineWidth = 1; ctx.globalAlpha = 0.6;
+                var sq = 8;
+                ctx.beginPath();
+                ctx.moveTo(bx + sq * tx, by + sq * ty);
+                ctx.lineTo(bx + sq * tx + sq * nx, by + sq * ty + sq * ny);
+                ctx.lineTo(bx + sq * nx, by + sq * ny);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.restore();
+
+                // Bead
+                PS.drawCircle(ctx, bx, by, 9,
+                  { fill: PS.colors.primary, stroke: PS.colors.bg, lineWidth: 2 });
+
+                // Generalized-coordinate label
+                PS.drawText(ctx, 'q = s = ' + s.s.toFixed(2) + ' m',
+                  bx + 16, by - 18,
+                  { color: PS.colors.text, font: 'bold 13px system-ui' });
+
+                // Angle arc at top of incline
+                ctx.save();
+                ctx.strokeStyle = PS.colors.text; ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.arc(x0w, y0w, 30, 0, alpha, false);
+                ctx.stroke();
+                PS.drawText(ctx, 'α', x0w + 36, y0w + 4,
+                  { color: PS.colors.text, font: 'italic 14px Georgia, serif' });
+                ctx.restore();
+
+                PS.drawText(ctx, 'Bead on incline  斜面上的小珠  (DOF = 1)',
+                  16, H - 12, { color: PS.colors.text, font: 'italic 12px system-ui' });
+
+                drawInfoPanel(ctx, [
+                  ['α', params.alpha.toFixed(0) + '°'],
+                  ['v = ṡ', s.v.toFixed(2) + ' m/s'],
+                  ['N = mg cos α', Nmag.toFixed(3) + ' N'],
+                  ['δr · N', '= 0  (ideal)']
+                ]);
+
+              } else {
+                // ---- HOOP ----
+                var phi = s.phi;
+                var cphi = Math.cos(phi), sphi = Math.sin(phi);
+                var cx = hoopC.x, cy = hoopC.y;
+                var Rpx = hoopRpx;
+
+                // Bead position: phi measured from bottom (canvas y is down)
+                //   pos = C + R*(sin φ, cos φ);  φ=0 -> bottom;  φ=π -> top
+                var bx = cx + Rpx * sphi;
+                var by = cy + Rpx * cphi;
+
+                // Tangent (direction of increasing φ):  (cos φ, -sin φ)
+                var tx = cphi, ty = -sphi;
+                // Radial unit vector pointing toward center:  (-sin φ, -cos φ)
+                var rx = -sphi, ry = -cphi;
+
+                var W_ = m * g;
+                var v = s.omega * hoopR;
+                // Radial force balance (positive = toward center):
+                //   N - mg cos φ = m R ω²   ⇒  N = m(g cos φ + R ω²)
+                var Nmag = m * (g * cphi + hoopR * s.omega * s.omega);
+
+                // Draw the hoop
+                ctx.save();
+                ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.arc(cx, cy, Rpx, 0, 2 * Math.PI); ctx.stroke();
+                ctx.restore();
+                // Center marker + radius tick
+                PS.drawCircle(ctx, cx, cy, 3, { fill: PS.colors.axis });
+
+                // δr tangent
+                PS.drawArrow(ctx, bx, by, bx + drLen * tx, by + drLen * ty,
+                  PS.colors.trace, 'δr');
+
+                // N radial (if N<0, force points OUTWARD from center)
+                var Nsign = Nmag >= 0 ? +1 : -1;
+                var Nlen = Math.abs(Nmag) * Fscale;
+                PS.drawArrow(ctx, bx, by, bx + Nsign * Nlen * rx, by + Nsign * Nlen * ry,
+                  PS.colors.accent2, 'N');
+
+                // mg downward
+                PS.drawArrow(ctx, bx, by, bx, by + W_ * Fscale,
+                  PS.colors.accent, 'mg');
+
+                // Right-angle marker between tangent (δr) and radial (N)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.text; ctx.lineWidth = 1; ctx.globalAlpha = 0.6;
+                var sq = 8;
+                var sgn = Nsign;
+                ctx.beginPath();
+                ctx.moveTo(bx + sq * tx, by + sq * ty);
+                ctx.lineTo(bx + sq * tx + sq * sgn * rx, by + sq * ty + sq * sgn * ry);
+                ctx.lineTo(bx + sq * sgn * rx, by + sq * sgn * ry);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.restore();
+
+                // Bead
+                PS.drawCircle(ctx, bx, by, 9,
+                  { fill: PS.colors.primary, stroke: PS.colors.bg, lineWidth: 2 });
+
+                // Generalized-coordinate label
+                var phiDeg = ((s.phi * 180 / Math.PI) % 360 + 360) % 360;
+                PS.drawText(ctx, 'q = φ = ' + phiDeg.toFixed(0) + '°',
+                  bx + 16, by - 18,
+                  { color: PS.colors.text, font: 'bold 13px system-ui' });
+
+                // Radius label
+                PS.drawText(ctx, 'R', cx + 5, cy - 5,
+                  { color: PS.colors.axis, font: 'italic 12px Georgia, serif' });
+
+                PS.drawText(ctx,
+                  'Bead on circular hoop  圆环上的小珠  (DOF = 1)',
+                  16, H - 12, { color: PS.colors.text, font: 'italic 12px system-ui' });
+
+                drawInfoPanel(ctx, [
+                  ['R', hoopR.toFixed(2) + ' m'],
+                  ['ω = φ̇', s.omega.toFixed(2) + ' rad/s'],
+                  ['v = Rω', v.toFixed(2) + ' m/s'],
+                  ['N = m(g cos φ + Rω²)', Nmag.toFixed(3) + ' N'],
+                  ['δr · N', '= 0  (ideal)']
+                ]);
+              }
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            {
+              type: 'toggle', key: 'shape', value: false,
+              label: '圆环 Hoop (取消勾选 = 斜面 Incline)'
+            },
+            { type: 'slider', key: 'alpha', label: '斜面角 α (°)', min: 10, max: 55, step: 1, value: DEFAULTS.alpha },
+            { type: 'slider', key: 'phi0', label: '初始角 φ₀ (°, 从底起)', min: 60, max: 170, step: 5, value: DEFAULTS.phi0 },
+            { type: 'slider', key: 'v0', label: '初速度 v₀ (m/s)', min: 0, max: 3, step: 0.1, value: DEFAULTS.v0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+
+          ctl.on('shape', function (v) {
+            params.shape = v ? 'hoop' : 'incline';
+            sim.reset();
+          });
+          ctl.on('alpha', function (v) { params.alpha = v; });   // live geometry change
+          ctl.on('phi0', function (v) { params.phi0 = v; sim.reset(); });
+          ctl.on('v0', function (v) { params.v0 = v; });
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            params.shape = DEFAULTS.shape;
+            // Reflect defaults back into control DOM
+            var ctrls = document.getElementById('controls-10');
+            var inputs = ctrls.querySelectorAll('input[type=range]');
+            var keys = ['alpha', 'phi0', 'v0'];
+            inputs.forEach(function (inp, i) {
+              inp.value = DEFAULTS[keys[i]];
+              inp.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            var cb = ctrls.querySelector('input[type=checkbox]');
+            if (cb) {
+              cb.checked = (DEFAULTS.shape === 'hoop');
+              cb.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>约束</strong>：限制系统位形或速度的几何/运动学条件。完整约束 \(f(\vec r_1,\dots,\vec r_N,t)=0\)；非完整约束含不等式或不可积微分关系。定常约束不含 \(t\)，非定常约束显含 \(t\)。</li>
+        <li><strong>自由度</strong>（仅完整约束）：\(\;\mathrm{DOF}=3N-k\)，其中 \(k\) 为<strong>独立</strong>完整约束的个数。</li>
+        <li><strong>广义坐标</strong> \(q_1,\dots,q_n\)（\(n=\mathrm{DOF}\)）：任意一组完备且独立的位形参数；笛卡尔位置可写为 \(\vec r_\alpha=\vec r_\alpha(q_1,\dots,q_n,t)\)。</li>
+        <li><strong>虚位移</strong> \(\delta\vec r\)：想象中、无穷小、与瞬时约束相容、\(\delta t=0\)。与实位移 \(d\vec r\)（\(dt\ne 0\)）严格区分。</li>
+        <li><strong>理想约束</strong>：约束力总虚功为零，\(\;\Sigma_\alpha\vec f_\alpha\cdot\delta\vec r_\alpha=0\)。典型：光滑曲面、刚性细杆、不可伸长轻绳。</li>
+        <li><strong>虚功原理（静力学）</strong>：\(\;\Sigma_\alpha\vec F_\alpha^{(a)}\cdot\delta\vec r_\alpha=0\)。约束力被自动消去。</li>
+        <li><strong>达朗贝尔原理（动力学）</strong>：\(\;\Sigma_\alpha(\vec F_\alpha^{(a)}-m_\alpha\vec a_\alpha)\cdot\delta\vec r_\alpha=0\)。统一静力学与动力学，是导出拉格朗日方程的起点（下一章）。</li>
+        <li><strong>杠杆机械利益</strong>：\(\;F_{\text{out}}/F_{\text{in}}=L_{\text{in}}/L_{\text{out}}\)（虚功原理）。</li>
+        <li><strong>阿特伍德机</strong>：\(\;a=\dfrac{m_2-m_1}{m_1+m_2}g\)，\(\;T=\dfrac{2m_1m_2}{m_1+m_2}g\)（达朗贝尔原理）。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

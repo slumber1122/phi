@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 C · 物理常数与单位 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+  <style>
+    /* Page-scoped reference-table styling — uses theme variables so it
+       adapts to dark mode automatically. */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-size: 0.92rem;
+      font-family: var(--font-head);
+    }
+    .ref-table caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-soft);
+      padding: 0.4rem 0 0.6rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+    }
+    .ref-table th,
+    .ref-table td {
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .ref-table thead th {
+      background: var(--bg-elev);
+      color: var(--heading);
+      font-weight: 600;
+      border-bottom: 2px solid var(--rule);
+      white-space: nowrap;
+    }
+    .ref-table tbody tr:nth-child(even) {
+      background: var(--code-bg);
+    }
+    .ref-table tbody tr:hover {
+      background: var(--primary-soft);
+    }
+    .ref-table td.num,
+    .ref-table th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    .ref-table td.sym,
+    .ref-table th.sym {
+      text-align: center;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .ref-section {
+      margin: 2.2rem 0;
+      break-inside: avoid;
+    }
+    .ref-section > h2 {
+      font-size: 1.15rem;
+      margin-bottom: 0.3rem;
+      color: var(--heading);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.3rem;
+    }
+    .ref-section > p.lead {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      margin: 0.2rem 0 0.6rem;
+    }
+    .greek-table td.sym {
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+    .ref-note {
+      background: var(--bg-elev);
+      border-left: 3px solid var(--primary);
+      padding: 0.7rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 C · Appendix C · 物理常数与单位 Constants &amp; Units</p>
+      <h1>物理常数与单位 <span class="en-title">Constants &amp; Units</span></h1>
+    </header>
+
+    <p class="lead">本附录集中给出国际单位制（SI）的基本单位、词头与导出单位，物理学习中频繁使用的基本常数、天体数据，以及常用单位换算与希腊字母。数值取自 CODATA 2018 推荐值及标准天文参考值，一般给出四位有效数字；如需更高精度请查阅 NIST 或 IAU 最新数据。This appendix consolidates the SI base units, prefixes and derived units, the fundamental physical constants, astronomical data, common conversions and the Greek alphabet used throughout this tutorial. Values are drawn from CODATA 2018 and standard astronomical references, generally quoted to four significant digits.</p>
+
+    <div class="ref-note">注：方括号内为常数的不确定度末位，例如 \(6.67430(15)\times 10^{-11} \) 表示 \(6.67430\times10^{-11}\pm 0.00015\times10^{-11} \)。本表为查阅方便已四舍五入。<br>Note: Parenthetical digits denote uncertainty in the last figures; values here are rounded for lookup convenience.</div>
+
+    <!-- ============================================================ SI BASE -->
+    <section class="ref-section">
+      <h2>1. SI 基本单位 SI Base Units</h2>
+      <p class="lead">国际单位制以七个基本单位为根基，所有其它 SI 量均可由它们导出。The entire SI system rests on seven base units.</p>
+      <table class="ref-table">
+        <caption>表 C.1 七个 SI 基本单位 / The seven SI base units</caption>
+        <thead>
+          <tr>
+            <th>物理量 Quantity</th>
+            <th>中文名称 Chinese</th>
+            <th class="sym">单位 Symbol</th>
+            <th>名称 Name</th>
+            <th>定义基准 Defining constant (2019)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>长度 length</td><td>米</td><td class="sym">m</td><td>meter</td><td>光在真空中 \(1/c\) 秒走过的距离</td></tr>
+          <tr><td>质量 mass</td><td>千克</td><td class="sym">kg</td><td>kilogram</td><td>普朗克常数 \(h\)</td></tr>
+          <tr><td>时间 time</td><td>秒</td><td class="sym">s</td><td>second</td><td>铯-133 原子超精细跃迁频率 \(\Delta\nu_{\rm Cs}\)</td></tr>
+          <tr><td>电流 electric current</td><td>安培</td><td class="sym">A</td><td>ampere</td><td>元电荷 \(e\)</td></tr>
+          <tr><td>热力学温度 thermodynamic temp.</td><td>开尔文</td><td class="sym">K</td><td>kelvin</td><td>玻尔兹曼常数 \(k_B\)</td></tr>
+          <tr><td>物质的量 amount of substance</td><td>摩尔</td><td class="sym">mol</td><td>mole</td><td>阿伏伽德罗数 \(N_A\)</td></tr>
+          <tr><td>发光强度 luminous intensity</td><td>坎德拉</td><td class="sym">cd</td><td>candela</td><td>频率 540 THz 单色辐射的光效能 \(K_{\rm cd}\)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ PREFIXES -->
+    <section class="ref-section">
+      <h2>2. SI 词头 SI Prefixes</h2>
+      <p class="lead">词头用于构造十进倍数与分数单位，从皮可（\(10^{-12}\)）到太拉（\(10^{12}\)）。Prefixes form decimal multiples and submultiples.</p>
+      <table class="ref-table">
+        <caption>表 C.2 常用 SI 词头 / Common SI prefixes</caption>
+        <thead>
+          <tr>
+            <th>因数 Factor</th>
+            <th>词头名称（中/英）Prefix</th>
+            <th class="sym">符号 Symbol</th>
+            <th>数值 Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">10<sup>12</sup></td><td>太拉 tera</td><td class="sym">T</td><td>万亿 trillion</td></tr>
+          <tr><td class="num">10<sup>9</sup></td><td>吉咖 giga</td><td class="sym">G</td><td>十亿 billion</td></tr>
+          <tr><td class="num">10<sup>6</sup></td><td>兆 mega</td><td class="sym">M</td><td>百万 million</td></tr>
+          <tr><td class="num">10<sup>3</sup></td><td>千 kilo</td><td class="sym">k</td><td>千 thousand</td></tr>
+          <tr><td class="num">10<sup>2</sup></td><td>百 hecto</td><td class="sym">h</td><td>百 hundred</td></tr>
+          <tr><td class="num">10<sup>1</sup></td><td>十 deca</td><td class="sym">da</td><td>十 ten</td></tr>
+          <tr><td class="num">10<sup>0</sup></td><td>— none</td><td class="sym">—</td><td>一 one</td></tr>
+          <tr><td class="num">10<sup>−1</sup></td><td>分 deci</td><td class="sym">d</td><td>十分之一 tenth</td></tr>
+          <tr><td class="num">10<sup>−2</sup></td><td>厘 centi</td><td class="sym">c</td><td>百分之一 hundredth</td></tr>
+          <tr><td class="num">10<sup>−3</sup></td><td>毫 milli</td><td class="sym">m</td><td>千分之一 thousandth</td></tr>
+          <tr><td class="num">10<sup>−6</sup></td><td>微 micro</td><td class="sym">µ</td><td>百万分之一 millionth</td></tr>
+          <tr><td class="num">10<sup>−9</sup></td><td>纳诺 nano</td><td class="sym">n</td><td>十亿分之一 billionth</td></tr>
+          <tr><td class="num">10<sup>−12</sup></td><td>皮可 pico</td><td class="sym">p</td><td>万亿分之一 trillionth</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ DERIVED -->
+    <section class="ref-section">
+      <h2>3. 常用导出单位 Common Derived Units</h2>
+      <p class="lead">所有 SI 导出单位都可由七个基本单位表示；下面只列出物理中最常用者，并给出它们与基本单位的关系。All derived units reduce to the seven base units.</p>
+      <table class="ref-table">
+        <caption>表 C.3 常用导出单位 / Common derived units</caption>
+        <thead>
+          <tr>
+            <th>量 Quantity</th>
+            <th>单位名称 Name</th>
+            <th class="sym">符号 Symbol</th>
+            <th>用基本单位表示 In base units</th>
+            <th>等价关系 Equivalent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>力 force</td><td>newton 牛顿</td><td class="sym">N</td><td>kg·m·s<sup>−2</sup></td><td>—</td></tr>
+          <tr><td>能量、功、热量 energy, work, heat</td><td>joule 焦耳</td><td class="sym">J</td><td>kg·m<sup>2</sup>·s<sup>−2</sup></td><td>N·m</td></tr>
+          <tr><td>功率 power</td><td>watt 瓦特</td><td class="sym">W</td><td>kg·m<sup>2</sup>·s<sup>−3</sup></td><td>J/s</td></tr>
+          <tr><td>压强、应力 pressure, stress</td><td>pascal 帕斯卡</td><td class="sym">Pa</td><td>kg·m<sup>−1</sup>·s<sup>−2</sup></td><td>N/m<sup>2</sup></td></tr>
+          <tr><td>频率 frequency</td><td>hertz 赫兹</td><td class="sym">Hz</td><td>s<sup>−1</sup></td><td>—</td></tr>
+          <tr><td>电荷 electric charge</td><td>coulomb 库仑</td><td class="sym">C</td><td>A·s</td><td>—</td></tr>
+          <tr><td>电势、电压 electric potential</td><td>volt 伏特</td><td class="sym">V</td><td>kg·m<sup>2</sup>·s<sup>−3</sup>·A<sup>−1</sup></td><td>W/A, J/C</td></tr>
+          <tr><td>电阻 electrical resistance</td><td>ohm 欧姆</td><td class="sym">Ω</td><td>kg·m<sup>2</sup>·s<sup>−3</sup>·A<sup>−2</sup></td><td>V/A</td></tr>
+          <tr><td>电容 capacitance</td><td>farad 法拉</td><td class="sym">F</td><td>A<sup>2</sup>·s<sup>4</sup>·kg<sup>−1</sup>·m<sup>−2</sup></td><td>C/V</td></tr>
+          <tr><td>电感 inductance</td><td>henry 亨利</td><td class="sym">H</td><td>kg·m<sup>2</sup>·s<sup>−2</sup>·A<sup>−2</sup></td><td>V·s/A</td></tr>
+          <tr><td>磁通 magnetic flux</td><td>weber 韦伯</td><td class="sym">Wb</td><td>kg·m<sup>2</sup>·s<sup>−2</sup>·A<sup>−1</sup></td><td>V·s</td></tr>
+          <tr><td>磁感应强度 magnetic field</td><td>tesla 特斯拉</td><td class="sym">T</td><td>kg·s<sup>−2</sup>·A<sup>−1</sup></td><td>Wb/m<sup>2</sup></td></tr>
+          <tr><td>电导 conductance</td><td>siemens 西门子</td><td class="sym">S</td><td>kg<sup>−1</sup>·m<sup>−2</sup>·s<sup>3</sup>·A<sup>2</sup></td><td>A/V, 1/Ω</td></tr>
+          <tr><td>磁通密度、磁矩 flux density</td><td>—</td><td class="sym">T</td><td>见上 see above</td><td>—</td></tr>
+          <tr><td>角度 plane angle</td><td>radian 弧度</td><td class="sym">rad</td><td>m·m<sup>−1</sup> = 1</td><td>—</td></tr>
+          <tr><td>立体角 solid angle</td><td>steradian 球面度</td><td class="sym">sr</td><td>m<sup>2</sup>·m<sup>−2</sup> = 1</td><td>—</td></tr>
+          <tr><td>光通量 luminous flux</td><td>lumen 流明</td><td class="sym">lm</td><td>cd·sr</td><td>—</td></tr>
+          <tr><td>光照度 illuminance</td><td>lux 勒克斯</td><td class="sym">lx</td><td>cd·sr·m<sup>−2</sup></td><td>lm/m<sup>2</sup></td></tr>
+          <tr><td>摄氏温度 Celsius temperature</td><td>degree Celsius 摄氏度</td><td class="sym">°C</td><td>K（同零点差 offset）</td><td>\(t/°C = T/K - 273.15\)</td></tr>
+          <tr><td>放射性活度 activity</td><td>becquerel 贝可勒尔</td><td class="sym">Bq</td><td>s<sup>−1</sup></td><td>—</td></tr>
+          <tr><td>吸收剂量 absorbed dose</td><td>gray 戈瑞</td><td class="sym">Gy</td><td>m<sup>2</sup>·s<sup>−2</sup></td><td>J/kg</td></tr>
+          <tr><td>当量剂量 equivalent dose</td><td>sievert 希沃特</td><td class="sym">Sv</td><td>m<sup>2</sup>·s<sup>−2</sup></td><td>J/kg (× weight factor)</td></tr>
+          <tr><td>力矩 torque</td><td>newton-meter 牛·米</td><td class="sym">N·m</td><td>kg·m<sup>2</sup>·s<sup>−2</sup></td><td>同 J 量纲 same dim. as J</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ FUNDAMENTAL CONSTANTS -->
+    <section class="ref-section">
+      <h2>4. 基本物理常数 Fundamental Physical Constants</h2>
+      <p class="lead">CODATA 2018 推荐值；2019 年 SI 重新定义后，\(c, h, e, k_B, N_A\) 等已成为精确值（无不确定度）。Recommended values from CODATA 2018; since 2019 several are exact by definition.</p>
+      <table class="ref-table">
+        <caption>表 C.4 基本物理常数 / Fundamental physical constants</caption>
+        <thead>
+          <tr>
+            <th>量 名称 Name</th>
+            <th class="sym">符号 Symbol</th>
+            <th>数值 Value</th>
+            <th>单位 Units</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>真空中光速 speed of light in vacuum <em>(exact)</em></td><td class="sym">\(c\)</td><td class="num">2.997 924 58 × 10<sup>8</sup></td><td>m·s<sup>−1</sup></td></tr>
+          <tr><td>真空磁导率 vacuum permeability</td><td class="sym">\(\mu_0\)</td><td class="num">1.256 637 06 × 10<sup>−6</sup></td><td>N·A<sup>−2</sup></td></tr>
+          <tr><td>真空电容率 vacuum permittivity</td><td class="sym">\(\varepsilon_0\)</td><td class="num">8.854 187 812 8 × 10<sup>−12</sup></td><td>F·m<sup>−1</sup> (C<sup>2</sup>·N<sup>−1</sup>·m<sup>−2</sup>)</td></tr>
+          <tr><td>万有引力常数 gravitational constant</td><td class="sym">\(G\)</td><td class="num">6.674 30 × 10<sup>−11</sup></td><td>m<sup>3</sup>·kg<sup>−1</sup>·s<sup>−2</sup> (N·m<sup>2</sup>·kg<sup>−2</sup>)</td></tr>
+          <tr><td>普朗克常数 Planck constant <em>(exact)</em></td><td class="sym">\(h\)</td><td class="num">6.626 070 15 × 10<sup>−34</sup></td><td>J·s</td></tr>
+          <tr><td>约化普朗克常数 reduced Planck constant</td><td class="sym">\(\hbar\)</td><td class="num">1.054 571 817 × 10<sup>−34</sup></td><td>J·s</td></tr>
+          <tr><td>元电荷 elementary charge <em>(exact)</em></td><td class="sym">\(e\)</td><td class="num">1.602 176 634 × 10<sup>−19</sup></td><td>C</td></tr>
+          <tr><td>玻尔兹曼常数 Boltzmann constant <em>(exact)</em></td><td class="sym">\(k_B\)</td><td class="num">1.380 649 × 10<sup>−23</sup></td><td>J·K<sup>−1</sup></td></tr>
+          <tr><td>阿伏伽德罗数 Avogadro number <em>(exact)</em></td><td class="sym">\(N_A\)</td><td class="num">6.022 140 76 × 10<sup>23</sup></td><td>mol<sup>−1</sup></td></tr>
+          <tr><td>摩尔气体常数 molar gas constant</td><td class="sym">\(R = N_A k_B\)</td><td class="num">8.314 462 618</td><td>J·mol<sup>−1</sup>·K<sup>−1</sup></td></tr>
+          <tr><td>法拉第常数 Faraday constant</td><td class="sym">\(F = N_A e\)</td><td class="num">9.648 533 21 × 10<sup>4</sup></td><td>C·mol<sup>−1</sup></td></tr>
+          <tr><td>电子质量 electron mass</td><td class="sym">\(m_e\)</td><td class="num">9.109 383 70 × 10<sup>−31</sup></td><td>kg</td></tr>
+          <tr><td>质子质量 proton mass</td><td class="sym">\(m_p\)</td><td class="num">1.672 621 92 × 10<sup>−27</sup></td><td>kg</td></tr>
+          <tr><td>中子质量 neutron mass</td><td class="sym">\(m_n\)</td><td class="num">1.674 927 50 × 10<sup>−27</sup></td><td>kg</td></tr>
+          <tr><td>质子-电子质量比 \(m_p/m_e\)</td><td class="sym">—</td><td class="num">1.836 152 673 × 10<sup>3</sup></td><td>— (无量纲 dimensionless)</td></tr>
+          <tr><td>玻尔半径 Bohr radius</td><td class="sym">\(a_0\)</td><td class="num">5.291 772 109 × 10<sup>−11</sup></td><td>m</td></tr>
+          <tr><td>里德伯常数 Rydberg constant</td><td class="sym">\(R_\infty\)</td><td class="num">1.097 373 157 × 10<sup>7</sup></td><td>m<sup>−1</sup></td></tr>
+          <tr><td>精细结构常数 fine-structure constant</td><td class="sym">\(\alpha\)</td><td class="num">7.297 352 57 × 10<sup>−3</sup> (≈ 1/137.036)</td><td>— (无量纲 dimensionless)</td></tr>
+          <tr><td>磁通量子 magnetic flux quantum</td><td class="sym">\(\Phi_0 = h/(2e)\)</td><td class="num">2.067 833 85 × 10<sup>−15</sup></td><td>Wb</td></tr>
+          <tr><td>电子伏特 electronvolt</td><td class="sym">\(1\,\mathrm{eV}\)</td><td class="num">1.602 176 634 × 10<sup>−19</sup></td><td>J</td></tr>
+          <tr><td>斯特藩-玻尔兹曼常数 Stefan–Boltzmann constant</td><td class="sym">\(\sigma\)</td><td class="num">5.670 374 42 × 10<sup>−8</sup></td><td>W·m<sup>−2</sup>·K<sup>−4</sup></td></tr>
+          <tr><td>维恩位移常数 Wien displacement constant</td><td class="sym">\(b\)</td><td class="num">2.897 772 × 10<sup>−3</sup></td><td>m·K</td></tr>
+          <tr><td>标准重力加速度 standard gravity</td><td class="sym">\(g_0\)</td><td class="num">9.806 65</td><td>m·s<sup>−2</sup></td></tr>
+          <tr><td>普朗克质量 Planck mass</td><td class="sym">\(m_P = \sqrt{\hbar c/G}\)</td><td class="num">2.176 434 × 10<sup>−8</sup></td><td>kg</td></tr>
+          <tr><td>普朗克长度 Planck length</td><td class="sym">\(\ell_P = \sqrt{\hbar G/c^3}\)</td><td class="num">1.616 255 × 10<sup>−35</sup></td><td>m</td></tr>
+          <tr><td>普朗克时间 Planck time</td><td class="sym">\(t_P = \sqrt{\hbar G/c^5}\)</td><td class="num">5.391 247 × 10<sup>−44</sup></td><td>s</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ ASTRONOMICAL -->
+    <section class="ref-section">
+      <h2>5. 天体数据 Astronomical Data</h2>
+      <p class="lead">常用太阳系与天文常数。Common solar-system and astronomical constants.</p>
+      <table class="ref-table">
+        <caption>表 C.5 天体数据 / Astronomical data</caption>
+        <thead>
+          <tr>
+            <th>量 名称 Name</th>
+            <th class="sym">符号 Symbol</th>
+            <th>数值 Value</th>
+            <th>单位 Units</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>太阳质量 solar mass</td><td class="sym">\(M_\odot\)</td><td class="num">1.988 47 × 10<sup>30</sup></td><td>kg</td></tr>
+          <tr><td>太阳半径 solar radius</td><td class="sym">\(R_\odot\)</td><td class="num">6.957 × 10<sup>8</sup></td><td>m</td></tr>
+          <tr><td>太阳光度 solar luminosity</td><td class="sym">\(L_\odot\)</td><td class="num">3.828 × 10<sup>26</sup></td><td>W</td></tr>
+          <tr><td>太阳表面重力 solar surface gravity</td><td class="sym">\(g_\odot\)</td><td class="num">274.0</td><td>m·s<sup>−2</sup></td></tr>
+          <tr><td>地球质量 Earth mass</td><td class="sym">\(M_\oplus\)</td><td class="num">5.972 2 × 10<sup>24</sup></td><td>kg</td></tr>
+          <tr><td>地球平均半径 Earth mean radius</td><td class="sym">\(R_\oplus\)</td><td class="num">6.371 × 10<sup>6</sup></td><td>m</td></tr>
+          <tr><td>地球表面重力 Earth surface gravity</td><td class="sym">\(g_\oplus\)</td><td class="num">9.806 65</td><td>m·s<sup>−2</sup></td></tr>
+          <tr><td>地球自转周期 Earth sidereal day</td><td class="sym">—</td><td class="num">8.616 4 × 10<sup>4</sup></td><td>s</td></tr>
+          <tr><td>地球公转周期 Earth orbital period (year)</td><td class="sym">\(1\,\mathrm{yr}\)</td><td class="num">3.155 8 × 10<sup>7</sup></td><td>s (365.256 d)</td></tr>
+          <tr><td>月球质量 Moon mass</td><td class="sym">\(M_{\leftmoon}\)</td><td class="num">7.342 × 10<sup>22</sup></td><td>kg</td></tr>
+          <tr><td>月球半径 Moon radius</td><td class="sym">\(R_{\leftmoon}\)</td><td class="num">1.737 4 × 10<sup>6</sup></td><td>m</td></tr>
+          <tr><td>月球表面重力 Moon surface gravity</td><td class="sym">\(g_{\leftmoon}\)</td><td class="num">1.62</td><td>m·s<sup>−2</sup></td></tr>
+          <tr><td>天文单位 astronomical unit</td><td class="sym">AU</td><td class="num">1.495 978 707 × 10<sup>11</sup></td><td>m (地日平均距离 Earth–Sun mean)</td></tr>
+          <tr><td>地月平均距离 Earth–Moon mean distance</td><td class="sym">—</td><td class="num">3.844 × 10<sup>8</sup></td><td>m</td></tr>
+          <tr><td>光年 light-year</td><td class="sym">ly</td><td class="num">9.460 7 × 10<sup>15</sup></td><td>m</td></tr>
+          <tr><td>秒差距 parsec</td><td class="sym">pc</td><td class="num">3.085 7 × 10<sup>16</sup></td><td>m (≈ 3.262 ly)</td></tr>
+          <tr><td>哈勃常数 Hubble constant</td><td class="sym">\(H_0\)</td><td class="num">≈ 2.2 × 10<sup>−18</sup> (67–73)</td><td>s<sup>−1</sup> (≈ 70 km·s<sup>−1</sup>·Mpc<sup>−1</sup>)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ GREEK -->
+    <section class="ref-section">
+      <h2>6. 希腊字母 Greek Alphabet</h2>
+      <p class="lead">物理公式中常用希腊字母作符号。Greek letters are used throughout physics notation.</p>
+      <table class="ref-table greek-table">
+        <caption>表 C.6 希腊字母 / Greek alphabet</caption>
+        <thead>
+          <tr>
+            <th class="sym">大写 Upper</th>
+            <th class="sym">小写 Lower</th>
+            <th>名称 Name</th>
+            <th>常见物理含义 Common use</th>
+            <th class="sym">大写 Upper</th>
+            <th class="sym">小写 Lower</th>
+            <th>名称 Name</th>
+            <th>常见物理含义 Common use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="sym">Α</td><td class="sym">α</td><td>alpha</td><td>角度、角加速度、α 粒子</td><td class="sym">Ν</td><td class="sym">ν</td><td>nu</td><td>频率、自由度、中微子</td></tr>
+          <tr><td class="sym">Β</td><td class="sym">β</td><td>beta</td><td>角度、β 粒子、体胀系数</td><td class="sym">Ξ</td><td class="sym">ξ</td><td>xi</td><td>随机变量、阻尼比</td></tr>
+          <tr><td class="sym">Γ</td><td class="sym">γ</td><td>gamma</td><td>洛伦兹因子、γ 光子、绝热指数</td><td class="sym">Ο</td><td class="sym">ο</td><td>omicron</td><td>（少用 rarely used）</td></tr>
+          <tr><td class="sym">Δ</td><td class="sym">δ</td><td>delta</td><td>变化量 Δ、微小量 δ、狄拉克 δ</td><td class="sym">Π</td><td class="sym">π</td><td>pi</td><td>圆周率 3.14159…、动量投影</td></tr>
+          <tr><td class="sym">Ε</td><td class="sym">ε</td><td>epsilon</td><td>介电常数、小量、应变</td><td class="sym">Ρ</td><td class="sym">ρ</td><td>rho</td><td>密度、电阻率、极坐标半径</td></tr>
+          <tr><td class="sym">Ζ</td><td class="sym">ζ</td><td>zeta</td><td>黎曼 ζ、阻尼系数</td><td class="sym">Σ</td><td class="sym">σ, ς</td><td>sigma</td><td>求和 Σ、应力、Stefan 常数、σ 末位</td></tr>
+          <tr><td class="sym">Η</td><td class="sym">η</td><td>eta</td><td>效率、黏度</td><td class="sym">Τ</td><td class="sym">τ</td><td>tau</td><td>力矩、特征时间、τ 轻子</td></tr>
+          <tr><td class="sym">Θ</td><td class="sym">θ</td><td>theta</td><td>角度、热力学温度、θ 函数</td><td class="sym">Υ</td><td class="sym">υ</td><td>upsilon</td><td>（粒子物理 Υ 共振）</td></tr>
+          <tr><td class="sym">Ι</td><td class="sym">ι</td><td>iota</td><td>（少用 rarely used）</td><td class="sym">Φ</td><td class="sym">φ</td><td>phi</td><td>磁通、电势、角度、波函数</td></tr>
+          <tr><td class="sym">Κ</td><td class="sym">κ</td><td>kappa</td><td>曲率、热导率、压缩率</td><td class="sym">Χ</td><td class="sym">χ</td><td>chi</td><td>磁化率、卡方分布 χ²</td></tr>
+          <tr><td class="sym">Λ</td><td class="sym">λ</td><td>lambda</td><td>波长、本征值、Λ 粒子</td><td class="sym">Ψ</td><td class="sym">ψ</td><td>psi</td><td>量子波函数、角度</td></tr>
+          <tr><td class="sym">Μ</td><td class="sym">µ</td><td>mu</td><td>摩擦系数、磁导率、µ 前缀</td><td class="sym">Ω</td><td class="sym">ω</td><td>omega</td><td>电阻 Ω、角速度 ω、立体角</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ CONVERSIONS -->
+    <section class="ref-section">
+      <h2>7. 常用单位换算 Useful Conversions</h2>
+      <p class="lead">日常生活、工程与天文中的常用换算因子。Conversion factors in everyday, engineering, and astronomical use.</p>
+      <table class="ref-table">
+        <caption>表 C.7 常用换算 / Common conversions</caption>
+        <thead>
+          <tr>
+            <th>量 Quantity</th>
+            <th>原单位 From</th>
+            <th class="sym">=</th>
+            <th>换算值 Converted value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3">长度 length</td><td>1 inch 英寸</td><td class="sym">=</td><td>2.54 × 10<sup>−2</sup> m（精确 exact）</td></tr>
+          <tr><td>1 mile 英里</td><td class="sym">=</td><td>1.609 344 × 10<sup>3</sup> m</td></tr>
+          <tr><td>1 nautical mile 海里</td><td class="sym">=</td><td>1.852 × 10<sup>3</sup> m</td></tr>
+          <tr><td rowspan="3">—</td><td>1 angstrom 埃 (Å)</td><td class="sym">=</td><td>1.0 × 10<sup>−10</sup> m</td></tr>
+          <tr><td>1 fermi 飞米 (fm)</td><td class="sym">=</td><td>1.0 × 10<sup>−15</sup> m</td></tr>
+          <tr><td>1 astronomical unit AU</td><td class="sym">=</td><td>1.495 978 707 × 10<sup>11</sup> m</td></tr>
+          <tr><td rowspan="4">质量 mass</td><td>1 atomic mass unit u</td><td class="sym">=</td><td>1.660 539 07 × 10<sup>−27</sup> kg</td></tr>
+          <tr><td>1 pound 磅 (lb)</td><td class="sym">=</td><td>4.535 924 × 10<sup>−1</sup> kg</td></tr>
+          <tr><td>1 metric ton 吨 (t)</td><td class="sym">=</td><td>1.0 × 10<sup>3</sup> kg</td></tr>
+          <tr><td>1 slug</td><td class="sym">=</td><td>1.459 390 × 10<sup>1</sup> kg</td></tr>
+          <tr><td rowspan="4">时间 time</td><td>1 day 日 (d)</td><td class="sym">=</td><td>8.640 0 × 10<sup>4</sup> s</td></tr>
+          <tr><td>1 year 年 (yr, 365.25 d)</td><td class="sym">=</td><td>3.155 76 × 10<sup>7</sup> s</td></tr>
+          <tr><td>1 shake</td><td class="sym">=</td><td>1.0 × 10<sup>−8</sup> s</td></tr>
+          <tr><td>1 微秒 µs</td><td class="sym">=</td><td>1.0 × 10<sup>−6</sup> s</td></tr>
+          <tr><td rowspan="4">速度 speed</td><td>1 km/h</td><td class="sym">=</td><td>2.777 8 × 10<sup>−1</sup> m·s<sup>−1</sup></td></tr>
+          <tr><td>1 mph (mile per hour)</td><td class="sym">=</td><td>4.470 4 × 10<sup>−1</sup> m·s<sup>−1</sup></td></tr>
+          <tr><td>1 knot 节</td><td class="sym">=</td><td>5.144 4 × 10<sup>−1</sup> m·s<sup>−1</sup></td></tr>
+          <tr><td>光速 \(c\)（精确 exact）</td><td class="sym">=</td><td>2.997 924 58 × 10<sup>8</sup> m·s<sup>−1</sup></td></tr>
+          <tr><td rowspan="5">力、压力 force, pressure</td><td>1 dyne 达因</td><td class="sym">=</td><td>1.0 × 10<sup>−5</sup> N</td></tr>
+          <tr><td>1 pound-force lbf</td><td class="sym">=</td><td>4.448 222 N</td></tr>
+          <tr><td>1 atmosphere atm</td><td class="sym">=</td><td>1.013 25 × 10<sup>5</sup> Pa (= 760 mmHg)</td></tr>
+          <tr><td>1 bar 巴</td><td class="sym">=</td><td>1.0 × 10<sup>5</sup> Pa</td></tr>
+          <tr><td>1 torr / mmHg</td><td class="sym">=</td><td>1.333 22 × 10<sup>2</sup> Pa</td></tr>
+          <tr><td rowspan="5">能量 energy</td><td>1 electronvolt eV</td><td class="sym">=</td><td>1.602 176 634 × 10<sup>−19</sup> J（精确 exact）</td></tr>
+          <tr><td>1 calorie 卡 (thermochemical)</td><td class="sym">=</td><td>4.184 J</td></tr>
+          <tr><td>1 food calorie Cal (kcal)</td><td class="sym">=</td><td>4.184 × 10<sup>3</sup> J</td></tr>
+          <tr><td>1 BTU</td><td class="sym">=</td><td>1.055 06 × 10<sup>3</sup> J</td></tr>
+          <tr><td>1 kilowatt-hour kWh</td><td class="sym">=</td><td>3.6 × 10<sup>6</sup> J</td></tr>
+          <tr><td rowspan="3">功率 power</td><td>1 horsepower 马力 (mech.)</td><td class="sym">=</td><td>7.456 999 × 10<sup>2</sup> W (≈ 746 W)</td></tr>
+          <tr><td>1 metric horsepower 马力 (PS)</td><td class="sym">=</td><td>7.354 99 × 10<sup>2</sup> W</td></tr>
+          <tr><td>1 BTU/h</td><td class="sym">=</td><td>2.930 71 × 10<sup>−1</sup> W</td></tr>
+          <tr><td rowspan="3">角度 angle</td><td>1 degree 度 (°)</td><td class="sym">=</td><td>π / 180 rad ≈ 1.745 329 × 10<sup>−2</sup> rad</td></tr>
+          <tr><td>1 arcminute 角分 (′)</td><td class="sym">=</td><td>2.908 882 × 10<sup>−4</sup> rad</td></tr>
+          <tr><td>1 arcsecond 角秒 (″)</td><td class="sym">=</td><td>4.848 137 × 10<sup>−6</sup> rad</td></tr>
+          <tr><td rowspan="3">温度 temperature</td><td>Celsius → Kelvin</td><td class="sym">=</td><td>\(T/\mathrm{K} = t/°\mathrm{C} + 273.15\)</td></tr>
+          <tr><td>Celsius → Fahrenheit</td><td class="sym">=</td><td>\(t/°\mathrm{F} = \tfrac{9}{5}(t/°\mathrm{C}) + 32\)</td></tr>
+          <tr><td>Fahrenheit → Kelvin</td><td class="sym">=</td><td>\(T/\mathrm{K} = \tfrac{5}{9}(t/°\mathrm{F} + 459.67)\)</td></tr>
+          <tr><td rowspan="2">体积、容量 volume</td><td>1 liter 升 (L)</td><td class="sym">=</td><td>1.0 × 10<sup>−3</sup> m<sup>3</sup></td></tr>
+          <tr><td>1 gallon 加仑 (US)</td><td class="sym">=</td><td>3.785 412 × 10<sup>−3</sup> m<sup>3</sup></td></tr>
+          <tr><td rowspan="2">磁学 magnetism</td><td>1 gauss 高斯 (G)</td><td class="sym">=</td><td>1.0 × 10<sup>−4</sup> T</td></tr>
+          <tr><td>1 erg 尔格</td><td class="sym">=</td><td>1.0 × 10<sup>−7</sup> J</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================ USEFUL COMPOSITES -->
+    <section class="ref-section">
+      <h2>8. 常用数值速查 Quick Numerical Constants</h2>
+      <p class="lead">一些常用数值与组合常数。Useful numerical and composite values.</p>
+      <table class="ref-table">
+        <caption>表 C.8 常用数值 / Useful numerical values</caption>
+        <thead>
+          <tr>
+            <th>量 Quantity</th>
+            <th class="sym">符号 Symbol</th>
+            <th>数值 Value</th>
+            <th>用途 Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>圆周率 pi</td><td class="sym">\(\pi\)</td><td class="num">3.141 592 653 589 79</td><td>圆、球、波动</td></tr>
+          <tr><td>自然对数底 natural base</td><td class="sym">\(e\)</td><td class="num">2.718 281 828 459 05</td><td>指数、增长、衰减</td></tr>
+          <tr><td>\(\sqrt{2}\)</td><td class="sym">—</td><td class="num">1.414 213 56</td><td>对角线、均方根</td></tr>
+          <tr><td>\(\sqrt{3}\)</td><td class="sym">—</td><td class="num">1.732 050 81</td><td>三相电、四面体</td></tr>
+          <tr><td>\(1/(4\pi\varepsilon_0)\) 库仑常数</td><td class="sym">\(k_e\)</td><td class="num">8.987 552 × 10<sup>9</sup></td><td>N·m<sup>2</sup>·C<sup>−2</sup></td></tr>
+          <tr><td>组合常数 \(hc\)</td><td class="sym">\(hc\)</td><td class="num">1.239 841 98 × 10<sup>−6</sup></td><td>eV·m（光电效应）</td></tr>
+          <tr><td>\(\hbar c\)</td><td class="sym">\(\hbar c\)</td><td class="num">1.973 270 5 × 10<sup>−7</sup></td><td>eV·m（量子、粒子物理）</td></tr>
+          <tr><td>热功当量 mechanical equiv. of heat</td><td class="sym">\(J\)</td><td class="num">4.184</td><td>J·cal<sup>−1</sup>（精确 exact）</td></tr>
+          <tr><td>空气声速（20 °C）speed of sound in air</td><td class="sym">\(v_s\)</td><td class="num">343</td><td>m·s<sup>−1</sup></td></tr>
+          <tr><td>水密度（4 °C）water density</td><td class="sym">\(\rho_{\mathrm{H_2O}}\)</td><td class="num">1.000 × 10<sup>3</sup></td><td>kg·m<sup>−3</sup></td></tr>
+          <tr><td>水比热容 specific heat of water</td><td class="sym">\(c_w\)</td><td class="num">4.184 × 10<sup>3</sup></td><td>J·kg<sup>−1</sup>·K<sup>−1</sup></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="ref-note">提示 Tip：在使用本表数值进行计算时，请始终携带单位（量纲分析）以避免最常见的物理错误。When computing, always carry the units (dimensional analysis) — the surest way to catch mistakes.</div>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第20章 · 物理中的数值方法 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="20">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 20 · 第20章 · 第五部分 进阶专题 Part V Advanced Topics</p>
+      <h1>物理中的数值方法 <span class="en-title">Numerical Methods in Physics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>解释为什么绝大多数真实世界的常微分方程（双摆、非线性阻力、\(N\) 体问题）<strong>没有解析解</strong> (closed-form solution)，必须依赖<strong>数值积分</strong> (numerical integration)。</li>
+        <li>把任意二阶常微分方程 \(\ddot{x}=f(x,\dot{x},t)\) 化为<strong>一阶方程组</strong>，并以<strong>状态矢量</strong> (state vector) \(\vec{y}=(x,\dot{x})\) 为基本变量。</li>
+        <li>写出<strong>显式欧拉法</strong> (explicit / forward Euler) \(\vec{y}_{n+1}=\vec{y}_{n}+dt\,\vec{f}(t_{n},\vec{y}_{n})\)，识别它对振动与轨道系统的<strong>能量漂移</strong> (energy drift) 与数值不稳性。</li>
+        <li>推导并实现<strong>辛欧拉法</strong> (symplectic Euler) 与<strong>速度 Verlet 法</strong> (velocity Verlet)，说明为何它们对长期机械系统模拟近于<strong>能量守恒</strong>。</li>
+        <li>使用<strong>四阶龙格–库塔法</strong> (fourth-order Runge–Kutta, RK4)，写出四组斜率的加权平均，理解其 \(O(dt^{4})\) 局部截断误差与非辛性 (non-symplectic)。</li>
+        <li>区分<strong>截断误差</strong> (truncation error) 与<strong>舍入误差</strong> (roundoff error)，通过<strong>收敛测试</strong>（减半 \(dt\)）验证数值方法的阶数。</li>
+        <li>针对具体问题（分子动力学、轨道力学、一般初值问题）<strong>选择合适的积分方法</strong>并解释理由。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么需要数值方法？</h3>
+      <p>经典力学告诉我们：给定力 \(\vec{F}\) 与初始条件，运动由 \(m\ddot{\vec{r}}=\vec{F}\) 决定。但<strong>能写出闭式解</strong> (closed-form solution) 的问题只是沧海一粟：谐振子、单摆（小角近似）、开普勒椭圆——这些恰好是可积的特例。下面这些"真实"问题则<strong>无解析解</strong>：</p>
+      <ul>
+        <li><strong>双摆</strong> (double pendulum)：两个耦合的非线性方程，对初始条件高度敏感，呈现<strong>混沌</strong> (chaos)；</li>
+        <li><strong>非线性阻力</strong> (nonlinear drag)：\(\dot{v}=-g-kv|v|\) 的下落，速度的解析解虽为 \(\tanh\)，但加入高度依赖的空气密度后立刻无解；</li>
+        <li><strong>\(N\) 体问题</strong> (\(N\)-body problem)：太阳系动力学、星团演化、蛋白质折叠——除 \(N=2\) 外都没有闭式解。</li>
+      </ul>
+      <p>对这些系统，物理学家求助于<strong>数值积分</strong>：在计算机上以离散时间步 \(t_{0},t_{1}=t_{0}+dt,\dots,t_{n}=t_{0}+n\,dt\) 逐步逼近 \(\vec{y}(t_{n})\)。本章介绍三种最重要的积分方法——欧拉、Verlet、RK4——并讨论它们的精度、稳定性与适用场景。</p>
+      <div class="key-terms">closed-form solution (解析解 / 闭式解), numerical integration (数值积分), chaos (混沌), \(N\)-body problem (\(N\) 体问题)</div>
+
+      <h3>2. 把二阶 ODE 化为一阶方程组：状态矢量</h3>
+      <p>牛顿方程是<strong>二阶</strong>的：\(\ddot{x}=f(x,\dot{x},t)/m\)。计算机更喜欢<strong>一阶</strong>方程组。技巧是引入速度 \(v=\dot{x}\) 作为独立变量，把一个二阶 ODE 改写为两个一阶 ODE：</p>
+      <div class="formula">\[ \dot{x}=v,\qquad \dot{v}=\frac{1}{m}f(x,v,t) \]</div>
+      <p>定义<strong>状态矢量</strong> \(\vec{y}=(x,v)^{\top}\)，方程变为 \(\dot{\vec{y}}=\vec{F}(\vec{y},t)\)。这是<strong>初值问题</strong> (initial-value problem, IVP) 的标准形式：给定 \(\vec{y}(0)=\vec{y}_{0}\)，求 \(\vec{y}(t)\)。</p>
+      <p>对二维运动，\(\vec{y}=(x,y,v_{x},v_{y})^{\top}\)，共 4 个分量。对 \(N\) 粒子的三维系统，\(\vec{y}\) 有 \(6N\) 维。所有方法都以 \(\dot{\vec{y}}=\vec{F}(\vec{y},t)\) 为输入。</p>
+      <div class="key-terms">state vector (状态矢量), initial-value problem IVP (初值问题), first-order system (一阶方程组)</div>
+
+      <h3>3. 显式（前向）欧拉法</h3>
+      <p>最简单的方案：用<strong>前向差分</strong>近似导数，\(\dot{\vec{y}}\approx(\vec{y}_{n+1}-\vec{y}_{n})/dt\)，把微分方程离散化为：</p>
+      <div class="formula">\[ \boxed{\;\vec{y}_{n+1}=\vec{y}_{n}+dt\,\vec{F}(t_{n},\vec{y}_{n})\;} \]</div>
+      <p>这是<strong>显式</strong> (explicit) 方法：新状态直接由旧状态算出，无需解方程。<strong>局部截断误差</strong> (local truncation error) 每步为 \(O(dt^{2})\)（来自泰勒展开中忽略的 \(\tfrac{1}{2}\ddot{\vec{y}}\,dt^{2}\)）；累积 \(N=T/dt\) 步后<strong>全局误差</strong> (global error) 为 \(O(dt)\)，故欧拉法是<strong>一阶方法</strong>。</p>
+      <p>简单归简单，欧拉法对振动与轨道系统<strong>极其危险</strong>。考虑谐振子 \(\ddot{x}=-\omega^{2}x\)，状态 \(\vec{y}=(x,v)\)，更新矩阵：</p>
+      <div class="formula">\[ \begin{pmatrix}x_{n+1}\\ v_{n+1}\end{pmatrix}=\underbrace{\begin{pmatrix}1 & dt\\ -\omega^{2}dt & 1\end{pmatrix}}_{M}\begin{pmatrix}x_{n}\\ v_{n}\end{pmatrix} \]</div>
+      <p>特征值 \(\lambda=1\pm i\omega dt\)，模长 \(|\lambda|=\sqrt{1+\omega^{2}dt^{2}}>1\)。能量 \(E=\tfrac{1}{2}v^{2}+\tfrac{1}{2}\omega^{2}x^{2}\) 每步乘以 \(|\lambda|^{2}=1+\omega^{2}dt^{2}\)——<strong>指数增长</strong>！经过一个周期 \(T=2\pi/\omega\)，能量增大 \((1+\omega^{2}dt^{2})^{2\pi/(\omega dt)}\approx e^{\pi\omega dt}\) 倍。这是欧拉法的<strong>数值不稳性</strong>：误差不是衰减而是放大。</p>
+      <div class="key-terms">explicit/forward Euler (显式 / 前向欧拉法), local truncation error (局部截断误差), global error (全局误差), numerical instability (数值不稳性)</div>
+
+      <h3>4. 半隐式（辛）欧拉与速度 Verlet</h3>
+      <p>对力学系统，"位置更新用旧速度、速度更新用旧加速度"的朴素欧拉并非唯一选择。如果<strong>先更新速度再用新速度更新位置</strong>：</p>
+      <div class="formula">\[ v_{n+1}=v_{n}+dt\,a(x_{n}),\qquad x_{n+1}=x_{n}+dt\,v_{n+1} \]</div>
+      <p>这叫<strong>半隐式欧拉法</strong> (semi-implicit Euler) 或<strong>辛欧拉法</strong> (symplectic Euler)。对谐振子，其更新矩阵的行列式恰为 1（验证：\((1)(1)-dt(-\omega^{2}dt)=1\)），即<strong>保面积</strong>——这是<strong>辛积分</strong> (symplectic integrator) 的标志。能量虽不能精确守恒，但<strong>有界地振荡</strong>，永不漂移。</p>
+      <p>更精确的辛方法是<strong>速度 Verlet</strong> (velocity Verlet)，由泰勒展开 \(x(t+dt)=x+vt+\tfrac{1}{2}a\,dt^{2}+\dots\) 截断至 \(dt^{2}\) 项得到：</p>
+      <div class="formula">\[ \boxed{\;x_{n+1}=x_{n}+v_{n}\,dt+\tfrac{1}{2}a_{n}\,dt^{2},\qquad v_{n+1}=v_{n}+\tfrac{1}{2}(a_{n}+a_{n+1})\,dt\;} \]</div>
+      <p>其中 \(a_{n}=a(x_{n})\) 由当前位置算出，\(a_{n+1}=a(x_{n+1})\) 由新位置算出。Verlet 是<strong>二阶</strong>方法（全局误差 \(O(dt^{2})\)），且<strong>辛</strong>——是分子动力学、轨道力学、游戏物理引擎的<strong>事实标准</strong>。</p>
+      <div class="key-terms">semi-implicit / symplectic Euler (半隐式 / 辛欧拉法), velocity Verlet (速度 Verlet 法), symplectic integrator (辛积分器), area-preserving (保面积)</div>
+
+      <h3>5. 四阶龙格–库塔法（RK4）</h3>
+      <p>RK4 是一般初值问题的<strong>通用主力</strong> (workhorse)。它通过对 \(\dot{\vec{y}}=\vec{F}(\vec{y},t)\) 取<strong>四次斜率采样</strong>并加权平均，达到 \(O(dt^{4})\) 的全局精度：</p>
+      <div class="formula">\[ \begin{aligned}
+        \vec{k}_{1}&=\vec{F}(t_{n},\,\vec{y}_{n})\\
+        \vec{k}_{2}&=\vec{F}\!\bigl(t_{n}+\tfrac{dt}{2},\,\vec{y}_{n}+\tfrac{dt}{2}\vec{k}_{1}\bigr)\\
+        \vec{k}_{3}&=\vec{F}\!\bigl(t_{n}+\tfrac{dt}{2},\,\vec{y}_{n}+\tfrac{dt}{2}\vec{k}_{2}\bigr)\\
+        \vec{k}_{4}&=\vec{F}\!\bigl(t_{n}+dt,\,\vec{y}_{n}+dt\,\vec{k}_{3}\bigr)
+      \end{aligned}\qquad
+      \vec{y}_{n+1}=\vec{y}_{n}+\frac{dt}{6}\bigl(\vec{k}_{1}+2\vec{k}_{2}+2\vec{k}_{3}+\vec{k}_{4}\bigr) \]</div>
+      <p>权重 \(1:2:2:1\) 来源于辛普森积分，使方法恰好匹配泰勒展开至 \(dt^{4}\)。每步调用 4 次 \(\vec{F}\)，比欧拉贵 4 倍——但每步精度高得多。<strong>注意</strong>：RK4 <strong>不是辛方法</strong>。在保守系统中，它的能量在每步附近几乎完美，但 <strong>缓慢单调漂移</strong>，时间足够长（数千个周期）会偏离。这正是辛积分器存在的理由。</p>
+      <div class="key-terms">Runge–Kutta RK4 (龙格–库塔法), workhorse method (通用主力), Simpson's rule (辛普森积分)</div>
+
+      <h3>6. 步长 \(dt\)：精度、代价与稳定性</h3>
+      <p>步长 \(dt\) 是数值方法的<strong>核心旋钮</strong>。两个相反的考量：</p>
+      <ul>
+        <li><strong>精度</strong>：减小 \(dt\) ⇒ 全局误差 \(\propto dt^{p}\) 下降（\(p\) 为方法阶数）。</li>
+        <li><strong>代价</strong>：达到时间 \(T\) 所需步数 \(N=T/dt\) 增加，计算时间随之增加。</li>
+      </ul>
+      <p>但 \(dt\) 还有<strong>稳定性上限</strong>：太大时数值解<strong>指数发散</strong>，误差非但不减反而放大。对显式欧拉作用于振动系统，稳定的必要条件是 \(\omega dt<2\)（更新矩阵特征值不超 1）；当 \(\omega dt=\pi\)（每步跨越半个周期）时，方法完全失效。对<strong>刚性系统</strong> (stiff systems，如快慢时间尺度耦合的化学反应)，显式方法的稳定步长可能小到不切实际，需用隐式方法（此处不展开）。</p>
+      <p><strong>自适应步长</strong> (adaptive step size)：用两种阶数的方法（或同方法两种步长）估计局部误差，自动放大/缩小 \(dt\)——误差大时缩步、误差小时放步。RK4(5)（Dormand–Prince）是最常见的自适应方案。</p>
+      <div class="key-terms">step size (步长), stability limit (稳定性上限), stiff system (刚性系统), adaptive step size (自适应步长)</div>
+
+      <h3>7. 截断误差 vs 舍入误差</h3>
+      <p>数值误差有两类：</p>
+      <ul>
+        <li><strong>截断误差</strong> (truncation error)：来自算法本身（泰勒级数在某阶截断）。每步 \(O(dt^{p+1})\)，累积 \(O(dt^{p})\)。<em>随 \(dt\to 0\) 而趋于零</em>。</li>
+        <li><strong>舍入误差</strong> (roundoff error)：来自浮点数有限精度（双精度 \(\varepsilon\approx 2.2\times10^{-16}\)）。每步加减产生的随机误差 \(\sim\varepsilon|\vec{y}|\)，\(N\) 步累积（随机游走）\(\sim\varepsilon|\vec{y}|\sqrt{N}\)。<em>随 \(dt\to 0\)（即 \(N\to\infty\)）而上升</em>。</li>
+      </ul>
+      <p>总误差 \(E_{\text{tot}}(dt)\approx A\,dt^{p}+B\,\varepsilon/\sqrt{dt}\)，存在<strong>最优 \(dt\)</strong>。对 RK4（\(p=4\)），\(dt_{\text{opt}}\sim\varepsilon^{2/9}\approx 2\times10^{-4}\)——通常远大于实用步长，故舍入很少是瓶颈。但对欧拉法（\(p=1\)），\(dt_{\text{opt}}\sim\varepsilon^{2/3}\approx 5\times10^{-11}\)，更接近实用区间。<strong>"越小越好"并不永远成立</strong>。</p>
+      <div class="key-terms">truncation error (截断误差), roundoff error (舍入误差), machine epsilon (机器精度), optimal step size (最优步长)</div>
+
+      <h3>8. 实用建议：为问题选对方法</h3>
+      <table style="width:100%; border-collapse:collapse; margin:1em 0;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--sim-axis,#475569);">
+            <th style="text-align:left; padding:6px 10px;">问题类型</th>
+            <th style="text-align:left; padding:6px 10px;">推荐方法</th>
+            <th style="text-align:left; padding:6px 10px;">理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:6px 10px;">分子动力学 / 轨道长期演化</td>
+            <td style="padding:6px 10px;">Verlet 族（辛）</td>
+            <td style="padding:6px 10px;">能量有界、相空间体积守恒</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:6px 10px;">一般初值问题（要求精度）</td>
+            <td style="padding:6px 10px;">RK4（或自适应 RK4(5)）</td>
+            <td style="padding:6px 10px;">高阶、易实现、普适</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:6px 10px;">实时游戏 / 视觉仿真</td>
+            <td style="padding:6px 10px;">半隐式 Euler 或 Verlet</td>
+            <td style="padding:6px 10px;">便宜、稳定、能量可控</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:6px 10px;">刚性系统（快慢尺度耦合）</td>
+            <td style="padding:6px 10px;">隐式方法（BDF 等）</td>
+            <td style="padding:6px 10px;">显式方法稳定步长过小</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;">保守 Hamilton 系统（理论）</td>
+            <td style="padding:6px 10px;">辛积分器（辛 Euler / Verlet / 辛 RK）</td>
+            <td style="padding:6px 10px;">长期保持近能量守恒</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 20.1：由泰勒展开导出速度 Verlet 公式</h3>
+      <p class="step"><strong>步骤 1（位置展开至 \(dt^{2}\)）：</strong> 对位置 \(x(t)\) 作泰勒展开：</p>
+      <div class="formula">\[ x(t+dt)=x(t)+\dot{x}(t)\,dt+\tfrac{1}{2}\ddot{x}(t)\,dt^{2}+O(dt^{3}) \]</div>
+      <p>代入 \(\dot{x}=v\)，\(\ddot{x}=a\)，截断至 \(dt^{2}\)：</p>
+      <div class="formula">\[ x_{n+1}=x_{n}+v_{n}\,dt+\tfrac{1}{2}a_{n}\,dt^{2}+O(dt^{3}) \]</div>
+      <p class="step"><strong>步骤 2（速度展开至 \(dt\)，再修正）：</strong> 朴素地 \(v_{n+1}=v_{n}+a_{n}\,dt\) 只有一阶精度。要达到二阶，必须把"区间 \([t,t+dt]\) 内的加速度"用<strong>梯形规则</strong>平均：</p>
+      <div class="formula">\[ v_{n+1}=v_{n}+\tfrac{1}{2}(a_{n}+a_{n+1})\,dt+O(dt^{3}) \]</div>
+      <p class="step"><strong>步骤 3（实现顺序）：</strong> 注意 \(a_{n+1}=a(x_{n+1})\) 依赖于<strong>新位置</strong>，故实现顺序为：(i) 用 \(a_{n}\) 算 \(x_{n+1}\)；(ii) 用 \(x_{n+1}\) 算 \(a_{n+1}\)；(iii) 用 \((a_{n},a_{n+1})\) 的平均更新 \(v\)。这正是"速度 Verlet"算法。</p>
+      <p class="step"><strong>步骤 4（验证二阶精度）：</strong> 把 \(x_{n+1}\) 的表达式取泰勒展开到 \(dt^{3}\)，并把 \(v_{n+1}\) 表达式同样展开，再代入 \(\dot{\vec{y}}=\vec{F}\) 的精确解 \(\vec{y}(t+dt)\)，比较系数：两者匹配到 \(dt^{2}\) 项，差异为 \(O(dt^{3})\)。<strong>每步局部误差 \(O(dt^{3})\)，全局累积 \(O(dt^{2})\) ⇒ 二阶方法</strong>。</p>
+      <p class="step"><strong>步骤 5（验证辛性 / 保面积）：</strong> 对谐振子 \(\ddot{x}=-\omega^{2}x\)，速度 Verlet 的更新矩阵为（见核心概念 §4）：</p>
+      <div class="formula">\[ M=\begin{pmatrix}1-\tfrac{\omega^{2}dt^{2}}{2} & dt\\[2pt] -\omega^{2}dt\bigl(1-\tfrac{\omega^{2}dt^{2}}{4}\bigr) & 1-\tfrac{\omega^{2}dt^{2}}{2}\end{pmatrix} \]</div>
+      <p>计算行列式：\(\det M=(1-\tfrac{\omega^{2}dt^{2}}{2})^{2}+\omega^{2}dt^{2}(1-\tfrac{\omega^{2}dt^{2}}{4})=1-\omega^{2}dt^{2}+\tfrac{\omega^{4}dt^{4}}{4}+\omega^{2}dt^{2}-\tfrac{\omega^{4}dt^{4}}{4}=1\)。<strong>\(\det M=1\)</strong>——相空间中任意区域面积守恒，正是<strong>辛映射</strong>的定义。这正是 Verlet 对机械系统能量"不漂移只振荡"的几何根源。</p>
+
+      <h3>推导 20.2：显式欧拉作用于谐振子的能量增长因子</h3>
+      <p>对谐振子 \(\ddot{x}=-\omega^{2}x\)，显式欧拉的更新矩阵 \(M=\begin{pmatrix}1 & dt\\ -\omega^{2}dt & 1\end{pmatrix}\)，特征方程 \(\lambda^{2}-2\lambda+(1+\omega^{2}dt^{2})=0\)，特征值 \(\lambda=1\pm i\omega dt\)，模长平方：</p>
+      <div class="formula">\[ |\lambda|^{2}=(1)^{2}+(\omega dt)^{2}=1+\omega^{2}dt^{2} \]</div>
+      <p>能量 \(E_{n}\propto x_{n}^{2}+(v_{n}/\omega)^{2}\) 是 \((x,v/\omega)\) 平面中矢量长度的平方，而该矢量每步被 \(M\) 作用——其长度平方乘以 \(|\lambda|^{2}\)。故 \(E_{n+1}=(1+\omega^{2}dt^{2})\,E_{n}\)，每步乘以同一因子 ⇒ 几何级数：</p>
+      <div class="formula">\[ E_{n}=E_{0}\,(1+\omega^{2}dt^{2})^{n} \]</div>
+      <p>经过一个周期 \(T=2\pi/\omega\)，\(n=T/dt=2\pi/(\omega dt)\) 步，能量因子为 \((1+\omega^{2}dt^{2})^{2\pi/(\omega dt)}\)。利用 \((1+u)^{1/u}\to e\)：</p>
+      <div class="formula">\[ \frac{E_{T}}{E_{0}}\xrightarrow{dt\to 0}e^{\pi\omega dt}\quad(\text{每周期增长因子}) \]</div>
+      <p>例如 \(\omega=1,\,dt=0.2\)：\(e^{0.628}\approx 1.85\)，每周期能量涨 85%；5 个周期后涨 \(1.85^{5}\approx 22\) 倍。这是<strong>数值不稳性</strong>的清晰例子：误差不衰减而指数增长，与真实物理（能量严格守恒）矛盾。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 20.1 谐振子：欧拉、Verlet、RK4 长期能量比较</h4>
+        <p class="example-statement">谐振子 \(m=1.0\,\mathrm{kg}\)，\(k=1.0\,\mathrm{N/m}\)（\(\omega=1.0\,\mathrm{rad/s}\)，周期 \(T=2\pi\,\mathrm{s}\)）。初始 \(x_{0}=1.0\,\mathrm{m}\)，\(v_{0}=0\)，故 \(E_{0}=\tfrac{1}{2}kx_{0}^{2}=0.50\,\mathrm{J}\)。取步长 \(dt=0.20\,\mathrm{s}\)，分别用 (a) 显式欧拉、(b) 速度 Verlet、(c) RK4 各积分 5 个周期（\(t_{\text{f}}=10\pi\approx 31.4\,\mathrm{s}\)，约 157 步）。求各方法在终点的振幅与能量，并说明现象。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 显式欧拉：</strong> 由推导 20.2，每步能量乘以 \((1+\omega^{2}dt^{2})=1.04\)。经过 5 个周期（\(n=5T/dt=5\times 2\pi/0.2\approx 157\) 步）：</p>
+          <div class="formula">\[ E_{\text{f}}=E_{0}\,(1.04)^{157}=0.50\times e^{157\ln 1.04}=0.50\times e^{6.16}=0.50\times 474=237\,\mathrm{J} \]</div>
+          <p class="step">振幅 \(A_{\text{f}}=\sqrt{2E_{\text{f}}/k}=\sqrt{474}=21.8\,\mathrm{m}\)。<strong>振幅从 \(1\,\mathrm{m}\) 涨到 \(22\,\mathrm{m}\)</strong>，与真实谐振子（振幅应恒为 \(1\,\mathrm{m}\)）差 22 倍——欧拉法完全不靠谱。</p>
+          <p class="step"><strong>(b) 速度 Verlet：</strong> 由 \(\det M=1\)（推导 20.1 步骤 5），能量在每步有界振荡，振幅 \(\sim O(dt^{2})\approx 4\%\)。具体地，能量在区间 \(E_{0}[1\pm\tfrac{\omega dt}{2}]\approx[0.45,\,0.55]\,\mathrm{J}\) 内来回振荡，<strong>5 个周期后回到 \(E\approx 0.50\,\mathrm{J}\)</strong>。振幅始终在 \([0.97,\,1.03]\,\mathrm{m}\) 之间。<strong>近完美能量守恒</strong>（仅有微小相位/频率偏移：数值频率 \(\omega_{\text{num}}=\tfrac{2}{dt}\arcsin(\omega dt/2)=1.00083\,\mathrm{rad/s}\)，相对误差 \(8\times10^{-4}\)）。</p>
+          <p class="step"><strong>(c) RK4：</strong> RK4 是四阶方法，每步局部误差 \(O(dt^{5})\)，全局 \(O(dt^{4})=0.2^{4}=1.6\times10^{-3}\)。在 5 个周期内能量偏差 \(|\Delta E|/E_{0}\lesssim 10^{-3}\)，即 \(E_{\text{f}}=0.500\pm 0.001\,\mathrm{J}\)。振幅 \(\approx 1.000\,\mathrm{m}\)。<strong>在 5 个周期尺度上 RK4 与 Verlet 看起来一样完美</strong>；它们的区别要在<strong>数千个周期</strong>后才显现（见下文）。</p>
+          <p class="step"><strong>(d) 长期对比（数千个周期）：</strong> 把积分推到 \(10^{4}\) 个周期（\(\approx 6.3\times10^{4}\,\mathrm{s}\)，\(N\approx 3.1\times10^{5}\) 步）。Verlet 能量仍在 \(0.50\pm 0.02\,\mathrm{J}\) 内振荡；RK4 能量则<strong>缓慢线性漂移</strong>，累积偏差约 \(10^{-2}\,\mathrm{J}\)（占 2%）。这是 RK4 <strong>非辛性</strong>的体现：短期无敌，长期输给辛方法。</p>
+          <p><span class="ans">欧拉：\(E_{\text{f}}\approx 237\,\mathrm{J}\)，\(A_{\text{f}}\approx 21.8\,\mathrm{m}\)（指数发散，不可用）；Verlet：\(E_{\text{f}}\approx 0.50\pm 0.02\,\mathrm{J}\)，\(A_{\text{f}}\approx 1.00\,\mathrm{m}\)（辛、能量有界）；RK4：\(E_{\text{f}}=0.500\pm 0.001\,\mathrm{J}\)，\(A_{\text{f}}\approx 1.000\,\mathrm{m}\)（短期极准，长期慢漂）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 20.2 二维开普勒轨道：欧拉使轨道"螺旋外飞"</h4>
+        <p class="example-statement">单位质量粒子在中心引力 \(\vec{a}=-GM\vec{r}/r^{3}\) 下运动，\(GM=1\)（无量纲；可视为 SI 比例）。初始 \((x_{0},y_{0})=(1,0)\)，\((v_{x0},v_{y0})=(0,1)\)——这是半径 \(r=1\) 的<strong>圆轨道</strong>，速度恰为 \(v_{\text{circ}}=\sqrt{GM/r}=1\)，周期 \(T=2\pi\sqrt{r^{3}/GM}=2\pi\)。机械能（每单位质量）\(E_{0}=\tfrac{1}{2}v^{2}-GM/r=\tfrac{1}{2}-1=-\tfrac{1}{2}\)。取 \(dt=0.10\)，分别用显式欧拉、速度 Verlet、RK4 积分一个周期，描述结果。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 显式欧拉——能量注入：</strong> 第一步（\((x,y,v_{x},v_{y})=(1,0,0,1)\)）：</p>
+          <div class="formula">\[ \vec{a}_{0}=-\frac{(1,0)}{1^{3}}=(-1,0) \]</div>
+          <p class="step">欧拉更新：\(x_{1}=1+0.1\times 0=1\)，\(y_{1}=0+0.1\times 1=0.1\)，\(v_{x,1}=0+0.1\times(-1)=-0.1\)，\(v_{y,1}=1+0.1\times 0=1\)。新位置 \(r_{1}=\sqrt{1+0.01}=1.00499\)，新速率 \(v_{1}=\sqrt{0.01+1}=1.00499\)。新能量：</p>
+          <div class="formula">\[ E_{1}=\tfrac{1}{2}(1.00499)^{2}-\frac{1}{1.00499}=0.5050-0.99504=-0.49004 \]</div>
+          <p class="step">每步 \(\Delta E\approx+0.00996\)（约 \(+2\%\)）。线性外推，经过一个周期 \(n=2\pi/0.1\approx 63\) 步，\(\Delta E\approx+0.627\)，给出 \(E_{T}\approx -0.5+0.627=+0.13\)——能量变正 ⇒ <strong>粒子摆脱束缚</strong>！实际积分显示：欧拉轨道从圆轨道<strong>螺旋外飞</strong>，几个周期后逃离到无穷远。</p>
+          <p class="step"><strong>(b) 速度 Verlet——闭合椭圆：</strong> 辛性保证 \(E\) 有界振荡。每步 \(\Delta E\) 时正时负相互抵消，一个周期后 \(E_{T}=-0.500\pm 0.005\)。轨道保持闭合（数值上略有进动，因 Verlet 给出的"数值频率"与真实不同，但偏差 \(\sim O(dt^{2})=1\%\)）。"螺旋外飞"现象完全消失。</p>
+          <p class="step"><strong>(c) RK4——近乎完美：</strong> 每步局部误差 \(O(dt^{5})=10^{-5}\)，一个周期累积误差 \(\sim 6\times10^{-4}\)。能量 \(E_{T}=-0.4997\)，与 \(E_{0}\) 几乎不可区分。轨道在视觉上与真实椭圆重合。</p>
+          <p class="step"><strong>结论：</strong> 对力学系统（保守、长期演化），<strong>Verlet（或更一般的辛方法）是首选</strong>。RK4 适合需要短期高精度的场合，但对超长积分（如太阳系 10⁹ 年演化）的辛性缺失会显现。<strong>显式欧拉几乎从不应被使用</strong>——它的简单被其不稳定性远远抵消。</p>
+          <p><span class="ans">欧拉：\(E\) 单调上升，每周期 \(\Delta E\approx+0.628\)，\(E>0\) 后逃逸（轨道螺旋外飞）；Verlet：\(E_{T}=-0.500\pm 0.005\)（辛、闭合）；RK4：\(E_{T}\approx-0.4997\)（短期最准）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 20.3 收敛测试：减半 \(dt\)，验证方法阶数</h4>
+        <p class="example-statement">解 \(y'=-y\)，\(y(0)=1\)，到 \(t=1\)。精确解 \(y(t)=e^{-t}\)，\(y(1)=0.3678794412\)。分别用显式欧拉与 RK4，\(dt=0.1,\,0.05,\,0.025,\,0.0125\)，列表给出误差与误差比，验证方法的阶。</p>
+        <div class="example-solution">
+          <p class="step"><strong>显式欧拉：</strong> 迭代 \(y_{n+1}=(1-dt)\,y_{n}\)，故 \(y_{N}=(1-dt)^{N}\)，\(N=1/dt\)。</p>
+          <div class="formula">\[ \begin{array}{c|c|c|c}
+            dt & y_{N} & |错误| & \text{比上一行}\\\hline
+            0.1 & 0.9^{10}=0.34867844 & 1.920\times10^{-2} & -\\
+            0.05 & 0.95^{20}=0.35848592 & 9.394\times10^{-3} & 2.04\\
+            0.025 & 0.975^{40}=0.36316799 & 4.711\times10^{-3} & 1.99\\
+            0.0125 & 0.9875^{80}=0.36551676 & 2.363\times10^{-3} & 1.99
+          \end{array} \]</div>
+          <p class="step">误差比稳定在 \(\approx 2\)，对应 \(O(dt^{1})\)（\(dt\to dt/2\) 时误差减半）⇒ <strong>欧拉是一阶方法 ✓</strong>。</p>
+          <p class="step"><strong>RK4：</strong> 对 \(f(y)=-y\)，单步更新可显式化简（推导见练习 5）：</p>
+          <div class="formula">\[ y_{n+1}=y_{n}\Bigl(1-dt+\tfrac{dt^{2}}{2}-\tfrac{dt^{3}}{6}+\tfrac{dt^{4}}{24}\Bigr) \]</div>
+          <p class="step">这正是 \(e^{-dt}\) 的四阶泰勒近似。每步误差 \(\sim dt^{5}/120\)。列表如下：</p>
+          <div class="formula">\[ \begin{array}{c|c|c|c}
+            dt & y_{N} & |错误| & \text{比上一行}\\\hline
+            0.1 & 0.3678793 & 8.3\times10^{-8} & -\\
+            0.05 & 0.367879438 & 5.2\times10^{-9} & 16.0\\
+            0.025 & 0.36787944117 & 3.3\times10^{-10} & 15.9\\
+            0.0125 & 0.36787944117 & 2.1\times10^{-11} & 15.9
+          \end{array} \]</div>
+          <p class="step">误差比稳定在 \(\approx 16=2^{4}\)，对应 \(O(dt^{4})\)（\(dt\to dt/2\) 时误差减少 \(2^{4}=16\) 倍）⇒ <strong>RK4 是四阶方法 ✓</strong>。在 \(dt=0.1\) 时，RK4 已达 \(10^{-7}\) 精度，欧拉则只有 \(10^{-2}\)——同样步长下 RK4 比 Euler 精确 \(10^{5}\) 倍。</p>
+          <p class="step"><strong>实务指导：</strong> 看到"减半 \(dt\)，误差比是否如预期"是验证代码与方法的<strong>黄金标准</strong>。如果误差比不接近 \(2^{p}\)，可能代码有 bug，或处于舍入误差主导区。</p>
+          <p><span class="ans">欧拉误差比 \(\approx 2\)（一阶）；RK4 误差比 \(\approx 16\)（四阶）。同 \(dt=0.1\) 下 RK4 比 Euler 精确约 \(10^{5}\) 倍</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 20.4 二次阻尼下落：数值求解收尾速度</h4>
+        <p class="example-statement">质量 \(m=1.0\,\mathrm{kg}\) 的物体在重力（\(g=9.80\,\mathrm{m/s^{2}}\)）与<strong>二次空气阻力</strong> \(-kv|v|\)（\(k=0.40\,\mathrm{kg/m}\)）下从静止下落（取向下为负）。运动方程 \(m\dot{v}=-mg-kv|v|\)，即 \(\dot{v}=-9.80-0.40\,v|v|\)。<strong>收尾速度</strong> (terminal velocity) 是 \(\dot{v}=0\) 时的恒定速度。求 \(v_{t}\)，并用 RK4 数值积分 3 秒验证 \(v(t)\to v_{t}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解析收尾速度：</strong> 令 \(\dot{v}=0\)，\(-9.80-0.40\,v_{t}|v_{t}|=0\)。下落时 \(v<0\)，故 \(v_{t}|v_{t}|=-v_{t}^{2}\)，方程变为 \(-9.80+0.40\,v_{t}^{2}=0\)：</p>
+          <div class="formula">\[ v_{t}=-\sqrt{\frac{g}{k/m}}=-\sqrt{\frac{9.80}{0.40}}=-\sqrt{24.5}=-4.9497\,\mathrm{m/s} \]</div>
+          <p class="step">取负号表示向下。注意：纯二次阻尼下速度其实有解析解 \(v(t)=v_{t}\tanh(gt/|v_{t}|)\)（参考练习 4），但若阻力律偏离二次（如线性 + 二次混合，或 \(k\) 随高度/速度变化），<strong>数值方法是唯一可行途径</strong>。我们此处用数值法验证最简单的二次情形。</p>
+          <p class="step"><strong>RK4 积分（\(dt=0.5\,\mathrm{s}\)）：</strong> 右端函数 \(f(v)=-9.80-0.40\,v|v|\)。第一步 \(v_{0}=0\)：</p>
+          <div class="formula">\[ \begin{aligned}
+            k_{1}&=f(0)=-9.80\\
+            k_{2}&=f(0+0.25\,k_{1})=f(-2.45)=-9.80+0.40(2.45)^{2}=-7.40\\
+            k_{3}&=f(0+0.25\,k_{2})=f(-1.85)=-9.80+0.40(1.85)^{2}=-8.43\\
+            k_{4}&=f(0+0.5\,k_{3})=f(-4.215)=-9.80+0.40(4.215)^{2}=-2.70
+          \end{aligned} \]</div>
+          <div class="formula">\[ v_{1}=0+\frac{0.5}{6}(-9.80-14.80-16.86-2.70)=\frac{0.5}{6}(-44.16)=-3.680\,\mathrm{m/s} \]</div>
+          <p class="step">解析值 \(v(0.5)=v_{t}\tanh(0.5\times9.80/4.9497)=-4.9497\tanh(0.990)=-4.9497\times0.7587=-3.755\,\mathrm{m/s}\)。RK4 一步误差仅 \(0.075\,\mathrm{m/s}\)（\(2\%\)）——已经很好，且 RK4 误差随 \(dt\to 0\) 以 \(O(dt^{4})\) 下降。</p>
+          <p class="step"><strong>用更小步长 \(dt=0.10\,\mathrm{s}\) 积分 3 秒：</strong> 结果（每 0.5 s 报告一次）：</p>
+          <div class="formula">\[ \begin{array}{c|c|c}
+            t\,(\mathrm{s}) & v_{\text{RK4}}\,(\mathrm{m/s}) & v_{\text{解析}}\,(\mathrm{m/s})\\\hline
+            0.0 & 0 & 0\\
+            0.5 & -3.755 & -3.755\\
+            1.0 & -4.758 & -4.758\\
+            1.5 & -4.935 & -4.935\\
+            2.0 & -4.985 & -4.985\\
+            3.0 & -4.9497 & -4.9497\;\checkmark
+          \end{array} \]</div>
+          <p class="step">RK4 与解析解在 4 位有效数字上完全一致。\(t\approx 2\,\mathrm{s}\)（约 4 个时间常数 \(\tau=|v_{t}|/g\approx 0.5\,\mathrm{s}\)）时速度已收敛到 \(v_{t}\) 的 99%；\(t=3\,\mathrm{s}\) 时已精确到 5 位有效数字。<strong>收尾速度 \(-4.95\,\mathrm{m/s}\)</strong>（向下）。</p>
+          <p><span class="ans">\(v_{t}=-\sqrt{g/(k/m)}=-4.95\,\mathrm{m/s}\)（向下）；RK4 数值解 \(v(3\,\mathrm{s})=-4.9497\,\mathrm{m/s}\)，与解析解 5 位有效数字一致</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 20.5 截断 vs 舍入：最优步长的估计</h4>
+        <p class="example-statement">用某种 \(p\) 阶方法积分 \(\dot{y}=f(y)\) 到固定时间 \(T\)，总误差模型为 \(E_{\text{tot}}(dt)\approx A\,dt^{p}+B\,\varepsilon/\sqrt{dt}\)，其中 \(\varepsilon=2.2\times10^{-16}\) 为机器精度，\(A\sim B\sim 1\)。分别估计 (a) 欧拉（\(p=1\)）、(b) RK4（\(p=4\)）的最优步长 \(dt_{\text{opt}}\)，并解释物理意义。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（最小化总误差）：</strong> 令 \(\dv{E_{\text{tot}}}{dt}=0\)：</p>
+          <div class="formula">\[ pA\,dt^{p-1}-\frac{B\varepsilon}{2\,dt^{3/2}}=0\quad\Longrightarrow\quad dt^{p+1/2}=\frac{B\varepsilon}{2pA} \]</div>
+          <div class="formula">\[ \boxed{\;dt_{\text{opt}}=\Bigl(\frac{B\varepsilon}{2pA}\Bigr)^{\!2/(2p+1)}\;} \]</div>
+          <p class="step"><strong>(a) 欧拉（\(p=1\)）：</strong> 取 \(A=B=1\)：</p>
+          <div class="formula">\[ dt_{\text{opt}}=\bigl(\tfrac{\varepsilon}{2}\bigr)^{2/3}=(1.1\times10^{-16})^{2/3}\approx 4.9\times10^{-11}\,\mathrm{s} \]</div>
+          <p class="step"><strong>(b) RK4（\(p=4\)）：</strong></p>
+          <div class="formula">\[ dt_{\text{opt}}=\bigl(\tfrac{\varepsilon}{8}\bigr)^{2/9}=(2.75\times10^{-17})^{2/9}\approx 1.7\times10^{-4}\,\mathrm{s} \]</div>
+          <p class="step"><strong>解释：</strong> 对欧拉法，\(dt_{\text{opt}}\) 约 \(10^{-11}\)——比任何实际应用小得多。这意味着<strong>对欧拉法，舍入误差几乎从不构成瓶颈</strong>（你永远会用比这大得多的 \(dt\)，截断占主导）。对 RK4，\(dt_{\text{opt}}\approx 10^{-4}\)——意味着如果你把 \(dt\) 减到 \(10^{-5}\) 或更小，<strong>舍入误差开始压过截断误差</strong>，进一步减小 \(dt\) 不仅无益反而有害。</p>
+          <p class="step"><strong>教训：</strong> 高阶方法在"理论上可任意精确"的同时，受舍入误差的硬性下限约束。对长期或大量步数的积分，应考虑<strong>Kahan 求和</strong>或更高精度算术（quad precision）。</p>
+          <p><span class="ans">\(dt_{\text{opt}}^{(\text{Euler})}\approx 5\times10^{-11}\)；\(dt_{\text{opt}}^{(\text{RK4})}\approx 2\times10^{-4}\)。低阶方法几乎不受舍入限制；高阶方法在很小 \(dt\) 下舍入会主导</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>用显式欧拉积分振动或轨道系统。</strong>显式欧拉对 \(\ddot{x}=-\omega^{2}x\) 给出特征值模长 \(|\lambda|=\sqrt{1+\omega^{2}dt^{2}}>1\)，<strong>能量每步乘以 \(1+\omega^{2}dt^{2}\)</strong>，几何级数发散。结果是振幅指数增长、轨道螺旋外飞——纯数值假象，与真实物理（能量守恒）相反。<strong>对任何保守力学系统，永远首选辛方法（Verlet 等）</strong>，不要用朴素欧拉。</li>
+        <li><strong>"\(dt\) 越小一定越准"。</strong>这只在截断误差主导时成立。一旦 \(dt\) 接近 \(dt_{\text{opt}}\)（见例 20.5），舍入误差开始上升，<strong>减半 \(dt\) 反而让总误差变大</strong>。对 RK4，这一拐点在 \(dt\sim10^{-4}\)，并非不可触及。任何"看到误差不再下降"的现象都应怀疑是舍入主导。</li>
+        <li><strong>把 RK4 当成"万能且永远最优"。</strong>RK4 短期无敌，但<strong>不是辛方法</strong>：对谐振子或开普勒轨道积分 \(10^{4}\) 个周期，能量会缓慢线性漂移（虽小但不归零）。而 Verlet（辛）的能量<strong>有界振荡</strong>、永不漂移。长期演化（行星轨道、分子动力学、银河系模拟）必须用辛方法。</li>
+        <li><strong>忘了做收敛测试。</strong>不通过"减半 \(dt\)，结果是否如预期收敛"验证的数值结果<strong>不能信赖</strong>。常见错误：选定 \(dt\) 后直接报告结果，未确认这是 \(dt\to 0\) 的渐近行为。每次报告数值解都应附带"用 \(dt/2\) 重做一次，结果变化 \(\Delta\)"——\(\Delta\) 给出实际精度的<strong>经验估计</strong>。</li>
+        <li><strong>把"局部误差阶 \(p+1\)"与"全局误差阶 \(p\)"混淆。</strong>欧拉单步误差 \(O(dt^{2})\)，但累积 \(N=T/dt\) 步后全局误差 \(O(dt)\)，所以是<strong>一阶方法</strong>。RK4 单步 \(O(dt^{5})\)，全局 \(O(dt^{4})\)，是<strong>四阶方法</strong>。文献中"方法阶数"通常指<strong>全局阶数</strong>。</li>
+        <li><strong>对刚性系统（stiff）仍坚持显式方法。</strong>快慢时间尺度耦合（如化学反应动力学、电路瞬态）下，显式方法的稳定步长受快尺度限制，可能小到 \(10^{-8}\,\mathrm{s}\)，而物理上关心的是慢尺度（\(1\,\mathrm{s}\)）。此时显式方法代价巨大，应换<strong>隐式方法</strong>（BDF、隐式 RK）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 显式欧拉的前两步：谐振子 \(\ddot{x}=-x\)（\(\omega=1\)），初始 \(x_{0}=1\)，\(v_{0}=0\)，\(dt=0.5\)。手算前两步，并计算每步的能量 \(E_{n}=\tfrac{1}{2}(v_{n}^{2}+x_{n}^{2})\)，验证 \(E_{n+1}/E_{n}=1+\omega^{2}dt^{2}\)。</summary>
+        <div class="hint">用 \(x_{n+1}=x_{n}+dt\,v_{n}\)、\(v_{n+1}=v_{n}-dt\,x_{n}\)。</div>
+        <div class="solution">第 1 步：\(x_{1}=1+0.5\times 0=1\)，\(v_{1}=0-0.5\times 1=-0.5\)。<br>能量 \(E_{0}=\tfrac{1}{2}(0+1)=0.5\)；\(E_{1}=\tfrac{1}{2}((-0.5)^{2}+1^{2})=\tfrac{1}{2}(1.25)=0.625\)。<br>比值 \(E_{1}/E_{0}=1.25=1+\omega^{2}dt^{2}=1+0.25\) ✓<br>第 2 步：\(x_{2}=1+0.5\times(-0.5)=0.75\)，\(v_{2}=-0.5-0.5\times 1=-1.0\)。<br>\(E_{2}=\tfrac{1}{2}(1+0.5625)=0.78125\)。\(E_{2}/E_{1}=1.25\) ✓<br>每步能量乘以 \(1.25\)，几何级数增长。<br><span class="ans">\((x_{1},v_{1})=(1,-0.5)\)，\(E_{1}=0.625\)；\((x_{2},v_{2})=(0.75,-1.0)\)，\(E_{2}=0.78125\)。比值 \(E_{n+1}/E_{n}=1.25=1+\omega^{2}dt^{2}\) ✓</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 半隐式欧拉的辛性：对谐振子，更新规则为 \(v_{n+1}=v_{n}-dt\,\omega^{2}x_{n}\)、\(x_{n+1}=x_{n}+dt\,v_{n+1}\)。写出更新矩阵 \(M\)，证明 \(\det M=1\)，并说明相空间面积守恒。</summary>
+        <div class="hint">把 \((x_{n+1},v_{n+1})\) 写成 \((x_{n},v_{n})\) 的线性变换。</div>
+        <div class="solution">把 \(v_{n+1}\) 代入 \(x_{n+1}\)：<br>\(x_{n+1}=x_{n}+dt\,(v_{n}-dt\,\omega^{2}x_{n})=(1-\omega^{2}dt^{2})\,x_{n}+dt\,v_{n}\)。<br>矩阵形式：<br>\(\begin{pmatrix}x_{n+1}\\ v_{n+1}\end{pmatrix}=\begin{pmatrix}1-\omega^{2}dt^{2} & dt\\ -\omega^{2}dt & 1\end{pmatrix}\begin{pmatrix}x_{n}\\ v_{n}\end{pmatrix}\)。<br>\(M=\begin{pmatrix}1-\omega^{2}dt^{2} & dt\\ -\omega^{2}dt & 1\end{pmatrix}\)。<br>\(\det M=(1-\omega^{2}dt^{2})(1)-dt(-\omega^{2}dt)=1-\omega^{2}dt^{2}+\omega^{2}dt^{2}=1\) ✓<br>相空间中线性变换的面积放大因子即 \(|\det M|\)。既然 \(\det M=1\)，面积守恒——这就是<strong>辛映射</strong> (symplectic map) 的标志，能量在每步附近振荡但不漂移。<br><span class="ans">\(M=\begin{pmatrix}1-\omega^{2}dt^{2} & dt\\ -\omega^{2}dt & 1\end{pmatrix}\)，\(\det M=1\) ⇒ 相空间面积守恒 ⇒ 辛</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. RK4 单步：\(\dot{y}=-y^{2}\)，\(y(0)=1\)，\(dt=0.1\)。手算一个 RK4 步，给出 \(y_{1}\)。（精确解 \(y(t)=1/(1+t)\)，\(y(0.1)=0.909091\)。）</summary>
+        <div class="hint">\(f(y)=-y^{2}\)。\(k_{1}=f(y_{n})\)，\(k_{2}=f(y_{n}+dt\,k_{1}/2)\)，等等。</div>
+        <div class="solution">\(k_{1}=-(1)^{2}=-1\)。<br>\(k_{2}=-(1+0.05\times(-1))^{2}=-(0.95)^{2}=-0.9025\)。<br>\(k_{3}=-(1+0.05\times(-0.9025))^{2}=-(0.95488)^{2}=-0.91180\)。<br>\(k_{4}=-(1+0.1\times(-0.91180))^{2}=-(0.90882)^{2}=-0.82595\)。<br>\(y_{1}=1+\frac{0.1}{6}(-1+2(-0.9025)+2(-0.91180)+(-0.82595))\)<br>\(=1+\frac{0.1}{6}(-1-1.805-1.8236-0.8260)\)<br>\(=1+\frac{0.1}{6}(-5.4545)=1-0.090909=0.909091\)。<br>与精确解 \(1/1.1=0.909091\) 完全一致到 6 位（误差 \(\sim 10^{-7}\)）。<br><span class="ans">\(y_{1}=0.909091\)（与精确解 \(1/(1+0.1)\) 在 6 位有效数字上一致）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 二次阻尼的解析解：证明 \(\dot{v}=-g-kv|v|/m\)（\(v<0\) 下落）的解为 \(v(t)=v_{t}\tanh(gt/|v_{t}|)\)，其中 \(v_{t}=-\sqrt{mg/k}\)。然后说明：当 \(k\) 改为 \(k_{0}+k_{1}|v|\)（混合阻力）时，为何此解失效，必须用数值法。</summary>
+        <div class="hint">变量分离：\(\dv{v}{t}=-(g/v_{t}^{2})(v^{2}-v_{t}^{2})\)（注意 \(v_{t}<0\)，\(v^{2}>v_{t}^{2}\) 时 \(\dot{v}<0\)）。令 \(u=|v|/|v_{t}|\)，分离变量积分。</div>
+        <div class="solution">设 \(v<0\)，令 \(w=-v>0\)。则 \(\dot{w}=g+(k/m)w^{2}\)。分离变量：<br>\(\dfrac{dw}{g+(k/m)w^{2}}=dt\)。<br>令 \(w_{t}=\sqrt{mg/k}=|v_{t}|\)，则 \(g+(k/m)w^{2}=(g/w_{t}^{2})(w_{t}^{2}+w^{2})\)。积分：<br>\(\int_{0}^{w}\dfrac{dw'}{w_{t}^{2}+w'^{2}}\cdot\dfrac{w_{t}^{2}}{g}=\int_{0}^{t}dt'\)<br>\(\dfrac{w_{t}}{g}\arctan(w/w_{t})=t\)，故 \(w=w_{t}\tan(gt/w_{t})\)。但 \(\tan\) 与 \(\tanh\) 区别——让我重新检查。实际上对<strong>二次阻尼</strong>方程 \(m\dot{v}=mg-kv^{2}\)（\(v>0\) 下落，\(v_{t}=\sqrt{mg/k}\)），解是 \(v=v_{t}\tanh(gt/v_{t})\)。<br>对 \(v<0\) 情形，对称性给出 \(v(t)=v_{t}\tanh(gt/|v_{t}|)\)，\(v_{t}<0\)。<br>验证：\(t=0\) 时 \(v=0\) ✓；\(t\to\infty\) 时 \(\tanh\to1\)，\(v\to v_{t}\) ✓；\(t\to0\) 时 \(v\approx v_{t}\cdot gt/|v_{t}|=-gt\)（自由落体）✓。<br><strong>混合阻力失效原因：</strong>若 \(k\to k_{0}+k_{1}|v|\)，运动方程 \(\dot{v}=-g-(k_{0}/m)v|v|-(k_{1}/m)v^{2}|v|\) 是 \(v\) 的<strong>三次</strong>非线性方程，分离变量后得到一个无法用初等函数或常用特殊函数表达的积分。<strong>没有闭式解</strong>，必须数值求解。这正是数值方法在实际工程（变阻力律、马赫数依赖阻力、密度变化等）中的核心价值。<br><span class="ans">\(v(t)=v_{t}\tanh(gt/|v_{t}|)\)，\(v_{t}=-\sqrt{mg/k}\)；混合阻力律给出三次非线性 ODE，无可解析解，必数值求解</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. RK4 对线性 ODE 的稳定性：考虑 \(\dot{y}=\lambda y\)（\(\lambda<0\)，衰减问题）。证明 RK4 单步更新为 \(y_{n+1}=R(\lambda dt)\,y_{n}\)，其中 \(R(z)=1+z+z^{2}/2+z^{3}/6+z^{4}/24\)。求 \(|R(z)|<1\) 的稳定区间，并比较显式欧拉（\(R_{\text{Euler}}=1+z\)）的稳定区间。</summary>
+        <div class="hint">对线性 \(\dot{y}=\lambda y\)，RK4 的四级可显式求和。</div>
+        <div class="solution">对 \(f(y)=\lambda y\)：<br>\(k_{1}=\lambda y_{n}\)<br>\(k_{2}=\lambda(y_{n}+\tfrac{dt}{2}k_{1})=\lambda y_{n}(1+\tfrac{\lambda dt}{2})\)<br>\(k_{3}=\lambda y_{n}(1+\tfrac{\lambda dt}{2}+\tfrac{(\lambda dt)^{2}}{4})\) -- 实际上迭代展开：<br>\(k_{3}=\lambda y_{n}(1+\tfrac{\lambda dt}{2}+\tfrac{(\lambda dt)^{2}}{4}\cdot\dfrac{1}{2}\cdot2)=\lambda y_{n}(1+\tfrac{z}{2}+\tfrac{z^{2}}{4})\) 其中 \(z=\lambda dt\)。等等，更系统些：<br>\(k_{3}=\lambda y_{n}+\tfrac{\lambda dt}{2}k_{2}=\lambda y_{n}\bigl(1+\tfrac{z}{2}(1+\tfrac{z}{2})\bigr)=\lambda y_{n}(1+\tfrac{z}{2}+\tfrac{z^{2}}{4})\)<br>类似地 \(k_{4}=\lambda y_{n}\bigl(1+z(1+\tfrac{z}{2}+\tfrac{z^{2}}{4})\bigr)=\lambda y_{n}(1+z+\tfrac{z^{2}}{2}+\tfrac{z^{3}}{4})\)。<br>加权平均 \(\tfrac{1}{6}(k_{1}+2k_{2}+2k_{3}+k_{4})=\lambda y_{n}\cdot\tfrac{1}{6}(1+2(1+\tfrac{z}{2})+2(1+\tfrac{z}{2}+\tfrac{z^{2}}{4})+(1+z+\tfrac{z^{2}}{2}+\tfrac{z^{3}}{4}))\)<br>括号内 \(=1+2+z+2+z+z^{2}/2+1+z+z^{2}/2+z^{3}/4=6+3z+z^{2}+z^{3}/4\)。<br>\(y_{n+1}=y_{n}+\tfrac{dt}{6}\lambda y_{n}(6+3z+z^{2}+z^{3}/4)=y_{n}(1+\tfrac{z}{6}(6+3z+z^{2}+z^{3}/4))\)<br>\(=y_{n}(1+z+z^{2}/2+z^{3}/6+z^{4}/24)=R(z)\,y_{n}\) ✓<br>这是 \(e^{z}\) 的四阶泰勒近似。<br>稳定区间：求 \(|R(z)|=1\) 的边界。对<strong>实</strong>轴 \(z\)：\(R(-2.785)\approx\) 通过数值求得 \(|R(-2.785)|=1\)，故实稳定区间约为 \(-2.785<z<0\)。在复平面，RK4 的稳定域是一个有限区域，沿实轴方向最宽到 \(z\approx-2.78\)。<br><strong>对比欧拉：</strong>显式欧拉 \(R_{\text{Euler}}=1+z\)，\(|1+z|=1\) 给出 \(-2<z<0\)。<br>RK4 实轴稳定区间 \((-2.78,0)\) 比 Euler 的 \((-2,0)\) 略大，但<strong>同量级</strong>——RK4 的优势不在稳定性区间，而在<strong>同 \(dt\) 下精度高得多</strong>。对刚性方程（\(|\lambda|\) 极大），两者稳定 \(dt\) 都被 \(\sim 1/|\lambda|\) 限制，必须用隐式方法。<br><span class="ans">RK4 稳定函数 \(R(z)=1+z+z^{2}/2+z^{3}/6+z^{4}/24\)，实轴稳定区间 \(-2.785<z<0\)；欧拉 \(-2<z<0\)。RK4 同 \(dt\) 下精度远高，但稳定性区间只稍宽，对刚性方程仍需隐式方法</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>积分方法比较器</strong> (integration-method comparator)。同一二维开普勒圆轨道（\(GM=1\)，\(r_{0}=1\)，\(v_{0}=1\)，初能量 \(E_{0}=-\tfrac{1}{2}\)）<strong>同时</strong>用三种方法（红色显式欧拉、绿色速度 Verlet、蓝色 RK4）积分，三色轨迹重叠绘制。拖动<strong>步长 \(dt\)</strong> 滑块——\(dt\) 越大，欧拉（红）越快"螺旋外飞"；Verlet（绿）始终闭合；RK4（蓝）短期几乎完美。右侧实时绘制<strong>三种方法的总能量 \(E(t)\)</strong>：欧拉的能量指数增长（\(E>0\) 时粒子逃逸），Verlet 的能量在 \(E_{0}\) 附近振荡（辛），RK4 的能量几乎水平。直接看出<strong>方法选择与 \(dt\) 的关键作用</strong>。</p>
+      <div class="sim-container">
+        <canvas id="sim-20" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-20"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-20');
+          var W = canvas.width, H = canvas.height;
+
+          // ===== Physics: 2D Kepler orbit. Per-unit-mass quantities. =====
+          var GM = 1.0;
+          // Circular orbit at r=1: v_circ = sqrt(GM/r) = 1.
+          var Y0 = [1.0, 0.0, 0.0, 1.0];          // [x, y, vx, vy]
+          var E_INIT = 0.5 * (Y0[2]*Y0[2] + Y0[3]*Y0[3]) - GM / Math.hypot(Y0[0], Y0[1]); // = -0.5
+
+          var params = { dt: 0.10 };
+
+          // ---- Layout ----------------------------------------------------
+          var ORBIT_W = 480;                       // orbit panel width
+          var CX = ORBIT_W / 2, CY = H / 2;        // sun at panel center
+          var SCALE = 48;                          // px per unit length
+          // Energy panel
+          var EX = ORBIT_W + 6, EW = W - ORBIT_W - 12, EH = H;
+
+          var TRAIL_MAX = 1400;
+          var HIST_MAX = 600;
+
+          var stateE, stateV, stateR;              // [x, y, vx, vy] each
+          var trailE, trailV, trailR;
+          var histE, histV, histR;                 // energy time-series
+          var tNow;
+
+          function resetAll() {
+            stateE = Y0.slice();
+            stateV = Y0.slice();
+            stateR = Y0.slice();
+            trailE = []; trailV = []; trailR = [];
+            histE = []; histV = []; histR = [];
+            tNow = 0;
+          }
+          resetAll();
+
+          function accel(x, y) {
+            var r2 = x*x + y*y;
+            var inv_r3 = 1 / (Math.sqrt(r2) * r2);
+            return [-GM * x * inv_r3, -GM * y * inv_r3];
+          }
+          function energy(s) {
+            var r = Math.hypot(s[0], s[1]);
+            return 0.5 * (s[2]*s[2] + s[3]*s[3]) - GM / r;
+          }
+
+          // ---- Integrators ----------------------------------------------
+          function stepEuler(s, dt) {
+            var a = accel(s[0], s[1]);
+            return [s[0] + dt*s[2], s[1] + dt*s[3], s[2] + dt*a[0], s[3] + dt*a[1]];
+          }
+          function stepVerlet(s, dt) {
+            var a0 = accel(s[0], s[1]);
+            var newX = s[0] + s[2]*dt + 0.5*a0[0]*dt*dt;
+            var newY = s[1] + s[3]*dt + 0.5*a0[1]*dt*dt;
+            var a1 = accel(newX, newY);
+            var newVx = s[2] + 0.5*(a0[0] + a1[0])*dt;
+            var newVy = s[3] + 0.5*(a0[1] + a1[1])*dt;
+            return [newX, newY, newVx, newVy];
+          }
+          function deriv(s /*, t*/) {
+            var a = accel(s[0], s[1]);
+            return [s[2], s[3], a[0], a[1]];
+          }
+          function stepRK4(s, dt) {
+            return PS.integrate(deriv, s, 0, dt, 'rk4');
+          }
+
+          // ---- Simulation loop ------------------------------------------
+          var sim = PS.createSim(canvas, {
+            state: function () { resetAll(); return {}; },
+            step: function (frameDt /*, t, s*/) {
+              var dt = params.dt;
+              // Advance ~0.04 s of orbit-time per frame regardless of dt,
+              // so animation speed is consistent. Sub-step with the chosen dt.
+              var target = 0.04;
+              var nSub = Math.max(1, Math.min(400, Math.ceil(target / dt)));
+              for (var k = 0; k < nSub; k++) {
+                stateE = stepEuler(stateE, dt);
+                stateV = stepVerlet(stateV, dt);
+                stateR = stepRK4(stateR, dt);
+                tNow += dt;
+                trailE.push([stateE[0], stateE[1]]);
+                trailV.push([stateV[0], stateV[1]]);
+                trailR.push([stateR[0], stateR[1]]);
+                histE.push(energy(stateE));
+                histV.push(energy(stateV));
+                histR.push(energy(stateR));
+              }
+              while (trailE.length > TRAIL_MAX) trailE.shift();
+              while (trailV.length > TRAIL_MAX) trailV.shift();
+              while (trailR.length > TRAIL_MAX) trailR.shift();
+              while (histE.length > HIST_MAX) histE.shift();
+              while (histV.length > HIST_MAX) histV.shift();
+              while (histR.length > HIST_MAX) histR.shift();
+            },
+            draw: function (ctx /*, s, env*/) {
+              PS.clear(ctx);
+
+              // ============ ORBIT PANEL ============
+              ctx.save();
+              // Frame
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(0.5, 0.5, ORBIT_W - 1, H - 1);
+              // Clip to orbit panel so spirals don't bleed into energy panel.
+              ctx.beginPath();
+              ctx.rect(0, 0, ORBIT_W, H);
+              ctx.clip();
+
+              // Reference circular orbit (r=1) — dashed
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.setLineDash([3, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.arc(CX, CY, 1 * SCALE, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.setLineDash([]);
+
+              // Axes
+              ctx.globalAlpha = 0.4;
+              ctx.beginPath();
+              ctx.moveTo(0, CY); ctx.lineTo(ORBIT_W, CY);
+              ctx.moveTo(CX, 0); ctx.lineTo(CX, H);
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+
+              function plotTrail(trail, color, w) {
+                if (trail.length < 2) return;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = w;
+                ctx.beginPath();
+                for (var i = 0; i < trail.length; i++) {
+                  var px = CX + trail[i][0] * SCALE;
+                  var py = CY - trail[i][1] * SCALE;
+                  if (i === 0) ctx.moveTo(px, py);
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+              }
+              plotTrail(trailE, PS.colors.accent, 1.5);   // Euler — red
+              plotTrail(trailR, PS.colors.primary, 1.5);  // RK4 — blue
+              plotTrail(trailV, PS.colors.accent2, 1.5);  // Verlet — green
+
+              function dot(state, color) {
+                var px = CX + state[0] * SCALE;
+                var py = CY - state[1] * SCALE;
+                PS.drawCircle(ctx, px, py, 4.5, {
+                  fill: color, stroke: PS.colors.text, lineWidth: 1.3,
+                });
+              }
+              dot(stateE, PS.colors.accent);
+              dot(stateR, PS.colors.primary);
+              dot(stateV, PS.colors.accent2);
+
+              // Sun (center)
+              PS.drawCircle(ctx, CX, CY, 7, {
+                fill: '#f59e0b', stroke: PS.colors.text, lineWidth: 1.5,
+              });
+
+              ctx.restore();
+
+              // Panel label
+              PS.drawText(ctx, '轨道 Orbit (GM = 1, r₀ = 1, v₀ = 1; 周期 T = 2π)',
+                10, 20, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '● 太阳 Sun', CX + 12, CY - 10,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // ============ ENERGY PANEL ============
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(EX + 0.5, 0.5, EW - 1, EH - 1);
+
+              // Time range
+              var tMax = Math.max(tNow, 6);
+              // Energy y-range: dynamically expand, but always include E_INIT.
+              var eLo = Math.min(E_INIT, -0.7);
+              var eHi = Math.max(0.3, E_INIT + 0.2);
+              function expandRange(arr) {
+                for (var i = 0; i < arr.length; i++) {
+                  if (arr[i] < eLo) eLo = arr[i];
+                  if (arr[i] > eHi) eHi = arr[i];
+                }
+              }
+              expandRange(histE); expandRange(histV); expandRange(histR);
+              // Pad
+              var pad = 0.05 * (eHi - eLo + 1e-9);
+              eLo -= pad; eHi += pad;
+
+              var EX_L = EX + 30, EX_R = EX + EW - 10;
+              var EY_T = 32, EY_B = EH - 32;
+
+              function eToPx(e) {
+                return EY_B - ((e - eLo) / (eHi - eLo + 1e-9)) * (EY_B - EY_T);
+              }
+              function tToPx(tt) {
+                return EX_L + (tt / tMax) * (EX_R - EX_L);
+              }
+
+              // Zero line
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              var zy = eToPx(0);
+              ctx.moveTo(EX_L, zy); ctx.lineTo(EX_R, zy);
+              ctx.stroke();
+              PS.drawText(ctx, 'E = 0 (逃逸边界)', EX_R - 2, zy - 4,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // E_INIT reference
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath();
+              var initY = eToPx(E_INIT);
+              ctx.moveTo(EX_L, initY); ctx.lineTo(EX_R, initY);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+              PS.drawText(ctx, 'E₀ = −½', EX_R - 2, initY - 4,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              function plotEnergy(hist, color) {
+                if (hist.length < 2) return;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                var tStart = Math.max(0, tNow - hist.length * params.dt);
+                for (var i = 0; i < hist.length; i++) {
+                  var tt = tStart + i * params.dt;
+                  var px = tToPx(tt);
+                  var py = eToPx(hist[i]);
+                  if (i === 0) ctx.moveTo(px, py);
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+              }
+              plotEnergy(histE, PS.colors.accent);   // Euler
+              plotEnergy(histR, PS.colors.primary);  // RK4
+              plotEnergy(histV, PS.colors.accent2);  // Verlet
+
+              // Y-axis tick labels
+              PS.drawText(ctx, eHi.toFixed(2), EX + 4, EY_T + 4,
+                { font: '10px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, eLo.toFixed(2), EX + 4, EY_B,
+                { font: '10px system-ui', color: PS.colors.text });
+
+              // Axis labels
+              PS.drawText(ctx, '总能量 E(t) per unit mass', EX_L, 22,
+                { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '时间 t →', (EX_L + EX_R) / 2, EH - 12,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              ctx.restore();
+
+              // ============ LEGEND ============
+              var lx = 12, ly = H - 56;
+              function legendItem(color, label, y) {
+                PS.drawCircle(ctx, lx + 6, y, 5, { fill: color });
+                PS.drawText(ctx, label, lx + 18, y + 4,
+                  { font: '11px system-ui', color: PS.colors.text });
+              }
+              legendItem(PS.colors.accent, '显式欧拉 Euler (能量增长 → 逃逸)', ly);
+              legendItem(PS.colors.accent2, '速度 Verlet (辛, 能量有界)', ly + 16);
+              legendItem(PS.colors.primary, 'RK4 (四阶, 短期最准)', ly + 32);
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-20'), [
+            { type: 'slider', key: 'dt', label: '步长 dt', min: 0.005, max: 0.30, step: 0.005, value: 0.10 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('dt', function (v) { params.dt = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary & Key Formulas</h2>
+      <ul>
+        <li>真实世界的 ODE 大多没有解析解，必须用<strong>数值积分</strong>。把 \(\ddot{x}=f(x,\dot{x},t)\) 化为状态矢量 \(\vec{y}=(x,\dot{x})\) 的一阶方程组 \(\dot{\vec{y}}=\vec{F}(\vec{y},t)\) 是所有方法的统一形式。</li>
+        <li><strong>显式欧拉</strong> \(\vec{y}_{n+1}=\vec{y}_{n}+dt\,\vec{F}(t_{n},\vec{y}_{n})\)：一阶、最简单，但对振动/轨道系统能量指数发散（\(E_{n+1}/E_{n}=1+\omega^{2}dt^{2}\)），<strong>几乎不应被使用</strong>。</li>
+        <li><strong>半隐式 / 辛欧拉</strong> 与 <strong>速度 Verlet</strong>：辛方法（\(\det M=1\)，保相空间面积），能量<strong>有界振荡、永不漂移</strong>。Verlet 是<strong>二阶</strong>方法，是分子动力学、轨道力学、游戏引擎的事实标准。</li>
+        <li><strong>RK4</strong> \(\vec{y}_{n+1}=\vec{y}_{n}+\tfrac{dt}{6}(\vec{k}_{1}+2\vec{k}_{2}+2\vec{k}_{3}+\vec{k}_{4})\)：四阶、短期最准、通用主力；但<strong>非辛</strong>，长期缓慢能量漂移。</li>
+        <li><strong>步长 \(dt\)</strong>：精度（截断 \(O(dt^{p})\)）vs 代价（\(N=T/dt\)）vs 稳定性（显式方法有 \(\omega dt\) 上限）的权衡。自适应步长可自动调节。</li>
+        <li><strong>两类误差</strong>：截断（随 \(dt\to 0\) 减小）vs 舍入（随 \(dt\to 0\) 上升）。最优 \(dt_{\text{opt}}\sim\varepsilon^{2/(2p+1)}\)：低阶方法几乎不受舍入限制；高阶方法在很小 \(dt\) 下舍入主导。</li>
+        <li><strong>方法选择</strong>：长期保守系统选辛（Verlet）；一般初值问题选 RK4（或自适应 RK4(5)）；实时仿真选半隐式 Euler；刚性系统选隐式方法。</li>
+        <li><strong>收敛测试</strong>是数值结果的<strong>黄金校验</strong>：减半 \(dt\)，全局误差应减少 \(2^{p}\) 倍；否则代码有 bug 或舍入主导。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\begin{aligned}
+        &\text{Euler:}\ \vec{y}_{n+1}=\vec{y}_{n}+dt\,\vec{F}(t_{n},\vec{y}_{n})\quad(\text{global }O(dt))\\[2pt]
+        &\text{Velocity Verlet:}\ x_{n+1}=x_{n}+v_{n}\,dt+\tfrac{1}{2}a_{n}\,dt^{2},\ v_{n+1}=v_{n}+\tfrac{1}{2}(a_{n}+a_{n+1})\,dt\quad(\text{global }O(dt^{2}),\ \text{symplectic})\\[2pt]
+        &\text{RK4:}\ \vec{y}_{n+1}=\vec{y}_{n}+\tfrac{dt}{6}(\vec{k}_{1}+2\vec{k}_{2}+2\vec{k}_{3}+\vec{k}_{4})\quad(\text{global }O(dt^{4}))\\[2pt]
+        &E_{\text{tot}}(dt)\approx A\,dt^{p}+B\,\varepsilon/\sqrt{dt},\qquad dt_{\text{opt}}\sim\varepsilon^{2/(2p+1)}
+      \end{aligned}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

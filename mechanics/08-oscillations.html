@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 振动 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 8 · 第8章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>振动 <span class="en-title">Oscillations</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从线性恢复力 \(F=-kx\) 出发推导简谐运动 (simple harmonic motion, SHM) 的运动方程，并写出其通解 \(x(t)=A\cos(\omega t+\varphi)\)。</li>
+        <li>计算弹簧–质点系统与单摆 (simple pendulum) 的周期 \(T\)、角频率 \(\omega\) 与频率 \(f\)，并能判断小角近似 (small-angle approximation) 的适用条件。</li>
+        <li>在相空间 (phase space) 中分析 SHM 的能量 \(E=\tfrac{1}{2}kA^{2}\) 在动能与势能之间的交换。</li>
+        <li>求解阻尼振动 (damped oscillation) 方程 \(\ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=0\) 的三种情形：欠阻尼、临界阻尼、过阻尼。</li>
+        <li>解释受迫振动 (driven oscillation) 的稳态振幅与相位滞后，并理解共振 (resonance) 现象与品质因子 \(Q\)。</li>
+        <li>简要识别耦合振子 (coupled oscillators) 的简正模式 (normal modes) 与 LC 振荡电路的类比关系。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 简谐运动 SHM</h3>
+      <p>若质点所受合力是线性恢复力 (linear restoring force) \(\vec{F}=-k\vec{x}\)，由牛顿第二定律 \(m\ddot{x}=-kx\)，得运动方程：</p>
+      <div class="formula">\[ \ddot{x}+\omega^{2}x=0,\qquad \omega\equiv\sqrt{\frac{k}{m}} \]</div>
+      <p>其通解为简谐运动：</p>
+      <div class="formula">\[ x(t)=A\cos(\omega t+\varphi) \]</div>
+      <p>其中 \(A\) 为振幅 (amplitude)，\(\varphi\) 为初相位 (phase constant)，由初始条件决定；\(\omega=\sqrt{k/m}\) 称为<strong>角频率</strong> (angular frequency)。注意 \(\omega\) 与质点作圆周运动时的角速度是不同的物理量——这是高频混淆点（见误区）。</p>
+      <p>由 \(\omega\) 可得<strong>周期</strong> (period) 与<strong>频率</strong> (frequency)：</p>
+      <div class="formula">\[ T=\frac{2\pi}{\omega}=2\pi\sqrt{\frac{m}{k}},\qquad f=\frac{1}{T}=\frac{\omega}{2\pi} \]</div>
+      <p>注意：周期只取决于 \(k\) 与 \(m\)，与振幅无关——这一性质称为<strong>等时性</strong> (isochronism)，是 SHM 的标志特征（仅在理想线性恢复力下成立）。</p>
+      <div class="key-terms">simple harmonic motion (简谐运动), restoring force (恢复力), angular frequency \(\omega\) (角频率), amplitude \(A\) (振幅), phase \(\varphi\) (相位), period \(T\) (周期), isochronism (等时性)</div>
+
+      <h3>2. 单摆与物理摆 Pendulums</h3>
+      <p>长度 \(L\)、质量 \(m\) 的理想单摆 (simple pendulum)，摆角 \(\theta\) 所受力矩 \(\tau=-mgL\sin\theta\)。运动方程为：</p>
+      <div class="formula">\[ mL^{2}\ddot{\theta}=-mgL\sin\theta\;\Rightarrow\;\ddot{\theta}+\frac{g}{L}\sin\theta=0 \]</div>
+      <p>这是非线性方程。在<strong>小角近似</strong> \(\sin\theta\approx\theta\)（\(\theta\ll 1\,\mathrm{rad}\)）下，化为 SHM：</p>
+      <div class="formula">\[ \ddot{\theta}+\frac{g}{L}\theta=0\;\Rightarrow\; T=2\pi\sqrt{\frac{L}{g}} \]</div>
+      <p>对于绕固定轴转动的刚体——<strong>物理摆</strong> (physical pendulum)，设转动惯量为 \(I\)，质心到转轴距离为 \(d\)，则：</p>
+      <div class="formula">\[ I\ddot{\theta}=-mgd\,\theta\;\Rightarrow\; T=2\pi\sqrt{\frac{I}{mgd}} \]</div>
+      <div class="key-terms">simple pendulum (单摆), small-angle approximation (小角近似), physical pendulum (物理摆), moment of inertia \(I\) (转动惯量)</div>
+
+      <h3>3. SHM 的能量与相空间</h3>
+      <p>弹性势能 \(U=\tfrac{1}{2}kx^{2}\)，动能 \(K=\tfrac{1}{2}m\dot{x}^{2}\)。总机械能守恒：</p>
+      <div class="formula">\[ E=K+U=\tfrac{1}{2}m\dot{x}^{2}+\tfrac{1}{2}kx^{2}=\tfrac{1}{2}kA^{2}=\tfrac{1}{2}m\omega^{2}A^{2} \]</div>
+      <p>将 \(x=A\cos(\omega t+\varphi)\) 与 \(\dot{x}=-A\omega\sin(\omega t+\varphi)\) 写成相空间坐标 \((x,\dot{x})\)，轨迹是椭圆：</p>
+      <div class="formula">\[ \frac{x^{2}}{A^{2}}+\frac{\dot{x}^{2}}{(A\omega)^{2}}=1 \]</div>
+      <p>能量在 \(x=0\)（动能最大 \(K_{\max}=\tfrac{1}{2}kA^{2}\)，\(v_{\max}=A\omega\)）与 \(x=\pm A\)（势能最大）之间来回交换。</p>
+      <div class="key-terms">phase space (相空间), kinetic energy (动能), potential energy (势能), total energy \(E\) (总能量)</div>
+
+      <h3>4. 阻尼振动 Damped Oscillations</h3>
+      <p>引入与速度成正比的粘性阻尼 \(-b\dot{x}\)（斯托克斯阻力，低雷诺数极限）。令 \(\gamma=b/2m\) 为<strong>阻尼常数</strong> (damping constant)，运动方程变为：</p>
+      <div class="formula">\[ \ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=0 \]</div>
+      <p>试探解 \(x=e^{\lambda t}\) 给出特征方程 \(\lambda^{2}+2\gamma\lambda+\omega_{0}^{2}=0\)，\(\lambda=-\gamma\pm\sqrt{\gamma^{2}-\omega_{0}^{2}}\)。按 \(\gamma\) 与 \(\omega_{0}\) 的关系分三种情形（推导见下节）：</p>
+      <ul>
+        <li><strong>欠阻尼</strong> (underdamped, \(\gamma<\omega_{0}\))：振荡衰减，\(x(t)=A_{0}e^{-\gamma t}\cos(\omega_{d}t+\varphi)\)，阻尼频率 \(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)。</li>
+        <li><strong>临界阻尼</strong> (critically damped, \(\gamma=\omega_{0}\))：最快地回到平衡而无振荡，\(x(t)=(A+Bt)e^{-\gamma t}\)。</li>
+        <li><strong>过阻尼</strong> (overdamped, \(\gamma>\omega_{0}\))：缓慢非振荡地回到平衡。</li>
+      </ul>
+      <div class="key-terms">damping constant \(\gamma\) (阻尼常数), underdamped (欠阻尼), critically damped (临界阻尼), overdamped (过阻尼), damped frequency \(\omega_{d}\) (阻尼频率)</div>
+
+      <h3>5. 受迫振动与共振 Driven Oscillations & Resonance</h3>
+      <p>在阻尼系统上施加周期性外力 \(F(t)=F_{0}\cos(\omega t)\)（\(\omega\) 为<strong>驱动频率</strong>，drive frequency）：</p>
+      <div class="formula">\[ \ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=\frac{F_{0}}{m}\cos(\omega t) \]</div>
+      <p>长时间后瞬态 (transient) 衰减殆尽，仅剩下与外力同频率的<strong>稳态</strong> (steady state) 解：</p>
+      <div class="formula">\[ x_{\mathrm{ss}}(t)=A(\omega)\cos\!\bigl(\omega t-\delta\bigr) \]</div>
+      <p>其中<strong>稳态振幅</strong>与<strong>相位滞后</strong> (phase lag) 为：</p>
+      <div class="formula">\[ A(\omega)=\frac{F_{0}/m}{\sqrt{(\omega_{0}^{2}-\omega^{2})^{2}+(2\gamma\omega)^{2}}},\qquad \tan\delta=\frac{2\gamma\omega}{\omega_{0}^{2}-\omega^{2}} \]</div>
+      <p>当 \(\omega\) 接近 \(\omega_{0}\) 时，振幅急剧增大——这就是<strong>共振</strong> (resonance)。对 \(\omega\) 求极值，得共振峰精确位置 \(\omega_{r}=\sqrt{\omega_{0}^{2}-2\gamma^{2}}\)；弱阻尼下 \(\omega_{r}\approx\omega_{0}\)，此时：</p>
+      <div class="formula">\[ A_{\max}\approx\frac{F_{0}/m}{2\gamma\omega_{0}}\quad(\text{弱阻尼共振}) \]</div>
+      <p>相位滞后在 \(\omega=\omega_{0}\) 处恰为 \(\delta=\pi/2\)；低频时 \(\delta\to 0\)（位移与外力同相），高频时 \(\delta\to\pi\)（位移与外力反相）。</p>
+
+      <h3>6. 品质因子 Quality Factor</h3>
+      <p><strong>品质因子</strong> (quality factor) \(Q=\omega_{0}/(2\gamma)\) 衡量共振峰的尖锐程度与能量耗散的快慢。\(Q\gg 1\) 表示弱阻尼、尖锐共振；共振峰的相对半宽 \(\Delta\omega/\omega_{0}\approx 1/Q\)。每一周期损失的能量分数约为 \(2\pi/Q\)。</p>
+
+      <h3>7. 耦合振子与简正模式 Coupled Oscillators</h3>
+      <p>两个质量均为 \(m\) 的质点，被劲度系数 \(k\) 的弹簧连到两端墙上，彼此之间用劲度系数 \(k_{c}\) 的弹簧相连。线性变换到对称坐标后，得到两个独立的<strong>简正模式</strong> (normal modes)：</p>
+      <div class="formula">\[ \omega_{1}=\sqrt{\frac{k}{m}}\;(\text{同相}),\qquad \omega_{2}=\sqrt{\frac{k+2k_{c}}{m}}\;(\text{反相}) \]</div>
+      <p>一般运动是这两个模式的线性叠加。简正模式的思想可推广到多自由度系统与场的简谐展开。</p>
+
+      <h3>8. LC 电路类比 LC Analogy</h3>
+      <p>无电阻的 LC 电路满足 \(L\ddot{q}+q/C=0\)，与 SHM 方程结构完全相同。对应关系：</p>
+      <div class="formula">\[ m\leftrightarrow L,\quad k=\frac{1}{C},\quad x\leftrightarrow q,\quad \dot{x}\leftrightarrow I=\dot{q},\quad \omega=\frac{1}{\sqrt{LC}} \]</div>
+      <p>电容储能 \(\tfrac{1}{2}q^{2}/C\) 与势能对应；电感储能 \(\tfrac{1}{2}LI^{2}\) 与动能对应。加入电阻 \(R\) 则对应阻尼 \(\gamma=R/(2L)\)。这一类比使力学与电路可以互相借鉴。</p>
+      <div class="key-terms">driven oscillation (受迫振动), steady state (稳态), resonance (共振), phase lag (相位滞后), quality factor \(Q\) (品质因子), normal mode (简正模式), LC circuit (LC 电路)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 8.1：从恢复力到 SHM 通解</h3>
+      <p class="step"><strong>步骤 1：</strong> 由 \(F=ma\) 与 \(F=-kx\) 得 \(m\ddot{x}=-kx\)，即 \(\ddot{x}+\omega^{2}x=0\)，\(\omega=\sqrt{k/m}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 试探解 \(x=e^{\lambda t}\)，得 \(\lambda^{2}+\omega^{2}=0\)，\(\lambda=\pm i\omega\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 通解 \(x(t)=C_{1}\cos\omega t+C_{2}\sin\omega t\)。利用恒等式化为单一余弦：</p>
+      <div class="formula">\[ x(t)=A\cos(\omega t+\varphi),\quad A=\sqrt{C_{1}^{2}+C_{2}^{2}},\quad \tan\varphi=-\frac{C_{2}}{C_{1}} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 由初始条件 \(x(0)=x_{0},\dot{x}(0)=v_{0}\) 定常数：</p>
+      <div class="formula">\[ A=\sqrt{x_{0}^{2}+\left(\frac{v_{0}}{\omega}\right)^{2}},\qquad \tan\varphi=-\frac{v_{0}}{\omega x_{0}} \]</div>
+
+      <h3>推导 8.2：阻尼三种情形</h3>
+      <p class="step"><strong>步骤 1：</strong> \(\ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=0\)，试探 \(x=e^{\lambda t}\)：</p>
+      <div class="formula">\[ \lambda^{2}+2\gamma\lambda+\omega_{0}^{2}=0\;\Rightarrow\;\lambda=-\gamma\pm\sqrt{\gamma^{2}-\omega_{0}^{2}} \]</div>
+      <p class="step"><strong>步骤 2（欠阻尼 \(\gamma<\omega_{0}\)）：</strong> 判别式为负，令 \(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)，则：</p>
+      <div class="formula">\[ x(t)=e^{-\gamma t}\bigl(C_{1}\cos\omega_{d}t+C_{2}\sin\omega_{d}t\bigr)=A_{0}e^{-\gamma t}\cos(\omega_{d}t+\varphi) \]</div>
+      <p>振幅以时间常数 \(1/\gamma\) 指数衰减；振荡频率被阻尼略微降低。</p>
+      <p class="step"><strong>步骤 3（临界阻尼 \(\gamma=\omega_{0}\)）：</strong> 重根 \(\lambda=-\gamma\)。通解：</p>
+      <div class="formula">\[ x(t)=(A+Bt)e^{-\gamma t} \]</div>
+      <p>在三种情形中，临界阻尼使系统<strong>最快地</strong>回到平衡位置而不发生振荡（常用在门铰链、汽车减震器设计）。</p>
+      <p class="step"><strong>步骤 4（过阻尼 \(\gamma>\omega_{0}\)）：</strong> 两个负实根 \(\lambda_{\pm}=-\gamma\pm\sqrt{\gamma^{2}-\omega_{0}^{2}}\)：</p>
+      <div class="formula">\[ x(t)=Ae^{\lambda_{+}t}+Be^{\lambda_{-}t}\quad(\lambda_{\pm}<0) \]</div>
+      <p>单调衰减，主导时间常数约 \(1/|\lambda_{+}|\)，比临界阻尼更慢（因为过大的阻尼"拖住"了运动）。</p>
+
+      <h3>推导 8.3：稳态振幅公式</h3>
+      <p>对 \(x_{\mathrm{ss}}=A\cos(\omega t-\delta)\)，代入受迫方程并比较 \(\cos\omega t\)、\(\sin\omega t\) 系数，解得：</p>
+      <div class="formula">\[ A(\omega)=\frac{F_{0}/m}{\sqrt{(\omega_{0}^{2}-\omega^{2})^{2}+(2\gamma\omega)^{2}}},\qquad \tan\delta=\frac{2\gamma\omega}{\omega_{0}^{2}-\omega^{2}} \]</div>
+      <p>对 \(A(\omega)\) 关于 \(\omega\) 求极值（令分母对 \(\omega^{2}\) 导数为零），得共振频率 \(\omega_{r}^{2}=\omega_{0}^{2}-2\gamma^{2}\)；当 \(\gamma\geq\omega_{0}/\sqrt{2}\) 时共振峰消失。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 弹簧–质点系统</h4>
+        <p class="example-statement">一轻弹簧劲度系数 \(k=200\,\mathrm{N/m}\)，挂有质量 \(m=0.50\,\mathrm{kg}\) 的物体，沿水平无摩擦桌面作 SHM，振幅 \(A=0.10\,\mathrm{m}\)。求角频率、周期、最大速率与总能量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 角频率 \(\omega=\sqrt{k/m}=\sqrt{200/0.50}=\sqrt{400}=20\,\mathrm{rad/s}\)。</p>
+          <p class="step">周期 \(T=2\pi/\omega=2\pi/20=0.314\,\mathrm{s}\)；频率 \(f=1/T=3.18\,\mathrm{Hz}\)。</p>
+          <p class="step">最大速率 \(v_{\max}=A\omega=0.10\times 20=2.0\,\mathrm{m/s}\)（在平衡位置取得）。</p>
+          <p class="step">总能量 \(E=\tfrac{1}{2}kA^{2}=\tfrac{1}{2}(200)(0.10)^{2}=1.0\,\mathrm{J}\)。校核：\(E=\tfrac{1}{2}mv_{\max}^{2}=\tfrac{1}{2}(0.50)(2.0)^{2}=1.0\,\mathrm{J}\) ✓</p>
+          <p><span class="ans">\(\omega=20\,\mathrm{rad/s},\;T=0.314\,\mathrm{s},\;v_{\max}=2.0\,\mathrm{m/s},\;E=1.0\,\mathrm{J}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 秒摆 (Second Pendulum)</h4>
+        <p class="example-statement">欲制作周期 \(T=2.00\,\mathrm{s}\) 的单摆（每次单向摆动用时 \(1\,\mathrm{s}\)，故称"秒摆"），取 \(g=9.80\,\mathrm{m/s^{2}}\)，求摆长 \(L\)，并估计振幅为 \(10^{\circ}\) 时小角近似的误差。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(T=2\pi\sqrt{L/g}\) 解出 \(L=g(T/2\pi)^{2}=9.80\times(2.00/2\pi)^{2}=9.80/\pi^{2}=0.993\,\mathrm{m}\)。</p>
+          <p class="step">小角近似的修正因子（精确周期与近似周期之比）为 \(1+\tfrac{1}{16}\theta_{0}^{2}+\cdots\)。当 \(\theta_{0}=10^{\circ}=0.175\,\mathrm{rad}\)：</p>
+          <div class="formula">\[ \frac{\Delta T}{T}\approx\frac{1}{16}\theta_{0}^{2}=\frac{(0.175)^{2}}{16}=1.9\times 10^{-3}\approx 0.19\% \]</div>
+          <p class="step">即真实周期比近似公式大约 \(0.004\,\mathrm{s}\)，对一般实验室精度可忽略。</p>
+          <p><span class="ans">\(L=0.993\,\mathrm{m}\approx 1.0\,\mathrm{m}\)；\(10^{\circ}\) 处误差约 \(0.19\%\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 物理摆——均匀杆</h4>
+        <p class="example-statement">一根长 \(L=1.00\,\mathrm{m}\) 的均匀细杆，绕一端点悬挂成物理摆，\(g=9.80\,\mathrm{m/s^{2}}\)。求其小角度摆动周期，并与同长度的单摆比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 均匀杆绕端点的转动惯量 \(I=\tfrac{1}{3}mL^{2}\)；质心到转轴 \(d=L/2\)。</p>
+          <p class="step">代入物理摆周期公式：</p>
+          <div class="formula">\[ T=2\pi\sqrt{\frac{I}{mgd}}=2\pi\sqrt{\frac{mL^{2}/3}{mgL/2}}=2\pi\sqrt{\frac{2L}{3g}} \]</div>
+          <p class="step">数值：\(T=2\pi\sqrt{2\times 1.00/(3\times 9.80)}=2\pi\sqrt{0.0680}=2\pi(0.261)=1.64\,\mathrm{s}\)。</p>
+          <p class="step">同长度单摆周期 \(T_{\text{单}}=2\pi\sqrt{1.00/9.80}=2.01\,\mathrm{s}\)。杆比单摆快——因为质量分布更靠近转轴，等效摆长 \(L_{\text{eff}}=I/(md)=2L/3\)。</p>
+          <p><span class="ans">\(T=1.64\,\mathrm{s}\)；单摆 \(T=2.01\,\mathrm{s}\)；\(L_{\text{eff}}=0.667\,\mathrm{m}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 临界阻尼条件</h4>
+        <p class="example-statement">质量 \(m=0.20\,\mathrm{kg}\) 的物体连在 \(k=80\,\mathrm{N/m}\) 的弹簧上，受粘性阻尼 \(-b\dot{x}\)。求达到<strong>临界阻尼</strong>所需的 \(b\)，并描述三种阻尼情形。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 自然角频率 \(\omega_{0}=\sqrt{k/m}=\sqrt{80/0.20}=\sqrt{400}=20\,\mathrm{rad/s}\)。</p>
+          <p class="step">临界阻尼条件 \(\gamma=\omega_{0}\)，即 \(b/(2m)=\omega_{0}\)：</p>
+          <div class="formula">\[ b_{\text{crit}}=2m\omega_{0}=2(0.20)(20)=8.0\,\mathrm{kg/s} \]</div>
+          <p class="step">描述：(i) \(b<8.0\,\mathrm{kg/s}\)：欠阻尼，作衰减振荡；(ii) \(b=8.0\,\mathrm{kg/s}\)：临界阻尼，最快回到平衡而无振荡；(iii) \(b>8.0\,\mathrm{kg/s}\)：过阻尼，缓慢非振荡地回到平衡。</p>
+          <p><span class="ans">\(b_{\text{crit}}=8.0\,\mathrm{kg/s}\)（即 \(\gamma=20\,\mathrm{s^{-1}}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 共振振幅 vs 远场振幅</h4>
+        <p class="example-statement">受迫振子 \(m=0.10\,\mathrm{kg}\)，\(\omega_{0}=10\,\mathrm{rad/s}\)，驱动力幅 \(F_{0}=0.50\,\mathrm{N}\)，阻尼常数 \(\gamma=0.50\,\mathrm{s^{-1}}\)。比较 \(\omega=\omega_{0}\)（共振）与 \(\omega=20\,\mathrm{rad/s}\)（远离共振）时的稳态振幅。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 稳态振幅 \(A=(F_{0}/m)/\sqrt{(\omega_{0}^{2}-\omega^{2})^{2}+(2\gamma\omega)^{2}}\)，其中 \(F_{0}/m=5.0\,\mathrm{m/s^{2}}\)。</p>
+          <p class="step"><strong>共振 \(\omega=10\)：</strong> \(\omega_{0}^{2}-\omega^{2}=0\)：</p>
+          <div class="formula">\[ A_{\text{res}}=\frac{5.0}{\sqrt{0+(2\times 0.50\times 10)^{2}}}=\frac{5.0}{10}=0.50\,\mathrm{m} \]</div>
+          <p class="step"><strong>远离 \(\omega=20\)：</strong> \(\omega_{0}^{2}-\omega^{2}=100-400=-300\)：</p>
+          <div class="formula">\[ A=\frac{5.0}{\sqrt{(-300)^{2}+(2\times 0.50\times 20)^{2}}}=\frac{5.0}{\sqrt{90000+400}}=\frac{5.0}{300.7}=0.0166\,\mathrm{m} \]</div>
+          <p class="step">两者之比 \(A_{\text{res}}/A\approx 30\)。共振使振幅放大约 30 倍——这就是为什么降低 \(\gamma\)（提高 \(Q\)）会让共振峰如此尖锐危险。</p>
+          <p><span class="ans">\(A_{\text{res}}=0.50\,\mathrm{m}\)；\(A_{\omega=20}=1.66\,\mathrm{cm}\)；比值 \(\approx 30\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>单摆周期公式 \(T=2\pi\sqrt{L/g}\) 仅对小角度成立。</strong>当 \(\theta_{0}\gtrsim 20^{\circ}\)，真实周期明显偏大（修正项 \(\tfrac{1}{16}\theta_{0}^{2}\)）。大角度下必须用椭圆积分，无简单闭式。</li>
+        <li><strong>把角频率 \(\omega\) 与摆的角速度 \(\dot{\theta}\) 混为一谈。</strong>\(\omega=\sqrt{k/m}\) 或 \(\sqrt{g/L}\) 是<strong>系统固有的常数</strong>；\(\dot{\theta}\) 是瞬时变量，按 \(-\theta_{0}\omega\sin(\omega t+\varphi)\) 随时间变化，二者量纲虽都是 \(\mathrm{rad/s}\)，但物理含义完全不同。</li>
+        <li><strong>误以为周期与振幅有关。</strong>在线性恢复力下，SHM 是<strong>等时的</strong>——周期与 \(A\) 无关。但这一等时性在大角度单摆、非线性弹簧中<strong>失效</strong>。</li>
+        <li><strong>误以为能量守恒在阻尼/驱动的情形下仍成立。</strong>机械能守恒 \(E=\tfrac{1}{2}kA^{2}\) 仅在无阻尼、无外力时成立；阻尼消耗能量（\(E\) 单调下降），驱动注入能量（稳态下注入 = 耗散）。</li>
+        <li><strong>共振时振幅"无限增长"。</strong>仅在 \(\gamma\to 0\) 的理想模型下，共振振幅发散；任何真实系统都有阻尼，振幅有限，为 \(A_{\max}\approx F_{0}/(2m\gamma\omega_{0})\)。但即使如此，仍可能大到足以破坏结构（塔科马海峡桥、酒杯被声波震碎）。</li>
+        <li><strong>把临界阻尼误认为"最快的回到平衡"。</strong>临界阻尼是<strong>无振荡</strong>情形下最快的；欠阻尼虽然首次到达平衡更快，但会越过并振荡。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 由静伸长求周期：一弹簧挂 \(0.50\,\mathrm{kg}\) 物体，平衡时伸长 \(5.0\,\mathrm{cm}\)，求竖直振动的周期。</summary>
+        <div class="hint">平衡时弹力 \(k\Delta x=mg\)，先求 \(k\)，再用 \(T=2\pi\sqrt{m/k}\)。取 \(g=9.8\,\mathrm{m/s^{2}}\)。</div>
+        <div class="solution">由 \(k\Delta x=mg\) 得 \(k=mg/\Delta x=(0.50)(9.8)/0.050=98\,\mathrm{N/m}\)。周期 \(T=2\pi\sqrt{0.50/98}=2\pi(0.0714)=0.449\,\mathrm{s}\)。<br><span class="ans">\(T\approx 0.449\,\mathrm{s}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 由初始条件定振幅与相位：\(m=0.40\,\mathrm{kg}\)，\(k=100\,\mathrm{N/m}\)，\(x(0)=0.050\,\mathrm{m}\)，\(\dot{x}(0)=-0.30\,\mathrm{m/s}\)。求 \(A\)、\(\varphi\) 与总能量。</summary>
+        <div class="hint">\(\omega=\sqrt{k/m}\)，用 \(A=\sqrt{x_{0}^{2}+(v_{0}/\omega)^{2}}\)、\(\tan\varphi=-v_{0}/(\omega x_{0})\)。</div>
+        <div class="solution">\(\omega=\sqrt{100/0.40}=\sqrt{250}=15.81\,\mathrm{rad/s}\)。<br>\(A=\sqrt{0.050^{2}+(-0.30/15.81)^{2}}=\sqrt{2.50\times 10^{-3}+3.61\times 10^{-4}}=\sqrt{2.86\times 10^{-3}}=0.0535\,\mathrm{m}\)。<br>\(\tan\varphi=-(-0.30)/(15.81\times 0.050)=0.379\)，\(\varphi=0.363\,\mathrm{rad}\approx 20.8^{\circ}\)（取使 \(x(0)>0\)、\(\dot{x}(0)<0\) 成立的象限）。<br>总能量 \(E=\tfrac{1}{2}kA^{2}=\tfrac{1}{2}(100)(0.0535)^{2}=0.143\,\mathrm{J}\)。<br><span class="ans">\(A=5.35\,\mathrm{cm},\;\varphi=0.363\,\mathrm{rad},\;E=0.143\,\mathrm{J}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 阻尼频率与振幅减半时间：\(\omega_{0}=5.0\,\mathrm{rad/s}\)，\(\gamma=0.20\,\mathrm{s^{-1}}\)。求阻尼振荡频率与振幅减半所需时间，并计算 \(Q\)。</summary>
+        <div class="hint">\(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)；振幅包络 \(A_{0}e^{-\gamma t}\) 减半令 \(e^{-\gamma t}=1/2\)。</div>
+        <div class="solution">\(\omega_{d}=\sqrt{25-0.04}=\sqrt{24.96}=4.996\,\mathrm{rad/s}\approx 5.0\,\mathrm{rad/s}\)（弱阻尼下几乎不变）。<br>振幅减半：\(t_{1/2}=\ln 2/\gamma=0.693/0.20=3.47\,\mathrm{s}\)。<br>品质因子 \(Q=\omega_{0}/(2\gamma)=5.0/0.40=12.5\)（中等弱阻尼）。</div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 弹簧串并联：两根弹簧 \(k_{1}=100\,\mathrm{N/m}\)、\(k_{2}=300\,\mathrm{N/m}\)，分别求串联与并联下的等效劲度系数，并求挂 \(m=0.60\,\mathrm{kg}\) 物体时的周期。</summary>
+        <div class="hint">串联 \(1/k_{\mathrm{eq}}=\sum 1/k_{i}\)（"较软"）；并联 \(k_{\mathrm{eq}}=\sum k_{i}\)（"较硬"）。</div>
+        <div class="solution">串联：\(1/k_{\mathrm{eq}}=1/100+1/300=(3+1)/300\)，\(k_{\mathrm{eq}}=75\,\mathrm{N/m}\)；\(T_{\text{串}}=2\pi\sqrt{0.60/75}=0.561\,\mathrm{s}\)。<br>并联：\(k_{\mathrm{eq}}=100+300=400\,\mathrm{N/m}\)；\(T_{\text{并}}=2\pi\sqrt{0.60/400}=0.243\,\mathrm{s}\)。<br><span class="ans">串联 \(k_{\mathrm{eq}}=75\,\mathrm{N/m},\,T=0.561\,\mathrm{s}\)；并联 \(k_{\mathrm{eq}}=400\,\mathrm{N/m},\,T=0.243\,\mathrm{s}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 共振峰宽度与 \(Q\)：一受迫振子 \(\omega_{0}=200\,\mathrm{rad/s}\)，\(Q=50\)。估计共振峰的半功率带宽 \(\Delta\omega\)，并求阻尼常数 \(\gamma\)。</summary>
+        <div class="hint">弱阻尼下 \(\Delta\omega/\omega_{0}\approx 1/Q\)，且 \(Q=\omega_{0}/(2\gamma)\)。</div>
+        <div class="solution">半功率带宽 \(\Delta\omega\approx\omega_{0}/Q=200/50=4.0\,\mathrm{rad/s}\)。<br>\(\gamma=\omega_{0}/(2Q)=200/100=2.0\,\mathrm{s^{-1}}\)。<br>含义：驱动频率在 \(\omega_{0}\pm 2\,\mathrm{rad/s}\) 之外时，稳态振幅降到共振时的约 \(1/\sqrt{2}\) 以下。<br><span class="ans">\(\Delta\omega\approx 4.0\,\mathrm{rad/s},\;\gamma=2.0\,\mathrm{s^{-1}}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">阻尼、受迫振子 (damped, driven oscillator)。求解 \(\ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=F_{d}\cos(\omega_{\mathrm{drive}}t)\)（采用 RK4 积分）。左侧画弹簧上的物体，右侧是滚动 \(x(t)\) 图。切换"受迫"开关、调节 \(\omega_{\mathrm{drive}}\) 让它扫过 \(\omega_{0}\)，观察共振峰的出现；将 \(\gamma\) 调小可看到稳态振幅急剧增大（虚线给出解析稳态振幅包络）。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="720" height="400"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          // Parameters (tuned so the phenomenon is visible at default).
+          var params = {
+            omega0: 4.0,      // natural angular frequency (rad/s)
+            gamma: 0.5,       // damping constant (1/s)
+            omegaD: 4.0,      // drive frequency (rad/s)
+            Fd: 3.0,          // drive amplitude (m/s^2), i.e. F0/m
+            driven: true,
+          };
+
+          var TRACE_MAX = 900;     // ~15 s at 60 fps
+          var T_WIN = 12.0;        // seconds visible in scrolling window
+          var X_RANGE = 1.6;       // m, half-range of graph y-axis
+
+          // Layout: left spring panel + right scrolling x(t) graph.
+          var PANEL_W = 210;       // spring panel width
+          var GRAPH_L = PANEL_W + 10;
+          var GRAPH_R = W - 16;
+          var GRAPH_T = 28;
+          var GRAPH_B = H - 28;
+          var GRAPH_CY = (GRAPH_T + GRAPH_B) / 2;
+
+          function drawSpring(ctx, x1, y1, x2, y2, coils, amp) {
+            var segs = coils * 2;
+            var dx = (x2 - x1) / segs;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            for (var i = 1; i <= segs; i++) {
+              var nx = x1 + dx * i;
+              var ny = y1 + ((i === segs) ? 0 : ((i % 2 === 1) ? amp : -amp));
+              ctx.lineTo(nx, ny);
+            }
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
+
+          var trace = [];
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              trace = [];
+              return { x: 0.30, v: 0, t: 0 }; // start off equilibrium -> shows transient
+            },
+            step: function (dt, t, s) {
+              // RHS of damped, driven oscillator: d[x,v]/dt
+              var deriv = function (st, tt) {
+                var xx = st[0], vv = st[1];
+                var a = -2 * params.gamma * vv - params.omega0 * params.omega0 * xx;
+                if (params.driven) a += params.Fd * Math.cos(params.omegaD * tt);
+                return [vv, a];
+              };
+              var ns = PS.integrate(deriv, [s.x, s.v], s.t, dt, 'rk4');
+              s.x = ns[0];
+              s.v = ns[1];
+              s.t += dt;
+              trace.push({ t: s.t, x: s.x });
+              if (trace.length > TRACE_MAX) trace.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ---- Left panel: wall + spring + mass ---------------------
+              var wallX = 28;
+              var eqX = 110;                 // canvas x for mass center at x=0
+              var massY = H / 2;
+              var xScale = 60;               // px per meter
+              var massCx = eqX + s.x * xScale;
+              // clamp mass center within panel
+              var lo = wallX + 40, hi = PANEL_W - 24;
+              if (massCx < lo) massCx = lo;
+              if (massCx > hi) massCx = hi;
+
+              // equilibrium reference
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath();
+              ctx.moveTo(eqX, massY - 60);
+              ctx.lineTo(eqX, massY + 60);
+              ctx.stroke();
+              ctx.restore();
+
+              // wall (hatched)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(wallX, massY - 70);
+              ctx.lineTo(wallX, massY + 70);
+              ctx.stroke();
+              ctx.lineWidth = 1;
+              for (var hy = massY - 70; hy < massY + 70; hy += 8) {
+                ctx.beginPath();
+                ctx.moveTo(wallX - 8, hy + 8);
+                ctx.lineTo(wallX, hy);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // spring
+              var massR = 14;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2;
+              drawSpring(ctx, wallX, massY, massCx - massR, massY, 8, 8);
+              ctx.restore();
+
+              // mass
+              PS.drawCircle(ctx, massCx, massY, massR, {
+                fill: PS.colors.accent,
+                stroke: PS.colors.text,
+                lineWidth: 2,
+              });
+              PS.drawText(ctx, 'm', massCx, massY + 4, {
+                font: '12px system-ui', color: '#fff', align: 'center',
+              });
+
+              // panel title
+              PS.drawText(ctx, '弹簧–质点系统', 14, 22, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'x = ' + s.x.toFixed(3) + ' m', 14, H - 12, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+
+              // ---- Right panel: scrolling x(t) graph --------------------
+              // graph frame
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(GRAPH_L, GRAPH_T, GRAPH_R - GRAPH_L, GRAPH_B - GRAPH_T);
+              ctx.restore();
+
+              // grid (vertical: every 1 s; horizontal: every 0.5 m)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.lineWidth = 1;
+              var tNow = s.t;
+              var t0 = tNow - T_WIN;
+              for (var gt = Math.ceil(t0); gt <= tNow; gt++) {
+                var px = GRAPH_L + (gt - t0) / T_WIN * (GRAPH_R - GRAPH_L);
+                ctx.beginPath();
+                ctx.moveTo(px, GRAPH_T);
+                ctx.lineTo(px, GRAPH_B);
+                ctx.stroke();
+              }
+              for (var gx = -1.5; gx <= 1.5 + 1e-9; gx += 0.5) {
+                var py = GRAPH_CY - gx / X_RANGE * ((GRAPH_B - GRAPH_T) / 2);
+                ctx.beginPath();
+                ctx.moveTo(GRAPH_L, py);
+                ctx.lineTo(GRAPH_R, py);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // t=0 axis (center line)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(GRAPH_L, GRAPH_CY);
+              ctx.lineTo(GRAPH_R, GRAPH_CY);
+              ctx.stroke();
+              ctx.restore();
+
+              // steady-state amplitude envelope (driven only)
+              if (params.driven) {
+                var denom = Math.sqrt(
+                  Math.pow(params.omega0 * params.omega0 - params.omegaD * params.omegaD, 2)
+                  + Math.pow(2 * params.gamma * params.omegaD, 2)
+                );
+                if (denom > 1e-6) {
+                  var Ass = params.Fd / denom;
+                  if (Ass < 5 * X_RANGE) { // only draw if finite / sensible
+                    var envPxAmp = Ass / X_RANGE * ((GRAPH_B - GRAPH_T) / 2);
+                    ctx.save();
+                    ctx.strokeStyle = PS.colors.accent2;
+                    ctx.globalAlpha = 0.55;
+                    ctx.setLineDash([5, 4]);
+                    ctx.lineWidth = 1.3;
+                    ctx.beginPath();
+                    ctx.moveTo(GRAPH_L, GRAPH_CY - envPxAmp);
+                    ctx.lineTo(GRAPH_R, GRAPH_CY - envPxAmp);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(GRAPH_L, GRAPH_CY + envPxAmp);
+                    ctx.lineTo(GRAPH_R, GRAPH_CY + envPxAmp);
+                    ctx.stroke();
+                    ctx.restore();
+                    PS.drawText(ctx, 'A_ss=' + Ass.toFixed(2) + 'm',
+                      GRAPH_R - 4, GRAPH_CY - envPxAmp - 4, {
+                        font: '11px system-ui', color: PS.colors.accent2, align: 'right',
+                      });
+                  }
+                }
+              }
+
+              // trace polyline
+              if (trace.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                var started = false;
+                for (var i = 0; i < trace.length; i++) {
+                  var p = trace[i];
+                  if (p.t < t0) continue;
+                  var px = GRAPH_L + (p.t - t0) / T_WIN * (GRAPH_R - GRAPH_L);
+                  var py = GRAPH_CY - p.x / X_RANGE * ((GRAPH_B - GRAPH_T) / 2);
+                  if (!started) { ctx.moveTo(px, py); started = true; }
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // graph title + axis labels
+              PS.drawText(ctx, 'x(t)  ——  滚动时域图 (12 s 窗口)', GRAPH_L + 6, 18, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, '+x', GRAPH_L + 4, GRAPH_T + 12, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, '-x', GRAPH_L + 4, GRAPH_B - 4, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 't (s) →', GRAPH_R - 4, GRAPH_B - 4, {
+                font: '11px system-ui', color: PS.colors.text, align: 'right',
+              });
+
+              // status / hint overlay
+              var nearRes = Math.abs(params.omegaD - params.omega0) < 0.08;
+              var statusColor = nearRes ? PS.colors.accent : PS.colors.text;
+              var statusText = params.driven
+                ? (nearRes ? '共振！ RESONANCE (ω_drive ≈ ω₀)' : '受迫振动 driven')
+                : '自由阻尼 damped free';
+              PS.drawText(ctx, statusText, GRAPH_L + 6, H - 12, {
+                font: '12px system-ui', color: statusColor,
+              });
+              PS.drawText(ctx,
+                'ω₀=' + params.omega0.toFixed(2) +
+                '  γ=' + params.gamma.toFixed(2) +
+                '  ω_d=' + (params.driven ? params.omegaD.toFixed(2) : '—'),
+                GRAPH_R - 4, H - 12, {
+                  font: '12px system-ui', color: PS.colors.text, align: 'right',
+                });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'omega0', label: '自然频率 ω₀ (rad/s)', min: 1, max: 8, step: 0.1, value: 4.0 },
+            { type: 'slider', key: 'gamma', label: '阻尼 γ (1/s)', min: 0, max: 3, step: 0.05, value: 0.5 },
+            { type: 'slider', key: 'omegaD', label: '驱动频率 ω_drive (rad/s)', min: 1, max: 8, step: 0.1, value: 4.0 },
+            { type: 'slider', key: 'Fd', label: '驱动力幅 F_d (m/s²)', min: 0, max: 8, step: 0.1, value: 3.0 },
+            { type: 'toggle', key: 'driven', label: '受迫驱动 driven', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('omega0', function (v) { params.omega0 = v; });
+          ctl.on('gamma', function (v) { params.gamma = v; });
+          ctl.on('omegaD', function (v) { params.omegaD = v; });
+          ctl.on('Fd', function (v) { params.Fd = v; });
+          ctl.on('driven', function (v) { params.driven = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary & Key Formulas</h2>
+      <ul>
+        <li>SHM 源于线性恢复力 \(F=-kx\)；通解 \(x=A\cos(\omega t+\varphi)\)，\(\omega=\sqrt{k/m}\)，\(T=2\pi\sqrt{m/k}\)。周期与振幅无关（等时性）。</li>
+        <li>单摆 \(T=2\pi\sqrt{L/g}\)（小角度）；物理摆 \(T=2\pi\sqrt{I/mgd}\)。两者都要求恢复力矩 \(\propto\theta\)。</li>
+        <li>能量 \(E=\tfrac{1}{2}kA^{2}=\tfrac{1}{2}m\omega^{2}A^{2}\) 守恒；相空间轨迹为椭圆。</li>
+        <li>阻尼方程 \(\ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=0\)：\(\gamma<\omega_{0}\) 欠阻尼振荡衰减；\(\gamma=\omega_{0}\) 临界阻尼（无振最快回平衡）；\(\gamma>\omega_{0}\) 过阻尼。</li>
+        <li>受迫振动稳态振幅 \(A=(F_{0}/m)/\sqrt{(\omega_{0}^{2}-\omega^{2})^{2}+(2\gamma\omega)^{2}}\)；共振峰在 \(\omega_{r}\approx\omega_{0}\)（弱阻尼），共振振幅 \(\approx F_{0}/(2m\gamma\omega_{0})\)。</li>
+        <li>品质因子 \(Q=\omega_{0}/(2\gamma)\)；共振峰相对半宽 \(\approx 1/Q\)。</li>
+        <li>耦合振子可分解为独立简正模式；LC 电路与力学振子完全类似 \((\omega=1/\sqrt{LC})\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\omega=\sqrt{\tfrac{k}{m}},\;\; T=2\pi\sqrt{\tfrac{m}{k}}=2\pi\sqrt{\tfrac{L}{g}},\;\; E=\tfrac{1}{2}kA^{2},\;\; A_{\text{res}}\approx\tfrac{F_{0}}{2m\gamma\omega_{0}},\;\; Q=\tfrac{\omega_{0}}{2\gamma}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

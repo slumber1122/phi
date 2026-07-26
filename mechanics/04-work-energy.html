@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 功、能量与守恒 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 4 · 第4章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>功、能量与守恒 <span class="en-title">Work, Energy &amp; Conservation</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>用积分计算变力（如弹簧力、万有引力）沿路径所做的功 (work)。</li>
+        <li>应用<b>动能定理</b> (work–energy theorem) \(W_{\text{net}}=\Delta K\) 解决质点动力学问题。</li>
+        <li>区分<b>保守力</b> (conservative force) 与<b>非保守力</b> (non-conservative force)，理解路径无关性与环路积分 \(\oint\vec{F}\cdot d\vec{r}=0\)。</li>
+        <li>使用<b>机械能守恒</b> (conservation of mechanical energy) 或非保守功公式 \(W_{\text{nc}}=\Delta E\) 分析含摩擦/外力的系统。</li>
+        <li>由势能 \(U(x)\) 求力 \(\vec{F}=-\nabla U\)，并由 \(U(x)\) 的极值判断<b>平衡与稳定性</b> (equilibrium &amp; stability)。</li>
+        <li>计算平均功率与瞬时功率 (average and instantaneous power) 并进行单位换算（瓦特、马力）。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 功 Work</h3>
+      <p>恒力 \(\vec{F}\) 作用在质点上、质点发生位移 \(\Delta\vec{r}\) 时，力对质点所做的<b>功</b> (work) 定义为：</p>
+      <div class="formula">\[ W \;=\; \vec{F}\cdot\Delta\vec{r} \;=\; F\,|\Delta\vec{r}|\,\cos\theta, \]</div>
+      <p>其中 \(\theta\) 是力与位移方向的夹角。功是<b>标量</b> (scalar)，可以为正、为负或为零；国际单位制中功的单位是<b>焦耳</b> (joule) \(\mathrm{J}=\mathrm{N\!\cdot\!m}\)。当力沿路径变化时，需用线积分：</p>
+      <div class="formula">\[ W \;=\; \int_{\mathcal{C}} \vec{F}\cdot d\vec{r} \;=\; \int_{i}^{f} \vec{F}\cdot d\vec{r}. \]</div>
+      <p>例如弹簧的胡克力 \(F_x=-kx\) 将弹簧从原长拉伸到 \(x\) 所做的功为负；外力准静态地拉伸所做的功为正：</p>
+      <div class="formula">\[ W_{\text{spring}}=\int_{0}^{x}(-kx')\,dx'=-\tfrac{1}{2}kx^{2},\qquad W_{\text{ext}}=+\tfrac{1}{2}kx^{2}. \]</div>
+
+      <h3>2. 功率 Power</h3>
+      <p><b>功率</b> (power) 是做功的速率：</p>
+      <div class="formula">\[ P \;=\; \dv{W}{t},\qquad P_{\text{inst}} \;=\; \vec{F}\cdot\vec{v}. \]</div>
+      <p>平均功率 \(P_{\text{avg}}=\Delta W/\Delta t\)。单位为<b>瓦特</b> (watt) \(\mathrm{W}=\mathrm{J/s}\)；常用单位还有马力 \(1\,\mathrm{hp}\approx 745.7\,\mathrm{W}\)。</p>
+
+      <h3>3. 动能与动能定理 Kinetic Energy &amp; Work–Energy Theorem</h3>
+      <p>质点的<b>动能</b> (kinetic energy) \(K=\tfrac{1}{2}mv^{2}\)。<b>动能定理</b>指出合外力做的功等于动能的增量：</p>
+      <div class="formula">\[ W_{\text{net}} \;=\; \int \vec{F}_{\text{net}}\cdot d\vec{r} \;=\; \Delta K \;=\; \tfrac{1}{2}mv_{f}^{2}-\tfrac{1}{2}mv_{i}^{2}. \]</div>
+      <p>注意是<b>合力</b>的功；各分力做功之代数和等于合力做功。</p>
+
+      <h3>4. 势能 Potential Energy</h3>
+      <p><b>势能</b> (potential energy) \(U\) 是系统位形的函数，仅对保守力有定义。两个常用形式：</p>
+      <div class="formula">\[ U_{\text{grav}}=mgy \quad(\text{均匀重力场}),\qquad U_{\text{spring}}=\tfrac{1}{2}kx^{2}\quad(\text{胡克弹簧}). \]</div>
+      <p>势能的<b>参考点</b> (reference point) 可任意选取，但两态之间的 \(\Delta U\) 与参考点无关。</p>
+
+      <h3>5. 保守力与非保守力 Conservative vs. Non-Conservative Forces</h3>
+      <p>若力沿<b>任意闭合路径</b>所做的功恒为零，则该力称为<b>保守力</b>：</p>
+      <div class="formula">\[ \text{保守力}\;\Longleftrightarrow\;\oint \vec{F}\cdot d\vec{r}=0\;\Longleftrightarrow\;\text{做功只依赖起止点}. \]</div>
+      <p>典型保守力：均匀重力、万有引力、静电力、胡克弹力。典型<b>非保守力</b>：动摩擦力、空气阻力（路径相关、耗散）。摩擦力做的功 \(W_{\text{fric}}\) 总为负（对运动方向反向），机械能转化为热。</p>
+
+      <h3>6. 机械能守恒 Conservation of Mechanical Energy</h3>
+      <p>定义<b>机械能</b> (mechanical energy) \(E=K+U\)。若系统中所有力均为保守力，则机械能守恒：</p>
+      <div class="formula">\[ E \;=\; K+U \;=\; \text{常量}. \]</div>
+      <p>若存在非保守力（摩擦、外力等），则：</p>
+      <div class="formula">\[ W_{\text{nc}} \;=\; \Delta E \;=\; \Delta K+\Delta U. \]</div>
+      <p>这是处理含摩擦问题的最简方法：把保守力的功替换为 \(-\Delta U\)，剩下的非保守功直接改变总机械能。</p>
+
+      <h3>7. 力是势能的负梯度 Force as Negative Gradient of Potential</h3>
+      <p>由势能定义 \(U(\vec{r})=-\int_{\vec{r}_0}^{\vec{r}}\vec{F}_{\text{c}}\cdot d\vec{r}\)（路径无关），求微分得：</p>
+      <div class="formula">\[ \vec{F}_{\text{c}} \;=\; -\nabla U,\qquad \text{一维：}\; F_{x}=-\dv{U}{x}. \]</div>
+      <p>这是连接势能函数 \(U(\vec{r})\) 与动力学的基本桥梁。</p>
+
+      <h3>8. 平衡、稳定与能量图 Equilibrium, Stability &amp; Energy Diagrams</h3>
+      <p>一维运动中，平衡位置满足 \(F_x=0\)，即 \(\dv{U}{x}=0\)。稳定性判据：</p>
+      <ul>
+        <li><b>稳定平衡</b> (stable)：\(U\) 的局部极小，\(\frac{d^{2}U}{dx^{2}}>0\)，小位移产生回复力。</li>
+        <li><b>不稳定平衡</b> (unstable)：\(U\) 的局部极大，\(\frac{d^{2}U}{dx^{2}}<0\)。</li>
+        <li><b>随遇平衡</b> (neutral)：\(U\) 在某区间为常量。</li>
+      </ul>
+      <p>能量图中 \(U(x)\) 曲线与水平线 \(E\) 的交点给出<b>转折点</b> (turning points)，在该处 \(K=0\)。允许运动区间为 \(U(x)\le E\)。若 \(E\) 小于势垒高度则运动为<b>束缚</b> (bound)，否则为<b>非束缚</b> (unbound)。</p>
+
+      <div class="key-terms">
+        work (功), power (功率), kinetic energy (动能), potential energy (势能), conservative force (保守力), non-conservative force (非保守力), mechanical energy (机械能), work–energy theorem (动能定理), joule (焦耳), watt (瓦特), gradient (梯度), equilibrium (平衡), stability (稳定性), turning point (转折点), energy diagram (能量图).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：动能定理 \(W_{\text{net}}=\Delta K\)</h3>
+      <p>从牛顿第二定律 \(\vec{F}_{\text{net}}=m\vec{a}=m\,\dv{\vec{v}}{t}\) 出发，沿路径积分：</p>
+      <p class="step"><strong>步骤 1：</strong> 把 \(d\vec{r}=\vec{v}\,dt\) 代入功的定义
+      \[ W_{\text{net}}=\int_{i}^{f}\vec{F}_{\text{net}}\cdot d\vec{r}=\int_{i}^{f}\vec{F}_{\text{net}}\cdot\vec{v}\,dt. \]</p>
+      <p class="step"><strong>步骤 2：</strong> 代入 \(\vec{F}_{\text{net}}=m\,\dv{\vec{v}}{t}\)：
+      \[ W_{\text{net}}=\int_{i}^{f} m\,\dv{\vec{v}}{t}\cdot\vec{v}\,dt. \]</p>
+      <p class="step"><strong>步骤 3：</strong> 利用恒等式 \(\dv{\vec{v}}{t}\cdot\vec{v}=\tfrac{1}{2}\dv{(\vec{v}\cdot\vec{v})}{t}=\tfrac{1}{2}\dv{(v^{2})}{t}\)：
+      \[ W_{\text{net}}=\int_{i}^{f}\tfrac{1}{2}m\,\dv{(v^{2})}{t}\,dt=\tfrac{1}{2}m\bigl[v^{2}\bigr]_{i}^{f}. \]</p>
+      <p class="step"><strong>步骤 4：</strong> 即
+      \[ W_{\text{net}}=\tfrac{1}{2}mv_{f}^{2}-\tfrac{1}{2}mv_{i}^{2}=\Delta K. \]
+      注意此推导仅用到 \(F=ma\)，因此对任意力（保守或非保守）均成立。</p>
+
+      <h3>推导 2：保守力满足 \(\vec{F}=-\nabla U\)</h3>
+      <p>由保守力的路径无关性，可定义 \(U(\vec{r})=-\int_{\vec{r}_0}^{\vec{r}}\vec{F}_{\text{c}}\cdot d\vec{r}\)。考察从 \(\vec{r}\) 到 \(\vec{r}+d\vec{r}\) 的微元：</p>
+      <p class="step">\(U(\vec{r}+d\vec{r})-U(\vec{r})=dU=-\vec{F}_{\text{c}}\cdot d\vec{r}\)。</p>
+      <p class="step">由多元函数微分 \(dU=(\nabla U)\cdot d\vec{r}\)。两式对任意 \(d\vec{r}\) 成立，故 \(\nabla U=-\vec{F}_{\text{c}}\)，即 \(\vec{F}_{\text{c}}=-\nabla U\)。一维即 \(F_x=-\dv{U}{x}\)。</p>
+      <p class="step">进一步，对任意闭合回路 \(C\)：\(\oint_C \vec{F}_{\text{c}}\cdot d\vec{r}=-\oint_C dU=U(\vec{r}_0)-U(\vec{r}_0)=0\)，故保守力环路积分为零——这是「保守」一词的来源。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 拉伸弹簧所做的功</h4>
+        <p class="example-statement">一轻质弹簧劲度系数 \(k=200\,\mathrm{N/m}\)，原长在 \(x=0\)。将它准静态地拉伸到 \(x=0.10\,\mathrm{m}\)。求：(a) 弹簧力所做的功 \(W_{\text{spring}}\)；(b) 外力所做的功 \(W_{\text{ext}}\)；(c) 弹簧储存的势能 \(U_s\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 胡克定律 \(F_x=-kx\)。弹簧力的功须用积分（变力）：</p>
+          <p class="step">\(W_{\text{spring}}=\displaystyle\int_{0}^{0.10}(-kx')\,dx'=-\bigl[\tfrac{1}{2}kx'^{2}\bigr]_{0}^{0.10}=-\tfrac{1}{2}(200)(0.10)^{2}=-1.0\,\mathrm{J}\)。</p>
+          <p class="step">(b) 准静态过程外力 \(F_{\text{ext}}=+kx\)，做正功 \(W_{\text{ext}}=+\tfrac{1}{2}kx^{2}=+1.0\,\mathrm{J}\)。</p>
+          <p class="step">(c) 弹簧势能 \(U_s=\tfrac{1}{2}kx^{2}=+1.0\,\mathrm{J}\)。</p>
+          <p>结果：\(W_{\text{spring}}=\)<span class="ans">\(-1.0\,\mathrm{J}\)</span>，\(W_{\text{ext}}=\)<span class="ans">\(+1.0\,\mathrm{J}\)</span>，\(U_s=\)<span class="ans">\(+1.0\,\mathrm{J}\)</span>。注意 \(W_{\text{spring}}=-\Delta U_s\)（保守力的功等于势能的负增量）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 粗糙斜面上的滑块</h4>
+        <p class="example-statement">质量 \(m=2.0\,\mathrm{kg}\) 的滑块从静止沿倾角 \(\theta=30^{\circ}\) 的斜面下滑，滑行距离 \(d=4.0\,\mathrm{m}\)，动摩擦系数 \(\mu_{k}=0.20\)。求到达底部时的速率 \(v_f\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 取斜面底部为重力势能零点。初始 \(K_i=0\)、\(U_i=mgd\sin\theta\)；末态 \(K_f=\tfrac{1}{2}mv_f^{2}\)、\(U_f=0\)。非保守力（摩擦）做功 \(W_{\text{fric}}=-\mu_k N\,d=-\mu_k (mg\cos\theta)\,d\)。法向力不做功（垂直位移）。</p>
+          <p class="step">由 \(W_{\text{nc}}=\Delta E=\Delta K+\Delta U\)：</p>
+          <p class="step">\(-\mu_k mg\cos\theta\cdot d=\tfrac{1}{2}mv_f^{2}-mgd\sin\theta\)。</p>
+          <p class="step">解出 \(v_f^{2}=2gd(\sin\theta-\mu_k\cos\theta)\)。</p>
+          <p class="step">代入：\(v_f^{2}=2(9.8)(4.0)\bigl(\sin30^{\circ}-0.20\cos30^{\circ}\bigr)=78.4\,(0.500-0.173)=25.6\)。</p>
+          <p>\(v_f=\)<span class="ans">\(5.06\,\mathrm{m/s}\)</span>。（对照无摩擦情形 \(v=\sqrt{2gd\sin\theta}=\sqrt{39.2}=6.26\,\mathrm{m/s}\)，摩擦明显减速。）</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 过山车环形轨道（loop-the-loop）</h4>
+        <p class="example-statement">一滑块在光滑轨道上从高度 \(h\) 由静止释放，进入半径为 \(R\) 的竖直圆环。求滑块刚好能通过圆环顶部（不脱离轨道）的最小释放高度 \(h_{\min}\)。取 \(R=0.40\,\mathrm{m}\) 并求出该高度及顶点处的速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 在圆环顶点，滑块受重力 \(mg\)（向下）与法向力 \(N\)（向下）。恰好不脱离的条件是 \(N\to 0\)，向心方程变为：</p>
+          <p class="step">\(mg=\dfrac{mv_{\text{top}}^{2}}{R}\;\Longrightarrow\;v_{\text{top}}^{2}=gR\)。</p>
+          <p class="step">机械能守恒（轨道光滑，只有保守力）。取环底为 \(U=0\)，顶点高度为 \(2R\)：</p>
+          <p class="step">\(mg h_{\min}=mg(2R)+\tfrac{1}{2}mv_{\text{top}}^{2}=2mgR+\tfrac{1}{2}mgR=\tfrac{5}{2}mgR\)。</p>
+          <p class="step">故 \(h_{\min}=\dfrac{5R}{2}\)。</p>
+          <p class="step">代入 \(R=0.40\,\mathrm{m}\)：\(h_{\min}=1.0\,\mathrm{m}\)；\(v_{\text{top}}=\sqrt{gR}=\sqrt{9.8\times 0.40}=\)</p>
+          <p>\(v_{\text{top}}=\)<span class="ans">\(1.98\,\mathrm{m/s}\)</span>，\(h_{\min}=\)<span class="ans">\(1.0\,\mathrm{m}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 双势阱的平衡与稳定</h4>
+        <p class="example-statement">设一维势能函数 \(U(x)=a x^{4}-b x^{2}\)（\(a=1.0\,\mathrm{J/m^{4}}\)，\(b=2.0\,\mathrm{J/m^{2}}\)）。求所有平衡位置，并判断稳定性。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(F_x=-\dv{U}{x}\)：</p>
+          <p class="step">\(F_x=-4a x^{3}+2b x=x\,(2b-4a x^{2})\)。</p>
+          <p class="step">令 \(F_x=0\)：\(x=0\) 或 \(x^{2}=\dfrac{b}{2a}=\dfrac{2.0}{2\times 1.0}=1\)，即 \(x=0,\;\pm 1.0\,\mathrm{m}\)。</p>
+          <p class="step">二阶导：\(\frac{d^{2}U}{dx^{2}}=12a x^{2}-2b\)。</p>
+          <p class="step">在 \(x=0\)：\(\frac{d^{2}U}{dx^{2}}=-2b=-4.0\,\mathrm{J/m^{2}}<0\)，\(U\) 局部极大，<b>不稳定</b>。</p>
+          <p class="step">在 \(x=\pm 1.0\,\mathrm{m}\)：\(\frac{d^{2}U}{dx^{2}}=12a(1)^{2}-2b=12-4=8.0\,\mathrm{J/m^{2}}>0\)，\(U\) 局部极小（\(U_{\min}=-1.0\,\mathrm{J}\)），<b>稳定</b>。</p>
+          <p>结论：\(x=\)<span class="ans">\(0\)（不稳定）</span>，\(x=\)<span class="ans">\(\pm 1.0\,\mathrm{m}\)（稳定）</span>。这是经典的对称双势阱。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 爬楼梯的平均功率</h4>
+        <p class="example-statement">一运动员质量 \(m=70\,\mathrm{kg}\)，沿楼梯在 \(t=8.0\,\mathrm{s}\) 内竖直上升 \(h=5.0\,\mathrm{m}\)。求克服重力所做的功与平均功率（分别以瓦特和马力表示）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 克服重力做功 \(W=mgh=(70)(9.8)(5.0)=3430\,\mathrm{J}\)。</p>
+          <p class="step">平均功率 \(P_{\text{avg}}=\dfrac{W}{t}=\dfrac{3430}{8.0}=428.75\,\mathrm{W}\)。</p>
+          <p class="step">换算为马力：\(P=\dfrac{428.75}{745.7}=0.575\,\mathrm{hp}\)。</p>
+          <p>\(W=\)<span class="ans">\(3.43\times 10^{3}\,\mathrm{J}\)</span>，\(P_{\text{avg}}\approx\)<span class="ans">\(429\,\mathrm{W}\approx 0.58\,\mathrm{hp}\)</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>「功 = 力 × 距离」忽略了 \(\cos\theta\)。</b> 一般情形 \(W=Fd\cos\theta\)。当力与位移垂直（如匀速圆周运动的向心力、静止斜面上的法向力）时做功为零。</li>
+        <li><b>法向力永远不做功？</b> 当接触面静止时确实不做功（\(N\perp\) 位移），但若接触面本身在运动（如自动扶梯、传送带），法向力可以做功。</li>
+        <li><b>符号混乱。</b> 举起重物时重力做<b>负</b>功，外力做<b>正</b>功；两者数值相反。正负号区分能量是「输入」还是「输出」。</li>
+        <li><b>把保守力的功算进 \(\Delta E\)。</b> 正确关系：\(W_{\text{c}}=-\Delta U\)，\(W_{\text{nc}}=\Delta E\)。守恒力只在 \(K\) 与 \(U\) 之间转移能量，不改变总机械能。</li>
+        <li><b>认为摩擦「消灭」了能量。</b> 总能量永远守恒；摩擦只是把机械能转化为热（内能）。说「能量损失」应明确是「机械能损失」。</li>
+        <li><b>对势能参考点执迷。</b> \(U\) 的零点是任意的（选地面或桌面皆可），但 \(\Delta U\) 是确定的物理量；解题时只需固定一个参考点。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 水平推箱子（含摩擦）：\(m=1.5\,\mathrm{kg}\)，\(F=12\,\mathrm{N}\)，\(\mu_k=0.15\)，\(d=3.0\,\mathrm{m}\)，求末速度。</summary>
+        <div class="hint">用动能定理 \(W_{\text{net}}=\Delta K\)，注意净功 = 推力功 + 摩擦功。</div>
+        <div class="solution">
+          \(W_{\text{push}}=Fd=(12)(3.0)=36\,\mathrm{J}\)；\(W_{\text{fric}}=-\mu_k mgd=-(0.15)(1.5)(9.8)(3.0)=-6.61\,\mathrm{J}\)。
+          净功 \(W_{\text{net}}=29.4\,\mathrm{J}=\tfrac{1}{2}mv_f^{2}\)。
+          \(v_f=\sqrt{\tfrac{2(29.4)}{1.5}}=\sqrt{39.2}=\)<span class="ans">\(6.26\,\mathrm{m/s}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 弹簧发射小球：\(m=0.20\,\mathrm{kg}\)，\(k=500\,\mathrm{N/m}\)，压缩 \(x=0.080\,\mathrm{m}\)。(a) 求弹簧回到原长时的速度；(b) 若竖直向上发射，能上升多高？</summary>
+        <div class="hint">弹簧势能 \(U_s=\tfrac{1}{2}kx^{2}\) 完全转化为动能（水平）或重力势能（竖直最高点）。</div>
+        <div class="solution">
+          (a) \(U_s=\tfrac{1}{2}(500)(0.080)^{2}=1.60\,\mathrm{J}=\tfrac{1}{2}mv^{2}\)，\(v=\sqrt{\tfrac{2(1.60)}{0.20}}=\)<span class="ans">\(4.0\,\mathrm{m/s}\)</span>。
+          (b) 机械能守恒：\(\tfrac{1}{2}kx^{2}=mg h_{\max}\)，\(h_{\max}=\dfrac{1.60}{(0.20)(9.8)}=\)<span class="ans">\(0.816\,\mathrm{m}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 过山车带摩擦：\(m=500\,\mathrm{kg}\)，\(h_i=30\,\mathrm{m}\)，\(h_f=5.0\,\mathrm{m}\)，轨道长 \(d=80\,\mathrm{m}\)，平均摩擦力 \(f_k=200\,\mathrm{N}\)。求末速度。</summary>
+        <div class="hint">用 \(W_{\text{nc}}=\Delta E\)，其中 \(W_{\text{fric}}=-f_k d\)。</div>
+        <div class="solution">
+          初态机械能 \(E_i=mg h_i=(500)(9.8)(30)=147{,}000\,\mathrm{J}\)。
+          末态 \(E_f=mg h_f+\tfrac{1}{2}mv_f^{2}\)。
+          \(W_{\text{fric}}=-f_k d=-(200)(80)=-16{,}000\,\mathrm{J}=E_f-E_i\)。
+          \(\tfrac{1}{2}(500)v_f^{2}=147000-24500-16000=106500\)。
+          \(v_f=\sqrt{\tfrac{2(106500)}{500}}=\sqrt{426}=\)<span class="ans">\(20.6\,\mathrm{m/s}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 给定 \(U(x)=\tfrac{1}{2}kx^{2}-\alpha x^{4}\)（\(k,\alpha>0\)），求平衡位置并判断稳定性。</summary>
+        <div class="hint">令 \(F_x=-\dv{U}{x}=0\)，再用二阶导数判据。</div>
+        <div class="solution">
+          \(F_x=-kx+4\alpha x^{3}=x(4\alpha x^{2}-k)\)。平衡点：\(x=0\) 与 \(x=\pm\sqrt{\dfrac{k}{4\alpha}}\)。
+          \(\frac{d^{2}U}{dx^{2}}=k-12\alpha x^{2}\)。
+          在 \(x=0\)：\(\frac{d^{2}U}{dx^{2}}=k>0\)，<b>稳定</b>。
+          在 \(x=\pm\sqrt{k/(4\alpha)}\)：\(\frac{d^{2}U}{dx^{2}}=k-12\alpha\cdot\dfrac{k}{4\alpha}=k-3k=-2k<0\)，<b>不稳定</b>。
+          结论：<span class="ans">\(x=0\) 稳定；\(x=\pm\sqrt{k/(4\alpha)}\) 不稳定</span>。注意此势能在大 \(|x|\) 时发散到 \(-\infty\)，原点只是<b>局部</b>稳定。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 汽车加速与爬坡功率：\(m=1200\,\mathrm{kg}\)，\(0\to 25\,\mathrm{m/s}\) 用 \(8.0\,\mathrm{s}\)（忽略阻力）。再以恒速 \(25\,\mathrm{m/s}\) 爬 \(6^{\circ}\) 斜坡，求发动机最小平均功率及爬坡所需附加功率。</summary>
+        <div class="hint">加速阶段 \(P_{\text{avg}}=\Delta K/\Delta t\)；爬坡恒速时发动机力等于重力沿斜面分量，\(P=Fv\)。</div>
+        <div class="solution">
+          \(\Delta K=\tfrac{1}{2}(1200)(25)^{2}=375{,}000\,\mathrm{J}\)。加速所需平均功率 \(P=\dfrac{375000}{8.0}=46{,}875\,\mathrm{W}\approx\)<span class="ans">\(46.9\,\mathrm{kW}\approx 62.9\,\mathrm{hp}\)</span>。
+          爬坡：所需驱动力 \(F=mg\sin 6^{\circ}=(1200)(9.8)(0.1045)=1229\,\mathrm{N}\)，功率 \(P=Fv=(1229)(25)=30{,}724\,\mathrm{W}\approx\)<span class="ans">\(30.7\,\mathrm{kW}\approx 41.2\,\mathrm{hp}\)</span>。
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">半管轨道上滑块的能量条形图：调节起始高度 \(h_0\)、质量 \(m\)、摩擦系数 \(\mu\)，观察动能 \(K\)（红）、势能 \(U\)（绿）、总能量 \(E\)（蓝）三条实时柱状图。当 \(\mu=0\) 时 \(E\) 恒定（与上方虚线齐平）；\(\mu>0\) 时 \(E\) 随时间衰减——直接「看见」能量守恒/耗散。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physics constants ----
+          var g = 9.8;             // m/s^2
+          var a = 0.8;             // track shape: y = a x^2  (parabolic half-pipe)
+          var Lx = 1.0;            // half-width of pipe (m); top height = a Lx^2 = 0.8 m
+
+          // ---- Canvas layout ----
+          var trackX0 = 36, trackW = 280;
+          var trackY_bottom = 320, trackScaleY = 320;       // px per metre (vertical)
+          var barBaseY = 320, barTop = 50, barHmax = barBaseY - barTop;
+          var barW = 48, barGap = 18, barsX0 = 360;
+
+          // ---- Parameters (bound to sliders) ----
+          var params = { h0: 0.6, mass: 1.0, mu: 0.0 };
+
+          function physToTrack(xp, yp) {
+            return {
+              cx: trackX0 + (xp + Lx) / (2 * Lx) * trackW,
+              cy: trackY_bottom - yp * trackScaleY,
+            };
+          }
+
+          function energies(s) {
+            var vsq = (1 + 4 * a * a * s.x * s.x) * s.vx * s.vx;
+            var K = 0.5 * params.mass * vsq;
+            var U = params.mass * g * a * s.x * s.x;
+            return { K: K, U: U, E: K + U };
+          }
+
+          // EOM derived from Lagrangian L = 1/2 m(1+4a^2 x^2) xdot^2 - m g a x^2,
+          // with generalised friction Q = -mu m (g + 2 a xdot^2) sign(xdot).
+          function deriv(state, t) {
+            var x = state[0], vx = state[1];
+            var mu = params.mu;
+            var sign_v = vx > 1e-6 ? 1 : (vx < -1e-6 ? -1 : 0);
+            var denom = 1 + 4 * a * a * x * x;
+            var ax = (-4 * a * a * x * vx * vx - 2 * g * a * x
+                      - mu * (g + 2 * a * vx * vx) * sign_v) / denom;
+            return [vx, ax];
+          }
+
+          function initialState() {
+            var h0 = Math.min(Math.max(params.h0, 0.001), a * Lx * Lx);
+            var x0 = Math.sqrt(h0 / a);
+            var E0 = params.mass * g * h0;
+            return { x: x0, vx: 0.0, E0: E0 };
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: initialState,
+            step: function (dt, t, s) {
+              // RK4 integration of [x, vx]
+              var arr = PS.integrate(deriv, [s.x, s.vx], t, dt, 'rk4');
+              s.x = arr[0]; s.vx = arr[1];
+              // Safety: reflect at boundaries (numerical guard)
+              if (s.x >  Lx) { s.x =  Lx; s.vx = -Math.abs(s.vx) * 0.985; }
+              if (s.x < -Lx) { s.x = -Lx; s.vx =  Math.abs(s.vx) * 0.985; }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              PS.drawText(ctx, 'Half-Pipe Energy Bars · 半管能量条形图',
+                          W / 2, 18,
+                          { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              // ---- Track (parabola y = a x^2) ----
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              for (var i = 0; i <= 100; i++) {
+                var xf = -Lx + (2 * Lx) * i / 100;
+                var yf = a * xf * xf;
+                var p = physToTrack(xf, yf);
+                if (i === 0) ctx.moveTo(p.cx, p.cy); else ctx.lineTo(p.cx, p.cy);
+              }
+              ctx.stroke();
+              // ground line
+              ctx.beginPath();
+              ctx.moveTo(trackX0 - 8, trackY_bottom);
+              ctx.lineTo(trackX0 + trackW + 8, trackY_bottom);
+              ctx.stroke();
+              // height tick marks
+              ctx.lineWidth = 1; ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.6;
+              for (var hv = 0.2; hv <= 0.8 + 1e-9; hv += 0.2) {
+                var yy = trackY_bottom - hv * trackScaleY;
+                ctx.beginPath();
+                ctx.moveTo(trackX0 - 4, yy);
+                ctx.lineTo(trackX0 + trackW + 4, yy);
+                ctx.stroke();
+                PS.drawText(ctx, hv.toFixed(1) + ' m', trackX0 - 6, yy + 3,
+                            { font: '10px system-ui', color: C.axis, align: 'right' });
+              }
+              ctx.globalAlpha = 1;
+              ctx.restore();
+              PS.drawText(ctx, 'Track 轨道', trackX0 + trackW / 2, trackY_bottom + 26,
+                          { font: '12px system-ui', color: C.text, align: 'center' });
+
+              // ---- Block ----
+              var yp = a * s.x * s.x;
+              var bp = physToTrack(s.x, yp);
+              PS.drawCircle(ctx, bp.cx, bp.cy, 10,
+                            { fill: C.primary, stroke: C.text, lineWidth: 1.5 });
+              // velocity arrow along the tangent direction
+              var slope = 2 * a * s.x;
+              var tlen = Math.hypot(1, slope);
+              var sgn = s.vx >= 0 ? 1 : -1;
+              var tx = sgn * (1 / tlen);
+              var ty = sgn * (slope / tlen);
+              var speed = Math.abs(s.vx) * tlen;
+              var arrowLen = Math.min(70, 10 + speed * 14);
+              if (speed > 5e-3) {
+                PS.drawArrow(ctx, bp.cx, bp.cy,
+                             bp.cx + tx * arrowLen, bp.cy - ty * arrowLen,
+                             C.accent, 'v');
+              }
+
+              // ---- Energy bars ----
+              var en = energies(s);
+              var scaleE = Math.max(s.E0, 1e-6);
+              function bar(idx, label, value, color) {
+                var bx0 = barsX0 + idx * (barW + barGap);
+                ctx.save();
+                ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+                ctx.strokeRect(bx0, barTop, barW, barHmax);
+                var h = Math.max(0, Math.min(barHmax, (value / scaleE) * barHmax));
+                ctx.fillStyle = color;
+                ctx.fillRect(bx0, barBaseY - h, barW, h);
+                ctx.restore();
+                PS.drawText(ctx, label, bx0 + barW / 2, barBaseY + 14,
+                            { font: 'bold 12px system-ui', color: C.text, align: 'center' });
+                PS.drawText(ctx, value.toFixed(2) + ' J', bx0 + barW / 2, barBaseY + 30,
+                            { font: '11px system-ui', color: C.text, align: 'center' });
+              }
+              bar(0, 'K 动能', en.K, C.accent);
+              bar(1, 'U 势能', en.U, C.accent2);
+              bar(2, 'E 总能', en.E, C.primary);
+
+              // ---- E0 reference (dashed line at top of bars) ----
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.setLineDash([5, 3]); ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(barsX0 - 6, barTop);
+              ctx.lineTo(barsX0 + 3 * barW + 2 * barGap + 6, barTop);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E₀ initial total energy 初态总能',
+                          barsX0 + 3 * barW + 2 * barGap, barTop - 5,
+                          { font: '10px system-ui', color: C.trace, align: 'right' });
+
+              // ---- Status line ----
+              var msg = (params.mu === 0)
+                ? 'μ = 0：K + U = E 守恒 (K、U 互相转换，E 不变)'
+                : 'μ > 0：摩擦做负功，E 随时间衰减 (K + U < E₀)';
+              PS.drawText(ctx, msg, W / 2, H - 8,
+                          { font: '11px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'h0',   label: '起始高度 h₀ (m)', min: 0.10, max: 0.80, step: 0.05, value: 0.60 },
+            { type: 'slider', key: 'mass', label: '质量 m (kg)',     min: 0.50, max: 3.00, step: 0.10, value: 1.00 },
+            { type: 'slider', key: 'mu',   label: '摩擦系数 μ',      min: 0.00, max: 0.30, step: 0.01, value: 0.00 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('h0',    function (v) { params.h0   = v; sim.reset(); });
+          ctl.on('mass',  function (v) { params.mass = v; sim.reset(); });
+          ctl.on('mu',    function (v) { params.mu   = v; });
+          ctl.on('reset', function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><b>功</b> \(W=\int\vec{F}\cdot d\vec{r}\)；<b>功率</b> \(P=\vec{F}\cdot\vec{v}\)。单位：焦耳 \(\mathrm{J}\) 与瓦特 \(\mathrm{W}\)。</li>
+        <li><b>动能</b> \(K=\tfrac{1}{2}mv^{2}\)；<b>动能定理</b> \(W_{\text{net}}=\Delta K\)（对任意力成立）。</li>
+        <li>保守力满足 \(\oint\vec{F}\cdot d\vec{r}=0\)；可定义势能 \(U\)，且 \(\vec{F}=-\nabla U\)（一维 \(F_x=-\dv{U}{x}\)）。</li>
+        <li>常用势能：\(U_{\text{grav}}=mgy\)、\(U_{\text{spring}}=\tfrac{1}{2}kx^{2}\)。</li>
+        <li><b>机械能守恒</b> \(E=K+U=\text{const}\)；含非保守力时 \(W_{\text{nc}}=\Delta E\)。</li>
+        <li>平衡位置 \(F=0\Leftrightarrow\dv{U}{x}=0\)；\(U\) 极小为稳定，极大为不稳定。能量图中 \(U(x)\le E\) 区间为允许运动区，交点为转折点。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,W=\int\vec{F}\cdot d\vec{r},\quad K=\tfrac{1}{2}mv^{2},\quad E=K+U,\quad W_{\text{nc}}=\Delta E,\quad \vec{F}=-\nabla U\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

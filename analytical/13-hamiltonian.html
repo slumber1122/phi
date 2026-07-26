@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第13章 · 哈密顿力学初步 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="13">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 13 · 第13章 · 第二部分 分析力学 Part II Analytical Mechanics</p>
+      <h1>哈密顿力学初步 <span class="en-title">Hamiltonian Mechanics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>通过<strong>勒让德变换</strong> (Legendre transform) 从拉格朗日量 \(L(q,\dot{q},t)\) 构造哈密顿量 \(H(q,p,t)=\sum_{i}p_{i}\dot{q}_{i}-L\)，并把 \(q\) 与正则动量 \(p\) 视为<strong>独立</strong>变量。</li>
+        <li>写出并推导<strong>哈密顿方程</strong> (Hamilton's equations) \(\dot{q}_{i}=\pdv{H}{p_{i}}\)，\(\dot{p}_{i}=-\pdv{H}{q_{i}}\)——一组一阶、对称的常微分方程组。</li>
+        <li>在<strong>相空间</strong> (phase space) 中以 \((q,p)\) 为坐标分析运动：识别轨迹与等能面 \(H=E\) 的关系。</li>
+        <li>证明当 \(L\) 不显含时间且动能为 \(\dot{q}\) 的二次齐次式时，\(H=T+V=\)总机械能。</li>
+        <li>叙述<strong>刘维尔定理</strong> (Liouville's theorem)——哈密顿流保持相空间体积——并据此解释为何阻尼系统并不服从刘维尔定理。</li>
+        <li>对比牛顿 (二阶、矢量)、拉格朗日 (二阶、标量 \(q\))、哈密顿 (一阶、\(q\) 与 \(p\)) 三种等价表述，并理解哈密顿观点为何是量子力学与统计力学的自然起点。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 从拉格朗日量到哈密顿量：勒让德变换</h3>
+      <p>拉格朗日力学以广义坐标 \(q\) 与广义速度 \(\dot{q}\) 为基本变量，运动由二阶方程 (欧拉–拉格朗日方程) \(\dv{}{t}\!\bigl(\pdv{L}{\dot{q}_{i}}\bigr)-\pdv{L}{q_{i}}=0\) 支配。哈密顿力学把同样的物理改写为以广义坐标 \(q\) 与<strong>正则动量</strong> (canonical momentum) \(p\) 为基本变量：</p>
+      <div class="formula">\[ p_{i}\;\equiv\;\pdv{L}{\dot{q}_{i}} \]</div>
+      <p>从拉格朗日量到哈密顿量的过渡称为<strong>勒让德变换</strong> (Legendre transform)。形式上，定义<strong>哈密顿量</strong> (Hamiltonian)：</p>
+      <div class="formula">\[ H(q,p,t)\;\equiv\;\sum_{i}p_{i}\,\dot{q}_{i}\;-\;L(q,\dot{q},t) \]</div>
+      <p>关键操作：先用 \(p_{i}=\pdv{L}{\dot{q}_{i}}\) 把 \(\dot{q}\) 解为 \(p\) 的函数 \(\dot{q}_{i}=\dot{q}_{i}(q,p,t)\)，再代入上式，使 \(H\) 仅以 \((q,p,t)\) 为变量，不再显含 \(\dot{q}\)。这个"反演"要求黑斯式 \(\det\!\bigl[\pdv{^{2}L}{\dot{q}_{i}\partial\dot{q}_{j}}\bigr]\neq 0\)（对常见 \(T=\tfrac{1}{2}m\dot{q}^{2}\) 的情形显然成立）。</p>
+      <p><strong>几何直觉</strong>：勒让德变换把"以斜率为变量的描述"换成"以截距为变量的描述"。对函数 \(f(v)\)，定义 \(g(p)=pv-f(v)\)，其中 \(p=f'(v)\) 反解出 \(v=v(p)\)。\(f\) 与 \(g\) 携带相同的信息，但用了"对偶"的变量。在力学中，\(L\) 是 \(\dot{q}\) 的函数，而 \(H\) 是 \(p\) 的函数——两者描述同一系统，只是坐标系不同。</p>
+      <div class="key-terms">Legendre transform (勒让德变换), Hamiltonian \(H\) (哈密顿量), canonical momentum \(p_{i}=\pdv{L}{\dot{q}_{i}}\) (正则动量)</div>
+
+      <h3>2. 哈密顿方程</h3>
+      <p>把 \(H\) 的微分 (作为 \(q,p\) 的函数) 与 \(H=\sum p_{i}\dot{q}_{i}-L\) 的微分 (作为 \(q,\dot{q}\) 的函数) 作比较，可 simultaneously 得到一对一阶方程（推导见下节）：</p>
+      <div class="formula">\[ \dot{q}_{i}=\pdv{H}{p_{i}},\qquad \dot{p}_{i}=-\pdv{H}{q_{i}} \]</div>
+      <p>这组对称的方程就是<strong>哈密顿正则方程</strong> (Hamilton's canonical equations)。注意 \(q_{i}\) 与 \(p_{i}\) 在 \(H\) 中是<strong>完全独立的自变量</strong>：在偏导数 \(\pdv{H}{p_{i}}\) 中，\(q_{i}\) 视为常数；只有把方程<strong>联立求解</strong>时，\(p(t)\) 与 \(q(t)\) 才联系起来。</p>
+      <p>哈密顿方程是一阶的：\(n\) 个自由度的系统化为 \(2n\) 个一阶常微分方程，而牛顿/拉格朗日是 \(n\) 个二阶方程。两者数学等价（一阶方程组与二阶方程组可互化），但哈密顿形式的对称性揭示出更深的几何结构。</p>
+      <p>若 \(H\) 不显含某坐标 \(q_{k}\)（即 \(\pdv{H}{q_{k}}=0\)），则 \(\dot{p}_{k}=0\)，相应的动量 \(p_{k}\) 守恒——\(q_{k}\) 称为<strong>可遗坐标</strong> (cyclic / ignorable coordinate)。这与拉格朗日量中的同名概念一致，但哈密顿形式下处理更直接（直接得 \(p_{k}=\) 常数，可降阶）。</p>
+      <div class="key-terms">Hamilton's canonical equations (哈密顿正则方程), cyclic coordinate (可遗坐标 / 循环坐标)</div>
+
+      <h3>3. 相空间与轨迹</h3>
+      <p>对 \(n\) 自由度系统，所有可能的 \((q_{1},\dots,q_{n},p_{1},\dots,p_{n})\) 张成 \(2n\) 维<strong>相空间</strong> (phase space)。系统的一个瞬时状态对应相空间中的一点，称为<strong>相点</strong> (phase point)；随时间演化，相点描出一条<strong>轨迹</strong> (trajectory)。</p>
+      <p>哈密顿方程给出相空间中的"速度场" \((\dot{q},\dot{p})=(\pdv{H}{p},-\pdv{H}{q})\)，称为<strong>哈密顿流</strong> (Hamiltonian flow)。给定点 \((q_{0},p_{0})\)，由存在唯一性定理，有且仅有一条轨迹经过它。</p>
+      <p>若 \(\pdv{H}{t}=0\)（\(H\) 不显含时间），则沿任意轨迹：</p>
+      <div class="formula">\[ \dv{H}{t}=\sum_{i}\Bigl(\pdv{H}{q_{i}}\dot{q}_{i}+\pdv{H}{p_{i}}\dot{p}_{i}\Bigr)+\pdv{H}{t}=\sum_{i}\bigl(\pdv{H}{q_{i}}\pdv{H}{p_{i}}-\pdv{H}{p_{i}}\pdv{H}{q_{i}}\bigr)+0=0 \]</div>
+      <p>即 \(H\) 守恒。这意味着：保守系统的轨迹始终躺在 \(H=\) 常数的等能面上。一维系统的等能面是相平面上的曲线，二维系统的等能面是三维曲面，依此类推。</p>
+      <div class="key-terms">phase space (相空间), phase point (相点), trajectory (轨迹), Hamiltonian flow (哈密顿流), energy surface (等能面)</div>
+
+      <h3>4. \(H=T+V\)：何时成立？</h3>
+      <p>设动能 \(T\) 是广义速度的<strong>二次齐次函数</strong> \(T=\tfrac{1}{2}\sum_{ij}M_{ij}(q)\dot{q}_{i}\dot{q}_{j}\)（笛卡尔坐标、自然曲线坐标下都成立），势能 \(V=V(q)\) 不依赖速度。由欧拉齐次定理，\(\sum_{i}\pdv{T}{\dot{q}_{i}}\dot{q}_{i}=2T\)。于是：</p>
+      <div class="formula">\[ H=\sum_{i}p_{i}\dot{q}_{i}-L=\sum_{i}\pdv{T}{\dot{q}_{i}}\dot{q}_{i}-(T-V)=2T-(T-V)=T+V \]</div>
+      <p>所以<strong>对标准定常约束系统，\(H\) 等于总机械能</strong>。但这一结论并不普适：若 \(L\) 显含时间（如含时势能 \(V(q,t)\)）、或动能含 \(\dot{q}\) 的一次项（如旋转参考系、电磁场中带电粒子的"广义势" \(L=\tfrac{1}{2}m\vec{v}^{2}+q\vec{v}\cdot\vec{A}-q\phi\)）、或约束本身随时间变化，则 \(H\) 与 \(T+V\) 一般不等（见误区）。</p>
+
+      <h3>5. 刘维尔定理</h3>
+      <p>考虑相空间中一块区域 \(\Omega\)，随哈密顿流演化。其体积 \(V_{\Omega}=\int_{\Omega}d^{n}q\,d^{n}p\) 是否改变？<strong>刘维尔定理</strong> (Liouville's theorem) 给出答案：哈密顿流是<strong>不可压缩</strong>的，相空间体积守恒。</p>
+      <p>用相空间速度场 \(\vec{u}=(\dot{q}_{1},\dots,\dot{q}_{n},\dot{p}_{1},\dots,\dot{p}_{n})\) 的散度表达：</p>
+      <div class="formula">\[ \nabla_{\!2n}\cdot\vec{u}=\sum_{i}\Bigl(\pdv{\dot{q}_{i}}{q_{i}}+\pdv{\dot{p}_{i}}{p_{i}}\Bigr)=\sum_{i}\Bigl(\pdv{^{2}H}{q_{i}\partial p_{i}}-\pdv{^{2}H}{p_{i}\partial q_{i}}\Bigr)=0 \]</div>
+      <p>散度处处为零——这是哈密顿方程对称结构（\(+\pdv{}{p}\) 与 \(-\pdv{}{q}\) 配对）的直接结果。由连续性方程，相空间密度 \(\rho(q,p,t)\) 满足 \(\pdv{\rho}{t}+\nabla\!\cdot(\rho\vec{u})=0\)；代入 \(\nabla\!\cdot\vec{u}=0\) 得 \(\dv{\rho}{t}=0\)（沿轨迹密度不变）。</p>
+      <p><strong>意义</strong>：(i) 它是经典统计力学的基础——系综 (ensemble) 在相空间中像不可压缩流体一样演化；(ii) 它是<strong>混沌</strong> (chaos) 的几何前提：因体积不变，伸展方向必然伴随压缩方向，导致相邻轨迹指数分离（"拉伸 + 折叠"，下章讨论）；(iii) 它是<strong>纯哈密顿系统</strong>的标志：任何耗散（摩擦、阻尼）都使 \(\nabla\!\cdot\vec{u}<0\)，相空间体积收缩，刘维尔定理失效——互动仿真中阻尼下的"螺旋收缩"正是这一现象的可视化。</p>
+      <div class="key-terms">Liouville's theorem (刘维尔定理), phase-space volume (相空间体积), incompressible flow (不可压缩流), ensemble (系综)</div>
+
+      <h3>6. 三种表述的对比</h3>
+      <p>牛顿、拉格朗日、哈密顿三种表述在物理上完全等价（对同一系统给出相同的 \(q(t)\)），但观点不同：</p>
+      <ul>
+        <li><strong>牛顿</strong> (Newton)：以矢量 (\(\vec{r},\vec{F}\)) 为基本对象，二阶方程 \(m\ddot{\vec{r}}=\vec{F}\)。直观，但矢量在复杂约束下繁琐。</li>
+        <li><strong>拉格朗日</strong> (Lagrange)：以广义坐标 \(q\) 为基本对象，二阶标量方程 \(\dv{}{t}\!\bigl(\pdv{L}{\dot{q}}\bigr)-\pdv{L}{q}=0\)。约束通过坐标选取自然处理，标量计算简洁。</li>
+        <li><strong>哈密顿</strong> (Hamilton)：以 \((q,p)\) 为基本对象，一阶对称方程 \(\dot{q}=\pdv{H}{p},\;\dot{p}=-\pdv{H}{q}\)。相空间几何清晰，对称性好，是量子化（\([q,p]=i\hbar\)）与统计力学（刘维尔方程）的天然起点。</li>
+      </ul>
+      <p>此外，<strong>哈密顿原理</strong> (Hamilton's principle, \(\delta S=\delta\!\int L\,dt=0\)) 也可改写为相空间形式：</p>
+      <div class="formula">\[ \delta\!\int_{t_{1}}^{t_{2}}\!\Bigl[\sum_{i}p_{i}\dot{q}_{i}-H(q,p,t)\Bigr]dt=0 \]</div>
+      <p>这里 \(q(t)\) 与 \(p(t)\) 独立变分，固定端点条件只施加于 \(q\)（\(p\) 在端点自由）。由此同样可推出哈密顿方程。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 13.1：由拉格朗日方程导出哈密顿方程</h3>
+      <p class="step"><strong>步骤 1（\(H\) 的全微分）：</strong> 把 \(H=\sum_{i}p_{i}\dot{q}_{i}-L(q,\dot{q},t)\) 视为 \((q,\dot{q},t)\) 的函数微分：</p>
+      <div class="formula">\[ dH=\sum_{i}\Bigl(\dot{q}_{i}\,dp_{i}+p_{i}\,d\dot{q}_{i}-\pdv{L}{q_{i}}dq_{i}-\pdv{L}{\dot{q}_{i}}d\dot{q}_{i}\Bigr)-\pdv{L}{t}dt \]</div>
+      <p class="step"><strong>步骤 2（消去 \(d\dot{q}_{i}\) 项）：</strong> 由定义 \(p_{i}=\pdv{L}{\dot{q}_{i}}\)，\(p_{i}\,d\dot{q}_{i}-\pdv{L}{\dot{q}_{i}}d\dot{q}_{i}=0\)。剩余：</p>
+      <div class="formula">\[ dH=\sum_{i}\Bigl(\dot{q}_{i}\,dp_{i}-\pdv{L}{q_{i}}dq_{i}\Bigr)-\pdv{L}{t}dt \]</div>
+      <p class="step"><strong>步骤 3（代入欧拉–拉格朗日方程）：</strong> 由 EL 方程 \(\dv{}{t}\!\bigl(\pdv{L}{\dot{q}_{i}}\bigr)=\pdv{L}{q_{i}}\)，即 \(\dot{p}_{i}=\pdv{L}{q_{i}}\)：</p>
+      <div class="formula">\[ dH=\sum_{i}\bigl(\dot{q}_{i}\,dp_{i}-\dot{p}_{i}\,dq_{i}\bigr)-\pdv{L}{t}dt \]</div>
+      <p class="step"><strong>步骤 4（与 \((q,p,t)\) 全微分比较）：</strong> 另一方面 \(H=H(q,p,t)\)，所以 \(dH=\sum_{i}\bigl(\pdv{H}{q_{i}}dq_{i}+\pdv{H}{p_{i}}dp_{i}\bigr)+\pdv{H}{t}dt\)。比较 \(dq_{i},dp_{i},dt\) 系数：</p>
+      <div class="formula">\[ \dot{q}_{i}=\pdv{H}{p_{i}},\qquad \dot{p}_{i}=-\pdv{H}{q_{i}},\qquad \pdv{H}{t}=-\pdv{L}{t} \]</div>
+      <p>前两式即哈密顿正则方程；第三式说明：\(H\) 是否显含时间与 \(L\) 同步。</p>
+
+      <h3>推导 13.2：\(H\) 守恒 \(\Leftrightarrow\) 能量守恒（定常情形）</h3>
+      <p>设 \(L\) 不显含时间，\(\pdv{L}{t}=0\)。沿真实轨迹：</p>
+      <div class="formula">\[ \dv{H}{t}=\sum_{i}\Bigl(\pdv{H}{q_{i}}\dot{q}_{i}+\pdv{H}{p_{i}}\dot{p}_{i}\Bigr)+\pdv{H}{t} \]</div>
+      <p>代入哈密顿方程 \(\dot{q}_{i}=\pdv{H}{p_{i}}\)、\(\dot{p}_{i}=-\pdv{H}{q_{i}}\)：</p>
+      <div class="formula">\[ \dv{H}{t}=\sum_{i}\Bigl(\pdv{H}{q_{i}}\pdv{H}{p_{i}}-\pdv{H}{p_{i}}\pdv{H}{q_{i}}\Bigr)+\pdv{H}{t}=0+\pdv{H}{t}=-\pdv{L}{t}=0 \]</div>
+      <p>故 \(H\) 沿轨迹是常数。再若动能 \(T\) 为 \(\dot{q}\) 的二次齐次式、\(V=V(q)\)，由齐次定理得 \(H=T+V=E\)——这正是机械能守恒。</p>
+
+      <h3>推导 13.3：刘维尔定理（散度论证）</h3>
+      <p>记 \(2n\) 维相空间坐标 \(z=(q_{1},\dots,q_{n},p_{1},\dots,p_{n})\)，哈密顿流给出速度场 \(\vec{u}(z)=\dot{z}=(\pdv{H}{p_{1}},\dots,\pdv{H}{p_{n}},-\pdv{H}{q_{1}},\dots,-\pdv{H}{q_{n}})\)。其散度：</p>
+      <div class="formula">\[ \nabla\!\cdot\vec{u}=\sum_{i=1}^{n}\pdv{\dot{q}_{i}}{q_{i}}+\sum_{i=1}^{n}\pdv{\dot{p}_{i}}{p_{i}}=\sum_{i=1}^{n}\pdv{^{2}H}{q_{i}\partial p_{i}}-\sum_{i=1}^{n}\pdv{^{2}H}{p_{i}\partial q_{i}}=0 \]</div>
+      <p>（二阶偏导数与求导次序无关）。故流不可压缩，任何相空间区域的体积 \(V_{\Omega}\) 在演化中守恒：\(\dv{V_{\Omega}}{t}=0\)。<br>反之，若加入与 \(p\) 成正比的阻尼项 \(-\gamma p\)，方程变为 \(\dot{p}=-\pdv{H}{q}-\gamma p\)，散度变为 \(-\sum_{i}\gamma=-n\gamma<0\)——相空间体积指数收缩，刘维尔定理被破坏，直观地反映能量耗散。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 13.1 一维谐振子的哈密顿量与相空间椭圆</h4>
+        <p class="example-statement">一质点 \(m=0.50\,\mathrm{kg}\) 系于劲度系数 \(k=200\,\mathrm{N/m}\) 的轻弹簧上，沿水平无摩擦桌面作简谐运动，振幅 \(A=0.10\,\mathrm{m}\)。写出哈密顿量 \(H\)，导出哈密顿方程，验证其等价于 \(\ddot{x}=-(k/m)x\)，并描述相空间轨迹。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 取坐标 \(x\)，拉格朗日量 \(L=\tfrac{1}{2}m\dot{x}^{2}-\tfrac{1}{2}kx^{2}\)。</p>
+          <p class="step"><strong>正则动量：</strong> \(p=\pdv{L}{\dot{x}}=m\dot{x}\)，反解 \(\dot{x}=p/m\)。</p>
+          <p class="step"><strong>哈密顿量：</strong> </p>
+          <div class="formula">\[ H=p\dot{x}-L=p\cdot\frac{p}{m}-\Bigl[\tfrac{1}{2}m\Bigl(\frac{p}{m}\Bigr)^{2}-\tfrac{1}{2}kx^{2}\Bigr]=\frac{p^{2}}{2m}+\tfrac{1}{2}kx^{2} \]</div>
+          <p class="step"><strong>哈密顿方程：</strong> </p>
+          <div class="formula">\[ \dot{x}=\pdv{H}{p}=\frac{p}{m},\qquad \dot{p}=-\pdv{H}{x}=-kx \]</div>
+          <p class="step"><strong>化为二阶方程：</strong> 对 \(\dot{x}=p/m\) 求时间导数，\(\ddot{x}=\dot{p}/m=-kx/m\)，即 \(\ddot{x}+\omega^{2}x=0\)，\(\omega=\sqrt{k/m}=\sqrt{400}=20\,\mathrm{rad/s}\)。与第 8 章结果一致 ✓。</p>
+          <p class="step"><strong>相空间轨迹：</strong> \(H=\)常数 \(=E\)，故 </p>
+          <div class="formula">\[ \frac{x^{2}}{2E/k}+\frac{p^{2}}{2mE}=1\quad\text{(椭圆)} \]</div>
+          <p class="step">能量 \(E=H(x=A,p=0)=\tfrac{1}{2}kA^{2}=\tfrac{1}{2}(200)(0.10)^{2}=1.00\,\mathrm{J}\)。椭圆半轴：\(x\) 方向 \(A=0.10\,\mathrm{m}\)，\(p\) 方向 \(p_{\max}=\sqrt{2mE}=\sqrt{2(0.50)(1.00)}=1.00\,\mathrm{kg\,m/s}\)（与 \(p_{\max}=m\omega A=0.50\times 20\times 0.10=1.00\) 一致 ✓）。轨迹每周期 \(T=2\pi/\omega=0.314\,\mathrm{s}\) 绕椭圆一周，顺时针（\(\dot{x}\) 与 \(p\) 同号，\(\dot{p}\) 与 \(-x\) 同号）。</p>
+          <p><span class="ans">\(H=\dfrac{p^{2}}{2m}+\tfrac{1}{2}kx^{2}\)；\(\dot{x}=p/m,\;\dot{p}=-kx\)；\(E=1.00\,\mathrm{J}\)；相空间椭圆半轴 \(A=0.10\,\mathrm{m}\)，\(p_{\max}=1.00\,\mathrm{kg\,m/s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.2 自由粒子——相空间中的水平直线</h4>
+        <p class="example-statement">质量 \(m=2.0\,\mathrm{kg}\) 的自由质点以初速度 \(v_{0}=5.0\,\mathrm{m/s}\) 沿 \(x\) 轴运动。写出 \(H\)、哈密顿方程，求 \(x(t)\) 与 \(p(t)\)，并描述相空间轨迹。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(L=\tfrac{1}{2}m\dot{x}^{2}\)，\(V=0\)。正则动量 \(p=m\dot{x}=2.0\times 5.0=10\,\mathrm{kg\,m/s}\)。</p>
+          <p class="step"><strong>哈密顿量：</strong> \(H=\dfrac{p^{2}}{2m}=\dfrac{p^{2}}{4.0}\)。</p>
+          <p class="step"><strong>哈密顿方程：</strong> </p>
+          <div class="formula">\[ \dot{x}=\pdv{H}{p}=\frac{p}{m},\qquad \dot{p}=-\pdv{H}{x}=0 \]</div>
+          <p class="step">由 \(\dot{p}=0\)，动量守恒 \(p(t)=p_{0}=10\,\mathrm{kg\,m/s}\)。代入第一式，\(\dot{x}=10/2.0=5.0\,\mathrm{m/s}\)（常量）。积分得 </p>
+          <div class="formula">\[ x(t)=x_{0}+v_{0}t=0+5.0\,t\,\mathrm{(m)} \]</div>
+          <p class="step"><strong>相空间轨迹：</strong> \(p\) 不变，\(x\) 线性增长——轨迹是相平面上的<strong>水平直线</strong> \(p=10\)。机械能 \(H=10^{2}/4.0=25\,\mathrm{J}\)（\(=\tfrac{1}{2}mv_{0}^{2}=\tfrac{1}{2}(2.0)(5.0)^{2}=25\,\mathrm{J}\) ✓）。</p>
+          <p class="step">经 \(t=3.0\,\mathrm{s}\)：\(x=15\,\mathrm{m}\)，\(p=10\,\mathrm{kg\,m/s}\)，\(H=25\,\mathrm{J}\)。</p>
+          <p><span class="ans">\(H=p^{2}/(2m)\)；\(x(t)=5.0t\,\mathrm{m}\)，\(p(t)=10\,\mathrm{kg\,m/s}\)；轨迹为水平直线</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.3 均匀重力场中的下落</h4>
+        <p class="example-statement">质量 \(m=0.50\,\mathrm{kg}\) 的质点从 \(z_{0}=10.0\,\mathrm{m}\) 高处由静止释放，仅受重力（\(g=9.80\,\mathrm{m/s^{2}}\)）。写出 \(H(z,p)\) 与哈密顿方程，求 \(t=1.0\,\mathrm{s}\) 时的状态，并验证 \(H\) 守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 取 \(z\) 向上为正，势能 \(V=mgz\)。\(L=\tfrac{1}{2}m\dot{z}^{2}-mgz\)。正则动量 \(p=m\dot{z}\)。</p>
+          <p class="step"><strong>哈密顿量：</strong> </p>
+          <div class="formula">\[ H=\frac{p^{2}}{2m}+mgz \]</div>
+          <p class="step"><strong>哈密顿方程：</strong> </p>
+          <div class="formula">\[ \dot{z}=\pdv{H}{p}=\frac{p}{m},\qquad \dot{p}=-\pdv{H}{z}=-mg \]</div>
+          <p class="step">由 \(\dot{p}=-mg\)，\(p(t)=p_{0}-mgt=0-(0.50)(9.80)t=-4.90\,t\,\mathrm{(kg\,m/s)}\)。</p>
+          <p class="step">由 \(\dot{z}=p/m=-gt\)，\(z(t)=z_{0}-\tfrac{1}{2}gt^{2}=10.0-4.90\,t^{2}\,\mathrm{(m)}\)。</p>
+          <p class="step"><strong>在 \(t=1.0\,\mathrm{s}\)：</strong> </p>
+          <div class="formula">\[ p=-4.90\,\mathrm{kg\,m/s},\qquad z=10.0-4.90=5.10\,\mathrm{m} \]</div>
+          <p class="step"><strong>能量验证：</strong> 初态 \(H_{0}=0+mgz_{0}=(0.50)(9.80)(10.0)=49.0\,\mathrm{J}\)；\(t=1.0\,\mathrm{s}\) 时 </p>
+          <div class="formula">\[ H=\frac{(-4.90)^{2}}{2(0.50)}+(0.50)(9.80)(5.10)=24.0+25.0=49.0\,\mathrm{J}\;\checkmark \]</div>
+          <p class="step"><strong>相空间轨迹：</strong> 由 \(H=E\)，\(p^{2}=2m(E-mgz)\)，即 \(p^{2}+2m^{2}g\,z=2mE\)，这是 \((z,p)\) 相平面上的抛物线。质点沿抛物线从 \((z_{0},0)\) 滑向 \((0,-\sqrt{2mE})\)，再返回（弹性地面假设下）。</p>
+          <p><span class="ans">\(H=p^{2}/(2m)+mgz\)；\(t=1.0\,\mathrm{s}\) 时 \(z=5.10\,\mathrm{m}\)，\(p=-4.90\,\mathrm{kg\,m/s}\)；\(H\equiv 49.0\,\mathrm{J}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.4 单摆的哈密顿形式</h4>
+        <p class="example-statement">理想单摆，摆长 \(L=0.50\,\mathrm{m}\)，质量 \(m=0.20\,\mathrm{kg}\)，从 \(\theta_{0}=0.20\,\mathrm{rad}\)（约 \(11.5^{\circ}\)）由静止释放，\(g=9.80\,\mathrm{m/s^{2}}\)。写出 \(H(\theta,p_{\theta})\)、哈密顿方程、能量、最大角速度，并画出相空间轨迹（小角近似下）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 动能 \(T=\tfrac{1}{2}mL^{2}\dot{\theta}^{2}\)，势能（取最低点为零）\(V=mgL(1-\cos\theta)\)。</p>
+          <p class="step"><strong>拉格朗日量：</strong> \(L_{\text{ag}}=\tfrac{1}{2}mL^{2}\dot{\theta}^{2}-mgL(1-\cos\theta)\)。</p>
+          <p class="step"><strong>正则动量：</strong> \(p_{\theta}=\pdv{L_{\text{ag}}}{\dot{\theta}}=mL^{2}\dot{\theta}\)（角动量量纲 \(\mathrm{kg\,m^{2}/s}\)），反解 \(\dot{\theta}=p_{\theta}/(mL^{2})\)。</p>
+          <p class="step"><strong>哈密顿量：</strong> </p>
+          <div class="formula">\[ H=p_{\theta}\dot{\theta}-L_{\text{ag}}=\frac{p_{\theta}^{2}}{2mL^{2}}+mgL(1-\cos\theta) \]</div>
+          <p class="step"><strong>哈密顿方程：</strong> </p>
+          <div class="formula">\[ \dot{\theta}=\pdv{H}{p_{\theta}}=\frac{p_{\theta}}{mL^{2}},\qquad \dot{p}_{\theta}=-\pdv{H}{\theta}=-mgL\sin\theta \]</div>
+          <p class="step"><strong>能量（由初态 \(\theta=\theta_{0},p_{\theta}=0\)）：</strong> </p>
+          <div class="formula">\[ E=mgL(1-\cos\theta_{0})=(0.20)(9.80)(0.50)(1-\cos 0.20) \]</div>
+          <p class="step">数值：\(\cos 0.20=0.98007\)，\(1-\cos 0.20=0.01993\)，\(E=0.98\times 0.01993=1.95\times 10^{-2}\,\mathrm{J}\)。</p>
+          <p class="step"><strong>最大角速度（在 \(\theta=0\) 处）：</strong> 由 \(H=\dfrac{p_{\theta,\max}^{2}}{2mL^{2}}\)，</p>
+          <div class="formula">\[ p_{\theta,\max}=\sqrt{2mL^{2}E}=\sqrt{2(0.20)(0.50)^{2}(1.95\times 10^{-2})}=4.43\times 10^{-2}\,\mathrm{kg\,m^{2}/s} \]</div>
+          <p class="step">对应 \(\dot{\theta}_{\max}=p_{\theta,\max}/(mL^{2})=4.43\times 10^{-2}/(0.20\times 0.25)=0.886\,\mathrm{rad/s}\)。校验：由能量守恒 \(\tfrac{1}{2}mL^{2}\dot{\theta}_{\max}^{2}=mgL(1-\cos\theta_{0})\)，\(\dot{\theta}_{\max}^{2}=2g(1-\cos\theta_{0})/L=2(9.80)(0.01993)/0.50=0.781\)，\(\dot{\theta}_{\max}=0.884\,\mathrm{rad/s}\) ✓。</p>
+          <p class="step"><strong>小角近似下相空间轨迹：</strong> \(\sin\theta\approx\theta\)，\(1-\cos\theta\approx\tfrac{1}{2}\theta^{2}\)，\(H\approx\dfrac{p_{\theta}^{2}}{2mL^{2}}+\tfrac{1}{2}mgL\theta^{2}\)。这是 \((\theta,p_{\theta})\) 相平面上的椭圆：</p>
+          <div class="formula">\[ \frac{\theta^{2}}{\theta_{0}^{2}}+\frac{p_{\theta}^{2}}{p_{\theta,\max}^{2}}=1 \]</div>
+          <p class="step">小角角频率 \(\omega=\sqrt{g/L}=\sqrt{9.80/0.50}=4.43\,\mathrm{rad/s}\)，周期 \(T=2\pi/\omega=1.42\,\mathrm{s}\)。</p>
+          <p><span class="ans">\(H=\dfrac{p_{\theta}^{2}}{2mL^{2}}+mgL(1-\cos\theta)\)；\(E=1.95\times 10^{-2}\,\mathrm{J}\)；\(\dot{\theta}_{\max}\approx 0.886\,\mathrm{rad/s}\)；\(T\approx 1.42\,\mathrm{s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.5 谐振子相空间面积与刘维尔定理（含阻尼对比）</h4>
+        <p class="example-statement">对例 13.1 的谐振子（\(m=0.50\,\mathrm{kg}\)，\(k=200\,\mathrm{N/m}\)，\(E_{0}=1.00\,\mathrm{J}\)），计算等能面 \(H=E\) 包围的相空间面积 \(A_{\text{ps}}\)。然后引入与 \(p\) 成正比的阻尼（\(\dot{p}=-kx-\gamma p\)，\(\gamma=0.50\,\mathrm{s^{-1}}\)），求 \(H(t)\) 与 \(A_{\text{ps}}(t)\)，并对比说明刘维尔定理的适用条件。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（无阻尼情形）：</strong> 等能面 \(H=E\) 是椭圆，半轴 \(x_{\max}=A=\sqrt{2E/k}\)，\(p_{\max}=\sqrt{2mE}=m\omega A\)。椭圆面积 </p>
+          <div class="formula">\[ A_{\text{ps}}=\pi\,x_{\max}\,p_{\max}=\pi A\cdot m\omega A=\pi m\omega A^{2} \]</div>
+          <p class="step">用 \(E=\tfrac{1}{2}m\omega^{2}A^{2}\)（即 \(A^{2}=2E/(m\omega^{2})\)）改写：</p>
+          <div class="formula">\[ A_{\text{ps}}=\pi m\omega\cdot\frac{2E}{m\omega^{2}}=\frac{2\pi E}{\omega} \]</div>
+          <p class="step">数值：\(\omega=20\,\mathrm{rad/s}\)，\(E_{0}=1.00\,\mathrm{J}\)，</p>
+          <div class="formula">\[ A_{\text{ps},0}=\frac{2\pi(1.00)}{20}=0.314\,\mathrm{J\,s}\;(=\mathrm{kg\,m^{2}/s}) \]</div>
+          <p class="step">这一面积量纲为<strong>作用量</strong> (action)，正是量子力学中 \(E_{n}=(n+\tfrac{1}{2})\hbar\omega\) 背后的几何量（玻尔–索末菲量子化条件 \(A_{\text{ps}}=nh\)）。</p>
+          <p class="step"><strong>引入阻尼后：</strong> 哈密顿量仍是 \(H=p^{2}/(2m)+\tfrac{1}{2}kx^{2}\)，但运动方程变为 \(\dot{x}=p/m,\;\dot{p}=-kx-\gamma p\)。沿轨迹：</p>
+          <div class="formula">\[ \dv{H}{t}=\pdv{H}{x}\dot{x}+\pdv{H}{p}\dot{p}=(kx)\Bigl(\frac{p}{m}\Bigr)+\Bigl(\frac{p}{m}\Bigr)(-kx-\gamma p)=-\frac{\gamma}{m}p^{2}\leq 0 \]</div>
+          <p class="step">能量单调下降。在一个周期内做平均（谐振子下 \(\langle p^{2}/m\rangle=\langle 2K\rangle=E\)，因 \(\langle K\rangle=\langle V\rangle=E/2\)）：</p>
+          <div class="formula">\[ \langle\dv{H}{t}\rangle\approx-\gamma E\;\Rightarrow\;E(t)\approx E_{0}\,e^{-\gamma t} \]</div>
+          <p class="step"><strong>相空间面积：</strong> \(A_{\text{ps}}(t)=2\pi E(t)/\omega=A_{\text{ps},0}\,e^{-\gamma t}\)。在 \(t=2.0\,\mathrm{s}\)（\(\gamma t=1.0\)）：</p>
+          <div class="formula">\[ E(2.0)=1.00\,e^{-1.0}=0.368\,\mathrm{J},\qquad A_{\text{ps}}(2.0)=0.314\,e^{-1.0}=0.116\,\mathrm{J\,s} \]</div>
+          <p class="step"><strong>结论：</strong> 无阻尼时相空间面积守恒（刘维尔定理成立）；有阻尼时面积指数收缩，对应相空间中轨迹向原点螺旋收缩（见互动仿真）。阻尼项 \(-\gamma p\) 不是任何 \(H\) 生成的哈密顿力，破坏了哈密顿结构，因此刘维尔定理不再适用。</p>
+          <p><span class="ans">无阻尼 \(A_{\text{ps},0}=0.314\,\mathrm{J\,s}\)；阻尼下 \(E(t)=E_{0}e^{-\gamma t}\)，\(A_{\text{ps}}(t)=A_{\text{ps},0}e^{-\gamma t}\)；阻尼破坏哈密顿结构 \(\Rightarrow\) 刘维尔定理失效</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把 \(p=m\dot{q}\) 当作前提代入 \(H\)。</strong>在写出哈密顿量 \(H(q,p)\) 时，\(q\) 与 \(p\) 是<strong>独立自变量</strong>——\(\pdv{H}{p}\) 时把 \(q\) 看作常数；只有在联立求解哈密顿方程后，\(p(t)\) 与 \(\dot{q}(t)\) 才由 \(\dot{q}=\pdv{H}{p}\) 联系。<strong>先验地</strong>写 \(p=m\dot{q}\) 会破坏 \(H\) 作为 \((q,p)\) 函数的意义。</li>
+        <li><strong>误以为 \(H=T+V\) 永远成立。</strong>只在<strong>定常约束</strong>、\(T\) 为 \(\dot{q}\) 的二次齐次式、\(V\) 不依赖速度时才有 \(H=T+V\)。电磁场中带电粒子的拉格朗日量 \(L=\tfrac{1}{2}m\vec{v}^{2}+q\vec{v}\cdot\vec{A}-q\phi\) 给出 \(H=\dfrac{1}{2m}(\vec{p}-q\vec{A})^{2}+q\phi\neq T+V\)；旋转系、含时约束情形也都会偏离。</li>
+        <li><strong>哈密顿方程中 \(\dot{p}_{i}\) 的负号。</strong>正号属于 \(\dot{q}_{i}=\pdv{H}{p_{i}}\)，负号属于 \(\dot{p}_{i}=-\pdv{H}{q_{i}}\)。这一负号正是 \(H\) 守恒（沿轨迹）的根本原因（两个交叉项相消）；写错符号会得到能量发散的非物理系统。</li>
+        <li><strong>把"相空间速度" \((\dot{q},\dot{p})\) 与物理速度 \(\vec{v}\) 混淆。</strong>物理速度是 \(\dot{q}\)（笛卡尔坐标下）；相空间速度是 \((\dot{q},\dot{p})=(\pdv{H}{p},-\pdv{H}{q})\)，是 \(2n\) 维矢量。两者量纲、维数都不同。</li>
+        <li><strong>误以为刘维尔定理对阻尼系统仍成立。</strong>刘维尔定理要求方程具有哈密顿形式（散度恒为零）。任何耗散项（摩擦 \(-\gamma\dot{q}\)、非保守力）都使相空间速度场散度为负，体积收缩——这恰恰告诉我们：耗散系统不是哈密顿系统。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 水平弹簧的哈密顿量：\(m=0.40\,\mathrm{kg}\)，\(k=100\,\mathrm{N/m}\)。初始 \(x_{0}=0.050\,\mathrm{m}\)，\(\dot{x}_{0}=0.30\,\mathrm{m/s}\)。写出 \(H\)，计算 \(H\) 的数值，并写出哈密顿方程。</summary>
+        <div class="hint">\(p=m\dot{x}\)；\(H=p^{2}/(2m)+\tfrac{1}{2}kx^{2}\)。把初始条件换算为 \((x_{0},p_{0})\) 代入。</div>
+        <div class="solution">\(L=\tfrac{1}{2}m\dot{x}^{2}-\tfrac{1}{2}kx^{2}\)，\(p=m\dot{x}\)，\(\dot{x}=p/m\)。<br>\(H=p\dot{x}-L=\dfrac{p^{2}}{2m}+\tfrac{1}{2}kx^{2}\)。<br>初始动量 \(p_{0}=m\dot{x}_{0}=(0.40)(0.30)=0.120\,\mathrm{kg\,m/s}\)。<br>\(H_{0}=\dfrac{(0.120)^{2}}{2(0.40)}+\tfrac{1}{2}(100)(0.050)^{2}=0.0180+0.125=0.143\,\mathrm{J}\)。<br>哈密顿方程：\(\dot{x}=\dfrac{p}{0.40}=2.5\,p\)，\(\dot{p}=-100\,x\)。<br><span class="ans">\(H=p^{2}/(2m)+\tfrac{1}{2}kx^{2}\)；\(H_{0}=0.143\,\mathrm{J}\)（守恒）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 抛体运动的哈密顿形式：质量 \(m\) 的质点在均匀重力场中作二维运动（\(x\) 水平，\(y\) 竖直向上）。写出 \(H(x,y,p_{x},p_{y})\)，给出四个哈密顿方程，并指明哪些量守恒。</summary>
+        <div class="hint">\(L=\tfrac{1}{2}m(\dot{x}^{2}+\dot{y}^{2})-mgy\)。注意 \(x\) 是可遗坐标。</div>
+        <div class="solution">\(p_{x}=m\dot{x}\)，\(p_{y}=m\dot{y}\)。<br>\(H=\dfrac{p_{x}^{2}+p_{y}^{2}}{2m}+mgy\)。<br>哈密顿方程：<br>\(\dot{x}=\pdv{H}{p_{x}}=\dfrac{p_{x}}{m},\quad \dot{p}_{x}=-\pdv{H}{x}=0\)（\(p_{x}\) 守恒）；<br>\(\dot{y}=\pdv{H}{p_{y}}=\dfrac{p_{y}}{m},\quad \dot{p}_{y}=-\pdv{H}{y}=-mg\)。<br>守恒量：\(p_{x}\)（水平动量，因为 \(x\) 可遗）、\(H\)（因为 \(H\) 不显含 \(t\)）。从 \(H\) 守恒立得 \(\tfrac{1}{2}m(\dot{x}^{2}+\dot{y}^{2})+mgy=\)常数 = 机械能。<br><span class="ans">\(H=\dfrac{p_{x}^{2}+p_{y}^{2}}{2m}+mgy\)；\(p_{x}\) 与 \(H\) 守恒</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 弱非简谐振子：势能 \(V(x)=\tfrac{1}{2}kx^{2}+\lambda x^{4}\)（\(\lambda>0\) 很小），质量 \(m\)。写出 \(H\)、哈密顿方程，并证明 \(H\) 仍守恒。这个系统能用刘维尔定理吗？相空间轨迹仍是椭圆吗？</summary>
+        <div class="hint">\(L=\tfrac{1}{2}m\dot{x}^{2}-V(x)\)。\(H\) 守恒判据是 \(\pdv{H}{t}=0\)，与势能形式无关。</div>
+        <div class="solution">\(p=m\dot{x}\)，\(H=\dfrac{p^{2}}{2m}+\tfrac{1}{2}kx^{2}+\lambda x^{4}\)。<br>哈密顿方程：\(\dot{x}=\dfrac{p}{m}\)，\(\dot{p}=-kx-4\lambda x^{3}\)。<br>由于 \(\pdv{H}{t}=0\)，沿用推导 13.2 的论证：\(\dv{H}{t}=\pdv{H}{x}\dot{x}+\pdv{H}{p}\dot{p}=(kx+4\lambda x^{3})(p/m)+(p/m)(-kx-4\lambda x^{3})=0\)。故 \(H\) 守恒 ✓。<br>因方程仍为哈密顿形式，刘维尔定理适用（相空间体积守恒）。但等能面 \(H=E\) 不再是椭圆——它是 \(p^{2}/(2m)+\tfrac{1}{2}kx^{2}+\lambda x^{4}=E\)，对大振幅显著"鼓包"（比椭圆更方）。即等能面形状变了，但面积（在二维情形）守恒。<br><span class="ans">\(H=p^{2}/(2m)+\tfrac{1}{2}kx^{2}+\lambda x^{4}\)，\(H\) 守恒；刘维尔定理适用；轨迹不是椭圆</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 电磁场中带电粒子：拉格朗日量 \(L=\tfrac{1}{2}m\dot{x}^{2}+q\dot{x}A_{x}(x,t)-q\phi(x,t)\)（一维，\(A_{x}\) 为矢势分量，\(\phi\) 为标势）。求正则动量 \(p\) 与哈密顿量 \(H\)，并说明为何 \(H\neq T+V\)。</summary>
+        <div class="hint">\(p=\pdv{L}{\dot{x}}\) 会包含 \(qA_{x}\) 项；反解 \(\dot{x}\) 时要小心。</div>
+        <div class="solution">\(p=\pdv{L}{\dot{x}}=m\dot{x}+qA_{x}\)，故 \(\dot{x}=(p-qA_{x})/m\)。<br>\(H=p\dot{x}-L=(p-qA_{x})^{2}/(2m)+q\phi\)。<br>机械动能为 \(\tfrac{1}{2}m\dot{x}^{2}=(p-qA_{x})^{2}/(2m)\)，故 \(H=T+q\phi\)（势能项）。但 \(p\neq m\dot{x}\)，而是<strong>正则动量</strong> \(=\)机械动量 \(+\) \(qA_{x}\)。若把"势能"理解为 \(V=q\phi\)，则 \(H=T+V\) 在此情形下巧合地成立；但若误把 \(p\) 当作 \(m\dot{x}\)，就会得到错误方程。这一例子说明 \(H=T+V\) 不是自动的——必须用 \(p\)（不是 \(m\dot{x}\)）作为基本变量。哈密顿方程：\(\dot{x}=(p-qA_{x})/m\)，\(\dot{p}=-\pdv{H}{x}=\dfrac{q(p-qA_{x})}{m}\pdv{A_{x}}{x}-q\pdv{\phi}{x}\)。<br><span class="ans">\(p=m\dot{x}+qA_{x}\)；\(H=(p-qA_{x})^{2}/(2m)+q\phi\)；正则动量 \(\neq\)机械动量</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 二维谐振子的等能面：\(H=\dfrac{p_{x}^{2}+p_{y}^{2}}{2m}+\tfrac{1}{2}k(x^{2}+y^{2})\)。在四维相空间 \((x,y,p_{x},p_{y})\) 中，等能面 \(H=E\) 是几维的？刘维尔定理对这一等能面内的"体积"说什么？</summary>
+        <div class="hint">四维相空间中一个等式 \(H=E\) 把维数减一。"体积"指四维相空间体积，不是三维体积。</div>
+        <div class="solution">相空间维数为 \(2n=4\)。一个方程 \(H=E\) 把流形维数降为 \(4-1=3\) 维——即等能面是<strong>三维超曲面</strong>（在四维相空间中），形状为 \(\mathbb{S}^{3}\)（三维球面，因 \(H\) 是四个变量的正定二次型）。<br>刘维尔定理说：相空间中任一区域（不论是否在等能面上）的<strong>四维体积</strong>在哈密顿流下守恒。若取等能面 \(H=E\) 附近的一薄壳 \([E,E+\delta E]\)，其四维体积也守恒。等价地，系综在等能面上均匀分布（微正则系综的几何基础）。<br><span class="ans">等能面为三维超曲面 \(\mathbb{S}^{3}\)；四维相空间体积在哈密顿流下守恒</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">谐振子的<strong>相空间肖像</strong> (phase portrait)。求解哈密顿方程 \(\dot{x}=p/m,\;\dot{p}=-kx\)（采用 RK4 积分，\(m=1.0\,\mathrm{kg},\,k=4.0\,\mathrm{N/m}\)，\(\omega=2\,\mathrm{rad/s}\)）。左侧画真实弹簧–质点系统；右侧画相空间 \((x,p)\) 中的<strong>实时轨迹</strong>，无阻尼时它精确地描出椭圆（\(H\) 守恒），不同振幅对应嵌套椭圆。打开<strong>阻尼</strong>开关（\(\dot{p}\to -kx-\gamma p\)，\(\gamma=0.40\,\mathrm{s^{-1}}\)），轨迹立刻<strong>螺旋内收</strong>，\(H\) 单调衰减——刘维尔定理在非哈密顿系统中失效的最直接可视化。实时显示 \(H\)（绿色 = 守恒，红色 = 衰减）。</p>
+      <div class="sim-container">
+        <canvas id="sim-13" width="720" height="400"></canvas>
+        <div class="sim-controls" id="controls-13"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-13');
+          var W = canvas.width, H = canvas.height;
+
+          // Physical parameters (chosen so the ellipse looks good and period ≈ π s).
+          var m = 1.0;                       // kg
+          var k = 4.0;                       // N/m
+          var omega = Math.sqrt(k / m);      // = 2.0 rad/s
+          var gammaDamp = 0.40;              // 1/s, applied only when damping is on
+
+          var params = {
+            amplitude: 1.0,                  // m; sets initial x = A, p = 0
+            damping: false,
+          };
+
+          // Layout: left = physical space, right = phase space.
+          var PANEL_W = 220;
+          var PHASE_L = PANEL_W + 14;
+          var PHASE_R = W - 16;
+          var PHASE_T = 36;
+          var PHASE_B = H - 38;
+          var PHASE_CX = (PHASE_L + PHASE_R) / 2;
+          var PHASE_CY = (PHASE_T + PHASE_B) / 2;
+
+          var X_RANGE = 1.6;                 // m, half-range
+          var P_RANGE = 3.2;                 // kg·m/s, half-range (= m·ω·X_RANGE)
+
+          function xToPx(x) { return PHASE_CX + (x / X_RANGE) * ((PHASE_R - PHASE_L) / 2); }
+          function pToPx(p) { return PHASE_CY - (p / P_RANGE) * ((PHASE_B - PHASE_T) / 2); }
+
+          var TRACE_MAX = 2400;              // ~40 s at 60 fps — long enough to see spiral
+          var trace = [];
+
+          function computeH(x, p) {
+            return p * p / (2 * m) + 0.5 * k * x * x;
+          }
+
+          function drawSpring(ctx, x1, y1, x2, y2, coils, amp) {
+            var segs = coils * 2;
+            var dx = (x2 - x1) / segs;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            for (var i = 1; i <= segs; i++) {
+              var nx = x1 + dx * i;
+              var ny = y1 + ((i === segs) ? 0 : ((i % 2 === 1) ? amp : -amp));
+              ctx.lineTo(nx, ny);
+            }
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              trace = [];
+              return { x: params.amplitude, p: 0, t: 0 };
+            },
+            step: function (dt, t, s) {
+              // RHS of Hamilton's equations (optionally with Rayleigh-style damping -γp).
+              var deriv = function (st /*, tt*/) {
+                var xx = st[0], pp = st[1];
+                var dxdt = pp / m;
+                var dpdt = -k * xx;
+                if (params.damping) dpdt -= gammaDamp * pp;
+                return [dxdt, dpdt];
+              };
+              var ns = PS.integrate(deriv, [s.x, s.p], s.t, dt, 'rk4');
+              s.x = ns[0];
+              s.p = ns[1];
+              s.t += dt;
+              trace.push({ x: s.x, p: s.p });
+              if (trace.length > TRACE_MAX) trace.shift();
+            },
+            draw: function (ctx, s /*, env*/) {
+              PS.clear(ctx);
+
+              // ===== Left panel: physical spring–mass =========================
+              var wallX = 24;
+              var eqX = 130;                  // canvas x for mass center at x=0
+              var massY = H / 2;
+              var xScale = 60;                // px per meter
+              var massR = 16;
+              var massCx = eqX + s.x * xScale;
+              var lo = wallX + 50, hi = PANEL_W - 22;
+              if (massCx < lo) massCx = lo;
+              if (massCx > hi) massCx = hi;
+
+              // equilibrium dashed line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath();
+              ctx.moveTo(eqX, massY - 70);
+              ctx.lineTo(eqX, massY + 70);
+              ctx.stroke();
+              ctx.restore();
+
+              // amplitude tick marks
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              [params.amplitude, -params.amplitude].forEach(function (ax) {
+                var px = eqX + ax * xScale;
+                ctx.beginPath();
+                ctx.moveTo(px, massY + 32);
+                ctx.lineTo(px, massY + 46);
+                ctx.stroke();
+              });
+              ctx.restore();
+
+              // hatched wall
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(wallX, massY - 70);
+              ctx.lineTo(wallX, massY + 70);
+              ctx.stroke();
+              ctx.lineWidth = 1;
+              for (var hy = massY - 70; hy < massY + 70; hy += 8) {
+                ctx.beginPath();
+                ctx.moveTo(wallX - 8, hy + 8);
+                ctx.lineTo(wallX, hy);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // spring
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2;
+              drawSpring(ctx, wallX, massY, massCx - massR, massY, 8, 7);
+              ctx.restore();
+
+              // mass
+              PS.drawCircle(ctx, massCx, massY, massR, {
+                fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 2,
+              });
+              PS.drawText(ctx, 'm', massCx, massY + 4, {
+                font: '12px system-ui', color: '#fff', align: 'center',
+              });
+
+              // panel labels
+              PS.drawText(ctx, '物理空间 Physical space', 14, 22, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'x = ' + s.x.toFixed(2) + ' m', 14, H - 30, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'p = ' + s.p.toFixed(2) + ' kg·m/s', 14, H - 14, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+
+              // ===== Right panel: phase space =================================
+              // frame
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(PHASE_L, PHASE_T, PHASE_R - PHASE_L, PHASE_B - PHASE_T);
+              ctx.restore();
+
+              // grid (every 0.5 m horizontally, every 1 kg·m/s vertically)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.5;
+              ctx.lineWidth = 1;
+              for (var gx = -1.5; gx <= 1.5 + 1e-9; gx += 0.5) {
+                var gpx = xToPx(gx);
+                ctx.beginPath(); ctx.moveTo(gpx, PHASE_T); ctx.lineTo(gpx, PHASE_B); ctx.stroke();
+              }
+              for (var gp = -3; gp <= 3 + 1e-9; gp += 1) {
+                var gpy = pToPx(gp);
+                ctx.beginPath(); ctx.moveTo(PHASE_L, gpy); ctx.lineTo(PHASE_R, gpy); ctx.stroke();
+              }
+              ctx.restore();
+
+              // coordinate axes through origin
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(PHASE_L, PHASE_CY); ctx.lineTo(PHASE_R, PHASE_CY); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(PHASE_CX, PHASE_T); ctx.lineTo(PHASE_CX, PHASE_B); ctx.stroke();
+              ctx.restore();
+
+              // reference ellipses (only when conservative): A = 0.5, 1.0, 1.5
+              if (!params.damping) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = 0.35;
+                ctx.setLineDash([4, 4]);
+                ctx.lineWidth = 1;
+                [0.5, 1.0, 1.5].forEach(function (Aref) {
+                  var ax = Aref * ((PHASE_R - PHASE_L) / 2) / X_RANGE;
+                  var ap = (m * omega * Aref) * ((PHASE_B - PHASE_T) / 2) / P_RANGE;
+                  ctx.beginPath();
+                  ctx.ellipse(PHASE_CX, PHASE_CY, ax, ap, 0, 0, Math.PI * 2);
+                  ctx.stroke();
+                });
+                ctx.restore();
+              }
+
+              // trajectory trace
+              if (trace.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                for (var i = 0; i < trace.length; i++) {
+                  var pt = trace[i];
+                  var ppx = xToPx(pt.x);
+                  var ppy = pToPx(pt.p);
+                  if (i === 0) ctx.moveTo(ppx, ppy);
+                  else ctx.lineTo(ppx, ppy);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // current phase point
+              PS.drawCircle(ctx, xToPx(s.x), pToPx(s.p), 5.5, {
+                fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.5,
+              });
+
+              // axis labels
+              PS.drawText(ctx, '相空间 Phase space (x, p)', PHASE_L + 6, 22, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'x (m) →', PHASE_R - 6, PHASE_CY - 6, {
+                font: '11px system-ui', color: PS.colors.text, align: 'right',
+              });
+              PS.drawText(ctx, '↑ p (kg·m/s)', PHASE_CX + 6, PHASE_T + 12, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+
+              // live H display
+              var Hnow = computeH(s.x, s.p);
+              var Hinit = 0.5 * k * params.amplitude * params.amplitude;
+              var Hcolor = params.damping ? PS.colors.accent : PS.colors.accent2;
+              PS.drawText(ctx, 'H = ' + Hnow.toFixed(3) + ' J   (初始 ' + Hinit.toFixed(3) + ' J)',
+                PHASE_L + 6, H - 28, {
+                font: '12px system-ui', color: Hcolor,
+              });
+              var statusText = params.damping
+                ? '阻尼 DAMPING: H 衰减 ⇒ 相面积收缩 (刘维尔定理失效)'
+                : '保守 CONSERVATIVE: H 守恒 ⇒ 轨迹为椭圆 (刘维尔定理成立)';
+              PS.drawText(ctx, statusText, PHASE_R - 6, H - 28, {
+                font: '11px system-ui', color: Hcolor, align: 'right',
+              });
+              PS.drawText(ctx, 'm = 1.0 kg,  k = 4.0 N/m,  ω = 2.0 rad/s' +
+                (params.damping ? ',  γ = 0.40 s⁻¹' : ''),
+                PHASE_L + 6, H - 12, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-13'), [
+            { type: 'slider', key: 'amplitude', label: '振幅 A (m) — 设能量 set energy', min: 0.3, max: 1.5, step: 0.05, value: 1.0 },
+            { type: 'toggle', key: 'damping', label: '阻尼 damping (H 非守恒)', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('amplitude', function (v) { params.amplitude = v; sim.reset(); });
+          ctl.on('damping', function (v) { params.damping = v; trace = []; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary & Key Formulas</h2>
+      <ul>
+        <li>哈密顿量通过勒让德变换由拉格朗日量得到：\(H(q,p,t)=\sum_{i}p_{i}\dot{q}_{i}-L\)，其中 \(p_{i}=\pdv{L}{\dot{q}_{i}}\)。\(q\) 与 \(p\) 是<strong>独立</strong>变量。</li>
+        <li>哈密顿正则方程：\(\dot{q}_{i}=\pdv{H}{p_{i}}\)，\(\dot{p}_{i}=-\pdv{H}{q_{i}}\)——\(2n\) 个一阶对称方程，等价于 \(n\) 个二阶 EL 方程。</li>
+        <li>对定常约束、\(T\) 为 \(\dot{q}\) 二次齐次式的标准系统，\(H=T+V=\)总机械能。</li>
+        <li>\(\pdv{H}{t}=0\) 时，\(\dv{H}{t}=0\)（沿轨迹）——能量守恒是哈密顿对称结构的直接结果。</li>
+        <li>相空间 \((q,p)\)：保守系统的轨迹躺在 \(H=\)常数的等能面上；一维系统等能面是曲线（谐振子是椭圆）。</li>
+        <li>刘维尔定理：哈密顿流散度为零，相空间体积守恒——统计力学与混沌的几何基础；耗散项破坏哈密顿结构，体积收缩。</li>
+        <li>三表述对比：牛顿（二阶矢量）↔ 拉格朗日（二阶标量 \(q\)）↔ 哈密顿（一阶、\(q\) 与 \(p\)）。</li>
+        <li>哈密顿形式是量子化（\([q_{i},p_{j}]=i\hbar\delta_{ij}\)）与统计力学（刘维尔方程）的天然起点。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;p_{i}=\pdv{L}{\dot{q}_{i}},\quad H(q,p,t)=\sum_{i}p_{i}\dot{q}_{i}-L,\quad \dot{q}_{i}=\pdv{H}{p_{i}},\quad \dot{p}_{i}=-\pdv{H}{q_{i}},\quad \pdv{H}{t}=0\,\Rightarrow\,H=\text{常数}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

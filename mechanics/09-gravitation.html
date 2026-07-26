@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 引力 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 9 · 第9章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>引力 <span class="en-title">Gravitation</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>运用牛顿万有引力定律 (Newton's law of universal gravitation) 计算两质点间的引力，并理解球壳定理 (shell theorem) 的含义。</li>
+        <li>由 \(G\)、\(M_{\oplus}\)、\(R_{\oplus}\) 推导地球表面重力加速度 \(g\approx 9.8\,\mathrm{m/s^2}\)，理解“称量地球”的卡文迪什实验 (Cavendish experiment)。</li>
+        <li>正确使用引力势能 \(U=-GMm/r\)（零点在无穷远）与引力势 \(\Phi=-GM/r\)。</li>
+        <li>推导并应用开普勒三定律 (Kepler's three laws)，包括 \(T^2=(4\pi^2/GM)\,a^3\)。</li>
+        <li>计算圆轨道速度 (circular orbital speed)、逃逸速度 (escape velocity) 与轨道能量，掌握 vis-viva 方程 \(v^2=GM(2/r-1/a)\)。</li>
+        <li>用有效势能 (effective potential) \(U_{\mathrm{eff}}=U+L^2/(2mr^2)\) 分析转折点与轨道分类。</li>
+        <li>定性讨论潮汐力 (tidal forces)、地球同步轨道 (geosynchronous orbit) 与双星系统 (binary stars)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 万有引力定律 Law of Universal Gravitation</h3>
+      <p>牛顿在 1687 年提出：两个质点之间的引力沿连线方向，大小与质量乘积成正比、与距离平方成反比：</p>
+      <div class="formula">\[ \vec{F}_{12}=-\,G\,\frac{m_1 m_2}{r^2}\,\hat{r}_{12} \]</div>
+      <p>其中引力常数 \(G=6.674\times 10^{-11}\,\mathrm{N\,m^2/kg^2}\)，\(\hat{r}_{12}\) 为从 \(m_2\) 指向 \(m_1\) 的单位矢量。负号表示引力。对球对称质量分布（如地球），<strong>球壳定理</strong>指出：球外的引力等价于把全部质量集中到球心；球内处引力只来自内部质量。</p>
+
+      <h3>2. 引力场与表面重力 Gravitational Field and Surface \(g\)</h3>
+      <p>质量 \(M\) 在距离 \(r\) 处产生的引力场 (gravitational field) 为：</p>
+      <div class="formula">\[ \vec{g}(\vec{r})=-\,\frac{GM}{r^2}\,\hat{r},\qquad |\vec{g}|=\frac{GM}{r^2} \]</div>
+      <p>地球表面 \(g=GM_{\oplus}/R_{\oplus}^2\approx 9.81\,\mathrm{m/s^2}\)。1798 年卡文迪什用扭秤实验首次精确测定 \(G\)，由此“称出”了地球的质量 \(M_{\oplus}\)。</p>
+
+      <h3>3. 引力势能（零点在无穷远）Gravitational Potential Energy</h3>
+      <div class="formula">\[ U(r)=-\,\frac{GMm}{r},\qquad \vec{F}=-\dv{U}{r}\,\hat{r}=-\frac{GMm}{r^2}\,\hat{r} \]</div>
+      <p>这里取 \(U(\infty)=0\)。<strong>势能为负</strong>表示引力是束缚力——把质点拉到无穷远需要外界做正功。对应的单位质量引力势 (gravitational potential) 为 \(\Phi=-GM/r\)。</p>
+
+      <h3>4. 开普勒三定律 Kepler's Three Laws</h3>
+      <p>根据第谷 (Tycho Brahe) 的行星观测数据，开普勒在 1609–1619 年总结出三条经验定律；牛顿随后从引力理论把它们推导出来。</p>
+      <ul>
+        <li><strong>第一定律</strong>：行星沿椭圆轨道运动，太阳位于椭圆的一个焦点上。</li>
+        <li><strong>第二定律</strong>（面积定律）：行星与太阳的连线在相等时间内扫过相等面积 \(\dv{A}{t}=\dfrac{L}{2m}=\text{const}\)——这是角动量守恒 (conservation of angular momentum) 的几何表现。</li>
+        <li><strong>第三定律</strong>：周期 \(T\) 与半长轴 \(a\) 满足 \(T^2/a^3=\text{const}\)，对绕同一中心天体的所有轨道，这个常数等于 \(4\pi^2/(GM)\)。</li>
+      </ul>
+      <div class="formula">\[ T^2=\frac{4\pi^2}{GM}\,a^3 \]</div>
+
+      <h3>5. 圆轨道力学 Circular Orbit Mechanics</h3>
+      <p>对半径为 \(r\) 的圆轨道，引力提供向心加速度：\(GMm/r^2=mv^2/r\)，故</p>
+      <div class="formula">\[ v_{\text{circ}}=\sqrt{\frac{GM}{r}},\qquad T=\frac{2\pi r}{v_{\text{circ}}}=2\pi\sqrt{\frac{r^3}{GM}} \]</div>
+
+      <h3>6. 轨道能量与逃逸速度 Orbital Energy and Escape Speed</h3>
+      <p>对半长轴为 \(a\) 的束缚（椭圆）轨道，<strong>总机械能</strong>为：</p>
+      <div class="formula">\[ E=K+U=\frac{1}{2}mv^2-\frac{GMm}{r}=-\,\frac{GMm}{2a}\le 0 \]</div>
+      <p>从距离 \(r\) 处逃离至无穷远（\(E=0\)）所需的最小发射速度称为<strong>逃逸速度</strong>：</p>
+      <div class="formula">\[ v_{\text{esc}}=\sqrt{\frac{2GM}{r}}=\sqrt{2}\,v_{\text{circ}} \]</div>
+      <p>更一般地，给定半长轴 \(a\)，任意点 \(r\) 处的速度由 <strong>vis-viva 方程</strong>给出：</p>
+      <div class="formula">\[ v^2=GM\!\left(\frac{2}{r}-\frac{1}{a}\right) \]</div>
+      <p>由能量正负即可判断轨道类型：\(E<0\) 椭圆（\(E=-GMm/2a\)），\(E=0\) 抛物线（\(v=v_{\text{esc}}\)），\(E>0\) 双曲线（\(v>v_{\text{esc}}\)）。</p>
+
+      <h3>7. 有效势能与转折点 Effective Potential</h3>
+      <p>把角动量 \(L=m r^2\dot\theta\) 守恒代入能量方程，径向运动可视为在<strong>有效势能</strong>中运动：</p>
+      <div class="formula">\[ U_{\mathrm{eff}}(r)=U(r)+\frac{L^2}{2mr^2}=-\frac{GMm}{r}+\frac{L^2}{2mr^2} \]</div>
+      <p>\(U_{\mathrm{eff}}\) 的极小值对应圆轨道；折返点 (turning points) 由 \(E=U_{\mathrm{eff}}(r)\) 决定，即近心点 (perihelion/perigee) 与远心点 (aphelion/apogee)。</p>
+
+      <h3>8. 潮汐力、地球同步轨道与双星 Tides, Geosynchronous Orbits, Binary Stars</h3>
+      <p>跨尺度 \(\Delta r\) 的物体上，引力差（潮汐力）近似为</p>
+      <div class="formula">\[ \Delta F_{\text{tidal}}\approx \frac{2GMm}{r^3}\,\Delta r \;\;\Longrightarrow\;\; a_{\text{tidal}}\propto \frac{1}{r^3} \]</div>
+      <p>这正是月球（虽小但近）对潮汐的作用超过太阳（虽大但远）的原因。<strong>地球同步轨道</strong>要求 \(T=86\,164\,\mathrm{s}\)（一个恒星日），对应 \(a\approx 4.22\times 10^7\,\mathrm{m}\)、高度约 \(35\,800\,\mathrm{km}\)。<strong>双星系统</strong>中两子星绕共同质心运动，等价于约化质量 \(\mu=m_1 m_2/(m_1+m_2)\) 在两体距离上的开普勒问题。</p>
+
+      <div class="key-terms">universal gravitation (万有引力), gravitational constant \(G\) (引力常数), shell theorem (球壳定理), gravitational field (引力场), gravitational potential energy (引力势能), gravitational potential (引力势), Kepler's laws (开普勒定律), semi-major axis (半长轴), angular momentum (角动量), circular orbit (圆轨道), escape velocity (逃逸速度), vis-viva equation (vis-viva 方程/活力公式), effective potential (有效势能), turning point (转折点), tidal force (潮汐力), geosynchronous orbit (地球同步轨道), reduced mass (约化质量)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：由牛顿定律导出开普勒第三定律</h3>
+      <p>对半径为 \(r\) 的圆轨道，万有引力提供向心力：</p>
+      <div class="formula">\[ \frac{GMm}{r^2}=m\omega^2 r=m\!\left(\frac{2\pi}{T}\right)^{\!2}r \]</div>
+      <p>解出周期 \(T\)：</p>
+      <div class="formula">\[ T^2=\frac{4\pi^2}{GM}\,r^3 \]</div>
+      <p>对椭圆轨道（推导略，需用换元 \(u=1/r\) 将轨道方程化为谐振子形式），同样得到 \(T^2=\dfrac{4\pi^2}{GM}\,a^3\)，其中 \(a\) 为半长轴。<strong>常数 \(4\pi^2/(GM)\) 对绕同一中心天体的所有轨道都相同</strong>——这正是开普勒第三定律的精确陈述。</p>
+
+      <h3>推导 B：vis-viva 方程与轨道能量 \(E=-GMm/(2a)\)</h3>
+      <p>对椭圆轨道，能量守恒给出 \(E=\tfrac{1}{2}mv^2-\dfrac{GMm}{r}\)。</p>
+      <p>在近心点 \(r_{\min}\) 与远心点 \(r_{\max}\) 处径向速度为零，且 \(r_{\min}+r_{\max}=2a\)。由角动量守恒 \(L=m r v_{\theta}\)（这两点处 \(v=v_\theta\)）：</p>
+      <div class="formula">\[ L=m\,r_{\min}v_{\max}=m\,r_{\max}v_{\min}\quad(\text{此处 }v_{\max},v_{\min}\text{ 指近、远心点速率}) \]</div>
+      <p>把这两点的能量方程联立并利用角动量守恒消去速度，可解得</p>
+      <div class="formula">\[ v^2=GM\!\left(\frac{2}{r}-\frac{1}{a}\right),\qquad E=-\frac{GMm}{2a} \]</div>
+      <p>取 \(r=a\)（圆轨道）时 \(v^2=GM/a\)，与圆轨道公式一致。令 \(E=0\) 即得 \(v_{\text{esc}}=\sqrt{2GM/r}\)。</p>
+
+      <h3>推导 C：潮汐力的 \(1/r^3\) 标度律</h3>
+      <p>取中心天体方向为 \(x\)。在距离 \(r\) 处，单位质量受力为 \(GM/r^2\)；偏离 \(\Delta x\) 后受力为 \(GM/(r+\Delta x)^2\)。泰勒展开：</p>
+      <div class="formula">\[ \frac{GM}{(r+\Delta x)^2}\approx \frac{GM}{r^2}-\frac{2GM}{r^3}\,\Delta x \;\;\Longrightarrow\;\; a_{\text{tidal}}\approx \frac{2GM}{r^3}\,\Delta x \]</div>
+      <p>潮汐加速度与 \(1/r^3\) 成正比，比引力本身衰减得更快。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 由基本常数求地球表面重力 \(g\)</h4>
+        <p class="example-statement">已知 \(G=6.674\times 10^{-11}\,\mathrm{N\,m^2/kg^2}\)、\(M_{\oplus}=5.97\times 10^{24}\,\mathrm{kg}\)、\(R_{\oplus}=6.37\times 10^{6}\,\mathrm{m}\)。求地球表面的重力加速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由球壳定理，地球对外部质点的引力等价于把全部质量集中于球心，故</p>
+          <div class="formula">\[ g=\frac{GM_{\oplus}}{R_{\oplus}^2}=\frac{(6.674\times 10^{-11})(5.97\times 10^{24})}{(6.37\times 10^6)^2} \]</div>
+          <p class="step">分子：\(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^3/s^2}\)（这一乘积 \(GM_{\oplus}\) 称为地球的标准引力参数 \(\mu\)）。</p>
+          <p class="step">分母：\(R_{\oplus}^2=4.058\times 10^{13}\,\mathrm{m^2}\)。</p>
+          <p class="step">因此 \(g=\dfrac{3.986\times 10^{14}}{4.058\times 10^{13}}=9.82\,\mathrm{m/s^2}\)。</p>
+          <p><span class="ans">\(g\approx 9.82\,\mathrm{m/s^2}\)</span>（与常用值 \(9.81\,\mathrm{m/s^2}\) 一致；微小差别来自地球的非球形与自转效应）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 地球同步轨道的高度</h4>
+        <p class="example-statement">求使通信卫星相对地面静止悬挂所需的轨道半径与高度（取恒星日 \(T=86\,164\,\mathrm{s}\)，\(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^3/s^2}\)，\(R_{\oplus}=6.37\times 10^6\,\mathrm{m}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>地球同步意味着卫星角速度等于地球自转角速度。由开普勒第三定律：</p>
+          <div class="formula">\[ a^3=\frac{GM_{\oplus}\,T^2}{4\pi^2}=\frac{(3.986\times 10^{14})(8.6164\times 10^4)^2}{4\pi^2} \]</div>
+          <p class="step">\(T^2=7.424\times 10^{9}\,\mathrm{s^2}\)，故 \(a^3=\dfrac{(3.986\times 10^{14})(7.424\times 10^9)}{39.48}=7.498\times 10^{22}\,\mathrm{m^3}\)。</p>
+          <p class="step">\(a=\sqrt[3]{7.498\times 10^{22}}=4.216\times 10^7\,\mathrm{m}\)。</p>
+          <p class="step">高度 \(h=a-R_{\oplus}=4.216\times 10^7-6.37\times 10^6=3.58\times 10^7\,\mathrm{m}\)。</p>
+          <p><span class="ans">\(a\approx 4.22\times 10^7\,\mathrm{m}\)，\(h\approx 3.58\times 10^4\,\mathrm{km}\)</span>（这正是通信卫星所在的高度，约 5.6 个地球半径）。</p>
+          <p class="step">同步轨道处的轨道速度：\(v=\sqrt{GM/a}=\sqrt{3.986\times 10^{14}/4.216\times 10^7}\approx 3.07\,\mathrm{km/s}\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 地球表面的圆轨道速度与逃逸速度</h4>
+        <p class="example-statement">假设地球无大气，求贴地表做圆周运动的轨道速度，以及从地表逃离地球引力场的最小速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>圆轨道速度</p>
+          <div class="formula">\[ v_{\text{circ}}=\sqrt{\frac{GM_{\oplus}}{R_{\oplus}}}=\sqrt{\frac{3.986\times 10^{14}}{6.37\times 10^6}}=\sqrt{6.257\times 10^7}=7.91\times 10^3\,\mathrm{m/s} \]</div>
+          <p class="step">逃逸速度 \(v_{\text{esc}}=\sqrt{2}\,v_{\text{circ}}\)：</p>
+          <div class="formula">\[ v_{\text{esc}}=\sqrt{\frac{2GM_{\oplus}}{R_{\oplus}}}=1.414\times 7.91\times 10^3=1.12\times 10^4\,\mathrm{m/s} \]</div>
+          <p><span class="ans">\(v_{\text{circ}}\approx 7.91\,\mathrm{km/s}\)，\(v_{\text{esc}}\approx 11.2\,\mathrm{km/s}\)</span>。比值 \(v_{\text{esc}}/v_{\text{circ}}=\sqrt{2}\) 与天体无关，是普适的。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 从低轨到高轨的霍曼转移能量</h4>
+        <p class="example-statement">一颗 \(m=1000\,\mathrm{kg}\) 的卫星要从 \(h_1=400\,\mathrm{km}\) 的低圆轨道（LEO）经霍曼转移 (Hohmann transfer) 进入 \(h_2\approx 35\,800\,\mathrm{km}\) 的地球同步圆轨道（GEO）。求两次点火总共需要提供的能量 \(\Delta E\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先确定三个半径（取 \(R_{\oplus}=6.37\times 10^6\,\mathrm{m}\)）：</p>
+          <p class="step">\(r_1=R_{\oplus}+h_1=6.77\times 10^6\,\mathrm{m}\)；\(r_2=4.22\times 10^7\,\mathrm{m}\)（由例 9.2）。</p>
+          <p class="step">转移椭圆的半长轴：\(a_t=\dfrac{r_1+r_2}{2}=\dfrac{6.77\times 10^6+4.22\times 10^7}{2}=2.45\times 10^7\,\mathrm{m}\)。</p>
+          <p class="step">圆轨道能量 \(E_{\text{circ}}(r)=-\dfrac{GMm}{2r}\)，椭圆轨道能量 \(E_{\text{ell}}=-\dfrac{GMm}{2a_t}\)。</p>
+          <p class="step">第一次点火（近地点，从 LEO 进入转移椭圆）：</p>
+          <div class="formula">\[ \Delta E_1=\frac{GMm}{2}\!\left(\frac{1}{r_1}-\frac{1}{a_t}\right) \]</div>
+          <p class="step">代入 \(GMm=(3.986\times 10^{14})(1000)=3.986\times 10^{17}\,\mathrm{J\cdot m}\)：</p>
+          <p class="step">\(\Delta E_1=\dfrac{3.986\times 10^{17}}{2}\!\left(\dfrac{1}{6.77\times 10^6}-\dfrac{1}{2.45\times 10^7}\right)=1.993\times 10^{17}\times(1.477\times 10^{-7}-4.082\times 10^{-8})\)</p>
+          <p class="step">\(=1.993\times 10^{17}\times 1.069\times 10^{-7}=2.13\times 10^{10}\,\mathrm{J}\)。</p>
+          <p class="step">第二次点火（远地点，从椭圆进入 GEO）：</p>
+          <div class="formula">\[ \Delta E_2=\frac{GMm}{2}\!\left(\frac{1}{a_t}-\frac{1}{r_2}\right)=1.993\times 10^{17}\times(4.082\times 10^{-8}-2.370\times 10^{-8})=3.42\times 10^9\,\mathrm{J} \]</div>
+          <p class="step">总能量：</p>
+          <p><span class="ans">\(\Delta E_{\text{tot}}=\Delta E_1+\Delta E_2\approx 2.47\times 10^{10}\,\mathrm{J}\)</span>（约 24.7 GJ）。注意 \(\Delta E_{\text{tot}}=\dfrac{GMm}{2}\!\left(\dfrac{1}{r_1}-\dfrac{1}{r_2}\right)\) 仅与两端点半径有关，与转移椭圆无关。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 彗星在近日点的速度（vis-viva）</h4>
+        <p class="example-statement">某彗星绕太阳的椭圆轨道近日距 \(r_p=0.50\,\mathrm{AU}\)、远日距 \(r_a=3.50\,\mathrm{AU}\)。已知地球（\(1\,\mathrm{AU}\) 圆轨道）公转速度 \(v_{\oplus}=29.8\,\mathrm{km/s}\)。求彗星在近日点与远日点的速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>半长轴 \(a=\dfrac{r_p+r_a}{2}=\dfrac{0.50+3.50}{2}=2.00\,\mathrm{AU}\)。</p>
+          <p class="step">由地球圆轨道：\(GM_{\odot}/(1\,\mathrm{AU})=v_{\oplus}^2=(2.98\times 10^4)^2=8.88\times 10^8\,\mathrm{m^2/s^2}\)，即 \(GM_{\odot}/\mathrm{AU}=8.88\times 10^8\)。取 \(\mathrm{AU}=1.496\times 10^{11}\,\mathrm{m}\)。</p>
+          <p class="step">vis-viva 方程：\(v^2=GM_{\odot}\!\left(\dfrac{2}{r}-\dfrac{1}{a}\right)\)。</p>
+          <p class="step">近日点：\(v_p^2=GM_{\odot}\!\left(\dfrac{2}{0.50}-\dfrac{1}{2.00}\right)\dfrac{1}{\mathrm{AU}}=\dfrac{GM_{\odot}}{\mathrm{AU}}(4.00-0.50)=8.88\times 10^8\times 3.50=3.108\times 10^9\)，</p>
+          <p class="step">\(v_p=\sqrt{3.108\times 10^9}=5.57\times 10^4\,\mathrm{m/s}=55.7\,\mathrm{km/s}\)。</p>
+          <p class="step">远日点：\(v_a^2=\dfrac{GM_{\odot}}{\mathrm{AU}}\!\left(\dfrac{2}{3.50}-\dfrac{1}{2.00}\right)=8.88\times 10^8\times(0.5714-0.5000)=8.88\times 10^8\times 0.0714=6.34\times 10^7\)，</p>
+          <p class="step">\(v_a=\sqrt{6.34\times 10^7}=7.96\times 10^3\,\mathrm{m/s}=7.96\,\mathrm{km/s}\)。</p>
+          <p class="step">角动量校验：\(v_p r_p=55.7\times 0.50=27.85\)，\(v_a r_a=7.96\times 3.50=27.86\)（一致 ✓）。</p>
+          <p><span class="ans">\(v_p\approx 55.7\,\mathrm{km/s}\)，\(v_a\approx 7.96\,\mathrm{km/s}\)</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>势能为负是正确的</strong>：引力势能 \(U=-GMm/r\) 以无穷远为零点，因此在任何有限距离都是<strong>负</strong>值。不要把它写成 \(+GMm/r\)，更不要误以为地表处 \(U=0\)。“势阱越深”等价于轨道越紧束缚。</li>
+        <li><strong>\(g\) 随高度变化</strong>：国际空间站高度（\(h\approx 400\,\mathrm{km}\)）处的 \(g\) 仅比地面小约 \(11\%\)，并非“几乎为零”。宇航员失重不是因为引力消失，而是因为他们在<strong>自由下落 (free fall)</strong>。</li>
+        <li><strong>“太空中没有重力”是错误直觉</strong>：轨道运动正是重力提供向心力的体现。把“失重”等同于“无引力”会误解所有轨道力学。</li>
+        <li><strong>逃逸速度是圆轨道速度的 \(\sqrt{2}\) 倍</strong>，不是 2 倍、也不是 \(\sqrt{2}/2\) 倍。记住 \(v_{\text{esc}}^2=2\,v_{\text{circ}}^2\)。</li>
+        <li><strong>开普勒第三定律是关于半长轴 \(a\)，不是瞬时半径 \(r\)</strong>：\(T^2\propto a^3\) 对椭圆轨道成立，不要把 \(r\) 代进去。对椭圆，\(a=(r_{\min}+r_{\max})/2\)。</li>
+        <li><strong>能量 \(E=-GMm/(2a)\) 仅对束缚（椭圆）轨道有效</strong>。抛物线 \(E=0\)、双曲线 \(E>0\)，公式形式不同。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 月球的轨道速度与周期：已知 \(r=3.84\times 10^8\,\mathrm{m}\)，\(M_{\oplus}=5.97\times 10^{24}\,\mathrm{kg}\)，\(G=6.674\times 10^{-11}\)。</summary>
+        <div class="hint">把月球轨道近似为圆轨道，用 \(v=\sqrt{GM/r}\) 与 \(T=2\pi r/v\)。</div>
+        <div class="solution">
+          <p>\(v=\sqrt{\dfrac{(6.674\times 10^{-11})(5.97\times 10^{24})}{3.84\times 10^8}}=\sqrt{\dfrac{3.986\times 10^{14}}{3.84\times 10^8}}=\sqrt{1.038\times 10^6}=1.019\times 10^3\,\mathrm{m/s}\)。</p>
+          <p>\(T=\dfrac{2\pi r}{v}=\dfrac{2\pi(3.84\times 10^8)}{1.019\times 10^3}=2.37\times 10^6\,\mathrm{s}\approx 27.4\,\mathrm{天}\)。</p>
+          <p><span class="ans">\(v\approx 1.02\,\mathrm{km/s}\)，\(T\approx 27.4\,\mathrm{天}\)</span>（与恒星月 27.3 天相符）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 用开普勒第三定律估计火星的公转周期。火星半长轴 \(a_{\text{Mars}}=2.28\times 10^{11}\,\mathrm{m}\)，地球 \(a_{\oplus}=1.496\times 10^{11}\,\mathrm{m}\)、\(T_{\oplus}=1\,\mathrm{yr}\)。</summary>
+        <div class="hint">对绕同一中心天体（太阳），\((T_2/T_1)^2=(a_2/a_1)^3\)。</div>
+        <div class="solution">
+          <p>\(\dfrac{T_{\text{Mars}}}{T_{\oplus}}=\left(\dfrac{a_{\text{Mars}}}{a_{\oplus}}\right)^{3/2}=\left(\dfrac{2.28\times 10^{11}}{1.496\times 10^{11}}\right)^{3/2}=(1.524)^{1.5}=1.881\)。</p>
+          <p><span class="ans">\(T_{\text{Mars}}\approx 1.88\,\mathrm{yr}\approx 687\,\mathrm{天}\)</span>（实测 687 天 ✓）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一颗卫星在 \(T=2.00\,\mathrm{h}\) 的低圆轨道上运行，求其离地高度。取 \(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^3/s^2}\)，\(R_{\oplus}=6.37\times 10^6\,\mathrm{m}\)。</summary>
+        <div class="hint">由 \(a^3=GM\,T^2/(4\pi^2)\)，再减去地球半径得高度。</div>
+        <div class="solution">
+          <p>\(a^3=\dfrac{(3.986\times 10^{14})(7.20\times 10^3)^2}{4\pi^2}=\dfrac{(3.986\times 10^{14})(5.184\times 10^7)}{39.48}=5.235\times 10^{20}\,\mathrm{m^3}\)。</p>
+          <p>\(a=\sqrt[3]{5.235\times 10^{20}}=8.06\times 10^6\,\mathrm{m}\)。</p>
+          <p>\(h=a-R_{\oplus}=8.06\times 10^6-6.37\times 10^6=1.69\times 10^6\,\mathrm{m}\)。</p>
+          <p><span class="ans">\(h\approx 1.69\times 10^3\,\mathrm{km}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 在距地心 \(r=3R_{\oplus}\) 处，引力加速度是地面 \(g\) 的几倍？又：把 \(1000\,\mathrm{kg}\) 物体从该处移到无穷远，需要做多少功？</summary>
+        <div class="hint">\(g\propto 1/r^2\)；做功等于势能差 \(W=U(\infty)-U(r)=+GMm/r\)。</div>
+        <div class="solution">
+          <p>\(\dfrac{g(3R_{\oplus})}{g(R_{\oplus})}=\dfrac{1}{3^2}=\dfrac{1}{9}\)，即约 \(1.09\,\mathrm{m/s^2}\)。</p>
+          <p>做功 \(W=\dfrac{GM_{\oplus}m}{r}=\dfrac{(3.986\times 10^{14})(1000)}{3(6.37\times 10^6)}=\dfrac{3.986\times 10^{17}}{1.911\times 10^7}=2.09\times 10^{10}\,\mathrm{J}\)。</p>
+          <p><span class="ans">\(g\) 为地面值的 \(1/9\)；需做功约 \(2.1\times 10^{10}\,\mathrm{J}\)（21 GJ）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 用土卫一（Mimas）的轨道数据求土星质量。\(r=1.85\times 10^8\,\mathrm{m}\)，\(T=8.14\times 10^4\,\mathrm{s}\)。</summary>
+        <div class="hint">由 \(T^2=4\pi^2 a^3/(GM)\) 反解 \(M\)（圆轨道下 \(a=r\)）。</div>
+        <div class="solution">
+          <p>\(M=\dfrac{4\pi^2 r^3}{G\,T^2}=\dfrac{4\pi^2(1.85\times 10^8)^3}{(6.674\times 10^{-11})(8.14\times 10^4)^2}\)。</p>
+          <p>分子：\(39.48\times(6.332\times 10^{24})=2.500\times 10^{26}\)。</p>
+          <p>分母：\((6.674\times 10^{-11})(6.626\times 10^9)=4.422\times 10^{-1}\)。</p>
+          <p>\(M=\dfrac{2.500\times 10^{26}}{4.422\times 10^{-1}}=5.65\times 10^{26}\,\mathrm{kg}\)。</p>
+          <p><span class="ans">\(M_{\text{Saturn}}\approx 5.65\times 10^{26}\,\mathrm{kg}\)</span>（公认值 \(5.68\times 10^{26}\,\mathrm{kg}\) ✓）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 轨道力学沙盒 Orbital Mechanics Sandbox</h2>
+      <p class="sim-desc">一颗卫星从距地心 \(r_0=1.5\,R_{\oplus}\) 处以可调速度 \(v_0\)（与方向角）发射。调节 \(v_0\) 相对圆轨道速度 \(v_{\text{circ}}\) 的大小，观察轨道在“椭圆坠落 → 圆 → 椭圆 → 抛物线 → 双曲线逃逸”之间的转变。HUD 实时显示 \(v/v_{\text{circ}}\)、\(v/v_{\text{esc}}\)、比能量 \(\varepsilon\) 与轨道分类。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="600" height="420"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- physical constants (SI) ----
+          var GM = 3.986e14;        // m^3/s^2, Earth
+          var Re = 6.371e6;         // m, Earth radius
+          var r0 = 1.5 * Re;        // initial radius (m)
+
+          // ---- display scaling ----
+          var CX = W / 2, CY = H / 2;
+          var PX = 70 / Re;         // 1 Earth radius = 70 px
+
+          function w2s(x, y) { return [CX + x * PX, CY - y * PX]; }
+
+          // ---- control params ----
+          var params = {
+            v0: 6460,        // m/s (≈ v_circ at r0)
+            angle: 0,        // deg, 0 = tangential prograde
+            timeScale: 1500, // sim seconds per real second
+          };
+
+          function vCirc() { return Math.sqrt(GM / r0); }
+          function vEsc()  { return Math.sqrt(2 * GM / r0); }
+
+          // ---- Newtonian gravity derivative for RK4 ----
+          // state = [x, y, vx, vy]  (SI metres, m/s)
+          function gravDeriv(state, t) {
+            var x = state[0], y = state[1], vx = state[2], vy = state[3];
+            var r2 = x * x + y * y;
+            var r  = Math.sqrt(r2);
+            var k  = -GM / (r2 * r); // acceleration = k * (x,y)
+            return [vx, vy, k * x, k * y];
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              var ang = params.angle * Math.PI / 180;
+              // satellite starts on +x axis; tangential = +y, radial outward = +x
+              var ux = Math.sin(ang);  // radial-outward component
+              var uy = Math.cos(ang);  // tangential component
+              return {
+                x: r0, y: 0,
+                vx: params.v0 * ux,
+                vy: params.v0 * uy,
+                trail: [],
+                impact: false,
+                tImpact: 0,
+              };
+            },
+            step: function (dt, t, s) {
+              if (s.impact) return;
+              var sim_dt = dt * params.timeScale;
+              var sub = 4;
+              var h = sim_dt / sub;
+              var st = [s.x, s.y, s.vx, s.vy];
+              for (var i = 0; i < sub; i++) {
+                st = PS.integrate(gravDeriv, st, t + i * h, h, 'rk4');
+                // abort if inside Earth or very far
+                var rx = st[0], ry = st[1];
+                var rr = Math.hypot(rx, ry);
+                if (rr < Re) { s.impact = true; s.tImpact = t; break; }
+                if (rr > 60 * r0) { /* effectively escaped */ break; }
+              }
+              s.x = st[0]; s.y = st[1]; s.vx = st[2]; s.vy = st[3];
+              s.trail.push({ x: s.x, y: s.y });
+              if (s.trail.length > 2500) s.trail.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // reference dashed circle at r0 (the launch radius)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([5, 5]);
+              ctx.globalAlpha = 0.8;
+              ctx.beginPath();
+              ctx.arc(CX, CY, r0 * PX, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.restore();
+
+              // Earth (central body)
+              PS.drawCircle(ctx, CX, CY, Re * PX, {
+                fill: PS.colors.primary, stroke: PS.colors.axis, lineWidth: 1.5,
+              });
+              PS.drawText(ctx, 'Earth', CX, CY, {
+                font: 'bold 11px system-ui', color: '#ffffff',
+                align: 'center', baseline: 'middle',
+              });
+
+              // trail with fading alpha
+              var tr = s.trail;
+              if (tr.length > 1) {
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                ctx.strokeStyle = PS.colors.trace;
+                for (var i = 1; i < tr.length; i++) {
+                  var a = i / tr.length;     // newer points → larger a
+                  ctx.globalAlpha = 0.10 + 0.75 * a;
+                  var p1 = w2s(tr[i - 1].x, tr[i - 1].y);
+                  var p2 = w2s(tr[i].x,     tr[i].y);
+                  ctx.beginPath();
+                  ctx.moveTo(p1[0], p1[1]);
+                  ctx.lineTo(p2[0], p2[1]);
+                  ctx.stroke();
+                }
+                ctx.restore();
+              }
+
+              // satellite + velocity arrow
+              var v = Math.hypot(s.vx, s.vy);
+              var r = Math.hypot(s.x, s.y);
+              if (!s.impact) {
+                var p = w2s(s.x, s.y);
+                PS.drawCircle(ctx, p[0], p[1], 5, {
+                  fill: PS.colors.accent, stroke: '#000000', lineWidth: 1,
+                });
+                var vscale = 0.012; // px per (m/s)
+                PS.drawArrow(ctx, p[0], p[1],
+                             p[0] + s.vx * vscale, p[1] - s.vy * vscale,
+                             PS.colors.accent2, 'v');
+              }
+
+              // classification
+              var vc = vCirc(), ve = vEsc();
+              var eps = v * v / 2 - GM / Math.max(r, Re); // specific energy (J/kg)
+              var classification = '';
+              if (s.impact) {
+                classification = 'IMPACT · 撞回地球';
+              } else if (r > 30 * r0) {
+                classification = 'Escaped · 已逃离';
+              } else if (Math.abs(v - ve) < 25) {
+                classification = 'Parabolic · 抛物线 (临界)';
+              } else if (eps > 0) {
+                classification = 'Hyperbolic · 双曲线逃逸';
+              } else if (Math.abs(v - vc) < 20 && Math.abs(params.angle) < 1) {
+                classification = 'Circular · 圆轨道';
+              } else {
+                classification = 'Elliptical · 椭圆轨道';
+              }
+
+              // HUD
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 220, 108);
+              ctx.strokeStyle = PS.colors.border || PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 220, 108);
+              ctx.restore();
+
+              PS.drawText(ctx, 'v0  = ' + params.v0.toFixed(0) + ' m/s', 16, 26,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v/v_circ = ' + (v / vc).toFixed(3), 16, 44,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v/v_esc  = ' + (v / ve).toFixed(3), 16, 62,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'ε = ' + (eps / 1e6).toFixed(2) + ' MJ/kg', 16, 80,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, classification, 16, 102,
+                { font: 'bold 12px system-ui', color: PS.colors.accent });
+
+              // legend at bottom-right
+              PS.drawText(ctx,
+                'v_circ = ' + vc.toFixed(0) + ' m/s   v_esc = ' + ve.toFixed(0) + ' m/s   (at r0 = 1.5 R_E)',
+                W - 12, H - 10,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'v0',   label: '初速度 v₀ (m/s)', min: 0,    max: 13000, step: 20,    value: 6460 },
+            { type: 'slider', key: 'angle',label: '方向角 θ (°，0=切向)', min: -90, max: 90,   step: 1,     value: 0 },
+            { type: 'slider', key: 'timeScale', label: '时间倍率',   min: 200,  max: 4000, step: 100,   value: 1500 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+
+          ctl.on('v0',        function (v) { params.v0 = v;         sim.reset(); });
+          ctl.on('angle',     function (v) { params.angle = v;      sim.reset(); });
+          ctl.on('timeScale', function (v) { params.timeScale = v; });
+          ctl.on('reset',     function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>万有引力 \(\vec{F}=-GMm\hat{r}/r^2\)，球外引力等价于质点（球壳定理）。</li>
+        <li>引力场 \(g=GM/r^2\)，引力势能 \(U=-GMm/r\)（零点在无穷远，处处为负）。</li>
+        <li>开普勒三定律：椭圆轨道、等面积律（角动量守恒）、\(T^2=\dfrac{4\pi^2}{GM}a^3\)。</li>
+        <li>圆轨道 \(v_{\text{circ}}=\sqrt{GM/r}\)；逃逸速度 \(v_{\text{esc}}=\sqrt{2GM/r}=\sqrt{2}\,v_{\text{circ}}\)。</li>
+        <li>vis-viva：\(v^2=GM(2/r-1/a)\)；椭圆轨道总能量 \(E=-GMm/(2a)<0\)。</li>
+        <li>有效势能 \(U_{\mathrm{eff}}=-GMm/r+L^2/(2mr^2)\)，极小值对应圆轨道。</li>
+        <li>潮汐力 \(\propto 1/r^3\)；地球同步轨道 \(a\approx 4.22\times 10^7\,\mathrm{m}\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\vec{F}=-\frac{GMm}{r^2}\hat{r},\quad U=-\frac{GMm}{r},\quad v_{\text{circ}}=\sqrt{\frac{GM}{r}},\quad v_{\text{esc}}=\sqrt{\frac{2GM}{r}},\quad T^2=\frac{4\pi^2}{GM}a^3,\quad v^2=GM\!\left(\frac{2}{r}-\frac{1}{a}\right),\quad E=-\frac{GMm}{2a}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

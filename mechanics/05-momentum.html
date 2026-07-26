@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 动量与碰撞 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 5 · 第5章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>动量与碰撞 <span class="en-title">Momentum &amp; Collisions</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够由牛顿第二定律导出冲量–动量定理 (impulse–momentum theorem) \( \vec{J}=\Delta\vec{p} \)，并计算变力的冲量。</li>
+        <li>能够判断系统动量守恒 (conservation of momentum) 的条件，并在一维与二维碰撞中正确应用。</li>
+        <li>能够计算离散与连续系统的质心 (center of mass)，并用 \( \vec{F}_{\text{ext}}=M\vec{a}_{\text{cm}} \) 分析质心运动。</li>
+        <li>能够推导并应用一维弹性碰撞 (elastic collision) 的速度公式，区分弹性、非弹性与完全非弹性碰撞。</li>
+        <li>能够在质心参考系 (center-of-mass frame) 中分析二维斜碰 (glancing collision)。</li>
+        <li>能够定性、定量地理解火箭方程 (rocket equation / Tsiolkovsky) 与变质量系统。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 动量与冲量 Momentum and Impulse</h3>
+      <p>质点的线动量 (linear momentum) 定义为质量与速度的乘积：</p>
+      <div class="formula">\[ \vec{p}=m\vec{v} \qquad (\text{SI 单位：}\,\mathrm{kg\,m/s}) \]</div>
+      <p>牛顿最初把第二定律表述为「运动的变化正比于力」，即 \( \vec{F}=\dv{\vec{p}}{t} \)。对于质量不变的质点，这等价于 \( \vec{F}=m\vec{a} \)。定义力在时间 \( t_1\to t_2 \) 内的<strong>冲量</strong> (impulse)：</p>
+      <div class="formula">\[ \vec{J}\equiv\int_{t_1}^{t_2}\vec{F}(t)\,dt \]</div>
+      <p>把 \( \vec{F}=\dv{\vec{p}}{t} \) 两边积分即得<strong>冲量–动量定理</strong>：</p>
+      <div class="formula">\[ \vec{J}=\Delta\vec{p}=\vec{p}_2-\vec{p}_1 \]</div>
+      <p>冲量是矢量 (vector)，方向沿力的方向。平均冲力 \( \bar{F}=\vec{J}/\Delta t \)；要减小碰撞中的冲力（例如安全气囊、跳高软垫），就在保持 \( \Delta\vec{p} \) 不变的同时增大 \( \Delta t \)。</p>
+
+      <h3>2. 动量守恒 Conservation of Momentum</h3>
+      <p>考虑两个质点 1、2 构成的孤立系统。它们之间有内力 \( \vec{F}_{12} \)、\( \vec{F}_{21} \)，由牛顿第三定律 (Newton's third law) \( \vec{F}_{12}=-\vec{F}_{21} \)。两质点动量之和的变化率：</p>
+      <div class="formula">\[ \dv{}{t}(\vec{p}_1+\vec{p}_2)=\vec{F}_{12}+\vec{F}_{21}=0 \]</div>
+      <p>因此 \( \vec{p}_1+\vec{p}_2=\text{常量} \)。一般地，若系统所受<strong>合外力</strong> \( \vec{F}_{\text{ext}}\approx 0 \)（或在某一方向上分量为零），则总动量守恒：</p>
+      <div class="formula">\[ \sum_i \vec{p}_i=\text{常矢量} \qquad \big(\vec{F}_{\text{ext}}\approx 0\big) \]</div>
+      <p>注意「合外力为零」是充分条件；即便 \( \vec{F}_{\text{ext}}\neq 0 \)，只要碰撞过程极短，内冲力远大于外力（如重力、摩擦），则碰撞<strong>瞬间</strong>仍可视为动量守恒。</p>
+
+      <h3>3. 质心 Center of Mass</h3>
+      <p>由 \( N \) 个质点组成的离散系统，其<strong>质心</strong>位置为：</p>
+      <div class="formula">\[ \vec{R}_{\text{cm}}=\frac{1}{M}\sum_{i=1}^{N}m_i\vec{r}_i,\qquad M=\sum_i m_i \]</div>
+      <p>对连续物体，求和换为积分 \( \vec{R}_{\text{cm}}=\dfrac{1}{M}\displaystyle\int \vec{r}\,dm \)。</p>
+      <p>把 \( \vec{R}_{\text{cm}} \) 对时间求两次导，并利用每个质点的牛顿第二定律 \( m_i\vec{a}_i=\vec{F}_{i,\text{ext}}+\sum_{j\neq i}\vec{F}_{ij} \)，内力成对抵消，得到<strong>质心运动定理</strong>：</p>
+      <div class="formula">\[ \vec{F}_{\text{ext}}=M\vec{a}_{\text{cm}} \]</div>
+      <p>这是极其重要的结论：不论系统内部如何复杂（爆炸、碰撞、旋转），质心的运动只由外力决定，宛如把全部质量集中于 \( \vec{R}_{\text{cm}} \) 的一个质点。</p>
+
+      <h3>4. 一维弹性碰撞 1D Elastic Collisions</h3>
+      <p>弹性碰撞同时满足<strong>动量守恒</strong>与<strong>动能守恒</strong>。设两球沿 \( x \) 轴运动，初速 \( v_1,v_2 \)，末速 \( v_1',v_2' \)：</p>
+      <div class="formula">\[ \begin{aligned} m_1 v_1+m_2 v_2&=m_1 v_1'+m_2 v_2' \\ \tfrac12 m_1 v_1^2+\tfrac12 m_2 v_2^2&=\tfrac12 m_1 v_1'^2+\tfrac12 m_2 v_2'^2 \end{aligned} \]</div>
+      <p>解这对方程（详见下节推导）得到速度交换公式：</p>
+      <div class="formula">\[ \boxed{\,v_1'=\frac{m_1-m_2}{m_1+m_2}\,v_1+\frac{2m_2}{m_1+m_2}\,v_2,\qquad v_2'=\frac{2m_1}{m_1+m_2}\,v_1+\frac{m_2-m_1}{m_1+m_2}\,v_2\,} \]</div>
+      <p>两个重要特例：若 \( m_1=m_2 \)，则 \( v_1'=v_2,\ v_2'=v_1 \)（速度交换）；若 \( m_2\to\infty \) 且 \( v_2=0 \)，则 \( v_1'=-v_1 \)（反弹）。</p>
+
+      <h3>5. 非弹性碰撞与恢复系数 Inelastic Collisions &amp; Coefficient of Restitution</h3>
+      <p>大多数真实碰撞中动能不守恒（部分转化为热、形变、声）。<strong>完全非弹性碰撞</strong> (perfectly inelastic) 是极端情形：碰后两物体粘在一起以共同速度运动：</p>
+      <div class="formula">\[ v'=\frac{m_1 v_1+m_2 v_2}{m_1+m_2} \]</div>
+      <p>定义<strong>恢复系数</strong> (coefficient of restitution)：</p>
+      <div class="formula">\[ e\equiv -\frac{v_1'-v_2'}{v_1-v_2} \]</div>
+      <p>\( e=1 \) 为完全弹性；\( e=0 \) 为完全非弹性；\( 0<e<1 \) 为一般非弹性。注意公式前的负号：分离速度与接近速度反向，故 \( e\geq 0 \)。动能损失为：</p>
+      <div class="formula">\[ \Delta K = -\tfrac12\,\frac{m_1 m_2}{m_1+m_2}(1-e^2)(v_1-v_2)^2 \]</div>
+
+      <h3>6. 二维斜碰 2D Glancing Collisions</h3>
+      <p>二维碰撞中动量守恒是<strong>矢量</strong>方程，等价于两个分量方程。若一球初态静止，已知一球的末速度方向，通常只有一个未知量待求。一个高效策略是转换到<strong>质心参考系</strong> (CM frame)：在 CM 系中，两球动量大小相等、方向相反；弹性碰撞只改变它们的<strong>方向</strong>而不改变大小。回实验室系只需加回 \( \vec{V}_{\text{cm}} \)。</p>
+
+      <h3>7. 变质量系统：火箭方程 Variable-Mass Systems — Rocket Equation</h3>
+      <p>火箭以相对速度 \( \vec{u} \)（向后为正）喷出质量元 \( dm>0 \)。在 \( dt \) 内火箭质量减少 \( dm \)、动量变化为 \( M\,dv \)，喷出气体带走向后动量 \( u\,dm \)。由动量守恒（忽略外力）：</p>
+      <div class="formula">\[ M\,dv = u\,dm \quad\Longrightarrow\quad dv = -u\,\frac{dM}{M} \]</div>
+      <p>积分得 <strong>Tsiolkovsky 火箭方程</strong>：</p>
+      <div class="formula">\[ \boxed{\,\Delta v = u\ln\!\frac{M_0}{M_f}\,} \]</div>
+      <p>其中 \( M_0 \) 为初质量，\( M_f \) 为末（干）质量。质量比 \( M_0/M_f \) 越大、排气速度 \( u \) 越大，获得的 \( \Delta v \) 越大。</p>
+
+      <div class="key-terms">momentum (动量), impulse (冲量), impulse–momentum theorem (冲量–动量定理), conservation of momentum (动量守恒), center of mass (质心), elastic collision (弹性碰撞), inelastic collision (非弹性碰撞), perfectly inelastic collision (完全非弹性碰撞), coefficient of restitution (恢复系数), center-of-mass frame (质心参考系), rocket equation / Tsiolkovsky (火箭方程)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <h3>一维弹性碰撞速度公式的推导</h3>
+      <p class="step"><strong>第一步：</strong> 由动量守恒 \( m_1(v_1-v_1')=m_2(v_2'-v_2) \)。</p>
+      <p class="step"><strong>第二步：</strong> 由动能守恒 \( m_1(v_1^2-v_1'^2)=m_2(v_2'^2-v_2^2) \)，即 \( m_1(v_1-v_1')(v_1+v_1')=m_2(v_2'-v_2)(v_2'+v_2) \)。</p>
+      <p class="step"><strong>第三步：</strong> 两式相除（设 \( v_1\neq v_1' \)，即非平凡情形）：</p>
+      <div class="formula">\[ v_1+v_1'=v_2+v_2'\quad\Longrightarrow\quad v_1-v_2=-(v_1'-v_2') \]</div>
+      <p>这正是相对速度反向（\( e=1 \)）。把这个关系代回动量方程：</p>
+      <div class="formula">\[ \begin{aligned} v_1'&=v_1-\frac{2m_2}{m_1+m_2}(v_1-v_2)=\frac{m_1-m_2}{m_1+m_2}v_1+\frac{2m_2}{m_1+m_2}v_2 \\ v_2'&=v_2+\frac{2m_1}{m_1+m_2}(v_1-v_2)=\frac{2m_1}{m_1+m_2}v_1+\frac{m_2-m_1}{m_1+m_2}v_2 \end{aligned} \]</div>
+      <p class="step"><strong>第四步（验证）：</strong> 把 \( v_1',v_2' \) 代入，可证 \( \tfrac12 m_1 v_1'^2+\tfrac12 m_2 v_2'^2=\tfrac12 m_1 v_1^2+\tfrac12 m_2 v_2^2 \)。</p>
+
+      <h3>由牛顿第三定律导出动量守恒</h3>
+      <p>对每个质点 \( i \)：\( \dv{\vec{p}_i}{t}=\vec{F}_{i,\text{ext}}+\sum_{j\neq i}\vec{F}_{ij} \)，其中 \( \vec{F}_{ij} \) 是 \( j \) 对 \( i \) 的内力。对 \( i \) 求和：</p>
+      <div class="formula">\[ \dv{}{t}\sum_i\vec{p}_i=\sum_i\vec{F}_{i,\text{ext}}+\sum_{i<j}\bigl(\vec{F}_{ij}+\vec{F}_{ji}\bigr)=\vec{F}_{\text{ext}} \]</div>
+      <p>因为 \( \vec{F}_{ij}+\vec{F}_{ji}=0 \)（牛顿第三定律）。当 \( \vec{F}_{\text{ext}}=0 \)，总动量守恒。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 一维弹性碰撞</h4>
+        <p class="example-statement">\( m_1=2.0\,\mathrm{kg} \) 以 \( v_1=3.0\,\mathrm{m/s} \) 向右运动，与静止的 \( m_2=1.0\,\mathrm{kg} \) 发生一维弹性碰撞。求末速度并验证动能守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由弹性碰撞速度公式 (\( v_2=0 \))：</p>
+          <p>\[ v_1'=\frac{m_1-m_2}{m_1+m_2}v_1=\frac{2-1}{2+1}\times 3.0=1.0\,\mathrm{m/s} \]</p>
+          <p>\[ v_2'=\frac{2m_1}{m_1+m_2}v_1=\frac{4}{3}\times 3.0=4.0\,\mathrm{m/s} \]</p>
+          <p class="step"><strong>动能验证：</strong> 初态 \( K_i=\tfrac12(2)(3^2)=9.0\,\mathrm{J} \)；末态 \( K_f=\tfrac12(2)(1^2)+\tfrac12(1)(4^2)=1+8=9.0\,\mathrm{J} \)。两者相等 ✓</p>
+          <p class="step"><strong>动量验证：</strong> \( p_i=2\times 3=6.0\,\mathrm{kg\,m/s} \)；\( p_f=2\times 1+1\times 4=6.0\,\mathrm{kg\,m/s} \) ✓</p>
+          <p><span class="ans">\( v_1'=1.0\,\mathrm{m/s} \)（向右）；\( v_2'=4.0\,\mathrm{m/s} \)（向右）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 冲击摆 Ballistic Pendulum</h4>
+        <p class="example-statement">一子弹 \( m=10\,\mathrm{g}=0.010\,\mathrm{kg} \) 水平射入用绳悬挂的木块 \( M=1.99\,\mathrm{kg} \) 并嵌入其中，木块摆起最大高度 \( h=8.0\,\mathrm{cm}=0.080\,\mathrm{m} \)。求子弹初速 \( v_0 \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>第一阶段（碰撞瞬间，动量守恒）：</strong> 子弹嵌入木块为完全非弹性碰撞。设共同速度为 \( V \)：</p>
+          <p>\[ m v_0=(m+M)V \;\Rightarrow\; V=\frac{m}{m+M}v_0 \]</p>
+          <p class="step"><strong>第二阶段（摆动，机械能守恒）：</strong> 绳张力不做功，只有重力做负功。最低点动能全部转化为最高点重力势能：</p>
+          <p>\[ \tfrac12(m+M)V^2=(m+M)gh \;\Rightarrow\; V=\sqrt{2gh}=\sqrt{2(9.8)(0.080)}=1.252\,\mathrm{m/s} \]</p>
+          <p class="step"><strong>反解子弹速度：</strong></p>
+          <p>\[ v_0=\frac{m+M}{m}V=\frac{2.00}{0.010}\times 1.252=250\,\mathrm{m/s} \]</p>
+          <p class="step"><strong>注意：</strong> 碰撞过程中动能大量损失（嵌入了），故不能用 \( \tfrac12 mv_0^2=(m+M)gh \)，那是常见错误。</p>
+          <p><span class="ans">\( v_0\approx 2.5\times 10^{2}\,\mathrm{m/s} \)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 二维斜碰（等质量）</h4>
+        <p class="example-statement">质量均为 \( m=1.0\,\mathrm{kg} \) 的两个相同台球。球 1 以 \( v_1=4.0\,\mathrm{m/s} \) 沿 \( x \) 轴运动，撞向静止的球 2。碰撞为弹性的，碰后球 1 偏折角 \( \theta_1=30^\circ \)（在 \( x \) 轴上方）。求两球的末速度大小及球 2 的偏折角。</p>
+        <div class="example-solution">
+          <p class="step"><strong>关键性质：</strong> 等质量弹性碰撞中，两末速度矢量<strong>互相垂直</strong>（\( \theta_1+\theta_2=90^\circ \)），故 \( \theta_2=60^\circ \)。</p>
+          <p class="step"><strong>动量守恒（分量）：</strong></p>
+          <p>\[ x:\quad mv_1=m v_1'\cos 30^\circ+m v_2'\cos 60^\circ \]</p>
+          <p>\[ y:\quad 0=m v_1'\sin 30^\circ-m v_2'\sin 60^\circ \]</p>
+          <p class="step"><strong>由 \( y \) 方程：</strong> \( v_1'\cdot\tfrac12=v_2'\cdot\tfrac{\sqrt 3}{2} \)，即 \( v_1'=\sqrt 3\,v_2' \)。</p>
+          <p class="step"><strong>代入 \( x \) 方程：</strong> \( 4=(\sqrt 3 v_2')\tfrac{\sqrt 3}{2}+v_2'\cdot\tfrac12=\tfrac32 v_2'+\tfrac12 v_2'=2 v_2' \)，所以 \( v_2'=2.0\,\mathrm{m/s} \)，\( v_1'=2\sqrt 3\approx 3.46\,\mathrm{m/s} \)。</p>
+          <p class="step"><strong>动能验证：</strong> \( K_i=\tfrac12(1)(4^2)=8\,\mathrm{J} \)；\( K_f=\tfrac12(1)(2\sqrt 3)^2+\tfrac12(1)(2^2)=6+2=8\,\mathrm{J} \) ✓</p>
+          <p><span class="ans">\( v_1'\approx 3.46\,\mathrm{m/s},\ \theta_1=30^\circ;\quad v_2'=2.0\,\mathrm{m/s},\ \theta_2=60^\circ \)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 爆炸后的质心轨迹</h4>
+        <p class="example-statement">一炮弹以初速 \( v_0=50\,\mathrm{m/s} \)、抛射角 \( \theta=53^\circ \)（\( \cos 53^\circ\approx 0.60,\ \sin 53^\circ\approx 0.80 \)）发射。在最高点爆炸成两块（\( m_1=2.0\,\mathrm{kg},\ m_2=3.0\,\mathrm{kg} \)），其中 \( m_1 \) 落地处距发射点 \( x_1=300\,\mathrm{m} \)。问 \( m_2 \) 落地处 \( x_2 \) 为何？（取 \( g=9.8\,\mathrm{m/s^2} \)，忽略空气阻力）</p>
+        <div class="example-solution">
+          <p class="step"><strong>关键思想：</strong> 爆炸的内力不改变质心运动。质心仍沿原抛物线轨迹运动，落地位置就是无爆炸时的射程。</p>
+          <p class="step"><strong>计算射程：</strong> \( v_x=v_0\cos\theta=50\times 0.60=30\,\mathrm{m/s} \)；\( v_{y0}=50\times 0.80=40\,\mathrm{m/s} \)；飞行时间 \( T=2v_{y0}/g=80/9.8=8.16\,\mathrm{s} \)。</p>
+          <p>\[ x_{\text{cm}}=v_x\,T=30\times 8.16=245\,\mathrm{m} \]</p>
+          <p class="step"><strong>由质心定义：</strong> \( M x_{\text{cm}}=m_1 x_1+m_2 x_2 \)，\( M=m_1+m_2=5.0\,\mathrm{kg} \)：</p>
+          <p>\[ x_2=\frac{M x_{\text{cm}}-m_1 x_1}{m_2}=\frac{5.0\times 245-2.0\times 300}{3.0}=\frac{1225-600}{3}=208\,\mathrm{m} \]</p>
+          <p class="step"><strong>合理性检查：</strong> \( m_1 \) 比质心落点远（\( 300>245 \)），则 \( m_2 \) 必比质心落点近（\( 208<245 \)），与质心定义一致。</p>
+          <p><span class="ans">\( x_2\approx 208\,\mathrm{m} \)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 火箭方程估算</h4>
+        <p class="example-statement">一枚化学燃料小火箭的排气速度 \( u=2.5\,\mathrm{km/s}=2500\,\mathrm{m/s} \)，初始质量 \( M_0=3000\,\mathrm{kg} \)，燃尽后干质量 \( M_f=1000\,\mathrm{kg} \)。求理想情况下火箭获得的 \( \Delta v \)。若希望 \( \Delta v=5.0\,\mathrm{km/s} \)，在同样 \( u \) 下需要多大的质量比 \( M_0/M_f \)？</p>
+        <div class="example-solution">
+          <p class="step"><strong>第一问：</strong> 由 Tsiolkovsky 方程：</p>
+          <p>\[ \Delta v=u\ln\!\frac{M_0}{M_f}=2500\,\ln\!\frac{3000}{1000}=2500\,\ln 3=2500\times 1.0986=2746\,\mathrm{m/s} \]</p>
+          <p class="step"><strong>第二问：</strong> \( \Delta v=u\ln(M_0/M_f) \)，解出：</p>
+          <p>\[ \frac{M_0}{M_f}=\exp\!\left(\frac{\Delta v}{u}\right)=\exp\!\left(\frac{5000}{2500}\right)=e^2\approx 7.39 \]</p>
+          <p class="step"><strong>结论：</strong> 想把速度增量加倍（从 \( 2.75 \) 到 \( 5.0\,\mathrm{km/s} \)），质量比必须从 \( 3 \) 增加到 \( 7.4 \)。这显示火箭方程的「指数困难」：要进一步提速，必须分级或提高 \( u \)（如离子推进 \( u\approx 30\,\mathrm{km/s} \)）。</p>
+          <p><span class="ans">\( \Delta v\approx 2.75\,\mathrm{km/s} \)；所需质量比 \( \approx 7.4 \)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>动量守恒不是「总是成立」：</strong> 必须满足合外力为零（或某方向分量为零，或碰撞瞬间内冲力远大于外冲力）。抛体在重力作用下总动量不守恒。</li>
+        <li><strong>非弹性碰撞中动能不守恒，但动量<strong>仍然</strong>守恒：</strong> 不要因为「能量损失」就放弃动量守恒方程。反过来，不要在完全非弹性碰撞中错误地套用动能守恒。</li>
+        <li><strong>二维动量是矢量：</strong> 必须按 \( x,y \) 分量分别写方程；角度、正负号极易出错。一个有效的检验是碰撞前后总动量矢量和应相等。</li>
+        <li><strong>恢复系数定义中的负号：</strong> \( e=-\dfrac{v_1'-v_2'}{v_1-v_2} \)。负号保证分离速度与接近速度反向时 \( e>0 \)。漏掉负号会得到错误的负值。</li>
+        <li><strong>「粘在一起」是 \( e=0 \)，不是 \( e=1 \)：</strong> 完全非弹性碰撞两物体以共同速度运动，动能损失最大（在同向碰撞中）。</li>
+        <li><strong>质心 ≠ 几何中心：</strong> 质心由质量分布决定；不均匀物体的质心可能在物体之外（如弯月、圆环）。</li>
+        <li><strong>冲击摆错误：</strong> 子弹嵌入木块过程中动能<strong>不</strong>守恒，机械能要在<strong>碰撞之后</strong>的摆动阶段才能用守恒。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一辆 \( 1200\,\mathrm{kg} \) 的车以 \( 15\,\mathrm{m/s} \) 向东，撞上停在路边的 \( 1000\,\mathrm{kg} \) 车并粘在一起。求共同末速。</summary>
+        <div class="hint">完全非弹性碰撞：动量守恒，\( m_1 v_1=(m_1+m_2)V \)。</div>
+        <div class="solution">
+          \[ V=\frac{m_1 v_1}{m_1+m_2}=\frac{1200\times 15}{2200}=8.18\,\mathrm{m/s} \]
+          <p>动能损失：\( \Delta K=\tfrac12(1200)(15^2)-\tfrac12(2200)(8.18^2)=1.35\times 10^5-7.36\times 10^4=6.15\times 10^4\,\mathrm{J} \)。</p>
+          <p><span class="ans">\( V\approx 8.2\,\mathrm{m/s} \)（向东）</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. \( m_1=3.0\,\mathrm{kg} \) 以 \( 4.0\,\mathrm{m/s} \) 撞向静止的 \( m_2=2.0\,\mathrm{kg} \)，弹性碰撞。求末速度并验证动能守恒。</summary>
+        <div class="hint">用速度交换公式 \( v_1'=\frac{m_1-m_2}{m_1+m_2}v_1,\ v_2'=\frac{2m_1}{m_1+m_2}v_1 \)。</div>
+        <div class="solution">
+          <p>\[ v_1'=\frac{3-2}{3+2}\times 4=0.80\,\mathrm{m/s};\qquad v_2'=\frac{2\times 3}{3+2}\times 4=4.8\,\mathrm{m/s} \]</p>
+          <p>\( K_i=\tfrac12(3)(16)=24\,\mathrm{J} \)；\( K_f=\tfrac12(3)(0.64)+\tfrac12(2)(23.04)=0.96+23.04=24.0\,\mathrm{J} \) ✓</p>
+          <p><span class="ans">\( v_1'=0.80\,\mathrm{m/s},\ v_2'=4.8\,\mathrm{m/s} \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一球从 \( h=1.25\,\mathrm{m} \) 落到地板再弹起到 \( h'=0.80\,\mathrm{m} \)。求恢复系数 \( e \)。</summary>
+        <div class="hint">落地速度 \( v=\sqrt{2gh} \)，离地速度 \( v'=\sqrt{2gh'} \)（地板始终 \( v_2=v_2'=0 \)）。</div>
+        <div class="solution">
+          <p>把地板看作质量无限大、初速 0 的「球 2」，则 \( e=-\dfrac{v_1'}{v_1} \)（球向上反弹取正）：</p>
+          <p>\[ e=\frac{\sqrt{2gh'}}{\sqrt{2gh}}=\sqrt{\frac{h'}{h}}=\sqrt{\frac{0.80}{1.25}}=\sqrt{0.64}=0.80 \]</p>
+          <p>这是典型中等弹性球（如篮球）的量级。</p>
+          <p><span class="ans">\( e=0.80 \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 两质点位于 \( \vec{r}_1=(2,0,0)\,\mathrm{m},\ \vec{r}_2=(0,4,0)\,\mathrm{m} \)，质量 \( m_1=1.0\,\mathrm{kg},\ m_2=3.0\,\mathrm{kg} \)。求质心位置；若系统受外力 \( \vec{F}_{\text{ext}}=(8,0,0)\,\mathrm{N} \)，求 \( \vec{a}_{\text{cm}} \)。</summary>
+        <div class="hint">\( \vec{R}_{\text{cm}}=\frac{1}{M}\sum m_i\vec{r}_i \)；\( \vec{a}_{\text{cm}}=\vec{F}_{\text{ext}}/M \)。</div>
+        <div class="solution">
+          <p>\( M=4.0\,\mathrm{kg} \)。</p>
+          <p>\[ \vec{R}_{\text{cm}}=\frac{1}{4}\bigl[1\cdot(2,0,0)+3\cdot(0,4,0)\bigr]=(0.50,\,3.0,\,0)\,\mathrm{m} \]</p>
+          <p>\[ \vec{a}_{\text{cm}}=\frac{\vec{F}_{\text{ext}}}{M}=\frac{(8,0,0)}{4.0}=(2.0,\,0,\,0)\,\mathrm{m/s^2} \]</p>
+          <p><span class="ans">\( \vec{R}_{\text{cm}}=(0.50,3.0,0)\,\mathrm{m} \)；\( \vec{a}_{\text{cm}}=(2.0,0,0)\,\mathrm{m/s^2} \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 一根长 \( L=1.0\,\mathrm{m} \) 的均匀细杆，在距左端 \( L/4 \) 处折成直角（两段仍共面）。求其质心位置（以折点为原点，两段沿 \( +x \) 与 \( +y \) 方向）。</summary>
+        <div class="hint">每段是均匀杆，质心在各段中点；把两段看作两个质点，质量正比于长度。</div>
+        <div class="solution">
+          <p>两段各长 \( L/4 \) 和 \( 3L/4 \)，线密度相同，故质量比 \( 1:3 \)。</p>
+          <p>段 1（\( x \) 方向）质心 \( (L/8,\,0) \)；段 2（\( y \) 方向）质心 \( (0,\,3L/8) \)。取 \( L=1 \)：</p>
+          <p>\[ x_{\text{cm}}=\frac{1\cdot\tfrac18+3\cdot 0}{4}=\frac{1}{32}=0.031\,\mathrm{m};\quad y_{\text{cm}}=\frac{1\cdot 0+3\cdot\tfrac{3}{8}}{4}=\frac{9}{32}=0.281\,\mathrm{m} \]</p>
+          <p><span class="ans">\( \vec{R}_{\text{cm}}\approx(0.031,\,0.281)\,\mathrm{m} \)</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">一维碰撞实验室：调节两球质量与初速，切换「弹性 / 完全非弹性」，观察碰撞前后两球的速度、动量条形图与动能条形图——你会直观看到<strong>动量始终守恒</strong>，而<strong>动能只在弹性碰撞中守恒</strong>。调好滑块后按「↺ 重置」应用，碰后总动量条与初始等高，但非弹性时动能条明显下降。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="620" height="400"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+          // World: x from -4 to +4 m, origin at canvas center.
+          var ORIGIN_X = W / 2;
+          var TRACK_Y = 130;
+          var SCALE = 60;            // px per meter
+          var WALL = 3.6;            // world units
+
+          var params = {
+            m1: 2.0, m2: 1.0,
+            v1: 2.5, v2: 0.0,
+            elastic: true,
+          };
+
+          function radius(m) {                       // ball radius in world units
+            return 0.18 + 0.07 * Math.cbrt(m);
+          }
+          function computeTotals(s) {
+            return {
+              p:  s.m1 * s.v1 + s.m2 * s.v2,
+              ke: 0.5 * s.m1 * s.v1 * s.v1 + 0.5 * s.m2 * s.v2 * s.v2,
+            };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return {
+                x1: -1.8, x2: 1.8,
+                v1: params.v1, v2: params.v2,
+                m1: params.m1, m2: params.m2,
+                elastic: params.elastic,
+                collided: false,
+                v1_init: params.v1, v2_init: params.v2,
+              };
+            },
+            step: function (dt, t, s) {
+              // Move
+              s.x1 += s.v1 * dt;
+              s.x2 += s.v2 * dt;
+              // Elastic walls
+              var r1 = radius(s.m1), r2 = radius(s.m2);
+              if (s.x1 < -WALL + r1) { s.x1 = -WALL + r1; s.v1 = Math.abs(s.v1); }
+              if (s.x1 >  WALL - r1) { s.x1 =  WALL - r1; s.v1 = -Math.abs(s.v1); }
+              if (s.x2 < -WALL + r2) { s.x2 = -WALL + r2; s.v2 = Math.abs(s.v2); }
+              if (s.x2 >  WALL - r2) { s.x2 =  WALL - r2; s.v2 = -Math.abs(s.v2); }
+
+              // Collision detection
+              var dx = s.x2 - s.x1;
+              var dist = Math.abs(dx);
+              if (!s.collided && dist <= r1 + r2) {
+                var approaching = (s.v1 - s.v2) * dx > 0;
+                if (approaching) {
+                  var m1 = s.m1, m2 = s.m2, u1 = s.v1, u2 = s.v2;
+                  if (s.elastic) {
+                    s.v1 = ((m1 - m2) * u1 + 2 * m2 * u2) / (m1 + m2);
+                    s.v2 = ((m2 - m1) * u2 + 2 * m1 * u1) / (m1 + m2);
+                  } else {
+                    var vc = (m1 * u1 + m2 * u2) / (m1 + m2);
+                    s.v1 = vc; s.v2 = vc;
+                  }
+                  s.collided = true;
+                  // Push apart so they don't keep overlapping
+                  var overlap = (r1 + r2) - dist + 0.001;
+                  var sgn = dx >= 0 ? 1 : -1;
+                  s.x1 -= 0.5 * overlap * sgn;
+                  s.x2 += 0.5 * overlap * sgn;
+                }
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ---- Header text ----
+              PS.drawText(ctx, '1D Collision Lab · 一维碰撞实验室', 14, 24,
+                { font: 'bold 15px system-ui, sans-serif', color: PS.colors.text });
+              var mode = s.elastic ? 'Elastic 弹性 (e=1)' : 'Perfectly Inelastic 完全非弹性 (e=0)';
+              PS.drawText(ctx, 'Mode: ' + mode + (s.collided ? '   ·   碰后 after' : '   ·   碰前 before'),
+                14, 46, { font: '13px system-ui, sans-serif', color: PS.colors.textSoft || PS.colors.text });
+
+              // ---- Track baseline & walls ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(0, TRACK_Y); ctx.lineTo(W, TRACK_Y); ctx.stroke();
+              // walls
+              ctx.beginPath();
+              ctx.moveTo(ORIGIN_X - WALL * SCALE, TRACK_Y - 40);
+              ctx.lineTo(ORIGIN_X - WALL * SCALE, TRACK_Y + 40);
+              ctx.moveTo(ORIGIN_X + WALL * SCALE, TRACK_Y - 40);
+              ctx.lineTo(ORIGIN_X + WALL * SCALE, TRACK_Y + 40);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Balls ----
+              var r1 = radius(s.m1) * SCALE;
+              var r2 = radius(s.m2) * SCALE;
+              var px1 = ORIGIN_X + s.x1 * SCALE;
+              var px2 = ORIGIN_X + s.x2 * SCALE;
+              PS.drawCircle(ctx, px1, TRACK_Y, r1, { fill: PS.colors.primary, stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawCircle(ctx, px2, TRACK_Y, r2, { fill: PS.colors.accent,  stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawText(ctx, 'm₁=' + s.m1.toFixed(1) + ' kg', px1, TRACK_Y + r1 + 16,
+                { font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, 'm₂=' + s.m2.toFixed(1) + ' kg', px2, TRACK_Y + r2 + 16,
+                { font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+
+              // ---- Velocity arrows (scaled) ----
+              var varrow = 26;   // px per (m/s)
+              function vax(v, x, y, color, lbl) {
+                if (Math.abs(v) < 0.02) return;
+                PS.drawArrow(ctx, x, y, x + v * varrow, y, color, lbl);
+              }
+              vax(s.v1, px1, TRACK_Y - r1 - 10, PS.colors.primary, 'v₁=' + s.v1.toFixed(2));
+              vax(s.v2, px2, TRACK_Y - r2 - 10, PS.colors.accent,  'v₂=' + s.v2.toFixed(2));
+
+              // ---- Bar chart: momentum + KE ----
+              // Reference (initial) totals — computed from initial velocities
+              var init = {
+                p:  s.m1 * s.v1_init + s.m2 * s.v2_init,
+                ke: 0.5 * s.m1 * s.v1_init * s.v1_init + 0.5 * s.m2 * s.v2_init * s.v2_init,
+              };
+              var cur = computeTotals(s);
+
+              var chartTop = 220, chartBot = 380;
+              var maxBarH = chartBot - chartTop - 14;     // leave room for label
+              var baseline = chartBot - 12;
+
+              // Section labels
+              PS.drawText(ctx, 'Total Momentum 总动量 (kg·m/s)', 150, chartTop - 6,
+                { font: 'bold 13px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, 'Total Kinetic Energy 总动能 (J)', 470, chartTop - 6,
+                { font: 'bold 13px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+
+              // Normalization: use the larger of |init|,|cur| for each quantity
+              var pMax = Math.max(Math.abs(init.p), Math.abs(cur.p), 1);
+              var kMax = Math.max(init.ke, cur.ke, 1);
+
+              drawBarPair(ctx, 150, init.p, cur.p, pMax, baseline, maxBarH, 'p');
+              drawBarPair(ctx, 470, init.ke, cur.ke, kMax, baseline, maxBarH, 'ke');
+
+              // ---- Legend ----
+              PS.drawText(ctx, '■ initial 碰前', 14, H - 8,
+                { font: '11px system-ui, sans-serif', color: PS.colors.grid });
+              PS.drawText(ctx, '■ current 现在', 130, H - 8,
+                { font: '11px system-ui, sans-serif', color: PS.colors.textSoft || PS.colors.text });
+            },
+          });
+
+          // Helper to draw a "before vs current" bar pair centered at cx.
+          function drawBarPair(ctx, cx, valInit, valCur, valMax, baseline, maxBarH, kind) {
+            var bw = 32, gap = 10;
+            var xInit = cx - bw - gap / 2;
+            var xCur  = cx + gap / 2;
+            // baseline tick
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(xInit - 8, baseline); ctx.lineTo(xCur + bw + 8, baseline);
+            ctx.stroke();
+            ctx.restore();
+
+            function bar(x, val, color) {
+              var h = (Math.abs(val) / valMax) * maxBarH;
+              var sign = val >= 0 ? -1 : 1;       // positive grows upward (negative y)
+              var topY = (sign < 0) ? baseline - h : baseline;
+              var drawH = Math.max(1, h);
+              ctx.save();
+              ctx.fillStyle = color;
+              ctx.fillRect(x, topY, bw, drawH);
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 0.8;
+              ctx.strokeRect(x, topY, bw, drawH);
+              ctx.restore();
+              // numeric label
+              PS.drawText(ctx, val.toFixed(2), x + bw / 2, baseline + 10,
+                { font: 'bold 11px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+            }
+
+            bar(xInit, valInit, PS.colors.grid);
+            bar(xCur,  valCur,  (kind === 'ke' && Math.abs(valCur - valInit) > 0.01) ? PS.colors.accent : PS.colors.accent2);
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'm1', label: 'm₁ (kg)',  min: 0.5, max: 5.0, step: 0.1, value: 2.0 },
+            { type: 'slider', key: 'm2', label: 'm₂ (kg)',  min: 0.5, max: 5.0, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'v1', label: 'v₁ (m/s)', min: -3,  max: 3,   step: 0.1, value: 2.5 },
+            { type: 'slider', key: 'v2', label: 'v₂ (m/s)', min: -3,  max: 3,   step: 0.1, value: 0.0 },
+            { type: 'toggle', key: 'elastic', label: '弹性 Elastic (取消=完全非弹性)', value: true },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('m1', function (v) { params.m1 = v; });
+          ctl.on('m2', function (v) { params.m2 = v; });
+          ctl.on('v1', function (v) { params.v1 = v; });
+          ctl.on('v2', function (v) { params.v2 = v; });
+          ctl.on('elastic', function (v) { params.elastic = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>动量 \( \vec{p}=m\vec{v} \)；冲量 \( \vec{J}=\int\vec{F}\,dt \)；冲量–动量定理 \( \vec{J}=\Delta\vec{p} \)。</li>
+        <li>若 \( \vec{F}_{\text{ext}}\approx 0 \)，则系统总动量守恒（按方向分解）。</li>
+        <li>质心 \( \vec{R}_{\text{cm}}=\frac{1}{M}\sum m_i\vec{r}_i=\frac{1}{M}\int\vec{r}\,dm \)；质心运动 \( \vec{F}_{\text{ext}}=M\vec{a}_{\text{cm}} \)。</li>
+        <li>一维弹性碰撞：\( v_1'=\frac{m_1-m_2}{m_1+m_2}v_1+\frac{2m_2}{m_1+m_2}v_2 \)，\( v_2'=\frac{2m_1}{m_1+m_2}v_1+\frac{m_2-m_1}{m_1+m_2}v_2 \)。</li>
+        <li>完全非弹性：\( v'=\frac{m_1 v_1+m_2 v_2}{m_1+m_2} \)；恢复系数 \( e=-\frac{v_1'-v_2'}{v_1-v_2} \)。</li>
+        <li>二维碰撞：动量为矢量，写两个分量方程；质心系简化分析。</li>
+        <li>火箭方程（Tsiolkovsky）：\( \Delta v=u\ln(M_0/M_f) \)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\vec{p}=m\vec{v},\quad \vec{J}=\Delta\vec{p},\quad \vec{F}_{\text{ext}}=M\vec{a}_{\text{cm}},\quad e=-\frac{v_1'-v_2'}{v_1-v_2},\quad \Delta v=u\ln\frac{M_0}{M_f}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

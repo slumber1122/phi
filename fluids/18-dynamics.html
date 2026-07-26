@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第18章 · 流体动力学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="18">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 18 · 第18章 · 第四部分 流体力学 Part IV Fluid Mechanics</p>
+      <h1>流体动力学 <span class="en-title">Fluid Dynamics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>说明理想流体 (ideal fluid) 的四条简化假设：不可压缩 (incompressible)、无粘性 (inviscid)、无旋 (irrotational)、稳恒流动 (steady flow)，并知道它们何时成立、何时失效。</li>
+        <li>用流线 (streamline) 与流管 (flow tube) 的语言描述流场，区分层流 (laminar flow) 与湍流 (turbulent flow)。</li>
+        <li>由质量守恒推导并应用<strong>连续性方程</strong> \(A_1 v_1 = A_2 v_2\)。</li>
+        <li>由功能原理沿流线推导<strong>伯努利方程</strong> \(P+\tfrac{1}{2}\rho v^2+\rho g y=\text{const}\)，并解释它是机械能守恒的表现。</li>
+        <li>求解托里拆利定律 (Torricelli's law)、文丘里管 (Venturi tube)、皮托管 (Pitot tube) 与机翼升力 (lift) 等典型问题。</li>
+        <li>用雷诺数 (Reynolds number) \(\mathit{Re}=\rho v L/\eta\) 判别层流与湍流，定性了解粘性 (viscosity) 与泊肃叶定律 (Poiseuille's law)。</li>
+        <li>指出伯努利方程在真实流体中的局限性（粘性耗散、能量损失）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 理想流体近似 Ideal-Fluid Approximations</h3>
+      <p>真实流体极其复杂。为建立可解析的理论，我们引入<strong>理想流体</strong> (ideal fluid)，它满足四条简化假设：</p>
+      <ul>
+        <li><strong>不可压缩</strong> (incompressible)：密度 \(\rho\) 为常数。液体几乎不可压缩；气体在流速远小于声速时也可视为不可压缩（马赫数 \(M=v/c\lesssim 0.3\)）。</li>
+        <li><strong>无粘性</strong> (inviscid)：忽略内摩擦，相邻流层之间没有切应力。水、空气在小尺度短距离中近似满足。</li>
+        <li><strong>无旋</strong> (irrotational)：流体微团不绕自身轴自转，速度场满足 \(\nabla\times\vec{v}=0\)。无旋流动中速度可写成势函数的梯度。</li>
+        <li><strong>稳恒</strong> (steady)：在固定点观察，速度 \(\vec{v}(\vec{r},t)\) 不显含时间，\(\partial\vec{v}/\partial t=0\)。流场像一张固定的“速度图”。</li>
+      </ul>
+      <p>这四条假设共同定义了 Bernoulli 描述的世界：能量守恒、沿流线可积。本章的核心方程<strong>仅在这个理想框架内</strong>严格成立。</p>
+
+      <h3>2. 流线、流管；层流与湍流 Streamlines, Flow Tubes; Laminar vs Turbulent</h3>
+      <p><strong>流线</strong> (streamline) 是速度场的瞬时切线曲线：流线上每一点的速度方向沿曲线的切向。在<strong>稳恒</strong>流动中，流线不随时间改变，与流体微团实际走过的轨迹（迹线，pathline）重合。</p>
+      <p>由一束流线围成的管状曲面称为<strong>流管</strong> (flow tube)。由于管壁由流线构成，流体不能穿越管壁——这给出了“质量守恒”的几何图像。</p>
+      <p>当流速较低时，流体分层平滑流动，各层之间互不混杂，称为<strong>层流</strong> (laminar flow)；当流速过高时，流场出现不规则旋涡与跨层混合，称为<strong>湍流</strong> (turbulent flow)。区分两者的判据是下面的雷诺数。</p>
+
+      <h3>3. 连续性方程（质量守恒）Continuity Equation</h3>
+      <p>考虑流管两端，截面积分别为 \(A_1\)、\(A_2\)，速度大小为 \(v_1\)、\(v_2\)。在时间 \(\mathrm{d}t\) 内，从一端流入的质量为 \(\rho A_1 v_1\,\mathrm{d}t\)，从另一端流出的质量为 \(\rho A_2 v_2\,\mathrm{d}t\)。稳恒流动要求管内质量不堆积，故：</p>
+      <div class="formula">\[ \rho\,A_1 v_1=\rho\,A_2 v_2 \;\;\xrightarrow{\;\rho\text{ const}\;}\;\; \boxed{\,A_1 v_1=A_2 v_2\,} \]</div>
+      <p>体积流量 (volume flow rate) \(Q=A v\) 沿流管守恒。<strong>物理图像</strong>：管道变窄处，流体必须加速；变宽处，必须减速——这与“水捏住管口喷得更远”的直觉一致。</p>
+
+      <h3>4. 伯努利方程（沿流线的能量守恒）Bernoulli's Equation</h3>
+      <p>沿一条流线，理想流体稳恒流动时，下列量是常数：</p>
+      <div class="formula">\[ \boxed{\;P+\tfrac{1}{2}\rho v^{2}+\rho g y=\text{constant (along a streamline)}\;} \]</div>
+      <p>三项分别对应<strong>压强能</strong>、<strong>动能</strong>与<strong>重力势能</strong>（每单位体积）。Bernoulli 方程本质上是沿流线的机械能守恒——它可由牛顿第二定律或功能原理严格导出（见推导 A）。其推论常常<strong>反直觉</strong>：</p>
+      <ul>
+        <li>沿同一水平流线 (\(y=\text{const}\))，速度大处<strong>压强小</strong>：\(\Delta P=-\tfrac{1}{2}\rho\Delta(v^2)\)。</li>
+        <li>静止流体 (\(v=0\)) 退化为上一章的流体静力学方程 \(\mathrm{d}P/\mathrm{d}y=-\rho g\)。</li>
+      </ul>
+
+      <h3>5. 应用 Applications</h3>
+      <p><strong>(a) 托里拆利定律 (Torricelli's law)。</strong>大水槽底部小孔在液面下深度 \(h\) 处。把 Bernoulli 用于“液面 → 小孔”：液面 \(v_1\approx 0\)（大槽），\(P_1=P_2=P_{\text{atm}}\)，高度差 \(h\)，于是 \(\tfrac{1}{2}\rho v_2^2=\rho g h\)：</p>
+      <div class="formula">\[ \boxed{\;v_{\text{efflux}}=\sqrt{2 g h}\;} \]</div>
+      <p>形式上与“自由下落高度 \(h\) 后获得的速度”完全相同——势能全部转化为动能。</p>
+
+      <p><strong>(b) 文丘里管 (Venturi tube)。</strong>一段先收缩后扩张的管道。在收缩的“喉部”测得压强 <em>下降</em>，由连续性 + Bernoulli 反算流量：</p>
+      <div class="formula">\[ Q=A_1 v_1=A_2 v_2,\qquad P_1-P_2=\tfrac{1}{2}\rho\,(v_2^{2}-v_1^{2})=\tfrac{1}{2}\rho v_1^{2}\!\left[\left(\tfrac{A_1}{A_2}\right)^{\!2}-1\right] \]</div>
+
+      <p><strong>(c) 皮托管 (Pitot tube)。</strong>飞机机头前方一根开口迎流的管子，把气流“堵住”到 \(v=0\)（驻点，stagnation point）。设自由来流压强 \(P\)、速度 \(v\)，驻点压强 \(P_0=P+\tfrac{1}{2}\rho v^2\)（总压）。测得压差即可读出空速：</p>
+      <div class="formula">\[ v=\sqrt{\frac{2\,(P_0-P)}{\rho}} \]</div>
+
+      <p><strong>(d) 机翼升力 (airplane wing lift)。</strong>由于翼型上表面弯曲更陡，空气流过机翼上方的速度大于下方。Bernoulli 给出上表面压强 <em>低于</em> 下表面，压差乘以机翼面积即为净升力 (lift)。注意：完整的升力机制还需考虑牛顿第三定律（机翼向下偏转气流），但 Bernoulli 给出了正确的数量级估计。</p>
+
+      <p><strong>(e) 弧线球 (curveball / Magnus effect)。</strong>旋转球体一侧迎风、另一侧背风，因粘性带动一层空气，两侧速度不同，产生横向压差力——即马格努斯效应 (Magnus effect)。同样的机制使乒乓球、足球产生弧线。</p>
+
+      <h3>6. 粘性、雷诺数 Viscosity and the Reynolds Number</h3>
+      <p>真实流体的<strong>粘性</strong> (viscosity) 用动力粘度 \(\eta\)（单位 \(\mathrm{Pa\cdot s}\)）描述：相邻流层有相对速度时，单位面积上的切向摩擦力（剪应力）为 \(\tau=\eta\,\mathrm{d}v/\mathrm{d}y\)（牛顿粘性定律）。常温下水 \(\eta\approx 1.0\times 10^{-3}\,\mathrm{Pa\cdot s}\)，空气 \(\eta\approx 1.8\times 10^{-5}\,\mathrm{Pa\cdot s}\)。</p>
+      <p>层流与湍流的判据是<strong>雷诺数</strong> (Reynolds number)，一个无量纲量：</p>
+      <div class="formula">\[ \boxed{\;\mathit{Re}=\frac{\rho v L}{\eta}=\frac{\text{惯性效应}}{\text{粘性效应}}\;} \]</div>
+      <p>其中 \(L\) 是特征尺度（管道取直径 \(d\)）。圆管流动的经验值：</p>
+      <ul>
+        <li>\(\mathit{Re}\lesssim 2300\)：层流；</li>
+        <li>\(2300\lesssim \mathit{Re}\lesssim 4000\)：过渡区；</li>
+        <li>\(\mathit{Re}\gtrsim 4000\)：湍流。</li>
+      </ul>
+      <p>\(\mathit{Re}\) 是流体力学中最重要的相似参数：两个几何相似、\(\mathit{Re}\) 相同的流动动力学相似——这是风洞模型试验的基础。</p>
+
+      <h3>7. 泊肃叶定律与阻力 Poiseuille's Law and Drag</h3>
+      <p>对半径为 \(R\)、长度为 \(L\) 的圆管内的<strong>层流</strong>，由 Navier–Stokes 方程可导出<strong>泊肃叶定律</strong> (Poiseuille's law)：</p>
+      <div class="formula">\[ Q=\frac{\pi R^{4}\,\Delta P}{8\,\eta\,L} \]</div>
+      <p>注意惊人的 \(R^{4}\) 标度：半径减半，流量下降 16 倍——这解释了为什么血管轻微收缩就会显著影响血流量。湍流情况下此定律失效。</p>
+      <p>当物体在流体中运动，会受到<strong>阻力</strong> (drag)。低速（层流）时 \(F_{\text{drag}}\propto v\)（Stokes 阻力，\(F=6\pi\eta R v\)）；高速（湍流）时 \(F_{\text{drag}}\propto v^{2}\)（形阻为主，\(F=\tfrac{1}{2}C_D \rho A v^2\)）。</p>
+
+      <h3>8. Bernoulli 的局限 Limitations of Bernoulli</h3>
+      <p>Bernoulli 方程<strong>忽略粘性</strong>，因此<strong>过高估计</strong>真实管道中的流速与流量：实际流体需要靠压强差持续做功以克服内摩擦，机械能逐步转化为热。在长管道中，能头损失 (head loss) 显著；在高雷诺数时湍流带来额外的能量耗散。理想模型提供的应是“理论上限”，工程实际须用 Poiseuille/Darcy–Weisbach 等含耗散的公式修正。</p>
+
+      <div class="key-terms">ideal fluid (理想流体), incompressible (不可压缩), inviscid (无粘性), irrotational (无旋), steady flow (稳恒流动), streamline (流线), flow tube (流管), laminar flow (层流), turbulent flow (湍流), continuity equation (连续性方程), Bernoulli's equation (伯努利方程), Torricelli's law (托里拆利定律), Venturi tube (文丘里管), Pitot tube (皮托管), stagnation point (驻点), lift (升力), Magnus effect (马格努斯效应), viscosity (粘性/粘度), dynamic viscosity \(\eta\) (动力粘度), Reynolds number (雷诺数), Poiseuille's law (泊肃叶定律), drag (阻力)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：由功能原理导出 Bernoulli 方程</h3>
+      <p>取一条流管，其两端截面分别为 \(A_1\)、\(A_2\)，流线由 1 指向 2。两端处的压强、速度、高度（取竖直向上为 \(y\)）分别为 \(P_i,v_i,y_i\)。考虑一段流体在时间 \(\mathrm{d}t\) 内由“1→2 之间”移动到“1′→2′ 之间”。</p>
+
+      <p><strong>第一步：压力做功。</strong>两端压力对这段流体做的净功为（左端推力做正功，右端阻力做负功）：</p>
+      <div class="formula">\[ \mathrm{d}W = P_1 A_1\,\mathrm{d}s_1 - P_2 A_2\,\mathrm{d}s_2 = (P_1-P_2)\,\mathrm{d}V \]</div>
+      <p>其中 \(\mathrm{d}s_i=v_i\,\mathrm{d}t\) 是位移，并利用连续性 \(A_1 v_1=A_2 v_2\) 推出 \(A_1\mathrm{d}s_1=A_2\mathrm{d}s_2\equiv \mathrm{d}V\)（同一份流体体积）。</p>
+
+      <p><strong>第二步：动能与势能变化。</strong>因为是<strong>稳恒</strong>流动，流管中 1′→2 之间的状态不随时间变化，整段流体的能量变化只相当于“在 1 处补入一小块、在 2 处移走一小块”：</p>
+      <div class="formula">\[ \mathrm{d}K = \tfrac{1}{2}\,\mathrm{d}m\,(v_2^{2}-v_1^{2})=\tfrac{1}{2}\rho\,\mathrm{d}V\,(v_2^{2}-v_1^{2}),\qquad \mathrm{d}U=\mathrm{d}m\,g\,(y_2-y_1)=\rho\,\mathrm{d}V\,g\,(y_2-y_1) \]</div>
+
+      <p><strong>第三步：功能定理 \(\mathrm{d}W=\mathrm{d}K+\mathrm{d}U\)。</strong></p>
+      <div class="formula">\[ (P_1-P_2)\,\mathrm{d}V=\tfrac{1}{2}\rho\,\mathrm{d}V\,(v_2^{2}-v_1^{2})+\rho\,\mathrm{d}V\,g\,(y_2-y_1) \]</div>
+      <p>两边除以 \(\mathrm{d}V\) 并整理：</p>
+      <div class="formula">\[ \boxed{\;P_1+\tfrac{1}{2}\rho v_1^{2}+\rho g y_1=P_2+\tfrac{1}{2}\rho v_2^{2}+\rho g y_2\;} \]</div>
+      <p>即沿流线 \(P+\tfrac{1}{2}\rho v^{2}+\rho g y=\text{const}\)。三条假设各自的作用一目了然：<strong>稳恒</strong>让我们只比较两端的小块；<strong>不可压缩</strong>保证 \(\mathrm{d}V\) 在两端相同；<strong>无粘</strong>让我们忽略耗散（不然 \(\mathrm{d}W>\mathrm{d}K+\mathrm{d}U\)）。</p>
+
+      <h3>推导 B：Torricelli 定律 \(v=\sqrt{2gh}\)</h3>
+      <p>对大水槽底部小孔：取点 1 为液面，点 2 为小孔。\(P_1=P_2=P_{\text{atm}}\)（都暴露在大气）；\(y_1-y_2=h\)；液面很大故 \(v_1\approx 0\)。代入 Bernoulli：</p>
+      <div class="formula">\[ P_{\text{atm}}+0+\rho g y_1=P_{\text{atm}}+\tfrac{1}{2}\rho v_2^{2}+\rho g y_2\;\;\Longrightarrow\;\; v_2=\sqrt{2g(y_1-y_2)}=\sqrt{2gh}\;. \]</div>
+      <p>结果与一个质点自由下落高度 \(h\) 所获得的速度完全一致——能量从液体的势能转化为射流的动能。</p>
+
+      <h3>推导 C：用 Bernoulli + 连续性导出 Venturi 流量公式</h3>
+      <p>水平文丘里管 (\(y_1=y_2\))：\(P_1-P_2=\tfrac{1}{2}\rho(v_2^{2}-v_1^{2})\)。由 \(v_2=(A_1/A_2)v_1\)：</p>
+      <div class="formula">\[ \Delta P=\tfrac{1}{2}\rho v_1^{2}\!\left[\left(\tfrac{A_1}{A_2}\right)^{\!2}-1\right]\;\;\Longrightarrow\;\; v_1=\sqrt{\frac{2\,\Delta P}{\rho\big[(A_1/A_2)^{2}-1\big]}},\quad Q=A_1 v_1 \]</div>
+      <p>测得压差 \(\Delta P\)（通常用 U 型管压差计读出），即可直接读出流量 \(Q\)。这是工业流量计的原理。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 18.1 水平管道收缩处的速度与压降</h4>
+        <p class="example-statement">水（\(\rho=1000\,\mathrm{kg/m^3}\)）以 \(v_1=2.0\,\mathrm{m/s}\) 流过一段水平管道，截面 \(A_1=0.010\,\mathrm{m^2}\)。管道收缩至 \(A_2=0.0020\,\mathrm{m^2}\)。已知收缩前压强 \(P_1=2.0\times 10^{5}\,\mathrm{Pa}\)（绝对压强）。求收缩处的速度 \(v_2\)、压强 \(P_2\) 及体积流量 \(Q\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由连续性方程 \(A_1 v_1=A_2 v_2\)：</p>
+          <div class="formula">\[ v_2=\frac{A_1}{A_2}\,v_1=\frac{0.010}{0.0020}\times 2.0=10.0\,\mathrm{m/s} \]</div>
+          <p class="step">水平管道 (\(y_1=y_2\))，由 Bernoulli：</p>
+          <div class="formula">\[ P_1-P_2=\tfrac{1}{2}\rho\,(v_2^{2}-v_1^{2})=\tfrac{1}{2}(1000)\,(10.0^{2}-2.0^{2})=500\times 96=4.80\times 10^{4}\,\mathrm{Pa} \]</div>
+          <p class="step">所以 \(P_2=P_1-(P_1-P_2)=2.0\times 10^{5}-4.8\times 10^{4}=1.52\times 10^{5}\,\mathrm{Pa}\)。</p>
+          <p class="step">体积流量 \(Q=A_1 v_1=0.010\times 2.0=2.0\times 10^{-2}\,\mathrm{m^3/s}=20\,\mathrm{L/s}\)。</p>
+          <p><span class="ans">\(v_2=10.0\,\mathrm{m/s}\)；\(P_2=1.52\times 10^{5}\,\mathrm{Pa}\)；\(Q=20\,\mathrm{L/s}\)。</span> 注意：管口收缩到原来的 1/5，速度增大到 5 倍，压强反而下降 48 kPa。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 18.2 Torricelli 定律：水箱射流</h4>
+        <p class="example-statement">一只大开口水箱，底部下方 \(h=1.50\,\mathrm{m}\) 处开一个面积 \(a=2.0\,\mathrm{cm^2}=2.0\times 10^{-4}\,\mathrm{m^2}\) 的小孔。求射出小孔的水流速度 \(v\) 与体积流量 \(Q\)。取 \(g=9.80\,\mathrm{m/s^2}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>把 Bernoulli 用于“液面 → 小孔”。两点都暴露在大气，\(P_1=P_2=P_{\text{atm}}\)。水箱很大，\(v_1\approx 0\)。高度差 \(y_1-y_2=h\)：</p>
+          <div class="formula">\[ v=\sqrt{2gh}=\sqrt{2(9.80)(1.50)}=\sqrt{29.4}=5.42\,\mathrm{m/s} \]</div>
+          <p class="step">体积流量：</p>
+          <div class="formula">\[ Q=a\,v=(2.0\times 10^{-4})(5.42)=1.08\times 10^{-3}\,\mathrm{m^3/s}=1.08\,\mathrm{L/s} \]</div>
+          <p><span class="ans">\(v\approx 5.42\,\mathrm{m/s}\)；\(Q\approx 1.08\,\mathrm{L/s}\)。</span>（注：实际流量略小，因截面收缩效应 \(a_{\text{eff}}\approx 0.62\,a\)，称为“收缩系数”。）</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 18.3 Pitot 管：从压差读出空速</h4>
+        <p class="example-statement">一飞机以速度 \(v\) 平飞。皮托管测得驻点（\(v=0\)）与自由来流之间的压差 \(\Delta P=P_0-P=6.0\times 10^{3}\,\mathrm{Pa}\)。空气密度 \(\rho=1.20\,\mathrm{kg/m^3}\)。求飞机空速 \(v\)，并用 \(\mathrm{km/h}\) 表示。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>沿同一条流线（远前方→驻点），Bernoulli 给出：</p>
+          <div class="formula">\[ P+\tfrac{1}{2}\rho v^{2}=P_0+0 \;\;\Longrightarrow\;\; v=\sqrt{\frac{2\,\Delta P}{\rho}} \]</div>
+          <p class="step">代入数值：</p>
+          <div class="formula">\[ v=\sqrt{\frac{2(6.0\times 10^{3})}{1.20}}=\sqrt{1.0\times 10^{4}}=1.00\times 10^{2}\,\mathrm{m/s}=100\,\mathrm{m/s} \]</div>
+          <p class="step">换算：\(100\,\mathrm{m/s}\times 3.6=360\,\mathrm{km/h}\)。</p>
+          <p><span class="ans">\(v=100\,\mathrm{m/s}=360\,\mathrm{km/h}\)。</span> 这正是飞机空速表的物理原理。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 18.4 机翼升力的数量级估计</h4>
+        <p class="example-statement">某客机巡航于约 \(10\,\mathrm{km}\) 高空，该处空气密度 \(\rho=0.40\,\mathrm{kg/m^3}\)。机翼面积 \(S=120\,\mathrm{m^2}\)。气流相对机翼：上表面速度 \(v_{\text{top}}=300\,\mathrm{m/s}\)，下表面 \(v_{\text{bot}}=270\,\mathrm{m/s}\)。两股气流来自同一均匀来流，可对各自流线用 Bernoulli 估算压差。求升力 \(L\)，并问它能支撑多大质量的飞机匀速平飞？取 \(g=9.8\,\mathrm{m/s^2}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>Bernoulli 给出上下表面压强差：</p>
+          <div class="formula">\[ \Delta P=P_{\text{bot}}-P_{\text{top}}=\tfrac{1}{2}\rho\,(v_{\text{top}}^{2}-v_{\text{bot}}^{2}) \]</div>
+          <p class="step">计算速度平方差：\(v_{\text{top}}^{2}=9.00\times 10^{4}\)，\(v_{\text{bot}}^{2}=7.29\times 10^{4}\)，差 \(=1.71\times 10^{4}\,\mathrm{m^2/s^2}\)。</p>
+          <div class="formula">\[ \Delta P=\tfrac{1}{2}(0.40)(1.71\times 10^{4})=0.20\times 1.71\times 10^{4}=3.42\times 10^{3}\,\mathrm{Pa} \]</div>
+          <p class="step">升力 \(L=\Delta P\cdot S\)：</p>
+          <div class="formula">\[ L=(3.42\times 10^{3})(120)=4.10\times 10^{5}\,\mathrm{N} \]</div>
+          <p class="step">匀速平飞要求 \(L=Mg\)，故 \(M=L/g=4.10\times 10^{5}/9.8=4.18\times 10^{4}\,\mathrm{kg}\)。</p>
+          <p><span class="ans">\(\Delta P\approx 3.42\,\mathrm{kPa}\)；\(L\approx 4.1\times 10^{5}\,\mathrm{N}\)；可支撑约 \(4.2\times 10^{4}\,\mathrm{kg}\)（约 42 吨）。</span> 注意：仅 \(10\%\) 的速度差即足以产生数千 Pa 的压差，机翼面积大故总力巨大。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 18.5 Reynolds 数：管中水流是层流还是湍流？</h4>
+        <p class="example-statement">水（\(\rho=1000\,\mathrm{kg/m^3}\)，\(\eta=1.0\times 10^{-3}\,\mathrm{Pa\cdot s}\)）在内径 \(d=2.0\,\mathrm{cm}=0.020\,\mathrm{m}\) 的圆管中以平均速度 \(v=0.50\,\mathrm{m/s}\) 流动。判断流态。若希望保持层流，速度上限是多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>圆管的特征长度取直径 \(L=d\)。</p>
+          <div class="formula">\[ \mathit{Re}=\frac{\rho v d}{\eta}=\frac{(1000)(0.50)(0.020)}{1.0\times 10^{-3}}=\frac{10}{1.0\times 10^{-3}}=1.0\times 10^{4} \]</div>
+          <p class="step">\(\mathit{Re}=10^{4}\gtrsim 4000\)，故流动为<strong>湍流</strong>。</p>
+          <p class="step">临界层流 \(\mathit{Re}_{\text{crit}}\approx 2300\)，对应的最大层流速度：</p>
+          <div class="formula">\[ v_{\max}=\frac{\mathit{Re}_{\text{crit}}\,\eta}{\rho\,d}=\frac{(2300)(1.0\times 10^{-3})}{(1000)(0.020)}=\frac{2.3}{20}=0.115\,\mathrm{m/s} \]</div>
+          <p><span class="ans">\(\mathit{Re}\approx 1.0\times 10^{4}\)（湍流）；保持层流需 \(v\lesssim 0.115\,\mathrm{m/s}\)。</span> 可见日常水管中水流极易进入湍流——这就是为什么打开水龙头时水会变得“浑浊翻滚”。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把“流速大处压强小”当成处处普适</strong>。Bernoulli 是<strong>沿一条流线</strong>对<strong>稳恒、理想</strong>流体成立的能量守恒。它并不意味着“整片流体中只要哪里快，哪里压强就一定低”——跨流线、非稳恒、含粘性的情形不能套用。</li>
+        <li><strong>方向反了</strong>。沿水平流线，速度<strong>增大</strong>处压强<strong>减小</strong>：\(\Delta P=-\tfrac{1}{2}\rho\,\Delta(v^2)\)。直觉上“撞得快压得大”是错的——那是“驻点”（\(v=0\)）的图像，不能与流动内部混为一谈。</li>
+        <li><strong>忘记 Bernoulli 方程中各项的单位</strong>。\(P+\tfrac{1}{2}\rho v^2+\rho g y\) 三项的单位都是 \(\mathrm{J/m^3}=\mathrm{Pa}\)，即<strong>单位体积的能量</strong>。如果你用 \(\tfrac{1}{2}mv^2\) 而不是 \(\tfrac{1}{2}\rho v^2\)，相当于把单位质量当成了单位体积。</li>
+        <li><strong>把连续性方程用在不满足前提的情形</strong>。\(A_1 v_1=A_2 v_2\) 要求<strong>不可压缩</strong>且<strong>稳恒</strong>。可压缩流动中（高速气流），ρ 变化显著，连续性应写作 \(\rho_1 A_1 v_1=\rho_2 A_2 v_2\)。</li>
+        <li><strong>忽略粘性耗散导致的高估</strong>。在长管道或细管中，真实流体因粘性损失能量，Bernoulli 给出的流速/流量是<strong>理论上限</strong>。定量计算层流须用 Poiseuille 定律 \(Q\propto R^4\)。</li>
+        <li><strong>混淆表压与绝对压强</strong>。Bernoulli 中的 \(P\) 是<strong>绝对压强</strong>；若两边都暴露在大气，\(P_{\text{atm}}\) 会自动消去（如 Torricelli）。用压力表读数时务必分清“表压 (gauge)”与“绝对压 (absolute)”。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一根水平水管直径 \(8.0\,\mathrm{cm}\)，水流速度 \(2.5\,\mathrm{m/s}\)。管道收缩到直径 \(3.0\,\mathrm{cm}\)，求收缩处的速度及压强降。水 \(\rho=1000\,\mathrm{kg/m^3}\)。</summary>
+        <div class="hint">面积 \(A=\pi d^2/4\)，连续性 \(A_1 v_1=A_2 v_2\)；水平 Bernoulli 给 \(\Delta P=\tfrac{1}{2}\rho(v_2^2-v_1^2)\)。</div>
+        <div class="solution">
+          <p>\(A_1=\pi(0.040)^2=5.03\times 10^{-3}\,\mathrm{m^2}\)，\(A_2=\pi(0.015)^2=7.07\times 10^{-4}\,\mathrm{m^2}\)。面积比 \(A_1/A_2=7.11\)。</p>
+          <p>\(v_2=7.11\times 2.5=17.8\,\mathrm{m/s}\)。</p>
+          <p>\(\Delta P=\tfrac{1}{2}(1000)(17.8^2-2.5^2)=500\times(316.8-6.25)=500\times 310.6=1.55\times 10^{5}\,\mathrm{Pa}\)。</p>
+          <p><span class="ans">\(v_2\approx 17.8\,\mathrm{m/s}\)；压强降 \(\Delta P\approx 1.55\times 10^{5}\,\mathrm{Pa}\)（约 \(155\,\mathrm{kPa}\)，1.5 atm）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 大水箱底部小孔 \(a=2.0\,\mathrm{cm^2}\)，初始水深 \(h_0=1.5\,\mathrm{m}\)，水面面积 \(A_{\text{tank}}=0.50\,\mathrm{m^2}\)。求把水放完所需时间 \(T\)。</summary>
+        <div class="hint">液面下降速率 \(\mathrm{d}h/\mathrm{d}t=-a\sqrt{2gh}/A_{\text{tank}}\)，分离变量积分 \(\int_{h_0}^{0}\mathrm{d}h/\sqrt{h}\)。</div>
+        <div class="solution">
+          <p>由 Torricelli，瞬时流量 \(Q=a\sqrt{2gh}\)。液面下降 \(A_{\text{tank}}\,\mathrm{d}h=-Q\,\mathrm{d}t\)：</p>
+          <p>\(\displaystyle\mathrm{d}t=-\frac{A_{\text{tank}}}{a\sqrt{2g}}\,\frac{\mathrm{d}h}{\sqrt{h}}\)，积分 \(h:h_0\to 0\)：</p>
+          <p>\(T=\dfrac{2 A_{\text{tank}}}{a}\sqrt{\dfrac{h_0}{g}}=\dfrac{2(0.50)}{2.0\times 10^{-4}}\sqrt{\dfrac{1.5}{9.8}}=5000\times 0.391=1.95\times 10^{3}\,\mathrm{s}\)。</p>
+          <p><span class="ans">\(T\approx 1.95\times 10^{3}\,\mathrm{s}\approx 33\,\mathrm{min}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. Venturi 流量计：入口面积 \(A_1=1.0\times 10^{-2}\,\mathrm{m^2}\)，喉部 \(A_2=3.0\times 10^{-3}\,\mathrm{m^2}\)。水银压差计读出 \(\Delta h=30\,\mathrm{cm}\,\mathrm{Hg}\)。管内为水，求体积流量 \(Q\)。（\(\rho_{\text{Hg}}=1.36\times 10^{4}\,\mathrm{kg/m^3}\)，\(\rho_{\text{water}}=1.00\times 10^{3}\,\mathrm{kg/m^3}\)，\(g=9.8\,\mathrm{m/s^2}\)。）</summary>
+        <div class="hint">压差 \(\Delta P=\rho_{\text{Hg}}\,g\,\Delta h\)；代入 \(v_1=\sqrt{2\Delta P/\{\rho_{\text{water}}[(A_1/A_2)^2-1]\}}\)。</div>
+        <div class="solution">
+          <p>\(\Delta P=(1.36\times 10^{4})(9.8)(0.30)=4.0\times 10^{4}\,\mathrm{Pa}\)。</p>
+          <p>\((A_1/A_2)^2-1=(10.0/3.0)^2-1=11.11-1=10.11\)。</p>
+          <p>\(v_1=\sqrt{\dfrac{2(4.0\times 10^{4})}{(1000)(10.11)}}=\sqrt{\dfrac{8.0\times 10^{4}}{1.011\times 10^{4}}}=\sqrt{7.91}=2.81\,\mathrm{m/s}\)。</p>
+          <p>\(Q=A_1 v_1=(1.0\times 10^{-2})(2.81)=2.81\times 10^{-2}\,\mathrm{m^3/s}\)。</p>
+          <p><span class="ans">\(Q\approx 2.81\times 10^{-2}\,\mathrm{m^3/s}=28.1\,\mathrm{L/s}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 虹吸管：内径 \(1.0\,\mathrm{cm}\) 的软管跨过一道 \(0.50\,\mathrm{m}\) 高的墙，从水箱把水引出，出口在水面以下 \(2.0\,\mathrm{m}\) 处（开口通大气）。求出口流速 \(v\)、流量 \(Q\)，以及管子最高点的绝对压强（取 \(P_{\text{atm}}=1.013\times 10^{5}\,\mathrm{Pa}\)）。</summary>
+        <div class="hint">从水面到出口用 Bernoulli 求 \(v\)（同 Torricelli，\(h=2.0\,\mathrm{m}\)）；再从水面到顶点求 \(P_{\text{top}}\)，顶点速度等于出口速度（管径均匀）。</div>
+        <div class="solution">
+          <p>出口：\(v=\sqrt{2g(2.0)}=\sqrt{39.2}=6.26\,\mathrm{m/s}\)。</p>
+          <p>面积 \(A=\pi(0.005)^2=7.85\times 10^{-5}\,\mathrm{m^2}\)，\(Q=Av=7.85\times 10^{-5}\times 6.26=4.92\times 10^{-4}\,\mathrm{m^3/s}=0.49\,\mathrm{L/s}\)。</p>
+          <p>顶点（高于水面 \(0.50\,\mathrm{m}\)）：从水面到顶点 Bernoulli，\(P_{\text{atm}}=P_{\text{top}}+\tfrac{1}{2}\rho v^2+\rho g(0.50)\)：</p>
+          <p>\(P_{\text{top}}=1.013\times 10^{5}-\tfrac{1}{2}(1000)(6.26)^2-(1000)(9.8)(0.50)\)</p>
+          <p>\(\qquad=1.013\times 10^{5}-1.96\times 10^{4}-4.90\times 10^{3}=7.68\times 10^{4}\,\mathrm{Pa}\)。</p>
+          <p><span class="ans">\(v\approx 6.26\,\mathrm{m/s}\)；\(Q\approx 0.49\,\mathrm{L/s}\)；\(P_{\text{top}}\approx 7.68\times 10^{4}\,\mathrm{Pa}\)（低于大气压约 \(24.5\,\mathrm{kPa}\)，正是它能把水“吸”过墙顶）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 主动脉与毛细血管的 Reynolds 数。血液 \(\rho\approx 1060\,\mathrm{kg/m^3}\)、\(\eta\approx 4.0\times 10^{-3}\,\mathrm{Pa\cdot s}\)。(a) 主动脉直径 \(d=2.5\,\mathrm{cm}\)、平均流速 \(v=0.40\,\mathrm{m/s}\)；(b) 毛细血管 \(d=8\,\mathrm{\mu m}\)、\(v=1.0\times 10^{-3}\,\mathrm{m/s}\)。分别判断流态。</summary>
+        <div class="hint">\(\mathit{Re}=\rho v d/\eta\)；与 2300/4000 比较。</div>
+        <div class="solution">
+          <p>(a) 主动脉：\(\mathit{Re}=\dfrac{(1060)(0.40)(0.025)}{4.0\times 10^{-3}}=\dfrac{10.6}{4.0\times 10^{-3}}=2.65\times 10^{3}\)。</p>
+          <p>处于过渡区（接近湍流阈值），剧烈运动时 \(\mathit{Re}\) 可短暂超过 4000，这正是医生听诊听到“杂音”的来源。</p>
+          <p>(b) 毛细血管：\(\mathit{Re}=\dfrac{(1060)(1.0\times 10^{-3})(8\times 10^{-6})}{4.0\times 10^{-3}}=\dfrac{8.48\times 10^{-6}}{4.0\times 10^{-3}}=2.1\times 10^{-3}\)。</p>
+          <p>极小，<strong>完全是层流</strong>——这是血液在微循环中能量损耗最小的原因之一。</p>
+          <p><span class="ans">主动脉 \(\mathit{Re}\approx 2.7\times 10^{3}\)（过渡区）；毛细血管 \(\mathit{Re}\approx 2\times 10^{-3}\)（完全层流）。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — Bernoulli / Venturi 流动可视化器</h2>
+      <p class="sim-desc">一段先收缩后扩张的水平管道（文丘里管）。蓝色粒子代表流体微团，按 <strong>连续性</strong> \(A v=\text{const}\) 在喉部加速、在扩张段减速；按 <strong>Bernoulli</strong> 喉部压强最低。三处测站（入口 / 喉部 / 出口）实时显示速度 \(v\) 与表压 \(P_g\)，下方曲线画出整条压力剖面 \(P(x)\)。拖动滑块改变入口速度、喉部/入口面积比、入口表压，亲眼看到“速度高 ⇔ 压强低”这一反直觉事实。</p>
+      <div class="sim-container">
+        <canvas id="sim-18" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-18"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-18');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- physical constants (SI) ----
+          var rho = 1000;          // water density (kg/m^3)
+          var P_atm = 1.013e5;     // atmospheric pressure (Pa)
+
+          // ---- pipe geometry (display pixels) ----
+          var CY = Math.round(H * 0.40);   // pipe centerline
+          var x0 = 50, x1 = W - 20;
+          var h_wide_px = 56;              // half-height of wide sections (px)
+
+          // ---- adjustable params (SI for v and P; ratio dimensionless) ----
+          var params = {
+            v_in: 2.0,           // m/s at the inlet
+            ratio: 0.30,         // throat half-height / inlet half-height
+            P_in_gauge: 5.0e4,   // Pa, inlet gauge pressure (above atmosphere)
+          };
+
+          // sample x grid for wall path / pressure profile
+          var NX = 220;
+          var xs = [];
+          for (var i = 0; i <= NX; i++) xs.push(x0 + (i / NX) * (x1 - x0));
+
+          // half-height (px) at position x —Venturi profile: wide → narrow → wide
+          function hpx(x) {
+            var hw = h_wide_px;
+            var hn = h_wide_px * params.ratio;
+            var span = x1 - x0;
+            var c0 = x0 + 0.30 * span;   // start of converging section
+            var c1 = x0 + 0.45 * span;   // throat begins
+            var c2 = x0 + 0.55 * span;   // throat ends / diverging begins
+            var c3 = x0 + 0.70 * span;   // back to wide
+            if (x < c0) return hw;
+            if (x < c1) {
+              var t = (x - c0) / (c1 - c0);
+              return hw + (hn - hw) * 0.5 * (1 - Math.cos(Math.PI * t)); // smooth cosine blend
+            }
+            if (x < c2) return hn;
+            if (x < c3) {
+              var t = (x - c2) / (c3 - c2);
+              return hn + (hw - hn) * 0.5 * (1 - Math.cos(Math.PI * t));
+            }
+            return hw;
+          }
+
+          // local speed by continuity (v_in * h_in / h(x))
+          function v_at(x) { return params.v_in * h_wide_px / hpx(x); }
+
+          // local absolute pressure by Bernoulli (horizontal pipe)
+          function P_abs_at(x) {
+            var v = v_at(x);
+            return (P_atm + params.P_in_gauge) + 0.5 * rho * params.v_in * params.v_in - 0.5 * rho * v * v;
+          }
+
+          // ---- particles ----
+          var NPART = 260;
+          function makeParticles() {
+            var arr = [];
+            for (var i = 0; i < NPART; i++) {
+              arr.push({
+                x: x0 + Math.random() * (x1 - x0),
+                yf: Math.random() * 2 - 1,   // fractional offset across pipe (-1..1)
+              });
+            }
+            return arr;
+          }
+
+          // display speed: 1 m/s = K px/s on screen
+          var SPEED_DISP = 28;
+
+          // hex color → rgb triple
+          function hex2rgb(h) {
+            return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+          }
+          function lerpColor(c1, c2, t) {
+            var a = hex2rgb(c1), b = hex2rgb(c2);
+            return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * t) + ','
+                          + Math.round(a[1] + (b[1] - a[1]) * t) + ','
+                          + Math.round(a[2] + (b[2] - a[2]) * t) + ')';
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { particles: makeParticles() }; },
+            step: function (dt, t, s) {
+              for (var i = 0; i < s.particles.length; i++) {
+                var p = s.particles[i];
+                var v = v_at(p.x);
+                p.x += v * SPEED_DISP * dt;
+                if (p.x > x1) p.x = x0 + (p.x - x1);
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // --- pipe interior shading ---
+              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(x0, CY - hpx(x0));
+              for (var i = 0; i < xs.length; i++) ctx.lineTo(xs[i], CY - hpx(xs[i]));
+              for (var i = xs.length - 1; i >= 0; i--) ctx.lineTo(xs[i], CY + hpx(xs[i]));
+              ctx.closePath();
+              ctx.fillStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.20;
+              ctx.fill();
+              ctx.restore();
+
+              // --- pipe walls ---
+              ctx.save();
+              ctx.lineWidth = 2.5;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.beginPath();
+              ctx.moveTo(x0, CY - hpx(x0));
+              for (var i = 0; i < xs.length; i++) ctx.lineTo(xs[i], CY - hpx(xs[i]));
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(x0, CY + hpx(x0));
+              for (var i = 0; i < xs.length; i++) ctx.lineTo(xs[i], CY + hpx(xs[i]));
+              ctx.stroke();
+              ctx.restore();
+
+              // --- particles colored by local speed (blue → red) ---
+              var v_throat = v_at(x0 + 0.5 * (x1 - x0));
+              var vmin = params.v_in;
+              var vmax = Math.max(vmin + 1e-6, v_throat);
+              for (var i = 0; i < s.particles.length; i++) {
+                var p = s.particles[i];
+                var v = v_at(p.x);
+                var h = hpx(p.x) - 3;
+                var y = CY + p.yf * h;
+                var tt = (v - vmin) / (vmax - vmin);
+                if (tt < 0) tt = 0; if (tt > 1) tt = 1;
+                var col = lerpColor(PS.colors.primary, PS.colors.accent, tt);
+                PS.drawCircle(ctx, p.x, y, 2.3, { fill: col });
+              }
+
+              // --- station markers ---
+              var stations = [
+                { x: x0 + 0.10 * (x1 - x0), name: '入口 Inlet' },
+                { x: x0 + 0.50 * (x1 - x0), name: '喉部 Throat' },
+                { x: x0 + 0.90 * (x1 - x0), name: '出口 Outlet' },
+              ];
+              ctx.save();
+              ctx.setLineDash([5, 4]);
+              ctx.strokeStyle = PS.colors.text;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1;
+              for (var i = 0; i < stations.length; i++) {
+                var st = stations[i];
+                ctx.beginPath();
+                ctx.moveTo(st.x, CY - hpx(st.x) - 6);
+                ctx.lineTo(st.x, CY + hpx(st.x) + 6);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // --- numeric labels above each station ---
+              for (var i = 0; i < stations.length; i++) {
+                var st = stations[i];
+                var v = v_at(st.x);
+                var Pg = P_abs_at(st.x) - P_atm; // gauge pressure
+                PS.drawText(ctx, st.name, st.x, 20,
+                  { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+                PS.drawText(ctx, 'v = ' + v.toFixed(2) + ' m/s', st.x, 38,
+                  { font: '12px system-ui', color: PS.colors.accent2, align: 'center' });
+                PS.drawText(ctx, 'P_g = ' + (Pg / 1000).toFixed(1) + ' kPa', st.x, 54,
+                  { font: '12px system-ui', color: PS.colors.accent, align: 'center' });
+              }
+
+              // --- pressure profile below the pipe ---
+              var plotTop = CY + h_wide_px + 38;
+              var plotBot = plotTop + 60;
+              // dynamic pressure range
+              var P_throat = P_abs_at(x0 + 0.5 * (x1 - x0));
+              var P_inlet = P_atm + params.P_in_gauge;
+              var P_hi = Math.max(P_inlet, P_throat) + 3000;
+              var P_lo = Math.min(0, Math.min(P_inlet, P_throat) - 8000);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(x0, plotTop, x1 - x0, plotBot - plotTop);
+              PS.drawText(ctx, '压力剖面 Pressure profile  P (Pa, absolute)',
+                x0, plotTop - 6, { font: '11px system-ui', color: PS.colors.text });
+              // plot P(x)
+              ctx.beginPath();
+              for (var i = 0; i <= NX; i++) {
+                var xx = x0 + (i / NX) * (x1 - x0);
+                var P = P_abs_at(xx);
+                var yy = plotBot - (P - P_lo) / (P_hi - P_lo) * (plotBot - plotTop);
+                if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+              }
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              // dashed reference at P_atm
+              var y_atm = plotBot - (P_atm - P_lo) / (P_hi - P_lo) * (plotBot - plotTop);
+              if (y_atm > plotTop && y_atm < plotBot) {
+                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = PS.colors.grid;
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x0, y_atm); ctx.lineTo(x1, y_atm); ctx.stroke();
+                ctx.setLineDash([]);
+                PS.drawText(ctx, 'P_atm', x1 - 4, y_atm - 3,
+                  { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              }
+              ctx.restore();
+
+              // --- footer legend / note ---
+              PS.drawText(ctx,
+                '● 蓝色 = 慢 (低速)   ● 红色 = 快 (高速)   颜色 ∝ 速度；压力曲线红色，越低表示压强越小',
+                12, H - 8,
+                { font: '11px system-ui', color: PS.colors.text });
+              var A_ratio = params.ratio; // half-height ratio = area ratio (2D, depth const)
+              PS.drawText(ctx,
+                '面积比 A_throat/A_in = ' + A_ratio.toFixed(2) +
+                '   Q = A_in·v_in (固定)',
+                W - 12, H - 8,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-18'), [
+            { type: 'slider', key: 'v_in',        label: '入口速度 v₁ (m/s)', min: 0.5, max: 5.0, step: 0.1, value: 2.0 },
+            { type: 'slider', key: 'ratio',       label: '喉部/入口 面积比',   min: 0.15, max: 0.85, step: 0.05, value: 0.30 },
+            { type: 'slider', key: 'P_in_gauge',  label: '入口表压 P₁ (kPa)',  min: 0, max: 150, step: 5, value: 50 },
+            { type: 'button', key: 'reset',       label: '↺ 重置 Reset' },
+          ]);
+
+          ctl.on('v_in',       function (v) { params.v_in = v; });
+          ctl.on('ratio',      function (v) { params.ratio = v; });
+          ctl.on('P_in_gauge', function (v) { params.P_in_gauge = v * 1000; });
+          ctl.on('reset',      function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>理想流体 = 不可压缩 + 无粘 + 无旋 + 稳恒；Bernoulli 仅在此框架内严格成立。</li>
+        <li><strong>连续性方程</strong>（不可压缩稳恒流动）：\(A_1 v_1=A_2 v_2\)，体积流量 \(Q=Av\) 守恒。</li>
+        <li><strong>Bernoulli 方程</strong>（沿流线）：\(P+\tfrac{1}{2}\rho v^{2}+\rho g y=\text{const}\)——机械能守恒。</li>
+        <li><strong>Torricelli</strong>：\(v=\sqrt{2gh}\)。<strong>Pitot</strong>：\(v=\sqrt{2(P_0-P)/\rho}\)。</li>
+        <li>沿水平流线，速度大处压强<strong>小</strong>；机翼升力来自上下表面速度差。</li>
+        <li><strong>雷诺数</strong> \(\mathit{Re}=\rho v L/\eta\)：\(\lesssim 2300\) 层流，\(\gtrsim 4000\) 湍流。</li>
+        <li>层流管道：<strong>Poiseuille</strong> \(Q=\pi R^{4}\Delta P/(8\eta L)\propto R^{4}\)。</li>
+        <li>粘性耗散使 Bernoulli 在长/细管道中过高估计流量，工程上须修正。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;A_1 v_1=A_2 v_2,\quad P+\tfrac{1}{2}\rho v^{2}+\rho g y=\text{const},\quad v_{\text{efflux}}=\sqrt{2gh},\quad v_{\text{Pitot}}=\sqrt{\tfrac{2\Delta P}{\rho}},\quad \mathit{Re}=\frac{\rho v L}{\eta},\quad Q_{\text{Poiseuille}}=\frac{\pi R^{4}\Delta P}{8\eta L}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

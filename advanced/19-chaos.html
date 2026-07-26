@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第19章 · 非线性动力学与混沌 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="19">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 19 · 第19章 · 第五部分 进阶专题 Part V Advanced Topics</p>
+      <h1>非线性动力学与混沌 <span class="en-title">Nonlinear Dynamics &amp; Chaos</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>区分<strong>线性</strong> (linear) 与<strong>非线性</strong> (nonlinear) 动力系统，说明为什么叠加原理 (superposition principle) 在非线性系统中失效，从而混沌 (chaos) 只可能出现在非线性系统中。</li>
+        <li>用<strong>逻辑斯谛映射</strong> (logistic map) \(x_{n+1}=r\,x_{n}(1-x_{n})\) 分析离散动力系统：求<strong>不动点</strong> (fixed points)，用判据 \(\lvert f'(x^{*})\rvert&lt;1\) 判断其<strong>稳定性</strong>，识别<strong>倍周期分岔</strong> (period-doubling bifurcation) 与混沌 onset。</li>
+        <li>陈述<strong>敏感性对初值</strong> (sensitivity to initial conditions, "蝴蝶效应" butterfly effect)：邻近轨道以 \(\delta(t)\sim\delta_{0}\,e^{\lambda t}\) 指数发散，并解释为什么这等价于<strong>李雅普诺夫指数</strong> (Lyapunov exponent) \(\lambda&gt;0\)。</li>
+        <li>说明<strong>确定性混沌</strong> (deterministic chaos) 这一概念：系统由完全确定的方程支配，却因指数放大初值误差而在长时间上不可预测——<em>这并非随机</em>。</li>
+        <li>从拉格朗日量 (Lagrangian) 出发推导<strong>双摆</strong> (double pendulum) 的非线性运动方程，解释它为何是连续时间混沌 (continuous-time chaos) 的范例。</li>
+        <li>定性描述<strong>洛伦兹方程</strong> (Lorenz system) 与<strong>奇怪吸引子</strong> (strange attractor)：轨道被约束在分形 (fractal) 结构上；说明为什么长期天气预报存在 <em>可预测性视界</em> (predictability horizon)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 线性 vs 非线性：叠加原理的失效</h3>
+      <p>若一个动力系统 (dynamical system) \(\dot{\vec x}=\vec F(\vec x)\) 满足 \(\vec F(\alpha\vec x+\beta\vec y)=\alpha\vec F(\vec x)+\beta\vec F(\vec y)\)，称为<strong>线性</strong>系统。线性系统满足<strong>叠加原理</strong> (superposition)：两解之和仍是解。线性系统的解是简谐的 (正弦/余弦/指数) 的组合，永远规则、可预测。</p>
+      <p>一旦 \(\vec F\) 中出现 \(x^{2}\)、\(\sin x\)、\(xy\)、\(\theta_{1}\theta_{2}\) 等<strong>非线性项</strong> (nonlinear terms)，叠加原理就失效——两解之和一般不再是解。非线性打开了全新的现象：<em>分岔、混沌、孤立子、自组织</em>。本章关注其中最戏剧化的一类：<strong>混沌</strong> (chaos)。</p>
+      <div class="key-terms">linear system (线性系统), nonlinear system (非线性系统), superposition principle (叠加原理), dynamical system (动力系统)</div>
+
+      <h3>2. 敏感依赖初值：蝴蝶效应</h3>
+      <p>混沌系统的标志是<strong>对初始条件的敏感依赖</strong> (sensitive dependence on initial conditions)：从两个<em>任意靠近</em>的初值出发的轨道，其差随时间指数增长：</p>
+      <div class="formula">\[ \boxed{\;\lvert\vec x(t)-\vec y(t)\rvert\;\sim\;\lvert\vec x(0)-\vec y(0)\rvert\,e^{\lambda t}\;} \]</div>
+      <p>常数 \(\lambda&gt;0\) 称为<strong>李雅普诺夫指数</strong> (Lyapunov exponent)。这就是气象学家 Edward Lorenz 在 1963 年发现的"蝴蝶效应" (butterfly effect)——巴西一只蝴蝶扇动翅膀，一周后德克萨斯的龙卷风路径就被根本性地改变。注意指数发散意味着无论测量精度提高多少，可预测时间都只能<em>对数地</em>延长（见例 19.4）。</p>
+      <div class="key-terms">sensitive dependence on initial conditions (对初值的敏感依赖), butterfly effect (蝴蝶效应), Lyapunov exponent \(\lambda\) (李雅普诺夫指数)</div>
+
+      <h3>3. 逻辑斯谛映射：通往混沌的倍周期道路</h3>
+      <p>最简单的混沌模型是一个一维离散映射——<strong>逻辑斯谛映射</strong> (logistic map)，模拟有限资源下种群的增长：</p>
+      <div class="formula">\[ \boxed{\;x_{n+1}\;=\;f(x_{n})\;=\;r\,x_{n}(1-x_{n}),\qquad x\in[0,1],\;\;r\in[0,4]\;} \]</div>
+      <p>这是个<em>完全确定</em>的迭代：给定 \(x_{0}\) 和 \(r\)，所有 \(x_{n}\) 都唯一确定。然而其长时间行为随 \(r\) 出现惊人的结构：</p>
+      <ul>
+        <li><strong>不动点</strong> \(x^{*}=f(x^{*})\)：解得 \(x^{*}_{0}=0\) 与 \(x^{*}_{1}=\dfrac{r-1}{r}\)。</li>
+        <li><strong>稳定性</strong>：在不动点附近线性化（设 \(x_{n}=x^{*}+\varepsilon_{n}\)），\(\varepsilon_{n+1}=f'(x^{*})\,\varepsilon_{n}\)。不动点<strong>稳定</strong>当且仅当</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\lvert f'(x^{*})\rvert\;&lt;1,\qquad f'(x)=r(1-2x)\;} \]</div>
+      <p>对 \(x^{*}_{0}=0\)：\(\lvert f'(0)\rvert=\lvert r\rvert\)，故 \(0&lt;r&lt;1\) 时稳定。对 \(x^{*}_{1}=(r-1)/r\)：\(f'(x^{*}_{1})=2-r\)，故 \(\lvert 2-r\rvert&lt;1\) 即 \(1&lt;r&lt;3\) 时稳定。</p>
+      <p>当 \(r\) 越过 3 时，不动点失稳，但取而代之的是一个稳定的 <strong>2-周期</strong> (period-2 cycle)：\(x_{a}\leftrightarrow x_{b}\)。继续增大 \(r\)：在 \(r_{2}\approx 3.449\) 经历第二次倍周期 (2→4)，\(r_{3}\approx 3.544\) 第三次 (4→8)，…… 倍周期点 \(r_{n}\) 几何收敛：</p>
+      <div class="formula">\[ \delta\;\equiv\;\lim_{n\to\infty}\frac{r_{n}-r_{n-1}}{r_{n+1}-r_{n}}\;\approx\;4.6692\qquad(\text{Feigenbaum 常数}) \]</div>
+      <p>\(\delta\) 是<strong>普适的</strong> (universal)：任何"单峰、二次极大"的一维映射 (unimodal map with quadratic maximum) 都给出<em>同一个</em> \(\delta\)。倍周期序列的极限 \(r_{\infty}\approx 3.5699\) 是<strong>混沌的 onset</strong>。在 \(r&gt;r_{\infty}\) 的大多数区域，迭代序列 \(\{x_{n}\}\) 表现为<em>非周期</em>且<em>对初值敏感</em>——这就是离散混沌。把稳定不动点 / 周期 / 混沌按 \(r\) 绘制就得到著名的<strong>分岔图</strong> (bifurcation diagram)，其中混沌区呈现自相似的分形结构 (fractal structure)。</p>
+      <div class="key-terms">logistic map (逻辑斯谛映射), fixed point (不动点), period-doubling bifurcation (倍周期分岔), bifurcation diagram (分岔图), Feigenbaum constant (Feigenbaum 常数), universality (普适性), unimodal map (单峰映射)</div>
+
+      <h3>4. 确定性混沌：决定论 ≠ 可预测</h3>
+      <p>混沌系统是<strong>确定性</strong>的 (deterministic)：给定完全的初值，方程唯一决定未来——<em>没有随机项</em>。然而由于 \(\lambda&gt;0\)，初值测量的有限精度被指数放大，长时间行为在实践上不可预测。这是物理学的深刻洞见：</p>
+      <div class="formula">\[ \text{deterministic}\;\not\Longrightarrow\;\text{predictable} \]</div>
+      <p>这与量子力学的<em>本征随机性</em> (intrinsic randomness) 截然不同——经典混沌的"随机感"来自放大初值误差，方程本身毫无随机。短期预测仍然有效（\(t\ll 1/\lambda\) 时指数尚未显著放大误差），长期则不行。</p>
+      <div class="key-terms">deterministic chaos (确定性混沌), predictability horizon (可预测性视界)</div>
+
+      <h3>5. 双摆：连续时间混沌的范例</h3>
+      <p>把一根单摆挂在另一根单摆的摆球上，就得到<strong>双摆</strong> (double pendulum)。除了角度 \(\theta_{1},\theta_{2}\) 之外，两摆之间的耦合项 \(\cos(\theta_{1}-\theta_{2})\) 使系统<em>强非线性</em>。在小振幅时它是两个简正模式的可积系统（线性化）；但在大振幅时——尤其当上摆被抬到水平面以上——它表现出<em>连续时间混沌</em>：相邻初值的轨迹指数发散。这是分析力学（第 11 章）的天然延续：双摆的运动方程直接由拉格朗日方程导出（见下节推导）。</p>
+      <div class="key-terms">double pendulum (双摆), continuous-time chaos (连续时间混沌)</div>
+
+      <h3>6. 奇怪吸引子与洛伦兹系统</h3>
+      <p>1963 年，Lorenz 从大气对流的流体方程截取出三个非线性 ODE：</p>
+      <div class="formula">\[ \dot x=\sigma(y-x),\qquad \dot y=x(\rho-z)-y,\qquad \dot z=xy-\beta z \]</div>
+      <p>经典参数 \(\sigma=10,\;\rho=28,\;\beta=8/3\)。所有轨道很快被吸引到一个蝴蝶状的有界集合上，永不重复、永不自交——这就是<strong>奇怪吸引子</strong> (strange attractor)。它具有三个关键性质：</p>
+      <ul>
+        <li><strong>有界</strong> (bounded)：能量耗散使轨道被压入有限区域——混沌<em>不等于发散</em>。</li>
+        <li><strong>分形维数</strong> (fractal dimension)：Lorenz 吸引子的 Hausdorff 维数 \(\approx 2.06\)，略大于二维——它在二维面上"密集折叠"。</li>
+        <li><strong>对初值敏感</strong>：最大 Lyapunov 指数 \(\lambda_{\max}\approx 0.906\) &gt; 0。</li>
+      </ul>
+      <p>大气本身可看作高维类似系统；其多个正 Lyapunov 指数共同决定了大约两周的可预测性视界。</p>
+      <div class="key-terms">strange attractor (奇怪吸引子), Lorenz system (洛伦兹系统), fractal dimension (分形维数)</div>
+
+      <h3>7. 为什么混沌重要</h3>
+      <ul>
+        <li><strong>气象</strong> (weather)：经典应用。即使模型完美，两周后的预报本质上不可能。</li>
+        <li><strong>生态 / 经济 / 心律</strong>：种群动力学、金融波动、心律不齐都被建模为非线性系统，混沌理论提供了"统计描述"的框架——单个轨道不可预测，但<em>不变分布</em> (invariant measure) 仍可预测。</li>
+        <li><strong>决定论的边界</strong>：混沌说明拉普拉斯妖 (Laplace's demon) 在实践中是空的——即使世界是确定的，可预测性仍受 \(\lambda\) 与测量精度之比限制。</li>
+        <li><strong>普适性</strong>：Feigenbaum 常数 \(\delta\) 在所有倍周期道路中出现，揭示了非线性现象背后的<em>普遍数学结构</em>。</li>
+      </ul>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：双摆的拉格朗日运动方程</h2>
+      <p>设两根无质量刚性杆长 \(L_{1},L_{2}\)，末端各系质点 \(m_{1},m_{2}\)。以悬挂点为原点，取 \(\theta_{1},\theta_{2}\) 为从下方铅垂算起的摆角（与第 11 章一致）。这是第 11 章拉格朗日方法的直接应用——只是现在我们保留<em>全部非线性</em>。</p>
+
+      <p><strong>第一步：写出两质点位置</strong>。</p>
+      <div class="formula">\[ \vec r_{1}=\bigl(L_{1}\sin\theta_{1},\,-L_{1}\cos\theta_{1}\bigr) \]</div>
+      <div class="formula">\[ \vec r_{2}=\bigl(L_{1}\sin\theta_{1}+L_{2}\sin\theta_{2},\,-L_{1}\cos\theta_{1}-L_{2}\cos\theta_{2}\bigr) \]</div>
+
+      <p><strong>第二步：求速度平方</strong>。</p>
+      <div class="formula">\[ v_{1}^{2}=\dot{\vec r}_{1}^{\,2}=L_{1}^{2}\dot\theta_{1}^{\,2} \]</div>
+      <div class="formula">\[ v_{2}^{2}=L_{1}^{2}\dot\theta_{1}^{\,2}+L_{2}^{2}\dot\theta_{2}^{\,2}+2L_{1}L_{2}\dot\theta_{1}\dot\theta_{2}\cos(\theta_{1}-\theta_{2}) \]</div>
+      <p>（交叉项来自两杆夹角的余弦——这是非线性耦合的来源。)</p>
+
+      <p><strong>第三步：动能与势能，写出 \(L=T-V\)</strong>。</p>
+      <div class="formula">\[ T=\tfrac{1}{2}(m_{1}+m_{2})L_{1}^{2}\dot\theta_{1}^{\,2}+\tfrac{1}{2}m_{2}L_{2}^{2}\dot\theta_{2}^{\,2}+m_{2}L_{1}L_{2}\dot\theta_{1}\dot\theta_{2}\cos(\theta_{1}-\theta_{2}) \]</div>
+      <div class="formula">\[ V=-(m_{1}+m_{2})gL_{1}\cos\theta_{1}-m_{2}gL_{2}\cos\theta_{2} \]</div>
+      <div class="formula">\[ \boxed{\;L=T-V\;} \]</div>
+
+      <p><strong>第四步：对 \(\theta_{1}\)、\(\theta_{2}\) 各套 Euler–Lagrange 方程</strong>。令 \(\Delta=\theta_{1}-\theta_{2}\)。求 \(\partial L/\partial\dot\theta_{i}\) 后再求时间导数（注意 \(\cos\Delta\) 也要参与 \(d/dt\)！），与 \(\partial L/\partial\theta_{i}\) 相减并整理，得到关于 \(\ddot\theta_{1},\ddot\theta_{2}\) 的<strong>两个线性方程</strong>：</p>
+      <div class="formula">\[ (m_{1}+m_{2})L_{1}\,\ddot\theta_{1}+m_{2}L_{2}\cos\Delta\,\ddot\theta_{2}=-m_{2}L_{2}\dot\theta_{2}^{\,2}\sin\Delta-(m_{1}+m_{2})g\sin\theta_{1} \]</div>
+      <div class="formula">\[ L_{1}\cos\Delta\,\ddot\theta_{1}+L_{2}\,\ddot\theta_{2}=L_{1}\dot\theta_{1}^{\,2}\sin\Delta-g\sin\theta_{2} \]</div>
+
+      <p><strong>第五步：用 Cramer 法则解 2×2 线性系统</strong>。系数行列式</p>
+      <div class="formula">\[ D=(m_{1}+m_{2})L_{1}L_{2}-m_{2}L_{1}L_{2}\cos^{2}\Delta=L_{1}L_{2}\bigl(m_{1}+m_{2}\sin^{2}\Delta\bigr) \]</div>
+      <p>经过代数化简（用 \(\cos^{2}\Delta=1-\sin^{2}\Delta\)）得到运动方程的最终形式：</p>
+      <div class="formula">\[ \boxed{\;\ddot\theta_{1}=\frac{m_{2}g\sin\theta_{2}\cos\Delta-(m_{1}+m_{2})g\sin\theta_{1}-m_{2}\sin\Delta\bigl(L_{1}\dot\theta_{1}^{\,2}\cos\Delta+L_{2}\dot\theta_{2}^{\,2}\bigr)}{L_{1}\bigl(m_{1}+m_{2}\sin^{2}\Delta\bigr)}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\ddot\theta_{2}=\frac{\sin\Delta\bigl((m_{1}+m_{2})L_{1}\dot\theta_{1}^{\,2}+m_{2}L_{2}\dot\theta_{2}^{\,2}\cos\Delta\bigr)+(m_{1}+m_{2})g\bigl(\cos\Delta\sin\theta_{1}-\sin\theta_{2}\bigr)}{L_{2}\bigl(m_{1}+m_{2}\sin^{2}\Delta\bigr)}\;} \]</div>
+
+      <p><strong>核验</strong>：小角极限 \(\sin\theta\approx\theta,\,\cos\theta\approx 1,\,\sin\Delta\approx 0\)。取 \(m_{1}=m_{2}=m,\,L_{1}=L_{2}=L\)：</p>
+      <div class="formula">\[ \ddot\theta_{1}\approx\frac{g(\theta_{2}-2\theta_{1})}{L},\qquad \ddot\theta_{2}\approx\frac{2g(\theta_{1}-\theta_{2})}{L} \]</div>
+      <p>这正是经典的双摆小角简正模式方程（频率 \(\omega^{2}=(2\pm\sqrt 2)\,g/L\)）。 ✔︎ 非线性方程在平衡附近正确还原可积极限。大角度时这些项不再可忽略，相空间出现同宿交错 (homoclinic tangle)，混沌随之产生——互动仿真会让这一切直接可见。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 19.1 逻辑斯谛映射的不动点与稳定性 Logistic map: fixed points &amp; stability</h4>
+        <p class="example-statement">对逻辑斯谛映射 \(x_{n+1}=r\,x_{n}(1-x_{n})\)，分别取 \(r=2.5\) 与 \(r=3.2\)。(a) 求所有不动点；(b) 用 \(\lvert f'(x^{*})\rvert&lt;1\) 判断各不动点的稳定性；(c) 对 \(r=3.2\)，求稳定的 2-周期，并指出倍周期分岔的阈值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 不动点</strong>。令 \(x^{*}=rx^{*}(1-x^{*})\)。整理得 \(x^{*}\bigl[r(1-x^{*})-1\bigr]=0\)，故</p>
+          <p>\(x^{*}_{0}=0\)，或 \(r(1-x^{*})=1\Rightarrow x^{*}_{1}=\dfrac{r-1}{r}=1-\dfrac{1}{r}\)。</p>
+          <p class="step"><strong>(b) 稳定性</strong>。\(f'(x)=r(1-2x)\)，故</p>
+          <p>在 \(x^{*}_{0}=0\)：\(f'(0)=r\)，稳定 \(\Leftrightarrow\lvert r\rvert&lt;1\)。</p>
+          <p>在 \(x^{*}_{1}=(r-1)/r\)：\(f'(x^{*}_{1})=r\!\left(1-\dfrac{2(r-1)}{r}\right)=r-2(r-1)=2-r\)，稳定 \(\Leftrightarrow\lvert 2-r\rvert&lt;1\Leftrightarrow 1&lt;r&lt;3\)。</p>
+          <p class="step"><strong>\(r=2.5\)</strong>：\(x^{*}_{0}=0\) 不稳定（\(\lvert 2.5\rvert&gt;1\)）。\(x^{*}_{1}=1.5/2.5=\)<span class="ans">\(0.600\)</span>，\(f'=2-2.5=-0.5\)，\(\lvert -0.5\rvert&lt;1\) ⇒ <strong>稳定</strong>（迭代以阻尼振荡方式收敛）。</p>
+          <p class="step"><strong>\(r=3.2\)</strong>：\(x^{*}_{0}=0\) 不稳定。\(x^{*}_{1}=2.2/3.2=\)<span class="ans">\(0.6875\)</span>，但 \(f'=2-3.2=-1.2\)，\(\lvert -1.2\rvert&gt;1\) ⇒ 也<strong>不稳定</strong>！两个不动点都失稳。</p>
+          <p class="step"><strong>(c) 2-周期</strong>。倍周期分岔在 \(r=3\) 发生（即 \(\lvert f'(x^{*}_{1})\rvert=1\) 处）。稳定的 2-周期 \(x_{a}\leftrightarrow x_{b}\) 满足 \(x_{a}+x_{b}=(r+1)/r\) 与 \(x_{a}x_{b}=(r+1)/r^{2}\)，解出</p>
+          <div class="formula">\[ x_{a,b}=\frac{(r+1)\pm\sqrt{(r-3)(r+1)}}{2r} \]</div>
+          <p>代入 \(r=3.2\)：\(\sqrt{(0.2)(4.2)}=\sqrt{0.84}=0.9165\)，故</p>
+          <p>\(x_{a}=\dfrac{4.2+0.9165}{6.4}=\)<span class="ans">\(0.7995\)</span>，\(x_{b}=\dfrac{4.2-0.9165}{6.4}=\)<span class="ans">\(0.5130\)</span>。</p>
+          <p class="step">2-周期本身在 \(r_{2}=1+\sqrt{6}\approx 3.449\) 失稳（进入 4-周期），其后 \(r_{3}\approx 3.544\)（4→8），\(r_{4}\approx 3.564\)（8→16），极限 \(r_{\infty}\approx\) <span class="ans">\(3.5699\)</span> = <strong>混沌 onset</strong>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 19.2 混沌区域中的迭代 Iteration in the chaotic regime</h4>
+        <p class="example-statement">取 \(r=3.9\)、\(x_{0}=0.500\)。计算前 10 次迭代，验证序列非周期地"漫游"在 (0,1) 中。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：用 \(x_{n+1}=3.9\,x_{n}(1-x_{n})\) 逐次代入（保留 4 位小数）：</p>
+          <div class="formula">\[ \begin{aligned} x_{0}&=0.5000\\ x_{1}&=3.9(0.5)(0.5)=0.9750\\ x_{2}&=3.9(0.9750)(0.0250)=0.0951\\ x_{3}&=3.9(0.0951)(0.9049)=0.3355\\ x_{4}&=3.9(0.3355)(0.6645)=0.8694\\ x_{5}&=3.9(0.8694)(0.1306)=0.4428\\ x_{6}&=3.9(0.4428)(0.5572)=0.9624\\ x_{7}&=3.9(0.9624)(0.0376)=0.1411\\ x_{8}&=3.9(0.1411)(0.8589)=0.4727\\ x_{9}&=3.9(0.4727)(0.5273)=0.9722\\ x_{10}&=3.9(0.9722)(0.0278)=0.1054 \end{aligned} \]</div>
+          <p>序列：\(0.5000,\,0.9750,\,0.0951,\,0.3355,\,0.8694,\,0.4428,\,0.9624,\,0.1411,\,0.4727,\,0.9722,\,0.1054,\dots\)</p>
+          <p>它<em>永不收敛</em>到不动点或有限周期，<em>不重复</em>——这是确定性混沌的标志。若把 \(x_{0}\) 改为 \(0.5001\)（差异 \(10^{-4}\)），前几次迭代仍接近，但到约 \(n=13\) 起两个序列完全不同（对 \(r=3.9\)，Lyapunov 指数 \(\lambda\approx 0.50\)，放大因子 \(e^{\lambda n}\) 在 \(n\approx \ln(1/10^{-4})/0.50\approx 18\) 处饱和）。注意整个过程<strong>毫无随机</strong>——每一步都由 \(f\) 唯一决定。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 19.3 两套双摆的发散 Two double pendulums diverging</h4>
+        <p class="example-statement">两套<strong>完全相同</strong>的双摆：\(L_{1}=L_{2}=1.000\,\mathrm{m}\)，\(m_{1}=m_{2}=1.00\,\mathrm{kg}\)，\(g=9.80\,\mathrm{m/s^{2}}\)。摆 A 从 \(\theta_{1}=\theta_{2}=2.500\,\mathrm{rad}\)（约 \(143^{\circ}\)，水平面以上）静止释放；摆 B 唯一不同的是 \(\theta_{1}=2.500+\Delta\theta_{0}\)，其中 \(\Delta\theta_{0}=1.0\times10^{-3}\,\mathrm{rad}\)（约 \(0.057^{\circ}\)）。数值积分给出此初值附近的最大 Lyapunov 指数 \(\lambda\approx 1.5\,\mathrm{s^{-1}}\)（这个值强依赖于能量与参数，由 RK4 长时间追踪两轨道的分离率实测得到）。问两摆的角位置差何时增长到 \(\sim 1\,\mathrm{rad}\)（"完全失去可预测性"）？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：敏感性意味着角位置差 \(\delta\theta(t)\) 满足 \(\delta\theta(t)\sim\Delta\theta_{0}\,e^{\lambda t}\)。设失相关阈值为 \(\delta\theta_{\text{tol}}=1\,\mathrm{rad}\)，则</p>
+          <div class="formula">\[ t^{*}=\frac{1}{\lambda}\ln\!\frac{\delta\theta_{\text{tol}}}{\Delta\theta_{0}}=\frac{1}{1.5}\ln\!\left(\frac{1}{10^{-3}}\right)=\frac{\ln(1000)}{1.5}=\frac{6.908}{1.5} \]</div>
+          <p>即 <span class="ans">\(t^{*}\approx 4.6\,\mathrm{s}\)</span>。</p>
+          <p class="step">也就是说，<strong>不到 5 秒</strong>之后，两摆——尽管初始只差 \(10^{-3}\,\mathrm{rad}\)（肉眼根本看不出）——就已经相差约 \(1\,\mathrm{rad}\)（约 \(57^{\circ}\)），实质上完全不相关。单摆的小角周期 \(T=2\pi\sqrt{L/g}\approx 2.0\,\mathrm{s}\)，所以这只是<em>两三个摆动</em>的时间，可预测性就彻底丧失。</p>
+          <p class="step"><strong>提高测量精度的效果</strong>：若把 \(\Delta\theta_{0}\) 改进到 \(10^{-6}\,\mathrm{rad}\)（提高 1000 倍），新的 \(t^{*}=\ln(10^{6})/1.5=13.82/1.5\approx 9.2\,\mathrm{s}\)——只多换得 <span class="ans">\(\approx 4.6\,\mathrm{s}\)</span> 的额外可预测时间。这就是混沌的"指数墙"：可预测时间只能<em>对数地</em>随精度改善。互动仿真将直观展示这一发散过程。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 19.4 李雅普诺夫指数与可预测性视界 Lyapunov exponent &amp; predictability horizon</h4>
+        <p class="example-statement">某混沌连续系统的最大 Lyapunov 指数 \(\lambda=0.70\,\mathrm{s^{-1}}\)。初始条件已知精度 \(\delta_{0}=1.0\times10^{-4}\)（任意相空间单位）。当误差增长到 \(\delta_{\text{tol}}=0.5\)（"预测失效"阈值）时，预测失去意义。(a) 求可预测性视界 \(t_{p}\)。(b) 把测量精度提高 100 倍（\(\delta_{0}=10^{-6}\)）能延长多少？(c) 大气模型的 \(\lambda\sim 0.5\,\mathrm{day^{-1}}\)，\(\delta_{\text{tol}}/\delta_{0}\sim 10^{6}\)，估算天气预报视界。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。令 \(\delta_{0}\,e^{\lambda t_{p}}=\delta_{\text{tol}}\)：</p>
+          <div class="formula">\[ t_{p}=\frac{1}{\lambda}\ln\!\frac{\delta_{\text{tol}}}{\delta_{0}}=\frac{1}{0.70}\ln\!\left(\frac{0.5}{10^{-4}}\right)=\frac{\ln(5000)}{0.70}=\frac{8.517}{0.70} \]</div>
+          <p><span class="ans">\(t_{p}\approx 12.2\,\mathrm{s}\)</span>。</p>
+          <p class="step"><strong>(b)</strong>。新的 \(t_{p}'=\dfrac{\ln(0.5/10^{-6})}{0.70}=\dfrac{\ln(5\times10^{5})}{0.70}=\dfrac{13.122}{0.70}\approx 18.7\,\mathrm{s}\)。延长 <span class="ans">\(\Delta t_{p}\approx 6.6\,\mathrm{s}\)</span>。</p>
+          <p>精度提升 \(10^{2}\) 倍，只换来 \((1/\lambda)\ln 100=4.61\) 秒，即线性于 \(\ln\)（精度）。这是混沌的天花板。</p>
+          <p class="step"><strong>(c) 天气</strong>。把大气看作连续混沌系统：</p>
+          <div class="formula">\[ t_{p}^{\text{天气}}=\frac{1}{0.5\,\mathrm{day^{-1}}}\ln(10^{6})=\frac{13.82}{0.5}\approx 27.6\,\mathrm{day} \]</div>
+          <p>这给出 <span class="ans">\(\sim 2\text{–}4\,\text{周}\)</span>。Lorenz 与后续研究指出，由于大气有<em>多个</em>正 Lyapunov 指数，实际有效视界约为 <span class="ans">\(2\,\text{周}\)</span>。两周以上的逐日预报本质上不可能——这与数值天气预报的实证经验精确吻合。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 19.5 洛伦兹系统与奇怪吸引子 Lorenz system &amp; the strange attractor</h4>
+        <p class="example-statement">考虑 Lorenz 方程 \(\dot x=\sigma(y-x)\), \(\dot y=x(\rho-z)-y\), \(\dot z=xy-\beta z\)，参数 \(\sigma=10,\rho=28,\beta=8/3\)。(a) 证明原点是不动点；(b) 描述长时间行为；(c) 解释为什么 Lorenz 1963 年的"舍入误差"实验成为混沌的象征。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。令 \(\dot x=\dot y=\dot z=0\)。从第一方程 \(\sigma(y-x)=0\Rightarrow y=x\)。代入第二：\(x(\rho-z)-x=0\Rightarrow x(\rho-z-1)=0\)。若 \(x=0\) 则 \(y=0\)，第三方程 \(-\beta z=0\Rightarrow z=0\)。故原点 \((0,0,0)\) 是不动点（另外还有两个非平凡不动点 \(x=y=\pm\sqrt{\beta(\rho-1)},\,z=\rho-1\)，当 \(\rho&gt;1\) 存在）。</p>
+          <p class="step"><strong>(b)</strong>。三个不动点在 \(\rho=28&gt;\rho_{c}=\sigma(\sigma+\beta+3)/(\sigma-\beta-1)\approx 24.74\) 时都不稳定。所有轨道被迅速吸引到一个<strong>有界、非周期、不自交</strong>的几何体——<strong>奇怪吸引子</strong>。它在 \(x\text{-}z\) 平面的投影呈蝴蝶状 (butterfly)：轨道先在一"翼"上绕几圈，再以不可预测的时刻跳到另一翼。其分形维数 \(\dim_{H}\approx 2.06\)，最大 Lyapunov 指数 \(\lambda_{\max}\approx 0.906\)。</p>
+          <p class="step"><strong>(c) 蝴蝶效应的诞生</strong>。1963 年冬，Lorenz 用一台 Royal McBee LGP-30 计算机迭代上述方程。一次他重启计算时，为节省时间从中途抄录了一个四舍五入到 3 位小数的状态（如 \(0.506\) 而非 \(0.506127\)）作为初值。几"天"(模拟时间)后，新轨道与原轨道<strong>完全不同</strong>。他立刻意识到这是方程本身的<em>对初值敏感</em>，而非机器故障——这就是著名的<strong>蝴蝶效应</strong>。后来他在 1972 年的论文标题中问道："一只蝴蝶在巴西扇动翅膀，会引起德克萨斯的龙卷风吗？"<span class="ans">答案是：在混沌系统中，微小扰动被指数放大，长时间细节不可预测。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>1. "混沌 = 随机"</strong>是最常见错误。混沌系统是<strong>完全确定</strong>的 (deterministic)：给定完全相同的初值，方程产生完全相同的轨道。"随机感"全部来自初值测量误差被指数放大。若把混沌当成随机过程，会误以为必须用概率论重新建模——其实<em>底层方程毫无随机</em>，统计描述只是为了应付初值不确定性。</li>
+        <li><strong>2. "线性系统也可以混沌"</strong>。错误。线性系统 \(\dot{\vec x}=A\vec x\) 的解是 \(e^{At}\vec x_{0}\)，是有限个指数 / 振荡项的叠加，永远规则。<strong>混沌要求非线性</strong>。若你在分析一个"混沌"系统，先确认它真的含非线性项。</li>
+        <li><strong>3. "混沌 = 不稳定 / 发散"</strong>。混淆了 Lyapunov 指数（局部）与轨迹有界性（全局）。奇怪吸引子上的轨道<em>既</em>对初值敏感（局部指数发散）<em>又</em>永远被约束在有限吸引子上（全局有界）。耗散混沌系统都如此。</li>
+        <li><strong>4. "短期不可预测"</strong>。正相反——<em>短期</em>预测良好，因为 \(e^{\lambda t}\approx 1\) 当 \(t\ll 1/\lambda\)。天气预报准 3 天，不准 14 天——这正是混沌的 signature。把"长期不可预测"推广到"任何时刻都不可预测"是错的。</li>
+        <li><strong>5. 忽略倍周期是<em>普适</em>道路</strong>。Feigenbaum 常数 \(\delta\approx 4.6692\) 出现在<em>所有</em>具有二次极大的单峰映射中（不止 logistic）。这意味着不同系统走向混沌的道路有共同的数学结构。不要以为 \(\delta\) 只是 logistic map 的特殊值。</li>
+        <li><strong>6. 把 \(f'(x^{*})=0\)（超稳定）与 \(f'(x^{*})=-1\)（倍周期阈值）混为一谈</strong>。\(\lvert f'(x^{*})\rvert&lt;1\) 是稳定，\(\lvert f'(x^{*})\rvert&gt;1\) 是不稳定，而恰等于 \(\pm 1\) 是<em>分岔点</em>。其中 \(f'=-1\) 触发倍周期分岔，\(f'=+1\) 触发鞍-结分岔 (saddle-node)。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 逻辑斯谛映射的 2-周期与稳定性 Logistic map 2-cycle</summary>
+        <p>对 \(x_{n+1}=r x_{n}(1-x_{n})\)，\(r=3.2\)。(a) 证明 \(x^{*}=0.6875\) 是不稳定不动点；(b) 验证 \(x_{a}=0.7995\) 与 \(x_{b}=0.5130\) 构成 2-周期；(c) 把 \(f^{(2)}(x)=f(f(x))\) 视作新映射，求其在 \(x_{a}\) 处的导数 \((f^{(2)})'(x_{a})\)，确认 \(\lvert\,\cdot\,\rvert&lt;1\)。</p>
+        <div class="hint">2-周期是 \(f^{(2)}\) 的不动点。链式法则：\((f^{(2)})'(x)=f'(f(x))\cdot f'(x)\)。对 2-周期，\(f(x_{a})=x_{b}\)，故 \((f^{(2)})'(x_{a})=f'(x_{b})\,f'(x_{a})\)。</div>
+        <div class="solution">
+          <p>(a) \(f'(x)=r(1-2x)=3.2(1-1.375)=3.2(-0.375)=-1.2\)，\(\lvert -1.2\rvert&gt;1\) ⇒ 不稳定。✔︎</p>
+          <p>(b) \(f(0.5130)=3.2(0.5130)(0.4870)=3.2(0.2498)=0.7994\approx x_{a}\) ✔︎；\(f(0.7995)=3.2(0.7995)(0.2005)=3.2(0.1603)=0.5130=x_{b}\) ✔︎。</p>
+          <p>(c) \(f'(x_{a})=3.2(1-2\cdot0.7995)=3.2(-0.599)=-1.917\)；\(f'(x_{b})=3.2(1-2\cdot0.5130)=3.2(-0.026)=-0.0832\)。乘积 \((f^{(2)})'(x_{a})=(-1.917)(-0.0832)=\)<span class="ans">\(0.160\)</span>，\(\lvert 0.160\rvert&lt;1\) ⇒ 2-周期稳定。 ✔︎</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. Feigenbaum 常数的自洽估计 Self-consistency of \(\delta\)</summary>
+        <p>已知倍周期阈值 \(r_{1}=3.000,\,r_{2}=3.449490,\,r_{3}=3.544090,\,r_{4}=3.564407,\,r_{5}=3.568759\)。用连续三组估计 \(\delta_{n}=(r_{n}-r_{n-1})/(r_{n+1}-r_{n})\)，验证 \(\delta_{n}\) 收敛到 \(\delta\approx 4.6692\)，并外推 \(r_{\infty}\)。</p>
+        <div class="hint">计算 \(\delta_{2},\delta_{3},\delta_{4},\delta_{5}\)。再用 \(r_{\infty}\approx r_{n}+(r_{n}-r_{n-1})/(\delta_{n}-1)\)。</div>
+        <div class="solution">
+          <p>\(\delta_{2}=\dfrac{r_{2}-r_{1}}{r_{3}-r_{2}}=\dfrac{0.44949}{0.09460}=4.7515\)；\(\delta_{3}=\dfrac{0.09460}{0.020317}=4.6562\)；\(\delta_{4}=\dfrac{0.020317}{0.004352}=4.6680\)；\(\delta_{5}=\dfrac{0.004352}{0.000932}=4.6686\)。</p>
+          <p>收敛到 <span class="ans">\(\delta\approx 4.669\)</span>（与 Feigenbaum 的普适值吻合）。用 \(n=5\) 外推：\(r_{\infty}\approx r_{5}+\dfrac{r_{5}-r_{4}}{\delta_{5}-1}=3.568759+\dfrac{0.004352}{3.6686}=\)<span class="ans">\(3.5699\)</span> ✔︎。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 双摆小角简正模式 Double pendulum small-angle modes</summary>
+        <p>对 \(m_{1}=m_{2}=m,\,L_{1}=L_{2}=L\) 的双摆，从推导节的方程出发，在小角近似下求两简正模式频率 \(\omega_{\pm}\)，并计算 \(L=1.00\,\mathrm{m}\)、\(g=9.80\,\mathrm{m/s^{2}}\) 时的周期。</p>
+        <div class="hint">小角方程 \(\ddot\theta_{1}=(g/L)(\theta_{2}-2\theta_{1})\)，\(\ddot\theta_{2}=(2g/L)(\theta_{1}-\theta_{2})\)。设 \(\theta_{i}=A_{i}\cos(\omega t)\)，得 \(2\times2\) 本征值问题。</div>
+        <div class="solution">
+          <p>代入 \(\ddot\theta=-\omega^{2}\theta\)：</p>
+          <div class="formula">\[ -\omega^{2}\!\begin{pmatrix}A_{1}\\A_{2}\end{pmatrix}\!=\frac{g}{L}\!\begin{pmatrix}-2&amp;1\\2&amp;-1\end{pmatrix}\!\!\begin{pmatrix}A_{1}\\A_{2}\end{pmatrix} \]</div>
+          <p>本征方程 \(\omega^{4}-3(g/L)\omega^{2}+(g/L)^{2}=0\)，解 \(\omega^{2}=\dfrac{g}{L}\cdot\dfrac{3\pm\sqrt 5}{2}\)。故</p>
+          <p>\(\omega_{+}^{2}=\dfrac{g}{L}\cdot\dfrac{3+\sqrt 5}{2}=\dfrac{g}{L}\cdot 2.618\)，\(\omega_{-}^{2}=\dfrac{g}{L}\cdot 0.382\)。</p>
+          <p>数值：\(\omega_{+}=\sqrt{9.8\cdot 2.618}=\)<span class="ans">\(5.07\,\mathrm{rad/s}\)</span>，\(T_{+}=2\pi/\omega_{+}=1.24\,\mathrm{s}\)；\(\omega_{-}=\sqrt{9.8\cdot 0.382}=\)<span class="ans">\(1.937\,\mathrm{rad/s}\)</span>，\(T_{-}=3.25\,\mathrm{s}\)。</p>
+          <p>注意：这两个简正模式是<em>可积</em>的，并不混沌；混沌只在大振幅（非线性项不可忽略）时出现。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Lorenz 系统的不动点与稳定性 Lorenz fixed points</summary>
+        <p>对 Lorenz 系统（参数 \(\sigma=10,\rho=28,\beta=8/3\)），(a) 求所有不动点；(b) 在原点线性化，证明当 \(\rho&gt;1\) 时原点失稳；(c) 定性说明为何 \(\rho=28\) 时三不动点全失稳，轨道被驱向奇怪吸引子。</p>
+        <div class="hint">令 \(\dot x=\dot y=\dot z=0\)。在原点 Jacobian \(J=\begin{pmatrix}-\sigma&amp;\sigma\\\rho&amp;-1\\0&amp;0&amp;-\beta\end{pmatrix}\)；其本征值之一为 \(-\beta\)，另两个由 \(2\times2\) 块决定。</div>
+        <div class="solution">
+          <p>(a) 不动点：\(C_{0}=(0,0,0)\)；\(C_{\pm}=\bigl(\pm\sqrt{\beta(\rho-1)},\,\pm\sqrt{\beta(\rho-1)},\,\rho-1\bigr)\)（仅当 \(\rho&gt;1\) 存在）。数值：\(C_{\pm}=\bigl(\pm 8.485,\,\pm 8.485,\,27\bigr)\)。</p>
+          <p>(b) 在原点的 Jacobian 本征方程 \((\lambda+\beta)\bigl[\lambda^{2}+(\sigma+1)\lambda+\sigma(1-\rho)\bigr]=0\)。\(2\times2\) 块的本征值：当 \(\rho&gt;1\) 时 \(\sigma(1-\rho)&lt;0\)，故一正一负 ⇒ <em>鞍点</em>（不稳定）。 \(\rho=1\) 是鞍-结分岔。</p>
+          <p>(c) 在 \(C_{\pm}\) 处进一步分析（特征多项式 \(\lambda^{3}+(\sigma+\beta+1)\lambda^{2}+\lambda\sigma(\beta+\rho)+2\sigma\beta(\rho-1)=0\)）显示当 \(\rho&gt;\rho_{c}\approx 24.74\) 时 \(C_{\pm}\) 也失稳（Hopf 分岔的次临界版本），三不动点都不再吸引。轨道既不能逃逸（耗散：\(\nabla\cdot\vec F=-(\sigma+1+\beta)&lt;0\) 收缩体积）又不能停在任何不动点，只能在一个有界分形——奇怪吸引子——上永远游走。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 数值发散实验 Numerical divergence experiment</summary>
+        <p>用逻辑斯谛映射 \(r=4\)（完全混沌区，最大 Lyapunov 指数 \(\lambda=\ln 2\approx 0.693\)）。两个初值 \(x_{0}=0.30000\) 与 \(y_{0}=0.30001\)。估算经过多少次迭代后两序列相差 \(\sim 0.5\)。再用脚本验证（若可用）。</p>
+        <div class="hint">\(\delta_{n}\sim\delta_{0}\,e^{\lambda n}\)，\(\delta_{0}=10^{-5}\)，\(\delta_{\text{tol}}=0.5\)。</div>
+        <div class="solution">
+          <p>\(n^{*}=\dfrac{1}{\lambda}\ln\!\dfrac{\delta_{\text{tol}}}{\delta_{0}}=\dfrac{1}{\ln 2}\ln\!\dfrac{0.5}{10^{-5}}=\dfrac{\ln(5\times10^{4})}{\ln 2}=\dfrac{10.820}{0.693}\)</p>
+          <p>= <span class="ans">\(n^{*}\approx 15.6\)</span> 次迭代。也就是说，约 16 次迭代后，初值 \(0.30000\) 与 \(0.30001\)（差异 \(10^{-5}\)）就放大成 \(\sim 0.5\) 量级的差异——之后两个序列<em>完全不相关</em>。这就是为什么"高精度"测量对长期预测收益如此有限。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">双摆混沌 + 初值发散 (double pendulum chaos &amp; divergence of initial conditions) ——蝴蝶效应的标志性演示。仿真<strong>同时积分两套完全相同的双摆</strong>（用上文推导的完整非线性方程，RK4 + 8 子步，等效 dt ≈ 1/480 s 以保证能量近似守恒）。摆 A（蓝色）和摆 B（红色）从相同初值释放，<em>唯一</em>差别是 \(\theta_{1}\) 相差 \(\Delta\theta_{0}\)（默认 \(2\times10^{-3}\,\mathrm{rad}\)，约 \(0.11^{\circ}\)）。两者起初肉眼完全重合，若干秒后突然<strong>指数地</strong>分离。右下方对数纵轴绘出角位置差 \(|\Delta\theta_{1}|+|\Delta\theta_{2}|\) 随时间的变化——指数增长在对数图上是<strong>直线</strong>，其斜率即为最大 Lyapunov 指数 \(\lambda\)（仿真实时估计并显示）。滑块可调两杆长、两质量、重力、初始角度差。点 Reset 重置。把 \(\Delta\theta_{0}\) 拉到最小（\(10^{-4}\,\mathrm{rad}\)）：发散推迟但绝<em>不</em>消失——这是混沌的本质。</p>
+      <div class="sim-container">
+        <canvas id="sim-19" width="720" height="500"></canvas>
+        <div class="sim-controls" id="controls-19"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-19');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical parameters (SI). Both pendulums share these. ----
+          var params = {
+            m1: 1.0, m2: 1.0,
+            L1: 1.0, L2: 1.0,
+            g: 9.8,
+            theta1_0: 2.5,        // initial theta_1 (rad), pendulum A  (~143°, strongly chaotic)
+            theta2_0: 2.5,        // initial theta_2 (rad), pendulum A
+            dtheta0: 0.002,       // tiny difference in theta_1 for pendulum B
+          };
+
+          // ---- Double-pendulum derivative. State = [th1, om1, th2, om2]. ----
+          function deriv(s, t) {
+            var th1 = s[0], om1 = s[1], th2 = s[2], om2 = s[3];
+            var m1 = params.m1, m2 = params.m2, L1 = params.L1, L2 = params.L2, g = params.g;
+            var D = th1 - th2;
+            var sD = Math.sin(D), cD = Math.cos(D);
+            var den = m1 + m2 * sD * sD;
+            var th1dd = (m2 * g * Math.sin(th2) * cD
+                       - (m1 + m2) * g * Math.sin(th1)
+                       - m2 * sD * (L1 * om1 * om1 * cD + L2 * om2 * om2)) / (L1 * den);
+            var th2dd = (sD * ((m1 + m2) * L1 * om1 * om1 + m2 * L2 * om2 * om2 * cD)
+                       + (m1 + m2) * g * (cD * Math.sin(th1) - Math.sin(th2))) / (L2 * den);
+            return [om1, th1dd, om2, th2dd];
+          }
+
+          // ---- Total energy (for sanity readout). ----
+          function energy(s) {
+            var th1 = s[0], om1 = s[1], th2 = s[2], om2 = s[3];
+            var m1 = params.m1, m2 = params.m2, L1 = params.L1, L2 = params.L2, g = params.g;
+            var D = th1 - th2;
+            var T = 0.5 * (m1 + m2) * L1 * L1 * om1 * om1
+                  + 0.5 * m2 * L2 * L2 * om2 * om2
+                  + m2 * L1 * L2 * om1 * om2 * Math.cos(D);
+            var V = -(m1 + m2) * g * L1 * Math.cos(th1) - m2 * g * L2 * Math.cos(th2);
+            return T + V;
+          }
+
+          // ---- Bob 2 position given state, in physics coords (origin at pivot, +y up). ----
+          function bob2(s) {
+            return {
+              x: params.L1 * Math.sin(s[0]) + params.L2 * Math.sin(s[2]),
+              y: -(params.L1 * Math.cos(s[0]) + params.L2 * Math.cos(s[2]))
+            };
+          }
+
+          // ---- Two pendulum states + trails + separation history. ----
+          var sA, sB, eA0;
+          var trailA = [], trailB = [];
+          var TRAIL_MAX = 360;
+          var sepHist = [];
+          var SEP_MAX = 1400;
+          var simTime = 0;
+
+          function resetState() {
+            sA = [params.theta1_0, 0, params.theta2_0, 0];
+            sB = [params.theta1_0 + params.dtheta0, 0, params.theta2_0, 0];
+            trailA = []; trailB = [];
+            sepHist = [];
+            simTime = 0;
+            eA0 = energy(sA);
+          }
+
+          // Cyclic angle difference (in [-pi, pi]).
+          function angDiff(a, b) {
+            var d = (a - b) % (2 * Math.PI);
+            if (d > Math.PI) d -= 2 * Math.PI;
+            if (d < -Math.PI) d += 2 * Math.PI;
+            return d;
+          }
+
+          // Estimate lambda via linear regression on log(sep) over the FIRST RISING
+          // portion only (before saturation decorrelates the two pendulums). Including
+          // late-time data would bias the slope toward zero.
+          function estimateLambda() {
+            var lo = Math.max(5.0 * params.dtheta0, 1e-4);
+            var hi = 0.5;
+            var pts = [];
+            var started = false, done = false;
+            for (var i = 0; i < sepHist.length; i++) {
+              if (done) break;
+              var v = sepHist[i].sep;
+              if (!started && v >= lo) started = true;
+              if (started) {
+                if (v >= hi) { done = true; break; }
+                pts.push({ t: sepHist[i].t, y: Math.log(v) });
+              }
+            }
+            if (pts.length < 8) return null;
+            var n = pts.length, St = 0, Sy = 0, Stt = 0, Sty = 0;
+            for (var i = 0; i < n; i++) {
+              St += pts[i].t; Sy += pts[i].y; Stt += pts[i].t * pts[i].t; Sty += pts[i].t * pts[i].y;
+            }
+            var denom = n * Stt - St * St;
+            if (Math.abs(denom) < 1e-12) return null;
+            return (n * Sty - St * Sy) / denom;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              resetState();
+              return { t: 0 };
+            },
+            step: function (dt, t, s) {
+              // Sub-step RK4 for accuracy.
+              var N = 8;
+              var h = dt / N;
+              for (var i = 0; i < N; i++) {
+                sA = PS.integrate(deriv, sA, simTime, h, 'rk4');
+                sB = PS.integrate(deriv, sB, simTime, h, 'rk4');
+                simTime += h;
+              }
+              // Record trails (bob 2 screen-space).
+              trailA.push(bob2(sA));
+              trailB.push(bob2(sB));
+              if (trailA.length > TRAIL_MAX) trailA.shift();
+              if (trailB.length > TRAIL_MAX) trailB.shift();
+              // Record separation.
+              var d1 = Math.abs(angDiff(sA[0], sB[0]));
+              var d2 = Math.abs(angDiff(sA[2], sB[2]));
+              sepHist.push({ t: simTime, sep: d1 + d2 });
+              if (sepHist.length > SEP_MAX) sepHist.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ===== Layout =====
+              var pivotX = 200, pivotY = 90;
+              var scale = 80;            // px per metre
+              var plotX0 = 380, plotY0 = 270, plotW = 320, plotH = 190;
+
+              // ---- Title ----
+              PS.drawText(ctx, '双摆混沌 + 初值发散  Double Pendulum Chaos & Divergence',
+                W / 2, 22, { font: 'bold 15px system-ui, sans-serif', align: 'center', color: PS.colors.text });
+
+              // ---- Pivot ----
+              PS.drawCircle(ctx, pivotX, pivotY, 4, { fill: PS.colors.axis });
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              ctx.moveTo(pivotX - 26, pivotY - 6); ctx.lineTo(pivotX + 26, pivotY - 6); ctx.stroke();
+              for (var k = -2; k <= 2; k++) {
+                ctx.beginPath();
+                ctx.moveTo(pivotX + k * 10, pivotY - 6); ctx.lineTo(pivotX + k * 10 - 5, pivotY - 12); ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- Trails (drawn under rods): fading polylines of bob 2. ----
+              function drawTrail(trail, col) {
+                if (trail.length < 2) return;
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                for (var i = 1; i < trail.length; i++) {
+                  var frac = i / trail.length;
+                  ctx.globalAlpha = 0.5 * frac;
+                  ctx.strokeStyle = col;
+                  ctx.beginPath();
+                  ctx.moveTo(pivotX + trail[i - 1].x * scale, pivotY - trail[i - 1].y * scale);
+                  ctx.lineTo(pivotX + trail[i].x * scale, pivotY - trail[i].y * scale);
+                  ctx.stroke();
+                }
+                ctx.restore();
+              }
+              drawTrail(trailA, PS.colors.primary);
+              drawTrail(trailB, PS.colors.accent);
+
+              // ---- Draw a pendulum (rods + bobs). ----
+              function drawPendulum(st, rodCol, bobCol, bobStroke) {
+                var x1 = pivotX + params.L1 * Math.sin(st[0]) * scale;
+                var y1 = pivotY - (-params.L1 * Math.cos(st[0])) * scale;
+                var x2 = x1 + params.L2 * Math.sin(st[2]) * scale;
+                var y2 = y1 - (-params.L2 * Math.cos(st[2])) * scale;
+                ctx.save();
+                ctx.strokeStyle = rodCol; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(x1, y1); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+                ctx.restore();
+                PS.drawCircle(ctx, x1, y1, 5, { fill: rodCol, stroke: bobStroke, lineWidth: 1 });
+                PS.drawCircle(ctx, x2, y2, 9, { fill: bobCol, stroke: bobStroke, lineWidth: 1.5 });
+              }
+              // Draw A first (so B sits on top when they overlap is fine; both visible).
+              drawPendulum(sA, PS.colors.primary, PS.colors.primary, PS.colors.text);
+              drawPendulum(sB, PS.colors.accent, PS.colors.accent, PS.colors.text);
+
+              // ---- Pendulum labels ----
+              PS.drawText(ctx, 'A (Δθ₀ 偏移前)', pivotX - 110, pivotY + 4,
+                { font: 'bold 11px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, 'B (Δθ₀ 偏移后)', pivotX - 110, pivotY + 20,
+                { font: 'bold 11px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '蓝 = 摆 A    红 = 摆 B (+Δθ₀)',
+                pivotX, pivotY + 50, { font: '12px system-ui', align: 'center', color: PS.colors.text });
+
+              // ===== Separation plot (log y) =====
+              // Frame
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1.2;
+              ctx.strokeRect(plotX0, plotY0, plotW, plotH);
+              // Grid (decade lines)
+              var yMin = 1e-5, yMax = 3.0;
+              var logMin = Math.log(yMin), logMax = Math.log(yMax);
+              ctx.strokeStyle = PS.colors.grid; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+              var decades = [-5, -4, -3, -2, -1, 0];
+              ctx.fillStyle = PS.colors.axis; ctx.font = '10px system-ui'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              for (var di = 0; di < decades.length; di++) {
+                var pwr = decades[di];
+                var yp = plotY0 + plotH - (pwr * Math.LN10 - logMin) / (logMax - logMin) * plotH;
+                if (yp < plotY0 - 0.5 || yp > plotY0 + plotH + 0.5) continue;
+                ctx.beginPath(); ctx.moveTo(plotX0, yp); ctx.lineTo(plotX0 + plotW, yp); ctx.stroke();
+                ctx.globalAlpha = 1; ctx.fillText('1e' + pwr, plotX0 + 4, yp - 6); ctx.globalAlpha = 0.5;
+              }
+              ctx.globalAlpha = 1;
+              // Axes labels
+              PS.drawText(ctx, '|Δθ₁| + |Δθ₂| (rad, 对数 log scale)', plotX0 + plotW / 2, plotY0 - 10,
+                { font: '12px system-ui', align: 'center', color: PS.colors.text });
+              PS.drawText(ctx, '时间 t (s)', plotX0 + plotW / 2, plotY0 + plotH + 22,
+                { font: '11px system-ui', align: 'center', color: PS.colors.axis });
+
+              // Time window (rolling)
+              var tWin = 12.0;
+              var tNow = simTime;
+              var tLo = Math.max(0, tNow - tWin);
+              var tHi = tLo + tWin;
+              // Plot data
+              if (sepHist.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace; ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                var started = false;
+                for (var i = 0; i < sepHist.length; i++) {
+                  var p = sepHist[i];
+                  if (p.t < tLo) continue;
+                  var xp = plotX0 + (p.t - tLo) / tWin * plotW;
+                  var yp = plotY0 + plotH - (Math.log(Math.max(p.sep, yMin)) - logMin) / (logMax - logMin) * plotH;
+                  if (yp < plotY0) yp = plotY0;
+                  if (yp > plotY0 + plotH) yp = plotY0 + plotH;
+                  if (!started) { ctx.moveTo(xp, yp); started = true; } else ctx.lineTo(xp, yp);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // Reference exponential line from estimated lambda
+              var lam = estimateLambda();
+              if (lam && lam > 0.05 && sepHist.length > 20) {
+                // Pick a reference point at the midpoint of the fit window
+                var tRef = tLo + tWin * 0.15;
+                var sepRef = Math.max(params.dtheta0 * 2, 5e-4);
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 1.4;
+                ctx.setLineDash([5, 4]); ctx.globalAlpha = 0.85;
+                ctx.beginPath();
+                var drawn = false;
+                for (var tt = tRef; tt <= tHi; tt += 0.05) {
+                  var sep = sepRef * Math.exp(lam * (tt - tRef));
+                  if (sep > yMax) break;
+                  var xp = plotX0 + (tt - tLo) / tWin * plotW;
+                  var yp = plotY0 + plotH - (Math.log(sep) - logMin) / (logMax - logMin) * plotH;
+                  if (!drawn) { ctx.moveTo(xp, yp); drawn = true; } else ctx.lineTo(xp, yp);
+                }
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, '参考 e^{λt}, λ ≈ ' + lam.toFixed(2) + ' /s',
+                  plotX0 + plotW - 6, plotY0 + 14,
+                  { font: 'bold 11px system-ui', align: 'right', color: PS.colors.accent2 });
+              }
+              ctx.restore();
+
+              // ---- Readouts (bottom-left) ----
+              var d1 = Math.abs(angDiff(sA[0], sB[0]));
+              var d2 = Math.abs(angDiff(sA[2], sB[2]));
+              var dTot = d1 + d2;
+              var eDrift = eA0 ? Math.abs((energy(sA) - eA0) / eA0) * 100 : 0;
+              var info1 = 't = ' + simTime.toFixed(2) + ' s';
+              var info2 = '|Δθ₁| + |Δθ₂| = ' + dTot.toExponential(2) + ' rad';
+              var info3 = 'Δθ₀ = ' + params.dtheta0.toExponential(1) + ' rad  (初始差)';
+              var info4 = '能量漂移 |ΔE/E₀| = ' + eDrift.toFixed(2) + '%  (RK4 数值误差)';
+              PS.drawText(ctx, info1, 14, H - 56, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, info2, 14, H - 40, { font: '12px system-ui', color: PS.colors.trace });
+              PS.drawText(ctx, info3, 14, H - 24, { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, info4, 14, H - 8,  { font: '11px system-ui', color: PS.colors.axis });
+            },
+          });
+
+          // ---- Controls ----
+          var ctl = PS.makeControls(document.getElementById('controls-19'), [
+            { type: 'slider', key: 'dtheta0', label: '初始角差 Δθ₀ (rad)', min: 0.0001, max: 0.01,  step: 0.0001, value: 0.002 },
+            { type: 'slider', key: 'L1',      label: '杆长 L₁ (m)',         min: 0.4,    max: 1.6,    step: 0.05,    value: 1.0 },
+            { type: 'slider', key: 'L2',      label: '杆长 L₂ (m)',         min: 0.4,    max: 1.6,    step: 0.05,    value: 1.0 },
+            { type: 'slider', key: 'm1',      label: '质量 m₁ (kg)',        min: 0.3,    max: 3.0,    step: 0.1,     value: 1.0 },
+            { type: 'slider', key: 'm2',      label: '质量 m₂ (kg)',        min: 0.3,    max: 3.0,    step: 0.1,     value: 1.0 },
+            { type: 'slider', key: 'g',       label: '重力 g (m/s²)',       min: 1.0,    max: 20.0,   step: 0.2,     value: 9.8 },
+            { type: 'button', key: 'reset',   label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('dtheta0', function (v) { params.dtheta0 = v; sim.reset(); });
+          ctl.on('L1',      function (v) { params.L1 = v; });
+          ctl.on('L2',      function (v) { params.L2 = v; });
+          ctl.on('m1',      function (v) { params.m1 = v; });
+          ctl.on('m2',      function (v) { params.m2 = v; });
+          ctl.on('g',       function (v) { params.g  = v; });
+          ctl.on('reset',   function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>混沌是<strong>非线性</strong>、<strong>确定性</strong>动力系统对初值<em>指数敏感</em>所导致的长期不可预测性。叠加原理失效是非线性的本质；指数放大 \(\delta(t)\sim\delta_{0}e^{\lambda t}\) 是混沌的核心机制；有界 + 分形 + 敏感 = 奇怪吸引子。</p>
+      <div class="formula">\[ \text{Logistic map:}\quad x_{n+1}=r\,x_{n}(1-x_{n}),\qquad \text{不动点稳定}\Leftrightarrow\lvert f'(x^{*})\rvert&lt;1 \]</div>
+      <div class="formula">\[ f'(x^{*}_{1})=2-r:\;\;1&lt;r&lt;3\text{ 稳定},\;\;r=3\text{ 倍周期 onset},\;\;r_{\infty}\approx3.5699\text{ 混沌 onset} \]</div>
+      <div class="formula">\[ \delta=\lim_{n\to\infty}\frac{r_{n}-r_{n-1}}{r_{n+1}-r_{n}}\approx 4.6692\quad(\text{Feigenbaum 普适常数}) \]</div>
+      <div class="formula">\[ \delta(t)\sim\delta_{0}\,e^{\lambda t},\qquad \lambda&gt;0\Leftrightarrow\text{混沌},\qquad t_{p}=\frac{1}{\lambda}\ln\frac{\delta_{\text{tol}}}{\delta_{0}} \]</div>
+      <div class="formula">\[ \text{Lorenz: }\dot x=\sigma(y-x),\;\dot y=x(\rho-z)-y,\;\dot z=xy-\beta z\Rightarrow\text{奇怪吸引子 (分形维}\approx2.06\text{)} \]</div>
+      <ul>
+        <li><strong>线性系统永不混沌</strong>：解是指数 / 振荡的有限叠加，永远规则。</li>
+        <li><strong>混沌 ≠ 随机</strong>：方程完全确定；"随机感"来自放大初值误差。</li>
+        <li><strong>混沌 ≠ 不稳定</strong>：奇怪吸引子上的轨道有界，只是局部指数分离。</li>
+        <li><strong>短期可预测，长期不可</strong>：\(t\ll1/\lambda\) 时预测良好；\(t\gtrsim t_{p}\) 失败。提高测量精度只对数地延长视界。</li>
+        <li><strong>双摆 + Lorenz + 逻辑斯谛映射</strong>是混沌的三个范例（连续、连续、离散）；倍周期分岔是通往混沌的普适道路之一。</li>
+        <li><strong>气象</strong>：大气的 \(\lambda\sim 0.5\,\mathrm{day^{-1}}\) 决定了约两周的可预测性视界；这是混沌理论最直接的应用。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

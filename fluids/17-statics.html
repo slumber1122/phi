@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第17章 · 流体静力学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="17">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 17 · 第17章 · 第四部分 流体力学 Part IV Fluid Mechanics</p>
+      <h1>流体静力学 <span class="en-title">Fluid Statics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>定义压强 (pressure) \(P=F/A\)，解释它为何是<strong>标量</strong>却对任意表面产生<strong>法向</strong>作用力，并能换算 \(\mathrm{Pa}\)、\(\mathrm{atm}\)、\(\mathrm{bar}\) 等单位。</li>
+        <li>推导并应用深度公式 \(P=P_0+\rho g h\)，理解密度 (density) \(\rho\) 与比重 (specific gravity) 的概念。</li>
+        <li>陈述并运用<strong>帕斯卡原理</strong> (Pascal's principle) 分析液压机 (hydraulic lift) 的力放大效应 \(F_2/F_1=A_2/A_1\)。</li>
+        <li>区分<strong>表压</strong> (gauge pressure) 与<strong>绝对压强</strong> (absolute pressure)（\(P_\text{abs}=P_\text{atm}+P_\text{gauge}\)），说明气压计 (barometer) 与压差计 (manometer) 的工作原理。</li>
+        <li>运用<strong>阿基米德原理</strong> (Archimedes' principle) 计算浮力 (buoyancy) \(F_b=\rho_f V_\text{disp}g\)，并用视重法 (apparent-weight method) 测定未知密度。</li>
+        <li>判断物体在流体中的浮沉条件 \(\rho_\text{obj}\lt\rho_f\)（浮）、\(=\rho_f\)（悬浮）、\(\gt\rho_f\)（沉），求出漂浮时的浸没分数。</li>
+        <li>定性讨论漂浮物体的稳定性（定倾中心高度 metacentric height）以及大气压随高度的变化。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 压强——定义、性质与单位 Pressure: Definition, Nature, Units</h3>
+      <p>当一流体或固体以力 \(\Delta \vec F\) 作用在面积元 \(\Delta A\) 上，且力的方向沿该面的<strong>法线</strong> (normal) 时，定义该处的<strong>压强</strong> (pressure)：</p>
+      <div class="formula">\[ P \;=\; \lim_{\Delta A\to 0}\frac{|\Delta \vec F|}{\Delta A}, \qquad [P]=\mathrm{N/m^2}=\mathrm{Pa} \]</div>
+      <p>压强是<strong>标量</strong>（只有大小、没有方向），但在静止流体中它<strong>各向同性</strong> (isotropic)：通过同一点取任意取向的面积元，流体对该面元施加的力总是<strong>沿法线方向</strong>、大小同为 \(PA\)。换言之，压强本身不是矢量，而它<strong>诱发的力</strong>总是垂直于所考察的面。这一点是流体与刚体受力分析最大的差异。</p>
+      <p>常用单位换算：</p>
+      <div class="formula">\[ 1\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}=101.3\,\mathrm{kPa}=1.013\,\mathrm{bar}=760\,\mathrm{mmHg} \]</div>
+      <div class="formula">\[ 1\,\mathrm{bar}=10^{5}\,\mathrm{Pa}\;\;(\text{工程常用}),\qquad 1\,\mathrm{psi}=6.895\times10^{3}\,\mathrm{Pa} \]</div>
+
+      <h3>2. 密度与比重 Density &amp; Specific Gravity</h3>
+      <p><strong>密度</strong> (density, mass density) \(\rho=m/V\)，单位 \(\mathrm{kg/m^3}\)。<strong>比重</strong> (specific gravity, SG) 是某材料密度与 \(4\,^\circ\mathrm{C}\) 纯水密度之比，无量纲：</p>
+      <div class="formula">\[ \mathrm{SG} \;=\; \frac{\rho_\text{material}}{\rho_\text{water}},\qquad \rho_\text{water}=1000\,\mathrm{kg/m^3} \]</div>
+      <p>常见值：水 \(1000\)、海水 \(1025\)、冰 \(917\)、酒精 \(790\)、甘油 \(1260\)、汞 (mercury, 水银) \(13534\)、铝 \(2700\)、钢 \(\approx 7800\) \(\mathrm{kg/m^3}\)。比重在 1 上下的细微差别决定物体浮沉，这是本章反复出现的主题。</p>
+
+      <h3>3. 压强随深度的变化 Variation of Pressure with Depth</h3>
+      <p>考虑静止流体内一高度差为 \(h\)、截面积为 \(A\) 的竖直柱体（图示于课本）。柱体内流块处于平衡：上表面受向下的压力 \(P_\text{top}A\)、下表面受向上的压力 \(P_\text{bottom}A\)、重力 \(\rho (Ah)g\) 向下。由 \(\Sigma F_y=0\)：</p>
+      <div class="formula">\[ P_\text{bottom}\,A \;-\; P_\text{top}\,A \;-\; \rho (Ah)\,g = 0 \;\;\Longrightarrow\;\; \boxed{\;P_\text{bottom}=P_\text{top}+\rho g h\;} \]</div>
+      <p>将上端取作自由液面 (free surface)，记那里的压强为 \(P_0\)（通常是大气压 \(P_\text{atm}\)），在液面下方深度 \(h\) 处：</p>
+      <div class="formula">\[ \boxed{\;P(h) \;=\; P_0 \;+\; \rho g h\;} \]</div>
+      <p>两个重要结论：(i) 静止流体中同一高度处压强相等（连通器原理，communicating vessels）；(ii) 压强只取决于深度、不取决于容器的形状（<em>流体静力学佯谬</em> hydrostatic paradox——一个细高水柱与一个粗矮水柱只要液面等高，底部压强就相同）。</p>
+      <p>对水（\(\rho=1000\,\mathrm{kg/m^3}\)），每下降 \(10\,\mathrm{m}\) 压强增加 \(\rho g h = 1000\times 9.8\times 10 = 9.8\times10^{4}\,\mathrm{Pa}\approx 0.967\,\mathrm{atm}\)，几乎就是“每 10 m 增加 1 atm”。这是潜水员耳压变化的来源。</p>
+
+      <h3>4. 帕斯卡原理与液压机 Pascal's Principle &amp; Hydraulic Lift</h3>
+      <p><strong>帕斯卡原理</strong> (Pascal's principle)：对<strong>封闭</strong>流体（液体）某处施加的压强变化，会<strong>不衰减</strong>地传遍流体各处。这是 \(P=P_0+\rho g h\) 的直接推论——外加 \(\Delta P\) 等效于抬高 \(P_0\)，处处同步增加。</p>
+      <p>液压机 (hydraulic lift) 由两个截面积分别为 \(A_1\)（小活塞）和 \(A_2\)（大活塞）的连通圆筒组成。在小活塞上施加力 \(F_1\)，大活塞上即可举起载荷 \(F_2\)。由两活塞<strong>处于同一液面</strong>（连线水平）时压强相等：</p>
+      <div class="formula">\[ \frac{F_1}{A_1} \;=\; \frac{F_2}{A_2} \;\;\Longrightarrow\;\; \boxed{\;\frac{F_2}{F_1}=\frac{A_2}{A_1}=\frac{r_2^{\,2}}{r_1^{\,2}}\;} \]</div>
+      <p>这是<strong>力的放大</strong>，但<strong>不</strong>违反能量守恒：功守恒要求 \(F_1\,d_1 = F_2\,d_2\)，故小活塞需移动更大距离 \(d_1=(A_2/A_1)\,d_2\)。这与第 7 章中力矩的“省力费距离”思想完全类似。</p>
+
+      <h3>5. 测量压强——气压计与压差计 Measuring Pressure: Barometer &amp; Manometer</h3>
+      <p><strong>托里拆利气压计</strong> (Torricelli's barometer)：将一端封闭、灌满汞的玻璃管倒扣于汞槽中。汞柱在管中下降到一定高度 \(h_\text{Hg}\) 后稳定，此时管顶形成真空。由 \(P_\text{atm}=\rho_\text{Hg}\,g\,h_\text{Hg}\) 直接读出大气压：标准值 \(h_\text{Hg}=760\,\mathrm{mm}\) 对应 \(1\,\mathrm{atm}\)。换用别的液体亦可（如水），但水柱会高达 \(\approx 10.3\,\mathrm{m}\)，工程上不便。</p>
+      <p><strong>压差计</strong> (manometer, U-tube)：U 形管内装密度为 \(\rho_m\) 的指示液（常为水或汞），一端接待测气体、另一端敞开于大气。两液面高度差 \(\Delta h\) 给出：</p>
+      <div class="formula">\[ P_\text{gas} \;=\; P_\text{atm} \;\pm\; \rho_m\,g\,\Delta h \]</div>
+      <p>“\(+\)”当气端低于液端（\(P_\text{gas}\gt P_\text{atm}\)），“\(-\)”反之。<strong>表压</strong> (gauge pressure) 就是相对于大气的压差 \(P_\text{gauge}=P_\text{abs}-P_\text{atm}\)，于是：</p>
+      <div class="formula">\[ \boxed{\;P_\text{abs} \;=\; P_\text{atm} \;+\; P_\text{gauge}\;} \]</div>
+      <p>胎压计读到的是表压：例如“32 psi”意味着绝对压强约 \(32+14.7=46.7\,\mathrm{psi}\)。许多压力表（如血压计、空压机）默认输出表压，故务必区分。</p>
+
+      <h3>6. 浮力与阿基米德原理 Buoyancy &amp; Archimedes' Principle</h3>
+      <p>浸在流体中的物体受到流体施加的<strong>向上的合力</strong>，称为<strong>浮力</strong> (buoyant force, buoyancy) \(\vec F_b\)。<strong>阿基米德原理</strong> (Archimedes' principle) 指出：</p>
+      <div class="formula">\[ \boxed{\;\text{浮力的大小}\;F_b \;=\; \rho_f\,V_\text{disp}\,g\;\;\text{（方向竖直向上）}\;} \]</div>
+      <p>其中 \(\rho_f\) 是<strong>流体</strong>的密度，\(V_\text{disp}\) 是物体<strong>排开</strong>流体的体积。对于漂浮物体，\(V_\text{disp}\) 仅是水下部分的体积；对于完全浸没的物体，\(V_\text{disp}\) 即物体整个体积 \(V\)。注意：浮力<strong>与浸没深度无关</strong>——只要物体完全在水下，深度再大浮力也不变（\(V_\text{disp}\) 不变）。深度只改变物体上下表面的<strong>压强</strong>，而浮力来源于上下表面的压强差 \(\Delta P\cdot A=\rho_f g h\cdot A\)，即排开液重。</p>
+
+      <h3>7. 浮沉条件与浸没分数 Flotation Condition &amp; Submerged Fraction</h3>
+      <p>比较物体所受重力 \(W=\rho_\text{obj}\,V\,g\) 与完全浸没时所能获得的最大浮力 \(F_{b,\max}=\rho_f\,V\,g\)（设 \(V_\text{disp}=V\)）：</p>
+      <ul>
+        <li>\(\rho_\text{obj}\lt\rho_f\)：最大浮力大于重力，物体加速上浮，最终<strong>部分浸没</strong>地漂浮于液面。由平衡 \(F_b=W\)：\(\rho_f\,V_\text{disp}\,g=\rho_\text{obj}\,V\,g\)，得 <strong>浸没分数</strong></li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\frac{V_\text{disp}}{V} \;=\; \frac{\rho_\text{obj}}{\rho_f}\;}\qquad (\rho_\text{obj}\le \rho_f) \]</div>
+      <ul>
+        <li>\(\rho_\text{obj}=\rho_f\)：物体内任意位置都满足 \(F_b=W\)，称为<strong>中性浮力</strong> (neutrally buoyant)，可悬浮于任意深度（潜艇的下潜均衡态）。</li>
+        <li>\(\rho_\text{obj}\gt\rho_f\)：浮力不足以托起，物体沉到底，由底部支持力 \(N=W-F_b\) 补足。</li>
+      </ul>
+      <p>关键：决定浮沉的是<strong>平均密度</strong>。钢块沉水，但钢壳船内部含大量空气，平均密度低于水，故能漂浮。</p>
+
+      <h3>8. 漂浮体的稳定性（定性）Stability of Floating Bodies</h3>
+      <p>当物体倾斜一个小角度时，浮力作用线（过排开液体的重心 \(B\)，称为<strong>浮心</strong> center of buoyancy）相对物体的位置改变。若浮力作用线与物体原对称轴的交点 \(M\)——<strong>定倾中心</strong> (metacenter)——位于物体重心 \(G\) 之上（\(GM\gt 0\)，称为<strong>定倾高度</strong> metacentric height），则浮力与重力形成<strong>恢复力偶</strong>，物体回到正位（稳定）。若 \(M\) 在 \(G\) 之下，倾斜会加剧（不稳定，翻转）。这就是为什么船底要压舱（降低 \(G\)）、而高重心货船危险。</p>
+
+      <h3>9. 大气压随高度的变化 Atmospheric Pressure vs. Altitude</h3>
+      <p>把空气视为等温的理想气体（粗略近似），由 \(dP=-\rho(P)\,g\,dh\) 与 \(\rho=PM/(RT)\)（\(M\) 为空气平均摩尔质量，\(R\) 气体常数，\(T\) 温度），得：</p>
+      <div class="formula">\[ P(h) \;=\; P_0\,\exp\!\left(-\frac{h}{H_\text{scale}}\right),\qquad H_\text{scale}=\frac{RT}{Mg}\approx 8.4\,\mathrm{km}\;\;(T\approx 250\,\mathrm{K}) \]</div>
+      <p>每升高一个<strong>标度高</strong> \(H_\text{scale}\)，大气压减少为原来的 \(1/e\)。珠峰顶（\(h\approx 8848\,\mathrm{m}\)）大气压约为海平面的 \(e^{-1.05}\approx 35\%\)——这与登山者的缺氧体验一致。严格地说，低层大气是非等温的，须用分段的标准大气模型。</p>
+
+      <div class="key-terms">pressure (压强), isotropic (各向同性), normal force (法向力), density (密度), specific gravity (比重), Pascal's principle (帕斯卡原理), hydraulic lift (液压机), barometer (气压计), manometer (压差计), gauge/absolute pressure (表压/绝对压强), buoyancy (浮力), Archimedes' principle (阿基米德原理), displaced volume (排开体积), metacenter (定倾中心), scale height (标度高)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：阿基米德原理（从压强差出发）</h2>
+      <p>我们不把阿基米德原理当作经验结论，而是从 \(P=P_0+\rho g h\) 出发严格导出。考虑一个任意形状、体积为 \(V\)、完全浸没在密度为 \(\rho_f\) 的液体中的物体。设液面在 \(y=0\)，\(y\) 轴向上为正；物体上最高点位于 \(y=y_\text{top}\)（\(y_\text{top}\le 0\)），最低点位于 \(y=y_\text{bot}\)。物体表面记为 \(S\)。</p>
+      <p class="step"><strong>步骤 1. 微元法分析表面受力。</strong> 在物体表面任取一面元 \(d\vec A\)（外法向矢量，大小为面积 \(dA\)）。该面元在液面下的深度为 \(-y\)（因 \(y\le 0\)），所受液体压强为 \(P(y)=P_0+\rho_f g(0-y)=P_0-\rho_f g y\)。液体对物体的作用力沿<strong>内</strong>法向（与 \(d\vec A\) 反向），大小为 \(P\,dA\)：</p>
+      <div class="formula">\[ d\vec F \;=\; -P(y)\,d\vec A \;=\; -(P_0-\rho_f g\,y)\,d\vec A \]</div>
+      <p class="step"><strong>步骤 2. 对整个表面求和（积分）。</strong> 合力为：</p>
+      <div class="formula">\[ \vec F_b \;=\; \oint_S d\vec F \;=\; -\oint_S (P_0-\rho_f g\,y)\,d\vec A \;=\; -P_0\!\oint_S d\vec A \;+\; \rho_f g\!\oint_S y\,d\vec A \]</div>
+      <p class="step"><strong>步骤 3. 用闭合面积分定理化简。</strong> 第一项 \(\oint_S d\vec A=\vec 0\)（任意闭合曲面的外法向面积分恒为零，因 \(\vec 0=\int_V \nabla(1)\,dV\)）。第二项用<strong>梯度定理</strong>（散度定理的矢量形式）：\(\displaystyle\oint_S y\,d\vec A=\int_V \nabla y\,dV=V\,\hat y\)，因为 \(\nabla y=\hat y\)（竖直向上单位矢量）。</p>
+      <p class="step"><strong>步骤 4. 代回，得浮力。</strong></p>
+      <div class="formula">\[ \vec F_b \;=\; \rho_f g\,V\,\hat y \;=\; \rho_f\,V\,g\;\;\text{（向上）} \]</div>
+      <p class="step"><strong>结论：</strong> 合力大小恰为排开液体的重量 \(\rho_f V g\)，方向竖直向上，与物体形状、深度均无关。这就是<strong>阿基米德原理</strong>。\(\blacksquare\)</p>
+      <p class="step"><strong>对漂浮物的推广：</strong> 若物体仅部分浸没，把闭合曲面 \(S\) 取作“物体水下部分的表面 + 水面处的水下截面”组成。后者位于 \(y=0\)，其上 \(P=P_0\)，对浮力无贡献（与第一项相同的理由消去）。剩下积分给出 \(\vec F_b=\rho_f\,V_\text{disp}\,g\,\hat y\)，其中 \(V_\text{disp}\) 是水下部分的体积——公式形式不变。</p>
+      <div class="note"><strong>注：</strong> 推导中我们隐含假设了流体处于静力平衡（\(P=P_0+\rho g h\) 适用）。对运动流体（如第 18 章的流动）须用伯努利方程，结果会不同。此外，物体表面的压强分布<strong>不</strong>依赖于物体是由何种材料构成——只取决于流体。因此把体积相同的木块、铁块、空气泡完全浸没在同一液体中，它们所受浮力<strong>相等</strong>；差异在于它们各自的重量，从而决定浮沉。</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 17.1 海平面下 10 m 处的压强—— “每 10 m 一个大气压” 法则</h4>
+        <p class="example-statement">求海平面下 \(h=10\,\mathrm{m}\) 处海水的压强（绝对压强与表压）。海水密度 \(\rho_f=1025\,\mathrm{kg/m^3}\)，\(g=9.8\,\mathrm{m/s^2}\)，\(P_\text{atm}=1.013\times 10^{5}\,\mathrm{Pa}\)。并验证“每 10 m 增加 1 atm”的经验法则。</p>
+        <div class="example-solution">
+          <p class="step"><strong>用深度公式：</strong> 表面压强 \(P_0=P_\text{atm}\)，深度 \(h\) 处的绝对压强为</p>
+          <div class="formula">\[ P_\text{abs}(h) \;=\; P_\text{atm} \;+\; \rho_f\,g\,h \]</div>
+          <p class="step"><strong>代入数值：</strong></p>
+          <div class="formula">\[ \rho_f g h = 1025 \times 9.8 \times 10 = 1.005\times 10^{5}\,\mathrm{Pa} \approx 0.992\,\mathrm{atm} \]</div>
+          <div class="formula">\[ P_\text{abs} = 1.013\times 10^{5} + 1.005\times 10^{5} = 2.018\times 10^{5}\,\mathrm{Pa} \approx 1.99\,\mathrm{atm} \]</div>
+          <p class="step"><strong>表压：</strong> \(P_\text{gauge}=P_\text{abs}-P_\text{atm}=\rho_f g h\approx 1.005\times 10^{5}\,\mathrm{Pa}\approx 0.992\,\mathrm{atm}\)。</p>
+          <p>故 <span class="ans">\(P_\text{abs}\approx 2.02\times 10^{5}\,\mathrm{Pa}\approx 2.0\,\mathrm{atm}\)；\(P_\text{gauge}\approx 1.0\,\mathrm{atm}\)</span>。</p>
+          <p class="step"><strong>经验法则的精度：</strong> 对<strong>淡水</strong> \(\rho=1000\)，\(h=10.3\,\mathrm{m}\) 才对应 1 atm；对海水因密度略大，约 \(10.1\,\mathrm{m}\) 即 1 atm。“10 m ≈ 1 atm” 是粗略但极其好用的近似——潜水员每下潜 10 m，肺内压强就近乎翻倍。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 17.2 冰山与木块——浸没分数</h4>
+        <p class="example-statement">一冰块密度 \(\rho_\text{ice}=917\,\mathrm{kg/m^3}\)，浮于 (a) 淡水（\(\rho_w=1000\,\mathrm{kg/m^3}\)）与 (b) 海水（\(\rho_\text{sea}=1025\,\mathrm{kg/m^3}\)）中。求两种情形下冰块浸没体积占总体积的分数。再问：一橡木块 \(\rho_\text{oak}=650\,\mathrm{kg/m^3}\) 在淡水里浸没分数是多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>方法：</strong> 漂浮平衡 \(W=F_b\)：\(\rho_\text{obj}\,V\,g = \rho_f\,V_\text{disp}\,g\)，所以</p>
+          <div class="formula">\[ \frac{V_\text{disp}}{V} \;=\; \frac{\rho_\text{obj}}{\rho_f} \]</div>
+          <p class="step"><strong>(a) 冰在淡水中：</strong></p>
+          <div class="formula">\[ \frac{V_\text{disp}}{V} = \frac{917}{1000} = 0.917 \;\;\Rightarrow\;\; \text{浸没 }91.7\% \]</div>
+          <p class="step"><strong>(b) 冰在海水中：</strong></p>
+          <div class="formula">\[ \frac{V_\text{disp}}{V} = \frac{917}{1025} = 0.895 \;\;\Rightarrow\;\; \text{浸没 }89.5\% \]</div>
+          <p class="step"><strong>(c) 橡木在淡水中：</strong></p>
+          <div class="formula">\[ \frac{V_\text{disp}}{V} = \frac{650}{1000} = 0.650 \;\;\Rightarrow\;\; \text{浸没 }65.0\% \]</div>
+          <p>故 <span class="ans">冰在淡水 / 海水中分别浸没 \(91.7\%\) / \(89.5\%\)；橡木在淡水中浸没 \(65.0\%\)</span>。</p>
+          <p class="step"><strong>注：</strong> “冰山一角”的物理基础：海水中冰山只有约 \(10.5\%\) 露出水面，即看到的部分仅为整体的 \(\sim 1/9\)。这与泰坦尼克号的事故分析高度相关——瞭望员看到的冰山大小远小于其水下危险体积。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 17.3 液压机举起汽车——输入力与距离</h4>
+        <p class="example-statement">一台液压机小活塞半径 \(r_1=2.0\,\mathrm{cm}\)、大活塞半径 \(r_2=20\,\mathrm{cm}\)。要在提升端托起质量 \(M=1500\,\mathrm{kg}\) 的汽车，求：(a) 小活塞上需施加的力 \(F_1\)；(b) 力放大倍数；(c) 欲将汽车抬升 \(d_2=10\,\mathrm{cm}\)，小活塞需下压多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 由帕斯卡原理</strong> \(F_1/A_1=F_2/A_2\)，其中 \(F_2=Mg\)：</p>
+          <div class="formula">\[ F_1 \;=\; F_2\,\frac{A_1}{A_2} \;=\; Mg\,\frac{\pi r_1^{\,2}}{\pi r_2^{\,2}} \;=\; Mg\,\frac{r_1^{\,2}}{r_2^{\,2}} \]</div>
+          <div class="formula">\[ F_1 = (1500)(9.8)\,\frac{(0.020)^2}{(0.20)^2} = 14700 \times \frac{4\times10^{-4}}{4\times10^{-2}} = 14700 \times 0.01 = 147\,\mathrm{N} \]</div>
+          <p class="step"><strong>(b) 放大倍数：</strong> 半径比 \(r_2/r_1=10\)，故面积比（即力放大）为 \(10^2=100\)。</p>
+          <div class="formula">\[ \frac{F_2}{F_1} \;=\; \frac{A_2}{A_1} \;=\; 100 \]</div>
+          <p class="step"><strong>(c) 功守恒</strong> \(F_1\,d_1 = F_2\,d_2\)（忽略活塞自重、摩擦，且液体不可压缩）：</p>
+          <div class="formula">\[ d_1 \;=\; \frac{F_2}{F_1}\,d_2 \;=\; 100\times 0.10 = 10\,\mathrm{m} \]</div>
+          <p>故 <span class="ans">\(F_1\approx 147\,\mathrm{N}\)（相当于 \(15\,\mathrm{kg}\) 物体的重量，常人手臂可施出）；力放大 100 倍；小活塞需下压 \(10\,\mathrm{m}\)</span>。</p>
+          <p class="step"><strong>注：</strong> \(10\,\mathrm{m}\) 的下压距离不现实——实际液压机会用多冲程杠杆泵（每次压一小段，阀门控制液体单向流入大端）。这就是修车店里“踩千斤顶”的原理。物理上仍是“省力费距离”的精确体现。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 17.4 视重法测密度——悬挂在水中的铝块</h4>
+        <p class="example-statement">一未知金属块在空气中用弹簧秤称得 \(W_\text{air}=4.90\,\mathrm{N}\)。将其完全浸没在淡水（\(\rho_w=1000\,\mathrm{kg/m^3}\)）中，弹簧秤读数（“视重”）变为 \(W_\text{app}=3.09\,\mathrm{N}\)。求：(a) 金属块的体积；(b) 金属的密度；(c) 若它放入汞（\(\rho_\text{Hg}=13534\,\mathrm{kg/m^3}\)），是浮是沉？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 视重与浮力的关系。</strong> 浸没时弹簧秤读数为 \(W_\text{app}=W_\text{air}-F_b\)，故浮力 \(F_b=W_\text{air}-W_\text{app}=4.90-3.09=1.81\,\mathrm{N}\)。又因完全浸没 \(F_b=\rho_w V g\)，所以</p>
+          <div class="formula">\[ V \;=\; \frac{F_b}{\rho_w\,g} \;=\; \frac{1.81}{1000\times 9.8} \;=\; 1.847\times10^{-4}\,\mathrm{m^3} \;=\; 185\,\mathrm{cm^3} \]</div>
+          <p class="step"><strong>(b) 密度。</strong> 物体质量 \(m=W_\text{air}/g=4.90/9.8=0.500\,\mathrm{kg}\)，</p>
+          <div class="formula">\[ \rho_\text{obj} \;=\; \frac{m}{V} \;=\; \frac{0.500}{1.847\times10^{-4}} \;=\; 2.71\times10^{3}\,\mathrm{kg/m^3} \]</div>
+          <p>这非常接近铝的密度 \(2700\,\mathrm{kg/m^3}\)。</p>
+          <p class="step"><strong>等价的“比重公式”：</strong> 把 \(\rho_w V g=F_b\) 与 \(W_\text{air}=\rho_\text{obj}Vg\) 相除，立即得</p>
+          <div class="formula">\[ \frac{\rho_\text{obj}}{\rho_w} \;=\; \frac{W_\text{air}}{W_\text{air}-W_\text{app}} \;=\; \frac{4.90}{1.81} \;=\; 2.71 \]</div>
+          <p class="step"><strong>(c) 在汞中：</strong> \(\rho_\text{obj}=2710\,\mathrm{kg/m^3}\ll \rho_\text{Hg}=13534\,\mathrm{kg/m^3}\)，故<strong>金属块会漂浮</strong>在汞面上。浸没分数为</p>
+          <div class="formula">\[ \frac{V_\text{disp}}{V} \;=\; \frac{2710}{13534} \;=\; 0.200 \;\;\Rightarrow\;\; \text{只有 }20\%\text{ 体积浸入汞中} \]</div>
+          <p>故 <span class="ans">\(V\approx 185\,\mathrm{cm^3}\)；\(\rho_\text{obj}\approx 2.71\times 10^{3}\,\mathrm{kg/m^3}\)（铝）；在汞中漂浮，浸没 \(20.0\%\)</span>。</p>
+          <p class="step"><strong>注：</strong> 视重法只需一杆秤与一杯水即可定密度，是经典实验。注意空气也提供微弱浮力（\(\rho_\text{air}\approx 1.2\,\mathrm{kg/m^3}\)），高精度实验需扣除（约 \(0.05\%\) 修正）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 17.5 压差计——由液柱差换算气罐压强</h4>
+        <p class="example-statement">一气罐连接 U 形水柱压差计（水，\(\rho_m=1000\,\mathrm{kg/m^3}\)），敞口端通大气。稳定后，气端水面<strong>低</strong>于敞口端水面 \(\Delta h=25\,\mathrm{cm}\)。已知 \(P_\text{atm}=1.013\times 10^{5}\,\mathrm{Pa}\)。求气罐内气体的绝对压强（分别以 \(\mathrm{Pa}\)、\(\mathrm{atm}\)、\(\mathrm{bar}\) 表示）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>判断正负号：</strong> 气端液面较<strong>低</strong>，意味着气体把液柱<strong>压下去</strong>，即 \(P_\text{gas}\gt P_\text{atm}\)。因此表压为正：</p>
+          <div class="formula">\[ P_\text{gauge} \;=\; \rho_m\,g\,\Delta h \;=\; 1000\times 9.8\times 0.25 \;=\; 2.45\times10^{3}\,\mathrm{Pa} \]</div>
+          <p class="step"><strong>绝对压强：</strong></p>
+          <div class="formula">\[ P_\text{abs} \;=\; P_\text{atm} \;+\; P_\text{gauge} \;=\; 1.013\times10^{5} + 2.45\times10^{3} \;=\; 1.038\times10^{5}\,\mathrm{Pa} \]</div>
+          <p class="step"><strong>换算：</strong></p>
+          <div class="formula">\[ P_\text{abs} = \frac{1.038\times10^{5}}{1.013\times10^{5}}\,\mathrm{atm} = 1.025\,\mathrm{atm}; \qquad P_\text{abs} = \frac{1.038\times10^{5}}{10^{5}}\,\mathrm{bar} = 1.038\,\mathrm{bar} \]</div>
+          <p>故 <span class="ans">\(P_\text{abs}\approx 1.038\times 10^{5}\,\mathrm{Pa}\approx 1.025\,\mathrm{atm}\approx 1.038\,\mathrm{bar}\)</span>。</p>
+          <p class="step"><strong>换用汞柱的情形：</strong> 若同一压差 \(\Delta P=2.45\,\mathrm{kPa}\) 用汞柱测量，则 \(\Delta h_\text{Hg}=\Delta P/(\rho_\text{Hg}g)=2450/(13534\times 9.8)=1.85\times10^{-2}\,\mathrm{m}=18.5\,\mathrm{mm}\)。汞密度是水的 13.5 倍，故同一压强对应的液柱高度只有 \(1/13.5\)——这正是气压计用汞的原因（管长不到 1 m 即可）。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把压强当作矢量。</strong> 压强是<strong>标量</strong>，没有方向；但它在面上诱发的<strong>力</strong>总是<strong>沿法线</strong>。把“压强向上 / 向下”说成是压强的属性是概念错误——方向取决于你考察哪个面。</li>
+        <li><strong>混淆表压与绝对压强。</strong> 胎压“32 psi”是<strong>表压</strong>，绝对压强是 \(32+14.7=46.7\,\mathrm{psi}\)。代入理想气体定律 \(PV=nRT\) 时必须用<strong>绝对</strong>压强；用表压会得到荒谬结果。同理，压差计读到的是表压。</li>
+        <li><strong>认为浮力随深度增大。</strong> 对<strong>完全浸没</strong>的物体，浮力 \(=\rho_f V g\) 与深度<strong>无关</strong>——深度只改变上下表面的绝对压强，差值恒定。深度只对<strong>部分浸没</strong>物体起作用（通过改变 \(V_\text{disp}\)）。</li>
+        <li><strong>把物体重量与浮力混为一谈。</strong> 浮力是<strong>流体</strong>施加的向上力，重力是<strong>地球</strong>施加的向下力。它们是两个独立的力，必须分别画在受力图上。漂浮时它们大小相等——但这是<strong>平衡条件的结果</strong>，不是定义。</li>
+        <li><strong>用材料的真实密度判断浮沉。</strong> 决定浮沉的是物体的<strong>平均密度</strong> \(m/V_\text{总}\)。钢块沉水，但钢壳船（含空气）平均密度低于水，故能浮。同理，把铁盒抽真空封死，它能浮在水上。</li>
+        <li><strong>误用液压机“力放大 = 能量放大”。</strong> 液压机不创造能量。力放大 \(N\) 倍，距离就缩小 \(N\) 倍，输入功 \(F_1 d_1\) 等于输出功 \(F_2 d_2\)（理想情形）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 深海潜水。 A diver descends to \(30\,\mathrm{m}\) below the surface of the ocean (\(\rho=1025\,\mathrm{kg/m^3}\)). Find the absolute pressure and the gauge pressure in atm.</summary>
+        <div class="hint">用 \(P_\text{abs}=P_\text{atm}+\rho g h\)；\(\rho g h\) 以 atm 表示为 \(\rho g h/(1.013\times10^{5})\)。</div>
+        <div class="solution">
+          <p>\(\rho g h = 1025\times 9.8\times 30 = 3.01\times 10^{5}\,\mathrm{Pa} \approx 2.98\,\mathrm{atm}\)。</p>
+          <p>\(P_\text{gauge}\approx 2.98\,\mathrm{atm}\)；\(P_\text{abs}=1+2.98\approx 3.98\,\mathrm{atm}\)。</p>
+          <p><span class="ans">\(P_\text{gauge}\approx 2.98\,\mathrm{atm}\)；\(P_\text{abs}\approx 3.98\,\mathrm{atm}\)</span>。每深 10 m 加 1 atm，30 m 即加 ~3 atm。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 气球升空。 A helium balloon is to lift a \(5.0\,\mathrm{kg}\) payload. The balloon envelope has mass \(0.80\,\mathrm{kg}\). Air density \(1.225\,\mathrm{kg/m^3}\), helium density \(0.179\,\mathrm{kg/m^3}\). Find the minimum balloon volume required.</summary>
+        <div class="hint">总浮力（排开空气的重）= 载荷 + 气囊 + 氦气自身的重量。即 \(\rho_\text{air} V g = (m_\text{pay}+m_\text{env})g + \rho_\text{He} V g\)。解出 \(V\)。</div>
+        <div class="solution">
+          <p>平衡条件：\(\rho_\text{air}\,V\,g = (m_\text{pay}+m_\text{env})g + \rho_\text{He}\,V\,g\)，</p>
+          <div class="formula">\[ V \;=\; \frac{m_\text{pay}+m_\text{env}}{\rho_\text{air}-\rho_\text{He}} \;=\; \frac{5.0+0.80}{1.225-0.179} \;=\; \frac{5.80}{1.046} \;=\; 5.54\,\mathrm{m^3} \]</div>
+          <p><span class="ans">最小体积 \(V\approx 5.5\,\mathrm{m^3}\)</span>（半径约 \(1.1\,\mathrm{m}\) 的球）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 木块挂重物后恰好浸没。 A wooden block of density \(600\,\mathrm{kg/m^3}\) and volume \(2.0\times10^{-3}\,\mathrm{m^3}\) floats in water. What mass \(m\) must be placed on top so the block is just fully submerged (but the added mass stays dry)?</summary>
+        <div class="hint">恰浸没时 \(F_b=\rho_w V g\)（最大浮力）应等于 (木块 + 重物) 总重。</div>
+        <div class="solution">
+          <p>木块质量 \(m_\text{wood}=\rho_\text{wood}V=600\times 2.0\times10^{-3}=1.20\,\mathrm{kg}\)。恰浸没时浮力 \(\rho_w V g=1000\times 2.0\times10^{-3}\times 9.8=19.6\,\mathrm{N}\)。设附加质量 \(m\)，由平衡 \(F_b=(m_\text{wood}+m)g\)：</p>
+          <div class="formula">\[ 19.6 = (1.20+m)\times 9.8 \;\Rightarrow\; m = \frac{19.6}{9.8}-1.20 = 2.00-1.20 = 0.80\,\mathrm{kg} \]</div>
+          <p><span class="ans">\(m=0.80\,\mathrm{kg}\)</span>。等价的思考：附加重物恰好填补“剩余浮力” \((\rho_w-\rho_\text{wood})Vg=0.8\,\mathrm{kg}\) 当量。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 双层流体——油与水。 A tank contains water (\(\rho_w=1000\)) overlaid by a \(5.0\,\mathrm{cm}\) layer of oil (\(\rho_\text{oil}=850\,\mathrm{kg/m^3}\)). Find the gauge pressure at the water–oil interface and at \(20\,\mathrm{cm}\) below the interface.</summary>
+        <div class="hint">界面处的压强 = 油柱 \(\rho_\text{oil} g h_\text{oil}\)；其下 \(h\) 处再加 \(\rho_w g h\)。</div>
+        <div class="solution">
+          <p>界面（油柱底）：\(P_1=\rho_\text{oil}\,g\,h_\text{oil}=850\times 9.8\times 0.050=416.5\,\mathrm{Pa}\)。</p>
+          <p>界面下 \(20\,\mathrm{cm}\)：\(P_2=P_1+\rho_w g(0.20)=416.5+1000\times 9.8\times 0.20=416.5+1960=2376.5\,\mathrm{Pa}\)。</p>
+          <p><span class="ans">界面处 \(P\approx 417\,\mathrm{Pa}\)；界面下 20 cm 处 \(P\approx 2377\,\mathrm{Pa}\)</span>。注意两层流体要<strong>分别</strong>用各自的 \(\rho\) 累加。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 视重法测黄铜密度。 A brass object weighs \(14.7\,\mathrm{N}\) in air and \(13.0\,\mathrm{N}\) fully submerged in water. Find its density and specific gravity.</summary>
+        <div class="hint">用例 17.4 的公式 \(\rho_\text{obj}/\rho_w = W_\text{air}/(W_\text{air}-W_\text{app})\)。</div>
+        <div class="solution">
+          <div class="formula">\[ \mathrm{SG} = \frac{W_\text{air}}{W_\text{air}-W_\text{app}} = \frac{14.7}{14.7-13.0} = \frac{14.7}{1.7} = 8.65 \]</div>
+          <div class="formula">\[ \rho_\text{obj} = 8.65\times 1000 = 8.65\times10^{3}\,\mathrm{kg/m^3} \]</div>
+          <p><span class="ans">\(\rho_\text{obj}\approx 8.65\times10^{3}\,\mathrm{kg/m^3}\)，\(\mathrm{SG}\approx 8.65\)</span>（典型黄铜 \(8400\text{–}8730\)，吻合）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <h3>浮力实验台 / 阿基米德实验室 Buoyancy / Archimedes Lab</h3>
+      <p class="sim-desc">调节滑块改变<strong>流体密度</strong> \(\rho_f\)（左滑块，\(500\text{–}1500\,\mathrm{kg/m^3}\)，涵盖原油到甘油）与<strong>物体密度</strong> \(\rho_\text{obj}\)（右滑块，\(200\text{–}2000\,\mathrm{kg/m^3}\)，涵盖泡沫到岩石）。物体是体积固定的立方体（\(V=0.027\,\mathrm{m^3}\)，边长 \(30\,\mathrm{cm}\)）。画布会动画显示物块从空中落下、进入水中、最终到达平衡位置（漂浮 / 中性悬浮 / 沉底）。实时绘制：浮力 \(\vec F_b\)（绿色向上箭头）与重力 \(\vec W\)（红色向下箭头，按力的大小成比例）、被排开的液体体积（物块水下部分加深高亮）、浸没分数、视重以及平衡判定（FLOATS / NEUTRAL / SINKS）。物理：\(\vec F_b=\rho_f V_\text{disp}\,\vec g\)；平衡浸没分数 \(\rho_\text{obj}/\rho_f\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-17" width="600" height="440"></canvas>
+        <div class="sim-controls" id="controls-17"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-17');
+          var W = canvas.width, H = canvas.height;
+          var g = 9.8;
+
+          // Fixed block geometry
+          var SIDE = 0.30;                          // m (cube edge)
+          var Vblock = SIDE * SIDE * SIDE;          // m^3 = 0.027
+
+          // Tank geometry (in metres; y is height above tank bottom)
+          var Hwater = 0.95;                         // water surface height (m)
+          var Htank  = 1.50;                         // tank interior height (m)
+
+          // Pixel mapping
+          var yBottomPx = 408, pxPerM = 240;
+          function yToScreen(yM) { return yBottomPx - yM * pxPerM; }
+          var waterPx = yToScreen(Hwater);           // screen y of water surface
+          var tankLeftPx = 130, tankRightPx = 470, tankTopPx = yToScreen(Htank);
+
+          var DEFAULTS = { rho_f: 1000, rho_obj: 600 };
+          var params = Object.assign({}, DEFAULTS);
+
+          function forces(s) {
+            // Returns current forces given block center height s.y
+            var rho_f = params.rho_f, rho_o = params.rho_obj;
+            var mObj = rho_o * Vblock;
+            var Wt = mObj * g;
+            var bot = s.y - SIDE / 2;
+            var top = s.y + SIDE / 2;
+            var sub;                                  // submerged depth (m)
+            if (bot >= Hwater) sub = 0;
+            else if (top <= Hwater) sub = SIDE;
+            else sub = Hwater - bot;
+            sub = Math.max(0, Math.min(SIDE, sub));
+            var Vdisp = SIDE * SIDE * sub;
+            var B = rho_f * Vdisp * g;
+            var frac = sub / SIDE;
+            return { W: Wt, B: B, frac: frac, m: mObj, Vdisp: Vdisp, sub: sub };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { y: 1.30, vy: 0 }; },   // start above water (in air)
+            step: function (dt, t, s) {
+              var f = forces(s);
+              // Net force (up positive): B - W; plus linear drag to settle.
+              var ay = (f.B - f.W) / f.m;
+              s.vy += ay * dt;
+              // Drag: stronger in water than in air (visual settling)
+              var inWater = (s.y - SIDE / 2) < Hwater;
+              var c = inWater ? 1.4 : 0.25;
+              s.vy *= Math.exp(-c * dt);
+              s.y += s.vy * dt;
+              // Tank floor (block rests on bottom)
+              if (s.y - SIDE / 2 < 0.005) {
+                s.y = 0.005 + SIDE / 2;
+                if (s.vy < 0) s.vy = 0;
+              }
+              // Tank ceiling
+              if (s.y + SIDE / 2 > Htank - 0.01) {
+                s.y = Htank - 0.01 - SIDE / 2;
+                if (s.vy > 0) s.vy = 0;
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var rho_f = params.rho_f, rho_o = params.rho_obj;
+              var cx = (tankLeftPx + tankRightPx) / 2;
+              var cyPx = yToScreen(s.y);
+              var sidePx = SIDE * pxPerM;
+              var f = forces(s);
+
+              // ---- Tank outline + back wall hatch ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 3;
+              ctx.strokeRect(tankLeftPx, tankTopPx, tankRightPx - tankLeftPx, yBottomPx - tankTopPx);
+              ctx.restore();
+              // ground hatch below tank
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1;
+              for (var gx = tankLeftPx - 20; gx < tankRightPx + 20; gx += 12) {
+                ctx.beginPath(); ctx.moveTo(gx, yBottomPx); ctx.lineTo(gx + 8, yBottomPx + 8); ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- Water body (translucent) ----
+              ctx.save();
+              ctx.fillStyle = 'rgba(56, 132, 218, 0.32)';
+              ctx.fillRect(tankLeftPx + 2, waterPx, tankRightPx - tankLeftPx - 4, yBottomPx - waterPx - 2);
+              // surface highlight
+              ctx.strokeStyle = '#2a6fc0'; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(tankLeftPx + 2, waterPx); ctx.lineTo(tankRightPx - 2, waterPx); ctx.stroke();
+              ctx.restore();
+
+              // ---- Block (above-water part) ----
+              var topPx = yToScreen(s.y + SIDE / 2);
+              var botPx = yToScreen(s.y - SIDE / 2);
+              ctx.save();
+              ctx.fillStyle = '#d97706';       // warm tone: dry part
+              ctx.strokeStyle = '#7c2d12'; ctx.lineWidth = 1.6;
+              ctx.fillRect(cx - sidePx / 2, topPx, sidePx, botPx - topPx);
+              ctx.strokeRect(cx - sidePx / 2, topPx, sidePx, botPx - topPx);
+              ctx.restore();
+
+              // ---- Highlight submerged portion (displaced-fluid volume) ----
+              if (f.sub > 0) {
+                var subTopPx = Math.max(topPx, waterPx);
+                var subBotPx = Math.min(botPx, yBottomPx - 2);
+                if (subBotPx > subTopPx) {
+                  ctx.save();
+                  ctx.fillStyle = 'rgba(186, 64, 32, 0.55)';  // darker overlay: underwater part
+                  ctx.fillRect(cx - sidePx / 2, subTopPx, sidePx, subBotPx - subTopPx);
+                  ctx.restore();
+                }
+              }
+
+              // ---- Waterline label & equilibrium line (target float level) ----
+              PS.drawText(ctx, 'water surface  水面  ρ_f = ' + params.rho_f.toFixed(0) + ' kg/m³',
+                          tankLeftPx + 6, waterPx - 6,
+                          { color: '#1d4ed8', font: '12px system-ui', baseline: 'bottom' });
+              // Equilibrium target (only if floats)
+              if (rho_o < rho_f) {
+                var fracEq = rho_o / rho_f;
+                var eqCenterY = Hwater - SIDE / 2 + SIDE * fracEq;   // block center at equilibrium
+                var eqPx = yToScreen(eqCenterY);
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(tankLeftPx + 4, eqPx); ctx.lineTo(tankRightPx - 4, eqPx); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, 'equilibrium  平衡线', tankRightPx - 96, eqPx - 4,
+                            { color: PS.colors.accent2, font: '11px system-ui', baseline: 'bottom' });
+              }
+
+              // ---- Force arrows (scaled to common factor) ----
+              function Fpx(F) { return Math.min(120, Math.max(6, F * 0.16)); }
+              var cW = PS.colors.accent;      // red: weight
+              var cB = PS.colors.accent2;     // green: buoyancy
+              // Weight (downward from block centre)
+              PS.drawArrow(ctx, cx, cyPx, cx, cyPx + Fpx(f.W), cW, 'W = ' + f.W.toFixed(0) + ' N');
+              // Buoyancy (upward, drawn slightly offset so labels don't overlap)
+              if (f.B > 0.4) {
+                PS.drawArrow(ctx, cx, cyPx, cx, cyPx - Fpx(f.B), cB, 'F_b = ' + f.B.toFixed(0) + ' N');
+              }
+
+              // ---- Status panel (top-left) ----
+              var eqFrac = rho_o / rho_f;
+              var status, statusColor;
+              if (Math.abs(rho_o - rho_f) < 25) { status = 'NEUTRAL 中性悬浮'; statusColor = '#b45309'; }
+              else if (rho_o < rho_f)            { status = 'FLOATS 漂浮';     statusColor = '#15803d'; }
+              else                               { status = 'SINKS 沉底';      statusColor = '#b91c1c'; }
+              ctx.save();
+              ctx.fillStyle = statusColor;
+              ctx.fillRect(14, 14, 224, 56);
+              PS.drawText(ctx, 'BUOYANCY STATUS 浮沉判定', 22, 27,
+                          { color: '#ffffff', font: 'bold 11px system-ui', baseline: 'top' });
+              PS.drawText(ctx, status, 22, 44,
+                          { color: '#ffffff', font: 'bold 19px system-ui', baseline: 'top' });
+              ctx.restore();
+
+              // ---- Numeric readout (top-right) ----
+              var rx = 380, ry = 18;
+              PS.drawText(ctx, '物体密度 ρ_obj = ' + rho_o.toFixed(0) + ' kg/m³', rx, ry,
+                          { color: PS.colors.text, font: '12px system-ui', baseline: 'top' });
+              PS.drawText(ctx, 'block V = ' + (Vblock * 1000).toFixed(1) + ' L', rx, ry + 16,
+                          { color: PS.colors.text, font: '12px system-ui', baseline: 'top' });
+              PS.drawText(ctx, '浸没分数 = ' + (f.frac * 100).toFixed(1) + ' %', rx, ry + 32,
+                          { color: PS.colors.text, font: '12px system-ui', baseline: 'top' });
+              PS.drawText(ctx, '平衡分数 = ' + (Math.min(1, eqFrac) * 100).toFixed(1) + ' %', rx, ry + 48,
+                          { color: PS.colors.text, font: '12px system-ui', baseline: 'top' });
+              // Apparent weight when fully submerged
+              var Bfull = rho_f * Vblock * g;
+              var Wapp = f.W - Bfull;
+              PS.drawText(ctx, '视重(全浸) = ' + Wapp.toFixed(1) + ' N', rx, ry + 64,
+                          { color: PS.colors.text, font: '12px system-ui', baseline: 'top' });
+
+              // ---- Block info inside block ----
+              PS.drawText(ctx, 'ρ_obj\n' + rho_o.toFixed(0), cx, cyPx,
+                          { color: '#ffffff', font: 'bold 13px system-ui', align: 'center', baseline: 'middle' });
+
+              // ---- Title bar ----
+              PS.drawText(ctx, 'Archimedes Lab · 阿基米德浮力实验室', 14, H - 8,
+                          { color: PS.colors.text, font: 'italic 12px system-ui' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-17'), [
+            { type: 'slider', key: 'rho_f',   label: '流体密度 ρ_f (kg/m³)',   min: 500, max: 1500, step: 10,  value: DEFAULTS.rho_f },
+            { type: 'slider', key: 'rho_obj', label: '物体密度 ρ_obj (kg/m³)', min: 200, max: 2000, step: 10,  value: DEFAULTS.rho_obj },
+            { type: 'button', key: 'reset',   label: '↺ 重新投放 Reset (drop block)' }
+          ]);
+          ctl.on('rho_f',   function (v) { params.rho_f = v; });
+          ctl.on('rho_obj', function (v) { params.rho_obj = v; });
+          ctl.on('reset',   function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>压强：</strong> \(P=F/A\)，标量但诱发的力恒沿面法线；单位 \(1\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}\)。</li>
+        <li><strong>深度公式：</strong> \(\;P=P_0+\rho g h\)。同一高度同压强，与容器形状无关。</li>
+        <li><strong>帕斯卡原理 / 液压机：</strong> \(\;\dfrac{F_1}{A_1}=\dfrac{F_2}{A_2}\)，力放大 \(A_2/A_1\)，距离缩短相同倍数（功守恒）。</li>
+        <li><strong>表压与绝对压强：</strong> \(\;P_\text{abs}=P_\text{atm}+P_\text{gauge}\)。气压计：\(P_\text{atm}=\rho_\text{Hg} g h\)。</li>
+        <li><strong>阿基米德原理：</strong> \(\;F_b=\rho_f\,V_\text{disp}\,g\)（向上）。完全浸没时与深度无关。</li>
+        <li><strong>浮沉条件：</strong> \(\rho_\text{obj}\lt\rho_f\) 浮、\(=\) 中性、\(\gt\) 沉。<strong>浸没分数</strong> \(V_\text{disp}/V=\rho_\text{obj}/\rho_f\)（漂浮时）。</li>
+        <li><strong>视重法测密度：</strong> \(\;\dfrac{\rho_\text{obj}}{\rho_f}=\dfrac{W_\text{air}}{W_\text{air}-W_\text{app}}\)。</li>
+        <li><strong>漂浮稳定性：</strong> 定倾中心 \(M\) 在重心 \(G\) 之上则稳定，定倾高度 \(GM\) 越大越稳。</li>
+        <li><strong>大气标度高：</strong> \(\;P(h)=P_0\,e^{-h/H}\)，\(H\approx 8.4\,\mathrm{km}\)。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

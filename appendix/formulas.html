@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 A · 公式速查表 / Formula Sheets — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+  <style>
+    /* Compact reference-table styling scoped to this appendix. */
+    .formula-ref h2 {
+      margin-top: 2.4em;
+      padding-bottom: 0.3em;
+      border-bottom: 2px solid var(--rule);
+      font-size: 1.4rem;
+    }
+    .formula-ref h3 {
+      margin: 1.3em 0 0.4em;
+      color: var(--primary);
+      font-size: 1.02rem;
+      font-family: var(--font-head);
+    }
+    .formula-ref p.intro {
+      color: var(--text-soft); font-size: 0.92em; margin: 0.3em 0 0.8em;
+    }
+    .formula-ref table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.4em 0 1.1em;
+      font-size: 0.92em;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .formula-ref th, .formula-ref td {
+      padding: 0.42em 0.75em;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+    .formula-ref th {
+      background: var(--sidebar-bg);
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+    .formula-ref tr:last-child td { border-bottom: none; }
+    .formula-ref td.name-cell { width: 38%; font-weight: 600; }
+    .formula-ref td.name-cell .en {
+      display: block; font-weight: 400; color: var(--text-mute);
+      font-size: 0.88em; font-family: var(--font-head);
+    }
+    .formula-ref td.formula-cell { white-space: normal; }
+    .formula-ref td.formula-cell mjx-container { margin: 0; }
+    .formula-ref tr:hover td { background: var(--primary-soft); }
+    .formula-ref .two-col-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.4em;
+    }
+    @media (max-width: 700px) {
+      .formula-ref .two-col-grid { grid-template-columns: 1fr; }
+      .formula-ref table { font-size: 0.85em; }
+    }
+    .formula-ref .part-heading {
+      font-family: var(--font-head); font-size: 1.6rem; font-weight: 700;
+      margin: 2.6em 0 0.4em; padding-bottom: 0.3em; border-bottom: 3px solid var(--primary);
+      color: var(--heading);
+    }
+    .formula-ref .part-heading:first-of-type { margin-top: 0.6em; }
+    .formula-ref .part-heading .pn {
+      display: inline-block; min-width: 1.7em; color: var(--primary); font-size: 0.9em;
+    }
+    .formula-ref .note-inline { color: var(--text-soft); font-size: 0.86em; }
+  </style>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 A · Appendix A · 公式速查表 Formula Sheets</p>
+      <h1>公式速查表 <span class="en-title">Formula Sheets</span></h1>
+    </header>
+
+    <p class="intro">本附录汇总课程所有主要公式，按部分与主题分组，便于快速查阅。矢量以 <span class="note-inline">\(\vec{A}\)</span> 表示，单位矢量 <span class="note-inline">\(\hat{n}\)</span>；点号 <span class="note-inline">\(\dot{x}\)</span> 表示对时间求导。This appendix collects every major formula in the course, grouped by part and topic for quick reference.</p>
+
+    <div class="formula-ref">
+
+    <!-- ============================================================= -->
+    <!-- 第一部分 / Part I -->
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">I</span>数学基础 · Mathematical Tools</h2>
+
+    <h3>1.1 矢量代数 Vector Algebra</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">模 Magnitude <span class="en">magnitude</span></td>
+            <td class="formula-cell">\(\displaystyle \lvert\vec{A}\rvert=\sqrt{A_x^2+A_y^2+A_z^2}\)</td></tr>
+        <tr><td class="name-cell">单位矢量 Unit vector</td>
+            <td class="formula-cell">\(\displaystyle \hat{A}=\frac{\vec{A}}{\lvert\vec{A}\rvert}\)</td></tr>
+        <tr><td class="name-cell">点积（代数） Dot product (algebraic)</td>
+            <td class="formula-cell">\(\displaystyle \vec{A}\cdot\vec{B}=A_xB_x+A_yB_y+A_zB_z\)</td></tr>
+        <tr><td class="name-cell">点积（几何） Dot product (geometric)</td>
+            <td class="formula-cell">\(\displaystyle \vec{A}\cdot\vec{B}=AB\cos\theta\)</td></tr>
+        <tr><td class="name-cell">叉积（大小） Cross product magnitude</td>
+            <td class="formula-cell">\(\displaystyle \lvert\vec{A}\times\vec{B}\rvert=AB\sin\theta\)</td></tr>
+        <tr><td class="name-cell">叉积（行列式） Cross product (determinant)</td>
+            <td class="formula-cell">\(\displaystyle \vec{A}\times\vec{B}=\begin{vmatrix}\hat{\imath}&\hat{\jmath}&\hat{k}\\ A_x&A_y&A_z\\ B_x&B_y&B_z\end{vmatrix}\)</td></tr>
+        <tr><td class="name-cell">BAC–CAB 恒等式 BAC–CAB identity</td>
+            <td class="formula-cell">\(\displaystyle \vec{A}\times(\vec{B}\times\vec{C})=\vec{B}(\vec{A}\cdot\vec{C})-\vec{C}(\vec{A}\cdot\vec{B})\)</td></tr>
+        <tr><td class="name-cell">混合三重积 Scalar triple product</td>
+            <td class="formula-cell">\(\displaystyle V=\vec{A}\cdot(\vec{B}\times\vec{C})\)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>1.2 微积分速查 Calculus Quick Reference</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">导数定义 Derivative definition</td>
+            <td class="formula-cell">\(\displaystyle \dv{f}{x}=\lim_{\Delta x\to 0}\frac{f(x+\Delta x)-f(x)}{\Delta x}\)</td></tr>
+        <tr><td class="name-cell">乘积法则 Product rule</td>
+            <td class="formula-cell">\(\displaystyle (fg)'=f'g+fg'\)</td></tr>
+        <tr><td class="name-cell">商法则 Quotient rule</td>
+            <td class="formula-cell">\(\displaystyle \left(\frac{f}{g}\right)'=\frac{f'g-fg'}{g^2}\)</td></tr>
+        <tr><td class="name-cell">链式法则 Chain rule</td>
+            <td class="formula-cell">\(\displaystyle \dv{f}{t}=\pdv{f}{x}\dv{x}{t}\)</td></tr>
+        <tr><td class="name-cell">分部积分 Integration by parts</td>
+            <td class="formula-cell">\(\displaystyle \int u\,dv=uv-\int v\,du\)</td></tr>
+        <tr><td class="name-cell">泰勒展开 Taylor series</td>
+            <td class="formula-cell">\(\displaystyle f(x)=f(a)+f'(a)(x-a)+\frac{f''(a)}{2!}(x-a)^2+\cdots\)</td></tr>
+        <tr><td class="name-cell">二项近似 Binomial approx.</td>
+            <td class="formula-cell">\(\displaystyle (1+x)^n\approx 1+nx\;\;(|x|\ll 1)\)</td></tr>
+        <tr><td class="name-cell">指数 / 三角 Exponential / trig</td>
+            <td class="formula-cell">\(\displaystyle e^x\approx 1+x+\tfrac{x^2}{2},\;\;\sin x\approx x-\tfrac{x^3}{6},\;\;\cos x\approx 1-\tfrac{x^2}{2}\)</td></tr>
+        <tr><td class="name-cell">梯度 / 散度 / 旋度 Grad / Div / Curl</td>
+            <td class="formula-cell">\(\displaystyle \vec{F}=-\nabla U,\;\;\nabla\cdot\vec{F},\;\;\nabla\times\vec{F}\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">II</span>运动学 · Kinematics</h2>
+
+    <h3>2.1 一维匀加速运动 1D Constant Acceleration</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">速度 Velocity</td>
+            <td class="formula-cell">\(\displaystyle v=v_0+at\)</td></tr>
+        <tr><td class="name-cell">位移 Displacement</td>
+            <td class="formula-cell">\(\displaystyle x=x_0+v_0t+\tfrac{1}{2}at^2\)</td></tr>
+        <tr><td class="name-cell">时间消去 Time-eliminated</td>
+            <td class="formula-cell">\(\displaystyle v^2=v_0^2+2a\,\Delta x\)</td></tr>
+        <tr><td class="name-cell">平均速度 Average velocity</td>
+            <td class="formula-cell">\(\displaystyle \bar{v}=\frac{v_0+v}{2}\)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.2 抛体运动 Projectile Motion</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">位置 Position</td>
+            <td class="formula-cell">\(\displaystyle x(t)=v_0\cos\theta\cdot t,\quad y(t)=v_0\sin\theta\cdot t-\tfrac{1}{2}gt^2\)</td></tr>
+        <tr><td class="name-cell">轨迹方程 Trajectory</td>
+            <td class="formula-cell">\(\displaystyle y=x\tan\theta-\frac{gx^2}{2v_0^2\cos^2\theta}\)</td></tr>
+        <tr><td class="name-cell">射程 Range (level)</td>
+            <td class="formula-cell">\(\displaystyle R=\frac{v_0^2\sin 2\theta}{g}\)</td></tr>
+        <tr><td class="name-cell">最大高度 Maximum height</td>
+            <td class="formula-cell">\(\displaystyle H=\frac{v_0^2\sin^2\theta}{2g}\)</td></tr>
+        <tr><td class="name-cell">飞行时间 Time of flight</td>
+            <td class="formula-cell">\(\displaystyle T=\frac{2v_0\sin\theta}{g}\)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.3 圆周 / 极坐标 Circular & Polar Motion</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">线速度–角速度 Linear vs angular</td>
+            <td class="formula-cell">\(\displaystyle v=r\omega\)</td></tr>
+        <tr><td class="name-cell">向心加速度 Centripetal accel.</td>
+            <td class="formula-cell">\(\displaystyle a_c=\frac{v^2}{r}=\omega^2 r\)</td></tr>
+        <tr><td class="name-cell">极坐标速度 Velocity in polar</td>
+            <td class="formula-cell">\(\displaystyle \vec{v}=\dot{r}\,\hat{r}+r\dot{\theta}\,\hat{\theta}\)</td></tr>
+        <tr><td class="name-cell">极坐标加速度 Acceleration in polar</td>
+            <td class="formula-cell">\(\displaystyle \vec{a}=(\ddot{r}-r\dot{\theta}^2)\,\hat{r}+(r\ddot{\theta}+2\dot{r}\dot{\theta})\,\hat{\theta}\)</td></tr>
+        <tr><td class="name-cell">匀角加速 Constant α</td>
+            <td class="formula-cell">\(\displaystyle \omega=\omega_0+\alpha t,\;\;\theta=\theta_0+\omega_0 t+\tfrac{1}{2}\alpha t^2\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">III</span>动力学 · Dynamics</h2>
+
+    <h3>3.1 牛顿定律与常见力 Newton's Laws & Forces</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">第二定律 Second law</td>
+            <td class="formula-cell">\(\displaystyle \vec{F}_{net}=m\vec{a}=\dv{\vec{p}}{t}\)</td></tr>
+        <tr><td class="name-cell">第三定律 Third law</td>
+            <td class="formula-cell">\(\displaystyle \vec{F}_{AB}=-\vec{F}_{BA}\)</td></tr>
+        <tr><td class="name-cell">静摩擦 Static friction</td>
+            <td class="formula-cell">\(\displaystyle f_s\le \mu_s N\)</td></tr>
+        <tr><td class="name-cell">动摩擦 Kinetic friction</td>
+            <td class="formula-cell">\(\displaystyle f_k=\mu_k N\)</td></tr>
+        <tr><td class="name-cell">胡克定律 Hooke's law</td>
+            <td class="formula-cell">\(\displaystyle F=-kx\)</td></tr>
+        <tr><td class="name-cell">线性阻力 Linear drag</td>
+            <td class="formula-cell">\(\displaystyle \vec{F}_d=-b\vec{v}\)</td></tr>
+        <tr><td class="name-cell">二次阻力 Quadratic drag</td>
+            <td class="formula-cell">\(\displaystyle F_d=\tfrac{1}{2}\rho C_d A\,v^2\)</td></tr>
+        <tr><td class="name-cell">收尾速度 Terminal velocity</td>
+            <td class="formula-cell">\(\displaystyle v_t=\frac{mg}{b}\) <span class="note-inline">(linear)</span>; \(\displaystyle v_t=\sqrt{\frac{2mg}{\rho C_d A}}\) <span class="note-inline">(quadratic)</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">IV</span>功与能 · Work &amp; Energy</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">功 Work</td>
+            <td class="formula-cell">\(\displaystyle W=\int \vec{F}\cdot d\vec{r}\)</td></tr>
+        <tr><td class="name-cell">功率 Power</td>
+            <td class="formula-cell">\(\displaystyle P=\dv{W}{t}=\vec{F}\cdot\vec{v}\)</td></tr>
+        <tr><td class="name-cell">动能 Kinetic energy</td>
+            <td class="formula-cell">\(\displaystyle K=\tfrac{1}{2}mv^2\)</td></tr>
+        <tr><td class="name-cell">动能定理 Work–energy theorem</td>
+            <td class="formula-cell">\(\displaystyle W_{net}=\Delta K\)</td></tr>
+        <tr><td class="name-cell">总机械能 Total mechanical energy</td>
+            <td class="formula-cell">\(\displaystyle E=K+U\)</td></tr>
+        <tr><td class="name-cell">非保守力功 Non-conservative work</td>
+            <td class="formula-cell">\(\displaystyle W_{nc}=\Delta E\)</td></tr>
+        <tr><td class="name-cell">力–势能 Force from potential</td>
+            <td class="formula-cell">\(\displaystyle \vec{F}=-\nabla U,\;\;F_x=-\dv{U}{x}\)</td></tr>
+        <tr><td class="name-cell">重力势能（近地表） Gravitational PE</td>
+            <td class="formula-cell">\(\displaystyle U=mgh\)</td></tr>
+        <tr><td class="name-cell">弹簧势能 Spring PE</td>
+            <td class="formula-cell">\(\displaystyle U=\tfrac{1}{2}kx^2\)</td></tr>
+        <tr><td class="name-cell">引力势能（通用） Gravitational PE (general)</td>
+            <td class="formula-cell">\(\displaystyle U=-\frac{GMm}{r}\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">V</span>动量 · Momentum</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">动量 Momentum</td>
+            <td class="formula-cell">\(\displaystyle \vec{p}=m\vec{v}\)</td></tr>
+        <tr><td class="name-cell">冲量 Impulse</td>
+            <td class="formula-cell">\(\displaystyle \vec{J}=\int\vec{F}\,dt=\Delta\vec{p}\)</td></tr>
+        <tr><td class="name-cell">动量守恒 Conservation</td>
+            <td class="formula-cell">\(\displaystyle \sum\vec{p}_i=\sum\vec{p}_f\;\;\;(F_{ext}=0)\)</td></tr>
+        <tr><td class="name-cell">质心 Position of CM</td>
+            <td class="formula-cell">\(\displaystyle \vec{r}_{cm}=\frac{1}{M}\sum_i m_i\vec{r}_i\)</td></tr>
+        <tr><td class="name-cell">质心运动 CM motion</td>
+            <td class="formula-cell">\(\displaystyle M\vec{a}_{cm}=\vec{F}_{ext},\;\;\vec{P}_{tot}=M\vec{v}_{cm}\)</td></tr>
+        <tr><td class="name-cell">一维弹性碰撞 1D elastic (target at rest)</td>
+            <td class="formula-cell">\(\displaystyle v_1'=\frac{m_1-m_2}{m_1+m_2}v_1,\;\;v_2'=\frac{2m_1}{m_1+m_2}v_1\)</td></tr>
+        <tr><td class="name-cell">一维弹性碰撞（一般） 1D elastic (general)</td>
+            <td class="formula-cell">\(\displaystyle v_1'=\frac{(m_1-m_2)v_1+2m_2 v_2}{m_1+m_2},\;\;v_2'=\frac{2m_1 v_1+(m_2-m_1)v_2}{m_1+m_2}\)</td></tr>
+        <tr><td class="name-cell">恢复系数 Coefficient of restitution</td>
+            <td class="formula-cell">\(\displaystyle e=\frac{v_{2f}-v_{1f}}{v_{1i}-v_{2i}}\)</td></tr>
+        <tr><td class="name-cell">齐奥尔科夫斯基公式 Rocket equation</td>
+            <td class="formula-cell">\(\displaystyle \Delta v=v_{ex}\ln\!\frac{m_0}{m_f}\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">VI</span>转动 · Rotation</h2>
+
+    <h3>6.1 转动动力学 Rotational Dynamics</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">力矩 Torque</td>
+            <td class="formula-cell">\(\displaystyle \vec{\tau}=\vec{r}\times\vec{F}\)</td></tr>
+        <tr><td class="name-cell">转动第二定律 Newton II (rot.)</td>
+            <td class="formula-cell">\(\displaystyle \vec{\tau}_{net}=I\vec{\alpha}=\dv{\vec{L}}{t}\)</td></tr>
+        <tr><td class="name-cell">转动动能 Rotational KE</td>
+            <td class="formula-cell">\(\displaystyle K_{rot}=\tfrac{1}{2}I\omega^2\)</td></tr>
+        <tr><td class="name-cell">角动量 Angular momentum</td>
+            <td class="formula-cell">\(\displaystyle \vec{L}=\vec{r}\times\vec{p}=I\vec{\omega}\)</td></tr>
+        <tr><td class="name-cell">平行轴定理 Parallel axis theorem</td>
+            <td class="formula-cell">\(\displaystyle I=I_{cm}+Md^2\)</td></tr>
+        <tr><td class="name-cell">垂直轴定理 Perpendicular axis (planar)</td>
+            <td class="formula-cell">\(\displaystyle I_z=I_x+I_y\)</td></tr>
+        <tr><td class="name-cell">无滑滚动 Rolling (no slip)</td>
+            <td class="formula-cell">\(\displaystyle v=R\omega,\;\;a=R\alpha\)</td></tr>
+        <tr><td class="name-cell">滚动总动能 Rolling total KE</td>
+            <td class="formula-cell">\(\displaystyle K=\tfrac{1}{2}Mv^2+\tfrac{1}{2}I_{cm}\omega^2\)</td></tr>
+        <tr><td class="name-cell">回转频率 Precession rate</td>
+            <td class="formula-cell">\(\displaystyle \Omega_p=\frac{\tau}{L}=\frac{Mgr}{I\omega}\)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.2 常见转动惯量 Moments of Inertia <span class="note-inline">(about CM, axis through CM)</span></h3>
+    <table>
+      <thead><tr><th>物体 Object</th><th>\(I\)</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">质点 Point mass <span class="en">(at radius r)</span></td>
+            <td class="formula-cell">\(\displaystyle I=Mr^2\)</td></tr>
+        <tr><td class="name-cell">细圆环 Hoop/ring <span class="en">(⊥ to plane)</span></td>
+            <td class="formula-cell">\(\displaystyle I=MR^2\)</td></tr>
+        <tr><td class="name-cell">圆盘 / 实心柱 Disk / solid cylinder <span class="en">(axial)</span></td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{1}{2}MR^2\)</td></tr>
+        <tr><td class="name-cell">实心球 Solid sphere</td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{2}{5}MR^2\)</td></tr>
+        <tr><td class="name-cell">薄球壳 Thin spherical shell</td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{2}{3}MR^2\)</td></tr>
+        <tr><td class="name-cell">匀质杆 Rod <span class="en">(axis through center)</span></td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{1}{12}ML^2\)</td></tr>
+        <tr><td class="name-cell">匀质杆 Rod <span class="en">(axis through end)</span></td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{1}{3}ML^2\)</td></tr>
+        <tr><td class="name-cell">实心柱 Disk <span class="en">(axis through diameter)</span></td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{1}{4}MR^2+\tfrac{1}{12}ML^2\)</td></tr>
+        <tr><td class="name-cell">矩形板 Rectangular slab <span class="en">(⊥ through center)</span></td>
+            <td class="formula-cell">\(\displaystyle I=\tfrac{1}{12}M(a^2+b^2)\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">VII</span>振动 · Oscillations</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">简谐运动方程 SHM equation</td>
+            <td class="formula-cell">\(\displaystyle \ddot{x}+\omega^2 x=0\)</td></tr>
+        <tr><td class="name-cell">通解 General solution</td>
+            <td class="formula-cell">\(\displaystyle x(t)=A\cos(\omega t+\phi)\)</td></tr>
+        <tr><td class="name-cell">弹簧振子 Spring–mass</td>
+            <td class="formula-cell">\(\displaystyle \omega=\sqrt{\frac{k}{m}},\;\;T=2\pi\sqrt{\frac{m}{k}}\)</td></tr>
+        <tr><td class="name-cell">单摆（小角度） Simple pendulum</td>
+            <td class="formula-cell">\(\displaystyle T=2\pi\sqrt{\frac{L}{g}}\)</td></tr>
+        <tr><td class="name-cell">物理摆 Physical pendulum</td>
+            <td class="formula-cell">\(\displaystyle T=2\pi\sqrt{\frac{I}{Mgd}}\)</td></tr>
+        <tr><td class="name-cell">总能量 SHM energy</td>
+            <td class="formula-cell">\(\displaystyle E=\tfrac{1}{2}kA^2\)</td></tr>
+        <tr><td class="name-cell">最大速度/加速度 Peak v / a</td>
+            <td class="formula-cell">\(\displaystyle v_{max}=A\omega,\;\;a_{max}=A\omega^2\)</td></tr>
+        <tr><td class="name-cell">阻尼方程 Damped oscillator</td>
+            <td class="formula-cell">\(\displaystyle m\ddot{x}+b\dot{x}+kx=0\)</td></tr>
+        <tr><td class="name-cell">阻尼频率 Underdamped freq.</td>
+            <td class="formula-cell">\(\displaystyle \omega_d=\sqrt{\omega_0^2-\gamma^2},\;\;\gamma=\frac{b}{2m}\)</td></tr>
+        <tr><td class="name-cell">共振振幅 Resonance amplitude</td>
+            <td class="formula-cell">\(\displaystyle A=\frac{F_0/m}{\sqrt{(\omega_0^2-\omega^2)^2+(2\gamma\omega)^2}}\)</td></tr>
+        <tr><td class="name-cell">品质因数 Quality factor</td>
+            <td class="formula-cell">\(\displaystyle Q=\frac{\omega_0}{2\gamma}\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">VIII</span>引力 · Gravitation</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">万有引力 Newton's law</td>
+            <td class="formula-cell">\(\displaystyle F=\frac{GMm}{r^2}\)</td></tr>
+        <tr><td class="name-cell">引力场 Gravitational field</td>
+            <td class="formula-cell">\(\displaystyle \vec{g}=-\frac{GM}{r^2}\,\hat{r}\)</td></tr>
+        <tr><td class="name-cell">表面重力 Surface gravity</td>
+            <td class="formula-cell">\(\displaystyle g=\frac{GM}{R^2}\)</td></tr>
+        <tr><td class="name-cell">引力势能 Gravitational PE</td>
+            <td class="formula-cell">\(\displaystyle U=-\frac{GMm}{r}\)</td></tr>
+        <tr><td class="name-cell">圆轨道速度 Circular orbit speed</td>
+            <td class="formula-cell">\(\displaystyle v_{orbit}=\sqrt{\frac{GM}{r}}\)</td></tr>
+        <tr><td class="name-cell">逃逸速度 Escape speed</td>
+            <td class="formula-cell">\(\displaystyle v_{esc}=\sqrt{\frac{2GM}{r}}\)</td></tr>
+        <tr><td class="name-cell">轨道总能量 Circular orbit energy</td>
+            <td class="formula-cell">\(\displaystyle E=-\frac{GMm}{2r},\;\;U=2E,\;\;K=-E\)</td></tr>
+        <tr><td class="name-cell">开普勒第三定律 Kepler's 3rd law</td>
+            <td class="formula-cell">\(\displaystyle T^2=\frac{4\pi^2}{GM}\,a^3\)</td></tr>
+        <tr><td class="name-cell">活力公式 Vis-viva equation</td>
+            <td class="formula-cell">\(\displaystyle v^2=GM\!\left(\frac{2}{r}-\frac{1}{a}\right)\)</td></tr>
+        <tr><td class="name-cell">开普勒第二定律 Kepler's 2nd (areal)</td>
+            <td class="formula-cell">\(\displaystyle \dv{A}{t}=\frac{L}{2m}\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">IX</span>分析力学 · Analytical Mechanics</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">作用量 Action</td>
+            <td class="formula-cell">\(\displaystyle S=\int_{t_1}^{t_2} L\,dt\)</td></tr>
+        <tr><td class="name-cell">拉格朗日量 Lagrangian</td>
+            <td class="formula-cell">\(\displaystyle L=T-V\)</td></tr>
+        <tr><td class="name-cell">共轭动量 Conjugate momentum</td>
+            <td class="formula-cell">\(\displaystyle p_i=\pdv{L}{\dot{q}_i}\)</td></tr>
+        <tr><td class="name-cell">欧拉–拉格朗日方程 Euler–Lagrange eq.</td>
+            <td class="formula-cell">\(\displaystyle \dv{t}\pdv{L}{\dot{q}_i}-\pdv{L}{q_i}=0\)</td></tr>
+        <tr><td class="name-cell">哈密顿量 Hamiltonian</td>
+            <td class="formula-cell">\(\displaystyle H=\sum_i p_i\dot{q}_i-L\)</td></tr>
+        <tr><td class="name-cell">哈密顿方程 Hamilton's equations</td>
+            <td class="formula-cell">\(\displaystyle \dot{q}_i=\pdv{H}{p_i},\;\;\dot{p}_i=-\pdv{H}{q_i}\)</td></tr>
+        <tr><td class="name-cell">守恒量对应 Conservation symmetry</td>
+            <td class="formula-cell">\(\displaystyle \pdv{L}{q_i}=0\Rightarrow p_i=\text{const.}\) <span class="note-inline">(Noether)</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">X</span>相对论 · Special Relativity</h2>
+
+    <h3>10.1 时空与变换 Spacetime &amp; Transformations</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">洛伦兹因子 Lorentz factor</td>
+            <td class="formula-cell">\(\displaystyle \gamma=\frac{1}{\sqrt{1-v^2/c^2}}\)</td></tr>
+        <tr><td class="name-cell">时间膨胀 Time dilation</td>
+            <td class="formula-cell">\(\displaystyle \Delta t=\gamma\,\Delta\tau\)</td></tr>
+        <tr><td class="name-cell">长度收缩 Length contraction</td>
+            <td class="formula-cell">\(\displaystyle L=\frac{L_0}{\gamma}\)</td></tr>
+        <tr><td class="name-cell">洛伦兹变换 Lorentz transform</td>
+            <td class="formula-cell">\(\displaystyle x'=\gamma(x-vt),\;\;t'=\gamma\!\left(t-\frac{vx}{c^2}\right)\)</td></tr>
+        <tr><td class="name-cell">速度合成 Velocity addition</td>
+            <td class="formula-cell">\(\displaystyle u'=\frac{u-v}{1-uv/c^2}\)</td></tr>
+        <tr><td class="name-cell">不变间隔 Invariant interval</td>
+            <td class="formula-cell">\(\displaystyle (\Delta s)^2=(c\,\Delta t)^2-(\Delta x)^2-(\Delta y)^2-(\Delta z)^2\)</td></tr>
+        <tr><td class="name-cell">相对论多普勒 Relativistic Doppler</td>
+            <td class="formula-cell">\(\displaystyle f'=f\sqrt{\frac{1\mp\beta}{1\pm\beta}},\;\;\beta=v/c\)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>10.2 相对论动量与能量 Relativistic Dynamics</h3>
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">四维速度 Four-velocity</td>
+            <td class="formula-cell">\(\displaystyle u^\mu=\gamma(c,\vec{v})\)</td></tr>
+        <tr><td class="name-cell">相对论动量 Relativistic momentum</td>
+            <td class="formula-cell">\(\displaystyle \vec{p}=\gamma m\vec{v}\)</td></tr>
+        <tr><td class="name-cell">总能量 Total energy</td>
+            <td class="formula-cell">\(\displaystyle E=\gamma mc^2\)</td></tr>
+        <tr><td class="name-cell">静能 Rest energy</td>
+            <td class="formula-cell">\(\displaystyle E_0=mc^2\)</td></tr>
+        <tr><td class="name-cell">动能 Kinetic energy</td>
+            <td class="formula-cell">\(\displaystyle K=(\gamma-1)mc^2\)</td></tr>
+        <tr><td class="name-cell">能量–动量关系 Energy–momentum</td>
+            <td class="formula-cell">\(\displaystyle E^2=(pc)^2+(mc^2)^2\)</td></tr>
+        <tr><td class="name-cell">四动量 Four-momentum</td>
+            <td class="formula-cell">\(\displaystyle p^\mu=(E/c,\,\vec{p})\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">XI</span>流体 · Fluid Mechanics</h2>
+
+    <table>
+      <thead><tr><th>名称 Name</th><th>表达式 Formula</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">压强 Pressure</td>
+            <td class="formula-cell">\(\displaystyle P=\frac{F}{A}\)</td></tr>
+        <tr><td class="name-cell">静水压 Hydrostatic pressure</td>
+            <td class="formula-cell">\(\displaystyle P=P_0+\rho g h\)</td></tr>
+        <tr><td class="name-cell">阿基米德浮力 Buoyant force</td>
+            <td class="formula-cell">\(\displaystyle F_b=\rho_f V g\)</td></tr>
+        <tr><td class="name-cell">连续性方程 Continuity (incompressible)</td>
+            <td class="formula-cell">\(\displaystyle A_1 v_1=A_2 v_2\)</td></tr>
+        <tr><td class="name-cell">伯努利方程 Bernoulli</td>
+            <td class="formula-cell">\(\displaystyle P+\tfrac{1}{2}\rho v^2+\rho g y=\text{const}\)</td></tr>
+        <tr><td class="name-cell">托里拆利 Torricelli</td>
+            <td class="formula-cell">\(\displaystyle v=\sqrt{2gh}\)</td></tr>
+        <tr><td class="name-cell">雷诺数 Reynolds number</td>
+            <td class="formula-cell">\(\displaystyle Re=\frac{\rho v L}{\eta}\)</td></tr>
+        <tr><td class="name-cell">泊肃叶定律 Poiseuille (laminar pipe)</td>
+            <td class="formula-cell">\(\displaystyle Q=\frac{\pi R^4\,\Delta P}{8\eta L}\)</td></tr>
+        <tr><td class="name-cell">斯托克斯阻力 Stokes drag</td>
+            <td class="formula-cell">\(\displaystyle F=6\pi\eta R v\)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ============================================================= -->
+    <h2 class="part-heading"><span class="pn">XII</span>常用常数 · Useful Constants</h2>
+    <table>
+      <thead><tr><th>常数 Constant</th><th>数值 Value</th></tr></thead>
+      <tbody>
+        <tr><td class="name-cell">重力加速度 Standard gravity, \(g\)</td>
+            <td class="formula-cell">\(\displaystyle 9.8\,\unit{m/s^2}\)</td></tr>
+        <tr><td class="name-cell">万有引力常量 Gravitational constant, \(G\)</td>
+            <td class="formula-cell">\(\displaystyle 6.674\times10^{-11}\,\unit{N\,m^2/kg^2}\)</td></tr>
+        <tr><td class="name-cell">光速 Speed of light, \(c\)</td>
+            <td class="formula-cell">\(\displaystyle 3.0\times10^{8}\,\unit{m/s}\)</td></tr>
+        <tr><td class="name-cell">电子质量 Electron mass, \(m_e\)</td>
+            <td class="formula-cell">\(\displaystyle 9.11\times10^{-31}\,\unit{kg}\)</td></tr>
+        <tr><td class="name-cell">元电荷 Elementary charge, \(e\)</td>
+            <td class="formula-cell">\(\displaystyle 1.602\times10^{-19}\,\unit{C}\)</td></tr>
+        <tr><td class="name-cell">水密度 Water density (4 °C)</td>
+            <td class="formula-cell">\(\displaystyle 1.0\times10^{3}\,\unit{kg/m^3}\)</td></tr>
+        <tr><td class="name-cell">标准大气压 Standard atmosphere, \(1\,\mathrm{atm}\)</td>
+            <td class="formula-cell">\(\displaystyle 1.013\times10^{5}\,\unit{Pa}\)</td></tr>
+      </tbody>
+    </table>
+
+    </div><!-- /.formula-ref -->
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

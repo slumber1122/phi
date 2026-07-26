@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 静力学与平衡 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 7 · 第7章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>静力学与平衡 <span class="en-title">Statics &amp; Equilibrium</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述刚体处于平衡状态的两个充要条件 \(\;\vec{\Sigma F}=\vec 0\;\) 与 \(\;\Sigma\vec\tau=\vec 0\)，并说明二者分别对应平动平衡 (translational equilibrium) 与转动平衡 (rotational equilibrium)。</li>
+        <li>解释为何力矩平衡“对任意参考点成立”，并能据此选择恰当的支点 (pivot point) 以消去未知力。</li>
+        <li>区分稳定 (stable)、不稳定 (unstable) 与随遇 (neutral) 平衡，并与第 4 章势能极小值相联系。</li>
+        <li>求解经典静力学问题：横梁、悬臂、吊臂、缆索以及靠墙梯子（含摩擦）。</li>
+        <li>区分重心 (center of gravity) 与质心 (center of mass)，并求复合体的重心位置。</li>
+        <li>用杨氏模量 (Young's modulus) \(Y\) 计算弹性杆件在载荷下的伸长量，理解应力 (stress) 与应变 (strain)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 平衡的两个条件 The Two Conditions for Equilibrium</h3>
+      <p>一个刚体 (rigid body) 处于平衡 (equilibrium) ——无论是静止（静态平衡 static equilibrium）还是以恒定速度/角速度运动（动态平衡 dynamic equilibrium）——当且仅当同时满足：</p>
+      <div class="formula">\[ \boxed{\;\sum \vec F = \vec 0 \quad\text{(平动平衡)}\;} \qquad \boxed{\;\sum \vec\tau = \vec 0 \quad\text{(转动平衡)}\;} \]</div>
+      <p>第一个条件保证物体没有线加速度；第二个条件保证物体没有角加速度。对二维问题，每个条件给出两个标量方程（\(x\)、\(y\)）和一个标量方程（绕轴的力矩），共三个独立方程，因此对单一刚体最多可解三个未知量。</p>
+
+      <h3>2. 力矩 Torque</h3>
+      <p>力 \(\vec F\) 对参考点 \(O\) 的力矩 (torque, moment) 定义为</p>
+      <div class="formula">\[ \vec\tau = \vec r \times \vec F, \qquad |\tau| = r\,F\,\sin\theta \]</div>
+      <p>其中 \(\vec r\) 是从 \(O\) 指向力的作用点的位置矢量，\(\theta\) 是 \(\vec r\) 与 \(\vec F\) 之间的夹角。在二维平面问题里，\(\vec\tau\) 沿垂直于平面的 \(z\) 轴：规定使物体<strong>逆时针</strong>转动的力矩为正、<strong>顺时针</strong>为负。乘积 \(r\sin\theta\) 称为<strong>力臂</strong> (moment arm, lever arm)，即从支点到力作用线的垂直距离。</p>
+
+      <h3>3. 平衡的分类 Stability of Equilibrium</h3>
+      <p>若在平衡态对系统施加微小扰动后：</p>
+      <ul>
+        <li>系统回到原位 → <strong>稳定平衡</strong> (stable equilibrium)，对应势能 \(U(x)\) 的<strong>极小值</strong>（见第 4 章 \(\dv{U}{x}=0,\;\dv[2]{U}{x}>0\)）；</li>
+        <li>系统继续远离原位 → <strong>不稳定平衡</strong> (unstable equilibrium)，对应势能<strong>极大值</strong>；</li>
+        <li>系统在新位置继续保持平衡 → <strong>随遇平衡</strong> (neutral equilibrium)，对应势能为常数。</li>
+      </ul>
+      <p>典型例子：竖直朝上的铅笔（不稳定）、悬挂的钟摆（稳定）、水平面上静止的台球（随遇）。</p>
+
+      <h3>4. 智选支点 Choosing a Smart Pivot</h3>
+      <p>力矩方程中，<strong>经过支点的力不产生力矩</strong>（因 \(\vec r\) 与 \(\vec F\) 共线时 \(r\times F = 0\)，或更准确说力臂为零）。技巧：把支点选在<strong>未知力的交点</strong>处，可使这些未知力不出现在力矩方程中，从而减少耦合。例如对于一端铰接 (hinge) 的吊臂，铰链处有两个未知分量 \((H_x, H_y)\)，因此对铰链取矩可立刻消去它们。</p>
+
+      <h3>5. 重心与质心 Center of Gravity vs. Center of Mass</h3>
+      <p><strong>质心</strong>是质量分布的平均位置；<strong>重心</strong>是重力的等效合作用点。在均匀重力场（\(g\) 处处相同）中两者严格重合。对由若干离散质点组成的系统：</p>
+      <div class="formula">\[ \vec r_{\,\mathrm{cm}} = \frac{\sum_i m_i \vec r_i}{\sum_i m_i} = \frac{1}{M}\int \vec r \,\dm \]</div>
+      <p>对均匀重力场，重力对任意支点的合力矩，等效于把总重力 \(M\vec g\) 作用于质心所产生的力矩。这就是为什么可以用单一矢量 \(M\vec g\) 画在重心处来代表整个物体的重量。</p>
+
+      <h3>6. 含摩擦的静力学：靠墙梯子 Statics with Friction — the Ladder</h3>
+      <p>梯子问题（本章互动仿真主题）综合了上述所有要素：地板提供法向力 \(N_\text{floor}\) 与静摩擦力 \(f\)，墙壁（若光滑）只提供法向力 \(N_\text{wall}\)，重力作用于梯子中点。临界条件是 \(f = \mu_s N_\text{floor}\)。详细求解见例 7.1。</p>
+
+      <h3>7. 桁架与方法-of-节点 Trusses &amp; Method of Joints</h3>
+      <p>桁架 (truss) 是由轻质二力杆 (two-force members) 通过光滑销钉连接而成的刚性结构。每根杆要么受拉 (tension)、要么受压 (compression)，且杆内力沿杆方向。<strong>方法-of-节点</strong> (method of joints)：对每个节点应用 \(\Sigma\vec F = \vec 0\)，逐节点求解未知杆力。<strong>方法-of-截面</strong> (method of sections) 则切开桁架、对一部分取矩，可一次求出指定杆力。</p>
+      <p class="example-statement">小例：如图，一个简单三角形桁架由两根斜杆与一根水平杆构成顶点 \(A\)，在 \(A\) 处挂载荷 \(W\)。若两斜杆对称、与水平面成 \(45^\circ\)，则由节点 \(A\) 的 \(\Sigma F_y=0\)：\(2\,T\sin 45^\circ = W\)，得每根斜杆拉力 \(T = W/\sqrt 2\)。</p>
+
+      <h3>8. 应力、应变与杨氏模量 Stress, Strain &amp; Young's Modulus</h3>
+      <p>对一根截面积为 \(A\)、原长为 \(L_0\) 的杆件施加拉伸力 \(F\) 时，定义</p>
+      <div class="formula">\[ \text{应力 (stress)}\;\;\sigma = \frac{F}{A}\;\;[\mathrm{Pa}], \qquad \text{应变 (strain)}\;\;\varepsilon = \frac{\Delta L}{L_0}\;\;[\text{无量纲}] \]</div>
+      <p>在线弹性范围 (Hooke 区) 内，应力与应变成正比，比例系数称为<strong>杨氏模量</strong> (Young's modulus) \(Y\)：</p>
+      <div class="formula">\[ Y = \frac{\sigma}{\varepsilon} = \frac{F/A}{\Delta L/L_0}, \qquad \Delta L = \frac{F\,L_0}{A\,Y} \]</div>
+      <p>当应力超过<strong>弹性极限</strong> (elastic limit) 后，材料发生永久性（塑性）变形；继续增大则达到<strong>极限应力</strong> (ultimate stress) 直至断裂。典型值：钢 \(Y\approx 2.0\times 10^{11}\,\mathrm{Pa}\)；铝 \(\approx 7.0\times 10^{10}\,\mathrm{Pa}\)；橡胶 \(\approx 0.01\text{–}0.1\times10^{9}\,\mathrm{Pa}\)。</p>
+
+      <div class="key-terms">equilibrium (平衡), static/dynamic equilibrium (静态/动态平衡), torque/moment (力矩), moment arm/lever arm (力臂), pivot point (支点), center of mass (质心), center of gravity (重心), hinge (铰链), two-force member (二力杆), tension/compression (拉/压), truss (桁架), method of joints (节点法), stress (应力), strain (应变), Young's modulus (杨氏模量), elastic limit (弹性极限)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：力矩平衡与参考点无关</h2>
+      <p>我们来严格证明一条贯穿全章的关键定理——<strong>若 \(\Sigma\vec F=\vec 0\) 且对某点 \(O\) 有 \(\Sigma\vec\tau_O=\vec 0\)，则对空间中任意另一点 \(O'\) 也有 \(\Sigma\vec\tau_{O'}=\vec 0\)</strong>。这正是“可自由选取支点”的根据。</p>
+      <p class="step"><strong>步骤 1.</strong> 设若干力 \(\vec F_i\) 分别作用于位置 \(\vec r_i\)（均以 \(O\) 为原点）。设 \(O'\) 相对 \(O\) 的位置为 \(\vec R\)。则各力相对 \(O'\) 的位置矢量为 \(\vec r_i - \vec R\)。</p>
+      <p class="step"><strong>步骤 2.</strong> 计算对 \(O'\) 的合力矩：</p>
+      <div class="formula">\[ \sum\vec\tau_{O'} = \sum_i (\vec r_i - \vec R)\times \vec F_i = \sum_i \vec r_i\times\vec F_i \;-\; \vec R \times \sum_i \vec F_i \]</div>
+      <p class="step"><strong>步骤 3.</strong> 第一项正是对 \(O\) 的合力矩 \(\Sigma\vec\tau_O\)。第二项含有 \(\Sigma_i\vec F_i\)。由假设 \(\Sigma\vec F_i = \vec 0\)，所以第二项为零：</p>
+      <div class="formula">\[ \sum\vec\tau_{O'} = \sum\vec\tau_O - \vec R\times\vec 0 = \sum\vec\tau_O \]</div>
+      <p class="step"><strong>结论：</strong> 合力矩 \(\Sigma\vec\tau\) 与参考点选择无关（前提是合力为零）。因此若对某点力矩为零，对一切点皆为零。\(\blacksquare\)</p>
+      <div class="note"><strong>实用推论：</strong> 你可以任意挑选最方便的支点列出力矩方程——通常选在多个未知力的交点，让这些未知力在力矩方程中消失。这把含 3 个未知量的问题降为一元方程。</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 靠墙梯子（光滑墙）——求地板最小摩擦因数</h4>
+        <p class="example-statement">一根长 \(L = 5.0\,\mathrm{m}\)、质量 \(m = 15\,\mathrm{kg}\) 的均匀梯子，以与地面成 \(\theta = 60^\circ\) 的倾角靠在<strong>完全光滑</strong>的竖直墙上。梯子与地板之间的静摩擦因数为 \(\mu_s\)。求使梯子不滑倒的最小 \(\mu_s\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>受力分析：</strong> 作用在梯子上的力有四个：地板法向力 \(N_\text{floor}\)（向上，作用于底端）、地板摩擦力 \(f\)（水平指向墙）、墙的法向力 \(N_\text{wall}\)（水平，背离墙）以及作用于梯子中点 \(L/2\) 的重力 \(mg\)（向下）。</p>
+          <p class="step"><strong>选支点：</strong> 取底端为支点。这样 \(N_\text{floor}\) 与 \(f\) 都经过支点，力矩为零，只剩 \(mg\) 与 \(N_\text{wall}\) 贡献力矩。</p>
+          <p class="step"><strong>力矩平衡 \(\Sigma\tau = 0\)（绕底端，逆时针为正）：</strong> 重力作用点距支点的水平距离为 \((L/2)\cos\theta\)，力矩顺时针：\(-mg(L/2)\cos\theta\)。墙法向力作用于梯顶（距支点水平距离 \(L\cos\theta\)、竖直距离 \(L\sin\theta\)），方向水平；其力矩为 \(+N_\text{wall}\,L\sin\theta\)。所以</p>
+          <div class="formula">\[ N_\text{wall}\,L\sin\theta - mg\,\frac{L}{2}\cos\theta = 0 \;\;\Longrightarrow\;\; N_\text{wall} = \frac{mg}{2\tan\theta} \]</div>
+          <p class="step"><strong>力平衡 \(\Sigma F_x = 0,\;\Sigma F_y = 0\)：</strong></p>
+          <div class="formula">\[ f - N_\text{wall} = 0 \;\Longrightarrow\; f = N_\text{wall} = \frac{mg}{2\tan\theta}; \qquad N_\text{floor} - mg = 0 \;\Longrightarrow\; N_\text{floor} = mg \]</div>
+          <p class="step"><strong>临界条件：</strong> 不滑倒要求 \(f \le \mu_s N_\text{floor}\)，即</p>
+          <div class="formula">\[ \frac{mg}{2\tan\theta} \le \mu_s\, mg \;\;\Longrightarrow\;\; \boxed{\;\mu_s \ge \frac{1}{2\tan\theta}\;} \]</div>
+          <p class="step"><strong>数值：</strong> \(\mu_{s,\min} = \dfrac{1}{2\tan 60^\circ} = \dfrac{1}{2\sqrt 3} \approx 0.289\)。</p>
+          <p>代入数据：\(N_\text{floor} = 15\cdot 9.8 = 147\,\mathrm{N}\)；\(N_\text{wall} = f = \dfrac{147}{2\times 1.732} \approx 42.4\,\mathrm{N}\)。因此 <span class="ans">\(\mu_{s,\min} \approx 0.29\)</span>，地板需提供至少 \(42.4\,\mathrm{N}\) 的摩擦力。</p>
+          <p class="step"><strong>注：</strong> 注意 \(\mu_{s,\min}\) 与 \(m\)、\(L\) 无关，只取决于角度。倾角越小，所需摩擦因数越大——平放的梯子几乎无法靠墙站立。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 两端支撑、载荷偏离中心的横梁</h4>
+        <p class="example-statement">一均匀横梁长 \(L = 4.0\,\mathrm{m}\)、质量 \(M = 20\,\mathrm{kg}\)，两端搁在两个支座上。一个 \(m = 50\,\mathrm{kg}\) 的物体放在距左端 \(d = 1.0\,\mathrm{m}\) 处。求两支座的支撑力 \(F_L\) 与 \(F_R\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>分析：</strong> 横梁自重 \(Mg\) 作用于中点（距左端 \(L/2 = 2.0\,\mathrm{m}\)），重物 \(mg\) 距左端 \(1.0\,\mathrm{m}\)。两支座给梁向上的力。</p>
+          <p class="step"><strong>对左端取矩</strong>（让 \(F_L\) 消失）：力矩顺时针为负。</p>
+          <div class="formula">\[ \sum\tau_L = 0:\quad F_R\cdot L \;-\; Mg\cdot\tfrac{L}{2} \;-\; mg\cdot d = 0 \]</div>
+          <p class="step"><strong>解 \(F_R\)：</strong></p>
+          <div class="formula">\[ F_R = \frac{Mg(L/2) + mg\,d}{L} = \frac{(20)(9.8)(2.0) + (50)(9.8)(1.0)}{4.0} = \frac{392 + 490}{4.0} = 220.5\,\mathrm{N} \]</div>
+          <p class="step"><strong>由 \(\Sigma F_y = 0\) 求 \(F_L\)：</strong></p>
+          <div class="formula">\[ F_L + F_R = (M+m)g = 70\cdot 9.8 = 686\,\mathrm{N} \;\Longrightarrow\; F_L = 686 - 220.5 = 465.5\,\mathrm{N} \]</div>
+          <p>故 <span class="ans">\(F_L \approx 466\,\mathrm{N}\)（左支座，靠重物一侧）、\(F_R \approx 220\,\mathrm{N}\)（右支座）</span>。检验：\(F_L + F_R = 686\,\mathrm{N} = (M+m)g\;\checkmark\)。重物越靠近哪一端，那一端的支座力越大——这与直觉一致。注意此时任一支座的力都<strong>不</strong>等于 \((M+m)g/2\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 吊臂与缆索——缆张力与铰链力</h4>
+        <p class="example-statement">一根均匀水平吊臂长 \(L = 3.0\,\mathrm{m}\)、质量 \(M = 10\,\mathrm{kg}\)，左端用铰链固定在墙上，右端用一根与水平成 \(\phi = 30^\circ\) 的缆索斜拉向上到墙上高处。一个 \(m = 25\,\mathrm{kg}\) 的招牌挂在吊臂右端。求缆索张力 \(T\) 与铰链处的两个力分量 \(H_x, H_y\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>受力分析：</strong> 铰链给梁的水平力 \(H_x\)、竖直力 \(H_y\)（先假设正向）；缆索对梁右端施拉力 \(T\)，沿索指向墙的上方，分量 \((-T\cos\phi,\, +T\sin\phi)\)；梁自重 \(Mg\) 在中点；招牌重力 \(mg\) 在右端。</p>
+          <p class="step"><strong>对铰链取矩</strong>（消去 \(H_x, H_y\)）。注意：\(T\) 的水平分量沿梁指向铰链，力矩为零；只有竖直分量 \(T\sin\phi\) 贡献，力臂 \(L\)。</p>
+          <div class="formula">\[ \sum\tau_\text{hinge} = 0:\quad T\sin\phi\cdot L \;-\; Mg\cdot\tfrac{L}{2} \;-\; mg\cdot L = 0 \]</div>
+          <div class="formula">\[ T\sin\phi = \frac{Mg}{2} + mg \;\Longrightarrow\; T = \frac{Mg/2 + mg}{\sin\phi} \]</div>
+          <p class="step"><strong>数值：</strong> \(Mg/2 = 49\,\mathrm{N}\)，\(mg = 245\,\mathrm{N}\)，\(\sin 30^\circ = 0.50\)。</p>
+          <div class="formula">\[ T = \frac{49 + 245}{0.50} = 588\,\mathrm{N} \]</div>
+          <p class="step"><strong>铰链力：</strong> 由 \(\Sigma F_x = 0\) 与 \(\Sigma F_y = 0\)：</p>
+          <div class="formula">\[ H_x = T\cos\phi = 588\cos 30^\circ \approx 509\,\mathrm{N}; \qquad H_y = (M+m)g - T\sin\phi = 343 - 294 = 49\,\mathrm{N} \]</div>
+          <p>故 <span class="ans">\(T \approx 588\,\mathrm{N}\)；\(H_x \approx 509\,\mathrm{N}\)（向墙内方向）、\(H_y \approx 49\,\mathrm{N}\)（向上）</span>。铰链合力 \(H = \sqrt{H_x^2 + H_y^2} \approx 511\,\mathrm{N}\)。可见缆索几乎承担了全部竖直载荷，而铰链的水平反作用力与缆张力水平分量平衡——铰链本质上是个“被拉伸”的固定点。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 L 形复合体的重心</h4>
+        <p class="example-statement">两根均匀细杆焊成直角：水平杆长 \(0.40\,\mathrm{m}\)、质量 \(0.30\,\mathrm{kg}\)，沿 \(+x\) 轴从原点 \(O\) 伸出；竖直杆长 \(0.30\,\mathrm{m}\)、质量 \(0.20\,\mathrm{kg}\)，沿 \(+y\) 轴从 \(O\) 伸出。求整个 L 形结构的重心位置。</p>
+        <div class="example-solution">
+          <p class="step"><strong>方法：</strong> 把复合体看作两个“质点”分别位于各自重心，然后用质心公式。均匀杆的质心在其几何中点：</p>
+          <div class="formula">\[ \text{水平杆质心: } (x_1,y_1) = (0.20\,\mathrm{m},\,0),\quad m_1 = 0.30\,\mathrm{kg} \]</div>
+          <div class="formula">\[ \text{竖直杆质心: } (x_2,y_2) = (0,\,0.15\,\mathrm{m}),\quad m_2 = 0.20\,\mathrm{kg} \]</div>
+          <p class="step"><strong>合成：</strong></p>
+          <div class="formula">\[ x_\text{cg} = \frac{m_1 x_1 + m_2 x_2}{m_1+m_2} = \frac{(0.30)(0.20) + (0.20)(0)}{0.50} = \frac{0.060}{0.50} = 0.120\,\mathrm{m} \]</div>
+          <div class="formula">\[ y_\text{cg} = \frac{m_1 y_1 + m_2 y_2}{m_1+m_2} = \frac{(0.30)(0) + (0.20)(0.15)}{0.50} = \frac{0.030}{0.50} = 0.060\,\mathrm{m} \]</div>
+          <p>故 <span class="ans">重心位于 \((x_\text{cg},\,y_\text{cg}) = (0.12\,\mathrm{m},\,0.060\,\mathrm{m})\)，即 \(O\) 点右方 \(12\,\mathrm{cm}\)、上方 \(6\,\mathrm{cm}\)</span>。</p>
+          <p class="step"><strong>检验：</strong> 重心位于 L 形“凹口”外侧的空白区域，这是 L 形（与 U 形、月牙形等）的典型现象——重心并不一定在物体内。这也提示：在重心下方用一根细针顶住，理论上可使任意形状平衡（“找重心”的实验方法）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 钢丝的弹性伸长</h4>
+        <p class="example-statement">一根长 \(L_0 = 2.0\,\mathrm{m}\)、直径 \(d = 1.0\,\mathrm{mm}\) 的钢丝悬挂 \(m = 10\,\mathrm{kg}\) 的载荷。钢的杨氏模量 \(Y = 2.0\times 10^{11}\,\mathrm{Pa}\)。求钢丝的伸长量 \(\Delta L\) 与应变 \(\varepsilon\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>截面积：</strong></p>
+          <div class="formula">\[ A = \pi\!\left(\frac{d}{2}\right)^2 = \pi(0.5\times10^{-3})^2 = 7.85\times10^{-7}\,\mathrm{m^2} \]</div>
+          <p class="step"><strong>力（载荷）：</strong> \(F = mg = 10\times 9.8 = 98\,\mathrm{N}\)。</p>
+          <p class="step"><strong>由 \(\Delta L = FL_0/(AY)\)：</strong></p>
+          <div class="formula">\[ \Delta L = \frac{(98)(2.0)}{(7.85\times10^{-7})(2.0\times10^{11})} = \frac{196}{1.571\times10^{5}} \approx 1.25\times10^{-3}\,\mathrm{m} \]</div>
+          <div class="formula">\[ \varepsilon = \frac{\Delta L}{L_0} = \frac{1.25\times10^{-3}}{2.0} \approx 6.2\times10^{-4} \quad(\text{即 } 0.062\%) \]</div>
+          <p>故 <span class="ans">\(\Delta L \approx 1.25\,\mathrm{mm}\)，\(\varepsilon \approx 6.2\times10^{-4}\)</span>。该应变远小于钢的弹性极限（典型约 \(2\times10^{-3}\)），故变形完全可逆，胡克定律成立。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>选了糟糕的支点。</strong> 把支点选在所求未知力之外的地方，会让力矩方程耦合多个未知量。正确做法：把支点选在尽可能多的未知力的交点上（尤其铰链处）。</li>
+        <li><strong>漏算某个力的力矩。</strong> 记住：每个力（不论大小、方向）都要在力矩方程中出现，除非它<strong>正好</strong>经过支点（力臂为零）。养成逐个力过一遍的习惯。</li>
+        <li><strong>力矩方向（正负号）搞反。</strong> 在二维问题里，请用“逆时针为正、顺时针为负”的统一约定，并明确写出每个力矩的符号；不要凭“直觉”。</li>
+        <li><strong>在多支座梁上想当然地写 \(N = mg\)。</strong> 例 7.2 中两个支座力之和等于总重，但单个支座力<strong>不</strong>是 \(mg/2\)，与载荷位置密切相关。必须用力矩方程分配。</li>
+        <li><strong>在梯子问题中漏掉墙的法向力。</strong> 光滑墙虽无摩擦，但仍有<strong>法向</strong>推力 \(N_\text{wall}\)。这是梯子不绕底端翻倒的唯一阻力来源。漏掉它会导致方程无解或得出荒谬结论。</li>
+        <li><strong>把“合力为零”等同于“合力矩为零”。</strong> 一个力偶 (couple) 合力为零但合力矩不为零；反之亦然。两条平衡条件<strong>必须</strong>分别列出。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 靠墙梯子是否滑倒？ A 12 m ladder leans at 65° against a frictionless wall; \(\mu_s = 0.30\) at the floor. Does it slip? Find the critical angle.</summary>
+        <div class="hint">用例 7.1 的公式 \(\mu_{s,\min} = 1/(2\tan\theta)\)；临界角由 \(\tan\theta_\text{crit} = 1/(2\mu_s)\) 给出。</div>
+        <div class="solution">
+          <p>所需摩擦因数：\(\mu_{s,\min} = \dfrac{1}{2\tan 65^\circ} = \dfrac{1}{2(2.145)} \approx 0.233\)。由于实际 \(\mu_s = 0.30 > 0.233\)，<strong>梯子不会滑倒</strong>。</p>
+          <p>临界角：\(\theta_\text{crit} = \arctan\dfrac{1}{2(0.30)} = \arctan(1.667) \approx 59.0^\circ\)。所以只要梯子倾角超过 \(59^\circ\) 即安全。 <span class="ans">不滑倒；\(\theta_\text{crit}\approx 59^\circ\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 画家的吊臂缆索。 A uniform 6.0 m, 25 kg beam is hinged at a wall and cable-supported at the far end at \(\phi=35^\circ\) above horizontal. A 60 kg painter stands 2.0 m from the hinge. Find the cable tension.</summary>
+        <div class="hint">对铰链取矩，让铰链力消失。缆张力只有竖直分量 \(T\sin\phi\) 贡献力矩，力臂 \(L\)。</div>
+        <div class="solution">
+          <p>\(\Sigma\tau_\text{hinge} = 0:\;\; T\sin\phi\cdot L = Mg(L/2) + mg\,d\)，其中 \(d = 2.0\,\mathrm{m}\) 为画家到铰链的距离。</p>
+          <div class="formula">\[ T = \frac{Mg(L/2) + mg\,d}{L\sin\phi} = \frac{(25)(9.8)(3.0) + (60)(9.8)(2.0)}{(6.0)\sin 35^\circ} = \frac{735 + 1176}{3.443} \]</div>
+          <p><span class="ans">\(T \approx 555\,\mathrm{N}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 钢杆的弹性应变。 A steel rod (\(Y = 2.0\times10^{11}\,\mathrm{Pa}\)) of length \(1.5\,\mathrm{m}\) and cross-section \(2.0\times10^{-4}\,\mathrm{m^2}\) supports a \(50\,\mathrm{kg}\) load. Find the elongation and the strain.</summary>
+        <div class="hint">直接用 \(\Delta L = FL_0/(AY)\)；应变 \(\varepsilon = \Delta L/L_0 = \sigma/Y\)。</div>
+        <div class="solution">
+          <p>\(F = 50\cdot 9.8 = 490\,\mathrm{N}\)。</p>
+          <div class="formula">\[ \sigma = \frac{F}{A} = \frac{490}{2.0\times10^{-4}} = 2.45\times10^{6}\,\mathrm{Pa} \]</div>
+          <div class="formula">\[ \varepsilon = \frac{\sigma}{Y} = \frac{2.45\times10^{6}}{2.0\times10^{11}} = 1.225\times10^{-5} \]</div>
+          <div class="formula">\[ \Delta L = \varepsilon L_0 = (1.225\times10^{-5})(1.5) \approx 1.84\times10^{-5}\,\mathrm{m} = 0.018\,\mathrm{mm} \]</div>
+          <p><span class="ans">\(\varepsilon \approx 1.2\times10^{-5}\)；\(\Delta L \approx 1.8\times10^{-2}\,\mathrm{mm}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 三角形薄板的重心。 Find the center of gravity of a uniform triangular lamina with vertices at \((0,0)\), \((6,0)\), and \((0,3)\) (cm).</summary>
+        <div class="hint">均匀三角形板的重心 = 三顶点的几何平均 = 三角形的“重心”（中線交点）。</div>
+        <div class="solution">
+          <p>对均匀薄板，重心即三条中线的交点，坐标为三顶点坐标的平均：</p>
+          <div class="formula">\[ (x_\text{cg},y_\text{cg}) = \left(\frac{0+6+0}{3},\,\frac{0+0+3}{3}\right) = (2.0,\,1.0)\,\mathrm{cm} \]</div>
+          <p><span class="ans">重心位于 \((2.0\,\mathrm{cm},\,1.0\,\mathrm{cm})\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 两人抬梯。 Two people carry a uniform 12 kg, 2.4 m ladder. One lifts at one end; the other lifts 0.50 m from the far end. Find the force each person exerts.</summary>
+        <div class="hint">设一人在 \(x=0\)（A 端），另一人在 \(x = L-0.5\)。梯子自重作用于中点 \(x=L/2\)。对 A 端取矩。</div>
+        <div class="solution">
+          <p>\(L = 2.4\,\mathrm{m}\)。A 在 \(x=0\)，B 在 \(x_B = 2.4 - 0.5 = 1.9\,\mathrm{m}\)。梯重 \(mg = 12\cdot 9.8 = 117.6\,\mathrm{N}\)，作用在中点 \(x = 1.2\,\mathrm{m}\)。</p>
+          <p>对 A 端取矩：\(F_B\cdot 1.9 - 117.6\cdot 1.2 = 0\)，所以 \(F_B = \dfrac{141.1}{1.9} \approx 74.3\,\mathrm{N}\)。</p>
+          <p>由 \(\Sigma F_y = 0\)：\(F_A = 117.6 - 74.3 = 43.3\,\mathrm{N}\)。</p>
+          <p><span class="ans">\(F_A \approx 43\,\mathrm{N}\)（端点的人），\(F_B \approx 74\,\mathrm{N}\)（靠近另一端的人）</span>。靠近端点的人承担更多重量。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <h3>梯子平衡 / 它会滑倒吗？ Ladder Equilibrium — Will It Slip?</h3>
+      <p class="sim-desc">拖动滑块改变梯子倾角 \(\theta\)、地板摩擦 \(\mu_\text{floor}\)、墙面摩擦 \(\mu_\text{wall}\)、梯子质量 \(m\) 与长度 \(L\)。画布会按比例绘制梯子与完整受力图（重力 \(mg\) 作用于中点、地板法向力 \(N_\text{floor}\)、墙法向力 \(N_\text{wall}\)、两处摩擦力 \(f\)）。右上角实时显示稳定性（SAFE 安全 / ABOUT TO SLIP 临界 / SLIPPING 滑动）以及临界角 \(\theta_\text{crit}\)。物理：\(N_\text{wall}=\dfrac{mg\cos\theta/2}{\sin\theta+\mu_\text{wall}\cos\theta}\)，\(f_\text{floor}=N_\text{wall}\)，临界条件 \(\tan\theta \ge \dfrac{1-\mu_\text{floor}\mu_\text{wall}}{2\mu_\text{floor}}\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="600" height="420"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+          var g = 9.8;
+
+          var DEFAULTS = { theta: 60, mu_floor: 0.40, mu_wall: 0.0, m: 15, L: 5 };
+          var params = Object.assign({}, DEFAULTS);
+
+          // Statics computation for the leaning-ladder problem.
+          // Impending-slip solution: frictions at their maxima.
+          function compute(thetaDeg, muF, muW, m) {
+            var th = thetaDeg * Math.PI / 180;
+            var mg = m * g;
+            var sinth = Math.sin(th), costh = Math.cos(th);
+            // N_wall from torque balance about the floor contact:
+            //   N_wall*(sin th + mu_wall*cos th) = (mg/2)*cos th
+            var denom = sinth + muW * costh;
+            var Nwall = denom > 1e-6 ? (0.5 * mg * costh) / denom : (0.5 * mg * costh) / 1e-6;
+            var fwall = muW * Nwall;
+            var Nfloor = mg - fwall;          // Sigma F_y = 0
+            var ffloor_req = Nwall;           // Sigma F_x = 0
+            var ffloor_max = muF * Nfloor;
+            var safe = ffloor_req <= ffloor_max + 1e-9;
+            var margin = ffloor_max - ffloor_req;
+            var pct = ffloor_max > 1e-6 ? margin / ffloor_max : (safe ? 1 : -1);
+            var status = !safe ? 'SLIPPING' : (pct < 0.05 ? 'ABOUT TO SLIP' : 'SAFE');
+
+            // Critical angle: tan th_crit = (1 - muF*muW)/(2 muF), if muF*muW < 1
+            var theta_crit;
+            if (muF <= 1e-6) {
+              theta_crit = 90;  // no floor friction -> always slips (unless vertical)
+            } else if (muF * muW >= 1) {
+              theta_crit = 0;   // frictions lock the ladder at any angle
+            } else {
+              theta_crit = Math.atan((1 - muF * muW) / (2 * muF)) * 180 / Math.PI;
+            }
+            return {
+              mg: mg, Nfloor: Nfloor, Nwall: Nwall,
+              ffloor: ffloor_req, fwall: fwall,
+              theta_crit: theta_crit, status: status, safe: safe
+            };
+          }
+
+          function hatch(ctx, x1, y1, x2, y2, n, color) {
+            // Draw diagonal hatch lines along a segment (to indicate a fixed surface).
+            ctx.save();
+            ctx.strokeStyle = color; ctx.lineWidth = 1;
+            for (var i = 0; i < n; i++) {
+              var t = i / n;
+              var x = x1 + t * (x2 - x1);
+              var y = y1 + t * (y2 - y1);
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.lineTo(x + 10, y + 10);
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
+
+          function Fscale(F) {
+            // Map a force (N) to a pixel length for arrows.
+            return Math.max(22, Math.min(82, F * 0.30));
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* purely static: no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var res = compute(params.theta, params.mu_floor, params.mu_wall, params.m);
+
+              // ---- Geometry ----
+              var wallX = 470, groundY = 340;
+              var dispL = 270;                          // display length of ladder (px)
+              var th = params.theta * Math.PI / 180;
+              var baseX = wallX - dispL * Math.cos(th);
+              var topX = wallX;
+              var topY = groundY - dispL * Math.sin(th);
+              var cgX = (baseX + topX) / 2;
+              var cgY = (groundY + topY) / 2;
+
+              // ---- Wall + ground (fixed surfaces) ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 3;
+              ctx.beginPath(); ctx.moveTo(wallX, 20); ctx.lineTo(wallX, groundY); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(20, groundY); ctx.lineTo(W - 20, groundY); ctx.stroke();
+              ctx.restore();
+              hatch(ctx, 20, groundY, W - 20, groundY, 28, PS.colors.axis);
+              hatch(ctx, wallX, 20, wallX, groundY, 20, PS.colors.axis);
+
+              // ---- Angle arc at the base ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text; ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.arc(baseX, groundY, 32, -th, 0, false);
+              ctx.stroke();
+              PS.drawText(ctx, 'θ', baseX + 38, groundY - 12, { color: PS.colors.text, font: 'italic 15px Georgia, serif' });
+              ctx.restore();
+
+              // ---- Ladder ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 7; ctx.lineCap = 'round';
+              ctx.beginPath(); ctx.moveTo(baseX, groundY); ctx.lineTo(topX, topY); ctx.stroke();
+              ctx.restore();
+              // contact dots
+              PS.drawCircle(ctx, baseX, groundY, 4, { fill: PS.colors.primary });
+              PS.drawCircle(ctx, topX, topY, 4, { fill: PS.colors.primary });
+              // CG dot
+              PS.drawCircle(ctx, cgX, cgY, 6, { fill: PS.colors.accent, stroke: PS.colors.bg, lineWidth: 2 });
+
+              // ---- Force vectors (FBD) ----
+              var cF = PS.colors.accent2;    // green: normals
+              var cW = PS.colors.accent;     // red: weight
+              var cN = PS.colors.primary;    // blue: wall normal
+              var cFf = '#7c3aed';           // violet: floor friction
+              var cFw = '#ea580c';           // orange: wall friction
+
+              // mg (downward at CG)
+              PS.drawArrow(ctx, cgX, cgY, cgX, cgY + Fscale(res.mg), cW, 'mg');
+              // N_floor (upward at base)
+              PS.drawArrow(ctx, baseX, groundY, baseX, groundY - Fscale(res.Nfloor), cF, 'N_floor');
+              // N_wall (leftward at top)
+              PS.drawArrow(ctx, topX, topY, topX - Fscale(res.Nwall), topY, cN, 'N_wall');
+              // f_floor (rightward at base, toward wall)
+              if (res.ffloor > 0.5)
+                PS.drawArrow(ctx, baseX, groundY, baseX + Fscale(res.ffloor), groundY - 1, cFf, 'f_floor');
+              // f_wall (upward at top)
+              if (res.fwall > 0.5)
+                PS.drawArrow(ctx, topX, topY, topX, topY - Fscale(res.fwall), cFw, 'f_wall');
+
+              // ---- Status panel (top-left) ----
+              var statusColor = res.status === 'SAFE' ? '#15803d'
+                            : (res.status === 'ABOUT TO SLIP' ? '#b45309' : '#b91c1c');
+              ctx.save();
+              ctx.fillStyle = statusColor;
+              ctx.fillRect(16, 16, 210, 64);
+              PS.drawText(ctx, 'STABILITY 稳定性', 26, 32, { color: '#ffffff', font: 'bold 11px system-ui', baseline: 'top' });
+              PS.drawText(ctx, res.status, 26, 50, { color: '#ffffff', font: 'bold 20px system-ui', baseline: 'top' });
+              ctx.restore();
+
+              // ---- Numeric readout (top-right) ----
+              var rx = 250, ry = 22;
+              PS.drawText(ctx, 'θ_crit = ' + res.theta_crit.toFixed(1) + '°', rx, ry,      { color: PS.colors.text, font: 'bold 13px system-ui', baseline: 'top' });
+              PS.drawText(ctx, 'N_floor = ' + res.Nfloor.toFixed(1) + ' N',          rx, ry + 18, { color: cF,  font: '13px system-ui', baseline: 'top' });
+              PS.drawText(ctx, 'N_wall  = ' + res.Nwall.toFixed(1) + ' N',           rx, ry + 36, { color: cN,  font: '13px system-ui', baseline: 'top' });
+              PS.drawText(ctx, 'f_floor = ' + res.ffloor.toFixed(1) + ' N',          rx, ry + 54, { color: cFf, font: '13px system-ui', baseline: 'top' });
+              PS.drawText(ctx, 'f_wall  = ' + res.fwall.toFixed(1) + ' N',           rx, ry + 72, { color: cFw, font: '13px system-ui', baseline: 'top' });
+
+              // ---- Title bar ----
+              PS.drawText(ctx, 'Ladder Equilibrium  梯子平衡', 16, H - 14, { color: PS.colors.text, font: 'italic 12px system-ui' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'theta',    label: '角度 θ (°)',         min: 20, max: 85, step: 1,    value: DEFAULTS.theta },
+            { type: 'slider', key: 'mu_floor', label: '地板摩擦 μ_floor',  min: 0,  max: 1.0, step: 0.05, value: DEFAULTS.mu_floor },
+            { type: 'slider', key: 'mu_wall',  label: '墙面摩擦 μ_wall',   min: 0,  max: 0.8, step: 0.05, value: DEFAULTS.mu_wall },
+            { type: 'slider', key: 'm',        label: '梯质量 m (kg)',              min: 5,  max: 50,  step: 1,    value: DEFAULTS.m },
+            { type: 'slider', key: 'L',        label: '梯长 L (m)',                     min: 3,  max: 8,   step: 0.5,  value: DEFAULTS.L },
+            { type: 'button', key: 'reset',    label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('theta',    function (v) { params.theta = v; });
+          ctl.on('mu_floor', function (v) { params.mu_floor = v; });
+          ctl.on('mu_wall',  function (v) { params.mu_wall = v; });
+          ctl.on('m',        function (v) { params.m = v; });
+          ctl.on('L',        function (v) { params.L = v; });
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            // Reflect defaults back into the slider DOM + value readouts.
+            var inputs = document.getElementById('controls-7').querySelectorAll('input[type=range]');
+            var keys = ['theta', 'mu_floor', 'mu_wall', 'm', 'L'];
+            inputs.forEach(function (inp, i) {
+              inp.value = DEFAULTS[keys[i]];
+              inp.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>平衡两条件：</strong> \(\;\Sigma\vec F = \vec 0\;\)（平动）与 \(\;\Sigma\vec\tau = \vec 0\;\)（转动）。两者必须分别满足。</li>
+        <li><strong>力矩：</strong> \(\;\vec\tau = \vec r\times\vec F\)，大小 \(\tau = rF\sin\theta = F\cdot(\text{力臂})\)。</li>
+        <li><strong>支点可任选：</strong> 在 \(\Sigma\vec F = 0\) 前提下，对一点力矩为零则对一切点皆为零。选经过未知力的支点能简化方程。</li>
+        <li><strong>平衡分类：</strong> 势能极小 → 稳定；极大 → 不稳定；常数 → 随遇。</li>
+        <li><strong>重心 = 质心</strong>（均匀重力场）。复合体：\(\vec r_\text{cg} = \dfrac{\sum m_i\vec r_i}{\sum m_i}\)。</li>
+        <li><strong>靠墙梯子（光滑墙）临界：</strong> \(\;\mu_{s,\min} = \dfrac{1}{2\tan\theta}\)；含墙面摩擦时 \(\tan\theta_\text{crit} = \dfrac{1-\mu_\text{floor}\mu_\text{wall}}{2\mu_\text{floor}}\)。</li>
+        <li><strong>桁架：</strong> 二力杆只受沿杆的拉或压；节点法对每节点用 \(\Sigma\vec F = \vec 0\)。</li>
+        <li><strong>弹性：</strong> \(\;Y = \dfrac{F/A}{\Delta L/L_0}\;\)⇒\(\;\Delta L = \dfrac{FL_0}{AY}\)。超过弹性极限进入塑性区。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

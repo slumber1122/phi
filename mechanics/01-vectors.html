@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 数学基础与矢量 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 1 · 第1章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>数学基础与矢量 <span class="en-title">Math Foundations &amp; Vectors</span></h1>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- 1. 学习目标                                                   -->
+    <!-- ============================================================ -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>使用 SI 基本单位 (SI base units) 并用量纲分析 (dimensional analysis) 检验物理等式是否自洽。</li>
+        <li>对未知量做数量级估算 / 费米估算 (order-of-magnitude / Fermi estimation)。</li>
+        <li>区分标量 (scalars) 与矢量 (vectors)，用几何法与分量法完成矢量加法 (vector addition)。</li>
+        <li>用单位矢量 (unit vectors) \(\hat{\imath},\hat{\jmath},\hat{k}\) 分解矢量，并计算模 \(\lvert\vec{A}\rvert\)。</li>
+        <li>熟练计算点积 (dot product) 与叉积 (cross product)，理解它们与投影、力矩 (torque) 的联系。</li>
+        <li>调用力学所需的微积分工具：导数、链式法则、积分、泰勒展开 (Taylor series)、偏导数。</li>
+        <li>在直角坐标 (Cartesian) 与极坐标 (plane polar) 之间换算。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. 核心概念                                                   -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. SI 基本单位与量纲分析 (SI Base Units &amp; Dimensional Analysis)</h3>
+      <p>国际单位制 (Système International, SI) 以七个基本单位为根基：长度米 \((\mathrm{m})\)、质量千克 \((\mathrm{kg})\)、时间秒 \((\mathrm{s})\)、电流安培 \((\mathrm{A})\)、热力学温度开尔文 \((\mathrm{K})\)、物质的量摩尔 \((\mathrm{mol})\)、发光强度坎德拉 \((\mathrm{cd})\)。所有其它单位均可由它们导出，例如牛顿 \(\mathrm{N}=\mathrm{kg\,m/s^2}\)、焦耳 \(\mathrm{J}=\mathrm{kg\,m^2/s^2}\)。</p>
+      <p>量纲分析 (dimensional analysis) 用三个最基本的力学量纲 —— 质量 \(M\)、长度 \(L\)、时间 \(T\) —— 检查等式两侧是否一致。若一等式物理上正确，则左右两侧的量纲必须相同。把任何量 \(Q\) 的量纲记作 \([Q]\)。</p>
+      <div class="formula">\[[F]=[ma]=M\cdot LT^{-2}=MLT^{-2}\]</div>
+      <p>量纲分析的两个用途：(i) 在做详细计算之前快速判断公式是否合理；(ii) 在不进行完整求解的情况下确定一个量与其它量之间的幂次关系（参见 §3 的白金汉 π 定理思想）。</p>
+      <div class="key-terms">SI base units (国际单位制基本单位), derived units (导出单位), dimensional analysis (量纲分析), dimensional homogeneity (量纲齐次性)</div>
+
+      <h3>2. 数量级与费米估算 (Order-of-Magnitude &amp; Fermi Estimation)</h3>
+      <p>物理学经常只关心“大致是 \(10\) 的几次方”。费米估算 (Fermi estimation) 把一个复杂问题分解为若干可估的因子，每个因子只取一位有效数字的 \(10\) 的幂，再相乘。原则：宁可每一项差到 \(2\) 倍也不要陷入细节；总误差通常落在 \(10\) 倍以内。圆周率可取 \(\pi\approx 3\)，球体积 \(\tfrac{4}{3}\pi r^3\approx 4 r^3\)。</p>
+      <div class="key-terms">order of magnitude (数量级), Fermi estimate (费米估算), significant figures (有效数字)</div>
+
+      <h3>3. 标量与矢量 (Scalars vs. Vectors)</h3>
+      <p><strong>标量 (scalar)</strong> 仅有大小与单位（质量、时间、温度、能量）；<strong>矢量 (vector)</strong> 同时具有大小、方向与单位（位移、速度、力）。两矢量 <strong>相等</strong> 当且仅当大小与方向都相同 —— 与在空间中画在哪里无关（矢量是“自由”的）。矢量加法满足交换律 \(\vec{A}+\vec{B}=\vec{B}+\vec{A}\) 与结合律。</p>
+      <p>几何上加法有两种等价做法：<strong>头尾相接法 (tip-to-tail)</strong> —— 把 \(\vec{B}\) 的尾接到 \(\vec{A}\) 的头，合力从 \(\vec{A}\) 的尾指向 \(\vec{B}\) 的头；<strong>平行四边形法 (parallelogram rule)</strong> —— 两矢量共起点，对角线即为合矢量。</p>
+      <div class="key-terms">scalar (标量), vector (矢量/向量), magnitude (大小/模), resultant (合矢量), tip-to-tail method (头尾相接法)</div>
+
+      <h3>4. 单位矢量与分量 (Unit Vectors &amp; Components)</h3>
+      <p>对任一矢量 \(\vec{A}\)，其<strong>单位矢量</strong> \(\hat{A}\) 定义为方向与 \(\vec{A}\) 相同、大小为 \(1\) 的矢量：</p>
+      <div class="formula">\[\hat{A}=\frac{\vec{A}}{\lvert\vec{A}\rvert},\qquad \lvert\vec{A}\rvert=\sqrt{A_x^2+A_y^2+A_z^2}.\]</div>
+      <p>在三维直角坐标系中，三个互相正交的单位矢量 \(\hat{\imath},\hat{\jmath},\hat{k}\) 分别指向 \(x,y,z\) 轴正方向。任一矢量可写为分量形式：</p>
+      <div class="formula">\[\vec{A}=A_x\,\hat{\imath}+A_y\,\hat{\jmath}+A_z\,\hat{k}.\]</div>
+      <p>若已知 \(\vec{A}\) 在 \(xy\) 平面内的大小 \(\lvert\vec{A}\rvert\) 与其跟 \(+x\) 轴的夹角 \(\theta\)（按数学惯例逆时针为正），则</p>
+      <div class="formula">\[A_x=\lvert\vec{A}\rvert\cos\theta,\qquad A_y=\lvert\vec{A}\rvert\sin\theta,\qquad \theta=\operatorname{atan2}(A_y,A_x).\]</div>
+      <p>分量加法即对应分量相加：\(\vec{A}+\vec{B}=(A_x+B_x)\hat{\imath}+(A_y+B_y)\hat{\jmath}+(A_z+B_z)\hat{k}\)。</p>
+      <div class="key-terms">unit vector (单位矢量), component (分量), magnitude (模), resolution into components (分解为分量)</div>
+
+      <h3>5. 点积 (Dot / Scalar Product)</h3>
+      <p>点积把两个矢量映射为一个标量，其几何与代数定义等价：</p>
+      <div class="formula">\[\vec{A}\cdot\vec{B}=\lvert\vec{A}\rvert\,\lvert\vec{B}\rvert\cos\theta=A_xB_x+A_yB_y+A_zB_z.\]</div>
+      <p>其中 \(\theta\in[0,\pi]\) 是两矢量间的夹角。点积的物理意义在于 <strong>投影 (projection)</strong>：\(\vec{A}\cdot\hat{B}=\lvert\vec{A}\rvert\cos\theta\) 是 \(\vec{A}\) 在 \(\vec{B}\) 方向上的投影。力学中功 (work) 的定义正是力在位移方向上的投影乘以位移：</p>
+      <div class="formula">\[W=\vec{F}\cdot\vec{d}.\]</div>
+      <p>关键判据：\(\vec{A}\cdot\vec{B}=0\iff\vec{A}\perp\vec{B}\)（或其一为零矢量）。</p>
+      <div class="key-terms">dot product (点积/标量积), projection (投影), work (功), perpendicular (垂直/正交)</div>
+
+      <h3>6. 叉积 (Cross / Vector Product)</h3>
+      <p>叉积只在三维有意义，结果是一个 <strong>矢量</strong>，方向由右手定则 (right-hand rule) 给出，垂直于 \(\vec{A}\) 与 \(\vec{B}\) 所张的平面：</p>
+      <div class="formula">\[\lvert\vec{A}\times\vec{B}\rvert=\lvert\vec{A}\rvert\,\lvert\vec{B}\rvert\sin\theta,\qquad 0\le\theta\le\pi.\]</div>
+      <p>分量形式（用行列式更易记忆）：</p>
+      <div class="formula">\[\vec{A}\times\vec{B}=\begin{vmatrix}\hat{\imath}&\hat{\jmath}&\hat{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}=(A_yB_z-A_zB_y)\,\hat{\imath}+(A_zB_x-A_xB_z)\,\hat{\jmath}+(A_xB_y-A_yB_x)\,\hat{k}.\]</div>
+      <p>基本关系：\(\hat{\imath}\times\hat{\jmath}=\hat{k}\)，\(\hat{\jmath}\times\hat{k}=\hat{\imath}\)，\(\hat{k}\times\hat{\imath}=\hat{\jmath}\)，任一矢量与自身叉积为零 (\(\hat{\imath}\times\hat{\imath}=\vec{0}\))。叉积反交换：\(\vec{A}\times\vec{B}=-\vec{B}\times\vec{A}\)。物理意义：力矩 \(\vec{\tau}=\vec{r}\times\vec{F}\)、角动量 \(\vec{L}=\vec{r}\times\vec{p}\)、洛伦兹力 \(\vec{F}=q\vec{v}\times\vec{B}\)。判据：\(\vec{A}\times\vec{B}=\vec{0}\iff\vec{A}\parallel\vec{B}\)。</p>
+      <div class="key-terms">cross product (叉积/矢量积), right-hand rule (右手定则), torque (力矩), angular momentum (角动量), parallel (平行)</div>
+
+      <h3>7. 微积分回顾 (Calculus Review)</h3>
+      <p>力学几乎全部建立在下面四件工具之上。设 \(u,v\) 为 \(x\) 的函数，\(n,a\) 为常数。</p>
+      <p><strong>基本求导 (derivatives)：</strong></p>
+      <div class="formula">\[\dv{}{x}(x^n)=nx^{n-1},\quad \dv{}{x}(\sin x)=\cos x,\quad \dv{}{x}(\cos x)=-\sin x,\quad \dv{}{x}(e^x)=e^x,\quad \dv{}{x}(\ln x)=\frac{1}{x}.\]</div>
+      <p><strong>四则与复合 (product, quotient, chain rules)：</strong></p>
+      <div class="formula">\[\dv{}{x}(uv)=u\,\dv{v}{x}+v\,\dv{u}{x},\qquad \dv{}{x}\!\left(\frac{u}{v}\right)=\frac{v\,\dv{u}{x}-u\,\dv{v}{x}}{v^2},\qquad \dv{f}{x}=\dv{f}{u}\,\dv{u}{x}.\]</div>
+      <p><strong>不定积分 (integrals) 的常用结果：</strong></p>
+      <div class="formula">\[\int x^n\,dx=\frac{x^{n+1}}{n+1}\ (n\neq-1),\qquad \int\frac{dx}{x}=\ln\lvert x\rvert,\qquad \int\cos x\,dx=\sin x,\qquad \int\sin x\,dx=-\cos x.\]</div>
+      <p><strong>泰勒展开 (Taylor series)</strong> 在 \(x=a\) 附近把函数展开成多项式：</p>
+      <div class="formula">\[f(x)\approx f(a)+f'(a)(x-a)+\tfrac{1}{2!}f''(a)(x-a)^2+\tfrac{1}{3!}f'''(a)(x-a)^3+\cdots\]</div>
+      <p>常用的若干展开（在 \(a=0\) 处，称为麦克劳林级数）：</p>
+      <div class="formula">\[e^x=1+x+\tfrac{x^2}{2!}+\tfrac{x^3}{3!}+\cdots,\qquad \sin x=x-\tfrac{x^3}{3!}+\cdots,\qquad \cos x=1-\tfrac{x^2}{2!}+\cdots\]</div>
+      <p>注意：三角函数的级数中 \(x\) <strong>必须以弧度 (radians) 为单位</strong>，否则导数公式 \((\sin x)'=\cos x\) 不成立。</p>
+      <p><strong>偏导数 (partial derivatives)</strong> 处理多变量函数：\(\pdv{f}{x}\) 是把其它自变量视为常数时对 \(x\) 的导数。例如 \(f(x,y)=x^2 y\) 时 \(\pdv{f}{x}=2xy\)，\(\pdv{f}{y}=x^2\)。</p>
+      <div class="key-terms">derivative (导数), chain rule (链式法则), integral (积分), Taylor series (泰勒级数), partial derivative (偏导数), radian (弧度)</div>
+
+      <h3>8. 坐标系 (Coordinate Systems)</h3>
+      <p><strong>直角坐标 (Cartesian)</strong> \((x,y,z)\) 适合具有平移对称性的问题。<strong>极坐标 (plane polar)</strong> \((r,\theta)\) 适合具有旋转对称性的二维问题，两者换算关系：</p>
+      <div class="formula">\[x=r\cos\theta,\quad y=r\sin\theta,\qquad r=\sqrt{x^2+y^2},\quad \theta=\operatorname{atan2}(y,x).\]</div>
+      <p>柱坐标 \((r,\theta,z)\) 与球坐标 \((r,\theta,\phi)\) 将在后续章节需要时引入。</p>
+      <div class="key-terms">Cartesian coordinates (直角坐标), plane polar coordinates (极坐标), radian (弧度)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. 推导                                                       -->
+    <!-- ============================================================ -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <h3>由几何定义导出点积的分量形式</h3>
+      <p>从几何定义 \(\vec{A}\cdot\vec{B}=\lvert\vec{A}\rvert\lvert\vec{B}\rvert\cos\theta\) 出发，导出代数式 \(\vec{A}\cdot\vec{B}=A_xB_x+A_yB_y+A_zB_z\)。</p>
+      <p class="step"><strong>步骤 1.</strong> 把 \(\vec{A},\vec{B}\) 写成在三个正交单位矢量 \(\hat{\imath},\hat{\jmath},\hat{k}\) 上的展开：\(\vec{A}=A_x\hat{\imath}+A_y\hat{\jmath}+A_z\hat{k}\)，\(\vec{B}=B_x\hat{\imath}+B_y\hat{\jmath}+B_z\hat{k}\)。</p>
+      <p class="step"><strong>步骤 2.</strong> 把点积按分配律展开（点积对加法满足分配律 \(\vec{A}\cdot(\vec{B}+\vec{C})=\vec{A}\cdot\vec{B}+\vec{A}\cdot\vec{C}\)），得到九项。</p>
+      <p class="step"><strong>步骤 3.</strong> 利用单位矢量间的几何关系：\(\hat{\imath}\cdot\hat{\imath}=\hat{\jmath}\cdot\hat{\jmath}=\hat{k}\cdot\hat{k}=1\)（自乘等于模平方），而不同方向的正交单位矢量互相垂直，夹角 \(90^{\circ}\)，故 \(\hat{\imath}\cdot\hat{\jmath}=\hat{\jmath}\cdot\hat{k}=\hat{k}\cdot\hat{\imath}=\cos 90^{\circ}=0\)。</p>
+      <p class="step"><strong>步骤 4.</strong> 九项中只有三项非零：</p>
+      <div class="formula">\[\vec{A}\cdot\vec{B}=A_xB_x(\hat{\imath}\cdot\hat{\imath})+A_yB_y(\hat{\jmath}\cdot\hat{\jmath})+A_zB_z(\hat{k}\cdot\hat{k})=A_xB_x+A_yB_y+A_zB_z.\]</div>
+      <p class="step"><strong>步骤 5.</strong> 反过来由代数式可推回几何式：把 \(\vec{B}\) 的长度 \(\lvert\vec{B}\rvert\) 与它跟 \(x\) 轴的角 \(\phi\) 写出 \(B_x=\lvert\vec{B}\rvert\cos\phi\)，\(\ldots\)，最终化简即得 \(\vec{A}\cdot\vec{B}=\lvert\vec{A}\rvert\lvert\vec{B}\rvert\cos\theta\)。这便是余弦定理的另一种推导：\(\lvert\vec{A}-\vec{B}\rvert^2=\lvert\vec{A}\rvert^2+\lvert\vec{B}\rvert^2-2\vec{A}\cdot\vec{B}\)。</p>
+
+      <h3>叉积模的几何意义与行列式形式</h3>
+      <p>考虑两个不共线的矢量 \(\vec{A},\vec{B}\)，它们所张的平行四边形面积为 \(\lvert\vec{A}\rvert\lvert\vec{B}\rvert\sin\theta\)。这正好是 \(\lvert\vec{A}\times\vec{B}\rvert\) 的几何意义——<strong>叉积的模等于两矢量所张平行四边形的面积</strong>，方向垂直于该平面（右手定则）。行列式形式</p>
+      <div class="formula">\[\vec{A}\times\vec{B}=\begin{vmatrix}\hat{\imath}&\hat{\jmath}&\hat{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}\]</div>
+      <p>只是把分量式按第一行余子式展开的助记法；展开后即得前述分量公式。它同时自动满足反交换性 \(\vec{B}\times\vec{A}=-\vec{A}\times\vec{B}\)（交换两行改变行列式符号）。</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. 例题                                                       -->
+    <!-- ============================================================ -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 万有引力常数 \(G\) 的量纲</h4>
+        <p class="example-statement">牛顿万有引力定律为 \(F=G\,\dfrac{Mm}{r^{2}}\)，其中 \(F\) 是力，\(M,m\) 是质量，\(r\) 是距离。试由量纲分析求引力常数 \(G\) 的量纲，并用 SI 基本单位表示。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>解出 \(G=\dfrac{F\,r^{2}}{Mm}\)。</p>
+          <p class="step">写出各项量纲：\([F]=MLT^{-2}\)（力 = 质量 × 加速度），\([r^2]=L^2\)，\([Mm]=M^2\)。</p>
+          <p class="step">于是 \([G]=\dfrac{[F][r^2]}{[Mm]}=\dfrac{(MLT^{-2})(L^2)}{M^2}=M^{-1}L^3T^{-2}\)。</p>
+          <p class="step">用 SI 基本单位表示：\(\mathrm{m^3\,kg^{-1}\,s^{-2}}\)，即 \(\mathrm{N\,m^2/kg^2}\)。这与已知的 \(G=6.674\times10^{-11}\,\mathrm{N\,m^2/kg^2}\) 一致。</p>
+          <p><span class="ans">\([G]=M^{-1}L^3T^{-2}\)（SI: \(\mathrm{m^3\,kg^{-1}\,s^{-2}}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 费米估算：雨滴中的水分子数</h4>
+        <p class="example-statement">估计一滴半径 \(r\approx 1\,\mathrm{mm}\) 的雨滴中含有多少个水分子？取水的密度 \(\rho\approx 10^{3}\,\mathrm{kg/m^3}\)，水的摩尔质量 \(M_{\mathrm{H_2O}}\approx 18\,\mathrm{g/mol}\)，阿伏伽德罗常数 \(N_A\approx 6.0\times10^{23}\,\mathrm{mol^{-1}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>水分子的特征尺度比雨滴小得多，按“体积 → 质量 → 物质的量 → 分子数”四步估算。</p>
+          <p class="step">① 体积：\(V=\tfrac{4}{3}\pi r^3\approx 4(10^{-3}\,\mathrm{m})^3=4\times10^{-9}\,\mathrm{m^3}\)。</p>
+          <p class="step">② 质量：\(m=\rho V\approx (10^3)(4\times10^{-9})=4\times10^{-6}\,\mathrm{kg}\)。</p>
+          <p class="step">③ 物质的量：\(n=\dfrac{m}{M}\approx\dfrac{4\times10^{-6}\,\mathrm{kg}}{1.8\times10^{-2}\,\mathrm{kg/mol}}\approx 2.2\times10^{-4}\,\mathrm{mol}\)。</p>
+          <p class="step">④ 分子数：\(N=nN_A\approx(2.2\times10^{-4})(6.0\times10^{23})\approx 1.3\times10^{20}\)。</p>
+          <p class="step">（用更精确的 \(\tfrac{4}{3}\pi\) 代入得 \(N\approx1.4\times10^{20}\)，估算与精确相差不到一个量级。）</p>
+          <p><span class="ans">约 \(1.4\times10^{20}\) 个水分子</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 用分量法做矢量加法</h4>
+        <p class="example-statement">一位徒步者先走 \(\vec{A}\)：大小 \(5.0\,\mathrm{m}\)，方向东偏北 \(30^{\circ}\)；再走 \(\vec{B}\)：大小 \(4.0\,\mathrm{m}\)，方向东偏北 \(110^{\circ}\)（即北偏西 \(20^{\circ}\)）。求合位移 \(\vec{R}=\vec{A}+\vec{B}\) 的大小与方向（相对 \(+x\) 轴）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取东为 \(+x\)，北为 \(+y\)，分别求分量。</p>
+          <p class="step">\(A_x=(5.0)\cos 30^{\circ}=4.33\,\mathrm{m}\)，\(A_y=(5.0)\sin 30^{\circ}=2.50\,\mathrm{m}\)。</p>
+          <p class="step">\(B_x=(4.0)\cos 110^{\circ}=-1.37\,\mathrm{m}\)，\(B_y=(4.0)\sin 110^{\circ}=3.76\,\mathrm{m}\)。</p>
+          <p class="step">合分量：\(R_x=A_x+B_x=4.33-1.37=2.96\,\mathrm{m}\)；\(R_y=A_y+B_y=2.50+3.76=6.26\,\mathrm{m}\)。</p>
+          <p class="step">模：\(\lvert\vec{R}\rvert=\sqrt{R_x^2+R_y^2}=\sqrt{(2.96)^2+(6.26)^2}=\sqrt{47.95}\approx 6.92\,\mathrm{m}\)。</p>
+          <p class="step">方向：\(\theta=\tan^{-1}(R_y/R_x)=\tan^{-1}(6.26/2.96)=\tan^{-1}(2.115)\approx 64.7^{\circ}\)。</p>
+          <p><span class="ans">\(\lvert\vec{R}\rvert\approx 6.92\,\mathrm{m}\)，方向 \(+x\) 偏 \(+y\) 约 \(64.7^{\circ}\)（北偏东）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 用点积求两矢量夹角</h4>
+        <p class="example-statement">设 \(\vec{A}=(2\hat{\imath}+3\hat{\jmath})\,\mathrm{m}\)，\(\vec{B}=(-\hat{\imath}+4\hat{\jmath})\,\mathrm{m}\)。求两矢量之间的夹角 \(\theta\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(\vec{A}\cdot\vec{B}=\lvert\vec{A}\rvert\lvert\vec{B}\rvert\cos\theta\) 解出 \(\cos\theta\)。</p>
+          <p class="step">点积：\(\vec{A}\cdot\vec{B}=(2)(-1)+(3)(4)=-2+12=10\,\mathrm{m^2}\)。</p>
+          <p class="step">模：\(\lvert\vec{A}\rvert=\sqrt{2^2+3^2}=\sqrt{13}\approx 3.606\,\mathrm{m}\)；\(\lvert\vec{B}\rvert=\sqrt{(-1)^2+4^2}=\sqrt{17}\approx 4.123\,\mathrm{m}\)。</p>
+          <p class="step">\(\cos\theta=\dfrac{\vec{A}\cdot\vec{B}}{\lvert\vec{A}\rvert\lvert\vec{B}\rvert}=\dfrac{10}{(3.606)(4.123)}\approx\dfrac{10}{14.87}\approx 0.6727\)。</p>
+          <p class="step">\(\theta=\cos^{-1}(0.6727)\approx 47.7^{\circ}\)。</p>
+          <p><span class="ans">\(\theta\approx 47.7^{\circ}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 用叉积求力矩</h4>
+        <p class="example-statement">一扳手被施加力 \(\vec{F}=(2.0\,\hat{\imath}+5.0\,\hat{\jmath})\,\mathrm{N}\)，力作用点相对转轴的位置矢量为 \(\vec{r}=3.0\,\hat{\imath}\,\mathrm{m}\)。求相对转轴的力矩 \(\vec{\tau}=\vec{r}\times\vec{F}\)，给出大小、方向（用右手定则验证）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>在三维下取 \(\vec{r}=(3.0,\,0,\,0)\,\mathrm{m}\)，\(\vec{F}=(2.0,\,5.0,\,0)\,\mathrm{N}\)，二者都在 \(xy\) 平面内。</p>
+          <p class="step">按行列式展开（或直接用 \(\hat{\imath}\times\hat{\imath}=\vec{0},\ \hat{\imath}\times\hat{\jmath}=\hat{k}\)）：</p>
+          <p class="step">\(\vec{\tau}=\vec{r}\times\vec{F}=(3.0\,\hat{\imath})\times(2.0\,\hat{\imath}+5.0\,\hat{\jmath})=3.0\times 2.0(\hat{\imath}\times\hat{\imath})+3.0\times 5.0(\hat{\imath}\times\hat{\jmath})=\vec{0}+15\,\hat{k}\)。</p>
+          <p class="step">所以 \(\vec{\tau}=15\,\hat{k}\,\mathrm{N\,m}\)，模 \(\lvert\vec{\tau}\rvert=15\,\mathrm{N\,m}\)。</p>
+          <p class="step"><strong>方向验证：</strong>从 \(\vec{r}\)（指向 \(+x\)）转向 \(\vec{F}\)（在第一象限）的右手四指卷向，拇指指出纸面，即 \(+z\) 方向，与 \(\hat{k}\) 一致。✓</p>
+          <p class="step"><strong>几何验证：</strong>\(\lvert\vec{r}\rvert=3.0\,\mathrm{m}\)，\(\lvert\vec{F}\rvert=\sqrt{2^2+5^2}=\sqrt{29}\approx 5.39\,\mathrm{N}\)；\(\vec{r}\) 与 \(\vec{F}\) 夹角 \(\alpha=\tan^{-1}(5/2)\approx 68.2^{\circ}\)；\(\lvert\vec{\tau}\rvert=\lvert\vec{r}\rvert\lvert\vec{F}\rvert\sin\alpha=(3.0)(5.39)(\sin 68.2^{\circ})\approx 15.0\,\mathrm{N\,m}\)。✓</p>
+          <p><span class="ans">\(\vec{\tau}=15\,\hat{k}\,\mathrm{N\,m}\)（大小 \(15\,\mathrm{N\,m}\)，方向垂直纸面向外）</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. 常见误区                                                   -->
+    <!-- ============================================================ -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把矢量当标量相加。</strong> “\(A+B\)”绝不是“\(|A|+|B|\)”。若两矢量方向不同，标量和会高估合矢量的模。务必先分解到分量再做加减。</li>
+        <li><strong>分量符号出错。</strong> 在第二象限 \(\cos\theta&lt;0\)，常被错记成正数。安全做法：始终用带符号的 \(A_x=|A|\cos\theta\)，让 \(\theta\) 决定符号；或写成分量后再用 \(\operatorname{atan2}(y,x)\) 反解角度。</li>
+        <li><strong>混淆“点积为零”与“叉积为零”。</strong> \(\vec{A}\cdot\vec{B}=0\iff\vec{A}\perp\vec{B}\)；而 \(\vec{A}\times\vec{B}=\vec{0}\iff\vec{A}\parallel\vec{B}\)（含其一为零矢量）。两者几何含义完全相反，绝不可混用。</li>
+        <li><strong>角度单位与起算方向不清。</strong> 微积分公式 \(\tfrac{d}{dx}\sin x=\cos x\) <em>仅在 \(x\) 用弧度时</em>成立；数值题里若用计算器务必检查 DEG/RAD 设置。再就是“\(30^{\circ}\) 是从哪个轴量起？”——点积用的 \(\theta\) 永远是<strong>两矢量之间</strong>的夹角，不是各自相对坐标轴之差。</li>
+        <li><strong>结果不带单位或量纲不一致。</strong> 数值答案若没写单位即不完整；同时若等式两边量纲不齐，公式几乎肯定写错了。养成“写完公式对量纲、写完答案标单位”的习惯。</li>
+        <li><strong>叉积顺序写错。</strong> \(\vec{B}\times\vec{A}=-\vec{A}\times\vec{B}\)，写力矩 \(\vec{\tau}=\vec{r}\times\vec{F}\) 时位置与力的位置不可互换，否则方向相反。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. 练习题                                                     -->
+    <!-- ============================================================ -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 普朗克常数 \(h\) 的量纲。爱因斯坦光子能量 \(E=hf\)，\(f\) 为频率。求 \([h]\)。</summary>
+        <div class="hint">写出 \([E]\) 与 \([f]\)，相除。</div>
+        <div class="solution">
+          \([E]=ML^2T^{-2}\)（能量），\([f]=T^{-1}\)。<br>
+          \([h]=[E]/[f]=ML^2T^{-1}\)。<br>
+          <span class="ans">\([h]=ML^2T^{-1}\)（SI: \(\mathrm{J\,s}=\mathrm{kg\,m^2/s}\)）</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 已知 \(\vec{A}=2\hat{\imath}-\hat{\jmath}\)，\(\vec{B}=-3\hat{\imath}+4\hat{\jmath}\)。求 \(\vec{R}=\vec{A}+\vec{B}\) 的大小和与 \(+x\) 轴的夹角。</summary>
+        <div class="hint">逐分量相加；注意 \(R_x&lt;0,R_y&gt;0\)，矢量在第二象限。</div>
+        <div class="solution">
+          \(R_x=2-3=-1\)，\(R_y=-1+4=3\)。<br>
+          \(\lvert\vec{R}\rvert=\sqrt{1+9}=\sqrt{10}\approx 3.16\)。<br>
+          \(\theta=\operatorname{atan2}(3,-1)\approx 180^{\circ}-71.6^{\circ}=108.4^{\circ}\)。<br>
+          <span class="ans">\(\lvert\vec{R}\rvert\approx 3.16\)，\(\theta\approx 108^{\circ}\)（在第二象限）</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 给定 \(\vec{A}=\hat{\imath}+2\hat{\jmath}-2\hat{k}\)，\(\vec{B}=3\hat{\imath}+0\hat{\jmath}+\hat{k}\)。求 \(\vec{A}\cdot\vec{B}\)、\(\vec{A}\times\vec{B}\)、\(\lvert\vec{A}\times\vec{B}\rvert\) 及两矢量夹角 \(\theta\)。</summary>
+        <div class="hint">点积是分量乘积之和；叉积用行列式；夹角用 \(\cos\theta=\vec{A}\cdot\vec{B}/(|A||B|)\)。可用 \(|A\times B|=|A||B|\sin\theta\) 验证。</div>
+        <div class="solution">
+          \(\vec{A}\cdot\vec{B}=(1)(3)+(2)(0)+(-2)(1)=1\)。<br>
+          \(|A|=\sqrt{1+4+4}=3\)，\(|B|=\sqrt{9+0+1}=\sqrt{10}\approx 3.162\)。<br>
+          \(\vec{A}\times\vec{B}=\bigl(2\cdot1-(-2)\cdot0,\,-(-2)\cdot3-1\cdot1,\,1\cdot0-2\cdot3\bigr)=(2,\,-7,\,-6)\)。<br>
+          \(|\vec{A}\times\vec{B}|=\sqrt{4+49+36}=\sqrt{89}\approx 9.43\)。<br>
+          \(\cos\theta=\dfrac{1}{3\sqrt{10}}\approx 0.1054\Rightarrow\theta\approx 83.9^{\circ}\)。<br>
+          验证：\(|A||B|\sin\theta=3(3.162)\sin 83.9^{\circ}\approx 9.43\)。✓<br>
+          <span class="ans">\(\vec{A}\cdot\vec{B}=1\)，\(\vec{A}\times\vec{B}=(2,-7,-6)\)，\(|\vec{A}\times\vec{B}|\approx 9.43\)，\(\theta\approx 83.9^{\circ}\)</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 用三阶泰勒展开（到 \(x^3\)）估算 \(e^{0.2}\)，并与精确值 \(1.22140\) 比较。</summary>
+        <div class="hint">\(e^x\approx 1+x+x^2/2+x^3/6\)，把 \(x=0.2\) 代入。</div>
+        <div class="solution">
+          \(e^{0.2}\approx 1+0.2+\dfrac{0.2^2}{2}+\dfrac{0.2^3}{6}=1+0.2+0.02+0.001333=1.221333\)。<br>
+          误差约 \(6.7\times10^{-5}\)。<br>
+          <span class="ans">\(e^{0.2}\approx 1.2213\)（精确 \(1.2214\)）</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 费米估算：一个寿命 \(80\) 岁的人一生大约心跳多少次？取静息心率 \(70\,\mathrm{min^{-1}}\)。</summary>
+        <div class="hint">心率 × 每分钟 × 每小时 × 每天 × 每年 × 一生。可只保留一位有效数字。</div>
+        <div class="solution">
+          每天心跳 \(\approx 70\times 60\times 24\approx 1.0\times10^{5}\)。<br>
+          每年 \(\approx (1.0\times10^{5})\times 365\approx 3.7\times10^{7}\)。<br>
+          一生 \(\approx (3.7\times10^{7})\times 80\approx 3\times10^{9}\)。<br>
+          <span class="ans">约 \(3\times10^{9}\) 次（三十亿次）</span>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. 互动仿真                                                   -->
+    <!-- ============================================================ -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">二维矢量加法可视化器 (2D vector-addition visualizer)：调节 \(\vec{A}\) 与 \(\vec{B}\) 的大小和方向，观察头尾相接的合成 \(\vec{R}=\vec{A}+\vec{B}\)，以及 \(R\) 在两坐标轴上的分量分解；面板实时显示点积 \(\vec{A}\cdot\vec{B}\)、叉积模 \(\lvert\vec{A}\times\vec{B}\rvert\) 与两矢量之间的夹角。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+          var SCALE = 22;                 // pixels per unit
+          var OX = W / 2, OY = H / 2;      // origin at canvas center
+          var DEFAULTS = { aMag: 5, aAng: 30, bMag: 4, bAng: 110 };
+          var params = Object.assign({}, DEFAULTS);
+
+          // Convert (magnitude, angle in degrees) to math-convention (x,y).
+          function comp(mag, angDeg) {
+            var a = angDeg * Math.PI / 180;
+            return { x: mag * Math.cos(a), y: mag * Math.sin(a) };
+          }
+          // Math (x,y) -> canvas pixel coordinates (y is flipped).
+          function mx(x) { return OX + x * SCALE; }
+          function my(y) { return OY - y * SCALE; }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },        // static picture, no dynamics
+            step: function (dt, t, s) { /* no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              PS.drawGrid(ctx, { originX: OX, originY: OY, scale: SCALE, step: 1 });
+
+              var A = comp(params.aMag, params.aAng);
+              var B = comp(params.bMag, params.bAng);
+              var Rx = A.x + B.x, Ry = A.y + B.y;
+              var tipAx = mx(A.x), tipAy = my(A.y);
+              var tipRx = mx(Rx),  tipRy = my(Ry);
+
+              // Dashed component breakdown of the resultant R.
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(tipRx, tipRy); ctx.lineTo(tipRx, OY);   // vertical drop
+              ctx.moveTo(tipRx, tipRy); ctx.lineTo(OX, tipRy);   // horizontal drop
+              ctx.stroke();
+              ctx.restore();
+              // Component value labels (faint).
+              PS.drawText(ctx, 'R_x=' + Rx.toFixed(2), tipRx / 2 + OX / 2 - 12, OY + 14,
+                          { font: '11px system-ui', color: PS.colors.axis });
+              PS.drawText(ctx, 'R_y=' + Ry.toFixed(2), OX + 6, (OY + tipRy) / 2,
+                          { font: '11px system-ui', color: PS.colors.axis });
+
+              // Resultant R drawn first (underneath).
+              PS.drawArrow(ctx, OX, OY, tipRx, tipRy, PS.colors.trace, 'R = A + B');
+
+              // Vector A from origin.
+              PS.drawArrow(ctx, OX, OY, tipAx, tipAy, PS.colors.primary, 'A');
+              // Vector B tip-to-tail from tip of A.
+              PS.drawArrow(ctx, tipAx, tipAy, tipRx, tipRy, PS.colors.accent, 'B');
+
+              // Numeric readouts (dot, cross, angle).
+              var dot = A.x * B.x + A.y * B.y;
+              var cross = A.x * B.y - A.y * B.x;     // z-component (signed)
+              var angBetween = 0;
+              var prod = params.aMag * params.bMag;
+              if (prod > 1e-9) {
+                var c = dot / prod;
+                if (c > 1) c = 1; if (c < -1) c = -1;
+                angBetween = Math.acos(c) * 180 / Math.PI;
+              }
+              PS.drawText(ctx, '|A| = ' + params.aMag.toFixed(2) +
+                               '   |B| = ' + params.bMag.toFixed(2),
+                          12, 20, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'A · B = ' + dot.toFixed(2),
+                          12, 40, { font: '13px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, '|A × B| = ' + Math.abs(cross).toFixed(2) +
+                              '   (z 分量 ' + cross.toFixed(2) + ')',
+                          12, 60, { font: '13px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '夹角 θ = ' + angBetween.toFixed(1) + '°',
+                          12, 80, { font: '13px system-ui', color: PS.colors.trace });
+              PS.drawText(ctx, '提示：A·B=0 ⇒ 垂直；|A×B|=0 ⇒ 平行',
+                          12, H - 12, { font: '11px system-ui', color: PS.colors.axis });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'aMag', label: '|A| 大小 (0–10)', min: 0, max: 10, step: 0.1, value: DEFAULTS.aMag },
+            { type: 'slider', key: 'aAng', label: 'A 角度 θ_A (°)', min: 0, max: 360, step: 1, value: DEFAULTS.aAng },
+            { type: 'slider', key: 'bMag', label: '|B| 大小 (0–10)', min: 0, max: 10, step: 0.1, value: DEFAULTS.bMag },
+            { type: 'slider', key: 'bAng', label: 'B 角度 θ_B (°)', min: 0, max: 360, step: 1, value: DEFAULTS.bAng },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('aMag', function (v) { params.aMag = v; });
+          ctl.on('aAng', function (v) { params.aAng = v; });
+          ctl.on('bMag', function (v) { params.bMag = v; });
+          ctl.on('bAng', function (v) { params.bAng = v; });
+
+          // Reset: restore defaults in params, control values, AND slider thumbs/labels in the DOM.
+          ctl.on('reset', function () {
+            var keys = ['aMag', 'aAng', 'bMag', 'bAng'];
+            keys.forEach(function (k) {
+              params[k] = DEFAULTS[k];
+              ctl.set(k, DEFAULTS[k]);
+            });
+            var sliders = document.getElementById('controls-1').querySelectorAll('input[type=range]');
+            var valSpans = document.getElementById('controls-1').querySelectorAll('.ctrl-value');
+            keys.forEach(function (k, i) {
+              if (sliders[i]) sliders[i].value = DEFAULTS[k];
+              if (valSpans[i]) valSpans[i].textContent = String(DEFAULTS[k]);
+            });
+          });
+        });
+      </script>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. 本章小结                                                   -->
+    <!-- ============================================================ -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>力学量均可用 \(M,L,T\) 三个量纲表示；量纲齐次是物理公式成立的必要条件。</li>
+        <li>费米估算用 \(10\) 的幂次近似，是物理直觉的核心训练。</li>
+        <li>矢量有方向；加法用几何（头尾相接 / 平行四边形）或分量法。</li>
+        <li>单位矢量 \(\hat{A}=\vec{A}/|\vec{A}|\)，模 \(|\vec{A}|=\sqrt{A_x^2+A_y^2+A_z^2}\)。</li>
+        <li>点积给标量、测投影；\(\vec{A}\cdot\vec{B}=0\Leftrightarrow\) 垂直。</li>
+        <li>叉积给矢量、测面积；\(\vec{A}\times\vec{B}=\vec{0}\Leftrightarrow\) 平行。</li>
+        <li>力学必备工具：导数、链式法则、积分、泰勒展开（角度用弧度）。</li>
+      </ul>
+      <div class="formula">\[\boxed{\;\vec{A}\cdot\vec{B}=A_xB_x+A_yB_y+A_zB_z=|\vec{A}||\vec{B}|\cos\theta\;}\]</div>
+      <div class="formula">\[\boxed{\;|\vec{A}\times\vec{B}|=|\vec{A}||\vec{B}|\sin\theta,\quad \vec{A}\times\vec{B}=(A_yB_z-A_zB_y)\hat{\imath}+(A_zB_x-A_xB_z)\hat{\jmath}+(A_xB_y-A_yB_x)\hat{k}\;}\]</div>
+      <div class="formula">\[\boxed{\;f(x)\approx f(a)+f'(a)(x-a)+\tfrac{1}{2}f''(a)(x-a)^2+\cdots\;}\]</div>
+      <div class="formula">\[\boxed{\;x=r\cos\theta,\quad y=r\sin\theta,\quad r=\sqrt{x^2+y^2},\quad \theta=\operatorname{atan2}(y,x)\;}\]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

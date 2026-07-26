@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 转动动力学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 6 · 第6章 · 第一部分 牛顿力学 Part I Newtonian Mechanics</p>
+      <h1>转动动力学 <span class="en-title">Rotational Dynamics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用角位置 \(\theta\)、角速度 \(\omega\)、角加速度 \(\alpha\) 描述定轴转动，并熟练运用恒定 \(\alpha\) 的运动学公式 (constant-\(\alpha\) kinematics)。</li>
+        <li>计算常见物体（点质量、环、盘、杆、球、薄球壳）绕给定轴的<b>转动惯量</b> (moment of inertia) \(I\)，并应用<b>平行轴定理</b> (parallel-axis theorem)。</li>
+        <li>理解<b>力矩</b> (torque) \(\vec{\tau}=\vec{r}\times\vec{F}\) 的矢量性质，运用转动定律 \(\vec{\tau}_{\text{net}}=I\vec{\alpha}\) 解决定轴转动问题。</li>
+        <li>分析<b>无滑滚动</b> (rolling without slipping)，分解平动与转动动能，导出 \(a=\dfrac{g\sin\theta}{1+I/(mR^{2})}\)。</li>
+        <li>运用<b>角动量</b> (angular momentum) \(\vec{L}=I\vec{\omega}=\vec{r}\times\vec{p}\) 及其守恒条件 \(\vec{\tau}_{\text{ext}}=0\)，定性解释<b>陀螺进动</b> (gyroscopic precession)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>6.1 角运动学 Angular Kinematics</h3>
+      <p>对绕固定轴转动的刚体，定义角位置 \(\theta\) (单位 \(\unit{rad}\))，则</p>
+      <div class="formula">\[ \omega=\dv{\theta}{t}\quad(\unit{rad/s}),\qquad \alpha=\dv{\omega}{t}=\frac{d^{2}\theta}{dt^{2}}\quad(\unit{rad/s^{2}}). \]</div>
+      <p>当 \(\alpha\) 为常数时，与一维直线运动学的公式形式完全相同 (analogy with 1-D linear kinematics)：</p>
+      <div class="formula">\[ \omega=\omega_{0}+\alpha t,\quad \theta=\theta_{0}+\omega_{0}t+\tfrac{1}{2}\alpha t^{2},\quad \omega^{2}=\omega_{0}^{2}+2\alpha(\theta-\theta_{0}). \]</div>
+      <p class="note">角度几乎总是用<b>弧度</b> (radians)。这样 \(v=r\omega\)、\(a_{t}=r\alpha\) 才成立，且量纲自洽：\(\unit{rad}\) 视为无量纲。</p>
+
+      <h3>6.2 与线运动的关系 Connection to Linear Motion</h3>
+      <p>距转轴 \(r\) 处的质元，其切向 (tangential) 与法向 (normal/centripetal) 分量为</p>
+      <div class="formula">\[ v_{t}=r\omega,\qquad a_{t}=r\alpha,\qquad a_{n}=\frac{v^{2}}{r}=r\omega^{2}. \]</div>
+      <p>注意 \(a_{t}\)（由角加速度引起）与 \(a_{n}\)（指向轴心）方向不同；总加速度 \(\vec{a}=a_{t}\hat{t}+a_{n}\hat{n}\)。</p>
+
+      <h3>6.3 力矩与转动定律 Torque and the Rotational Law</h3>
+      <p>力 \(\vec{F}\) 作用于相对转轴位矢 \(\vec{r}\) 处，其<b>力矩</b> (torque)</p>
+      <div class="formula">\[ \vec{\tau}=\vec{r}\times\vec{F},\qquad |\tau|=rF\sin\theta_{rF}=rF_{\perp}=r_{\perp}F. \]</div>
+      <p>对绕固定轴的刚体，外力矩之<b>和</b>等于转动惯量乘角加速度——牛顿第二定律的转动版本：</p>
+      <div class="formula">\[ \boxed{\;\vec{\tau}_{\text{net}}=I\vec{\alpha}\;}\qquad(\text{轴方向}). \]</div>
+
+      <h3>6.4 转动惯量 Moment of Inertia</h3>
+      <p>对离散质点系与连续刚体，分别定义为</p>
+      <div class="formula">\[ I=\sum_{i}m_{i}r_{i}^{2}=\int r^{2}\,dm. \]</div>
+      <p>\(I\) 度量物体对改变转动的“惰性”，取决于质量分布<b>及轴的位置</b>。常用结果（\(M\) 为总质量、\(R\) 为特征半径、\(L\) 为杆长）：</p>
+      <div class="formula">
+        \[ \begin{aligned}
+        &\text{点质量 about any axis at }r: && I=mr^{2}.\\
+        &\text{细圆环 / 薄壁圆筒 hoop/thin cylindrical shell:} && I=MR^{2}.\\
+        &\text{实心圆盘 / 实心圆柱 solid disk/cylinder:} && I=\tfrac{1}{2}MR^{2}.\\
+        &\text{均匀细杆 rod, 轴过中心 } \perp\text{ 杆:} && I=\tfrac{1}{12}ML^{2}.\\
+        &\text{均匀细杆 rod, 轴过端点:} && I=\tfrac{1}{3}ML^{2}.\\
+        &\text{实心球 solid sphere (直径轴):} && I=\tfrac{2}{5}MR^{2}.\\
+        &\text{薄球壳 thin spherical shell:} && I=\tfrac{2}{3}MR^{2}.
+        \end{aligned} \]
+      </div>
+
+      <h3>6.5 平行轴定理 Parallel-Axis Theorem</h3>
+      <p>已知刚体绕过质心 (center of mass) 某方向轴的 \(I_{\text{cm}}\)，则绕<b>平行</b>于该轴、距质心距离为 \(d\) 的另一轴</p>
+      <div class="formula">\[ \boxed{\;I=I_{\text{cm}}+Md^{2}.\;} \]</div>
+      <p>这一定理极大简化计算：先算（或查表）质心轴，再用平行轴定理搬到任意平行轴。</p>
+
+      <h3>6.6 转动动能与无滑滚动 Rotational KE and Rolling without Slipping</h3>
+      <p>转动动能 (rotational kinetic energy)</p>
+      <div class="formula">\[ K_{\text{rot}}=\tfrac{1}{2}I\omega^{2}. \]</div>
+      <p>对既滚又移的物体，<b>无滑条件</b> (no-slip condition) 为 \(v=R\omega\)，总动能</p>
+      <div class="formula">\[ K=K_{\text{trans}}+K_{\text{rot}}=\tfrac{1}{2}mv^{2}+\tfrac{1}{2}I\omega^{2}=\tfrac{1}{2}mv^{2}\!\left(1+\frac{I}{mR^{2}}\right). \]</div>
+
+      <h3>6.7 角动量及其守恒 Angular Momentum and Its Conservation</h3>
+      <p>质点对原点的<b>角动量</b> (angular momentum) 与刚体绕固定轴的角动量分别为</p>
+      <div class="formula">\[ \vec{L}=\vec{r}\times\vec{p}\quad(\text{质点}),\qquad L=I\omega\quad(\text{刚体定轴}). \]</div>
+      <p>与牛顿第二定律 \(\vec{F}=d\vec{p}/dt\) 对偶的是力矩—角动量定理：</p>
+      <div class="formula">\[ \boxed{\;\vec{\tau}_{\text{ext}}=\dv{\vec{L}}{t}.\;} \]</div>
+      <p>若外力矩之和为零 \(\vec{\tau}_{\text{ext}}=0\)，则 \(\vec{L}\) 守恒——这是物理学最深刻的守恒律之一（与空间的各向同性相关）。</p>
+
+      <h3>6.8 陀螺的进动 Precession of a Gyroscope</h3>
+      <p>快速自旋的陀螺 (gyroscope)，自旋角动量 \(\vec{L}_{s}=I\vec{\omega}_{s}\) 沿自旋轴。重力对支点产生力矩 \(\vec{\tau}=\vec{r}_{\text{cm}}\times M\vec{g}\)，方向<b>垂直</b>于 \(\vec{L}_{s}\)。由 \(\dv{\vec{L}}{t}=\vec{\tau}\)，\(d\vec{L}\perp\vec{L}_{s}\)：只改变 \(\vec{L}_{s}\) 的<b>方向</b>而不改变其大小，于是自旋轴绕竖直方向缓慢<b>进动</b> (precess)。对快速自旋，进动角速度</p>
+      <div class="formula">\[ \Omega_{p}=\frac{\tau}{L_{s}}=\frac{Mgr_{\text{cm}}}{I\omega_{s}}. \]</div>
+
+      <div class="key-terms">angular displacement (角位移), angular velocity (角速度), angular acceleration (角加速度), torque (力矩), moment of inertia (转动惯量), parallel-axis theorem (平行轴定理), rotational kinetic energy (转动动能), rolling without slipping (无滑滚动), angular momentum (角动量), conservation of angular momentum (角动量守恒), precession (进动)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>D1. 由 \(F=ma\) 到 \(\tau_{\text{net}}=I\alpha\)</h3>
+      <p>把刚体分成无穷多质元 \(dm\)，第 \(i\) 个质元受合外力 \(\vec{F}_{i}\)（含内力 \(\vec{f}_{ij}\) 来自其它质元）。对其切向运动方程 \(F_{i,t}=dm_{i}\,a_{t}=dm_{i}\,r_{i}\alpha\)（所有质元共享同一 \(\alpha\)）。两边乘 \(r_{i}\) 并对所有质元求和：</p>
+      <div class="formula">\[ \sum_{i}r_{i}F_{i,t}=\sum_{i}r_{i}^{2}\,dm_{i}\,\alpha=\alpha\int r^{2}\,dm=I\alpha. \]</div>
+      <p>左边恰为对轴的外力矩之和（内力按牛顿第三定律两两抵消：\(r_{i}f_{ij,t}+r_{j}f_{ji,t}\) 因沿连线 \(f_{ij}\parallel\vec{r}_{i}-\vec{r}_{j}\) 而为零）。故</p>
+      <div class="formula">\[ \tau_{\text{net}}=I\alpha. \]</div>
+
+      <h3>D2. 无滑滚动沿斜面的加速度</h3>
+      <p>质量 \(m\)、半径 \(R\)、转动惯量 \(I\) 的物体在倾角 \(\theta\) 的斜面上无滑滚下。设静摩擦力 \(f\) 沿斜面向上（提供力矩使物体转起来），质心沿斜面方向的运动方程与绕质心的转动方程分别为：</p>
+      <div class="formula">\[ mg\sin\theta-f=ma,\qquad fR=I\alpha. \]</div>
+      <p>无滑条件 \(a=R\alpha\) 给出 \(\alpha=a/R\)。代入转动方程：\(f=I\alpha/R=Ia/R^{2}\)。代回平动方程：</p>
+      <div class="formula">\[ mg\sin\theta-\frac{Ia}{R^{2}}=ma\;\;\Longrightarrow\;\; a=\frac{g\sin\theta}{1+I/(mR^{2})}. \]</div>
+      <p>定义无量纲系数 \(\beta\equiv I/(mR^{2})\)，则 \(a=g\sin\theta/(1+\beta)\)。代入各形状：环 \(\beta=1\)（\(a=\tfrac{1}{2}g\sin\theta\)），盘 \(\beta=\tfrac{1}{2}\)（\(a=\tfrac{2}{3}g\sin\theta\)），球 \(\beta=\tfrac{2}{5}\)（\(a=\tfrac{5}{7}g\sin\theta\)）。质量与半径<b>都被约掉</b>，只取决于质量分布。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 均匀杆的转动惯量（积分 + 平行轴）</h4>
+        <p class="example-statement">长 \(L\)、质量 \(M\) 的均匀细杆，求 (a) 轴过中心且垂直于杆的 \(I_{\text{cm}}\)；(b) 轴过一端点且垂直于杆的 \(I_{\text{end}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>线密度 \(\lambda=M/L\)。取杆沿 \(x\) 轴、原点在中心，则 \(dm=\lambda\,dx\)，\(r=|x|\)。</p>
+          <p>\[ I_{\text{cm}}=\int_{-L/2}^{L/2}x^{2}\lambda\,dx=\lambda\left[\frac{x^{3}}{3}\right]_{-L/2}^{L/2}=\lambda\cdot\frac{2(L/2)^{3}}{3}=\frac{M}{L}\cdot\frac{L^{3}}{12}=\frac{ML^{2}}{12}. \]</p>
+          <p class="step"><strong>解 (b) 用平行轴定理：</strong>过端点的轴与过中心的轴平行，二者距离 \(d=L/2\)。</p>
+          <p>\[ I_{\text{end}}=I_{\text{cm}}+M\!\left(\frac{L}{2}\right)^{2}=\frac{ML^{2}}{12}+\frac{ML^{2}}{4}=\frac{ML^{2}}{3}. \]</p>
+          <p class="step"><strong>验证（直接积分）：</strong>取原点在端点，\(I=\int_{0}^{L}x^{2}\lambda\,dx=\lambda L^{3}/3=ML^{2}/3\)。结果一致 ✓</p>
+          <p><span class="ans">\(I_{\text{cm}}=\tfrac{1}{12}ML^{2}\)，\(I_{\text{end}}=\tfrac{1}{3}ML^{2}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 带大滑轮的 Atwood 机（massive pulley）</h4>
+        <p class="example-statement">两物块 \(m_{1}=2.0\,\unit{kg}\)、\(m_{2}=5.0\,\unit{kg}\) 跨在半径 \(R=0.20\,\unit{m}\)、质量 \(M=4.0\,\unit{kg}\) 的实心圆柱滑轮上（\(I=\tfrac{1}{2}MR^{2}\)，无相对滑动）。求加速度 \(a\) 与两侧绳张力 \(T_{1},T_{2}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>设 \(m_{2}\) 向下加速。对两物块用平动方程，对滑轮用转动方程（注意绳子在滑轮两边张力不同）：</p>
+          <p>\[ T_{1}-m_{1}g=m_{1}a,\qquad m_{2}g-T_{2}=m_{2}a,\qquad (T_{2}-T_{1})R=I\alpha=\Big(\tfrac{1}{2}MR^{2}\Big)\!\cdot\!\frac{a}{R}. \]</p>
+          <p class="step">化简第三式：\(T_{2}-T_{1}=\tfrac{1}{2}Ma\)。把三式相加消去张力：</p>
+          <p>\[ (m_{2}-m_{1})g=(m_{1}+m_{2}+\tfrac{1}{2}M)\,a. \]</p>
+          <p class="step">代入数字：分母 \(=2.0+5.0+2.0=9.0\,\unit{kg}\)，分子 \(=3.0\times 9.8=29.4\,\unit{N}\)，</p>
+          <p>\[ a=\frac{29.4}{9.0}=3.27\,\unit{m/s^{2}}. \]</p>
+          <p class="step">回代求张力：</p>
+          <p>\[ T_{1}=m_{1}(g+a)=2.0(9.8+3.27)=26.1\,\unit{N},\quad T_{2}=m_{2}(g-a)=5.0(9.8-3.27)=32.7\,\unit{N}. \]</p>
+          <p class="step"><strong>校验：</strong>\(T_{2}-T_{1}=6.6\,\unit{N}\)，而 \(\tfrac{1}{2}Ma=\tfrac{1}{2}\cdot 4.0\cdot 3.27=6.5\,\unit{N}\) ✓（差 0.1 为舍入）。</p>
+          <p><span class="ans">\(a\approx 3.27\,\unit{m/s^{2}}\)，\(T_{1}\approx 26.1\,\unit{N}\)，\(T_{2}\approx 32.7\,\unit{N}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 斜面赛跑：环、盘、球（无滑）</h4>
+        <p class="example-statement">三个同质量 \(m\)、同半径 \(R\) 的物体——细圆环、实心圆盘、实心球——同时从倾角 \(\theta=30^{\circ}\) 的斜面顶端由静止无滑滚下。(a) 排出先后名次；(b) 求实心球到达底部时的加速度 \(a_{\text{球}}\) 与速率 \(v_{\text{球}}\)（斜面长 \(L=4.0\,\unit{m}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>由 D2 推导，\(a=g\sin\theta/(1+\beta)\)，\(\beta=I/(mR^{2})\)。代入：</p>
+          <p>\[ \beta_{\text{环}}=1,\;\beta_{\text{盘}}=\tfrac{1}{2},\;\beta_{\text{球}}=\tfrac{2}{5}\;\Rightarrow\;a_{\text{环}}=\tfrac{1}{2}g\sin\theta<a_{\text{盘}}=\tfrac{2}{3}g\sin\theta<a_{\text{球}}=\tfrac{5}{7}g\sin\theta. \]</p>
+          <p class="step">\(\beta\) 越小（质量越集中于转轴附近）越易转，加速度越大。<b>球最快，盘次之，环最慢</b>，与 \(m,R\) 无关。</p>
+          <p class="step"><strong>解 (b)：</strong>对球，\(a=\tfrac{5}{7}\,g\sin 30^{\circ}=\tfrac{5}{7}\cdot 9.8\cdot 0.5=3.50\,\unit{m/s^{2}}\)。</p>
+          <p class="step">由静止匀加速到底部：\(v^{2}=2aL=2\cdot 3.50\cdot 4.0=28.0\)，故</p>
+          <p>\[ v_{\text{球}}=\sqrt{28.0}=5.29\,\unit{m/s}. \]</p>
+          <p class="step"><strong>能量校验：</strong>底部 \(K_{\text{trans}}+K_{\text{rot}}=\tfrac{1}{2}mv^{2}(1+\tfrac{2}{5})=\tfrac{7}{10}mv^{2}\)；势能损失 \(mgL\sin 30^{\circ}=\tfrac{1}{2}mgL=\tfrac{1}{2}\cdot m\cdot 9.8\cdot 4=19.6m\,\unit{J}\)。代入 \(v^{2}=28\)：\(\tfrac{7}{10}m\cdot 28=19.6m\) ✓</p>
+          <p><span class="ans">球 \(>\) 盘 \(>\) 环；\(a_{\text{球}}=3.50\,\unit{m/s^{2}}\)，\(v_{\text{球}}\approx 5.29\,\unit{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 花样滑冰选手收臂（角动量守恒）</h4>
+        <p class="example-statement">选手张开双臂时 \(I_{1}=2.0\,\unit{kg\cdot m^{2}}\)、\(\omega_{1}=3.0\,\unit{rad/s}\)。收臂后 \(I_{2}=0.60\,\unit{kg\cdot m^{2}}\)。求 \(\omega_{2}\)，并比较前后转动动能，说明能量从何而来。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>冰面近乎无摩擦，对过质心竖直轴外力矩为零，角动量守恒：</p>
+          <p>\[ I_{1}\omega_{1}=I_{2}\omega_{2}\;\Rightarrow\;\omega_{2}=\frac{I_{1}\omega_{1}}{I_{2}}=\frac{2.0\cdot 3.0}{0.60}=10.0\,\unit{rad/s}. \]</p>
+          <p class="step">动能：</p>
+          <p>\[ K_{1}=\tfrac{1}{2}I_{1}\omega_{1}^{2}=\tfrac{1}{2}\cdot 2.0\cdot 9.0=9.0\,\unit{J},\quad K_{2}=\tfrac{1}{2}I_{2}\omega_{2}^{2}=\tfrac{1}{2}\cdot 0.60\cdot 100=30.0\,\unit{J}. \]</p>
+          <p class="step">动能<b>增加</b>了 \(\Delta K=21.0\,\unit{J}\)。这不是凭空产生——而是选手肌肉<b>做内功</b>把双臂从远离轴处拉回轴旁（对抗“离心”惯性趋势）。角动量守恒并不禁止动能改变：守恒的是 \(L\)，不是 \(K\)。</p>
+          <p><span class="ans">\(\omega_{2}=10.0\,\unit{rad/s}\)；\(K\) 由 \(9.0\,\unit{J}\) 增至 \(30.0\,\unit{J}\)，能量来自肌肉做功。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 飞轮的力矩与角加速度</h4>
+        <p class="example-statement">一飞轮 \(I=0.50\,\unit{kg\cdot m^{2}}\)、半径 \(r=0.40\,\unit{m}\)，初始静止。一绳切向绕在轮缘，用恒力 \(F=12\,\unit{N}\) 拉绳（与轮缘相切）。求 (a) 角加速度 \(\alpha\)；(b) \(5.0\,\unit{s}\) 末的角速度 \(\omega\) 与已转过的圈数 \(N\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>力沿轮缘切向，\(\theta_{rF}=90^{\circ}\)，力矩 \(\tau=rF=0.40\cdot 12=4.8\,\unit{N\cdot m}\)。由 \(\tau=I\alpha\)：</p>
+          <p>\[ \alpha=\frac{\tau}{I}=\frac{4.8}{0.50}=9.6\,\unit{rad/s^{2}}. \]</p>
+          <p class="step"><strong>解 (b)：</strong>恒 \(\alpha\)，从静止起：</p>
+          <p>\[ \omega=\alpha t=9.6\cdot 5.0=48\,\unit{rad/s},\qquad \theta=\tfrac{1}{2}\alpha t^{2}=\tfrac{1}{2}\cdot 9.6\cdot 25=120\,\unit{rad}. \]</p>
+          <p>\[ N=\frac{\theta}{2\pi}=\frac{120}{2\pi}\approx 19.1\,\text{圈 (rev)}. \]</p>
+          <p><span class="ans">\(\alpha=9.6\,\unit{rad/s^{2}}\)；\(\omega=48\,\unit{rad/s}\)；\(N\approx 19.1\) 圈。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>把 \(I=mr^{2}\) 套用到扩展物体</b>。该公式只适用于<b>点质量</b>。对杆、盘、球等扩展体必须积分或查表，再按需用平行轴定理。</li>
+        <li><b>滚动问题漏掉转动动能</b>。无滑滚动物体的总动能是 \(K=\tfrac{1}{2}mv^{2}+\tfrac{1}{2}I\omega^{2}\)，<b>两项都要算</b>。能量法解题时最易遗漏 \(K_{\text{rot}}\)。</li>
+        <li><b>混淆 \(\alpha\) 与 \(a\)</b>。角加速度 \(\alpha\)（\(\unit{rad/s^{2}}\)）与平动加速度 \(a\)（\(\unit{m/s^{2}}\)）量纲不同；二者仅在无滑滚动时由 \(a=R\alpha\) 联系。</li>
+        <li><b>力矩方向判断错误</b>。\(\vec{\tau}=\vec{r}\times\vec{F}\) 是<b>矢量</b>，方向由右手定则给出，垂直于 \(\vec{r}\) 与 \(\vec{F}\) 所在平面。在 2D 题中约定“出页为正、入页为负”并坚持使用。</li>
+        <li><b>误以为“合力为零”角动量就守恒</b>。守恒条件是<b>合外力矩</b> \(\vec{\tau}_{\text{ext}}=0\)，不是合外力为零。例如行星受有心力，合力非零但力矩为零，故角动量守恒。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 实心圆柱体的总动能：\(M=2.0\,\unit{kg}\)、\(R=0.30\,\unit{m}\) 的实心圆柱以 \(v=4.0\,\unit{m/s}\) 在水平面上无滑滚动，求总动能。</summary>
+        <div class="hint">分别算 \(K_{\text{trans}}=\tfrac{1}{2}Mv^{2}\) 与 \(K_{\text{rot}}=\tfrac{1}{2}I\omega^{2}\)（\(I=\tfrac{1}{2}MR^{2}\)、\(\omega=v/R\)）。或直接用 \(K=\tfrac{1}{2}Mv^{2}(1+\tfrac{1}{2})=\tfrac{3}{4}Mv^{2}\)。</div>
+        <div class="solution">
+          <p>\[ I=\tfrac{1}{2}MR^{2}=\tfrac{1}{2}\cdot 2.0\cdot 0.30^{2}=0.090\,\unit{kg\cdot m^{2}},\quad \omega=\frac{v}{R}=\frac{4.0}{0.30}=13.3\,\unit{rad/s}. \]</p>
+          <p>\[ K_{\text{trans}}=\tfrac{1}{2}\cdot 2.0\cdot 16=16.0\,\unit{J},\quad K_{\text{rot}}=\tfrac{1}{2}\cdot 0.090\cdot 13.3^{2}=8.0\,\unit{J}. \]</p>
+          <p><span class="ans">\(K=24.0\,\unit{J}\)（其中转动占 \(\tfrac{1}{3}\)）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 跳水选手“抱膝”：开体 \(I_{1}=8.0\,\unit{kg\cdot m^{2}}\)、\(\omega_{1}=2.0\,\unit{rad/s}\)；抱膝后 \(I_{2}=3.5\,\unit{kg\cdot m^{2}}\)。求抱膝时 \(\omega_{2}\)。</summary>
+        <div class="hint">空中飞行时外力矩（关于质心）为零，角动量守恒：\(I_{1}\omega_{1}=I_{2}\omega_{2}\)。</div>
+        <div class="solution">
+          <p>\[ \omega_{2}=\frac{I_{1}\omega_{1}}{I_{2}}=\frac{8.0\cdot 2.0}{3.5}=4.57\,\unit{rad/s}. \]</p>
+          <p><span class="ans">\(\omega_{2}\approx 4.57\,\unit{rad/s}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 实心球关于切轴的转动惯量：质量 \(M\)、半径 \(R\) 的均匀实心球，求关于“与球面相切”的轴的 \(I\)。</summary>
+        <div class="hint">切轴与过球心的直径平行，二者距离 \(d=R\)。先用 \(I_{\text{cm}}=\tfrac{2}{5}MR^{2}\)，再用平行轴定理。</div>
+        <div class="solution">
+          <p>\[ I=I_{\text{cm}}+Md^{2}=\tfrac{2}{5}MR^{2}+MR^{2}=\tfrac{7}{5}MR^{2}. \]</p>
+          <p><span class="ans">\(I=\tfrac{7}{5}MR^{2}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 砂轮的减速：\(I=2.0\,\unit{kg\cdot m^{2}}\)、初角速度 \(5.0\,\unit{rad/s}\)，轴承摩擦恒力矩 \(\tau_{f}=0.50\,\unit{N\cdot m}\)。多长时间停下？停下前转了几圈？</summary>
+        <div class="hint">\(\alpha=-\tau_{f}/I\) 为常数；用 \(\omega(t)=\omega_{0}+\alpha t=0\) 求 \(t\)，用 \(\theta=\omega_{0}t+\tfrac{1}{2}\alpha t^{2}\) 求转角。</div>
+        <div class="solution">
+          <p>\[ \alpha=-\frac{\tau_{f}}{I}=-\frac{0.50}{2.0}=-0.25\,\unit{rad/s^{2}},\quad t=\frac{-\omega_{0}}{\alpha}=\frac{5.0}{0.25}=20\,\unit{s}. \]</p>
+          <p>\[ \theta=5.0\cdot 20-\tfrac{1}{2}\cdot 0.25\cdot 20^{2}=100-50=50\,\unit{rad},\quad N=\frac{50}{2\pi}\approx 7.96\,\text{圈}. \]</p>
+          <p><span class="ans">\(t=20\,\unit{s}\)，约 \(7.96\) 圈。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 哑铃的角动量：两质点质量 \(m=1.5\,\unit{kg}\) 各居一根轻杆两端，杆长 \(L=0.60\,\unit{m}\)，绕过中心、垂直于杆的轴以 \(\omega=4.0\,\unit{rad/s}\) 转动。求 \(I\) 与角动量 \(L\) 的大小。</summary>
+        <div class="hint">每个质点距轴 \(L/2\)；用 \(I=2m(L/2)^{2}\) 与 \(L=I\omega\)。</div>
+        <div class="solution">
+          <p>\[ I=2m\!\left(\frac{L}{2}\right)^{2}=2\cdot 1.5\cdot 0.30^{2}=0.27\,\unit{kg\cdot m^{2}}, \]</p>
+          <p>\[ L=I\omega=0.27\cdot 4.0=1.08\,\unit{kg\cdot m^{2}/s}. \]</p>
+          <p><span class="ans">\(I=0.27\,\unit{kg\cdot m^{2}}\)，\(L=1.08\,\unit{kg\cdot m^{2}/s}\)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">斜面赛跑：选择形状（环/盘/球）与倾角 \(\theta\)，看物体沿斜面无滑滚下；HUD 实时显示加速度 \(a=g\sin\theta/(1+I/mR^{2})\)、速度、动能分解与总机械能。打开“完全滑动”开关则物体只滑不转，对比 \(a\to g\sin\theta\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physics constants (SI) ----
+          var g = 9.8;             // m/s^2
+          var m = 1.0;             // kg
+          var R = 0.20;            // m, body radius
+          var L = 4.0;             // m, incline length
+
+          // ---- Display mapping ----
+          var scale = 95;          // px per meter
+          var bx = 540, by = 330;  // bottom-right corner of incline (px)
+
+          // ---- Shape catalog: beta = I/(m R^2) ----
+          var SHAPES = {
+            1: { name: '环 Hoop',     beta: 1.0, Iexpr: 'MR^2',            color: '#dc2626' },
+            2: { name: '盘 Disk',     beta: 0.5, Iexpr: '(1/2) MR^2',      color: '#2563eb' },
+            3: { name: '球 Sphere',   beta: 0.4, Iexpr: '(2/5) MR^2',      color: '#16a34a' }
+          };
+
+          var params = { shape: 2, angle: 30, slip: false };
+
+          function thetaRad() { return params.angle * Math.PI / 180; }
+
+          function accel() {
+            var th = thetaRad();
+            var beta = SHAPES[params.shape].beta;
+            if (params.slip) return g * Math.sin(th);              // no friction -> no rotation
+            return g * Math.sin(th) / (1 + beta);
+          }
+
+          // state = [ s (m along incline), v (m/s), phi (rad, rotation angle) ]
+          function deriv(state, t) {
+            var s = state[0], v = state[1];
+            if (s >= L) return [0, 0, 0];                          // reached bottom: stop
+            var a = accel();
+            return [v, a, params.slip ? 0 : v / R];
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return [0, 0, 0]; },
+            step: function (dt, t, st) {
+              var next = PS.integrate(deriv, st, t, dt, 'rk4');
+              if (next[0] > L) { next[0] = L; next[1] = 0; next[2] = st[2]; }
+              st[0] = next[0]; st[1] = next[1]; st[2] = next[2];
+            },
+            draw: function (ctx, st, env) {
+              PS.clear(ctx);
+              var th = thetaRad();
+              var shape = SHAPES[params.shape];
+
+              // ---- Incline geometry ----
+              var tx = bx - L * scale * Math.cos(th);
+              var ty = by - L * scale * Math.sin(th);
+
+              // Filled incline triangle
+              ctx.save();
+              ctx.fillStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.38;
+              ctx.beginPath();
+              ctx.moveTo(bx, by);
+              ctx.lineTo(tx, ty);
+              ctx.lineTo(tx, by);
+              ctx.closePath();
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              // Hypotenuse + ground
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(tx, ty); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(0, by); ctx.lineTo(W, by); ctx.stroke();
+              ctx.restore();
+
+              // Angle arc + label
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.arc(bx, by, 30, Math.PI, Math.PI + th, false);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, params.angle.toFixed(0) + '°', bx - 48, by - 10,
+                          { font: '13px system-ui, sans-serif', color: PS.colors.text });
+
+              // ---- Rolling body ----
+              var dist = st[0];                 // m along incline from top
+              var Rpx = R * scale;
+              var pxHyp = tx + dist * scale * Math.cos(th);
+              var pyHyp = ty + dist * scale * Math.sin(th);
+              // offset perpendicular to incline, outward (up-left normal)
+              var cx = pxHyp + Rpx * Math.sin(th);
+              var cy = pyHyp - Rpx * Math.cos(th);
+
+              // Body
+              PS.drawCircle(ctx, cx, cy, Rpx, { fill: shape.color + '33', stroke: shape.color, lineWidth: 2.5 });
+
+              // Radius line (shows rotation) + rim dot
+              var phi = st[2];
+              var rx = cx + Rpx * Math.cos(phi);
+              var ry = cy + Rpx * Math.sin(phi);
+              ctx.save();
+              ctx.strokeStyle = shape.color;
+              ctx.lineWidth = 2.5;
+              ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(rx, ry); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, rx, ry, 3.2, { fill: shape.color });
+
+              // Velocity vector along incline
+              var v = st[1];
+              if (v > 0.05) {
+                var vScale = 16;
+                PS.drawArrow(ctx, cx, cy,
+                             cx + v * vScale * Math.cos(th),
+                             cy + v * vScale * Math.sin(th),
+                             PS.colors.accent, 'v');
+              }
+
+              // ---- HUD ----
+              var aNow = accel();
+              var omega = params.slip ? 0 : v / R;
+              var Ival = shape.beta * m * R * R;
+              var Kt = 0.5 * m * v * v;
+              var Kr = 0.5 * Ival * omega * omega;
+              var Ktot = Kt + Kr;
+              var Ulost = m * g * dist * Math.sin(th);             // PE lost so far
+              var Etot = Ktot - Ulost + m * g * L * Math.sin(th);  // const if no slip & no friction
+
+              var x0 = 16, y0 = 22, dy = 18;
+              PS.drawText(ctx, '形状 Shape: ' + shape.name + '    (I = ' + shape.Iexpr + ')',
+                          x0, y0, { font: '14px system-ui, sans-serif', color: PS.colors.text });
+              PS.drawText(ctx, '加速度 a = ' + aNow.toFixed(3) + ' m/s^2   ' +
+                          '(= g sinθ / ' + (1 + shape.beta).toFixed(2) + ')',
+                          x0, y0 + dy, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+              PS.drawText(ctx, '速度 v = ' + v.toFixed(2) + ' m/s',
+                          x0, y0 + 2 * dy, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+              PS.drawText(ctx, '角速度 ω = ' + omega.toFixed(2) + ' rad/s' +
+                          (params.slip ? '   (滑动不转)' : ''),
+                          x0, y0 + 3 * dy, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+              PS.drawText(ctx, 'K_trans = ' + Kt.toFixed(2) + ' J',
+                          x0, y0 + 4 * dy, { font: '13px system-ui, sans-serif', color: PS.colors.accent });
+              PS.drawText(ctx, 'K_rot   = ' + Kr.toFixed(2) + ' J',
+                          x0, y0 + 5 * dy, { font: '13px system-ui, sans-serif', color: shape.color });
+              PS.drawText(ctx, '总机械能 E = ' + Etot.toFixed(2) + ' J  (应为常数)',
+                          x0, y0 + 6 * dy, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+
+              PS.drawText(ctx, '斜面赛跑 / Race Down an Incline',
+                          16, H - 12, { font: 'italic 13px system-ui, sans-serif', color: PS.colors.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'shape', label: '形状 (1环 / 2盘 / 3球)', min: 1, max: 3, step: 1, value: 2 },
+            { type: 'slider', key: 'angle', label: '倾角 θ (°)', min: 10, max: 50, step: 1, value: 30 },
+            { type: 'toggle', key: 'slip',  label: '完全滑动 (无摩擦不转)', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('shape', function (v) { params.shape = v; });
+          ctl.on('angle', function (v) { params.angle = v; });
+          ctl.on('slip',  function (v) { params.slip = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><b>角运动学</b>：\(\omega=d\theta/dt\)，\(\alpha=d\omega/dt\)；恒定 \(\alpha\) 公式与一维直线运动学形式完全相同。</li>
+        <li><b>线量—角量</b>：\(v=r\omega\)，\(a_{t}=r\alpha\)，\(a_{n}=v^{2}/r\)。</li>
+        <li><b>力矩</b>：\(\vec{\tau}=\vec{r}\times\vec{F}\)，\(\vec{\tau}_{\text{net}}=I\vec{\alpha}\)。</li>
+        <li><b>转动惯量</b>：\(I=\int r^{2}\,dm\)；常见物体质心轴 \(I\) 须熟记，平行轴定理 \(I=I_{\text{cm}}+Md^{2}\)。</li>
+        <li><b>转动动能</b>：\(K_{\text{rot}}=\tfrac{1}{2}I\omega^{2}\)；无滑滚动 \(K=\tfrac{1}{2}mv^{2}(1+I/mR^{2})\)，\(v=R\omega\)。</li>
+        <li><b>斜面无滑滚下</b>：\(a=g\sin\theta/(1+I/mR^{2})\)，与 \(m,R\) 无关；环最慢，球最快。</li>
+        <li><b>角动量</b>：\(\vec{L}=\vec{r}\times\vec{p}\)（质点），\(L=I\omega\)（刚体）；\(\vec{\tau}_{\text{ext}}=d\vec{L}/dt\)，当 \(\vec{\tau}_{\text{ext}}=0\) 时 \(\vec{L}\) 守恒。</li>
+        <li><b>陀螺进动</b>：自旋 \(\vec{L}_{s}\perp\vec{\tau}\)，只改方向不改变大小，\(\Omega_{p}=Mgr_{\text{cm}}/(I\omega_{s})\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\tau=I\alpha,\quad K_{\text{rot}}=\tfrac{1}{2}I\omega^{2},\quad I=I_{\text{cm}}+Md^{2},\quad L=I\omega,\quad \tau=\dv{L}{t},\quad v=R\omega} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

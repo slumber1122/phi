@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第15章 · 时空几何与四维矢量 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="15">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 15 · 第15章 · 第三部分 狭义相对论 Part III Special Relativity</p>
+      <h1>时空几何与四维矢量 <span class="en-title">Spacetime Geometry &amp; Four-vectors</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>把一个物理事件 (event) 表示为闵可夫斯基时空 (Minkowski spacetime) 中的点 \(X^{\mu}=(ct,x,y,z)\)，理解“空间与时间统一为四维几何”这一思想革命。</li>
+        <li>计算时空间隔 (spacetime interval) \(s^{2}=(c\Delta t)^{2}-(\Delta x)^{2}-(\Delta y)^{2}-(\Delta z)^{2}\)，并证明它在洛伦兹变换下是不变量 (invariant)。</li>
+        <li>按 \(s^{2}\) 的符号把两事件分离分类为类时 (timelike)、类光 (lightlike/null)、类空 (spacelike)，并判断能否存在因果联系 (causal connection)。</li>
+        <li>画出光锥 (light cone)，区分未来 (future)、过去 (past)、它处 (elsewhere)，理解相对论中的因果结构。</li>
+        <li>沿世界线 (worldline) 计算固有时 (proper time) \(\tau\)，说明为什么惯性 (自由下落) 路径<strong>最大化</strong>固有时——这是双生子佯谬 (twin paradox) 的本质。</li>
+        <li>操作四维矢量 (four-vector)：4-位置 \(X^{\mu}\)、4-速度 \(U^{\mu}=\mathrm{d}X^{\mu}/\mathrm{d}\tau\)、4-动量 \(P^{\mu}=(E/c,\vec{p})\)，并用洛伦兹不变标量积导出不变质量 (invariant mass)。</li>
+        <li>把洛伦兹变换视为双曲旋转 (hyperbolic rotation)，用快度 (rapidity) \(\phi\)（\(\tanh\phi=\beta\)）合成共线变换，并说明<strong>快度可加而速度不可加</strong>。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 闵可夫斯基时空 Minkowski Spacetime</h3>
+      <p>1908 年，闵可夫斯基 (Hermann Minkowski) 指出：相对论真正革命性的并非“时间膨胀”或“长度收缩”这些表面效应，而是<strong>空间与时间从此不再是独立的实体</strong>。一个物理事件——例如“闪电击中某点”——需要四个坐标来定位。把它们写成</p>
+      <div class="formula">\[ X^{\mu}=(ct,\,x,\,y,\,z),\qquad \mu=0,1,2,3 \]</div>
+      <p>注意第零坐标是 \(ct\)（量纲为长度），这样四个坐标有相同单位。一组事件的序列构成一条<strong>世界线 (worldline)</strong>，它就是粒子在四维时空中的轨迹。</p>
+
+      <h3>2. 时空间隔及其不变性 Spacetime Interval &amp; Its Invariance</h3>
+      <p>欧几里得几何中两点距离 \(L^{2}=(\Delta x)^{2}+(\Delta y)^{2}+(\Delta z)^{2}\) 在转动下不变。闵可夫斯基几何的“距离”是<strong>时空间隔</strong>，采用 \((+,-,-,-)\) 度规符号：</p>
+      <div class="formula">\[ s^{2}\equiv(c\Delta t)^{2}-(\Delta x)^{2}-(\Delta y)^{2}-(\Delta z)^{2}=(c\Delta t)^{2}-|\Delta\vec{r}|^{2} \]</div>
+      <p>等价地用闵可夫斯基度规张量 \(\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\) 写成 \(s^{2}=\eta_{\mu\nu}\,\Delta X^{\mu}\Delta X^{\nu}\)。关键事实：<strong>所有惯性观测者测得的 \(s^{2}\) 都相同</strong>——它是一个洛伦兹标量。这与 \(\Delta t\)、\(\Delta x\) 各自随参考系变化形成鲜明对比。</p>
+
+      <h3>3. 间隔的分类与因果结构 Classification &amp; Causal Structure</h3>
+      <p>由 \(s^{2}\) 的符号立即把分离类型分成三类：</p>
+      <ul>
+        <li><strong>类时 timelike</strong>，\(s^{2}>0\)：\(c|\Delta t|>|\Delta\vec{r}|\)，存在小于光速的信号能从一事件传到另一事件，<strong>可因果联系</strong>。</li>
+        <li><strong>类光 lightlike / null</strong>，\(s^{2}=0\)：\(c|\Delta t|=|\Delta\vec{r}|\)，恰好是光信号的轨迹，<strong>光可联系</strong>。</li>
+        <li><strong>类空 spacelike</strong>，\(s^{2}<0\)：\(c|\Delta t|<|\Delta\vec{r}|\)，任何信号都来不及，<strong>不可能因果联系</strong>；在不同惯性系中两事件的时间顺序甚至可能颠倒。</li>
+      </ul>
+
+      <h3>4. 光锥：未来、过去、它处 The Light Cone</h3>
+      <p>选定事件 \(A\) 为原点。从 \(A\) 沿 \(\pm 45^{\circ}\) 发出的两条直线 \(ct=\pm x\)（一维空间情形）构成 <strong>光锥</strong>。它把时空分成三个区域：</p>
+      <ul>
+        <li><strong>未来光锥内部与锥面</strong>（\(ct>0\) 且 \(s^{2}\ge 0\)）：\(A\) 能影响的事件——这是 \(A\) 的因果未来。</li>
+        <li><strong>过去光锥内部与锥面</strong>（\(ct<0\) 且 \(s^{2}\ge 0\)）：能影响 \(A\) 的事件——\(A\) 的因果过去。</li>
+        <li><strong>它处 elsewhere</strong>（\(s^{2}<0\)）：与 \(A\) 类空分离，<strong>既不在 \(A\) 的未来也不在过去</strong>，与 \(A\) 无因果关联。</li>
+      </ul>
+      <p>光锥结构保证了“原因总在结果的光锥过去”——这是相对论对因果律的精确表述。</p>
+
+      <h3>5. 固有时 \(\tau\) 与双生子佯谬 Proper Time &amp; the Twin Paradox</h3>
+      <p>沿一条世界线，把无穷小时隔记作 \(\mathrm{d}s^{2}=c^{2}\mathrm{d}t^{2}-|\mathrm{d}\vec{r}|^{2}=c^{2}\mathrm{d}t^{2}(1-v^{2}/c^{2})\)。定义<strong>固有时</strong> \(\mathrm{d}\tau=\mathrm{d}s/c\)：</p>
+      <div class="formula">\[ \mathrm{d}\tau=\sqrt{1-\frac{v^{2}}{c^{2}}}\;\mathrm{d}t=\frac{\mathrm{d}t}{\gamma},\qquad \tau_{AB}=\int_{A}^{B}\!\sqrt{1-\frac{v^{2}(t)}{c^{2}}}\,\mathrm{d}t \]</div>
+      <p>固有时就是<strong>随粒子运动的钟</strong>所读出的时间。由于被积函数 \(\sqrt{1-v^{2}/c^{2}}\le 1\)（等号仅当 \(v=0\)），<strong>偏离直线（加速）的世界线累积的固有时更短</strong>。这与欧几里得几何“直线最短”恰恰相反——在闵可夫斯基几何中，<strong>类时直世界线（惯性/自由下落路径）使固有时最大化</strong>。这就是双生子佯谬的几何本质：外出旅行的双生子走了一条“折弯”的世界线，回来时更年轻，不存在对称矛盾（折点处的加速破坏了交换对称性）。</p>
+
+      <h3>6. 四维矢量：4-位置、4-速度、4-动量 Four-vectors</h3>
+      <p>凡在洛伦兹变换下像 \(X^{\mu}\) 一样变换的 4 分量量都叫<strong>四维矢量</strong>。</p>
+      <div class="formula">\[ \text{4-位置:}\ X^{\mu}=(ct,\vec{r}),\qquad \text{4-速度:}\ U^{\mu}=\frac{\mathrm{d}X^{\mu}}{\mathrm{d}\tau}=\gamma(c,\vec{v}) \]</div>
+      <p>注意 4-速度用固有时求导。因为 \(\mathrm{d}X^{\mu}\) 与 \(\mathrm{d}\tau\) 都是标量/矢量，\(U^{\mu}\) 自然是 4-矢量；其模方 \(U\cdot U=\eta_{\mu\nu}U^{\mu}U^{\nu}=\gamma^{2}(c^{2}-v^{2})=c^{2}\) 是不变量（<strong>任何粒子的 4-速度大小都是 \(c\)</strong>）。把 4-速度乘以静止质量 \(m\) 得 4-动量：</p>
+      <div class="formula">\[ P^{\mu}=mU^{\mu}=\left(\gamma mc,\,\gamma m\vec{v}\right)=\left(\frac{E}{c},\,\vec{p}\right) \]</div>
+      <p>这里 \(E=\gamma mc^{2}\) 是相对论总能量，\(\vec{p}=\gamma m\vec{v}\) 是相对论动量。4-动量把能量与动量统一为一个几何对象。</p>
+
+      <h3>7. 洛伦兹变换＝双曲旋转；快度的可加性 Lorentz Boosts as Hyperbolic Rotations</h3>
+      <p>在 \(1{+}1\) 维下，沿 \(x\) 方向的洛伦兹变换可写成</p>
+      <div class="formula">\[ \begin{pmatrix}ct'\\ x'\end{pmatrix}=\begin{pmatrix}\cosh\phi & -\sinh\phi\\ -\sinh\phi & \cosh\phi\end{pmatrix}\begin{pmatrix}ct\\ x\end{pmatrix},\qquad \tanh\phi=\beta\equiv\frac{v}{c} \]</div>
+      <p>它与普通转动矩阵 \(\bigl(\begin{smallmatrix}\cos\theta & -\sin\theta\\ \sin\theta & \cos\theta\end{smallmatrix}\bigr)\) 的区别仅是三角函数换成双曲函数、一个符号翻转——所以称洛伦兹变换为<strong>双曲旋转</strong>，参数 \(\phi=\tanh^{-1}\beta\) 称<strong>快度 (rapidity)</strong>。两个共线 boost 的合成等价于角度相加：</p>
+      <div class="formula">\[ \phi_{\text{合}}=\phi_{1}+\phi_{2}\quad\Longrightarrow\quad \beta_{\text{合}}=\tanh(\phi_{1}+\phi_{2})=\frac{\beta_{1}+\beta_{2}}{1+\beta_{1}\beta_{2}} \]</div>
+      <p>这正是爱因斯坦速度合成公式。<strong>快度可加，而速度不可加</strong>——快度才是相对论中真正“线性”的运动学量。</p>
+
+      <h3>8. 不变标量积与不变质量 Lorentz-invariant Scalar Product &amp; Invariant Mass</h3>
+      <p>两个 4-矢量的标量积 \(A\cdot B\equiv\eta_{\mu\nu}A^{\mu}B^{\nu}=A^{0}B^{0}-\vec{A}\cdot\vec{B}\) 是洛伦兹标量。对 4-动量：</p>
+      <div class="formula">\[ P\cdot P=\frac{E^{2}}{c^{2}}-|\vec{p}|^{2}=(mc)^{2}\quad\text{（在静止系中 }P^{\mu}=(mc,\vec{0})\text{）} \]</div>
+      <p>整理得 <strong>质能关系的一般形式</strong>：</p>
+      <div class="formula">\[ E^{2}=|\vec{p}|^{2}c^{2}+m^{2}c^{4} \]</div>
+      <p>静止质量 \(m\)（也称<strong>不变质量</strong>）是粒子的内禀属性，<strong>在所有惯性系中都相同</strong>——这与过时的“相对论质量”概念（\(\gamma m\)，随系而变）有本质区别。</p>
+
+      <div class="key-terms">Minkowski spacetime (闵可夫斯基时空), event (事件), worldline (世界线), spacetime interval (时空间隔), metric signature (度规符号), timelike/lightlike/spacelike (类时/类光/类空), causal connection (因果联系), light cone (光锥), future/past/elsewhere (未来/过去/它处), proper time (固有时), twin paradox (双生子佯谬), four-vector (四维矢量), 4-position (4-位置), 4-velocity (4-速度), 4-momentum (4-动量), Lorentz scalar (洛伦兹标量), hyperbolic rotation (双曲旋转), rapidity (快度), invariant mass / rest mass (不变质量/静止质量), Einstein velocity addition (爱因斯坦速度合成)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：时空间隔在洛伦兹变换下的不变性</h3>
+      <p>在 \(1{+}1\) 维下沿 \(x\) 方向 boost：\(ct'=\gamma(ct-\beta x)\)，\(x'=\gamma(x-\beta ct)\)，其中 \(\beta=v/c\)，\(\gamma=(1-\beta^{2})^{-1/2}\)。计算变换后的间隔：</p>
+      <div class="formula">\[ s'^{2}=(ct')^{2}-(x')^{2}=\gamma^{2}\!\left[(ct-\beta x)^{2}-(x-\beta ct)^{2}\right] \]</div>
+      <p>展开括号：</p>
+      <div class="formula">\[ (ct-\beta x)^{2}-(x-\beta ct)^{2}=(ct)^{2}-2\beta(ct)(x)+\beta^{2}x^{2}-x^{2}+2\beta(ct)(x)-\beta^{2}(ct)^{2} \]</div>
+      <p>交叉项相消，剩下 \((ct)^{2}(1-\beta^{2})-x^{2}(1-\beta^{2})=(1-\beta^{2})[(ct)^{2}-x^{2}]\)。乘以外层 \(\gamma^{2}\) 并用 \(\gamma^{2}(1-\beta^{2})=1\)：</p>
+      <div class="formula">\[ s'^{2}=\gamma^{2}(1-\beta^{2})\bigl[(ct)^{2}-x^{2}\bigr]=(ct)^{2}-x^{2}=s^{2}\quad\checkmark \]</div>
+      <p>因此 \(s^{2}\) 是洛伦兹标量。把它推广到 \((+,-,-,-)\) 全 4 维的情形只需同样计算（\(y,z\) 不变）。</p>
+
+      <h3>推导 B：固有时与“直世界线最大化固有时”</h3>
+      <p>由 \(\mathrm{d}s^{2}=c^{2}\mathrm{d}t^{2}-|\mathrm{d}\vec{r}|^{2}=c^{2}\mathrm{d}t^{2}\!\left(1-\dfrac{1}{c^{2}}\!\left|\dfrac{\mathrm{d}\vec{r}}{\mathrm{d}t}\right|^{2}\right)=c^{2}\mathrm{d}t^{2}(1-v^{2}/c^{2})\)，开方除以 \(c\)：</p>
+      <div class="formula">\[ \mathrm{d}\tau=\frac{\mathrm{d}s}{c}=\sqrt{1-\frac{v^{2}}{c^{2}}}\,\mathrm{d}t=\frac{\mathrm{d}t}{\gamma(v)} \]</div>
+      <p>对一条连接事件 \(A,B\) 的类时世界线积分 \(\tau_{AB}=\int_{A}^{B}\!\sqrt{1-v^{2}/c^{2}}\,\mathrm{d}t\)。由于被积函数 \(\sqrt{1-v^{2}/c^{2}}\le 1\)（仅当 \(v\equiv 0\) 时取等），任何有 \(v\ne 0\) 段的世界线都使 \(\tau\) 严格减小。<strong>使 \(\tau\) 取最大值的，正是沿 \(ct\) 轴的直世界线（恒静路径），更一般地是测地线（惯性/自由下落路径）。</strong>这正是双生子佯谬的几何根：旅行双生子折回处 \(v\ne 0\)，故其固有时较小、回程更年轻；且因为折点破坏了“两个惯性系”的对称性，佯谬并不存在。</p>
+
+      <h3>推导 C：由 4-动量不变量导出 \(E^{2}=(pc)^{2}+(mc^{2})^{2}\)</h3>
+      <p>4-动量 \(P^{\mu}=mU^{\mu}\)，所以 \(P\cdot P=m^{2}\,U\cdot U=m^{2}c^{2}\)（用了推导 B 中 \(U\cdot U=c^{2}\)）。另一方面 \(P^{\mu}=(E/c,\vec{p})\)，故</p>
+      <div class="formula">\[ P\cdot P=\eta_{\mu\nu}P^{\mu}P^{\nu}=\frac{E^{2}}{c^{2}}-|\vec{p}|^{2}=m^{2}c^{2} \]</div>
+      <p>两边乘以 \(c^{2}\) 即得</p>
+      <div class="formula">\[ \boxed{\,E^{2}=|\vec{p}|^{2}c^{2}+m^{2}c^{4}\,} \]</div>
+      <p>特例：静止粒子 \(\vec{p}=0\) 给出 \(E=mc^{2}\)；无质量粒子（如光子，\(m=0\)）给出 \(E=pc\)，即 \(v=c\)。4-动量守恒（在一个惯性系中矢量守恒）自动蕴含能量守恒与动量守恒在<strong>所有</strong>惯性系中同时成立——这是 4-矢量形式化的最大胜利。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 15.1 计算时空间隔并判断因果</h4>
+        <p class="example-statement">在某惯性系 \(S\) 中，事件 \(A\)：闪电击中坐标原点，\(X_{A}^{\mu}=(0,0,0,0)\)；事件 \(B\)：远处观测者记录到闪光，\(X_{B}^{\mu}=(ct_{B},x_{B},0,0)\)，其中 \(ct_{B}=5\,\mathrm{ls}\)（光秒），\(x_{B}=3\,\mathrm{ls}\)。已知 \(1\,\mathrm{ls}=c\times 1\,\mathrm{s}=3.0\times 10^{8}\,\mathrm{m}\)。求间隔 \(s^{2}\)、分类、能否因果联系，以及沿直世界线的固有时 \(\Delta\tau\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>间隔（取 \(y=z=0\)）：</p>
+          <div class="formula">\[ s^{2}=(c\Delta t)^{2}-(\Delta x)^{2}=(5)^{2}-(3)^{2}=25-9=16\,(\mathrm{ls})^{2} \]</div>
+          <p class="step">\(s^{2}=16>0\)，故<strong>类时分离</strong>。两事件可由慢于光速的信号联系，<strong>存在因果可能</strong>。</p>
+          <p class="step">换算 SI：\(s^{2}=16\times(3.0\times 10^{8}\,\mathrm{m})^{2}=16\times 9.0\times 10^{16}=1.44\times 10^{18}\,\mathrm{m^{2}}\)。</p>
+          <p class="step">原时：\(c\Delta\tau=\sqrt{s^{2}}=\sqrt{16}\,\mathrm{ls}=4\,\mathrm{ls}\)，故</p>
+          <div class="formula">\[ \Delta\tau=\frac{4\,\mathrm{ls}}{c}=\frac{4\times 3.0\times 10^{8}\,\mathrm{m}}{3.0\times 10^{8}\,\mathrm{m/s}}=4.0\,\mathrm{s} \]</div>
+          <p class="step">校验：在 \(S\) 系中 \(\Delta t=5\,\mathrm{s}\)，\(\Delta x/c=3\,\mathrm{ls}/c=3\,\mathrm{s}\)，\(\Delta\tau=\sqrt{\Delta t^{2}-(\Delta x/c)^{2}}=\sqrt{25-9}\,\mathrm{s}=4\,\mathrm{s}\) ✓。</p>
+          <p><span class="ans">\(s^{2}=+16\,(\mathrm{ls})^{2}=+1.44\times 10^{18}\,\mathrm{m^{2}}\)（类时），可因果联系，固有时 \(\Delta\tau=4.0\,\mathrm{s}\)</span>。若改取 \(x_{B}=5\,\mathrm{ls}\) 则 \(s^{2}=0\)（类光）；取 \(x_{B}=6\,\mathrm{ls}\) 则 \(s^{2}=-11\)（类空，不可因果）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 15.2 双生子佯谬：直世界线 vs 折世界线</h4>
+        <p class="example-statement">事件 \(A=(0,0)\)、事件 \(B=(ct,x)=(10\,\mathrm{ls},\,0)\)（在地球系 \(S\) 中相隔 \(10\,\mathrm{s}\)、同一地点）。比较两条世界线的固有时：(i) 留守双生子静止于 \(x=0\)；(ii) 旅行双生子以 \(v=0.6c\) 离开 \(5\,\mathrm{s}\)（到达 \(x=3\,\mathrm{ls}\)），瞬间折返、再以 \(0.6c\) 返回，\(5\,\mathrm{s}\) 后抵达 \(B\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (i)：</strong>全程 \(v=0\)，\(\mathrm{d}\tau=\mathrm{d}t\)，</p>
+          <div class="formula">\[ \tau_{\text{静}}=\int_{0}^{10\,\mathrm{s}}\!\mathrm{d}t=10.0\,\mathrm{s} \]</div>
+          <p class="step"><strong>解 (ii)：</strong>每段 \(v=0.6c\)，\(\gamma=1/\sqrt{1-0.36}=1/0.8=1.25\)。每段原时 \(=\Delta t/\gamma=5/1.25=4\,\mathrm{s}\)。两段共</p>
+          <div class="formula">\[ \tau_{\text{旅}}=4\,\mathrm{s}+4\,\mathrm{s}=8.0\,\mathrm{s} \]</div>
+          <p class="step"><strong>用间隔分段校验：</strong>段 1 从 \((0,0)\) 到 \((5,3)\)，\(s_{1}^{2}=25-9=16\)，\(\Delta\tau_{1}=\sqrt{16}/c=4\,\mathrm{s}\)；段 2 从 \((5,3)\) 到 \((10,0)\)，\(\Delta ct=5,\Delta x=-3\)，\(s_{2}^{2}=25-9=16\)，\(\Delta\tau_{2}=4\,\mathrm{s}\)。合计 \(8\,\mathrm{s}\) ✓。而直路径 \(s^{2}=100\)，\(\Delta\tau=10\,\mathrm{s}\)。</p>
+          <p class="step">两线对比：直世界线（惯性）固有时 \(10\,\mathrm{s}\) <strong>大于</strong>折线（加速）的 \(8\,\mathrm{s}\)。</p>
+          <p><span class="ans">留守双生子经历 \(\tau=10.0\,\mathrm{s}\)，旅行双生子经历 \(\tau=8.0\,\mathrm{s}\)，旅行者年轻 \(2.0\,\mathrm{s}\)</span>。这印证“类时直世界线最大化原时”。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 15.3 由 \(E\)、\(p\) 求不变质量</h4>
+        <p class="example-statement">在某惯性系中测得一个粒子的总能量 \(E=1.25\,\mathrm{GeV}\)、动量 \(p=0.75\,\mathrm{GeV}/c\)（沿 \(x\)）。求其静止质量 \(m\)（以 \(\mathrm{GeV}/c^{2}\) 与 \(\mathrm{kg}\) 表示）以及在该系中的速率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用不变关系 \(E^{2}=(pc)^{2}+(mc^{2})^{2}\)。取 \(pc\) 为能量单位，则 \(pc=0.75\,\mathrm{GeV}\)：</p>
+          <div class="formula">\[ (mc^{2})^{2}=E^{2}-(pc)^{2}=(1.25)^{2}-(0.75)^{2}=1.5625-0.5625=1.00\,(\mathrm{GeV})^{2} \]</div>
+          <p class="step">\(mc^{2}=1.00\,\mathrm{GeV}\)，即 \(m=1.00\,\mathrm{GeV}/c^{2}\)。</p>
+          <p class="step">换算 SI：\(1\,\mathrm{GeV}/c^{2}=1.783\times 10^{-27}\,\mathrm{kg}\)，故 \(m=1.78\times 10^{-27}\,\mathrm{kg}\)（约为 \(1.07\) 倍质子质量）。</p>
+          <p class="step">速率：由 \(\vec{p}=\gamma m\vec{v}\) 与 \(E=\gamma mc^{2}\) 相除，\(v/c=pc/E=0.75/1.25=0.60\)，即</p>
+          <div class="formula">\[ v=0.60\,c=1.8\times 10^{8}\,\mathrm{m/s} \]</div>
+          <p class="step">校验：\(\gamma=E/(mc^{2})=1.25\)；对 \(v=0.6c\)，\(\gamma=1/\sqrt{1-0.36}=1.25\) ✓。若换到粒子静止系，能量恰为 \(mc^{2}=1.00\,\mathrm{GeV}\)，动量为零——但 \(m\) 不变。</p>
+          <p><span class="ans">\(m=1.00\,\mathrm{GeV}/c^{2}\approx 1.78\times 10^{-27}\,\mathrm{kg}\)（所有惯性系相同），速率 \(v=0.60\,c\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 15.4 快度的可加性：两次连续 boost</h4>
+        <p class="example-statement">粒子相对实验室系 \(S\) 以 \(v_{1}=0.6c\) 沿 \(x\) 运动。在粒子的静止系 \(S'\) 中再沿同方向发射一个以 \(v_{2}=0.8c\) 运动的子弹。求子弹相对 \(S\) 的速度。用快度法和速度合成公式两种方法核对。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (快度法)：</strong>两 boost 的快度</p>
+          <div class="formula">\[ \phi_{1}=\tanh^{-1}(0.6)=\tfrac{1}{2}\ln\!\frac{1+0.6}{1-0.6}=\tfrac{1}{2}\ln 4=0.6931 \]</div>
+          <div class="formula">\[ \phi_{2}=\tanh^{-1}(0.8)=\tfrac{1}{2}\ln\!\frac{1+0.8}{1-0.8}=\tfrac{1}{2}\ln 9=1.0986 \]</div>
+          <p class="step">快度相加：\(\phi=\phi_{1}+\phi_{2}=1.7918\)。故</p>
+          <div class="formula">\[ \beta=\tanh\phi=\tanh(1.7918)=0.9459 \]</div>
+          <p class="step"><strong>解 (速度合成)：</strong></p>
+          <div class="formula">\[ v=\frac{v_{1}+v_{2}}{1+v_{1}v_{2}/c^{2}}=\frac{0.6c+0.8c}{1+(0.6)(0.8)}=\frac{1.4c}{1.48}=0.9459\,c \]</div>
+          <p class="step">两法一致 ✓。若按伽利略（错误）直接相加 \(0.6c+0.8c=1.4c>c\)，违反光速极限——速度不可加，<strong>快度才可加</strong>。</p>
+          <p class="step">合成后的 \(\gamma=\cosh\phi=\cosh(1.7918)=3.083\)（也可由 \(1/\sqrt{1-0.9459^{2}}=3.083\) 校验）。</p>
+          <p><span class="ans">\(\phi=1.7918\)，\(v=0.946\,c\)（\(v<c\)，符合相对论）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 15.5 4-动量的洛伦兹变换与不变量验证</h4>
+        <p class="example-statement">在实验室系 \(S\) 中，粒子具有 \(E=1.25\,\mathrm{GeV}\)、\(p_{x}=0.75\,\mathrm{GeV}/c\)（即例 15.3 的粒子）。另一系 \(S'\) 以 \(u=0.8c\) 沿 \(+x\) 相对 \(S\) 运动。求粒子在 \(S'\) 系中的能量与动量，并验证 \(P\cdot P\) 不变。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对 \(u=0.8c\)，\(\beta_{u}=0.8\)，\(\gamma_{u}=1/\sqrt{1-0.64}=1/0.6=5/3\)。4-动量变换：</p>
+          <div class="formula">\[ E'=\gamma_{u}\bigl(E-\beta_{u}\,pc\bigr),\qquad p'_{x}c=\gamma_{u}\bigl(pc-\beta_{u}E\bigr) \]</div>
+          <p class="step">代入 \(E=1.25\,\mathrm{GeV},\;pc=0.75\,\mathrm{GeV}\)：</p>
+          <div class="formula">\[ E'=\tfrac{5}{3}(1.25-0.8\times 0.75)=\tfrac{5}{3}(1.25-0.60)=\tfrac{5}{3}\times 0.65=1.083\,\mathrm{GeV} \]</div>
+          <div class="formula">\[ p'_{x}c=\tfrac{5}{3}(0.75-0.8\times 1.25)=\tfrac{5}{3}(0.75-1.00)=\tfrac{5}{3}\times(-0.25)=-0.417\,\mathrm{GeV} \]</div>
+          <p class="step">即 \(E'=1.083\,\mathrm{GeV}\)，\(p'_{x}=-0.417\,\mathrm{GeV}/c\)（粒子在 \(S'\) 中反向运动——因为 \(S'\) 追得比粒子快）。</p>
+          <p class="step"><strong>验证不变量：</strong></p>
+          <div class="formula">\[ S\ \text{系：}\ \frac{E^{2}}{c^{2}}-p^{2}=(1.25)^{2}-(0.75)^{2}=1.00\,(\mathrm{GeV}/c)^{2} \]</div>
+          <div class="formula">\[ S'\text{系：}\ \frac{E'^{2}}{c^{2}}-p'^{2}=(1.083)^{2}-(0.417)^{2}=1.1736-0.1736=1.00\,(\mathrm{GeV}/c)^{2}\ \checkmark \]</div>
+          <p class="step">两值相等，对应 \(P\cdot P=(mc)^{2}=1.00\,(\mathrm{GeV}/c)^{2}\)，即 \(m=1.00\,\mathrm{GeV}/c^{2}\)（与例 15.3 一致）。速率校验：\(v'/c=p'c/E'=-0.417/1.083=-0.385\)，与速度变换 \((0.6-0.8)/(1-0.48)=-0.385\) 相符 ✓。</p>
+          <p><span class="ans">\(E'=1.083\,\mathrm{GeV},\;p'_{x}=-0.417\,\mathrm{GeV}/c\)；\(P\cdot P=1.00\,(\mathrm{GeV}/c)^{2}\) 在两系相同</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>时空间隔带“负号”，不是欧氏距离。</strong>\(s^{2}=(c\Delta t)^{2}-|\Delta\vec{r}|^{2}\) 中的减号是定义，不是笔误。把所有项都加起来会得到一个在洛伦兹变换下<strong>不</strong>不变的量，丢失全部物理意义。</li>
+        <li><strong>类空分离的事件不能相互影响。</strong>\(s^{2}<0\) 意味着即使光也来不及。不要因为“在 \(A\) 之后发生”就以为 \(B\) 是 \(A\) 的结果——只有 \(B\) 在 \(A\) 的未来光锥之内（\(s^{2}\ge 0\) 且 \(\Delta t>0\)）才算。</li>
+        <li><strong>固有时是“最大化”（不是最小化）于自由下落路径。</strong>这与欧氏“直线最短”相反。双生子佯谬中<strong>留守者（惯性）老得更多</strong>，不是旅行者。记住：被积函数 \(\sqrt{1-v^{2}/c^{2}}\le 1\)，运动越多原时越少。</li>
+        <li><strong>不变质量在所有系中相同；不要与“相对论质量”\(\gamma m\) 混淆。</strong>\(m\) 是粒子内禀属性，\(P\cdot P=(mc)^{2}\) 给出。而 \(\gamma m\) 随系而变，且在现代相对论中已基本弃用——用 \(E=\gamma mc^{2}\) 与 \(\vec{p}=\gamma m\vec{v}\) 即可，无需“相对论质量”。</li>
+        <li><strong>速度不可加，快度才可加。</strong>\(0.6c+0.8c\ne 1.4c\)，正确合成 \(=0.946c\)。合成共线 boost 时把 \(\phi_{1}+\phi_{2}\) 相加，再 \(\tanh\) 一次得速度。跨方向（非共线）boost 还会伴随 Wigner 转动，更不能简单相加。</li>
+        <li><strong>4-速度的“大小”恒为 \(c\)，即使粒子静止。</strong>静止粒子 \(U^{\mu}=(c,\vec{0})\)，\(U\cdot U=c^{2}\)。不要以为静止粒子 4-速度为零——4-速度用<strong>固有时</strong>而非坐标时求导，恒不为零。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 间隔与因果判定：事件 \(A=(0,0)\)，事件 \(B=(ct=2\,\mathrm{ls},\,x=5\,\mathrm{ls})\)。求 \(s^{2}\)、分类，并判断 \(A\) 能否影响 \(B\)。</summary>
+        <div class="hint">用 \(s^{2}=(c\Delta t)^{2}-(\Delta x)^{2}\)，看符号；因果要求 \(s^{2}\ge 0\) 且 \(B\) 在 \(A\) 的未来（\(\Delta t>0\)）。</div>
+        <div class="solution">
+          <p>\(s^{2}=(2)^{2}-(5)^{2}=4-25=-21\,(\mathrm{ls})^{2}<0\)，<strong>类空分离</strong>。即使光也只走 \(2\,\mathrm{ls}\)，到不了 \(5\,\mathrm{ls}\) 远处。</p>
+          <p><span class="ans">\(s^{2}=-21\,(\mathrm{ls})^{2}\)，类空，\(A\) <strong>不能</strong>影响 \(B\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 类时分离与原时：实验室中两事件相隔 \(\Delta t=5.0\,\mu\mathrm{s}\)、\(\Delta x=1.0\,\mathrm{km}\)。判断是否类时，并求沿直世界线的原时 \(\Delta\tau\)。取 \(c=3.0\times 10^{8}\,\mathrm{m/s}\)。</summary>
+        <div class="hint">比较 \(c\Delta t\) 与 \(|\Delta x|\)；\(\Delta\tau=\sqrt{(\Delta t)^{2}-(\Delta x/c)^{2}}\)。</div>
+        <div class="solution">
+          <p>\(c\Delta t=(3.0\times 10^{8})(5.0\times 10^{-6})=1.50\times 10^{3}\,\mathrm{m}=1.50\,\mathrm{km}\)。</p>
+          <p>\(|\Delta x|=1.0\,\mathrm{km}<c\Delta t\)，故 \(s^{2}>0\)，<strong>类时</strong>。</p>
+          <p>\(s^{2}=(1500)^{2}-(1000)^{2}=2.25\times 10^{6}-1.00\times 10^{6}=1.25\times 10^{6}\,\mathrm{m^{2}}\)。</p>
+          <p>\(c\Delta\tau=\sqrt{1.25\times 10^{6}}=1118\,\mathrm{m}\)，\(\Delta\tau=1118/(3.0\times 10^{8})=3.73\,\mu\mathrm{s}\)。</p>
+          <p><span class="ans">类时分离；\(\Delta\tau\approx 3.73\,\mu\mathrm{s}\)</span>（小于坐标时 \(5\,\mu\mathrm{s}\)，因为事件空间有间距）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 质子的高能动量：静止能量 \(m_{p}c^{2}=938.3\,\mathrm{MeV}\)。某加速器中质子总能量 \(E=2.00\,\mathrm{GeV}\)。求动量 \(p\) 与速率 \(v\)。</summary>
+        <div class="hint">用 \(E^{2}=(pc)^{2}+(mc^{2})^{2}\) 求 \(p\)；用 \(v/c=pc/E\) 求速率。</div>
+        <div class="solution">
+          <p>\(mc^{2}=0.9383\,\mathrm{GeV}\)。\((pc)^{2}=E^{2}-(mc^{2})^{2}=(2.00)^{2}-(0.9383)^{2}=4.000-0.8804=3.1196\)。</p>
+          <p>\(pc=1.766\,\mathrm{GeV}\)，即 \(p=1.77\,\mathrm{GeV}/c\)。</p>
+          <p>\(v/c=pc/E=1.766/2.00=0.883\)，\(v=0.883\,c=2.65\times 10^{8}\,\mathrm{m/s}\)。</p>
+          <p>校验：\(\gamma=E/(mc^{2})=2.000/0.9383=2.132\)；由 \(v\) 算 \(\gamma=1/\sqrt{1-0.883^{2}}=1/\sqrt{0.2203}=2.131\) ✓。</p>
+          <p><span class="ans">\(p\approx 1.77\,\mathrm{GeV}/c\)，\(v\approx 0.883\,c\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 对头碰的相对速度：两枚火箭相向飞行，各自相对地面以 \(0.90c\) 运动。它们的相对速度是多少？（不要回答 \(1.8c\)！）</summary>
+        <div class="hint">在一枚火箭的静止系中用速度合成：\(v'=(v-u)/(1-uv/c^{2})\)，或用快度 \(\phi=2\tanh^{-1}(0.9)\)。</div>
+        <div class="solution">
+          <p>取一枚火箭为 \(S'\)，它以 \(u=-0.90c\) 相对地面；另一枚在地面系中 \(v=+0.90c\)。</p>
+          <p>\(v'=\dfrac{v-u}{1-uv/c^{2}}=\dfrac{0.90c-(-0.90c)}{1-(-0.90)(0.90)}=\dfrac{1.80c}{1+0.81}=\dfrac{1.80}{1.81}c=0.9945\,c\)。</p>
+          <p>快度法：\(\phi=2\tanh^{-1}(0.9)=2\times\tfrac{1}{2}\ln\!\dfrac{1.9}{0.1}=\ln 19=2.944\)；\(\tanh(2.944)=0.9945\) ✓。</p>
+          <p><span class="ans">相对速度 \(\approx 0.994\,c\)（仍小于 \(c\)）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 间隔在不同系中的不变性：在 \(S\) 系中 \(A=(0,0)\)，\(B=(ct=4\,\mathrm{ls},\,x=0)\)。在以 \(v=0.6c\) 沿 \(x\) 运动的 \(S'\) 系中求 \(B\) 的坐标，并验证 \(s^{2}\) 相同。</summary>
+        <div class="hint">洛伦兹：\(ct'=\gamma(ct-\beta x)\)，\(x'=\gamma(x-\beta ct)\)，\(\gamma=1.25,\beta=0.6\)。</div>
+        <div class="solution">
+          <p>\(ct'_{B}=1.25(4-0.6\times 0)=5.0\,\mathrm{ls}\)；\(x'_{B}=1.25(0-0.6\times 4)=1.25(-2.4)=-3.0\,\mathrm{ls}\)。</p>
+          <p>即 \(B'=(5\,\mathrm{ls},\,-3\,\mathrm{ls})\)。</p>
+          <p>\(S\) 系：\(s^{2}=4^{2}-0^{2}=16\)。\(S'\) 系：\(s'^{2}=5^{2}-(-3)^{2}=25-9=16\,\checkmark\)。</p>
+          <p>注意：在 \(S\) 系两事件同地（\(s^{2}=(c\Delta\tau)^{2}\)，原时 \(\Delta\tau=4\,\mathrm{s}\)）；在 \(S'\) 系两事件不同地，但间隔不变——这正是“固有时是洛伦兹标量”的体现。</p>
+          <p><span class="ans">\(B'=(5\,\mathrm{ls},\,-3\,\mathrm{ls})\)；\(s^{2}=s'^{2}=16\,(\mathrm{ls})^{2}\) 不变</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 闵可夫斯基时空图与因果结构 Minkowski Diagram &amp; Causal Structure</h2>
+      <p class="sim-desc">这是一个可调的 <strong>闵可夫斯基时空图</strong>（\(ct\) 竖直、\(x\) 水平，光锥为 \(\pm 45^{\circ}\) 虚线）。用滑块分别设置事件 \(A\) 与事件 \(B\) 的坐标 \((ct,x)\)。仿真将：从 \(A\) 画出未来/过去光锥（绿色锥面）、画出连接 \(A\to B\) 的世界线（按 \(s^{2}\) 的符号着色：<span style="color:#2563eb">蓝＝类时</span>、<span style="color:#16a34a">绿＝类光</span>、<span style="color:#dc2626">红＝类空</span>），并实时报告间隔 \(s^{2}\)、分类结果以及“\(A\) 能否因果地影响 \(B\)”。尝试把 \(B\) 移到光锥之外，观察红色提示。</p>
+      <div class="sim-container">
+        <canvas id="sim-15" width="600" height="420"></canvas>
+        <div class="sim-controls" id="controls-15"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-15');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- diagram geometry: ct vertical (up), x horizontal ----
+          var OX = W / 2;        // origin centred horizontally
+          var OY = H - 60;       // origin near bottom so the future cone opens upward
+          var UNIT = 36;         // pixels per "light-second" unit
+          var SQ2 = Math.SQRT2;
+
+          // world coords -> screen coords
+          function w2s(x, ct) { return [OX + x * UNIT, OY - ct * UNIT]; }
+
+          // ---- adjustable events (units: light-seconds) ----
+          var DEFAULT = { ctA: 0, xA: 0, ctB: 5, xB: 3 };
+          var params = { ctA: DEFAULT.ctA, xA: DEFAULT.xA, ctB: DEFAULT.ctB, xB: DEFAULT.xB };
+
+          function classify(dct, dx) {
+            var s2 = dct * dct - dx * dx;
+            if (Math.abs(s2) < 1e-4) return { s2: s2, type: 'lightlike', color: PS.colors.accent2 };
+            if (s2 > 0)               return { s2: s2, type: 'timelike',  color: PS.colors.primary };
+            return { s2: s2, type: 'spacelike', color: PS.colors.accent };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { /* static diagram, redrawn each frame from params */ }; },
+            step: function (dt, t, s) { /* no dynamics */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // grid + axes
+              PS.drawGrid(ctx, { originX: OX, originY: OY, scale: UNIT, step: 1 });
+              PS.drawText(ctx, 'x',  W - 12, OY + 16, { font: 'italic 13px system-ui', color: PS.colors.axis });
+              PS.drawText(ctx, 'ct', OX - 16, 14,     { font: 'italic 13px system-ui', color: PS.colors.axis });
+
+              var A = w2s(params.xA, params.ctA);
+              var reach = 12 * UNIT;   // extent of the cone lines (canvas clips the rest)
+
+              // ---- shaded timelike future/past wedges of A (faint) ----
+              ctx.save();
+              ctx.globalAlpha = 0.10;
+              ctx.fillStyle = PS.colors.accent2;
+              // future wedge: apex A, upper-left, upper-right
+              ctx.beginPath();
+              ctx.moveTo(A[0], A[1]);
+              ctx.lineTo(A[0] - reach / SQ2, A[1] - reach / SQ2);
+              ctx.lineTo(A[0] + reach / SQ2, A[1] - reach / SQ2);
+              ctx.closePath();
+              ctx.fill();
+              // past wedge
+              ctx.beginPath();
+              ctx.moveTo(A[0], A[1]);
+              ctx.lineTo(A[0] - reach / SQ2, A[1] + reach / SQ2);
+              ctx.lineTo(A[0] + reach / SQ2, A[1] + reach / SQ2);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              // ---- light-cone lines (45°) from A ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.75;
+              ctx.setLineDash([6, 5]);
+              ctx.lineWidth = 1.6;
+              var tips = [
+                [ A[0] + reach / SQ2, A[1] - reach / SQ2],  // future right
+                [ A[0] - reach / SQ2, A[1] - reach / SQ2],  // future left
+                [ A[0] + reach / SQ2, A[1] + reach / SQ2],  // past right
+                [ A[0] - reach / SQ2, A[1] + reach / SQ2],  // past left
+              ];
+              for (var i = 0; i < tips.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(A[0], A[1]);
+                ctx.lineTo(tips[i][0], tips[i][1]);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- classify separation A -> B ----
+              var dct = params.ctB - params.ctA;
+              var dx  = params.xB - params.xA;
+              var info = classify(dct, dx);
+              var causal = (dct > 0) && (info.s2 >= -1e-4);  // B inside/on future cone of A
+              var typeText = {
+                timelike:  'timelike · 类时 (s² > 0)',
+                lightlike: 'lightlike · 类光 (s² = 0)',
+                spacelike: 'spacelike · 类空 (s² < 0)',
+              }[info.type];
+
+              // ---- worldline A -> B, colour-coded ----
+              var B = w2s(params.xB, params.ctB);
+              ctx.save();
+              ctx.strokeStyle = info.color;
+              ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              ctx.moveTo(A[0], A[1]);
+              ctx.lineTo(B[0], B[1]);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- events ----
+              PS.drawCircle(ctx, A[0], A[1], 6, { fill: PS.colors.trace, stroke: '#000', lineWidth: 1 });
+              PS.drawText(ctx, 'A', A[0] + 10, A[1] - 8,
+                { font: 'bold 13px system-ui', color: PS.colors.trace });
+              PS.drawCircle(ctx, B[0], B[1], 6, { fill: info.color, stroke: '#000', lineWidth: 1 });
+              PS.drawText(ctx, 'B', B[0] + 10, B[1] - 8,
+                { font: 'bold 13px system-ui', color: info.color });
+
+              // ---- HUD ----
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 268, 130);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 268, 130);
+              ctx.restore();
+
+              var hud = [
+                ['A: ct=' + params.ctA.toFixed(2) + '  x=' + params.xA.toFixed(2), PS.colors.text, false],
+                ['B: ct=' + params.ctB.toFixed(2) + '  x=' + params.xB.toFixed(2), PS.colors.text, false],
+                ['Δ(ct)=' + dct.toFixed(2) + '   Δx=' + dx.toFixed(2),             PS.colors.text, false],
+                ['s² = (Δct)² − (Δx)² = ' + info.s2.toFixed(3) + '  (ls)²',        PS.colors.text, false],
+                [typeText, info.color, true],
+                [causal ? '→ A 可以影响 B  (in future light cone)'
+                        : '→ A 不能影响 B  (no causal link)',
+                 causal ? PS.colors.primary : PS.colors.accent, true],
+              ];
+              for (var k = 0; k < hud.length; k++) {
+                var r = hud[k];
+                PS.drawText(ctx, r[0], 16, 28 + k * 17,
+                  { font: (r[2] ? 'bold ' : '') + '12px system-ui', color: r[1] });
+              }
+
+              // legend (bottom-right)
+              PS.drawText(ctx,
+                'light cone = 45°   ·   units: light-seconds   ·   1 ls = c·1 s',
+                W - 12, H - 10,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-15'), [
+            { type: 'slider', key: 'ctA', label: '事件 A 的 ct (ls)', min: 0,  max: 8, step: 0.1, value: DEFAULT.ctA },
+            { type: 'slider', key: 'xA',  label: '事件 A 的 x  (ls)', min: -6, max: 6, step: 0.1, value: DEFAULT.xA },
+            { type: 'slider', key: 'ctB', label: '事件 B 的 ct (ls)', min: 0,  max: 8, step: 0.1, value: DEFAULT.ctB },
+            { type: 'slider', key: 'xB',  label: '事件 B 的 x  (ls)', min: -6, max: 6, step: 0.1, value: DEFAULT.xB },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+
+          ctl.on('ctA', function (v) { params.ctA = v; });
+          ctl.on('xA',  function (v) { params.xA  = v; });
+          ctl.on('ctB', function (v) { params.ctB = v; });
+          ctl.on('xB',  function (v) { params.xB  = v; });
+          ctl.on('reset', function () {
+            params.ctA = DEFAULT.ctA; params.xA = DEFAULT.xA;
+            params.ctB = DEFAULT.ctB; params.xB = DEFAULT.xB;
+            // sync slider DOM thumbs + value labels so the UI matches the diagram
+            var box = document.getElementById('controls-15');
+            var inputs = box.querySelectorAll('input[type=range]');
+            var spans  = box.querySelectorAll('.ctrl-value');
+            var vals = [DEFAULT.ctA, DEFAULT.xA, DEFAULT.ctB, DEFAULT.xB];
+            for (var i = 0; i < inputs.length; i++) {
+              inputs[i].value = vals[i];
+              if (spans[i]) spans[i].textContent = vals[i].toFixed(1);
+            }
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>事件是闵可夫斯基时空中的点 \(X^{\mu}=(ct,x,y,z)\)；时空几何度规 \(\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\)。</li>
+        <li>时空间隔 \(s^{2}=(c\Delta t)^{2}-|\Delta\vec{r}|^{2}\) 是洛伦兹标量（在所有惯性系中相同）。</li>
+        <li>分类：类时 \(s^{2}>0\)（可因果）、类光 \(s^{2}=0\)（光）、类空 \(s^{2}<0\)（不可因果）。</li>
+        <li>光锥划分未来/过去/它处；因果律＝原因必在结果的光锥过去。</li>
+        <li>固有时 \(\mathrm{d}\tau=\mathrm{d}t/\gamma=\sqrt{1-v^{2}/c^{2}}\,\mathrm{d}t\)；类时直世界线（惯性/自由下落）<strong>最大化</strong>原时——双生子佯谬的根源。</li>
+        <li>4-速度 \(U^{\mu}=\mathrm{d}X^{\mu}/\mathrm{d}\tau=\gamma(c,\vec{v})\)，\(U\cdot U=c^{2}\)；4-动量 \(P^{\mu}=(E/c,\vec{p})=mU^{\mu}\)。</li>
+        <li>洛伦兹 boost＝双曲旋转，快度 \(\tanh\phi=\beta\)；共线 boost 的<strong>快度可加</strong>，速度需用爱因斯坦合成公式。</li>
+        <li>不变质量由 \(P\cdot P=(mc)^{2}\) 给出，导出 \(E^{2}=(pc)^{2}+(mc^{2})^{2}\)；\(m\) 在所有系中相同。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;s^{2}=(c\Delta t)^{2}-|\Delta\vec{r}|^{2},\quad \mathrm{d}\tau=\frac{\mathrm{d}t}{\gamma},\quad U^{\mu}=\gamma(c,\vec{v}),\quad P^{\mu}=\left(\frac{E}{c},\vec{p}\right),\quad P\cdot P=\frac{E^{2}}{c^{2}}-p^{2}=(mc)^{2},\quad E^{2}=(pc)^{2}+(mc^{2})^{2},\quad \tanh\phi=\frac{v}{c},\ \ \phi_{\text{合}}=\phi_{1}+\phi_{2}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

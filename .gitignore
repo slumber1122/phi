@@ -1,0 +1,10 @@
+# local Claude settings
+.claude/
+
+# browser/test artifacts
+.playwright-mcp/
+*.png
+
+# OS / editor
+.DS_Store
+*.log

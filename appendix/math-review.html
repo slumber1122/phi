@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 B · 数学回顾 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 B · Appendix B · 数学回顾 Math Review</p>
+      <h1>数学回顾 <span class="en-title">Math Review</span></h1>
+    </header>
+
+    <p class="sim-desc">本附录为本课程所需的数学工具速查表。术语首次出现给出英文对照；公式块可直接背诵。This appendix is a cheat-sheet of the mathematical tools needed in this course. English terms are given on first mention; the formula blocks are worth memorizing.</p>
+
+    <!-- ============================================================ -->
+    <!-- 1. 微积分基础 Calculus                                        -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>1. 微积分基础 Calculus</h2>
+
+      <h3>1.1 导数 The Derivative</h3>
+      <p>导数 (derivative) 描述函数的瞬时变化率。几何上是切线 (tangent line) 的斜率；物理上，位移对时间的导数是速度，速度的导数是加速度。</p>
+      <div class="formula">
+        \[ f'(x) \;=\; \lim_{\Delta x \to 0}\frac{f(x+\Delta x)-f(x)}{\Delta x}, \qquad \dv{f}{x}\equiv f'(x) \]
+      </div>
+      <div class="formula">
+        \[ \text{链式法则 chain rule:}\quad \dv{}{x}f(g(x)) \;=\; f'(g(x))\,g'(x) \]
+      </div>
+
+      <h3>1.2 求导法则 Rules of Differentiation</h3>
+      <div class="formula">
+        \[ \begin{aligned}
+        \text{和差 sum/diff:}&\quad \dv{}{x}(u\pm v)=u'\pm v'\\[2pt]
+        \text{积 product:}&\quad \dv{}{x}(uv)=u'v+uv'\\[2pt]
+        \text{商 quotient:}&\quad \dv{}{x}\!\left(\frac{u}{v}\right)=\frac{u'v-uv'}{v^{2}}\\[2pt]
+        \text{链式 chain:}&\quad \dv{}{x}f(g)=f'(g)\,g'
+        \end{aligned} \]
+      </div>
+
+      <h3>1.3 常用导数 Common Derivatives</h3>
+      <table class="formula" style="border-collapse:collapse;width:100%;font-size:0.95em;">
+        <thead><tr style="border-bottom:2px solid var(--rule);">
+          <th style="text-align:left;padding:4px 10px;">函数 \(f(x)\)</th>
+          <th style="text-align:left;padding:4px 10px;">导数 \(f'(x)\)</th>
+          <th style="text-align:left;padding:4px 10px;">备注 Note</th>
+        </tr></thead>
+        <tbody>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(c\) (常数 constant)</td><td style="padding:4px 10px;">\(0\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(x^{n}\)</td><td style="padding:4px 10px;">\(n\,x^{\,n-1}\)</td><td style="padding:4px 10px;">幂法则 power rule, \(n\in\mathbb{R}\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\sin x\)</td><td style="padding:4px 10px;">\(\cos x\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\cos x\)</td><td style="padding:4px 10px;">\(-\sin x\)</td><td style="padding:4px 10px;">注意负号 mind the sign</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\tan x\)</td><td style="padding:4px 10px;">\(\sec^{2} x\)</td><td style="padding:4px 10px;">\(\sec x=1/\cos x\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(e^{x}\)</td><td style="padding:4px 10px;">\(e^{x}\)</td><td style="padding:4px 10px;">自身不变 invariant</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(a^{x}\)</td><td style="padding:4px 10px;">\(a^{x}\ln a\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\ln x\)</td><td style="padding:4px 10px;">\(1/x\)</td><td style="padding:4px 10px;">\(x>0\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\log_{a} x\)</td><td style="padding:4px 10px;">\(\dfrac{1}{x\ln a}\)</td><td style="padding:4px 10px;">换底 change of base</td></tr>
+        <tr><td style="padding:4px 10px;">\(\arctan x\)</td><td style="padding:4px 10px;">\(\dfrac{1}{1+x^{2}}\)</td><td style="padding:4px 10px;">—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>1.4 积分 The Integral</h3>
+      <p>不定积分 (indefinite integral) 是导数的逆运算：求 \(F\) 使 \(F'=f\)。定积分 (definite integral) 是黎曼和 (Riemann sum) 的极限，几何上表示曲线下方的有向面积 (signed area)。</p>
+      <div class="formula">
+        \[ \int f(x)\,dx = F(x)+C,\qquad F'(x)=f(x) \]
+      </div>
+      <div class="formula">
+        \[ \int_{a}^{b} f(x)\,dx \;=\; \lim_{N\to\infty}\sum_{i=1}^{N} f(x_i^{*})\,\Delta x \]
+      </div>
+
+      <h3>1.5 微积分基本定理 Fundamental Theorem of Calculus</h3>
+      <p>基本定理把微分与积分联系起来 (links differentiation and integration)：</p>
+      <div class="formula">
+        \[ \int_{a}^{b} \dv{F}{x}\,dx \;=\; F(b)-F(a), \qquad \dv{}{x}\!\int_{a}^{x} f(t)\,dt = f(x) \]
+      </div>
+
+      <h3>1.6 常用积分 Common Integrals</h3>
+      <p>以下均省略任意常数 \(C\)。换元法 (substitution) 与分部积分 (integration by parts, \(\int u\,dv=uv-\int v\,du\)) 是计算的两大利器。</p>
+      <table class="formula" style="border-collapse:collapse;width:100%;font-size:0.95em;">
+        <thead><tr style="border-bottom:2px solid var(--rule);">
+          <th style="text-align:left;padding:4px 10px;">被积函数 Integrand</th>
+          <th style="text-align:left;padding:4px 10px;">原函数 Antiderivative</th>
+          <th style="text-align:left;padding:4px 10px;">条件 Condition</th>
+        </tr></thead>
+        <tbody>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(x^{n}\)</td><td style="padding:4px 10px;">\(\dfrac{x^{\,n+1}}{n+1}\)</td><td style="padding:4px 10px;">\(n\neq -1\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(x^{-1}\)</td><td style="padding:4px 10px;">\(\ln|x|\)</td><td style="padding:4px 10px;">\(x\neq 0\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(e^{x}\)</td><td style="padding:4px 10px;">\(e^{x}\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\cos x\)</td><td style="padding:4px 10px;">\(\sin x\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\sin x\)</td><td style="padding:4px 10px;">\(-\cos x\)</td><td style="padding:4px 10px;">注意负号 mind the sign</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\sec^{2} x\)</td><td style="padding:4px 10px;">\(\tan x\)</td><td style="padding:4px 10px;">—</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\dfrac{1}{a^{2}+x^{2}}\)</td><td style="padding:4px 10px;">\(\dfrac{1}{a}\arctan\!\dfrac{x}{a}\)</td><td style="padding:4px 10px;">\(a>0\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\dfrac{1}{\sqrt{a^{2}-x^{2}}}\)</td><td style="padding:4px 10px;">\(\arcsin\!\dfrac{x}{a}\)</td><td style="padding:4px 10px;">\(|x|<a\)</td></tr>
+        <tr><td style="padding:4px 10px;">\(\dfrac{1}{\sqrt{x^{2}\pm a^{2}}}\)</td><td style="padding:4px 10px;">\(\ln\!\bigl|x+\sqrt{x^{2}\pm a^{2}}\bigr|\)</td><td style="padding:4px 10px;">双曲代换 hyperbolic sub.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="key-terms">derivative (导数), tangent line (切线), antiderivative (原函数), definite integral (定积分), Riemann sum (黎曼和), fundamental theorem of calculus (微积分基本定理), substitution (换元法), integration by parts (分部积分)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. 泰勒级数 Taylor Series                                     -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>2. 泰勒级数 Taylor Series</h2>
+
+      <p>泰勒级数 (Taylor series) 把一个充分光滑的函数在某点 \(a\) 附近展开为幂级数 (power series)。它是物理中做<strong>线性化 / 小量近似</strong>的核心工具。</p>
+      <div class="formula">
+        \[ f(x) \;=\; \sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}\,(x-a)^{n} \;=\; f(a)+f'(a)(x-a)+\tfrac{1}{2}f''(a)(x-a)^{2}+\cdots \]
+      </div>
+      <p>\(a=0\) 时称为麦克劳林级数 (Maclaurin series)。下面是最常用的若干展开（均在 \(x=0\) 处）：</p>
+
+      <table class="formula" style="border-collapse:collapse;width:100%;font-size:0.95em;">
+        <thead><tr style="border-bottom:2px solid var(--rule);">
+          <th style="text-align:left;padding:4px 10px;">函数 Function</th>
+          <th style="text-align:left;padding:4px 10px;">级数展开 Series</th>
+          <th style="text-align:left;padding:4px 10px;">收敛域 Convergence</th>
+        </tr></thead>
+        <tbody>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(e^{x}\)</td><td style="padding:4px 10px;">\(1+x+\dfrac{x^{2}}{2!}+\dfrac{x^{3}}{3!}+\cdots\)</td><td style="padding:4px 10px;">所有 \(x\) all \(x\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\sin x\)</td><td style="padding:4px 10px;">\(x-\dfrac{x^{3}}{3!}+\dfrac{x^{5}}{5!}-\cdots\)</td><td style="padding:4px 10px;">所有 \(x\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\cos x\)</td><td style="padding:4px 10px;">\(1-\dfrac{x^{2}}{2!}+\dfrac{x^{4}}{4!}-\cdots\)</td><td style="padding:4px 10px;">所有 \(x\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\(\dfrac{1}{1-x}\)</td><td style="padding:4px 10px;">\(1+x+x^{2}+x^{3}+\cdots\)</td><td style="padding:4px 10px;">\(|x|<1\)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:4px 10px;">\((1+x)^{n}\)</td><td style="padding:4px 10px;">\(1+nx+\dfrac{n(n-1)}{2!}x^{2}+\cdots\)</td><td style="padding:4px 10px;">二项式 binomial, \(|x|<1\)</td></tr>
+        <tr><td style="padding:4px 10px;">\(\ln(1+x)\)</td><td style="padding:4px 10px;">\(x-\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3}-\cdots\)</td><td style="padding:4px 10px;">\(-1<x\le 1\)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.1 小角近似 Small-Angle Approximations</h3>
+      <p>当角度 \(\theta\)（以弧度 radian 为单位）很小时，保留泰勒展开的首项：</p>
+      <div class="formula">
+        \[ \sin\theta \approx \theta, \qquad \cos\theta \approx 1-\frac{\theta^{2}}{2}, \qquad \tan\theta \approx \theta \qquad (\theta \ll 1\,\mathrm{rad}) \]
+      </div>
+
+      <div class="note">物理意义 Why it matters in physics：单摆方程 \(\ddot{\theta}+\tfrac{g}{L}\sin\theta=0\) 在小角下化为 \(\ddot{\theta}+\omega^{2}\theta=0\)（简谐运动）；相对论中 \((1-v^{2}/c^{2})^{-1/2}\approx 1+\tfrac{1}{2}(v/c)^{2}\) 给出经典动能修正。线性化 (linearization) 几乎是推导任何“小振动”问题的第一步。</div>
+
+      <div class="key-terms">Taylor series (泰勒级数), Maclaurin series (麦克劳林级数), power series (幂级数), small-angle approximation (小角近似), linearization (线性化)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. 多元与偏导 Multivariable & Partial Derivatives             -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>3. 多元与偏导 Multivariable &amp; Partial Derivatives</h2>
+
+      <p>偏导数 (partial derivative) \(\pdv{f}{x}\) 是固定其它变量、只对 \(x\) 求导。它表示沿坐标轴方向的变化率。</p>
+      <div class="formula">
+        \[ \pdv{f}{x} \;=\; \lim_{\Delta x\to 0}\frac{f(x+\Delta x,\,y,\,z)-f(x,\,y,\,z)}{\Delta x} \]
+      </div>
+
+      <h3>3.1 梯度与全微分 Gradient &amp; Total Differential</h3>
+      <p>梯度 (gradient) 把标量场 \(f\) 映射为矢量场，指向 \(f\) 增加最快方向；全微分 (total differential) \(df\) 描述沿任意路径的微小变化。</p>
+      <div class="formula">
+        \[ \nabla f \;=\; \pdv{f}{x}\,\hat{\imath}+\pdv{f}{y}\,\hat{\jmath}+\pdv{f}{z}\,\hat{k} \]
+      </div>
+      <div class="formula">
+        \[ df \;=\; \pdv{f}{x}\,dx+\pdv{f}{y}\,dy+\pdv{f}{z}\,dz \]
+      </div>
+
+      <h3>3.2 多元链式法则 Multivariable Chain Rule</h3>
+      <p>若 \(f=f(x,y)\) 而 \(x=x(t),\,y=y(t)\)，则 \(f\) 沿路径对 \(t\) 的全变化率为</p>
+      <div class="formula">
+        \[ \dv{f}{t} \;=\; \pdv{f}{x}\dv{x}{t}+\pdv{f}{y}\dv{y}{t} \]
+      </div>
+
+      <h3>3.3 多重积分 Multiple Integrals</h3>
+      <p>二重/三重积分 (double / triple integral) 把一维面积推广到体积、质量、转动惯量等。可逐次 (iterated) 计算，必要时用换元法（如极坐标）。</p>
+      <div class="formula">
+        \[ \iint_{R} f(x,y)\,dA \;=\; \int_{a}^{b}\!\int_{c(x)}^{d(x)} f(x,y)\,dy\,dx \]
+      </div>
+      <p>在极坐标 (polar) 下 \(dA = r\,dr\,d\theta\)；在球坐标 (spherical) 下 \(dV = r^{2}\sin\theta\,dr\,d\theta\,d\phi\)。</p>
+
+      <div class="key-terms">partial derivative (偏导数), gradient (梯度), total differential (全微分), chain rule (链式法则), double integral (二重积分), iterated integral (逐次积分)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. 矢量 Vectors                                               -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>4. 矢量 Vectors</h2>
+
+      <h3>4.1 分量、模、单位矢量 Components, Magnitude, Unit Vectors</h3>
+      <p>三维矢量 \(\vec{A}\) 在直角坐标 (Cartesian) 下分解为</p>
+      <div class="formula">
+        \[ \vec{A} \;=\; A_{x}\,\hat{\imath}+A_{y}\,\hat{\jmath}+A_{z}\,\hat{k},\qquad \lvert\vec{A}\rvert=\sqrt{A_{x}^{2}+A_{y}^{2}+A_{z}^{2}} \]
+      </div>
+      <p>单位矢量 (unit vector) \(\hat{A}=\vec{A}/\lvert\vec{A}\rvert\) 给出方向、长度为 1。</p>
+
+      <h3>4.2 点积与投影 Dot Product &amp; Projection</h3>
+      <p>点积 (dot/scalar product) 是一个<strong>标量</strong>，衡量两矢量的同向程度。</p>
+      <div class="formula">
+        \[ \vec{A}\cdot\vec{B} \;=\; \lvert\vec{A}\rvert\,\lvert\vec{B}\rvert\cos\theta \;=\; A_{x}B_{x}+A_{y}B_{y}+A_{z}B_{z} \]
+      </div>
+      <p>\(\vec{A}\) 在 \(\vec{B}\) 方向上的<strong>投影</strong> (projection)：标量分量 \(A_{\parallel}=\vec{A}\cdot\hat{B}\)；矢量投影 \(\mathrm{proj}_{\vec{B}}\vec{A}=(\vec{A}\cdot\hat{B})\,\hat{B}=\dfrac{\vec{A}\cdot\vec{B}}{\lvert\vec{B}\rvert^{2}}\vec{B}\)。两矢量垂直 iff \(\vec{A}\cdot\vec{B}=0\)。</p>
+
+      <h3>4.3 叉积 Cross Product</h3>
+      <p>叉积 (cross/vector product) 是一个<strong>矢量</strong>，方向由右手定则 (right-hand rule) 给出，与 \(\vec{A},\vec{B}\) 都垂直。</p>
+      <div class="formula">
+        \[ \lvert\vec{A}\times\vec{B}\rvert \;=\; \lvert\vec{A}\rvert\,\lvert\vec{B}\rvert\sin\theta, \qquad \vec{A}\times\vec{B}=-\,\vec{B}\times\vec{A} \]
+      </div>
+      <div class="formula">
+        \[ \vec{A}\times\vec{B} \;=\; \begin{vmatrix}\hat{\imath} &amp; \hat{\jmath} &amp; \hat{k}\\[2pt] A_{x} &amp; A_{y} &amp; A_{z}\\[2pt] B_{x} &amp; B_{y} &amp; B_{z}\end{vmatrix} \;=\; (A_{y}B_{z}-A_{z}B_{y})\,\hat{\imath}-(A_{x}B_{z}-A_{z}B_{x})\,\hat{\jmath}+(A_{x}B_{y}-A_{y}B_{x})\,\hat{k} \]
+      </div>
+
+      <h3>4.4 三重积 Triple Products</h3>
+      <div class="formula">
+        \[ \text{标量三重积 scalar triple:}\quad \vec{A}\cdot(\vec{B}\times\vec{C}) \;=\; \text{平行六面体体积 (volume)} \]
+      </div>
+      <div class="formula">
+        \[ \text{矢量三重积 vector triple (BAC-CAB):}\quad \vec{A}\times(\vec{B}\times\vec{C}) \;=\; \vec{B}\,(\vec{A}\cdot\vec{C})-\vec{C}\,(\vec{A}\cdot\vec{B}) \]
+      </div>
+
+      <h3>4.5 矢量微分算符 ∇ (Del / Nabla)</h3>
+      <p>算符 \(\nabla=\hat{\imath}\pdv{}{x}+\hat{\jmath}\pdv{}{y}+\hat{k}\pdv{}{z}\) 统一了三种场运算：</p>
+      <div class="formula">
+        \[ \begin{aligned}
+        \text{梯度 gradient:}&\quad \nabla f \;\;(\text{标量}\to\text{矢量})\\[2pt]
+        \text{散度 divergence:}&\quad \nabla\cdot\vec{F} \;=\; \pdv{F_{x}}{x}+\pdv{F_{y}}{y}+\pdv{F_{z}}{z}\;\;(\text{矢量}\to\text{标量})\\[2pt]
+        \text{旋度 curl:}&\quad \nabla\times\vec{F} \;\;(\text{矢量}\to\text{矢量})
+        \end{aligned} \]
+      </div>
+      <p>拉普拉斯算子 (Laplacian) 是散度的梯度，作用于标量场：\(\nabla^{2} f \;=\; \dfrac{\partial^{2} f}{\partial x^{2}}+\dfrac{\partial^{2} f}{\partial y^{2}}+\dfrac{\partial^{2} f}{\partial z^{2}}\)。散度衡量场源的”净流出” (net outflow)，旋度衡量场的”环量” (circulation)。常见恒等式：\(\nabla\times(\nabla f)=\vec{0}\)，\(\nabla\cdot(\nabla\times\vec{F})=0\)。</p>
+
+      <div class="key-terms">vector (矢量), magnitude (模), unit vector (单位矢量), dot product (点积), projection (投影), cross product (叉积), right-hand rule (右手定则), scalar triple product (标量三重积), del/nabla (算符 ∇), gradient (梯度), divergence (散度), curl (旋度), Laplacian (拉普拉斯算子)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. 三角与复数 Trig & Complex Numbers                          -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>5. 三角与复数 Trigonometry &amp; Complex Numbers</h2>
+
+      <h3>5.1 常用恒等式 Key Trig Identities</h3>
+      <div class="formula">
+        \[ \sin^{2}\theta+\cos^{2}\theta=1,\qquad 1+\tan^{2}\theta=\sec^{2}\theta,\qquad 1+\cot^{2}\theta=\csc^{2}\theta \]
+      </div>
+      <div class="formula">
+        \[ \sin(A\pm B)=\sin A\cos B\pm\cos A\sin B,\qquad \cos(A\pm B)=\cos A\cos B\mp\sin A\sin B \]
+      </div>
+      <div class="formula">
+        \[ \sin(2A)=2\sin A\cos A, \qquad \cos(2A)=\cos^{2}\!A-\sin^{2}\!A=2\cos^{2}\!A-1=1-2\sin^{2}\!A \]
+      </div>
+      <div class="formula">
+        \[ \text{和化积 sum-to-product:}\quad \sin A+\sin B=2\sin\!\tfrac{A+B}{2}\cos\!\tfrac{A-B}{2} \]
+      </div>
+      <div class="formula">
+        \[ \text{半角 half-angle:}\quad \sin^{2}\!\tfrac{\theta}{2}=\tfrac{1-\cos\theta}{2},\qquad \cos^{2}\!\tfrac{\theta}{2}=\tfrac{1+\cos\theta}{2} \]
+      </div>
+
+      <h3>5.2 复数与欧拉公式 Complex Numbers &amp; Euler's Formula</h3>
+      <p>复数 \(z=a+bi\)（\(i^{2}=-1\)）有模 \(|z|=\sqrt{a^{2}+b^{2}}\) 与共轭 (conjugate) \(z^{*}=a-bi\)。欧拉公式 (Euler's formula) 把指数与三角联系起来，是振动、波、量子力学的记号基石。</p>
+      <div class="formula">
+        \[ e^{i\theta} \;=\; \cos\theta+i\sin\theta,\qquad z=r(\cos\theta+i\sin\theta)=r\,e^{i\theta} \]
+      </div>
+      <div class="formula">
+        \[ |z|^{2}=z\,z^{*}=a^{2}+b^{2},\qquad z_{1}z_{2}=r_{1}r_{2}\,e^{i(\theta_{1}+\theta_{2})},\qquad \dv{z}{t}\;\text{便于表振荡} \]
+      </div>
+      <p>实振动 \(x(t)=A\cos(\omega t+\phi)\) 可视为 \(A e^{i(\omega t+\phi)}\) 的实部；这使线性 ODE 的求解大大简化（用 \(e^{i\omega t}\) 代替 \(\sin/\cos\)）。</p>
+
+      <div class="key-terms">identity (恒等式), double-angle (倍角), half-angle (半角), complex number (复数), modulus (模), conjugate (共轭), Euler's formula (欧拉公式), polar form (极坐标形式)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. 常微分方程 ODE Basics                                      -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>6. 常微分方程 Ordinary Differential Equations (ODE)</h2>
+
+      <p>常微分方程 (ODE) 是联系未知函数 \(y(x)\) 及其各阶导数的方程。阶数 (order) = 出现的最高阶导数。物理定律大多以 ODE 形式出现（牛顿第二定律本身就是一个二阶 ODE）。</p>
+
+      <h3>6.1 可分离变量的一阶 ODE Separable First-Order</h3>
+      <p>若能写成 \(\dv{y}{x}=f(x)\,g(y)\)，则分离变量后两边积分 (separate and integrate)：</p>
+      <div class="formula">
+        \[ \int \frac{dy}{g(y)} \;=\; \int f(x)\,dx \;+\; C \]
+      </div>
+
+      <h3>6.2 简谐振子 The Harmonic Oscillator</h3>
+      <p>简谐运动方程 (simple harmonic oscillator) 是物理中最重要的线性 ODE 之一：</p>
+      <div class="formula">
+        \[ \frac{d^{2}x}{dt^{2}}+\omega^{2}x \;=\; 0 \]
+      </div>
+      <p>猜测解 \(x\propto e^{rt}\) 得特征方程 \(r^{2}+\omega^{2}=0\)，根 \(r=\pm i\omega\)。通解 (general solution)：</p>
+      <div class="formula">
+        \[ x(t) \;=\; C_{1}\cos(\omega t)+C_{2}\sin(\omega t) \;=\; A\cos(\omega t+\phi) \]
+      </div>
+      <p>两个任意常数 \(C_{1},C_{2}\)（或 \(A,\phi\)）由<strong>初始条件</strong> (initial conditions) \(x(0)=x_{0},\;\dot{x}(0)=v_{0}\) 确定：</p>
+      <div class="formula">
+        \[ A=\sqrt{x_{0}^{2}+\left(\tfrac{v_{0}}{\omega}\right)^{2}},\qquad \phi=\arctan\!\left(-\frac{v_{0}}{\omega x_{0}}\right) \]
+      </div>
+
+      <div class="key-terms">ordinary differential equation (常微分方程), order (阶), separable (可分离变量), general solution (通解), initial condition (初始条件), harmonic oscillator (简谐振子)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. 坐标变换 Coordinate Transformations                        -->
+    <!-- ============================================================ -->
+    <section class="core-concepts">
+      <h2>7. 坐标变换 Coordinate Transformations</h2>
+
+      <h3>7.1 平面：直角 ↔ 极坐标 Cartesian ↔ Polar (2D)</h3>
+      <div class="formula">
+        \[ x=r\cos\theta,\qquad y=r\sin\theta \]
+      </div>
+      <div class="formula">
+        \[ r=\sqrt{x^{2}+y^{2}},\qquad \theta=\arctan\!\left(\frac{y}{x}\right)\;\;\text{(用象限修正 quadrant correction)} \]
+      </div>
+      <p>位置矢量 \(\vec{r}=r\,\hat{r}\)。注意 \(\hat{r}=\cos\theta\,\hat{\imath}+\sin\theta\,\hat{\jmath}\) 与 \(\hat{\theta}=-\sin\theta\,\hat{\imath}+\cos\theta\,\hat{\jmath}\) 是<strong>随时间变化</strong>的单位基，因此求速度要小心：</p>
+      <div class="formula">
+        \[ \vec{v} \;=\; \dot{r}\,\hat{r}+r\dot{\theta}\,\hat{\theta},\qquad \vec{a}=\bigl(\ddot{r}-r\dot{\theta}^{2}\bigr)\hat{r}+\bigl(r\ddot{\theta}+2\dot{r}\dot{\theta}\bigr)\hat{\theta} \]
+      </div>
+
+      <h3>7.2 三维：柱坐标与球坐标 Cylindrical &amp; Spherical</h3>
+      <p>柱坐标 (cylindrical)：在极坐标基础上加 \(z\)，体积元 \(dV=r\,dr\,d\theta\,dz\)。</p>
+      <div class="formula">
+        \[ \text{球坐标 spherical:}\quad x=r\sin\theta\cos\phi,\;\; y=r\sin\theta\sin\phi,\;\; z=r\cos\theta,\;\; dV=r^{2}\sin\theta\,dr\,d\theta\,d\phi \]
+      </div>
+
+      <div class="key-terms">Cartesian coordinates (直角坐标), polar coordinates (极坐标), cylindrical coordinates (柱坐标), spherical coordinates (球坐标), azimuthal angle (方位角), polar angle (极角)</div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Summary                                                      -->
+    <!-- ============================================================ -->
+    <section class="summary">
+      <h2>速查要点 Quick Take-Aways</h2>
+      <ul>
+        <li><strong>导数</strong>是变化率，<strong>积分</strong>是积累；基本定理把二者缝合。基本定理 stitches differentiation and integration together.</li>
+        <li><strong>泰勒展开</strong>+ 小量近似是物理推导的万能起手式（单摆、相对论、振动……）。</li>
+        <li><strong>点积</strong>给投影（标量），<strong>叉积</strong>给力矩/角动量（矢量）。</li>
+        <li><strong>欧拉公式</strong> \(e^{i\theta}=\cos\theta+i\sin\theta\) 让振动与波的代数大大简化。</li>
+        <li><strong>简谐振子</strong> \(\ddot{x}+\omega^{2}x=0\) 的解永远是正弦/余弦；初始条件定常数。</li>
+        <li>换坐标系时务必带上<strong>体积/面积元</strong>（极坐标多一个 \(r\)，球坐标多一个 \(r^{2}\sin\theta\)）。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第16章 · 相对论动力学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="16">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 16 · 第16章 · 第三部分 狭义相对论 Part III Special Relativity</p>
+      <h1>相对论动力学 <span class="en-title">Relativistic Dynamics</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>说明在高速情形下牛顿形式 \(\vec{F}=m\vec{a}\) 失效的<b>原因</b>，并解释为何必须重新定义动量 (momentum) 使其在所有惯性系中守恒。</li>
+        <li>正确计算<b>相对论动量</b> (relativistic momentum) \(\vec{p}=\gamma m\vec{v}\)、<b>总能量</b> (total energy) \(E=\gamma mc^{2}\)、<b>静止能量</b> (rest energy) \(E_{0}=mc^{2}\) 与<b>动能</b> (kinetic energy) \(K=(\gamma-1)mc^{2}\)。</li>
+        <li>使用<b>能量–动量关系</b> (energy–momentum relation) \(E^{2}=(pc)^{2}+(mc^{2})^{2}\) 分析粒子，包括无质量粒子的 \(E=pc\)。</li>
+        <li>用相对论形式的力 \(\vec{F}=d\vec{p}/dt\) 与<b>动量–能量守恒</b>求解碰撞、衰变与粒子产生 (particle creation) 问题，包括<b>阈能</b> (threshold energy) 与<b>质心系</b> (center-of-momentum frame)。</li>
+        <li>应用<b>相对论多普勒效应</b> (relativistic Doppler effect) 处理纵向接近/远离光源的红移与蓝移。</li>
+        <li>用<b>原时</b> (proper time) 与<b>世界线</b> (worldline) 的时空几何完全化解<b>双生子佯谬</b> (twin paradox)，与第15章的洛伦兹变换相衔接。</li>
+        <li>验证所有相对论公式在低速极限 \(v\ll c\) 下退化为牛顿力学结果。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么 F = ma 在高速下失效 Why F = ma Fails at High Speed</h3>
+      <p>牛顿第二定律 \(\vec{F}=m\vec{a}\) 预言：在恒力作用下，加速度恒定，速度随时间线性增长，\(v(t)=v_{0}+at\)，<b>没有上限</b>。这与狭义相对论的公设——任何物理信号、任何有质量的物体都不能超过光速 \(c=3.0\times10^{8}\,\unit{m/s}\)——直接矛盾。因此，我们必须在保留<b>动量守恒</b>与<b>能量守恒</b>这两大支柱的前提下，重新构造动量与能量的表达式，使它们在<b>所有惯性系</b>（即所有由洛伦兹变换相连的参考系）中都成立。</p>
+      <p>关键洞见：保留 \(\vec{F}=d\vec{p}/dt\) 这一定律的<b>形式</b>，但把动量重新定义为</p>
+      <div class="formula">\[ \vec{p} \;=\; \gamma m \vec{v},\qquad \gamma \;=\; \frac{1}{\sqrt{1-\beta^{2}}},\qquad \beta \;=\; \frac{v}{c}. \]</div>
+      <p>这里 \(m\) 是粒子的<b>静止质量</b> (rest mass / invariant mass)，是一个洛伦兹不变量（所有惯性系测得的同一值）；\(\gamma\) 是<b>洛伦兹因子</b> (Lorentz factor)，在第15章已引入。在低速下 \(\gamma\to 1\)，故 \(\vec{p}\to m\vec{v}\)，回到经典结果。</p>
+
+      <h3>2. 相对论动量 Relativistic Momentum</h3>
+      <p>重新定义后的动量 \(\vec{p}=\gamma m\vec{v}\) 在弹性碰撞、非弹性碰撞、粒子产生等各种过程中均守恒（与能量守恒一起），且其守恒性在洛伦兹变换下<b>协变</b> (covariant)。注意当 \(v\to c\) 时 \(\gamma\to\infty\)，因此有质量的物体动量可以无限增大，但速度永远不能达到 \(c\)。</p>
+
+      <h3>3. 相对论能量、静止能量与 E = mc² Relativistic Energy, Rest Energy, E = mc²</h3>
+      <p>与新的动量一致地，粒子的<b>总能量</b> (total energy) 定义为</p>
+      <div class="formula">\[ E \;=\; \gamma m c^{2}. \]</div>
+      <p>当粒子静止（\(v=0,\;\gamma=1\)）时，能量并不为零，而是</p>
+      <div class="formula">\[ E_{0} \;=\; m c^{2}, \]</div>
+      <p>这就是爱因斯坦著名的<b>质能等价关系</b> (mass–energy equivalence)。质量本身即是能量的度量：哪怕粒子静止，它仍携带 \(mc^{2}\) 的<b>静止能量</b> (rest energy)。核反应、化学反应、放射性衰变中观察到的能量释放，都源于反应前后总<b>静止质量</b>的变化 \(\Delta E=\Delta m\,c^{2}\)。</p>
+
+      <h3>4. 相对论动能 Relativistic Kinetic Energy</h3>
+      <p>动能定义为<b>总能</b>超出<b>静止能</b>的部分：</p>
+      <div class="formula">\[ K \;=\; E - E_{0} \;=\; (\gamma-1) m c^{2}. \]</div>
+      <p><b>注意</b>：相对论动能<b>不是</b> \(\tfrac{1}{2}mv^{2}\)。后者只是低速近似。展开 \(\gamma\) 在小 \(\beta\) 下：</p>
+      <div class="formula">\[ \gamma \;=\; \bigl(1-\beta^{2}\bigr)^{-1/2} \;=\; 1+\tfrac{1}{2}\beta^{2}+\tfrac{3}{8}\beta^{4}+\cdots \;\Longrightarrow\; K \;=\; \tfrac{1}{2}mv^{2}+\tfrac{3}{8}\frac{mv^{4}}{c^{2}}+\cdots. \]</div>
+      <p>当 \(v\ll c\) 时高阶项可忽略，\(K\to\tfrac{1}{2}mv^{2}\)（牛顿极限）。当 \(v\to c\) 时 \(K\to\infty\)——这就是不能把任何有质量物体加速到光速的原因。</p>
+
+      <h3>5. 能量–动量关系 The Energy–Momentum Relation</h3>
+      <p>由 \(E=\gamma mc^{2}\) 与 \(p=\gamma mv\) 消去 \(\gamma\) 与速度，可得洛伦兹不变关系</p>
+      <div class="formula">\[ \boxed{\,E^{2} \;=\; (pc)^{2} \;+\; (mc^{2})^{2}\,} \]</div>
+      <p>右边的 \(mc^{2}\) 是静止能量，对所有惯性系取同一值。该关系的重要性在于：即使在不同惯性系中 \(E\) 与 \(p\) 各自不同，组合 \(E^{2}-(pc)^{2}=(mc^{2})^{2}\) 是<b>不变量</b> (invariant)。</p>
+      <p>对<b>无质量粒子</b> (massless particle)，如光子 (photon)，\(m=0\)，则</p>
+      <div class="formula">\[ E \;=\; pc, \qquad p \;=\; \frac{E}{c} \;=\; \frac{h f}{c} \;=\; \frac{h}{\lambda}. \]</div>
+
+      <h3>6. 相对论的力 Relativistic Force</h3>
+      <p>正确的相对论力定义为</p>
+      <div class="formula">\[ \vec{F} \;=\; \dv{\vec{p}}{t} \;=\; \dv{(\gamma m\vec{v})}{t}, \]</div>
+      <p>而<b>不是</b> \(\vec{F}=m\vec{a}\)。由于 \(\gamma\) 随速度变化，即使力沿速度方向，加速度也不简单地等于 \(F/m\)。在直线上加速一个粒子，\(F=\gamma^{3}ma\)（推后文）；垂直于速度方向，\(F=\gamma ma\)。</p>
+
+      <h3>7. 相对论多普勒效应（纵向）Relativistic Doppler Effect (Longitudinal)</h3>
+      <p>当光源与观察者沿连线方向相对运动（远离为正 \(\beta\)）时，观察到的频率</p>
+      <div class="formula">\[ \frac{f_{\text{obs}}}{f_{\text{emit}}} \;=\; \sqrt{\frac{1-\beta}{1+\beta}} \quad (\text{远离 recession, 红移 redshift}). \]</div>
+      <p>若相互接近（\(\beta\) 取负或反转公式），观察频率升高（<b>蓝移</b> blueshift）。波长关系为 \(\lambda_{\text{obs}}/\lambda_{\text{emit}}=\sqrt{(1+\beta)/(1-\beta)}\)。这个公式与经典纵向多普勒不同，它<b>无需介质</b>，只依赖相对速度，是相对论性的纯运动学效应。</p>
+
+      <h3>8. 粒子碰撞、产生与阈能 Particle Collisions, Creation, Threshold</h3>
+      <p>在相对论碰撞中，<b>总能量</b>与<b>总动量</b>同时守恒。在实验室系中，入射粒子的部分动能可以转化为新粒子的静止质量——这是粒子加速器的物理基础。能产生给定反应所需的<b>最小入射动能</b>称为<b>阈能</b> (threshold energy)，由<b>质心系</b> (center-of-momentum, COM frame) 中所有产物粒子静止这一条件给出。</p>
+      <p>用洛伦兹不变的<b>曼德斯坦 s 变量</b> (Mandelstam variable)</p>
+      <div class="formula">\[ s \;=\; (p_{1}+p_{2})^{2} \;=\; (E_{\text{tot}}^{\text{COM}})^{2}/c^{2}, \]</div>
+      <p>在阈能处 \(s_{\text{thr}}=(\sum m_{\text{final}})^{2}c^{2}\)。在实验室系（靶粒子静止）解出 \(s\)，再令其等于阈值得入射能量。</p>
+
+      <h3>9. 双生子佯谬的完全化解 Twin Paradox, Fully Resolved</h3>
+      <p>留在家中的孪生哥哥（A）始终处于一个惯性系；旅行的弟弟（B）以速度 \(v\) 飞向远处恒星，到达后立即折返。在 A 的参照系中，B 的钟因<b>时间膨胀</b> (time dilation) 而变慢，每段单程耗时（A 的坐标时）除以 \(\gamma\) 即为 B 的<b>原时</b> (proper time) \(\tau\)。</p>
+      <p>关键点：B 在折返时<b>改变了惯性系</b>——这是 A 与 B 地位不对称的根源。在<b>闵可夫斯基时空</b> (Minkowski spacetime) 中，两点（事件）之间的<b>类时间隔</b>（原时）由世界线决定：</p>
+      <div class="formula">\[ \Delta\tau \;=\; \int_{\text{worldline}}\! d\tau \;=\; \int\!\sqrt{dt^{2}-\tfrac{1}{c^{2}}(dx^{2}+dy^{2}+dz^{2})}. \]</div>
+      <p>在平直时空中，<b>直线（惯性运动）世界线使原时最大</b>（这是欧氏几何中「直线最短」在闵氏几何中的对偶命题）。A 走的是惯性直线世界线，B 走的是两条折线，因此 \(\Delta\tau_{B}<\Delta\tau_{A}\)，B 回来时较年轻。完全无悖论——这就把第15章的洛伦兹变换与时间膨胀统一起来。</p>
+
+      <h3>10. 牛顿极限 Recovery of Newtonian Mechanics</h3>
+      <p>当 \(v\ll c\) 时，\(\gamma\to 1\)，故</p>
+      <div class="formula">\[ \vec{p}\to m\vec{v}, \quad K\to\tfrac{1}{2}mv^{2}, \quad E\to mc^{2}+\tfrac{1}{2}mv^{2}, \quad \vec{F}\to m\vec{a}. \]</div>
+      <p>相对论并不否定牛顿力学，而是把它作为低速极限<b>包含</b>在内。</p>
+
+      <div class="key-terms">
+        relativistic momentum (相对论动量), Lorentz factor (洛伦兹因子), rest mass / invariant mass (静止质量/不变质量), total energy (总能量), rest energy (静止能量), mass–energy equivalence (质能等价), kinetic energy (动能), energy–momentum relation (能量–动量关系), massless particle (无质量粒子), relativistic force (相对论的力), relativistic Doppler effect (相对论多普勒效应), redshift (红移), blueshift (蓝移), threshold energy (阈能), center-of-momentum frame (质心系), Mandelstam variable (曼德斯坦变量), twin paradox (双生子佯谬), proper time (原时), worldline (世界线), Minkowski spacetime (闵可夫斯基时空).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：动能 \(K=(\gamma-1)mc^{2}\)</h3>
+      <p>从相对论力的定义 \(\vec{F}=d\vec{p}/dt\) 出发，沿粒子路径积分做功，使用功–能定理：</p>
+      <p class="step"><strong>步骤 1：</strong> 对沿 \(x\) 方向的一维运动，外力做功
+      \[ W \;=\; \int_{0}^{x} F\,dx \;=\; \int_{0}^{t} \dv{p}{t}\,v\,dt \;=\; \int_{0}^{p} v\,dp. \]</p>
+      <p class="step"><strong>步骤 2：</strong> 由 \(p=\gamma mv=\gamma m\beta c\) 计算微分。先注意到
+      \[ \dv{\gamma}{\beta} \;=\; \frac{\beta}{(1-\beta^{2})^{3/2}} \;=\; \gamma^{3}\beta, \qquad \dv{p}{\beta} \;=\; m c\,\dv{(\gamma\beta)}{\beta} \;=\; m c(\gamma+\beta\cdot\gamma^{3}\beta) \;=\; m c\,\gamma^{3}. \]
+      最后一步用到了恒等式 \(\gamma+\beta^{2}\gamma^{3}=\gamma^{3}\)（由 \(\gamma^{2}(1-\beta^{2})=1\) 即证）。</p>
+      <p class="step"><strong>步骤 3：</strong> 因此 \(dp = mc\,\gamma^{3}\,d\beta\)，而 \(v=\beta c\)，代入
+      \[ W \;=\; \int_{0}^{\beta} (\beta' c)(m c\,\gamma'^{3})\,d\beta' \;=\; m c^{2}\int_{0}^{\beta} \gamma'^{3}\beta'\,d\beta'. \]</p>
+      <p class="step"><strong>步骤 4：</strong> 利用 \(d\gamma=\gamma^{3}\beta\,d\beta\)（步骤 2 已得），积分变为
+      \[ W \;=\; m c^{2}\int_{\gamma=1}^{\gamma} d\gamma' \;=\; m c^{2}(\gamma - 1). \]</p>
+      <p class="step"><strong>步骤 5：</strong> 动能定义为粒子从静止到目前速度所获得的能量，故
+      \[ \boxed{\,K \;=\; (\gamma-1)\,m c^{2}.\,} \]
+      低速展开 \(\gamma=1+\tfrac{1}{2}\beta^{2}+\cdots\) 立即给出 \(K\to\tfrac{1}{2}mv^{2}\)。</p>
+
+      <h3>推导 2：能量–动量关系 \(E^{2}=(pc)^{2}+(mc^{2})^{2}\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 由定义 \(E=\gamma mc^{2}\) 与 \(p=\gamma mv\)，对二者平方并消去 \(\gamma\)：
+      \[ \frac{E^{2}}{c^{2}} \;=\; \gamma^{2} m^{2} c^{2}, \qquad p^{2} \;=\; \gamma^{2} m^{2} v^{2}. \]</p>
+      <p class="step"><strong>步骤 2：</strong> 作差
+      \[ \frac{E^{2}}{c^{2}} - p^{2} \;=\; \gamma^{2} m^{2} (c^{2}-v^{2}) \;=\; \gamma^{2} m^{2} c^{2}\,(1-\beta^{2}). \]</p>
+      <p class="step"><strong>步骤 3：</strong> 由于 \(\gamma^{2}(1-\beta^{2})=1\)，
+      \[ \frac{E^{2}}{c^{2}} - p^{2} \;=\; m^{2} c^{2} \;\Longrightarrow\; E^{2} \;=\; p^{2} c^{2} + m^{2} c^{4}. \]</p>
+      <p class="step"><strong>步骤 4：</strong> 即 \(\boxed{E^{2}=(pc)^{2}+(mc^{2})^{2}}\)。当 \(m=0\)（光子）时 \(E=pc\)；当 \(p=0\)（粒子瞬时静止）时 \(E=mc^{2}\)。该关系是粒子物理的「毕达哥拉斯定理」。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 16.1 电子被加速到 0.8c</h4>
+        <p class="example-statement">电子（静止质量 \(m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)）被加速到 \(v=0.8c\)。求 (a) 洛伦兹因子 \(\gamma\)；(b) 相对论动量 \(p\)；(c) 相对论动能 \(K_{\text{rel}}\)；(d) 总能量 \(E\)；(e) 经典动能 \(K_{\text{class}}=\tfrac{1}{2}mv^{2}\)，并求 \(K_{\text{rel}}/K_{\text{class}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(\beta=0.8\)，\(\gamma=\dfrac{1}{\sqrt{1-0.8^{2}}}=\dfrac{1}{\sqrt{0.36}}=\dfrac{1}{0.6}=\)<span class="ans">\(1.667\)</span>。</p>
+          <p class="step">(b) \(p=\gamma m v=(1.667)(9.11\times10^{-31})(0.8)(3.0\times10^{8})=3.64\times10^{-22}\,\mathrm{kg\,m/s}\)。</p>
+          <p class="step">(c) 静止能 \(E_{0}=m c^{2}=(9.11\times10^{-31})(3.0\times10^{8})^{2}=8.20\times10^{-14}\,\mathrm{J}=0.512\,\mathrm{MeV}\)。
+          \[ K_{\text{rel}}=(\gamma-1)mc^{2}=(0.667)(8.20\times10^{-14})=5.47\times10^{-14}\,\mathrm{J}\approx 0.341\,\mathrm{MeV}. \]</p>
+          <p class="step">(d) 总能量 \(E=\gamma mc^{2}=(1.667)(8.20\times10^{-14})=1.37\times10^{-13}\,\mathrm{J}\approx 0.853\,\mathrm{MeV}\)（验证 \(E=E_{0}+K\)：\(0.512+0.341=0.853\,\mathrm{MeV}\) ✓）。</p>
+          <p class="step">(e) 经典动能 \(K_{\text{class}}=\tfrac{1}{2}m v^{2}=\tfrac{1}{2}(9.11\times10^{-31})(2.4\times10^{8})^{2}=2.62\times10^{-14}\,\mathrm{J}\approx 0.164\,\mathrm{MeV}\)。</p>
+          <p>比值 \(K_{\text{rel}}/K_{\text{class}}=5.47/2.62=\)<span class="ans">\(\approx 2.08\)</span>。即在 \(v=0.8c\)，经典公式<b>低估</b>动能两倍多，说明牛顿力学已严重失效。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 16.2 质能等价：1 g 物质释放的能量与氦核结合能</h4>
+        <p class="example-statement">(a) 完全转化 \(m=1.0\,\mathrm{g}\) 的物质所释放的能量是多少焦耳？相当于多少千吨 TNT？（1 千吨 TNT \(\approx 4.184\times10^{12}\,\mathrm{J}\)） (b) 氦-4原子核由 2 个质子（\(m_{p}=1.67262\times10^{-27}\,\mathrm{kg}\)）和 2 个中子（\(m_{n}=1.67493\times10^{-27}\,\mathrm{kg}\)）组成，实际测得质量为 \(m_{\text{He}}=6.6447\times10^{-27}\,\mathrm{kg}\)。求总结合能与每核子平均结合能（MeV）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 由 \(E=mc^{2}\)：
+          \[ E=(1.0\times10^{-3})(3.0\times10^{8})^{2}=9.0\times10^{13}\,\mathrm{J}. \]
+          换算 \(E/(4.184\times10^{12})\approx 21.5\) <span class="ans">千吨 TNT</span>——与广岛原子弹（约 15 千吨 TNT）量级相当。</p>
+          <p class="step">(b) 组成粒子的质量之和
+          \[ \sum m = 2m_{p}+2m_{n}=2(1.67262+1.67493)\times10^{-27}=6.6950\times10^{-27}\,\mathrm{kg}. \]</p>
+          <p class="step">质量亏损 \(\Delta m = \sum m - m_{\text{He}}=(6.6950-6.6447)\times10^{-27}=5.03\times10^{-29}\,\mathrm{kg}\)。</p>
+          <p class="step">结合能 \(E_{B}=\Delta m c^{2}=(5.03\times10^{-29})(9.0\times10^{16})=4.53\times10^{-12}\,\mathrm{J}\)。</p>
+          <p class="step">换算为 MeV（\(1\,\mathrm{MeV}=1.602\times10^{-13}\,\mathrm{J}\)）：\(E_{B}=4.53\times10^{-12}/1.602\times10^{-13}\approx\) <span class="ans">\(28.3\,\mathrm{MeV}\)</span>。</p>
+          <p class="step">每核子结合能 \(E_{B}/4\approx\)<span class="ans">\(7.07\,\mathrm{MeV}\)</span>／核子。这正是核物理中「聚变放能」的来源：轻核聚合成更紧的氦核时，亏损的质量以动能形式释出。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 16.3 反质子产生阈能 p + p → p + p + p + p̄</h4>
+        <p class="example-statement">在实验室系中，高能质子轰击静止的质子靶，产生一对质子–反质子：\(p+p\to p+p+p+\bar{p}\)。所有产物粒子质量均为 \(m_{p}\)，\(m_{p}c^{2}=938.272\,\mathrm{MeV}\)。求入射质子所需的最小<b>动能</b>（阈能）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 用洛伦兹不变的曼德斯坦变量 \(s=(p_{1}+p_{2})^{2}\)（采用自然单位 \(c=1\)，符号差 \(+---\)）。</p>
+          <p class="step"><strong>步骤 1：</strong> 阈能处产物粒子在<b>质心系</b>中相对静止（仅有的可能性，否则还有多余动能用于产生），故
+          \[ s_{\text{thr}} \;=\; \bigl(\sum m_{\text{final}}\bigr)^{2} \;=\; (4 m_{p})^{2} \;=\; 16 m_{p}^{2}. \]</p>
+          <p class="step"><strong>步骤 2：</strong> 在实验室系（粒子2静止，\(E_{2}=m_{p}\)，\(\vec{p}_{2}=0\)；入射粒子1：\(E_{1}=E_{\text{lab}}\)，动量 \(p_{\text{lab}}\)）：
+          \[ s \;=\; (p_{1}+p_{2})^{2} \;=\; p_{1}^{2}+p_{2}^{2}+2 p_{1}\!\cdot\! p_{2} \;=\; m_{p}^{2}+m_{p}^{2}+2 E_{1}E_{2}-2\vec{p}_{1}\!\cdot\!\vec{p}_{2}. \]
+          由于 \(\vec{p}_{2}=0\)、\(E_{2}=m_{p}\)：\(s = 2m_{p}^{2}+2 E_{\text{lab}}\,m_{p}\)。</p>
+          <p class="step"><strong>步骤 3：</strong> 令 \(s=s_{\text{thr}}\)：
+          \[ 2 m_{p}^{2}+2 E_{\text{lab}}\,m_{p} \;=\; 16 m_{p}^{2} \;\Longrightarrow\; 2 E_{\text{lab}}\,m_{p}=14 m_{p}^{2} \;\Longrightarrow\; E_{\text{lab}}=7 m_{p}. \]</p>
+          <p class="step"><strong>步骤 4：</strong> 入射粒子总能量 \(E_{\text{lab}}=7 m_{p}c^{2}\)，扣除静止能得到阈能：
+          \[ K_{\text{thr}} \;=\; E_{\text{lab}} - m_{p}c^{2} \;=\; 6\,m_{p}c^{2} \;=\; 6\times 938.272\,\mathrm{MeV} \;\approx\; 5630\,\mathrm{MeV}. \]</p>
+          <p>\(K_{\text{thr}}=\)<span class="ans">\(\approx 5.63\,\mathrm{GeV}\)</span>。这正是 1950 年代伯克利 Bevatron 加速器设计的能量（约 6.5 GeV），用以发现反质子（Chamberlain &amp; Segrè，1955，1959 年诺贝尔奖）。注意阈能远大于「产生一对 \(m_{p}\bar{p}_{p}\) 所需」的 \(2m_{p}c^{2}=1.88\,\mathrm{GeV}\)——多出的动能是为了在质心系中保持动量守恒所必须的「浪费」。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 16.4 退行星系的红移</h4>
+        <p class="example-statement">一遥远星系以速度 \(v=0.5c\) 沿视线方向<b>远离</b>地球。该星系辐射的氢光谱 Hα 线静止波长为 \(\lambda_{\text{emit}}=656.3\,\mathrm{nm}\)。求 (a) 观测到的波长 \(\lambda_{\text{obs}}\)；(b) 频率比 \(f_{\text{obs}}/f_{\text{emit}}\)；(c) 红移参数 \(z=(\lambda_{\text{obs}}-\lambda_{\text{emit}})/\lambda_{\text{emit}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 这是相对论多普勒效应（纵向，远离），\(\beta=0.5\)。</p>
+          <p class="step">(a) 波长关系 \(\lambda_{\text{obs}}/\lambda_{\text{emit}}=\sqrt{(1+\beta)/(1-\beta)}=\sqrt{1.5/0.5}=\sqrt{3}\approx 1.732\)。</p>
+          <p class="step">故 \(\lambda_{\text{obs}}=656.3\times 1.732=\)<span class="ans">\(1136.7\,\mathrm{nm}\)</span>（落入近红外波段，肉眼不可见）。</p>
+          <p class="step">(b) 频率比 \(f_{\text{obs}}/f_{\text{emit}}=\lambda_{\text{emit}}/\lambda_{\text{obs}}=1/\sqrt{3}\approx\) <span class="ans">\(0.577\)</span>（频率下降，即红移）。</p>
+          <p class="step">(c) 红移参数 \(z=(1.732-1)=\)<span class="ans">\(0.732\)</span>。</p>
+          <p class="step">注：实际宇宙学红移由空间膨胀所致，而非单纯的狭义相对论多普勒；但对中等红移的星系，本公式给出的数值与宇宙学模型结果量级一致，是教学上的良好近似。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 16.5 双生子佯谬：6 光年外的旅行</h4>
+        <p class="example-statement">孪生弟弟 B 乘坐飞船以 \(v=0.6c\) 飞向距地球 \(D=6.0\) 光年处的恒星，到达后立即以相同速率返航。哥哥 A 留在地球（视为惯性系）。设加速、减速时间可忽略。求 (a) A 测得的往返时间；(b) B 测得的往返原时；(c) 重逢时二人的年龄差。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(\beta=0.6\)，\(\gamma=1/\sqrt{1-0.36}=1/0.8=1.25\)。</p>
+          <p class="step">(a) 在地球系，单程坐标时 \(t_{\text{one}}=D/v=6.0\,\text{光年}/0.6c=10.0\,\text{年}\)。往返：<span class="ans">\(20.0\,\text{年}\)</span>。</p>
+          <p class="step">(b) B 在每一段匀速运动中均为单一惯性系，其原时（自身钟读数）由时间膨胀给出 \(\Delta\tau=\Delta t/\gamma\)。单程 \(\tau_{\text{one}}=10.0/1.25=8.0\,\text{年}\)。往返：<span class="ans">\(16.0\,\text{年}\)</span>。</p>
+          <p class="step">(c) 重逢时 A 老了 20 年、B 老了 16 年，<b>年龄差</b> <span class="ans">\(4.0\,\text{年}\)</span>（A 较年长）。</p>
+          <p class="step"><strong>化解要点：</strong> 之所以「不矛盾」，是因为 B 在折返瞬间从一个以 \(+0.6c\) 运动的惯性系<b>跳到</b>另一个以 \(-0.6c\) 运动的惯性系。在这一瞬间，B 视角下「地球钟」会因同时性的相对性而发生跳跃，恰好弥补两段单程的时间膨胀差。从时空几何看，A 的世界线是直线（测地线，原时最大），B 的世界线是折线（非测地线，原时较小）。\(\Delta\tau\) 沿不同世界线积分的结果不同，正如欧氏空间中两点间直线最短——这里只是把「最短」换成类时间隔的「最长」。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>「相对论质量」\(m_{\text{rel}}=\gamma m\)。</b> 现代相对论与粒子物理已基本弃用这一概念，因为它容易让人误以为质量随速度变化、且在不同方向上有「横质量」「纵质量」。正确做法：使用<b>不变的静止质量</b> \(m\)，把速度依赖性<b>全部</b>放入 \(\gamma\) 因子：\(p=\gamma mv\)，\(E=\gamma mc^{2}\)。</li>
+        <li><b>用 \(\tfrac{1}{2}mv^{2}\) 计算高速动能。</b> 正确公式是 \(K=(\gamma-1)mc^{2}\)。例 16.1 显示，在 \(v=0.8c\) 时经典公式低估动能超过 2 倍；在 \(v=0.99c\) 时低估约 12 倍。</li>
+        <li><b>把 \(E=\gamma mc^{2}\) 误当作动能。</b> 这是<b>总能量</b>（含静止能量）。动能只是 \(E-E_{0}=(\gamma-1)mc^{2}\)。解碰撞问题时，若产物粒子静止质量增加，能量差从动能中扣除。</li>
+        <li><b>认为「持续加速总有一天会超过光速」。</b> 错。由于 \(K=(\gamma-1)mc^{2}\) 在 \(v\to c\) 时趋于无穷，要继续加速需输入无穷的能量。任何有质量物体的速度严格小于 \(c\)。</li>
+        <li><b>碰撞中只守恒动量或只守恒能量。</b> 相对论碰撞必须<b>同时</b>守恒<b>总能量</b>（含静止能）与<b>总动量</b>。建议先在质心系（COM frame）分析，再用 \(s\) 不变量回到实验室系。</li>
+        <li><b>双生子佯谬中「两兄弟完全对称」。</b> 不对称：留家者始终在同一惯性系；旅行者在折返时切换惯性系。原时是世界线的内蕴属性，与坐标系无关，故 \(\Delta\tau_{A}\neq\Delta\tau_{B}\) 是几何事实，不是观察误差。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一个质子（\(m_{p}c^{2}=938\,\mathrm{MeV}\)）以 \(v=0.95c\) 运动。求 \(\gamma\)、动量 \(p\)（以 \(\mathrm{MeV}/c\) 为单位）、动能 \(K\) 与总能量 \(E\)。</summary>
+        <div class="hint">用 \(\gamma=1/\sqrt{1-\beta^{2}}\)；用 \(E^{2}=(pc)^{2}+(m c^{2})^{2}\) 求 \(p\)，注意 \(pc\) 与 \(m c^{2}\) 同量纲（MeV），故 \(p\) 的单位为 \(\mathrm{MeV}/c\)。</div>
+        <div class="solution">
+          \(\gamma=1/\sqrt{1-0.9025}=1/\sqrt{0.0975}\approx 3.20\)。
+          \(E=\gamma m c^{2}=3.20\times 938=3003\,\mathrm{MeV}\)。
+          \(K=(\gamma-1)mc^{2}=2.20\times 938=2064\,\mathrm{MeV}\)。
+          由 \(pc=\sqrt{E^{2}-(mc^{2})^{2}}=\sqrt{3003^{2}-938^{2}}=\sqrt{9.018\times10^{6}-0.880\times10^{6}}=\sqrt{8.138\times10^{6}}\approx 2853\,\mathrm{MeV}\)，
+          故 <span class="ans">\(p\approx 2853\,\mathrm{MeV}/c\)</span>，<span class="ans">\(K\approx 2064\,\mathrm{MeV}\)</span>，<span class="ans">\(E\approx 3003\,\mathrm{MeV}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一个静质量为 \(m\) 的粒子衰变为两个相同的光子（\(\gamma+\gamma\)）。求光子的能量与动量（用 \(m\) 与 \(c\) 表示），并证明 \(E=pc\) 对每个光子成立。</summary>
+        <div class="hint">在粒子静止系中能量守恒与动量守恒同时成立；两光子动量必须等大反向。</div>
+        <div class="solution">
+          在母粒子静止系中，初态 \(E_{i}=mc^{2}\)，\(\vec{p}_{i}=0\)。设两光子能量 \(E_{1},E_{2}\)、动量 \(\vec{p}_{1},\vec{p}_{2}\)。能量守恒：\(E_{1}+E_{2}=mc^{2}\)。动量守恒：\(\vec{p}_{1}+\vec{p}_{2}=0\)，即两光子反向。光子 \(E_{i}=p_{i}c\)，故 \(|p_{1}|=|p_{2}|\)，从而 \(E_{1}=E_{2}\)。各 <span class="ans">\(E=mc^{2}/2\)，\(p=mc/2\)，方向相反</span>。验证 \(E=pc\)：\(mc^{2}/2=(mc/2)c\) ✓。这是中性 π 介子衰变 \(\pi^{0}\to 2\gamma\) 的标准过程。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一颗 GPS 卫星轨道速度约 \(v=3.9\times10^{3}\,\mathrm{m/s}\)。求其 \((\gamma-1)\) 的值，并计算运行一天（86400 s）后卫星钟与地面钟因狭义相对论时间膨胀累积的<b>偏差</b>。</summary>
+        <div class="hint">\(\beta\ll 1\)，故 \(\gamma-1\approx\tfrac{1}{2}\beta^{2}\)。偏差 \(\Delta t\cdot(\gamma-1)\) 给出钟落后的秒数。</div>
+        <div class="solution">
+          \(\beta=v/c=3.9\times10^{3}/3.0\times10^{8}=1.3\times10^{-5}\)。
+          \(\gamma-1\approx\tfrac{1}{2}\beta^{2}=\tfrac{1}{2}(1.3\times10^{-5})^{2}=8.45\times10^{-11}\)。
+          一天的偏差 \(\Delta =86400\times 8.45\times10^{-11}\approx\)<span class="ans">\(7.3\times10^{-6}\,\mathrm{s}=7.3\,\mu\mathrm{s}\)</span>（卫星钟<b>走慢</b>）。注：广义相对论的引力红移效应（约 \(+45\,\mu\mathrm{s}\)／天）更大且方向相反，两者净效应约 \(+38\,\mu\mathrm{s}\)／天，若不修正会迅速累积为定位误差。</div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 反质子产生反应 \(p+p\to p+p+p+\bar{p}\) 的阈能已在例 16.3 算出。现考虑光生反应 \(\gamma+p\to p+\pi^{0}\)（中性π 介子光生），其中 \(m_{p}c^{2}=938\,\mathrm{MeV}\)，\(m_{\pi^{0}}c^{2}=135\,\mathrm{MeV}\)，靶质子静止。求阈能光子能量 \(E_{\gamma}^{\text{thr}}\)。</summary>
+        <div class="hint">阈能处 \(s_{\text{thr}}=(m_{p}+m_{\pi})^{2}\)；光子 \(E_{\gamma}=p_{\gamma}c\)，无静止质量，故 \(s=m_{p}^{2}+2 m_{p}E_{\gamma}\)（\(c=1\)）。</div>
+        <div class="solution">
+          令 \(s=m_{p}^{2}+2 m_{p}E_{\gamma}=(m_{p}+m_{\pi})^{2}=m_{p}^{2}+2 m_{p}m_{\pi}+m_{\pi}^{2}\)。
+          解出 \(E_{\gamma}=m_{\pi}+m_{\pi}^{2}/(2m_{p})=135+135^{2}/(2\times 938)=135+18225/1876\approx 135+9.72\approx\)<span class="ans">\(144.7\,\mathrm{MeV}\)</span>。可见阈能光子能量仅略高于产生的π 介子静止能（135 MeV），这是因为光子在质心系中带走的动量可被质子吸收，无须「浪费」太多动能。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 飞船以 \(v=0.8c\) 飞向 8 光年外的恒星，立即折返。(a) 求地球与飞船各测得的往返时间；(b) 在飞船飞出去的<b>第一段</b>惯性运动期间，飞船观察者认为地球钟因时间膨胀变慢，他「测得」地球只过了几年？(c) 用同时性的相对性解释 (a) 中总差异与 (b) 中「悖论」如何协调。</summary>
+        <div class="hint">\(\gamma=1/\sqrt{1-0.64}=5/3\)。每段单程在地球系耗时 \(D/v\)。飞船视角下，地球到恒星的路程因长度收缩变短。</div>
+        <div class="solution">
+          (a) 地球系单程 \(t=8/0.8=10\) 年，往返 <span class="ans">\(20\) 年</span>。飞船原时单程 \(10/\gamma=10/(5/3)=6\) 年，往返 <span class="ans">\(12\) 年</span>，差 \(8\) 年。
+          (b) 飞船在第一段匀速运动中认为：地球钟时间膨胀，故地球只过了 \(6\times(1/\gamma)=6\times 0.6=3.6\) 年；同时地球–恒星距离洛伦兹收缩为 \(8/\gamma=4.8\) 光年，他飞过这段只需 \(4.8/0.8=6\) 年（自洽）。
+          (c) 在第一段运动中，飞船与外向惯性系 \(\mathcal{S}'\) 相对静止；在该系中，「地球钟读数」与「恒星钟读数」由于同时性相对性<b>不同步</b>——恒星钟已预读为 \(vD/c^{2}\times\gamma=8\times 0.8=6.4\) 年。当飞船到达恒星并瞬间反向（切换到惯性系 \(\mathcal{S}''\)），此时飞船认为地球钟「瞬间跳变」\(2 vD/c^{2}\times\gamma\approx 12.8\) 年。考虑两段飞行中地球钟的膨胀变慢（每段 \(3.6\) 年）加上一次跳变（约 \(12.8\) 年），共 \(3.6+12.8+3.6=20\) 年，与地球系结果一致。世界线积分 \(\Delta\tau\) 给出唯一不变答案。
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">相对论能量–动量探索器：调节静止质量 \(m\)（kg）与速度参数 \(\beta=v/c\)（0–0.99），实时查看 \(\beta,\gamma,p,K,E_{0},E\) 的数值；下方曲线图把<b>相对论动能</b> \(K_{\text{rel}}/mc^{2}=\gamma-1\) 与<b>经典动能</b> \(K_{\text{cl}}/mc^{2}=\tfrac{1}{2}\beta^{2}\) 在同一坐标上叠加，直观展现经典公式在高速下严重低估能量、并在 \(\beta\to1\) 时相对论曲线发散。垂直虚线为当前 \(\beta\)，两圆点标出当前两个 K 值。</p>
+      <div class="sim-container">
+        <canvas id="sim-16" width="600" height="460"></canvas>
+        <div class="sim-controls" id="controls-16"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-16');
+          var W = canvas.width, H = canvas.height;
+
+          var c_speed = 3.0e8; // m/s
+          var params = { mass: 1.0, beta: 0.60 };
+
+          function gamma(b) {
+            b = Math.min(0.999999, Math.max(0, b));
+            return 1 / Math.sqrt(1 - b * b);
+          }
+
+          var SUP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+          function sup(n) { return String(n).split('').map(function (d){ return SUP[d] || d; }).join(''); }
+          function sci(v, d) {
+            d = d || 3;
+            if (Math.abs(v) < 1e-30) return '0';
+            var e = Math.floor(Math.log10(Math.abs(v)));
+            var m = v / Math.pow(10, e);
+            return m.toFixed(d) + '×10' + sup(e);
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 30,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var beta = params.beta;
+              var m = params.mass;
+              var g = gamma(beta);
+              var c2 = c_speed * c_speed;
+
+              var p_SI = g * m * beta * c_speed;
+              var K_SI = (g - 1) * m * c2;
+              var E0_SI = m * c2;
+              var E_tot = g * m * c2;
+              var K_class_SI = 0.5 * m * (beta * c_speed) * (beta * c_speed);
+
+              // ---- Title ----
+              PS.drawText(ctx, 'Relativistic Energy / Momentum Explorer · 相对论能量–动量探索器',
+                          W / 2, 18,
+                          { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              // ---- Live readouts: 2 rows x 3 cells ----
+              var roTop = 36, rowH = 46, cellGap = 8;
+              var margin = 18, innerW = W - 2 * margin;
+              var cellW = (innerW - 2 * cellGap) / 3;
+              function cellX(i) { return margin + i * (cellW + cellGap); }
+
+              function drawCell(i, row, label, value, color) {
+                var x = cellX(i);
+                var y = roTop + row * (rowH + 6);
+                ctx.save();
+                ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, cellW, rowH);
+                PS.drawText(ctx, label, x + cellW / 2, y + 15,
+                            { font: '11px system-ui', color: C.axis, align: 'center' });
+                PS.drawText(ctx, value, x + cellW / 2, y + 34,
+                            { font: 'bold 13px system-ui', color: color || C.text, align: 'center' });
+                ctx.restore();
+              }
+
+              drawCell(0, 0, 'β = v/c', beta.toFixed(3), C.text);
+              drawCell(1, 0, 'γ  洛伦兹因子', g.toFixed(3), C.accent);
+              drawCell(2, 0, 'p = γmv (kg·m/s)', sci(p_SI, 3), C.primary);
+              drawCell(0, 1, 'rest E₀ = mc² (J)', sci(E0_SI, 3), C.accent2);
+              drawCell(1, 1, 'K = (γ−1)mc² (J)', sci(K_SI, 3), C.accent);
+              drawCell(2, 1, 'total E = γmc² (J)', sci(E_tot, 3), C.primary);
+
+              // ---- K / mc² vs β plot ----
+              var plotX0 = 56, plotY0 = 196, plotW = W - 80, plotH = 220;
+              var plotX1 = plotX0 + plotW, plotY1 = plotY0 + plotH;
+              var ymax = 5.0;
+              function xP(b) { return plotX0 + b * plotW; }
+              function yP(K) { return plotY1 - (K / ymax) * plotH; }
+
+              ctx.save();
+              // y-grid
+              ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.45; ctx.lineWidth = 1;
+              for (var yy = 1; yy <= ymax; yy++) {
+                ctx.beginPath(); ctx.moveTo(plotX0, yP(yy)); ctx.lineTo(plotX1, yP(yy)); ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+
+              // axes
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotX0, plotY0 - 4); ctx.lineTo(plotX0, plotY1);
+              ctx.lineTo(plotX1 + 4, plotY1); ctx.stroke();
+
+              // y-tick labels
+              PS.drawText(ctx, 'K / mc²', plotX0 - 8, plotY0 - 10,
+                          { font: 'bold 11px system-ui', color: C.axis, align: 'left' });
+              for (var yy2 = 0; yy2 <= ymax; yy2++) {
+                PS.drawText(ctx, String(yy2), plotX0 - 8, yP(yy2) + 3,
+                            { font: '10px system-ui', color: C.axis, align: 'right' });
+              }
+              // x-tick labels
+              for (var bb = 0; bb <= 1.001; bb += 0.2) {
+                var xt = xP(bb);
+                ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(xt, plotY1); ctx.lineTo(xt, plotY1 + 4); ctx.stroke();
+                PS.drawText(ctx, bb.toFixed(1), xt, plotY1 + 15,
+                            { font: '10px system-ui', color: C.axis, align: 'center' });
+              }
+              PS.drawText(ctx, 'β = v/c', plotX1 + 4, plotY1 + 4,
+                          { font: 'bold 11px system-ui', color: C.axis, align: 'left' });
+
+              // asymptote at β = 1
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+              ctx.beginPath(); ctx.moveTo(xP(1), plotY0); ctx.lineTo(xP(1), plotY1); ctx.stroke();
+              ctx.setLineDash([]);
+              PS.drawText(ctx, 'v = c 渐近', xP(1) - 6, plotY0 + 12,
+                          { font: '10px system-ui', color: C.trace, align: 'right' });
+
+              // Classical curve ½β²
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              for (var i = 0; i <= 240; i++) {
+                var b = i / 240;
+                var Kc = 0.5 * b * b;
+                var xp = xP(b), yp = yP(Kc);
+                if (i === 0) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
+              }
+              ctx.stroke();
+
+              // Relativistic curve γ-1
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              for (var i = 0; i <= 240; i++) {
+                var b = i / 240;
+                var gg = 1 / Math.sqrt(1 - b * b);
+                var Kr = gg - 1;
+                var xp = xP(b), yp = yP(Math.min(Kr, ymax));
+                if (i === 0) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
+              }
+              ctx.stroke();
+
+              // current-β vertical marker
+              var xm = xP(beta);
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 1.4; ctx.setLineDash([4, 3]);
+              ctx.beginPath(); ctx.moveTo(xm, plotY0); ctx.lineTo(xm, plotY1); ctx.stroke();
+              ctx.setLineDash([]);
+
+              // dots at the two K values
+              PS.drawCircle(ctx, xm, yP(Math.min(0.5 * beta * beta, ymax)), 4.5,
+                            { fill: C.accent2, stroke: C.text, lineWidth: 1 });
+              PS.drawCircle(ctx, xm, yP(Math.min(g - 1, ymax)), 4.5,
+                            { fill: C.accent, stroke: C.text, lineWidth: 1 });
+
+              // legend
+              var lx = plotX0 + 12, ly = plotY0 + 14;
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 2.6;
+              ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 26, ly); ctx.stroke();
+              PS.drawText(ctx, 'K_rel = (γ−1)mc² (相对论)', lx + 32, ly + 4,
+                          { font: '11px system-ui', color: C.text });
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(lx, ly + 18); ctx.lineTo(lx + 26, ly + 18); ctx.stroke();
+              PS.drawText(ctx, 'K_cl = ½mv² (经典)', lx + 32, ly + 22,
+                          { font: '11px system-ui', color: C.text });
+
+              // status line
+              var ratio = K_class_SI / K_SI;
+              var msg = 'β = ' + beta.toFixed(2) + ':  经典动能仅为相对论动能的 ' +
+                        (ratio * 100).toFixed(1) + '%  (低估 ' + (1 / ratio).toFixed(2) + '×)';
+              PS.drawText(ctx, msg, W / 2, H - 8,
+                          { font: '11px system-ui', color: C.text, align: 'center' });
+
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-16'), [
+            { type: 'slider', key: 'mass', label: '静止质量 m (kg)', min: 0.10, max: 5.00, step: 0.10, value: 1.00 },
+            { type: 'slider', key: 'beta', label: '速度 β = v/c',  min: 0.00, max: 0.99, step: 0.01, value: 0.60 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('mass', function (v) { params.mass = v; });
+          ctl.on('beta', function (v) { params.beta = v; });
+          ctl.on('reset', function ()  { params.mass = 1.0; params.beta = 0.6; sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>牛顿 \(\vec{F}=m\vec{a}\) 在高速失效；正确的相对论动量 \(\vec{p}=\gamma m\vec{v}\)、力 \(\vec{F}=d\vec{p}/dt\)。</li>
+        <li><b>总能量</b> \(E=\gamma mc^{2}\)；<b>静止能量</b> \(E_{0}=mc^{2}\)；<b>动能</b> \(K=(\gamma-1)mc^{2}\)（不是 \(\tfrac{1}{2}mv^{2}\)）。</li>
+        <li><b>能量–动量关系</b> \(E^{2}=(pc)^{2}+(mc^{2})^{2}\)，无质量粒子 \(E=pc\)。</li>
+        <li><b>纵向多普勒</b>（远离）：\(f_{\text{obs}}/f_{\text{emit}}=\sqrt{(1-\beta)/(1+\beta)}\)。</li>
+        <li>碰撞中能量与动量<b>同时</b>守恒；用 \(s=(p_{1}+p_{2})^{2}\) 不变量在质心系求阈能最便捷。</li>
+        <li>双生子佯谬由<b>原时沿世界线积分</b>化解：惯性（直线）世界线原时最大，旅行者归来更年轻。</li>
+        <li>低速下 \(\gamma\to1\)，全部公式回到牛顿力学。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\vec{p}=\gamma m\vec{v},\quad E=\gamma mc^{2},\quad K=(\gamma-1)mc^{2},\quad E^{2}=(pc)^{2}+(mc^{2})^{2},\quad \vec{F}=\dv{\vec{p}}{t}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

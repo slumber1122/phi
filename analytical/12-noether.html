@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 守恒律与诺特定理 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">Chapter 12 · 第12章 · 第二部分 分析力学 Part II Analytical Mechanics</p>
+      <h1>守恒律与诺特定理 <span class="en-title">Conservation Laws &amp; Noether's Theorem</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>识别拉格朗日量 (Lagrangian) 中的<strong>循环坐标 (cyclic/ignorable coordinate)</strong>，并由欧拉–拉格朗日方程直接证明对应的<strong>广义动量 (generalized momentum)</strong> \(p_i=\partial L/\partial\dot q_i\) 守恒。</li>
+        <li>准确陈述<strong>诺特定理 (Noether's theorem)</strong>：每一种对拉格朗日量的<strong>连续对称性 (continuous symmetry)</strong> 都产生一条<strong>守恒律 (conservation law)</strong>。</li>
+        <li>把空间平移、转动、时间平移三种基本对称性分别对应到线动量、角动量、能量守恒，并说明它们源自 \(L\) 的何种结构。</li>
+        <li>由勒让德变换定义<strong>哈密顿量 (Hamiltonian)</strong> \(H=\sum_i p_i\dot q_i-L\)，并证明 \(\mathrm dH/\mathrm dt=-\partial L/\partial t\)；由此说明何时 \(H\) 等于总机械能 \(T+V\)。</li>
+        <li>在阿特伍德机、弹簧振子、有心力、锥面约束等系统中辨认对称性与对应守恒量，并做带量纲的数值计算。</li>
+        <li>用对称性这一统一观点理解守恒律：守恒并非巧合，而是物理规律本身对称性的必然结果。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 循环坐标与广义动量守恒 Cyclic Coordinates</h3>
+      <p>考虑完整约束系统，广义坐标为 \(q_i\)，拉格朗日量 \(L(q_1,\dots,q_n;\dot q_1,\dots,\dot q_n;t)\)。欧拉–拉格朗日方程 (Euler–Lagrange equation, E-L) 写作：</p>
+      <div class="formula">\[ \frac{\mathrm d}{\mathrm dt}\!\left(\frac{\partial L}{\partial \dot q_i}\right)-\frac{\partial L}{\partial q_i}=0 \]</div>
+      <p>定义与坐标 \(q_i\) 共轭的<strong>广义动量</strong>（也叫<strong>正则动量 canonical momentum</strong>）：</p>
+      <div class="formula">\[ p_i\;\equiv\;\frac{\partial L}{\partial \dot q_i} \]</div>
+      <p>若某个坐标 \(q_k\) 在 \(L\) 中<strong>不出现</strong>（即 \(\partial L/\partial q_k=0\)），称 \(q_k\) 为<strong>循环坐标</strong>或<strong>可遗坐标</strong>。此时 E-L 立即给出：</p>
+      <div class="formula">\[ \frac{\partial L}{\partial q_k}=0 \quad\Longrightarrow\quad \frac{\mathrm dp_k}{\mathrm dt}=0 \quad\Longrightarrow\quad p_k=\text{const} \]</div>
+      <p>这是从 E-L 方程得到的<strong>最直接</strong>的守恒律。请注意：广义动量 \(p_k\) 不一定是 \(m\dot q_k\)——例如对角度坐标 \(\theta\)，\(p_\theta=mr^2\dot\theta\) 正是角动量，而不是 \(m\dot\theta\)。在下文中，循环坐标其实是诺特定理的一个特例，对应于“\(L\) 在 \(q_k\to q_k+\varepsilon\) 下的不变性”。</p>
+
+      <h3>2. 诺特定理（核心结果）Noether's Theorem</h3>
+      <p>1918 年，Emmy Noether 给出一条深刻而优美的定理，把<strong>对称性</strong>与<strong>守恒律</strong>严格地联系起来。本章所用版本陈述如下：</p>
+      <div class="formula">\[ \text{若拉格朗日量 }L\text{ 在某连续变换下不变（至多差一个全时间导数），则存在一个守恒量。} \]</div>
+      <p>更精确地：设连续变换 \(q_i(t)\to q_i(t)+\varepsilon\,\eta_i(q,t)\)（\(\varepsilon\) 无穷小）使</p>
+      <div class="formula">\[ \delta L=\varepsilon\,\frac{\mathrm dF}{\mathrm dt} \]</div>
+      <p>则<strong>诺特荷</strong>（Noether charge）</p>
+      <div class="formula">\[ Q=\sum_i p_i\,\eta_i - F \]</div>
+      <p>在真实运动下 \(\mathrm dQ/\mathrm dt=0\)。三种最重要的情形如下。</p>
+
+      <h3>3. 空间平移不变性 ⇒ 线动量守恒 Spatial Translation</h3>
+      <p>若系统整体平移 \(\vec r_i\to\vec r_i+\varepsilon\hat a\) 时 \(L\) 不变（即势能只依赖粒子间相对位置、不依赖绝对位置），取 \(\eta_i=\hat a\)，\(F=0\)：</p>
+      <div class="formula">\[ Q=\sum_i p_i\cdot\hat a=\hat a\cdot\vec P_{\text{tot}}=\text{const}\quad\Longrightarrow\quad \vec P_{\text{tot}}=\text{const} \]</div>
+      <p>即<strong>线动量守恒</strong>是空间平移对称性 (translational invariance of space) 的推论。势能 \(V(\vec r_1,\dots,\vec r_n)\) 仅依赖相对位置（如万有引力 \(V=-Gm_1m_2/r_{12}\)）就属于此情形。</p>
+
+      <h3>4. 转动不变性 ⇒ 角动量守恒 Rotational Symmetry</h3>
+      <p>若系统绕某轴 \(\hat n\) 整体旋转 \(\delta\vec r_i=\varepsilon\,\hat n\times\vec r_i\) 时 \(L\) 不变（即空间各向同性 isotropy 在该方向成立），则 \(\eta_i=\hat n\times\vec r_i\)：</p>
+      <div class="formula">\[ Q=\sum_i \vec p_i\cdot(\hat n\times\vec r_i)=\hat n\cdot\sum_i(\vec r_i\times\vec p_i)=\hat n\cdot\vec L_{\text{tot}}=\text{const} \]</div>
+      <p>故<strong>角动量守恒</strong>来自空间的转动对称性。对于<strong>有心力</strong> (central force)，势能 \(V(r)\) 只依赖 \(r=|\vec r|\)，与角度无关；用极坐标时 \(\theta\) 是循环坐标，所以 \(L_z=mr^2\dot\theta\) 守恒——这是循环坐标观点下的同一结论。</p>
+
+      <h3>5. 时间平移不变性 ⇒ 能量守恒 Time Translation &amp; the Hamiltonian</h3>
+      <p>若 \(\partial L/\partial t=0\)（拉氏量没有显含时间），则系统在时间平移 \(t\to t+\varepsilon\) 下不变。此时<strong>哈密顿量</strong>（Legendre 变换的产物）守恒：</p>
+      <div class="formula">\[ H(q,p,t)\;\equiv\;\sum_i p_i\dot q_i-L \]</div>
+      <p>关键定理（推导见下节）：沿真实运动</p>
+      <div class="formula">\[ \frac{\mathrm dH}{\mathrm dt}=-\,\frac{\partial L}{\partial t} \]</div>
+      <p>因此 \(\partial L/\partial t=0\Rightarrow \mathrm dH/\mathrm dt=0\)，即 \(H\) 守恒。</p>
+      <p><strong>何时 \(H\) 等于总机械能 \(T+V\)？</strong> 当 (i) 势能不显含时间；(ii) 约束是<strong>定常的</strong> (scleronomic)，即约束方程不含 \(t\)；(iii) 由笛卡尔坐标到广义坐标的变换不含 \(t\)。此时动能是广义速度的齐次二次型 \(T=\tfrac12\sum_{ij}T_{ij}(q)\dot q_i\dot q_j\)，由欧拉齐次函数定理 \(\sum_i\dot q_i\,\partial T/\partial\dot q_i=2T\)，于是</p>
+      <div class="formula">\[ H=\sum_i\frac{\partial T}{\partial\dot q_i}\dot q_i-(T-V)=2T-(T-V)=T+V=E \]</div>
+      <p>反之，若有<strong>非定常约束</strong> (rheonomic constraint，如外力驱动的支点、显含 \(t\) 的坐标变换) 或速度相关势（如含时的电磁矢势 \(\vec A(\vec r,t)\)），则 \(H\neq T+V\)，需逐项计算。</p>
+
+      <h3>6. 统一观点：守恒律的起源 The Unifying Viewpoint</h3>
+      <p>把上述结果列表对照，便能看清物理学的核心组织原理之一：</p>
+      <div class="formula">\[ \begin{array}{c|c|c}
+      \text{对称性 Symmetry} & \text{不变性 Invariance} & \text{守恒量 Conserved}\\\ \hline
+      \text{空间平移} & \vec r\to\vec r+\varepsilon\hat a & \text{线动量 }\vec P\\\
+      \text{空间转动} & \vec r\to\vec r+\varepsilon\hat n\times\vec r & \text{角动量 }\vec L\\\
+      \text{时间平移} & t\to t+\varepsilon & \text{能量 }E=H
+      \end{array} \]</div>
+      <p>换言之：<strong>动量、角动量、能量之所以守恒，并不是因为某个具体力的巧合，而是因为空间本身是均匀且各向同性的、物理规律不随时间改变</strong>。一旦某种对称性被破坏（例如外场 \(V(\vec r)\) 选出特殊方向），相应的守恒律也随之失效——这是本章要重点掌握的洞察。</p>
+
+      <div class="key-terms">cyclic/ignorable coordinate (循环坐标/可遗坐标), generalized/canonical momentum (广义动量/正则动量), Noether's theorem (诺特定理), symmetry (对称性), conservation law (守恒律), continuous symmetry (连续对称性), spatial translation (空间平移), rotational invariance / isotropy (转动不变性/各向同性), time-translation invariance (时间平移不变性), Hamiltonian (哈密顿量), Legendre transform (勒让德变换), scleronomic / rheonomic constraint (定常/非定常约束), Noether charge (诺特荷)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：循环坐标 ⇒ 广义动量守恒（一行证明）</h3>
+      <p>由 E-L 方程 \( \dfrac{\mathrm d}{\mathrm dt}\!\left(\dfrac{\partial L}{\partial\dot q_i}\right)=\dfrac{\partial L}{\partial q_i}\)，若 \(\partial L/\partial q_k=0\)，则右边为零，故 \(\mathrm dp_k/\mathrm dt=0\)。这正是诺特定理在“\(q_k\to q_k+\varepsilon\)”这一连续对称性下的特例（\(\eta_k=1\)，其它 \(\eta=0\)，\(F=0\)，\(Q=p_k\)）。</p>
+
+      <h3>推导 B：\(\mathrm dH/\mathrm dt=-\partial L/\partial t\)（关键定理）</h3>
+      <p>沿真实运动求 \(H=\sum_i p_i\dot q_i-L\) 的全时间导数：</p>
+      <div class="formula">\[ \frac{\mathrm dH}{\mathrm dt}=\sum_i\left(\dot p_i\,\dot q_i+p_i\,\ddot q_i\right)-\sum_i\frac{\partial L}{\partial q_i}\dot q_i-\sum_i\frac{\partial L}{\partial\dot q_i}\ddot q_i-\frac{\partial L}{\partial t} \]</div>
+      <p>注意 \(p_i=\partial L/\partial\dot q_i\) 使第二、四项相消；用 E-L 方程 \(\dot p_i=\partial L/\partial q_i\) 又使第一、三项相消，只剩</p>
+      <div class="formula">\[ \boxed{\;\frac{\mathrm dH}{\mathrm dt}=-\,\frac{\partial L}{\partial t}\;} \]</div>
+      <p>于是 \(\partial L/\partial t=0\Leftrightarrow H\) 守恒。注意：\(H\) 是守恒量；它是否等于 \(T+V\) 是另一个问题（见核心概念 §5）。</p>
+
+      <h3>推导 C：诺特定理的证明（连续对称 ⇒ 守恒流）</h3>
+      <p>设连续变换 \(q_i\to q_i+\varepsilon\eta_i\) 使 \(\delta L=\varepsilon\,\mathrm dF/\mathrm dt\)。把 \(\delta q_i=\varepsilon\eta_i\) 代入 \(L\) 的变分：</p>
+      <div class="formula">\[ \delta L=\varepsilon\sum_i\left(\frac{\partial L}{\partial q_i}\eta_i+\frac{\partial L}{\partial\dot q_i}\dot\eta_i\right)=\varepsilon\sum_i\left(\dot p_i\eta_i+p_i\dot\eta_i\right)=\varepsilon\frac{\mathrm d}{\mathrm dt}\!\left(\sum_i p_i\eta_i\right) \]</div>
+      <p>（第二步用了 E-L 方程 \(\dot p_i=\partial L/\partial q_i\)；第三步用了乘积求导法则。）另一方面 \(\delta L=\varepsilon\,\mathrm dF/\mathrm dt\)，两式相减：</p>
+      <div class="formula">\[ \frac{\mathrm d}{\mathrm dt}\!\left(\sum_i p_i\eta_i-F\right)=0 \quad\Longrightarrow\quad Q=\sum_i p_i\eta_i-F=\text{const} \]</div>
+      <p>这条证明展示了诺特定理的普适性：无论对称性多么复杂，只要找到 \(\eta_i\) 与 \(F\)，就能立刻写出守恒量 \(Q\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 抛体运动中的水平动量与能量 Projectile in Uniform Gravity</h4>
+        <p class="example-statement">质量 \(m=0.50\,\mathrm{kg}\) 的小球以 \(v_0=20\,\mathrm{m/s}\)、仰角 \(\theta=30^\circ\) 抛出（取 \(g=9.8\,\mathrm{m/s^2}\)，忽略空气阻力）。写出拉格朗日量，指出循环坐标并由此求得守恒量；最后计算总机械能。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取 \(x\)（水平）、\(y\)（竖直向上）坐标，势能 \(V=mgy\)，拉格朗日量</p>
+          <div class="formula">\[ L=\tfrac12 m(\dot x^2+\dot y^2)-mgy \]</div>
+          <p class="step">\(x\) 不出现，故 \(x\) 是循环坐标：\(\partial L/\partial x=0\Rightarrow p_x=m\dot x=\text{const}\)。这是“空间水平平移不变性”的直接推论（重力只沿 \(y\)，破坏了竖直方向的平移对称性，故 \(p_y\) 不守恒）。</p>
+          <p class="step">初速度分量：\(\dot x_0=v_0\cos30^\circ=17.32\,\mathrm{m/s}\)，\(\dot y_0=v_0\sin30^\circ=10.0\,\mathrm{m/s}\)。</p>
+          <p class="step"><strong>水平动量：</strong> \(p_x=m\dot x_0=(0.50)(17.32)=\) <span class="ans">\(8.66\,\mathrm{kg\,m/s}\)</span>（运动全过程不变）。</p>
+          <p class="step"><strong>能量：</strong> \(L\) 不显含 \(t\)，故 \(H\) 守恒。因 \(L\) 满足 §5 三条件，\(H=T+V\)。在出发点（\(y=0\)）：</p>
+          <div class="formula">\[ E=\tfrac12 m v_0^2=\tfrac12(0.50)(20)^2= \text{<span class="ans">\(1.0\times10^{2}\,\mathrm J\)</span>} \]</div>
+          <p class="step"><strong>验证：</strong> 最高点处 \(\dot y=0\)，\(\dot x\) 仍为 \(17.32\,\mathrm{m/s}\)，\(y_{\max}=\dot y_0^2/(2g)=5.10\,\mathrm m\)，于是 \(T=\tfrac12(0.50)(17.32)^2=75\,\mathrm J\)，\(V=(0.50)(9.8)(5.10)=25\,\mathrm J\)，\(T+V=100\,\mathrm J\) ✓。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 地球公转：角动量来自转动对称性 Earth's Orbital Angular Momentum</h4>
+        <p class="example-statement">把地球（\(m=5.97\times10^{24}\,\mathrm{kg}\)）绕太阳（\(M_\odot=1.99\times10^{30}\,\mathrm{kg}\)）的公转视为有心力问题。已知 \(r=1\,\mathrm{AU}=1.496\times10^{11}\,\mathrm m\)，公转速率 \(v=29.78\,\mathrm{km/s}\)。用极坐标写出 \(L\)，指出循环坐标，求 \(L_z\)，并说明其守恒的对称性起源。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>约化质量近似下取 \(\mu\approx m\)。有心引力势 \(V(r)=-GM_\odot m/r\)。极坐标下动能 \(T=\tfrac12 m(\dot r^2+r^2\dot\theta^2)\)，故</p>
+          <div class="formula">\[ L=\tfrac12 m(\dot r^2+r^2\dot\theta^2)+\frac{GM_\odot m}{r} \]</div>
+          <p class="step">\(\theta\) 不出现，故 \(\theta\) 循环；\(\partial L/\partial\theta=0\Rightarrow p_\theta=mr^2\dot\theta=\text{const}\)。这就是角动量 \(L_z\)。它的守恒源于 \(V\) 仅依赖 \(r\)、与 \(\theta\) 无关，即<strong>空间的转动不变性</strong>。</p>
+          <p class="step">数值：\(L_z=m\,r\,v=(5.97\times10^{24})(1.496\times10^{11})(2.978\times10^4)=\) <span class="ans">\(2.66\times10^{40}\,\mathrm{kg\,m^2/s}\)</span>。</p>
+          <p class="step"><strong>径向含义：</strong>由能量 \(E=\tfrac12 m\dot r^2+U_{\mathrm{eff}}(r)\)，其中 \(U_{\mathrm{eff}}(r)=-GM_\odot m/r+L_z^2/(2mr^2)\)。若初始 \(\dot r=0\)，则地球在 \(U_{\mathrm{eff}}\) 极小处做圆周运动；一般情形下径向振荡即得椭圆轨道——这一切都建立在 \(L_z\) 守恒的基础上。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 弹簧振子的哈密顿量 Hamiltonian of a Spring–Mass System</h4>
+        <p class="example-statement">\(m=1.5\,\mathrm{kg}\) 的物块系于 \(k=200\,\mathrm{N/m}\) 的轻弹簧，在光滑水平面上做一维运动。\(t=0\) 时拉至 \(x=A=0.10\,\mathrm m\) 处由静止释放。计算哈密顿量 \(H\)，验证 \(H=T+V\)，并求物块通过平衡位置时的速率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(L=\tfrac12 m\dot x^2-\tfrac12 kx^2\)。正则动量 \(p=m\dot x\)。</p>
+          <p class="step">勒让德变换：</p>
+          <div class="formula">\[ H=p\dot x-L=m\dot x^2-\Big(\tfrac12 m\dot x^2-\tfrac12 kx^2\Big)=\tfrac12 m\dot x^2+\tfrac12 kx^2=T+V \]</div>
+          <p class="step">\(L\) 不显含 \(t\)，约束（光滑水平面）定常，故 \(\mathrm dH/\mathrm dt=0\)，\(H=E\) 守恒。</p>
+          <p class="step"><strong>数值：</strong> 在释放点 \(x=A,\dot x=0\)：</p>
+          <div class="formula">\[ E=H=\tfrac12 kA^2=\tfrac12(200)(0.10)^2=\text{<span class="ans">\(1.0\,\mathrm J\)</span>} \]</div>
+          <p class="step">通过平衡位置 \(x=0\) 时 \(V=0\)，全部化为动能：\(\tfrac12 m v_{\max}^2=1.0\Rightarrow v_{\max}=\sqrt{2(1.0)/1.5}=\) <span class="ans">\(1.15\,\mathrm{m/s}\)</span>。</p>
+          <p class="step"><strong>对称性视角：</strong> \(L\) 不显含 \(t\)（时间平移不变性）⇒ 能量守恒。注意此处 \(x\) <em>不</em>是循环坐标（\(\partial L/\partial x=-kx\neq0\)），故线动量并不守恒——弹簧的固定端选出了空间特殊位置，破坏了平移对称性。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 阿特伍德机：能守恒而非动量守恒 Atwood Machine</h4>
+        <p class="example-statement">阿特伍德机两物块 \(m_1=4.0\,\mathrm{kg}\)、\(m_2=2.0\,\mathrm{kg}\) 由轻绳跨过无摩擦滑轮。\(t=0\) 由静止释放，求 \(m_1\) 下落 \(h=0.50\,\mathrm m\) 时的速率（取 \(g=9.8\,\mathrm{m/s^2}\)）。先用拉格朗日方法判断哪些量守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取 \(x\) 为 \(m_1\) 向下（\(m_2\) 向上）的位移，绳长不变给出单一广义坐标。动能 \(T=\tfrac12(m_1+m_2)\dot x^2\)；势能 \(V=-m_1 gx+m_2 gx\)（取 \(x=0\) 为势能零点），故</p>
+          <div class="formula">\[ L=\tfrac12(m_1+m_2)\dot x^2+(m_1-m_2)gx \]</div>
+          <p class="step"><strong>判断循环坐标：</strong> \(\partial L/\partial x=(m_1-m_2)g\neq0\)，故 \(x\) <em>不</em>是循环坐标，广义动量 \(p_x=(m_1+m_2)\dot x\) 不守恒。直觉解释：重力场 \(\hat y\) 选出了竖直方向，整体平移对称性被破坏。</p>
+          <p class="step"><strong>能量是否守恒？</strong> \(\partial L/\partial t=0\)，且约束（不可伸长绳、定滑轮）定常，故 \(H=T+V\) 守恒。</p>
+          <p class="step"><strong>用能量守恒求解：</strong> 初始 \(T=V=0\)，故 \(E=0\)。下落 \(h\) 后：</p>
+          <div class="formula">\[ \tfrac12(m_1+m_2)v^2-(m_1-m_2)gh=0 \;\Longrightarrow\; v=\sqrt{\frac{2(m_1-m_2)gh}{m_1+m_2}} \]</div>
+          <p class="step">代入数值得 \(v=\sqrt{\dfrac{2(2.0)(9.8)(0.50)}{6.0}}=\sqrt{3.27}=\) <span class="ans">\(1.81\,\mathrm{m/s}\)</span>。</p>
+          <p class="step"><strong>对照牛顿法：</strong> 加速度 \(a=(m_1-m_2)g/(m_1+m_2)=3.27\,\mathrm{m/s^2}\)，\(v^2=2ah=3.27\)，\(v=1.81\,\mathrm{m/s}\) ✓。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 锥面上的质点：转动对称 ⇒ 角动量守恒 Particle on a Cone</h4>
+        <p class="example-statement">一半顶角 \(\alpha=30^\circ\) 的直立圆锥（顶点在原点，开口向上），内表面光滑。一质点在重力作用下在其上滑动。用柱坐标 \((r,\varphi,z)\)，写出约束后的拉氏量，指出循环坐标，并写出守恒量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>锥面约束 \(z=r\cot\alpha\)（故 \(\dot z=\dot r\cot\alpha\)），重力势 \(V=mgz=mg r\cot\alpha\)。代入柱坐标动能 \(T=\tfrac12 m(\dot r^2+r^2\dot\varphi^2+\dot z^2)\)：</p>
+          <div class="formula">\[ L=\tfrac12 m\,\dot r^2(1+\cot^2\alpha)+\tfrac12 m r^2\dot\varphi^2-mg r\cot\alpha=\tfrac12 m\,\csc^2\alpha\,\dot r^2+\tfrac12 m r^2\dot\varphi^2-mg r\cot\alpha \]</div>
+          <p class="step"><strong>循环坐标：</strong> \(\varphi\) 不出现，故 \(p_\varphi=mr^2\dot\varphi=L_z=\text{const}\)。</p>
+          <p class="step"><strong>对称性起源：</strong> 锥面本身绕 \(z\) 轴转动对称，且重力沿 \(-\hat z\) 也在此转动下不变；这两个条件共同保证 \(L\) 不显含 \(\varphi\)，故 \(L_z\) 守恒。</p>
+          <p class="step"><strong>能量：</strong> \(L\) 不显含 \(t\)，约束定常（\(\alpha\) 不含 \(t\)），动能是 \(\dot r,\dot\varphi\) 的二次齐次式，故 \(H=T+V=E\) 守恒。</p>
+          <p class="step"><strong>数值示例：</strong> 若 \(\alpha=30^\circ\)（\(\cot\alpha=\sqrt3\)，\(\csc^2\alpha=4\)），且初条件 \(r_0=0.20\,\mathrm m\)、\(\dot r_0=0\)、\(\dot\varphi_0=3.0\,\mathrm{rad/s}\)、\(m=0.10\,\mathrm{kg}\)：</p>
+          <div class="formula">\[ L_z=(0.10)(0.20)^2(3.0)=\text{<span class="ans">\(1.2\times10^{-2}\,\mathrm{kg\,m^2/s}\)</span>} \]</div>
+          <p class="step">无论其后运动如何复杂，这个 \(L_z\) 恒定不变——这是“绕锥轴的转动对称性”的几何结果。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>“守恒的动量”是广义动量 \(p_i=\partial L/\partial\dot q_i\)，未必是 \(mv\)。</strong> 对角度坐标，\(p_\theta=mr^2\dot\theta\) 是角动量；在磁场中带电粒子的正则动量 \(\vec p=m\vec v+q\vec A\) 还含矢势。把“动量守恒”一律当作 \(m\vec v\) 不变是错误。</li>
+        <li><strong>对称性必须连同约束一起考虑。</strong> 例：自由质点在水平桌面上的 \(x,y\) 平移对称性给出 \(p_x,p_y\) 守恒；但若桌面有一固定小钉（约束点），整体平移对称被破坏，相应动量不再守恒。约束本身可以破坏对称性。</li>
+        <li><strong>\(H=T+V\) 需要满足三个条件，不是普适等式。</strong> 当存在非定常约束（如外力驱动的摆支点）或速度相关势（含时 \(\vec A(\vec r,t)\)）时，\(H\neq T+V\)。务必先分别计算 \(H\) 与 \(T+V\) 再判断是否相等。</li>
+        <li><strong>“循环坐标”是坐标选择的问题，不是内蕴性质。</strong> 同一自由质点，笛卡尔坐标下 \(x,y,z\) 都循环；改用极坐标 \((r,\theta)\) 时只有 \(\theta\) 循环，\(r\) 不循环。物理上守恒的是 \(p_x,p_y,p_z\) 或 \(L_z\)，不会因换坐标而改变，但“是否显含某坐标”依赖于描述。</li>
+        <li><strong>诺特定理只对<strong>连续</strong>对称性成立。</strong> 离散对称（如宇称 \(\vec r\to-\vec r\)、时间反演 \(t\to-t\)）并不给出守恒量。把诺特定理误用于离散变换是常见错误。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 系于小孔的绳上质点：找出守恒量 Bead Pulled Through a Hole</summary>
+        <div class="hint">用极坐标，写出含 \(r,\theta\) 的拉氏量；看哪个坐标不出现。</div>
+        <div class="solution">质量 \(m\) 在光滑水平桌面上，绳穿过原点小孔后用力向下拉。设极坐标 \((r,\theta)\)，\(L=\tfrac12 m(\dot r^2+r^2\dot\theta^2)\)（桌面无势能）。\(\theta\) 不出现，故 \(L_z=mr^2\dot\theta=\text{const}\)。当手缓慢下拉（\(r\) 减小）时，\(\dot\theta\) 必然增大——这就是花样滑冰旋转收紧手臂转速加快的物理。<span class="ans">守恒量：\(L_z=mr^2\dot\theta\)（除非外力对孔的力矩非零）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 旋转圆环上的小珠：能量是否守恒？Bead on a Rotating Hoop</summary>
+        <div class="hint">注意约束方程显含 \(t\)，判断拉氏量是否仍不显含 \(t\)。</div>
+        <div class="solution">半径 \(R\) 的直立圆环以恒定角速度 \(\omega\) 绕其竖直直径旋转。小珠约束在环上，唯一广义坐标是 \(\theta\)（相对环底的角度）。坐标变换显含 \(t\)（环在转），所以拉氏量虽可能不显含 \(t\)，但<strong>动能不再是 \(\dot\theta\) 的二次齐次式</strong>，含线性项 \(\propto\dot\theta\)。结果 \(H\neq T+V\)，\(H\) 仍守恒（因 \(L\) 不显含 \(t\)），但它不是通常意义下的“总能量”。具体地，\(T=\tfrac12 mR^2\dot\theta^2+\tfrac12 mR^2\omega^2\sin^2\theta\)，\(H=\tfrac12 mR^2\dot\theta^2-\tfrac12 mR^2\omega^2\sin^2\theta+mgR(1-\cos\theta)\)，与 \(T+V\) 相差一项 \(-mR^2\omega^2\sin^2\theta\)。<span class="ans">这是“\(H\neq T+V\)”的典型例子。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 双摆：哪些坐标循环？Double Pendulum</summary>
+        <div class="hint">写出两角度 \(\theta_1,\theta_2\) 的拉氏量，检查偏导。</div>
+        <div class="solution">双摆两广义坐标为 \(\theta_1,\theta_2\)。重力势能同时含 \(\theta_1\) 与 \(\theta_2\)：\(V=-(m_1+m_2)gl_1\cos\theta_1-m_2gl_2\cos\theta_2\)。所以两个角度都不是循环坐标，没有相应的动量守恒。但 \(L\) 不显含 \(t\)，且约束定常，故 \(H=T+V=E\) 守恒——这是双摆可积性的唯一简单守恒量（一般情形下双摆是混沌系统）。<span class="ans">守恒量：仅能量。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 判别对称性：下列各情形分别有何守恒量？</summary>
+        <div class="hint">对每种情形问三件事：空间平移不变？转动不变？时间平移不变？</div>
+        <div class="solution">
+          <ul>
+            <li>(a) 自由质点（无场）：平移、转动、时间平移皆不变 ⇒ \(\vec P,\vec L,E\) 全守恒。</li>
+            <li>(b) 均匀重力场中的抛体：水平方向平移不变 ⇒ \(p_x,p_y\) 守恒；时间不变 ⇒ \(E\) 守恒；竖直方向被 \(\vec g\) 选向 ⇒ \(p_z\) 不守恒；转动对称性被破坏（除绕 \(\vec g\) 的转动外）。</li>
+            <li>(c) 弹簧振子（一维）：仅时间平移不变 ⇒ 仅 \(E\) 守恒。</li>
+            <li>(d) 带电粒子在恒定均匀磁场中：拉氏量 \(L=\tfrac12 m\dot{\vec r}^{\,2}+q\vec A\cdot\dot{\vec r}\)，正则动量 \(m\vec v+q\vec A\) 守恒与否取决于规范；但绕 \(\vec B\) 的转动对称性 ⇒ 相应角动量分量守恒。<span class="ans">关键：拉氏量对称性决定一切。</span></li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 有心力运动中的角动量与能量守恒 Central-Force Motion &amp; Conservation</h2>
+      <p class="sim-desc">一单位质量质点受指向固定力心的平方反比引力 \(\vec F=-\hat r/r^2\)（取 \(k=GM=1\) 的代码单位）。调节初始半径 \(r_0\) 与切向初速 \(v_0\)，观察：(a) 轨迹与渐隐尾迹；(b) 左上角实时显示的角动量 \(L_z=xv_y-yv_x\) 与能量 \(E=\tfrac12v^2-1/r\)——它们在数值上保持恒定（这是转动对称与时间平移对称的<strong>必然结果</strong>）；(c) 等时阴影扇形——相同时间间隔扫过相同面积（开普勒第二定律的几何表现，本质即 \(L_z\) 守恒）。每个扇形上方标出其面积，便于直接核对。RK4 积分。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="600" height="440"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- physics: central 1/r^2 attraction, code units (k = GM = 1, m = 1) ----
+          var K = 1.0;
+          var CX = W / 2, CY = H / 2;
+          var PX = 95;   // 1 length unit = 95 px
+
+          function w2s(x, y) { return [CX + x * PX, CY - y * PX]; }
+
+          var params = {
+            r0: 1.0,
+            v0: 1.00,   // v_circ at r=1 is 1.00
+          };
+
+          function vCirc() { return Math.sqrt(K / params.r0); }
+          function vEsc()  { return Math.sqrt(2 * K / params.r0); }
+
+          // state derivative: F = -k r_hat / r^2  (acceleration since m=1)
+          function deriv(state, t) {
+            var x = state[0], y = state[1], vx = state[2], vy = state[3];
+            var r2 = x * x + y * y;
+            var r  = Math.sqrt(Math.max(r2, 1e-9));
+            var f  = -K / (r2 * r);   // multiply by (x,y) to get accel
+            return [vx, vy, f * x, f * y];
+          }
+
+          var MARK_DT = 0.45;   // code-time between recorded sectors
+          var MAX_MARKS = 6;
+
+          var sim = PS.createSim(canvas, {
+            timeScale: 1.0,
+            state: function () {
+              return {
+                x: params.r0, y: 0.0,
+                vx: 0.0, vy: params.v0,
+                trail: [],
+                marks: [],          // {from:{x,y}, to:{x,y}, area, mid:{x,y}}
+                nextMark: MARK_DT,
+                prev: { x: params.r0, y: 0.0 },
+              };
+            },
+            step: function (dt, t, s) {
+              // RK4 with substeps for accuracy
+              var sub = 6;
+              var h = dt / sub;
+              var st = [s.x, s.y, s.vx, s.vy];
+              var tloc = t;
+              for (var i = 0; i < sub; i++) {
+                st = PS.integrate(deriv, st, tloc, h, 'rk4');
+                tloc += h;
+              }
+              s.x = st[0]; s.y = st[1]; s.vx = st[2]; s.vy = st[3];
+              s.trail.push({ x: s.x, y: s.y });
+              if (s.trail.length > 1400) s.trail.shift();
+
+              // record equal-time sector markers
+              while (t >= s.nextMark) {
+                var cur = { x: s.x, y: s.y };
+                // interpolate the position back at exactly t = s.nextMark using current velocity
+                var overshoot = t - s.nextMark;
+                var bx = s.x - s.vx * overshoot;
+                var by = s.y - s.vy * overshoot;
+                var mark = { x: bx, y: by };
+                var area = 0.5 * Math.abs(s.prev.x * mark.y - mark.x * s.prev.y);
+                var mid  = { x: (s.prev.x + mark.x) / 2, y: (s.prev.y + mark.y) / 2 };
+                s.marks.push({ from: s.prev, to: mark, area: area, mid: mid });
+                if (s.marks.length > MAX_MARKS) s.marks.shift();
+                s.prev = mark;
+                s.nextMark += MARK_DT;
+              }
+
+              // safety: if particle escapes very far, stop integrating
+              if (Math.hypot(s.x, s.y) > 12) { s.vx = 0; s.vy = 0; }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // light reference axes
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.35;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(0, CY); ctx.lineTo(W, CY); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(CX, 0); ctx.lineTo(CX, H); ctx.stroke();
+              ctx.restore();
+
+              // reference dashed circles: r0 and 0.5*r0
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([5, 5]);
+              ctx.globalAlpha = 0.55;
+              [params.r0, 0.5 * params.r0].forEach(function (rr) {
+                ctx.beginPath();
+                ctx.arc(CX, CY, Math.max(2, rr * PX), 0, Math.PI * 2);
+                ctx.stroke();
+              });
+              ctx.restore();
+
+              // swept sectors with alternating fill + area label
+              var marks = s.marks;
+              for (var i = 0; i < marks.length; i++) {
+                var m = marks[i];
+                var color = (i % 2 === 0) ? PS.colors.accent2 : PS.colors.accent;
+                var alpha = 0.18 + 0.45 * ((i + 1) / marks.length);
+                var o = w2s(0, 0);
+                var a = w2s(m.from.x, m.from.y);
+                var b = w2s(m.to.x,   m.to.y);
+                ctx.save();
+                ctx.fillStyle = color;
+                ctx.globalAlpha = alpha;
+                ctx.beginPath();
+                ctx.moveTo(o[0], o[1]);
+                ctx.lineTo(a[0], a[1]);
+                ctx.lineTo(b[0], b[1]);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = 0.85;
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+                ctx.restore();
+                // area label near sector centroid
+                var c = w2s(m.mid.x, m.mid.y);
+                PS.drawText(ctx, m.area.toFixed(3), c[0], c[1], {
+                  font: 'bold 11px system-ui, sans-serif',
+                  color: color, align: 'center', baseline: 'middle',
+                });
+              }
+
+              // fading orbit trail
+              var tr = s.trail;
+              if (tr.length > 1) {
+                ctx.save();
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = PS.colors.trace;
+                for (var k = 1; k < tr.length; k++) {
+                  var a = k / tr.length;
+                  ctx.globalAlpha = 0.05 + 0.65 * a;
+                  var p1 = w2s(tr[k - 1].x, tr[k - 1].y);
+                  var p2 = w2s(tr[k].x,     tr[k].y);
+                  ctx.beginPath();
+                  ctx.moveTo(p1[0], p1[1]);
+                  ctx.lineTo(p2[0], p2[1]);
+                  ctx.stroke();
+                }
+                ctx.restore();
+              }
+
+              // force centre
+              PS.drawCircle(ctx, CX, CY, 6, { fill: PS.colors.primary, stroke: PS.colors.axis, lineWidth: 1.5 });
+              PS.drawText(ctx, '力心', CX, CY - 14, {
+                font: '11px system-ui, sans-serif', color: PS.colors.axis, align: 'center', baseline: 'bottom',
+              });
+
+              // particle + velocity arrow
+              var p = w2s(s.x, s.y);
+              PS.drawCircle(ctx, p[0], p[1], 5, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+              var vEnd = w2s(s.x + s.vx * 0.35, s.y + s.vy * 0.35);
+              PS.drawArrow(ctx, p[0], p[1], vEnd[0], vEnd[1], PS.colors.accent, 'v');
+
+              // live conservation HUD
+              var r = Math.hypot(s.x, s.y);
+              var v = Math.hypot(s.vx, s.vy);
+              var Lz = s.x * s.vy - s.y * s.vx;
+              var E  = 0.5 * (s.vx * s.vx + s.vy * s.vy) - K / Math.max(r, 1e-9);
+
+              ctx.save();
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'top';
+              ctx.font = 'bold 13px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.fillText('角动量 L = ' + Lz.toFixed(4) + '   ← 转动对称 ⇒ 守恒', 12, 12);
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillText('能量   E = ' + E.toFixed(4)  + '   ← 时间平移 ⇒ 守恒', 12, 30);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('v / v_circ = ' + (v / vCirc()).toFixed(3) +
+                           '    v / v_esc = ' + (v / vEsc()).toFixed(3), 12, 50);
+              ctx.fillText('t = ' + env.t.toFixed(2), 12, 68);
+
+              // legend top-right
+              ctx.textAlign = 'right';
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillText('阴影扇形 = 相同时间 Δt 内扫过的面积', W - 12, 12);
+              ctx.fillText('（不同形状、相同面积 ⇒ L 守恒）', W - 12, 28);
+              ctx.fillText('单位：k = GM = 1，m = 1', W - 12, 44);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'r0', label: '初始半径 r₀',  min: 0.50, max: 1.80, step: 0.05, value: 1.00 },
+            { type: 'slider', key: 'v0', label: '切向初速 v₀', min: 0.40, max: 1.80, step: 0.02, value: 1.00 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('r0', function (val) { params.r0 = val; sim.reset(); });
+          ctl.on('v0', function (val) { params.v0 = val; sim.reset(); });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>循环坐标</strong> \(q_k\)：\(\partial L/\partial q_k=0\) ⇒ 广义动量 \(p_k=\partial L/\partial\dot q_k\) 守恒（E-L 方程的直接推论）。</li>
+        <li><strong>诺特定理</strong>：每一种连续对称性 ⇒ 一条守恒律。诺特荷 \(Q=\sum_i p_i\eta_i-F\)。</li>
+        <li>三大基本对称性及其守恒量：</li>
+        <li style="list-style: none; padding-left: 1.2em;">空间平移 ⇒ \(\vec P\)；转动 ⇒ \(\vec L\)；时间平移 (\(\partial L/\partial t=0\)) ⇒ \(H\)。</li>
+        <li><strong>哈密顿量</strong> \(H=\sum_i p_i\dot q_i-L\)，满足 \(\mathrm dH/\mathrm dt=-\partial L/\partial t\)。当势能无显时、约束定常、坐标变换不含 \(t\) 时 \(H=T+V=E\)。</li>
+        <li><strong>统一观点</strong>：守恒律不是巧合，而是物理规律对称性的几何必然。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\frac{\partial L}{\partial q_k}=0\Rightarrow p_k=\text{const};\qquad H=\sum_i p_i\dot q_i-L,\ \frac{\mathrm dH}{\mathrm dt}=-\frac{\partial L}{\partial t};\qquad \text{symmetry}\Rightarrow\text{conservation}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
