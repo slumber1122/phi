@@ -79,6 +79,31 @@
         ]},
       ],
     },
+    {
+      name: '第三学期 · 波动·光学·数学方法 Waves, Optics & Math Methods',
+      parts: [
+        { name: '机械波与声 Mechanical Waves & Sound', items: [
+          { url: 'sem3/01-waves.html', title: '波动基础', en: 'Wave Basics' },
+          { url: 'sem3/02-string-sound.html', title: '弦上的波与声波', en: 'String & Sound Waves' },
+          { url: 'sem3/03-superposition.html', title: '叠加·干涉·驻波', en: 'Superposition & Standing Waves' },
+          { url: 'sem3/04-doppler.html', title: '多普勒效应', en: 'Doppler Effect' },
+          { url: 'sem3/05-fourier.html', title: '傅里叶分析', en: 'Fourier Analysis' },
+        ]},
+        { name: '光学 Optics', items: [
+          { url: 'sem3/06-geometric.html', title: '几何光学', en: 'Geometric Optics' },
+          { url: 'sem3/07-lenses.html', title: '面镜与透镜', en: 'Mirrors & Lenses' },
+          { url: 'sem3/08-instruments.html', title: '光学仪器', en: 'Optical Instruments' },
+          { url: 'sem3/09-interference.html', title: '波动光学·干涉', en: 'Interference' },
+          { url: 'sem3/10-diffraction.html', title: '衍射', en: 'Diffraction' },
+          { url: 'sem3/11-polarization.html', title: '偏振', en: 'Polarization' },
+        ]},
+        { name: '数学方法 Math Methods', items: [
+          { url: 'sem3/12-linear-algebra.html', title: '线性代数', en: 'Linear Algebra' },
+          { url: 'sem3/13-ode-special.html', title: '微分方程与特殊函数', en: 'ODEs & Special Functions' },
+          { url: 'sem3/14-complex-pde.html', title: '复变函数与偏微分方程', en: 'Complex Analysis & PDEs' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }

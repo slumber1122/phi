@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 衍射 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第10章 · 光学 Optics</p>
+      <h1>衍射 <span class="en-title">Diffraction</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用<strong>惠更斯-菲涅耳原理</strong> (Huygens–Fresnel principle) 解释光绕过障碍物进入几何阴影区的现象，并论证衍射是<strong>光的波动性</strong> (wave nature of light) 的决定性证据。</li>
+        <li>对单缝 (single slit) 的夫琅禾费衍射 (Fraunhofer diffraction)，由相位积分导出强度分布 \(I(\theta)=I_{0}\bigl[\sin\beta/\beta\bigr]^{2}\)（\(\beta=\pi a\sin\theta/\lambda\)），并指出极小满足 \(a\sin\theta=m\lambda\)（\(m=\pm1,\pm2,\ldots\)）。</li>
+        <li>说明<strong>中央主极大</strong> (central maximum) 的角宽度为何是次极大的两倍，并在屏幕距离 \(L\) 处计算其线宽 \(\approx 2L\lambda/a\)。</li>
+        <li>把单缝强度作为"包络" (envelope) 乘上 \(N\) 缝干涉因子，写出 \(I(\theta)=I_{0}(\sin\beta/\beta)^{2}\bigl[\sin(N\alpha)/(N\sin\alpha)\bigr]^{2}\)；对 \(N=2\) 化为双缝 (double-slit) 公式 \(I_{0}(\sin\beta/\beta)^{2}\cos^{2}\alpha\)。</li>
+        <li>对衍射光栅 (diffraction grating) 写出主极大条件 \(d\sin\theta=m\lambda\)，论证主极大宽度 \(\propto 1/N\)，并计算<strong>分辨本领</strong> \(R=\lambda/\Delta\lambda=Nm\)。</li>
+        <li>对圆孔 (circular aperture) 应用<strong>瑞利判据</strong> (Rayleigh criterion) \(\theta_{\min}\approx 1.22\,\lambda/D\) 估算望远镜、显微镜与人眼的极限分辨角。</li>
+        <li>对晶体 (crystal) 的 X 射线衍射写出 <strong>Bragg 定律</strong> \(2d\sin\theta=m\lambda\)，识别 \(\theta\) 为掠射角 (glancing angle)，并据此求晶面间距。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 衍射：波动性的决定性证据</h3>
+      <p>几何光学 (geometric optics) 预言光沿直线传播，遇到障碍物后在阴影区形成清晰的明暗分界。但精确实验显示，光会<strong>绕过</strong>障碍物边缘进入几何阴影，并在照明区内形成<strong>明暗相间的条纹</strong>——这一现象叫<strong>衍射</strong> (diffraction)。衍射、干涉 (interference, 第 9 章) 与偏振 (polarization, 第 11 章) 并列为光的波动性三大证据。</p>
+      <p><strong>惠更斯-菲涅耳原理</strong>把波前 (wavefront) 上每一点都视为发出球面子波 (secondary wavelets) 的次级波源，空间任一点的总场等于所有子波的相干叠加（带倾斜因子与 \(1/r\) 衰减）。"衍射"与"干涉"在数学上完全是同一件事——都是相干波的叠加；习惯上把<strong>有限个分立波源</strong>（如双缝、光栅）的叠加叫干涉，把<strong>连续分布的波源</strong>（如单缝、圆孔）的叠加叫衍射。本章遵循此约定。</p>
+      <p>衍射的尺度由波长与障碍物尺寸之比 \(\lambda/a\) 决定：\(\lambda\ll a\) 时衍射角很小（接近几何光学极限）；\(\lambda\sim a\) 时衍射显著；\(\lambda\gg a\) 时波动图像完全取代射线图像。这正是我们听得见但看不见拐角后面的人的原因——声波波长（厘米量级）绕过障碍物，而光波波长（几百纳米）几乎不绕。</p>
+      <div class="key-terms">diffraction (衍射), Huygens–Fresnel principle (惠更斯-菲涅耳原理), wavefront (波前), secondary wavelet (子波)</div>
+
+      <h3>2. 单缝夫琅禾费衍射 Single-Slit Fraunhofer Diffraction</h3>
+      <p>考虑宽度为 \(a\) 的无限长狭缝，受单色平行光（平面波）垂直照射，在无穷远（或等效地，经透镜后焦面上）观察。把缝分成宽度 \(\mathrm{d}y\) 的无穷多微元，每个微元是惠更斯子波源。在偏离角 \(\theta\) 方向，位于缝中心偏移 \(y\) 处的微元贡献的相位比中心微元多（或少）\(\Delta\varphi=(2\pi/\lambda)\,y\sin\theta\)。把所有微元相干求和（即对 \(y\) 积分），结果（见推导 10.1）为：</p>
+      <div class="formula">\[ E(\theta)\propto\int_{-a/2}^{a/2}\!e^{i(2\pi/\lambda)y\sin\theta}\,\mathrm{d}y=a\,\frac{\sin\beta}{\beta},\qquad \beta\equiv\frac{\pi a\sin\theta}{\lambda} \]</div>
+      <p>故光强 (intensity) 分布：</p>
+      <div class="formula">\[ \boxed{\,I(\theta)=I_{0}\left(\frac{\sin\beta}{\beta}\right)^{2},\qquad \beta=\frac{\pi a\sin\theta}{\lambda}\,} \]</div>
+      <p>这是物理中无处不在的 <strong>sinc² 函数</strong> (squared sinc)。其特征：</p>
+      <ul>
+        <li><strong>中央主极大</strong> (central maximum)：\(\theta=0\)（\(\beta=0\)），取极限 \(\sin\beta/\beta\to1\)，\(I=I_{0}\)。</li>
+        <li><strong>极小</strong> (minima)：\(\sin\beta=0\) 且 \(\beta\neq0\)，即 \(\beta=m\pi\)，故 <div class="formula">\[ \boxed{\,a\sin\theta=m\lambda,\qquad m=\pm1,\pm2,\pm3,\ldots\,} \]</div> 注意 \(m=0\) <strong>不属于极小</strong>——它是中央极大。</li>
+        <li><strong>次极大</strong> (secondary maxima)：约在两相邻极小的中点，位于解 \(\tan\beta=\beta\) 的根处。第一、二次极大的强度仅约 \(I_{0}\) 的 \(4.7\%\)、\(1.6\%\)——绝大部分能量集中在中央主极大。</li>
+      </ul>
+      <p><strong>中央主极大的宽度。</strong>第一对极小 (\(m=\pm1\)) 位于 \(\sin\theta_{1}=\pm\lambda/a\)。在距离 \(L\) 处的屏幕上，中央主极大的<strong>线宽</strong>（两第一极小间距）为：</p>
+      <div class="formula">\[ \boxed{\,\Delta y_{\text{中央}}=2L\tan\theta_{1}\approx 2L\frac{\lambda}{a}\quad(\text{小角})\,} \]</div>
+      <p>次极大宽度只有它的一半（相邻极小间距 \(\approx L\lambda/a\)）。这是衍射反比关系：<strong>缝越窄，衍射越宽</strong>；\(\lambda/a\to0\) 时图样收缩为一条几何像——几何光学是波动光学在 \(\lambda/a\to0\) 下的极限。</p>
+      <div class="key-terms">Fraunhofer diffraction (夫琅禾费衍射), single slit (单缝), sinc function (sinc 函数), central maximum (中央主极大), secondary maximum (次极大)</div>
+
+      <h3>3. 双缝（有限缝宽）：干涉 × 单缝包络</h3>
+      <p>第 9 章杨氏双缝假设缝是无限细的线源，只有干涉、没有单缝衍射。实际缝有非零宽度 \(a\)，缝中心间距 \(d\)（\(d>a\)）。两条有限宽缝的合强度是<strong>单缝包络</strong> \(\times\) <strong>双缝干涉因子</strong>（推导见 10.2）：</p>
+      <div class="formula">\[ \boxed{\,I(\theta)=I_{0}\underbrace{\left(\frac{\sin\beta}{\beta}\right)^{2}}_{\text{单缝包络}}\;\underbrace{\cos^{2}\!\alpha}_{\text{双缝干涉}},\qquad \beta=\frac{\pi a\sin\theta}{\lambda},\;\alpha=\frac{\pi d\sin\theta}{\lambda}\,} \]</div>
+      <p>细锐的干涉峰 \(d\sin\theta=m\lambda\) 受到缓变包络 \((\sin\beta/\beta)^{2}\) 的"调制"。若某干涉主极大恰落在外层单缝极小 \(a\sin\theta=n\lambda\) 上，该极大被完全抑制——称为<strong>缺级</strong> (missing order)。缺级条件：</p>
+      <div class="formula">\[ \frac{d}{a}=\frac{m}{n}\quad(m,n\in\mathbb{Z}^{+}) \]</div>
+      <p>例如 \(d/a=5\) 时第 \(m=5,10,15,\ldots\) 级干涉峰缺级（被 \(n=1,2,3,\ldots\) 级单缝极小吸收）。这是常见考点。</p>
+      <div class="key-terms">envelope (包络), double-slit with finite width (有限缝宽双缝), missing order (缺级)</div>
+
+      <h3>4. 衍射光栅 The Diffraction Grating</h3>
+      <p>把双缝推广到 \(N\) 条等距排列的平行狭缝（间距 \(d\)、缝宽 \(a\)），就是<strong>衍射光栅</strong> (diffraction grating)。合强度（推导见 10.2）：</p>
+      <div class="formula">\[ \boxed{\,I(\theta)=I_{0}\left(\frac{\sin\beta}{\beta}\right)^{2}\left[\frac{\sin(N\alpha)}{N\sin\alpha}\right]^{2},\qquad \alpha=\frac{\pi d\sin\theta}{\lambda},\;\beta=\frac{\pi a\sin\theta}{\lambda}\,} \]</div>
+      <p><strong>主极大</strong> (principal maxima) 出现在 \(\alpha=m\pi\)，即分母与分子同为零，由洛必达法则 \(\sin(N\alpha)/(N\sin\alpha)\to\pm1\)。位置：</p>
+      <div class="formula">\[ \boxed{\,d\sin\theta=m\lambda,\qquad m=0,\pm1,\pm2,\ldots\,} \]</div>
+      <p>主极大之间均匀排布 \(N-1\) 个零（\(\sin(N\alpha)=0\)，\(\sin\alpha\neq0\)）和 \(N-2\) 个微弱的次极大。<strong>主极大的锐度正比于 \(N\)</strong>：第一零点离主极大中心 \(\Delta\alpha=\pi/N\)，对应的角半宽：</p>
+      <div class="formula">\[ \Delta\theta_{\text{主极大}}\approx\frac{\lambda}{Nd\cos\theta} \]</div>
+      <p>\(N\) 越大、主极大越细锐——这就是为什么商用光栅刻线数高达 \(10^{3}\!\sim\!10^{4}\,\text{lines/mm}\)、总缝数 \(N\sim10^{4}\!\sim\!10^{5}\)。</p>
+      <div class="key-terms">diffraction grating (衍射光栅), slit spacing \(d\) (缝间距, center-to-center), principal maximum (主极大), order \(m\) (级次)</div>
+
+      <h3>5. 光栅的分辨本领 Resolving Power of a Grating</h3>
+      <p>按瑞利判据，两条谱线 \(\lambda\) 与 \(\lambda+\Delta\lambda\) 恰能分辨的条件是：一条的 \(m\) 级主极大中心落在另一条 \(m\) 级主极大的第一零点上。把 \(\Delta\alpha=\pi/N\) 翻译为 \(\Delta\lambda\)：由 \(d\cos\theta\,\Delta\theta=m\,\Delta\lambda\) 及 \(\Delta\theta=\lambda/(Nd\cos\theta)\)，得：</p>
+      <div class="formula">\[ \boxed{\,R\equiv\frac{\lambda}{\Delta\lambda_{\min}}=Nm\,} \]</div>
+      <p>分辨本领 (resolving power) 与 \(N\) 和级次 \(m\) 成正比，与 \(d\)、\(a\) 无关。例如 \(N=10^{4}\)、用 2 级，\(R=2\times10^{4}\)，在 \(\lambda=500\,\mathrm{nm}\) 处能分辨到 \(\Delta\lambda=0.025\,\mathrm{nm}\)——足以分开钠双线 \(D_{1}\)（\(589.59\,\mathrm{nm}\)）与 \(D_{2}\)（\(589.00\,\mathrm{nm}\)，间距 \(0.59\,\mathrm{nm}\)）。</p>
+      <div class="key-terms">resolving power \(R\) (分辨本领), Rayleigh criterion for gratings (光栅瑞利判据)</div>
+
+      <h3>6. 圆孔衍射与瑞利判据 Circular Aperture & Rayleigh Criterion</h3>
+      <p>大多数光学仪器（望远镜、显微镜、相机、人眼）的孔径是<strong>圆形</strong>的。圆孔的夫琅禾费衍射图样为<strong>艾里斑</strong> (Airy disk)：中央亮斑外围环绕一系列暗弱同心环。第一暗环对应角度由一阶贝塞尔函数 \(J_{1}\) 的第一个零点决定：</p>
+      <div class="formula">\[ \sin\theta_{1}=1.22\,\frac{\lambda}{D}\quad(D=\text{孔径直径}) \]</div>
+      <p>（系数 \(1.22=3.832/\pi\)，其中 \(3.832\) 是 \(J_{1}\) 的第一零点。）<strong>瑞利判据</strong>规定：两个等强度的点光源恰能被分辨，当其角距离等于一个像的艾里斑半径——即一个点源的中央极大恰好落在另一个的第一暗环上：</p>
+      <div class="formula">\[ \boxed{\,\theta_{\min}\approx 1.22\,\frac{\lambda}{D}\quad(\text{圆孔 circular aperture})\,} \]</div>
+      <p>对照狭缝情形（一维）的瑞利判据：\(\theta_{\min}=\lambda/a\)（一个缝中央主极大宽的一半）——没有 \(1.22\) 因子。这是高频错点：圆孔才有 \(1.22\)。瑞利判据是<strong>基本极限</strong>，由光的波动性决定，<strong>与仪器像差、加工精度无关</strong>——再完美的透镜也无法突破。增大孔径 \(D\) 或缩短波长 \(\lambda\) 是仅有的改善途径（电子显微镜用 \(\lambda\sim10^{-12}\,\mathrm{m}\) 的电子波获得原子级分辨）。</p>
+      <div class="key-terms">Airy disk (艾里斑), circular aperture (圆孔), Rayleigh criterion (瑞利判据), Bessel function \(J_{1}\) (贝塞尔函数)</div>
+
+      <h3>7. X 射线衍射：Bragg 定律</h3>
+      <p>晶体内原子间距 \(\sim10^{-10}\,\mathrm{m}\)，与 X 射线波长 (\(\sim0.1\,\mathrm{nm}\)) 同数量级，故晶体是 X 射线的天然三维光栅。<strong>Bragg 定律</strong>把问题简化为一组平行晶面 (crystal planes) 的"镜面反射 + 相干叠加"：相邻两层反射波的路程差为 \(2d\sin\theta\)，其中 \(d\) 为相邻晶面间距、\(\theta\) 为<strong>掠射角</strong> (glancing angle，入射束与晶面的夹角，<strong>不是</strong>与法线的夹角)。相长干涉条件：</p>
+      <div class="formula">\[ \boxed{\,2d\sin\theta=m\lambda,\qquad m=1,2,3,\ldots\,} \]</div>
+      <p>Bragg 公式给出的是分立的"反射峰"——只对某些 \((\theta,\lambda)\) 组合成立。实验上既可固定 \(\lambda\) 扫描 \(\theta\)（粉末法、单晶四圆衍射），也可固定 \(\theta\) 扫描 \(\lambda\)（劳厄法）。Bragg 定律是 X 射线晶体学 (X-ray crystallography) 的基石——由它可从衍射图样反推原子位置，DNA 双螺旋结构 (Watson–Crick, 1953) 的发现就是著名例证。</p>
+      <div class="key-terms">Bragg's law (Bragg 定律), glancing angle \(\theta\) (掠射角), crystal planes (晶面), interplanar spacing \(d\) (晶面间距)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 10.1：单缝强度 \(I(\theta)=I_{0}(\sin\beta/\beta)^{2}\)</h3>
+      <p class="step"><strong>步骤 1（微元与相位）：</strong>把宽度 \(a\) 的缝分成无穷多 \(\mathrm{d}y\) 微元，每个微元发出惠更斯子波。在偏离角 \(\theta\) 方向上，位于缝内坐标 \(y\)（以缝中心为原点）的微元到远处观察点的光程比中心微元多 \(y\sin\theta\)，对应相位差 \(\Delta\varphi=(2\pi/\lambda)\,y\sin\theta\)。</p>
+      <p class="step"><strong>步骤 2（复指数积分）：</strong>总电场是所有子波的相干和。把微元贡献写成复指数形式（实部为物理场）：</p>
+      <div class="formula">\[ E(\theta)\propto\int_{-a/2}^{a/2}\!e^{\,i(2\pi/\lambda)y\sin\theta}\,\mathrm{d}y \]</div>
+      <p class="step"><strong>步骤 3（积分）：</strong>令 \(k=2\pi/\lambda\)，做不定积分 \(\int e^{iky\sin\theta}\mathrm{d}y=e^{iky\sin\theta}/(ik\sin\theta)\)，代入上下限：</p>
+      <div class="formula">\[ E(\theta)\propto\frac{e^{ika\sin\theta/2}-e^{-ika\sin\theta/2}}{ik\sin\theta}=\frac{2i\sin\!\bigl(\tfrac{1}{2}ka\sin\theta\bigr)}{ik\sin\theta}=\frac{\sin\!\bigl(\tfrac{1}{2}ka\sin\theta\bigr)}{\tfrac{1}{2}k\sin\theta}\cdot\frac{a}{a} \]</div>
+      <p class="step"><strong>步骤 4（引入 \(\beta\)）：</strong>令 \(\beta\equiv\tfrac{1}{2}ka\sin\theta=\pi a\sin\theta/\lambda\)，分子分母同乘 \(a/2\)：</p>
+      <div class="formula">\[ E(\theta)=E_{0}\,\frac{\sin\beta}{\beta} \]</div>
+      <p class="step"><strong>步骤 5（取模平方）：</strong>光强 \(I\propto|E|^{2}\)，故 \(I(\theta)=I_{0}(\sin\beta/\beta)^{2}\)。在 \(\beta=0\)（\(\theta=0\)）处，由 \(\sin\beta/\beta\to1\) 得中央主极大 \(I=I_{0}\)。</p>
+      <p class="step"><strong>步骤 6（极小条件）：</strong>\(\sin\beta=0\) 且 \(\beta\neq0\) 即 \(\beta=m\pi\)（\(m=\pm1,\pm2,\ldots\)），化为 \(a\sin\theta=m\lambda\)。\(\beta=0\) 不在极小之列，因为它对应中央主极大。</p>
+
+      <h3>推导 10.2：\(N\) 缝强度（光栅公式）与分辨本领</h3>
+      <p class="step"><strong>步骤 1（每条缝贡献 sinc）：</strong>每条缝宽 \(a\)，单独贡献电场 \(\propto\sin\beta/\beta\)（推导 10.1）。</p>
+      <p class="step"><strong>步骤 2（\(N\) 条缝的相位差）：</strong>相邻缝中心间距 \(d\)，到偏离角 \(\theta\) 方向的相邻缝相位差 \(\delta=(2\pi/\lambda)\,d\sin\theta=2\alpha\)，其中 \(\alpha\equiv\pi d\sin\theta/\lambda\)。</p>
+      <p class="step"><strong>步骤 3（等比数列求和）：</strong>以第 1 条缝为参考，第 \(j\) 条缝贡献 \(\propto e^{i(j-1)\cdot 2\alpha}\)，求和（\(N\) 项等比数列）：</p>
+      <div class="formula">\[ \sum_{j=0}^{N-1}e^{i\,2j\alpha}=\frac{1-e^{i\,2N\alpha}}{1-e^{i\,2\alpha}}=\frac{\sin(N\alpha)}{\sin\alpha}\,e^{i(N-1)\alpha} \]</div>
+      <p class="step"><strong>步骤 4（合电场与强度）：</strong>合并单缝因子与多缝因子：</p>
+      <div class="formula">\[ E(\theta)\propto\frac{\sin\beta}{\beta}\cdot\frac{\sin(N\alpha)}{\sin\alpha},\qquad I(\theta)=I_{0}\left(\frac{\sin\beta}{\beta}\right)^{2}\left[\frac{\sin(N\alpha)}{N\sin\alpha}\right]^{2} \]</div>
+      <p>（归一化使主极大峰值= \(I_{0}\)，故多缝因子分母加 \(N\)。）</p>
+      <p class="step"><strong>步骤 5（主极大条件）：</strong>当 \(\alpha=m\pi\)（\(m\in\mathbb{Z}\)），\(\sin(N\alpha)=\sin\alpha=0\)，用洛必达法则：\(\lim_{\alpha\to m\pi}\sin(N\alpha)/\sin\alpha=N\cos(Nm\pi)/\cos(m\pi)=N(\pm1)/(\pm1)=N\)，故多缝因子 \(\to1\)。又因 \(\alpha=\pi d\sin\theta/\lambda=m\pi\)，给出 <strong>\(d\sin\theta=m\lambda\)</strong>。</p>
+      <p class="step"><strong>步骤 6（零点位置）：</strong>\(\sin(N\alpha)=0\) 且 \(\sin\alpha\neq0\) 给出 \(\alpha=p\pi/N\)（\(p\) 不是 \(N\) 的倍数）。相邻两主极大（间隔 \(\Delta\alpha=\pi\)）之间均匀分布 \(N-1\) 个零点，故<strong>主极大半宽</strong>（中心到第一零点）\(\Delta\alpha=\pi/N\)，对应角宽 \(\Delta\theta=\lambda/(Nd\cos\theta)\)——这就是"\(N\) 越大主极大越锐"的来源。</p>
+      <p class="step"><strong>步骤 7（分辨本领）：</strong>对波长 \(\lambda\) 的 \(m\) 级主极大，半宽 \(\Delta\theta=\lambda/(Nd\cos\theta)\)；对相邻波长 \(\lambda+\Delta\lambda\)，\(m\) 级主极大的位置差由 \(d\cos\theta\,\Delta\theta=m\,\Delta\lambda\) 给出。瑞利判据要求二者相等：\(m\,\Delta\lambda/d=\lambda/(Nd)\)，即 \(\Delta\lambda_{\min}=\lambda/(Nm)\)，故 <strong>\(R=\lambda/\Delta\lambda_{\min}=Nm\)</strong>。</p>
+
+      <h3>推导 10.3：双缝强度作为 \(N=2\) 的特例</h3>
+      <p class="step"><strong>步骤 1：</strong>把 \(N=2\) 代入 \([\sin(N\alpha)/(N\sin\alpha)]^{2}\)：</p>
+      <div class="formula">\[ \left(\frac{\sin(2\alpha)}{2\sin\alpha}\right)^{2}=\left(\frac{2\sin\alpha\cos\alpha}{2\sin\alpha}\right)^{2}=\cos^{2}\alpha \]</div>
+      <p class="step"><strong>步骤 2：</strong>故 \(I(\theta)=I_{0}(\sin\beta/\beta)^{2}\cos^{2}\alpha\)，即"单缝包络 × 双缝干涉"。令 \(\alpha=m\pi\) 得双缝亮纹条件 \(d\sin\theta=m\lambda\)，与第 9 章一致——但本章还给出"缝宽包络"调制，而第 9 章假设 \(a\to0\)（包络恒为 1）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 单缝：由第一极小求缝宽</h4>
+        <p class="example-statement">钠灯 (\(\lambda=589\,\mathrm{nm}\)) 垂直入射一狭缝，在 \(L=2.00\,\mathrm{m}\) 外的屏幕上形成衍射图样。测得中央主极大中心到第一极小的距离 \(y_{1}=5.00\,\mathrm{mm}\)。求缝宽 \(a\)，并校验小角近似是否合法。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>第一极小满足 \(a\sin\theta_{1}=\lambda\)（\(m=1\)）。把 \(\sin\theta_{1}\) 用屏幕几何表达：\(\tan\theta_{1}=y_{1}/L=5.00\times10^{-3}/2.00=2.50\times10^{-3}\)。</p>
+          <p class="step">小角时 \(\sin\theta\approx\tan\theta\)，故：</p>
+          <div class="formula">\[ a=\frac{\lambda}{\sin\theta_{1}}\approx\frac{\lambda}{\tan\theta_{1}}=\frac{589\times10^{-9}}{2.50\times10^{-3}}=2.36\times10^{-4}\,\mathrm{m}=0.236\,\mathrm{mm} \]</div>
+          <p class="step"><strong>小角校验：</strong>\(\theta_{1}=\arctan(2.50\times10^{-3})=2.50\times10^{-3}\,\mathrm{rad}=0.143^{\circ}\)，此时 \(\sin\theta_{1}/\tan\theta_{1}=\cos\theta_{1}=0.999999\,7\)，小角近似引入的相对误差仅 \(3\times10^{-5}\)，完全可忽略。</p>
+          <p class="step"><strong>自洽检验：</strong>中央主极大全宽 \(2y_{1}=10.0\,\mathrm{mm}\)，对应角宽 \(2\theta_{1}\approx 5.0\times10^{-3}\,\mathrm{rad}\)；次极大宽约 \(2.5\,\mathrm{mm}\)——恰好一半，与 sinc² 性质一致。</p>
+          <p><span class="ans">\(a=0.236\,\mathrm{mm}\)；小角近似误差 \(\sim3\times10^{-5}\)，合法</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 光栅：主极大角位置与最高级</h4>
+        <p class="example-statement">一透射光栅刻线密度为 \(5000\,\text{lines/cm}\)，用钠双线之一 \(\lambda=589\,\mathrm{nm}\) 照明。求：(a) \(m=0,1,2,3\) 级主极大的角位置；(b) 可观测的最高级 \(m_{\max}\)；(c) 若照明区域为 \(1.00\,\mathrm{cm}\)（即 \(N=5000\) 缝被照亮），2 级光谱的分辨本领与可分辨的最小 \(\Delta\lambda\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>缝间距 \(d=1/(5000\,\mathrm{cm^{-1}})=2.00\times10^{-4}\,\mathrm{cm}=2.00\,\mu\mathrm{m}\)。由 \(d\sin\theta=m\lambda\)：</p>
+          <div class="formula">\[ \sin\theta_{m}=m\,\frac{\lambda}{d}=m\cdot\frac{589\times10^{-9}}{2.00\times10^{-6}}=m\cdot 0.2945 \]</div>
+          <p class="step">逐级计算：</p>
+          <div class="formula">\[ \begin{array}{c|c|c}m&\sin\theta_{m}&\theta_{m}\\\hline 0&0&0^{\circ}\\1&0.2945&17.1^{\circ}\\2&0.589&36.1^{\circ}\\3&0.884&62.1^{\circ}\end{array} \]</div>
+          <p class="step"><strong>解 (b)：</strong>\(|\sin\theta|\le1\) 给出 \(|m|\le d/\lambda=2.00\times10^{-6}/589\times10^{-9}=3.40\)，故最高整数级：</p>
+          <div class="formula">\[ m_{\max}=\left\lfloor d/\lambda\right\rfloor=3 \]</div>
+          <p>（\(m=4\) 时 \(\sin\theta=1.18>1\)，无实数解。）</p>
+          <p class="step"><strong>解 (c)：</strong>2 级、\(N=5000\) 缝被照亮，分辨本领：</p>
+          <div class="formula">\[ R=Nm=5000\times 2=1.00\times10^{4} \]</div>
+          <p class="step">在 \(\lambda=589\,\mathrm{nm}\) 处可分辨的最小波长差：</p>
+          <div class="formula">\[ \Delta\lambda_{\min}=\frac{\lambda}{R}=\frac{589\,\mathrm{nm}}{1.00\times10^{4}}=0.0589\,\mathrm{nm} \]</div>
+          <p class="step"><strong>对照钠双线：</strong>\(D_{1}\)（\(589.59\,\mathrm{nm}\)）与 \(D_{2}\)（\(589.00\,\mathrm{nm}\)）间距 \(0.59\,\mathrm{nm}\)，约为 \(\Delta\lambda_{\min}\) 的 10 倍——本光栅在 2 级可轻松分辨这两条线。若只用 \(N=500\) 缝（\(R=1000\)），\(\Delta\lambda_{\min}=0.589\,\mathrm{nm}\approx\) 双线间距，恰好临界分辨——这凸显"被照亮的缝数"对光栅性能的决定性影响。</p>
+          <p><span class="ans">\((a)\;\theta_{1}=17.1^{\circ},\,\theta_{2}=36.1^{\circ},\,\theta_{3}=62.1^{\circ}\)；\((b)\;m_{\max}=3\)；\((c)\;R=1.0\times10^{4},\,\Delta\lambda_{\min}=0.0589\,\mathrm{nm}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 瑞利判据：望远镜与人眼</h4>
+        <p class="example-statement">(a) James Webb 太空望远镜主镜有效直径 \(D=6.5\,\mathrm{m}\)，在 \(\lambda=550\,\mathrm{nm}\) 工作，求其衍射极限角分辨。(b) 人眼瞳孔直径 \(D=3.0\,\mathrm{mm}\)（亮光下），在同样波长下求 \(\theta_{\min}\)。(c) 距离观察者多远时，汽车前灯（中心距 \(1.5\,\mathrm{m}\)）恰好被人眼分辨为两个点光源？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) JWST：</strong></p>
+          <div class="formula">\[ \theta_{\min}=1.22\,\frac{\lambda}{D}=1.22\cdot\frac{550\times10^{-9}}{6.5}=1.03\times10^{-7}\,\mathrm{rad} \]</div>
+          <p class="step">化为角秒（\(1\,\mathrm{rad}=206\,265^{\prime\prime}\)）：</p>
+          <div class="formula">\[ \theta_{\min}=1.03\times10^{-7}\times 206\,265=0.0213^{\prime\prime}\;\;(\text{约 }21\,\mathrm{mas}) \]</div>
+          <p class="step">这比哈勃（\(D=2.4\,\mathrm{m}\)，同波长 \(\theta_{\min}=0.057^{\prime\prime}\)）优约 2.7 倍——主镜更大是 JWST 高分辨率的根本原因（不是像素数）。</p>
+          <p class="step"><strong>解 (b) 人眼：</strong></p>
+          <div class="formula">\[ \theta_{\min}=1.22\cdot\frac{550\times10^{-9}}{3.0\times10^{-3}}=2.24\times10^{-4}\,\mathrm{rad}=46^{\prime\prime}\approx 0.77^{\prime} \]</div>
+          <p class="step">人眼实际分辨约 \(1^{\prime}\)（受视网膜感光细胞间距限制），与衍射极限 \(0.77^{\prime}\) 相当——人眼在亮处几乎"恰好"是衍射极限系统。</p>
+          <p class="step"><strong>解 (c) 前灯恰被分辨的距离：</strong>两前灯对眼所张角 \(\alpha=s/L\)。瑞利判据 \(\alpha=\theta_{\min}\)：</p>
+          <div class="formula">\[ L_{\max}=\frac{s}{\theta_{\min}}=\frac{1.5}{2.24\times10^{-4}}=6.7\times10^{3}\,\mathrm{m}=6.7\,\mathrm{km} \]</div>
+          <p class="step">超过 \(6.7\,\mathrm{km}\)，两前灯在视网膜上合为一个艾里斑，肉眼无法分辨。雾天/夜间感觉更近一些——因为散射使表观亮度变化，但物理衍射极限不变。</p>
+          <p><span class="ans">\((a)\;\theta_{\min}=1.03\times10^{-7}\,\mathrm{rad}=0.021^{\prime\prime}\)；\((b)\;\theta_{\min}=2.24\times10^{-4}\,\mathrm{rad}=46^{\prime\prime}\)；\((c)\;L_{\max}=6.7\,\mathrm{km}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 有限缝宽双缝：缺级</h4>
+        <p class="example-statement">一双缝：缝宽 \(a=0.040\,\mathrm{mm}\)，缝中心距 \(d=0.200\,\mathrm{mm}\)，照明 \(\lambda=546\,\mathrm{nm}\)（汞绿线）。求：(a) 第 3 级干涉极大的角位置；(b) 第 1 级单缝极小的角位置；(c) 哪些干涉级缺级？(d) 中央单缝包络内可见多少条干涉亮纹？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 第 3 级干涉极大：</strong>\(d\sin\theta_{3}=3\lambda\)：</p>
+          <div class="formula">\[ \sin\theta_{3}=\frac{3\lambda}{d}=\frac{3(546\times10^{-9})}{0.200\times10^{-3}}=8.19\times10^{-3}\Rightarrow\theta_{3}=0.469^{\circ} \]</div>
+          <p class="step"><strong>解 (b) 第 1 级单缝极小：</strong>\(a\sin\theta=\lambda\)：</p>
+          <div class="formula">\[ \sin\theta_{1,\text{env}}=\frac{\lambda}{a}=\frac{546\times10^{-9}}{0.040\times10^{-3}}=1.365\times10^{-2}\Rightarrow\theta_{1,\text{env}}=0.782^{\circ} \]</div>
+          <p class="step"><strong>解 (c) 缺级条件：</strong>\(d/a=m/n\)，其中 \(m\) 是干涉级、\(n\) 是单缝极小级。此处 \(d/a=0.200/0.040=5\)，故：</p>
+          <div class="formula">\[ m=5n\quad\Rightarrow\quad m=5,10,15,\ldots\;\text{缺级} \]</div>
+          <p class="step">验证：第 5 级干涉峰位置 \(\sin\theta_{5}=5\lambda/d=5(546\,\mathrm{nm})/0.200\,\mathrm{mm}=1.365\times10^{-2}\)，恰等于第 1 级单缝极小位置——包络为零，该峰消失。同理第 10 级落到第 2 级单缝极小上，缺级。</p>
+          <p class="step"><strong>解 (d) 包络内的亮纹数：</strong>中央单缝包络范围 \(|\sin\theta|<\lambda/a=1.365\times10^{-2}\)，干涉峰位置 \(|\sin\theta_{m}|=|m|\lambda/d=|m|(2.73\times10^{-3})\)。可见条件 \(|m|(2.73\times10^{-3})<1.365\times10^{-2}\Rightarrow|m|<5\)，故 \(m=0,\pm1,\pm2,\pm3,\pm4\)，共 \(9\) 条亮纹。\(\pm5\) 级位于包络零点（缺级），不亮。</p>
+          <p><span class="ans">\((a)\;\theta_{3}=0.469^{\circ}\)；\((b)\;\theta_{1,\text{env}}=0.782^{\circ}\)；\((c)\;m=5,10,15,\ldots\) 缺级；(d) 中央包络内 9 条亮纹</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 Bragg 定律：硅晶体的 X 射线衍射</h4>
+        <p class="example-statement">用铜靶 X 射线管（Cu K\(_{\alpha}\)，\(\lambda=0.154\,\mathrm{nm}\)）做硅单晶粉末衍射。实验测得 (111) 晶面的 1 级 Bragg 反射峰位于 \(2\theta=28.4^{\circ}\)。求：(a) Si (111) 晶面间距 \(d_{111}\)；(b) 由 \(d_{111}\) 反推晶格常数 \(a\)，与已知 Si 晶格常数 \(a=0.543\,\mathrm{nm}\) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>Bragg 定律 \(2d\sin\theta=m\lambda\)（\(m=1\)）。注意 \(\theta\) 是<strong>掠射角</strong>（入射束与晶面夹角），等于实验给出的衍射角的一半：\(\theta=28.4^{\circ}/2=14.2^{\circ}\)。</p>
+          <div class="formula">\[ d_{111}=\frac{m\lambda}{2\sin\theta}=\frac{1(0.154\,\mathrm{nm})}{2\sin 14.2^{\circ}}=\frac{0.154}{2(0.2454)}=0.314\,\mathrm{nm} \]</div>
+          <p class="step"><strong>解 (b)：</strong>立方晶系 (cubic) 的晶面间距公式：</p>
+          <div class="formula">\[ d_{hkl}=\frac{a}{\sqrt{h^{2}+k^{2}+l^{2}}} \]</div>
+          <p class="step">对 (111) 面，\(\sqrt{h^{2}+k^{2}+l^{2}}=\sqrt{3}\)，故：</p>
+          <div class="formula">\[ a=d_{111}\sqrt{3}=0.314\,\mathrm{nm}\times 1.732=0.544\,\mathrm{nm} \]</div>
+          <p class="step">与已知值 \(a=0.543\,\mathrm{nm}\) 相差 \(0.001\,\mathrm{nm}\)（约 \(0.2\%\)），在角度读数的不确定度内——实验与理论自洽。</p>
+          <p class="step"><strong>注：</strong>Bragg 公式中的 \(\theta\) 不是入射束与法线的夹角——把它误用为法线角会让结果差一倍。若误用 \(\theta=28.4^{\circ}\)，则 \(d=0.162\,\mathrm{nm}\)，明显小于硅最近邻原子间距（\(0.235\,\mathrm{nm}\)），物理上不可能。</p>
+          <p><span class="ans">\((a)\;d_{111}=0.314\,\mathrm{nm}\)；\((b)\;a=0.544\,\mathrm{nm}\)（与公认值 \(0.543\,\mathrm{nm}\) 一致）</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把中央主极大当作"普通"极大。</strong>单缝衍射极小条件 \(a\sin\theta=m\lambda\) 中 \(m\) <strong>取 \(\pm1,\pm2,\ldots\)，不含 \(m=0\)</strong>——\(m=0\)（\(\theta=0\)）是中央<strong>主极大</strong>而非极小。结果：第一对极小 (\(m=\pm1\)) 位于中央两侧，使中央主极大宽为次极大的<strong>两倍</strong>（角宽 \(2\lambda/a\)，次极大角宽 \(\lambda/a\)）。常见错答：用 \(m=0\) 求"第一极小"，得出 \(\theta=0\)（错，那里最亮）。</li>
+        <li><strong>混淆光栅的 \(d\) 与 \(a\)。</strong>\(d\) 是<strong>缝中心间距</strong>（决定主极大位置 \(d\sin\theta=m\lambda\)），\(a\) 是<strong>缝宽</strong>（决定包络 \((\sin\beta/\beta)^{2}\) 的零点位置）。光栅公式只用 \(d\)；要让主极大不被包络吃掉，需 \(d>a\)，且比值 \(d/a\) 决定缺级位置。学生常把"光栅常数" (grating constant，即 \(d\) 或其倒数刻线密度) 误填成缝宽。</li>
+        <li><strong>圆孔瑞利判据忘了 1.22 因子。</strong>圆孔 \(\theta_{\min}=1.22\lambda/D\)，狭缝（一维孔径）才是 \(\theta_{\min}=\lambda/a\)（无系数）。1.22 来自圆孔衍射图样艾里斑第一暗环的位置（贝塞尔函数 \(J_{1}\) 的第一零点 \(3.832\)，除以 \(\pi\)）。望远镜、人眼、相机镜头都是圆孔——务必用 1.22。</li>
+        <li><strong>把衍射极限当作"工程问题"。</strong>瑞利判据是<strong>波性极限</strong>，源于光作为电磁波的本质，与透镜像差、加工精度、像素大小无关。一个"完美"透镜仍受 \(\theta_{\min}=1.22\lambda/D\) 限制。改善分辨只有两条路：<strong>增大 \(D\)</strong>（更大的望远镜/光圈）或<strong>减小 \(\lambda\)</strong>（电子显微镜用 \(\lambda\sim10^{-12}\,\mathrm{m}\) 的物质波获得原子级分辨；紫外光刻用更短波长做更小线宽）。近场超分辨（STED 显微镜、近场扫描光学显微镜）通过改变探测方式绕过远场衍射极限，但并未"违反"它。</li>
+        <li><strong>Bragg 公式中 \(\theta\) 用错。</strong>\(2d\sin\theta=m\lambda\) 中 \(\theta\) 是<strong>掠射角</strong> (glancing angle)，即入射束与晶面之间的夹角；不是入射束与法线的夹角，也不是衍射仪显示的 \(2\theta\)（即散射束相对入射束的总偏转角）。把 \(\theta\) 用错为法线角或 \(2\theta\) 都会让结果差一倍或更多。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 单缝：中央主极大宽度。缝宽 \(a=0.10\,\mathrm{mm}\)，照明 \(\lambda=546\,\mathrm{nm}\)（汞绿线），屏距 \(L=1.50\,\mathrm{m}\)。求中央主极大的角宽与屏上的线宽。</summary>
+        <div class="hint">第一极小在 \(a\sin\theta=\lambda\)；中央主极大宽 \(=2\theta_{1}\)（角）或 \(2L\tan\theta_{1}\)（线）。</div>
+        <div class="solution">\(\sin\theta_{1}=\lambda/a=546\times10^{-9}/1.0\times10^{-4}=5.46\times10^{-3}\)。<br>角宽 \(2\theta_{1}\approx 2\sin\theta_{1}=1.09\times10^{-2}\,\mathrm{rad}=0.626^{\circ}\)。<br>线宽 \(2L\tan\theta_{1}\approx 2L\sin\theta_{1}=2(1.50)(5.46\times10^{-3})=1.64\times10^{-2}\,\mathrm{m}=16.4\,\mathrm{mm}\)。<br>次极大宽约 \(8.2\,\mathrm{mm}\)（一半）。<br><span class="ans">角宽 \(1.09\times10^{-2}\,\mathrm{rad}\)；线宽 \(16.4\,\mathrm{mm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 光栅：刻线密度 \(4000\,\text{lines/cm}\)（即 \(d=2.50\,\mu\mathrm{m}\)），氦氖激光 \(\lambda=633\,\mathrm{nm}\)。(a) 求 \(m=1,2,3\) 级的角位置；(b) 最高可观测级；(c) 若 \(N=4000\) 缝被照亮，3 级光谱的分辨本领与可分辨的最小 \(\Delta\lambda\)。</summary>
+        <div class="hint">主极大 \(d\sin\theta=m\lambda\)；\(m_{\max}=\lfloor d/\lambda\rfloor\)；\(R=Nm\)。</div>
+        <div class="solution">(a) \(\sin\theta_{m}=m\lambda/d=m(633/2500)=m\cdot 0.253\)。<br>\(m=1\): \(\sin\theta=0.253\Rightarrow\theta=14.7^{\circ}\)。<br>\(m=2\): \(\sin\theta=0.506\Rightarrow\theta=30.4^{\circ}\)。<br>\(m=3\): \(\sin\theta=0.760\Rightarrow\theta=49.5^{\circ}\)。<br>(b) \(d/\lambda=2500/633=3.95\Rightarrow m_{\max}=3\)。<br>(c) \(R=Nm=4000\times 3=1.20\times10^{4}\)；\(\Delta\lambda_{\min}=\lambda/R=633/12000=0.0527\,\mathrm{nm}\)。<br><span class="ans">\((a)\;\theta_{1}=14.7^{\circ},\,\theta_{2}=30.4^{\circ},\,\theta_{3}=49.5^{\circ}\)；\((b)\;m_{\max}=3\)；\((c)\;R=1.2\times10^{4},\,\Delta\lambda_{\min}=0.053\,\mathrm{nm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 瑞利判据：相机镜头。\(f/2.8\) 镜头焦距 \(f=50\,\mathrm{mm}\)，光圈直径 \(D=f/2.8=17.9\,\mathrm{mm}\)，\(\lambda=550\,\mathrm{nm}\)。求 \(\theta_{\min}\)，以及焦平面上艾里斑的直径（"衍射斑"）\(2\times1.22\lambda f/D\)。结果对照典型 CMOS 像素 \(5\,\mu\mathrm{m}\) 讨论。</summary>
+        <div class="hint">\(\theta_{\min}=1.22\lambda/D\)；焦平面像高 \(=\theta_{\min}\cdot f\)。</div>
+        <div class="solution">\(\theta_{\min}=1.22(550\times10^{-9})/(17.9\times10^{-3})=3.75\times10^{-5}\,\mathrm{rad}=7.7^{\prime\prime}\)。<br>艾里斑半径 \(=\theta_{\min}\cdot f=3.75\times10^{-5}\times 50\times10^{-3}=1.87\,\mu\mathrm{m}\)，直径 \(3.75\,\mu\mathrm{m}\)。<br>对照像素 \(5\,\mu\mathrm{m}\)：衍射斑（\(3.75\,\mu\mathrm{m}\)）小于像素，故 \(f/2.8\) 时像素是瓶颈——再调小光圈（增大 \(f/\#\)）会使衍射斑增大、像质下降（这就是为什么 \(f/8\) 后画面变软）。\(f/16\)（\(D=3.1\,\mathrm{mm}\)）时艾里斑直径达 \(22\,\mu\mathrm{m}\)，远超像素，衍射主导。<br><span class="ans">\(\theta_{\min}=3.75\times10^{-5}\,\mathrm{rad}\)；艾里斑直径 \(3.75\,\mu\mathrm{m}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Bragg：镍晶体。用 Cu K\(_{\alpha}\)（\(\lambda=0.154\,\mathrm{nm}\)）照射镍（面心立方，\(a=0.352\,\mathrm{nm}\)）。求 (111) 晶面 1 级 Bragg 反射的掠射角 \(\theta\)。</summary>
+        <div class="hint">立方晶系 \(d_{hkl}=a/\sqrt{h^{2}+k^{2}+l^{2}}\)，再用 Bragg \(2d\sin\theta=\lambda\)。</div>
+        <div class="solution">\(d_{111}=a/\sqrt{3}=0.352/\sqrt{3}=0.203\,\mathrm{nm}\)。<br>Bragg 1 级：\(\sin\theta=\lambda/(2d)=0.154/(2\times0.203)=0.379\)。<br>\(\theta=\arcsin(0.379)=22.3^{\circ}\)，故衍射峰在 \(2\theta=44.6^{\circ}\)。<br>这与实验测得的 Ni(111) 主峰（\(44.5^{\circ}\)）相符，证实镍为面心立方结构。<br><span class="ans">\(\theta=22.3^{\circ}\)（\(2\theta=44.6^{\circ}\)）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 有限缝宽双缝：\(a=0.050\,\mathrm{mm}\)，\(d=0.300\,\mathrm{mm}\)，\(\lambda=600\,\mathrm{nm}\)。求哪些干涉级缺级，并写出单缝包络内可见的干涉级 \(m\)。</summary>
+        <div class="hint">缺级 \(d/a=m/n\)；包络零点在 \(a\sin\theta=n\lambda\)。</div>
+        <div class="solution">\(d/a=0.300/0.050=6\)，故 \(m=6,12,18,\ldots\) 缺级（落到 \(n=1,2,3,\ldots\) 级单缝极小上）。<br>中央包络范围 \(|\sin\theta|<\lambda/a=600\times10^{-9}/5.0\times10^{-5}=1.20\times10^{-2}\)。<br>干涉峰位置 \(|\sin\theta_{m}|=|m|\lambda/d=|m|(2.0\times10^{-3})\)。<br>可见条件 \(|m|(2.0\times10^{-3})<1.20\times10^{-2}\Rightarrow|m|<6\)，故 \(m=0,\pm1,\ldots,\pm5\)，共 11 条亮纹。\(\pm6\) 缺级。\(\pm7,\pm8,\ldots\) 位于第一单缝包络的次极大内，强度极弱（约 \(I_{0}\) 的 4.7% 以下），通常不计入"可见"。<br><span class="ans">缺级：\(m=6,12,\ldots\)；中央包络内 11 条亮纹</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">N 缝衍射图样 (N-slit diffraction pattern)。拖动滑块改变<strong>缝宽 \(a\)</strong>、<strong>缝间距 \(d\)</strong>、<strong>缝数 \(N\)</strong>、<strong>波长 \(\lambda\)</strong>，观察上方"屏"上的彩色衍射图样与下方的强度曲线。绿色虚线为单缝包络 \((\sin\beta/\beta)^{2}\)，可见它如何调制细锐的 \(N\) 缝干涉峰。增大 \(N\)——主极大迅速变锐；改变 \(\lambda\)——曲线和图样同时变色（按可见光光谱）。屏下方标注 \(d\sin\theta=m\lambda\) 主极大的级次 \(m\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="720" height="400"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+
+          // Sliders store: a in μm, d in μm, λ in nm, N integer.
+          var params = { a: 20, d: 50, N: 5, lambda: 550, showEnv: true };
+
+          // Wavelength (nm) → [r,g,b] each 0–255 (visible-spectrum approximation).
+          function wavelengthToRGB(wl) {
+            var r = 0, g = 0, b = 0;
+            if (wl < 440) { r = -(wl - 440) / 60; b = 1; }
+            else if (wl < 490) { g = (wl - 440) / 50; b = 1; }
+            else if (wl < 510) { g = 1; b = -(wl - 510) / 20; }
+            else if (wl < 580) { r = (wl - 510) / 70; g = 1; }
+            else if (wl < 645) { r = 1; g = -(wl - 645) / 65; }
+            else { r = 1; }
+            var f = 1;
+            if (wl < 420) f = 0.3 + 0.7 * (wl - 380) / 40;
+            else if (wl > 700) f = 0.3 + 0.7 * (780 - wl) / 80;
+            return [
+              Math.round(255 * Math.pow(Math.max(0, r) * f, 0.8)),
+              Math.round(255 * Math.pow(Math.max(0, g) * f, 0.8)),
+              Math.round(255 * Math.pow(Math.max(0, b) * f, 0.8))
+            ];
+          }
+
+          // Geometry of the plot.
+          var PLOT_L = 50, PLOT_R = W - 50;
+          var PLOT_W = PLOT_R - PLOT_L;
+          var PLOT_CX = (PLOT_L + PLOT_R) / 2;
+          var SCR_TOP = 50, SCR_BOT = 130;
+          var CURVE_TOP = 155, CURVE_BOT = 330;
+          var SIN_RANGE = 0.15;  // plot sinθ from -0.15 to +0.15
+
+          function intensity(sinT, a_m, d_m, N, lambda_m) {
+            var beta = Math.PI * a_m * sinT / lambda_m;
+            var alpha = Math.PI * d_m * sinT / lambda_m;
+            var env;
+            if (Math.abs(beta) < 1e-9) env = 1; else env = Math.sin(beta) / beta;
+            var num = Math.sin(N * alpha);
+            var den = N * Math.sin(alpha);
+            var interf;
+            if (Math.abs(den) < 1e-9) interf = 1; else interf = num / den;
+            var e2 = env * env, i2 = interf * interf;
+            return { total: e2 * i2, env: e2 };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },  // static pattern; time only used for nothing
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var lambda_nm = params.lambda;
+              var lambda_m = lambda_nm * 1e-9;
+              var a_m = params.a * 1e-6;
+              var d_m = params.d * 1e-6;
+              var N = params.N;
+              var rgb = wavelengthToRGB(lambda_nm);
+              var r = rgb[0], g = rgb[1], b = rgb[2];
+
+              // Title
+              PS.drawText(ctx, 'N 缝衍射图样 N-slit Diffraction Pattern',
+                16, 22, { font: '14px system-ui', color: PS.colors.text });
+
+              // 1. "Screen" band: each column = angle, color = λ × √intensity
+              for (var px = PLOT_L; px <= PLOT_R; px++) {
+                var sinT = (px - PLOT_CX) / (PLOT_W / 2) * SIN_RANGE;
+                var res = intensity(sinT, a_m, d_m, N, lambda_m);
+                var bri = Math.sqrt(res.total);  // gamma for visibility
+                var rr = Math.round(r * bri);
+                var gg = Math.round(g * bri);
+                var bb = Math.round(b * bri);
+                ctx.fillStyle = 'rgb(' + rr + ',' + gg + ',' + bb + ')';
+                ctx.fillRect(px, SCR_TOP, 1, SCR_BOT - SCR_TOP);
+              }
+              // Screen border
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1;
+              ctx.strokeRect(PLOT_L, SCR_TOP, PLOT_W, SCR_BOT - SCR_TOP);
+              PS.drawText(ctx, '屏 Screen (L ≫ )', PLOT_L, SCR_TOP - 6,
+                { font: '11px system-ui', color: PS.colors.text, align: 'left' });
+
+              // 2. Intensity curve panel
+              // Faint envelope (single-slit factor only)
+              if (params.showEnv) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = 0.55;
+                ctx.lineWidth = 1.4;
+                ctx.setLineDash([5, 3]);
+                ctx.beginPath();
+                for (px = PLOT_L; px <= PLOT_R; px++) {
+                  sinT = (px - PLOT_CX) / (PLOT_W / 2) * SIN_RANGE;
+                  var envOnly = intensity(sinT, a_m, d_m, N, lambda_m).env;
+                  var yy = CURVE_BOT - envOnly * (CURVE_BOT - CURVE_TOP);
+                  if (px === PLOT_L) ctx.moveTo(px, yy); else ctx.lineTo(px, yy);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // Main intensity curve, colored by wavelength
+              ctx.save();
+              ctx.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+              ctx.lineWidth = 1.6;
+              ctx.beginPath();
+              for (px = PLOT_L; px <= PLOT_R; px++) {
+                sinT = (px - PLOT_CX) / (PLOT_W / 2) * SIN_RANGE;
+                var I = intensity(sinT, a_m, d_m, N, lambda_m).total;
+                var y2 = CURVE_BOT - I * (CURVE_BOT - CURVE_TOP);
+                if (px === PLOT_L) ctx.moveTo(px, y2); else ctx.lineTo(px, y2);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Axes: x-axis (baseline) and vertical axis at sinθ=0
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(PLOT_L, CURVE_BOT); ctx.lineTo(PLOT_R, CURVE_BOT); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(PLOT_CX, CURVE_TOP - 4); ctx.lineTo(PLOT_CX, CURVE_BOT); ctx.stroke();
+
+              // Tick + label principal maxima m where d sinθ = m λ, |sinθ| ≤ SIN_RANGE
+              var mMaxRange = Math.floor(SIN_RANGE * d_m / lambda_m);
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '10px system-ui';
+              ctx.textAlign = 'center';
+              for (var m = -mMaxRange; m <= mMaxRange; m++) {
+                var sinM = m * lambda_m / d_m;
+                if (Math.abs(sinM) > SIN_RANGE) continue;
+                var pxM = PLOT_CX + sinM / SIN_RANGE * (PLOT_W / 2);
+                ctx.strokeStyle = PS.colors.grid; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(pxM, CURVE_BOT); ctx.lineTo(pxM, CURVE_BOT + 4); ctx.stroke();
+                ctx.fillText((m === 0 ? 'm=0' : 'm=' + m), pxM, CURVE_BOT + 15);
+              }
+              // x-axis end labels
+              ctx.textAlign = 'left';
+              ctx.fillText('sinθ = −' + SIN_RANGE, PLOT_L, CURVE_BOT + 15);
+              ctx.textAlign = 'right';
+              ctx.fillText('sinθ = +' + SIN_RANGE, PLOT_R, CURVE_BOT + 15);
+              ctx.textAlign = 'left';
+              PS.drawText(ctx, '强度 I(θ)', PLOT_L - 38, CURVE_TOP + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // Legend (top-right)
+              var legX = W - 240, legY = SCR_TOP + 8;
+              ctx.save();
+              ctx.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')'; ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(legX, legY); ctx.lineTo(legX + 18, legY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '总强度 total I(θ)', legX + 24, legY + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+              if (params.showEnv) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 1.4; ctx.setLineDash([4, 2]);
+                ctx.beginPath(); ctx.moveTo(legX, legY + 14); ctx.lineTo(legX + 18, legY + 14); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, '单缝包络 envelope (sinβ/β)²', legX + 24, legY + 18,
+                  { font: '11px system-ui', color: PS.colors.text });
+              }
+
+              // Bottom readout line
+              var mMaxPossible = Math.floor(d_m / lambda_m);
+              var R2 = N * 2;  // resolving power in 2nd order
+              var dOverA = (d_m / a_m).toFixed(2);
+              var missingNote = '';
+              // Detect integer d/a (within tolerance) to flag missing-order pedagogy
+              var ratio = d_m / a_m;
+              var intPart = Math.round(ratio);
+              if (Math.abs(ratio - intPart) < 0.02 && intPart >= 2) {
+                missingNote = '   缺级 missing order: m=' + intPart + ',' + (2 * intPart) + ',…';
+              }
+              var line1 = 'λ=' + lambda_nm + ' nm   a=' + params.a + ' μm   d=' + params.d +
+                ' μm   N=' + N + '   →   d/a=' + dOverA + missingNote;
+              var line2 = '主极大最高级 m_max=⌊d/λ⌋=' + mMaxPossible +
+                '    R(2级)=N·m=' + R2 +
+                '    主极大半宽 Δθ∝1/(N·d)=' + (lambda_m / (N * d_m)).toExponential(2) + ' rad';
+              PS.drawText(ctx, line1, 16, H - 24, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, line2, 16, H - 8, { font: '12px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'a', label: '缝宽 a (μm)', min: 5, max: 100, step: 1, value: 20 },
+            { type: 'slider', key: 'd', label: '缝间距 d (μm)', min: 20, max: 200, step: 1, value: 50 },
+            { type: 'slider', key: 'N', label: '缝数 N', min: 1, max: 40, step: 1, value: 5 },
+            { type: 'slider', key: 'lambda', label: '波长 λ (nm)', min: 400, max: 700, step: 5, value: 550 },
+            { type: 'toggle', key: 'showEnv', label: '显示单缝包络 show single-slit envelope', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('a', function (v) { params.a = v; });
+          ctl.on('d', function (v) { params.d = v; });
+          ctl.on('N', function (v) { params.N = Math.round(v); });
+          ctl.on('lambda', function (v) { params.lambda = v; });
+          ctl.on('showEnv', function (v) { params.showEnv = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>衍射</strong>是光绕过障碍物进入几何阴影的现象，由惠更斯-菲涅耳原理（波前上每点都是子波源）描述，是光的波动性的核心证据。尺度由 \(\lambda/a\) 控制。</li>
+        <li><strong>单缝夫琅禾费衍射</strong>：\(I(\theta)=I_{0}(\sin\beta/\beta)^{2}\)，\(\beta=\pi a\sin\theta/\lambda\)。极小 \(a\sin\theta=m\lambda\)（\(m=\pm1,\pm2,\ldots\)，<strong>不含 \(m=0\)</strong>）。中央主极大宽 = 次极大宽的 2 倍，屏上中央主极大线宽 \(\approx 2L\lambda/a\)。</li>
+        <li><strong>\(N\) 缝光栅强度</strong>：\(I=I_{0}(\sin\beta/\beta)^{2}\bigl[\sin(N\alpha)/(N\sin\alpha)\bigr]^{2}\)，\(\alpha=\pi d\sin\theta/\lambda\)、\(\beta=\pi a\sin\theta/\lambda\)。主极大 \(d\sin\theta=m\lambda\)；半宽 \(\Delta\theta\approx\lambda/(Nd\cos\theta)\propto 1/N\)。</li>
+        <li><strong>双缝（有限缝宽）</strong>：\(N=2\) 时多缝因子化为 \(\cos^{2}\alpha\)，强度 = 单缝包络 \(\times\cos^{2}\alpha\)。缺级条件 \(d/a=m/n\)（整数比）。</li>
+        <li><strong>光栅分辨本领</strong>：\(R=\lambda/\Delta\lambda_{\min}=Nm\)。与被照亮的缝数 \(N\) 和级次 \(m\) 成正比。</li>
+        <li><strong>圆孔瑞利判据</strong>：\(\theta_{\min}=1.22\lambda/D\)（\(D=\) 孔径直径）；狭缝（一维）才是 \(\theta_{\min}=\lambda/a\)。衍射极限是波性极限，与仪器精度无关。</li>
+        <li><strong>Bragg 定律</strong>：\(2d\sin\theta=m\lambda\)（\(m=1,2,\ldots\)），\(\theta\) 是<strong>掠射角</strong>（入射束与晶面夹角）。用于 X 射线晶体学。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,I_{\text{单缝}}(\theta)=I_{0}\!\left(\frac{\sin\beta}{\beta}\right)^{2},\;\beta=\frac{\pi a\sin\theta}{\lambda};\qquad a\sin\theta=m\lambda\;(m=\pm1,\pm2,\ldots)\,} \]</div>
+      <div class="formula">\[ \boxed{\,I_{N\text{缝}}=I_{0}\!\left(\frac{\sin\beta}{\beta}\right)^{2}\!\left[\frac{\sin(N\alpha)}{N\sin\alpha}\right]^{2};\quad d\sin\theta=m\lambda;\quad R=Nm;\quad \theta_{\min}=1.22\frac{\lambda}{D};\quad 2d\sin\theta=m\lambda\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

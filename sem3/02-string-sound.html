@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 弦上的波与声波 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第2章 · 机械波与声 Mechanical Waves &amp; Sound</p>
+      <h1>弦上的波与声波 <span class="en-title">String &amp; Sound Waves</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从一段弦元 (string segment) 的横向受力出发，<strong>推导</strong>张紧弦上的横波波速公式 \(v=\sqrt{T/\mu}\)，其中 \(T\) 为张力 (tension)、\(\mu\) 为线密度 (linear mass density)。</li>
+        <li>识别空气中的声波 (sound wave) 是一种<strong>纵波</strong> (longitudinal wave)，并以压力变化 (pressure variation) \(p(x,t)\) 与位移 (displacement) \(s(x,t)\) 两种等价描述刻画；解释为何<strong>压力波节</strong>恰是<strong>位移波腹</strong>。</li>
+        <li>应用空气声速的经验公式 \(v\approx 331.3+0.60\,T_{\!C}\,\mathrm{m/s}\) 与理想气体导出的 \(v=\sqrt{\gamma RT/M}\) 估算不同温度下的声速，并说明 20℃ 时 \(v\approx 343\,\mathrm{m/s}\)。</li>
+        <li>计算声波强度 (intensity) \(I\)（单位 \(\mathrm{W/m^{2}}\)），对点声源 (point source) 应用<strong>平方反比律</strong> \(I=P/(4\pi r^{2})\)。</li>
+        <li>使用分贝 (decibel) 标度 \(\beta=10\log_{10}(I/I_{0})\)（\(I_{0}=10^{-12}\,\mathrm{W/m^{2}}\)）做强度↔分贝互化；阐明"强度加倍约 +3 dB"的物理含义。</li>
+        <li>描述人耳听觉范围 (human hearing range)：频率约 \(20\,\mathrm{Hz}\text{–}20\,\mathrm{kHz}\)、声压 0–120 dB，并解释响度 (loudness) 的主观性。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 张紧弦上的横波 Transverse Wave on a Stretched String</h3>
+      <p>考虑一根以张力 \(T\)（单位 \(\mathrm{N}\)）拉紧的弦，其线密度 (linear mass density) \(\mu=m/L\)（单位 \(\mathrm{kg/m}\)）。一段微元 \(\Delta x\) 的质量为 \(\Delta m=\mu\,\Delta x\)。当弦上有横向扰动时，扰动的传播速度 (wave speed) 由<strong>介质</strong>决定——这正是机械波的核心特征：</p>
+      <div class="formula">\[ v=\sqrt{\frac{T}{\mu}} \]</div>
+      <p>注意 \(v\) <strong>与振幅无关</strong>（线性近似下），<strong>与频率无关</strong>（弦无色散）；只取决于弦的"绷紧程度" \(T\) 和"惯性" \(\mu\)。绷得更紧 (\(T\uparrow\))、弦越轻 (\(\mu\downarrow\))，波传播越快。一根吉他弦的高音弦细而紧，低音弦粗而松，正源于此。</p>
+      <p>对于两端固定 (fixed ends) 的弦长 \(L\)，相邻波腹数为 1 的<strong>基频</strong> (fundamental frequency) 满足 \(L=\lambda_{1}/2\)，即 \(\lambda_{1}=2L\)，故：</p>
+      <div class="formula">\[ f_{1}=\frac{v}{\lambda_{1}}=\frac{v}{2L}=\frac{1}{2L}\sqrt{\frac{T}{\mu}} \]</div>
+      <div class="key-terms">tension \(T\) (张力), linear mass density \(\mu\) (线密度), transverse wave (横波), fundamental frequency \(f_{1}\) (基频), fixed ends (固定端)</div>
+
+      <h3>2. 声波：纵波与压力/位移描述 Sound as a Longitudinal Wave</h3>
+      <p>空气中的声波是<strong>纵波</strong> (longitudinal wave)：空气分子沿传播方向往复振动，形成稀疏 (rarefaction) 与稠密 (compression) 的交替区域。可用两种等价描述：</p>
+      <ul>
+        <li><strong>位移描述 (displacement description)：</strong> \(s(x,t)\) 表示流体微元相对其平衡位置的纵向位移，常写作 \(s(x,t)=s_{0}\cos(kx-\omega t)\)。</li>
+        <li><strong>压力描述 (pressure description)：</strong> \(p(x,t)\) 表示<strong>逾量压强</strong> (excess pressure)——即瞬时压强相对平衡压强 \(P_{0}\) 的偏差 \(p=P-P_{0}\)。在稠密区 \(p&gt;0\)，稀疏区 \(p&lt;0\)。</li>
+      </ul>
+      <p>由连续性方程与体积模量 (bulk modulus) \(B\) 可得两者关系（推导见本章推导 2.3）：</p>
+      <div class="formula">\[ p(x,t)=-B\,\frac{\partial s}{\partial x} \]</div>
+      <p>这是<strong>关键关系</strong>：压力变化正比于位移的<strong>空间梯度</strong>。若位移取余弦波 \(s=s_{0}\cos(kx-\omega t)\)，则 \(p=Bks_{0}\sin(kx-\omega t)=Bks_{0}\cos(kx-\omega t-\pi/2)\)，即<strong>压力波比位移波超前 \(\pi/2\)（四分之一周期）</strong>。结果是：</p>
+      <div class="formula">\[ \text{位移波节处} \;\Longleftrightarrow\; \text{压力波腹},\qquad \text{位移波腹处} \;\Longleftrightarrow\; \text{压力波节} \]</div>
+      <p>这解释了为什么闭管开口端（压力等于大气压）是<strong>压力波节、位移波腹</strong>，而封闭端（位移为零）是<strong>位移波节、压力波腹</strong>。</p>
+      <div class="key-terms">longitudinal wave (纵波), displacement \(s\) (位移), excess pressure \(p\) (逾量压强), bulk modulus \(B\) (体积模量), compression (稠密), rarefaction (稀疏)</div>
+
+      <h3>3. 空气中的声速 Speed of Sound in Air</h3>
+      <p>由流体力学可知，声速 \(v=\sqrt{B/\rho}\)，其中 \(B\) 为体积模量、\(\rho\) 为空气密度。牛顿最初假设声波传热为等温过程，得到 \(B=P\)；但声波振荡极快，气团来不及热交换，实际是<strong>绝热</strong> (adiabatic) 过程，故 \(B=\gamma P\)（\(\gamma=c_{p}/c_{v}\) 为绝热指数，空气 \(\gamma\approx 1.40\)）。代入理想气体状态方程 \(PV=nRT\) 即 \(\rho=PM/(RT)\)（\(M\) 为摩尔质量），得<strong>拉普拉斯声速公式</strong> (Laplace's formula)：</p>
+      <div class="formula">\[ v=\sqrt{\frac{\gamma P}{\rho}}=\sqrt{\frac{\gamma RT}{M}}\quad\text{（\(T\) 为热力学温度，单位 K）} \]</div>
+      <p>对空气：\(\gamma=1.40\)，\(M=28.97\times10^{-3}\,\mathrm{kg/mol}\)，\(R=8.314\,\mathrm{J/(mol\,K)}\)。代入 \(T=293.15\,\mathrm{K}\) (20℃)：</p>
+      <div class="formula">\[ v=\sqrt{\frac{(1.40)(8.314)(293.15)}{28.97\times10^{-3}}}\approx 343\,\mathrm{m/s} \]</div>
+      <p>工程上常用<strong>线性近似</strong>（在室温附近误差 &lt;0.5%）：</p>
+      <div class="formula">\[ v(T_{\!C})\approx 331.3+0.60\,T_{\!C}\;\;\mathrm{m/s}\qquad(T_{\!C}\text{ 为摄氏温度}) \]</div>
+      <p>可见温度每升高 1℃，声速约增 0.60 m/s。湿度增加也会使声速略增（水蒸气摩尔质量比干空气小）。</p>
+      <div class="key-terms">speed of sound (声速), adiabatic process (绝热过程), adiabatic index \(\gamma\) (绝热指数), Laplace's formula (拉普拉斯公式), molar mass \(M\) (摩尔质量)</div>
+
+      <h3>4. 强度与平方反比律 Intensity &amp; the Inverse-Square Law</h3>
+      <p><strong>强度</strong> (intensity) 定义为单位面积上通过的<strong>时间平均</strong>能流：</p>
+      <div class="formula">\[ I=\frac{\langle P\rangle}{A}\quad(\mathrm{W/m^{2}}) \]</div>
+      <p>对于球面声源 (point source) 向各向同性发射声功率 \(\langle P\rangle\)（简称 \(P\)），在距源 \(r\) 处能量均匀分布在球面 \(4\pi r^{2}\) 上：</p>
+      <div class="formula">\[ I(r)=\frac{P}{4\pi r^{2}}\quad\Longrightarrow\quad \frac{I_{2}}{I_{1}}=\left(\frac{r_{1}}{r_{2}}\right)^{2} \]</div>
+      <p>这就是<strong>平方反比律</strong>：距离加倍，强度降为原来的 1/4。<strong>注意</strong>此式仅在<strong>自由场</strong> (free field，无反射) 且声源可视为<strong>点源</strong>（即 \(r\gg\) 声源尺寸）时成立；室内反射、近场 (near field) 均不遵守。</p>
+      <div class="key-terms">intensity \(I\) (强度), point source (点源), inverse-square law (平方反比律), free field (自由场), isotropic (各向同性)</div>
+
+      <h3>5. 分贝标度 The Decibel Scale</h3>
+      <p>人耳可听的最弱声强（阈值 threshold of hearing）约 \(I_{0}=10^{-12}\,\mathrm{W/m^{2}}\)（1000 Hz 纯音），痛阈 (threshold of pain) 约 \(1\,\mathrm{W/m^{2}}\)——跨越 12 个数量级。为此采用对数标度，定义<strong>声强级</strong> (sound intensity level)：</p>
+      <div class="formula">\[ \beta=10\log_{10}\!\left(\frac{I}{I_{0}}\right)\;\;\mathrm{dB},\qquad I_{0}=10^{-12}\,\mathrm{W/m^{2}} \]</div>
+      <p>反向公式：\(I=I_{0}\cdot10^{\beta/10}\)。常见量级：呼吸 ~10 dB、低声交谈 ~50 dB、正常交谈 ~60 dB、繁忙街道 ~80 dB、摇滚音乐会 ~110 dB、喷气式飞机起飞（100 m 外）~120 dB。<strong>重要</strong>：分贝是对数值——强度<strong>加倍</strong>仅使 \(\beta\) 增加 \(10\log_{10}2\approx 3.01\,\mathrm{dB}\)；强度变为 10 倍，\(\beta\) 才增加 10 dB。</p>
+      <div class="key-terms">decibel \(\beta\) (分贝), sound intensity level (声强级), threshold of hearing \(I_{0}\) (听阈), threshold of pain (痛阈)</div>
+
+      <h3>6. 响度与听觉范围 Loudness &amp; Hearing Range</h3>
+      <p><strong>响度</strong> (loudness) 是人耳对强度的主观感受，单位为方 (phon, 等响度级) 或宋 (sone)。同一强度下不同频率响度差异极大：人耳对 2–5 kHz 最敏感（耳道共振所致），对 20 Hz 与 20 kHz 灵敏度低数十 dB。所以"分贝"是<strong>客观</strong>强度级，"响度"是<strong>主观</strong>感受，二者不能直接画等号。</p>
+      <p>健康青年人耳的<strong>听觉范围</strong> (audible range) 约：</p>
+      <div class="formula">\[ f\in[20\,\mathrm{Hz},\,20\,\mathrm{kHz}],\qquad \beta\in[0,\,120]\,\mathrm{dB} \]</div>
+      <p>高于 20 kHz 称超声波 (ultrasound，用于医学成像、声呐、测距)，低于 20 Hz 称次声波 (infrasound，地震、海啸、大象低频通讯)。长期暴露于 85 dB 以上会造成不可逆听力损伤 (noise-induced hearing loss)。</p>
+      <div class="key-terms">loudness (响度), phon (方), audible range (听觉范围), ultrasound (超声波), infrasound (次声波)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 2.1：弦上波速 \(v=\sqrt{T/\mu}\)</h3>
+      <p class="step"><strong>步骤 1（弦元几何）：</strong> 取弦上一段微元 \(\Delta x\)，质量 \(\Delta m=\mu\Delta x\)。设弦上有横向位移 \(y(x,t)\)，且斜率 \(|\partial y/\partial x|\ll 1\)（小扰动近似）。设左右两端的张力大小都为 \(T\)（小扰动下张力变化可忽略），但方向沿各自切线，分别与水平成角度 \(\theta_{1}\)、\(\theta_{2}\)。</p>
+      <p class="step"><strong>步骤 2（横向合力）：</strong> 横向 (transverse) 分量的合力为</p>
+      <div class="formula">\[ F_{y}=T\sin\theta_{2}-T\sin\theta_{1}\approx T(\tan\theta_{2}-\tan\theta_{1})=T\!\left.\frac{\partial y}{\partial x}\right|_{x+\Delta x}-T\!\left.\frac{\partial y}{\partial x}\right|_{x} \]</div>
+      <p>小角度近似 \(\sin\theta\approx\tan\theta\)，且 \(\tan\theta=\partial y/\partial x\)。</p>
+      <p class="step"><strong>步骤 3（泰勒展开）：</strong> 对 \(\partial y/\partial x\) 在 \(x\) 处一阶展开：</p>
+      <div class="formula">\[ \left.\frac{\partial y}{\partial x}\right|_{x+\Delta x}=\left.\frac{\partial y}{\partial x}\right|_{x}+\frac{\partial^{2}y}{\partial x^{2}}\,\Delta x+\cdots \]</div>
+      <p>代入得 \(F_{y}\approx T\,\dfrac{\partial^{2}y}{\partial x^{2}}\Delta x\)。</p>
+      <p class="step"><strong>步骤 4（牛顿第二定律）：</strong> 横向加速度 \(a_{y}=\partial^{2}y/\partial t^{2}\)，故</p>
+      <div class="formula">\[ (\mu\,\Delta x)\,\frac{\partial^{2}y}{\partial t^{2}}=T\,\frac{\partial^{2}y}{\partial x^{2}}\,\Delta x \]</div>
+      <p>两边除以 \(\mu\Delta x\)：</p>
+      <div class="formula">\[ \frac{\partial^{2}y}{\partial t^{2}}=\frac{T}{\mu}\,\frac{\partial^{2}y}{\partial x^{2}}\quad\Longleftrightarrow\quad \frac{\partial^{2}y}{\partial x^{2}}=\frac{\mu}{T}\,\frac{\partial^{2}y}{\partial t^{2}} \]</div>
+      <p class="step"><strong>步骤 5（识别波方程）：</strong> 标准波动方程 \(\partial^{2}y/\partial x^{2}=(1/v^{2})\partial^{2}y/\partial t^{2}\)，对照得：</p>
+      <div class="formula">\[ \boxed{\;v=\sqrt{\frac{T}{\mu}}\;} \]</div>
+      <p>结果干净物理：波速由"恢复力" \(T\) 与"惯性" \(\mu\) 之比开方——与弹簧上波速 \(v=\sqrt{kL/\mu}\)、声速 \(v=\sqrt{B/\rho}\)、地震波速 \(v=\sqrt{\text{弹性模量}/\text{密度}}\) 同构，是机械波的<strong>通用结构</strong>。</p>
+
+      <h3>推导 2.2：拉普拉斯声速公式 \(v=\sqrt{\gamma RT/M}\)</h3>
+      <p class="step"><strong>步骤 1（机械波通用公式）：</strong> 流体中纵波波速 \(v=\sqrt{B/\rho}\)，其中 \(B=-V\,dP/dV\) 为体积模量（也写作 \(K\)）。</p>
+      <p class="step"><strong>步骤 2（绝热条件）：</strong> 声波频率高、气团来不及热交换，故过程为绝热 (adiabatic) 而非等温。绝热过程 \(PV^{\gamma}=\text{const}\)，微分得 \(dP/P=-\gamma\,dV/V\)，故 \(B_{\text{ad}}=\gamma P\)。</p>
+      <p class="step"><strong>步骤 3（理想气体状态方程）：</strong> \(PV=nRT\)，即 \(P\cdot V=(m/M)RT\)，故密度 \(\rho=m/V=PM/(RT)\)。</p>
+      <p class="step"><strong>步骤 4（代入）：</strong></p>
+      <div class="formula">\[ v=\sqrt{\frac{B}{\rho}}=\sqrt{\frac{\gamma P}{PM/(RT)}}=\sqrt{\frac{\gamma RT}{M}} \]</div>
+      <p>声速<strong>与压强无关</strong>（\(P\) 抵消）：因为 \(P\) 增大同时使 \(B\) 增大、\(\rho\) 同比增大，二者抵消。声速<strong>仅依赖温度与气体种类</strong>。这一实验事实曾让牛顿困惑良久。</p>
+
+      <h3>推导 2.3：压力波与位移波相位差 \(\pi/2\) </h3>
+      <p class="step"><strong>步骤 1（连续性 + 胡克定律）：</strong> 设位移波 \(s(x,t)=s_{0}\cos(kx-\omega t)\)。某段长 \(dx\) 的气柱由于两端位移不同而体积变化 \(dV/V=\partial s/\partial x\)。逾量压强 \(p=-B\,dV/V=-B\,\partial s/\partial x\)。</p>
+      <p class="step"><strong>步骤 2（求导）：</strong> \(\partial s/\partial x=-ks_{0}\sin(kx-\omega t)\)，故</p>
+      <div class="formula">\[ p(x,t)=Bks_{0}\sin(kx-\omega t)=Bks_{0}\cos\!\left(kx-\omega t-\frac{\pi}{2}\right) \]</div>
+      <p class="step"><strong>步骤 3（识别节点关系）：</strong> 压力振幅 \(p_{0}=Bks_{0}=\rho v\omega s_{0}\)（用 \(v=\sqrt{B/\rho}\) 与 \(\omega=vk\)）。压力<strong>超前</strong>位移 \(\pi/2\)——位移最大处（波腹）压力为零；位移为零处（波节）压力最大。即</p>
+      <div class="formula">\[ \boxed{\;\text{位移波节}=\text{压力波腹},\quad \text{位移波腹}=\text{压力波节}\;} \]</div>
+      <p>这是管乐器调音、驻波管测声速、Kundt 管等实验的几何基础。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 钢琴弦上的波速</h4>
+        <p class="example-statement">一根钢琴弦线密度 \(\mu=5.0\,\mathrm{g/m}=5.0\times10^{-3}\,\mathrm{kg/m}\)，张力 \(T=80\,\mathrm{N}\)。求弦上横波波速 \(v\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 直接代入公式：</p>
+          <div class="formula">\[ v=\sqrt{\frac{T}{\mu}}=\sqrt{\frac{80}{5.0\times10^{-3}}}=\sqrt{1.6\times10^{4}}=126.5\,\mathrm{m/s} \]</div>
+          <p class="step">校核量纲：\(T/\mu=[\mathrm{N}]/[\mathrm{kg/m}]=[\mathrm{kg\,m/s^{2}}]\cdot[\mathrm{m/kg}]=[\mathrm{m^{2}/s^{2}}]\)，开方后为 \(\mathrm{m/s}\) ✓。该速度对应空气中声速的约 37%——金属弦中的横波比空气声速慢得多（注意：金属中的<strong>纵波</strong>声速 ~5000 m/s，那是另一种波）。</p>
+          <p><span class="ans">\(v\approx 126.5\,\mathrm{m/s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 把吉他弦调到 A2（110 Hz）</h4>
+        <p class="example-statement">吉他弦有效振动长度 \(L=64\,\mathrm{cm}=0.64\,\mathrm{m}\)，线密度 \(\mu=6.0\,\mathrm{g/m}=6.0\times10^{-3}\,\mathrm{kg/m}\)。要把基频 \(f_{1}\) 调到标准音 A2（\(110\,\mathrm{Hz}\)），求所需张力 \(T\)，并换算为等效悬挂质量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（由 \(f_{1}\) 反解 \(v\)）：</strong> 两端固定弦的基频 \(f_{1}=v/(2L)\)，故</p>
+          <div class="formula">\[ v=2Lf_{1}=2(0.64)(110)=140.8\,\mathrm{m/s} \]</div>
+          <p class="step"><strong>步骤 2（由 \(v=\sqrt{T/\mu}\) 反解 \(T\)）：</strong> \(T=\mu v^{2}\)：</p>
+          <div class="formula">\[ T=(6.0\times10^{-3})(140.8)^{2}=(6.0\times10^{-3})(19825)=118.9\,\mathrm{N} \]</div>
+          <p class="step"><strong>步骤 3（换算为等效质量）：</strong> 由 \(T=mg\)，\(m=T/g=118.9/9.8=12.1\,\mathrm{kg}\)。相当于挂一桶 12 L 水所产生的张力。实际吉他调音靠旋钮卷绕改变 \(T\)，确实需要相当大的力——这也是琴弦容易断的原因。</p>
+          <p class="step"><strong>步骤 4（弦太松时的对比）：</strong> 若张力仅 60 N，则 \(v=\sqrt{60/0.006}=100\,\mathrm{m/s}\)，\(f_{1}=100/1.28=78.1\,\mathrm{Hz}\)——比标准 A2（110 Hz）低约 6 个半音，听起来"哑"了。</p>
+          <p><span class="ans">\(T\approx 119\,\mathrm{N}\)（等效挂 \(12.1\,\mathrm{kg}\) 重物）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 强度 → 分贝，分贝 → 强度</h4>
+        <p class="example-statement">(a) 一台吸尘器在 1 m 外辐射的平均强度 \(I=1.0\times10^{-5}\,\mathrm{W/m^{2}}\)。求声强级 \(\beta\)。(b) 喷气式飞机起飞时距 100 m 处声强级 \(\beta=120\,\mathrm{dB}\)。求该处强度 \(I\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 解：</strong> 取 \(I_{0}=10^{-12}\,\mathrm{W/m^{2}}\)：</p>
+          <div class="formula">\[ \beta=10\log_{10}\!\left(\frac{I}{I_{0}}\right)=10\log_{10}\!\left(\frac{1.0\times10^{-5}}{10^{-12}}\right)=10\log_{10}(10^{7})=10\times 7=70\,\mathrm{dB} \]</div>
+          <p>约相当于繁忙街道的噪声。</p>
+          <p class="step"><strong>(b) 解：</strong> 反向公式 \(I=I_{0}\cdot 10^{\beta/10}\)：</p>
+          <div class="formula">\[ I=(10^{-12})\cdot 10^{120/10}=10^{-12}\cdot 10^{12}=1.0\,\mathrm{W/m^{2}} \]</div>
+          <p>恰好为痛阈 (threshold of pain)。注意指数是 \(\beta/10\)（不是 \(\beta\)），因为定义里已经乘了 10：每升 10 dB 强度乘 10，每升 3 dB 强度乘约 2。</p>
+          <p><span class="ans">(a) \(\beta=70\,\mathrm{dB}\)；(b) \(I=1.0\,\mathrm{W/m^{2}}\)（痛阈）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 点声源的平方反比律</h4>
+        <p class="example-statement">一个小型扬声器视为各向同性点声源，辐射声功率 \(P=5.0\,\mathrm{W}\)。求距源 \(r_{1}=2.0\,\mathrm{m}\) 与 \(r_{2}=10.0\,\mathrm{m}\) 处的强度与声强级；并验证平方反比关系。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（\(r_{1}=2.0\,\mathrm{m}\) 处）：</strong></p>
+          <div class="formula">\[ I_{1}=\frac{P}{4\pi r_{1}^{2}}=\frac{5.0}{4\pi(2.0)^{2}}=\frac{5.0}{50.27}=9.95\times10^{-2}\,\mathrm{W/m^{2}} \]</div>
+          <p class="step">声强级：</p>
+          <div class="formula">\[ \beta_{1}=10\log_{10}\!\left(\frac{9.95\times10^{-2}}{10^{-12}}\right)=10\log_{10}(9.95\times10^{10})=10\times 10.998=110.0\,\mathrm{dB} \]</div>
+          <p class="step"><strong>步骤 2（\(r_{2}=10.0\,\mathrm{m}\) 处）：</strong></p>
+          <div class="formula">\[ I_{2}=\frac{P}{4\pi r_{2}^{2}}=\frac{5.0}{4\pi(100)}=\frac{5.0}{1256.6}=3.98\times10^{-3}\,\mathrm{W/m^{2}} \]</div>
+          <p class="step"><strong>步骤 3（校核平方反比）：</strong> \((r_{1}/r_{2})^{2}=(2/10)^{2}=0.04\)；而 \(I_{2}/I_{1}=3.98\times10^{-3}/9.95\times10^{-2}=0.0400\) ✓。强度降为原来的 1/25，声强级降 \(10\log_{10}25=14.0\,\mathrm{dB}\)：</p>
+          <div class="formula">\[ \beta_{2}=\beta_{1}-14.0=96.0\,\mathrm{dB} \]</div>
+          <p class="step"><strong>注意：</strong> 若用 <em>分贝数除以距离</em> 是错的：60 dB 在 1 m 处不会变成 30 dB 在 2 m 处；正确做法是先回到强度，按 \(1/r^{2}\) 衰减，再取分贝。</p>
+          <p><span class="ans">\(I_{1}=9.95\times10^{-2}\,\mathrm{W/m^{2}},\,\beta_{1}=110\,\mathrm{dB}\)；\(I_{2}=3.98\times10^{-3}\,\mathrm{W/m^{2}},\,\beta_{2}=96\,\mathrm{dB}\)（衰减 14 dB）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 不同温度下的声速</h4>
+        <p class="example-statement">一场马拉松在 5℃ 的清晨起跑，假设空气中声速仅由温度决定。求该温度下的声速；并与 20℃ 时的值（343 m/s）比较，估算看到发令枪烟后多久听到枪声（观察者距发令员 200 m）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（线性近似公式）：</strong></p>
+          <div class="formula">\[ v(5^{\circ}\mathrm{C})\approx 331.3+0.60\times 5=331.3+3.0=334.3\,\mathrm{m/s} \]</div>
+          <p class="step"><strong>步骤 2（用精确公式校核）：</strong> \(v=331.3\sqrt{1+T_{\!C}/273.15}=331.3\sqrt{1+5/273.15}=331.3\sqrt{1.01831}=331.3\times 1.00911=334.3\,\mathrm{m/s}\) ✓，二者一致到 4 位有效数字。</p>
+          <p class="step"><strong>步骤 3（时间延迟）：</strong> 在 5℃ 下：</p>
+          <div class="formula">\[ t_{5^{\circ}}=\frac{200}{334.3}=0.598\,\mathrm{s}\approx 0.60\,\mathrm{s} \]</div>
+          <p class="step"><strong>步骤 4（与 20℃ 对比）：</strong> 在 20℃ 下 \(t_{20^{\circ}}=200/343=0.583\,\mathrm{s}\)。差别仅 15 ms，人耳不可分辨，但会影响 200 m 外用声速测距的精度。</p>
+          <p><span class="ans">\(v(5^{\circ}\mathrm{C})\approx 334\,\mathrm{m/s}\)；听到枪声延迟约 \(0.60\,\mathrm{s}\)（比 20℃ 时多 ~15 ms）</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>压力波节 = 位移波腹（反之亦然）。</strong> 学生常误以为"压力最大处位移也最大"。恰恰相反：稠密区 (\(p&gt;0\) 最大) 处分子聚集，是两侧分子<strong>反向</strong>位移的<strong>交汇点</strong>，位移本身为零；而位移最大的地方，左右对称拉伸/压缩相等，逾量压强为零。二者相位差 \(\pi/2\)。</li>
+        <li><strong>分贝是对数：强度加倍 ≠ 分贝加倍。</strong> 强度由 \(I\) 翻倍为 \(2I\)，声强级变化 \(\Delta\beta=10\log_{10}2\approx 3.01\,\mathrm{dB}\)。两支相同的 70 dB 小提琴合奏，总强度 \(\beta\approx 73\,\mathrm{dB}\)（不是 140 dB）；10 支合奏约 80 dB（不是 700 dB）。</li>
+        <li><strong>平方反比律只在点声源 + 自由场成立。</strong> 室内因墙壁反射形成混响场 (reverberant field)，远处强度不再按 \(1/r^{2}\) 衰减；声源尺度与距离可相比拟时（例如靠近一架钢琴），也不能套用 \(I=P/(4\pi r^{2})\)。</li>
+        <li><strong>\(v=\sqrt{T/\mu}\) 中的 \(T\) 是张力（力，单位 N），\(\mu\) 是线密度（kg/m）——不是体密度、不是"拉紧程度"。</strong> 同一根钢丝，用作吉他弦（\(\mu\) 大）和用作小提琴弦（\(\mu\) 小）波速迥异；切勿用体密度 \(\rho\)（\(\mathrm{kg/m^{3}}\)）替换 \(\mu\)。</li>
+        <li><strong>声速与压强无关（同种气体）。</strong> 公式 \(v=\sqrt{\gamma RT/M}\) 中不含 \(P\)：登山顶气压低，但若温度相同，声速与海平面相同。压强变化已被密度变化抵消。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 弦的基频：小提琴 G 弦长度 \(L=33\,\mathrm{cm}\)，\(\mu=2.0\times10^{-3}\,\mathrm{kg/m}\)，张力 \(T=55\,\mathrm{N}\)。求弦上波速 \(v\) 与基频 \(f_{1}\)，并指出最接近的标准音名（参考：G3 ≈ 196 Hz, A3 ≈ 220 Hz, B3 ≈ 247 Hz, C4 ≈ 262 Hz）。</summary>
+        <div class="hint">用 \(v=\sqrt{T/\mu}\)，\(f_{1}=v/(2L)\)。</div>
+        <div class="solution">\(v=\sqrt{55/2.0\times10^{-3}}=\sqrt{2.75\times10^{4}}=165.8\,\mathrm{m/s}\)。<br>\(f_{1}=v/(2L)=165.8/(2\times0.33)=165.8/0.66=251\,\mathrm{Hz}\)。<br>最接近 B3 (247 Hz)，偏高约 4 Hz（约 +3 音分），属于可调音范围。<br><span class="ans">\(v\approx 166\,\mathrm{m/s},\;f_{1}\approx 251\,\mathrm{Hz}\)（≈ B3）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 把 65 dB 转为强度；并把强度 \(I=5.0\times10^{-3}\,\mathrm{W/m^{2}}\) 转为分贝。</summary>
+        <div class="hint">\(I=I_{0}\cdot10^{\beta/10}\)；\(\beta=10\log_{10}(I/I_{0})\)。</div>
+        <div class="solution">第一问：\(I=10^{-12}\cdot10^{65/10}=10^{-12}\cdot10^{6.5}=10^{-5.5}=3.16\times10^{-6}\,\mathrm{W/m^{2}}\)。<br>第二问：\(\beta=10\log_{10}(5.0\times10^{-3}/10^{-12})=10\log_{10}(5.0\times10^{9})=10\cdot 9.699=97.0\,\mathrm{dB}\)。<br><span class="ans">\(I=3.16\times10^{-6}\,\mathrm{W/m^{2}}\)；\(\beta=97\,\mathrm{dB}\)（约相当于手提电锯 1 m 外）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 强度加倍增加多少分贝？强度变 10 倍呢？100 倍呢？</summary>
+        <div class="hint">\(\Delta\beta=10\log_{10}(I_{2}/I_{1})\)。</div>
+        <div class="solution">加倍：\(\Delta\beta=10\log_{10}2=3.01\,\mathrm{dB}\)。<br>10 倍：\(\Delta\beta=10\log_{10}10=10\,\mathrm{dB}\)。<br>100 倍：\(\Delta\beta=10\log_{10}100=20\,\mathrm{dB}\)。<br>由此可见分贝"每 10 dB 一个数量级"，"每 3 dB 翻一倍"——记住这两个数对工程估算极有用。<br><span class="ans">+3 dB；+10 dB；+20 dB</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 距点声源 5.0 m 处测得声强级 \(\beta_{1}=90\,\mathrm{dB}\)。在自由场中，距源 20.0 m 处声强级为多少？</summary>
+        <div class="hint">先算强度比 \(I_{2}/I_{1}=(r_{1}/r_{2})^{2}\)，再 \(\Delta\beta=10\log_{10}(I_{2}/I_{1})\)。也可直接用 \(\Delta\beta=20\log_{10}(r_{1}/r_{2})\)。</div>
+        <div class="solution">距离比 \(r_{2}/r_{1}=4\)，强度比 \(I_{2}/I_{1}=(1/4)^{2}=1/16\)。<br>\(\Delta\beta=10\log_{10}(1/16)=-10\log_{10}16=-10\times 1.204=-12.04\,\mathrm{dB}\)。<br>\(\beta_{2}=90-12.04=77.96\,\mathrm{dB}\approx 78\,\mathrm{dB}\)。<br>校核用另一公式：\(\Delta\beta=20\log_{10}(r_{1}/r_{2})=20\log_{10}(1/4)=20\times(-0.602)=-12.04\,\mathrm{dB}\) ✓。<br><span class="ans">\(\beta_{2}\approx 78\,\mathrm{dB}\)（衰减 12 dB）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 冬日 \(-10^{\circ}\mathrm{C}\) 时空气声速是多少？一根长 \(L=0.50\,\mathrm{m}\) 的闭管（一端封闭、一端开口）在此温度下的<strong>基频</strong>是多少？</summary>
+        <div class="hint">闭管基频 \(f_{1}=v/(4L)\)（管长 = 基频波长的 1/4）。</div>
+        <div class="solution">声速：\(v(-10^{\circ}\mathrm{C})\approx 331.3+0.60\times(-10)=331.3-6.0=325.3\,\mathrm{m/s}\)。<br>闭管基频：\(f_{1}=v/(4L)=325.3/(4\times0.50)=325.3/2.0=162.7\,\mathrm{Hz}\)。<br>对照：在 20℃ 时 \(f_{1}=343/2.0=171.5\,\mathrm{Hz}\)——温度降低 30℃ 使管乐器音高降低约 9 Hz（半音为 ~6%，此处约 5%），演奏厅温度变化确实影响木管乐器音准。<br><span class="ans">\(v\approx 325\,\mathrm{m/s},\;f_{1}\approx 163\,\mathrm{Hz}\)（在 20℃ 时约 172 Hz）</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 弦张力调音器 String-Tension Tuner</h2>
+      <p class="sim-desc">一根两端固定的弦（吉他弦，固定长度 \(L=0.64\,\mathrm{m}\)）。拖动滑块改变张力 \(T\) 与线密度 \(\mu\)，实时读取波速 \(v=\sqrt{T/\mu}\) 与基频 \(f_{1}=v/(2L)\)，观察<strong>基频驻波形状</strong> \(y(x,t)=A\sin(\pi x/L)\cos(2\pi f_{1}t)\) 的振动（动画做了慢放以便肉眼观察，左侧标签显示真实 \(f_{1}\) 与最近音符名）。开关"播放音色 Play tone"用 WebAudio 播放真实频率，便于耳朵校验。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Fixed physical length -------------------------------------
+          var L = 0.64;     // m (guitar string scale length)
+
+          // ---- Slider parameters ----------------------------------------
+          var params = { T: 119, mu_gm: 6.0, amp: 22, tone: false };
+
+          // ---- WebAudio (optional tone) ---------------------------------
+          var audioCtx = null, osc = null, gain = null;
+          function ensureAudio() {
+            if (!audioCtx) {
+              try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+              catch (e) { audioCtx = null; }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+          }
+          function startTone(freq) {
+            ensureAudio();
+            if (!audioCtx) return;
+            stopTone();
+            osc = audioCtx.createOscillator();
+            gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.value = 0;
+            osc.connect(gain).connect(audioCtx.destination);
+            osc.start();
+            gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.04);
+          }
+          function stopTone() {
+            if (!osc || !audioCtx) return;
+            try {
+              gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
+              var o = osc; setTimeout(function () { try { o.stop(); } catch (e) {} }, 120);
+            } catch (e) {}
+            osc = null;
+          }
+
+          // ---- Note-name lookup (equal temperament, A4 = 440 Hz) --------
+          var NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+          function noteName(f) {
+            if (f <= 0) return '—';
+            var midi = Math.round(69 + 12 * Math.log2(f / 440));
+            var idx = ((midi % 12) + 12) % 12;
+            var oct = Math.floor(midi / 12) - 1;
+            var ideal = 440 * Math.pow(2, (midi - 69) / 12);
+            var cents = Math.round(1200 * Math.log2(f / ideal));
+            return NAMES[idx] + oct + (cents >= 0 ? ' (+' + cents + '¢)' : ' (' + cents + '¢)');
+          }
+
+          // ---- Geometry of canvas ---------------------------------------
+          var SX0 = 70, SX1 = W - 70, SY = 240;
+          var SPAN = SX1 - SX0;   // pixels representing L
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var tt = s.t;
+              var T = params.T;
+              var mu = params.mu_gm * 1e-3;          // kg/m
+              var v = Math.sqrt(T / mu);              // m/s
+              var f1 = v / (2 * L);                   // Hz
+              var omega = 2 * Math.PI * f1;
+
+              // ---- Slow visual frequency so eye can see oscillation ----
+              // Map true f1 to a visual rate ~ 1.5 Hz (still sinusoidal in time).
+              var visualRate = 1.5;  // Hz
+              var phase = 2 * Math.PI * visualRate * tt;
+              var Apx = params.amp;
+
+              // ---- Backdrop: horizontal equilibrium line ----------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(SX0, SY); ctx.lineTo(SX1, SY); ctx.stroke();
+              ctx.restore();
+
+              // ---- Envelope ±A sin(πx/L) (translucent) ------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.18;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              for (var i = 0; i <= 120; i++) {
+                var xf = i / 120;
+                var env = Apx * Math.sin(Math.PI * xf);
+                var px = SX0 + xf * SPAN;
+                var py = SY - env;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              for (var j = 120; j >= 0; j--) {
+                var xf2 = j / 120;
+                var env2 = Apx * Math.sin(Math.PI * xf2);
+                var px2 = SX0 + xf2 * SPAN;
+                var py2 = SY + env2;
+                ctx.lineTo(px2, py2);
+              }
+              ctx.closePath();
+              ctx.fill();
+              // envelope outline
+              ctx.globalAlpha = 0.55;
+              ctx.beginPath();
+              for (var k = 0; k <= 120; k++) {
+                var xk = k / 120;
+                var envk = Apx * Math.sin(Math.PI * xk);
+                var pkx = SX0 + xk * SPAN;
+                var pky = SY - envk;
+                if (k === 0) ctx.moveTo(pkx, pky); else ctx.lineTo(pkx, pky);
+              }
+              ctx.stroke();
+              ctx.beginPath();
+              for (var l = 0; l <= 120; l++) {
+                var xl = l / 120;
+                var envl = Apx * Math.sin(Math.PI * xl);
+                var plx = SX0 + xl * SPAN;
+                var ply = SY + envl;
+                if (l === 0) ctx.moveTo(plx, ply); else ctx.lineTo(plx, ply);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Vibrating string (instantaneous shape) ----------------
+              var snap = Math.cos(phase);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              for (var m = 0; m <= 160; m++) {
+                var xm = m / 160;
+                var y = Apx * Math.sin(Math.PI * xm) * snap;
+                var sx = SX0 + xm * SPAN;
+                var sy = SY - y;
+                if (m === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Fixed ends (walls + anchors) -------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 3;
+              ctx.beginPath(); ctx.moveTo(SX0, SY - 38); ctx.lineTo(SX0, SY + 38); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(SX1, SY - 38); ctx.lineTo(SX1, SY + 38); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, SX0, SY, 4, { fill: PS.colors.accent });
+              PS.drawCircle(ctx, SX1, SY, 4, { fill: PS.colors.accent });
+              PS.drawText(ctx, '固定端 x=0', SX0, SY + 56,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '固定端 x=L', SX1, SY + 56,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // ---- Small displacement sample dots along string -----------
+              for (var n = 1; n <= 7; n++) {
+                var xn = n / 8;
+                var yn = Apx * Math.sin(Math.PI * xn) * snap;
+                var snx = SX0 + xn * SPAN;
+                var sny = SY - yn;
+                PS.drawCircle(ctx, snx, sny, 3, { fill: PS.colors.accent2 });
+              }
+
+              // ---- "Node" markers at endpoints, "antinode" at center -----
+              PS.drawText(ctx, '节点 node', SX0, SY - 50,
+                { font: '11px system-ui', color: PS.colors.axis, align: 'center' });
+              PS.drawText(ctx, '节点 node', SX1, SY - 50,
+                { font: '11px system-ui', color: PS.colors.axis, align: 'center' });
+              PS.drawText(ctx, '波腹 antinode (最大振幅)',
+                (SX0 + SX1) / 2, SY - Apx - 14,
+                { font: '11px system-ui', color: PS.colors.accent2, align: 'center' });
+
+              // ---- Readout panel (top-left) ------------------------------
+              var rx = 14, ry = 18;
+              PS.drawText(ctx, '物理量 Physical quantities (SI):', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'L (固定 fixed) = ' + L.toFixed(2) + ' m', rx, ry + 20,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'T = ' + T.toFixed(1) + ' N', rx, ry + 38,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'μ = ' + params.mu_gm.toFixed(1) + ' g/m  (' + (mu).toExponential(1) + ' kg/m)',
+                rx, ry + 56, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'v = √(T/μ) = ' + v.toFixed(1) + ' m/s',
+                rx, ry + 76, { font: 'bold 13px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx,
+                'f₁ = v/(2L) = ' + f1.toFixed(2) + ' Hz',
+                rx, ry + 96, { font: 'bold 13px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx,
+                'λ₁ = 2L = ' + (2 * L).toFixed(3) + ' m',
+                rx, ry + 114, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                '最接近音符 nearest note: ' + noteName(f1),
+                rx, ry + 132, { font: '12px system-ui', color: PS.colors.text });
+
+              // ---- Hint top-right ----------------------------------------
+              PS.drawText(ctx,
+                '动画做了慢放（视觉频率 ' + visualRate.toFixed(1) + ' Hz）；读数为真实 f₁',
+                W - 14, 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx,
+                params.tone ? '🔊 正在播放 f₁ = ' + f1.toFixed(1) + ' Hz' : '🔇 静音',
+                W - 14, 38,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          // ---- Tone follow f1 in real time ------------------------------
+          function updateTone() {
+            if (!params.tone) { stopTone(); return; }
+            var mu = params.mu_gm * 1e-3;
+            var v = Math.sqrt(params.T / mu);
+            var f1 = v / (2 * L);
+            if (f1 >= 30 && f1 <= 4000) startTone(f1); else stopTone();
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'T',      label: '张力 T (N)',         min: 20,  max: 300, step: 1,   value: 119 },
+            { type: 'slider', key: 'mu_gm',  label: '线密度 μ (g/m)',     min: 1.0, max: 20,  step: 0.5, value: 6.0 },
+            { type: 'slider', key: 'amp',    label: '显示振幅 A (px)',    min: 6,   max: 38,  step: 1,   value: 22 },
+            { type: 'toggle', key: 'tone',   label: '播放音色 Play tone', value: false },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('T',     function (v) { params.T = v; updateTone(); });
+          ctl.on('mu_gm', function (v) { params.mu_gm = v; updateTone(); });
+          ctl.on('amp',   function (v) { params.amp = v; });
+          ctl.on('tone',  function (v) {
+            params.tone = !!v;
+            if (params.tone) { ensureAudio(); updateTone(); } else { stopTone(); }
+          });
+          ctl.on('reset', function () { stopTone(); sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>张紧弦上横波波速 \(v=\sqrt{T/\mu}\)，由"恢复力 \(T\)"与"惯性 \(\mu\)"之比开方；与机械波通用结构 \(v=\sqrt{\text{弹性}/\text{惯性}}\) 一致。</li>
+        <li>两端固定、长 \(L\) 的弦，基频 \(f_{1}=v/(2L)=\tfrac{1}{2L}\sqrt{T/\mu}\)；调音即改变 \(T\)（旋钮）或选择不同 \(\mu\) 的弦。</li>
+        <li>声波是<strong>纵波</strong>，可用位移 \(s(x,t)\) 或逾量压强 \(p(x,t)\) 描述，二者关系 \(p=-B\,\partial s/\partial x\)，相位差 \(\pi/2\)：<strong>压力波节 = 位移波腹</strong>。</li>
+        <li>声速（理想气体）\(v=\sqrt{\gamma RT/M}\)，与压强无关，仅依赖温度与气体种类；空气 20℃ 时 \(v\approx 343\,\mathrm{m/s}\)，线性近似 \(v\approx 331.3+0.60\,T_{\!C}\)。</li>
+        <li>声强 \(I=P/(4\pi r^{2})\)（点声源，自由场）—— 平方反比律：距离加倍，强度降为 1/4，分贝降 6 dB；距离变 10 倍，强度降为 1/100，分贝降 20 dB。</li>
+        <li>声强级 \(\beta=10\log_{10}(I/I_{0})\,\mathrm{dB}\)，\(I_{0}=10^{-12}\,\mathrm{W/m^{2}}\)；强度加倍 +3 dB，10 倍 +10 dB。</li>
+        <li>听觉范围约 20 Hz – 20 kHz，0 – 120 dB；响度是主观量，与频率有关；&gt;85 dB 长期暴露损伤听力。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;v=\sqrt{\frac{T}{\mu}},\quad f_{1}=\frac{1}{2L}\sqrt{\frac{T}{\mu}},\quad v_{\text{sound}}=\sqrt{\frac{\gamma RT}{M}}\approx 331.3+0.60\,T_{\!C},\quad I=\frac{P}{4\pi r^{2}},\quad \beta=10\log_{10}\!\frac{I}{10^{-12}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

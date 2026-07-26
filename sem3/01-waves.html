@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 波动基础 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第1章 · 机械波与声 Mechanical Waves &amp; Sound</p>
+      <h1>波动基础 <span class="en-title">Wave Basics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用「传播的扰动 (a propagating disturbance)」定义机械波 (mechanical wave)，论证波<strong>输运能量而不输运物质</strong>，并区分横波 (transverse) 与纵波 (longitudinal)。</li>
+        <li>从一段弦元 (string segment) 在张力下的牛顿第二定律出发，<strong>严格推导</strong>经典一维波动方程 \(\partial^{2}y/\partial t^{2}=v^{2}\,\partial^{2}y/\partial x^{2}\)，并得出弦上波速 \(v=\sqrt{F_{T}/\mu}\)。</li>
+        <li>用链式法则验证行波解 (traveling-wave solution) \(y=f(x\mp vt)\) 满足波动方程，并解释符号 \(\mp\) 决定传播方向。</li>
+        <li>写出正弦波 \(y(x,t)=A\sin(kx-\omega t+\varphi)\)，灵活换算 \(k=2\pi/\lambda\)、\(\omega=2\pi f=2\pi/T\)、色散关系 \(v=\omega/k=\lambda f\)。</li>
+        <li>区分<strong>波速</strong> (wave speed) \(v\) 与<strong>质元速度</strong> (particle speed) \(v_{y}=\partial y/\partial t\)，理解前者由介质决定、后者随位置时间变化。</li>
+        <li>导出弦上波的平均输运功率 \(P_{\text{avg}}=\tfrac{1}{2}\mu\omega^{2}A^{2}v\)，并解释 \(P\propto A^{2}\)、\(P\propto\omega^{2}\)。</li>
+        <li>计算同波列上两点的相位差 (phase difference) \(\Delta\Phi=k\,\Delta x\)，并用它判断两点「同相 / 反相」。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 什么是波？ What Is a Wave?</h3>
+      <p><strong>机械波</strong> (mechanical wave) 是某种「扰动」(distortion) 在弹性介质 (medium) 中的传播。重要的是：<em>传播的是扰动的形状（信息、能量），而不是介质本身</em>。把一根长绳的一端抖动一下，绳上各点只在原地往返振动，而「凸起」却沿绳传向远处——这正是「<strong>波携带能量、不携带物质</strong>」的最直接证据。机械波必须依赖介质（绳、水、空气、固体），与之相对的电磁波 (electromagnetic wave) 可在真空中传播，留待第二学期讨论。</p>
+      <p>一个孤立波包 (pulse) 是局部扰动；若扰动随时间周期性重复，就形成连续波列 (wave train)，其中最重要的特例是<strong>正弦波</strong> (sinusoidal wave)。任何复杂波都可由正弦波叠加（傅里叶分解，见第 5 章），故本章把正弦波作为基本模型。</p>
+      <div class="key-terms">mechanical wave (机械波), medium (介质), disturbance (扰动), pulse (波包), wave train (波列), energy transport (能量输运)</div>
+
+      <h3>2. 横波与纵波 Transverse vs Longitudinal Waves</h3>
+      <p>按照<strong>质元振动方向</strong>与<strong>波传播方向</strong>的关系，机械波分为两类：</p>
+      <ul>
+        <li><strong>横波 (transverse wave)：</strong>质元振动方向 ⊥ 传播方向。典型例子：绷紧的弦上的波、电磁波、(近似地) 绳波。横波的「形状」可以直接看成一条曲线 \(y(x,t)\)。</li>
+        <li><strong>纵波 (longitudinal wave)：</strong>质元振动方向 ∥ 传播方向，介质交替出现「稠密」(compression) 与「稀疏」(rarefaction)。典型例子：空气中的声波、弹簧中的疏密波、地震纵波 (P-wave)。</li>
+      </ul>
+      <p>有的波兼有横、纵两个分量——例如水面波 (surface water wave) 的水质元做椭圆运动；地震面波 (surface wave, Rayleigh wave) 也是。本章数学描述以横波（弦上的位移 \(y\)）为范式，但<strong>波动方程本身与「横/纵」无关</strong>：纵波的局部压缩量 \(s(x,t)\)（流体中）或格点位移同样满足 \(\partial^{2}s/\partial t^{2}=v^{2}\partial^{2}s/\partial x^{2}\)。</p>
+      <div class="key-terms">transverse wave (横波), longitudinal wave (纵波), compression (稠密区), rarefaction (稀疏区), surface wave (表面波)</div>
+
+      <h3>3. 行波与波动方程 Traveling Waves &amp; the Wave Equation</h3>
+      <p>考虑弦上向 \(+x\) 方向传播、形状保持不变的波。若 \(t=0\) 时形状为 \(y=f(x)\)，则在时刻 \(t\)，整个形状向右平移了 \(vt\)，所以：</p>
+      <div class="formula">\[ y(x,t)=f(x-vt)\qquad(\text{沿 }+x\text{ 传播}) \]</div>
+      <p>同理，\(y=f(x+vt)\) 描述沿 \(-x\) 传播的波。这两种「行波」都是下节推导的<strong>波动方程</strong>的解。注意函数 \(f\) 的具体形状不影响波速——线性波动方程有一个关键性质：<em>任何形状</em>的扰动都以同一速度 \(v\) 传播，称为<strong>非色散</strong> (nondispersive)；色散介质中不同频率分量速度不同，波包会「散开」，留待第 5 章讨论。</p>
+      <div class="key-terms">traveling wave (行波), nondispersive (非色散), dispersive medium (色散介质)</div>
+
+      <h3>4. 正弦波与波参数 Sinusoidal Waves &amp; Wave Parameters</h3>
+      <p>取 \(f\) 为正弦函数，得到最常用模型：</p>
+      <div class="formula">\[ y(x,t)=A\sin(kx-\omega t+\varphi) \]</div>
+      <p>各量的物理含义与单位：</p>
+      <ul>
+        <li><strong>振幅 (amplitude) \(A\)</strong>：质元离开平衡位置的最大距离，单位 \(\mathrm{m}\)。能量正比于 \(A^{2}\)。</li>
+        <li><strong>角频率 (angular frequency) \(\omega\)</strong>：单位 \(\mathrm{rad/s}\)，与频率 \(f\)（赫兹 \(\mathrm{Hz}=\mathrm{s^{-1}}\)）、周期 \(T\) 的关系：
+          \(\;\omega=2\pi f=2\pi/T\)。</li>
+        <li><strong>波数 (wave number) \(k\)</strong>：单位 \(\mathrm{rad/m}\)，与波长 \(\lambda\)（单位 \(\mathrm{m}\)，相邻同相位点间距）的关系：
+          \(\;k=2\pi/\lambda\)。</li>
+        <li><strong>相位常数 / 初相 (phase constant) \(\varphi\)</strong>：决定 \(t=0\)、\(x=0\) 处的初始位移，单位 \(\mathrm{rad}\)。</li>
+      </ul>
+      <p>把「时间一圈 = \(T\)」与「空间一圈 = \(\lambda\)」对应起来：波在每一周期 \(T\) 内向前推进一个 \(\lambda\)，因此</p>
+      <div class="formula">\[ \boxed{\;v=\frac{\lambda}{T}=\lambda f=\frac{\omega}{k}\;} \]</div>
+      <p>最后这个等式 \(\omega = vk\) 称为<strong>色散关系</strong> (dispersion relation)。对弦上波，\(v\) 由介质决定（见下节），与 \(f\) 无关，故 \(\omega=vk\) 是<strong>线性</strong>色散关系——非色散介质的标志。</p>
+      <div class="key-terms">amplitude \(A\) (振幅), angular frequency \(\omega\) (角频率), wave number \(k\) (波数), wavelength \(\lambda\) (波长), period \(T\) (周期), frequency \(f\) (频率), phase constant \(\varphi\) (相位常数), dispersion relation (色散关系)</div>
+
+      <h3>5. 相位与相位差 Phase &amp; Phase Difference</h3>
+      <p>把正弦函数的自变量整体称为<strong>相位</strong> (phase)：</p>
+      <div class="formula">\[ \Phi(x,t)=kx-\omega t+\varphi \]</div>
+      <p>同一时刻 \(t\)，相距 \(\Delta x=x_{2}-x_{1}\) 的两点相位差为</p>
+      <div class="formula">\[ \Delta\Phi=\Phi_{2}-\Phi_{1}=k\,\Delta x=\frac{2\pi}{\lambda}\,\Delta x \]</div>
+      <p>几个重要判据：</p>
+      <ul>
+        <li>\(\Delta x=m\lambda\)（\(m\) 为整数）→ \(\Delta\Phi=2m\pi\)，两点<strong>同相</strong> (in phase)，振动步调完全一致；</li>
+        <li>\(\Delta x=(m+\tfrac{1}{2})\lambda\) → \(\Delta\Phi=(2m+1)\pi\)，两点<strong>反相</strong> (out of phase / antiphase)，振动相反；</li>
+        <li>其他情形为部分相位差，常用 \(\mathrm{mod}\;2\pi\) 化简到 \([0,2\pi)\)。</li>
+      </ul>
+      <div class="key-terms">phase (相位), phase difference (相位差), in phase (同相), antiphase (反相)</div>
+
+      <h3>6. 波速 vs 质元速度 Wave Speed vs Particle Speed</h3>
+      <p>这是初学最易混淆之处，务必厘清：</p>
+      <ul>
+        <li><strong>波速 (wave / phase speed) \(v\)</strong>：波形整体推进的速度，由介质决定，恒定。在弦上 \(v=\sqrt{F_{T}/\mu}\)。</li>
+        <li><strong>质元速度 (particle / transverse speed) \(v_{y}\)</strong>：弦上某一点（固定 \(x\)）做上下振动的速度，
+          \[ v_{y}=\frac{\partial y}{\partial t}=-A\omega\cos(kx-\omega t+\varphi),\qquad |v_{y}|_{\max}=A\omega. \]
+          它随位置、时间变化，最大值 \(A\omega\) 可以远小于波速 \(v\)。</li>
+      </ul>
+      <p>举例：钢琴弦上 \(A=2\,\mathrm{mm}\)、\(f=440\,\mathrm{Hz}\)、\(v=140\,\mathrm{m/s}\)，则 \(|v_{y}|_{\max}=A\omega=2\times10^{-3}\times2\pi\times440\approx5.5\,\mathrm{m/s}\)，比 \(v\) 小近 30 倍。波形飞快前进，质元本身却只是慢慢上下摆动。</p>
+      <div class="key-terms">wave speed (波速), particle speed (质元速度), transverse velocity (横向速度)</div>
+
+      <h3>7. 波输运的能量与功率 Energy &amp; Power Carried by a Wave</h3>
+      <p>弦上每个长 \(dx\) 的小段都在振动，因而具有动能；同时由于被拉伸，又有弹性势能。<strong>对行波而言，二者时间平均相等</strong>（推导见下）：</p>
+      <div class="formula">\[ \Big\langle\frac{dK}{dx}\Big\rangle=\Big\langle\frac{dU}{dx}\Big\rangle=\frac{1}{4}\mu A^{2}\omega^{2} \]</div>
+      <p>所以单位长度弦上的平均总能量为</p>
+      <div class="formula">\[ \Big\langle\frac{dE}{dx}\Big\rangle=\frac{1}{2}\mu A^{2}\omega^{2} \]</div>
+      <p>这些能量以波速 \(v\) 沿传播方向流动，因此波<strong>平均输运功率</strong> (average power transmitted)：</p>
+      <div class="formula">\[ \boxed{\;P_{\text{avg}}=\Big\langle\frac{dE}{dx}\Big\rangle v=\frac{1}{2}\mu\omega^{2}A^{2}v\;} \]</div>
+      <p>单位 \(\mathrm{W}\)。两个重要标度律：<em>振幅加倍</em> → 功率 ×4；<em>频率加倍</em> → 功率 ×4。能量并非停留在驱动端，而是源源不断随波传向远端——这就是波「输运能量」的定量表述。</p>
+      <div class="key-terms">kinetic energy density (动能密度), potential energy density (势能密度), average power (平均功率), energy transport (能量输运)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>D1. 由弦元导出经典波动方程 Deriving the Classical Wave Equation</h3>
+      <p>考虑一根线密度 (linear mass density) 为 \(\mu\)（单位 \(\mathrm{kg/m}\)）、被恒定张力 \(F_{T}\)（单位 \(\mathrm{N}\)）拉紧的均匀弦。设弦的平衡位置沿 \(x\) 轴，横向位移为 \(y(x,t)\)。我们做<strong>小幅度近似</strong> (small-amplitude approximation)：处处 \(|\partial y/\partial x|\ll 1\)，于是 (i) 任一小段弦的长度近似等于其水平跨度；(ii) 张力大小处处仍为 \(F_{T}\)（修正项为二阶小量，可略）。</p>
+
+      <p><strong>第 1 步：取受力分析对象。</strong>取平衡位置介于 \(x\) 与 \(x+dx\) 之间的一小段弦。两端各受张力 \(F_{T}\)，方向沿弦的切线，与水平夹角记为 \(\theta(x)\) 与 \(\theta(x+dx)\)。</p>
+
+      <p><strong>第 2 步：写横向合力。</strong>水平张力分量互相抵消（保留 \(F_{T}\) 恒定的条件）；横向分量合成为
+      \[ F_{y}=F_{T}\sin\theta(x+dx)-F_{T}\sin\theta(x). \]
+      小角度下 \(\sin\theta\simeq\tan\theta=\partial y/\partial x\)，故
+      \[ F_{y}\simeq F_{T}\!\left[\left.\frac{\partial y}{\partial x}\right|_{x+dx}-\left.\frac{\partial y}{\partial x}\right|_{x}\right]\simeq F_{T}\,\frac{\partial^{2}y}{\partial x^{2}}\,dx. \]</p>
+
+      <p><strong>第 3 步：套牛顿第二定律。</strong>该段质量为 \(\mu\,dx\)，横向加速度为 \(\partial^{2}y/\partial t^{2}\)。于是
+      \[ (\mu\,dx)\,\frac{\partial^{2}y}{\partial t^{2}}=F_{T}\,\frac{\partial^{2}y}{\partial x^{2}}\,dx. \]</p>
+
+      <p><strong>第 4 步：整理并读出波速。</strong>两边除以 \(\mu\,dx\)：</p>
+      <div class="formula">\[ \boxed{\;\frac{\partial^{2}y}{\partial t^{2}}=\underbrace{\frac{F_{T}}{\mu}}_{\displaystyle v^{2}}\,\frac{\partial^{2}y}{\partial x^{2}}\;}\qquad\Longrightarrow\qquad v=\sqrt{\frac{F_{T}}{\mu}} \]</div>
+      <p>这正是<strong>经典一维波动方程</strong> (classical wave equation) \(\partial^{2}y/\partial t^{2}=v^{2}\partial^{2}y/\partial x^{2}\)。<em>注意：\(F_{T}\) 与 \(\mu\) 都是介质属性，故 \(v\) 由介质决定，与波的具体形状、振幅、频率都无关</em>——这正是非色散的几何根源。</p>
+
+      <h3>D2. 验证行波解 Confirming \(y=f(x\mp vt)\) Solves the Wave Equation</h3>
+      <p>令 \(\xi=x-vt\)（即 \(y=f(\xi)\)），由链式法则：
+      \[ \frac{\partial y}{\partial t}=f'(\xi)\,\frac{\partial\xi}{\partial t}=-v\,f'(\xi),\qquad
+         \frac{\partial^{2}y}{\partial t^{2}}=v^{2}\,f''(\xi), \]
+      \[ \frac{\partial y}{\partial x}=f'(\xi)\,\frac{\partial\xi}{\partial x}=f'(\xi),\qquad
+         \frac{\partial^{2}y}{\partial x^{2}}=f''(\xi). \]
+      代入即得 \(\partial^{2}y/\partial t^{2}=v^{2}\,\partial^{2}y/\partial x^{2}\)，对<strong>任意</strong>二次可微的 \(f\) 都成立。同理 \(y=f(x+vt)\) 也满足（请读者自行验证）。所以波动方程的通解是
+      \[ y(x,t)=f(x-vt)+g(x+vt), \]
+      即「向右的任意形状」加上「向左的任意形状」叠加——这是 1747 年 d'Alembert 给出的著名结果。<strong>符号约定</strong>：含 \(kx-\omega t\) 的项 → 沿 \(+x\) 传播；含 \(kx+\omega t\) 的项 → 沿 \(-x\) 传播。读「负号 → 正方向」最容易记。</p>
+
+      <h3>D3. 弦上波的平均功率（能量均分）Average Power &amp; Equipartition</h3>
+      <p>动能密度：取 \(y=A\sin(kx-\omega t)\)，则 \(\partial y/\partial t=-A\omega\cos(kx-\omega t)\)，单位长度动能为
+      \[ \frac{dK}{dx}=\frac{1}{2}\mu\!\left(\frac{\partial y}{\partial t}\right)^{2}=\frac{1}{2}\mu A^{2}\omega^{2}\cos^{2}(kx-\omega t). \]
+      对一个周期取平均，\(\langle\cos^{2}\rangle=1/2\)，得 \(\langle dK/dx\rangle=\tfrac14\mu A^{2}\omega^{2}\)。</p>
+      <p>势能密度：被拉伸的小段长度为 \(ds=\sqrt{dx^{2}+dy^{2}}\simeq dx\bigl[1+\tfrac12(\partial y/\partial x)^{2}\bigr]\)，附加伸长量 \(\delta=\tfrac12(\partial y/\partial x)^{2}dx\)。张力做功 \(dU=F_{T}\,\delta=\tfrac12 F_{T}(\partial y/\partial x)^{2}dx\)，故
+      \[ \frac{dU}{dx}=\frac{1}{2}F_{T}\!\left(\frac{\partial y}{\partial x}\right)^{2}=\frac{1}{2}F_{T}A^{2}k^{2}\cos^{2}(kx-\omega t). \]
+      利用 \(F_{T}=\mu v^{2}\) 与 \(k=\omega/v\) 得 \(F_{T}k^{2}=\mu\omega^{2}\)，于是 \(\langle dU/dx\rangle=\tfrac14\mu A^{2}\omega^{2}\)，与动能密度<strong>完全相等</strong>——这就是行波的能量均分 (equipartition)。两者相加得 \(\langle dE/dx\rangle=\tfrac12\mu A^{2}\omega^{2}\)，乘以能量流速 \(v\) 即得 \(P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 由波函数读参数 Reading Parameters from \(y(x,t)\)</h4>
+        <p class="example-statement">一横波在弦上传播，其位移函数为 \(y=0.050\sin(2.0\,x-400\,t)\)（SI 单位）。求：(a) 振幅、波长、频率、周期；(b) 波速与传播方向；(c) 弦上一点的最大横向速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对照标准式 \(y=A\sin(kx-\omega t)\)（这里 \(\varphi=0\)），读出
+            \(A=0.050\,\mathrm{m}=5.0\,\mathrm{cm}\)，\(k=2.0\,\mathrm{rad/m}\)，\(\omega=400\,\mathrm{rad/s}\)。</p>
+          <p class="step">(a) 波长 \(\lambda=2\pi/k=2\pi/2.0=\pi\approx 3.14\,\mathrm{m}\)。频率 \(f=\omega/2\pi=400/2\pi\approx 63.7\,\mathrm{Hz}\)。周期 \(T=1/f=2\pi/400\approx 1.57\times10^{-2}\,\mathrm{s}=15.7\,\mathrm{ms}\)。</p>
+          <p class="step">(b) \(v=\omega/k=400/2.0=200\,\mathrm{m/s}\)。时间项系数为 \(-\omega t\)（负号），故波沿 <strong>\(+x\)</strong> 方向传播。</p>
+          <p class="step">(c) 最大横向速度 \(|v_{y}|_{\max}=A\omega=0.050\times 400=20\,\mathrm{m/s}\)。注意它远小于波速 \(v=200\,\mathrm{m/s}\)。</p>
+          <p><span class="ans">答案：\(A=5.0\,\mathrm{cm}\)，\(\lambda\approx 3.14\,\mathrm{m}\)，\(f\approx 63.7\,\mathrm{Hz}\)，\(T\approx 15.7\,\mathrm{ms}\)；\(v=200\,\mathrm{m/s}\) 沿 \(+x\)；\(|v_{y}|_{\max}=20\,\mathrm{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 弦上波速与张力（小提琴 A 弦） Wave Speed &amp; Tension</h4>
+        <p class="example-statement">小提琴的 A 弦振动长度 \(L=330\,\mathrm{mm}\)，线密度 \(\mu=4.0\times10^{-4}\,\mathrm{kg/m}\)，两端固定，发音基频 \(f_{1}=440\,\mathrm{Hz}\)（基频对应 \(\lambda_{1}=2L\)）。求：(a) 弦上的波速 \(v\)；(b) 弦中张力 \(F_{T}\)；(c) 若把弦绷得更紧使 \(F_{T}\) 增加 10%，基频如何变化？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 基频满足 \(f_{1}=v/\lambda_{1}=v/(2L)\)，所以
+            \[ v=2Lf_{1}=2(0.330)(440)=290.4\,\mathrm{m/s}\approx 2.9\times10^{2}\,\mathrm{m/s}. \]</p>
+          <p class="step">(b) 由 \(v=\sqrt{F_{T}/\mu}\) 反解：
+            \[ F_{T}=\mu v^{2}=(4.0\times10^{-4})(290.4)^{2}=(4.0\times10^{-4})(8.43\times10^{4})\approx 33.7\,\mathrm{N}. \]</p>
+          <p class="step">(c) \(v\propto\sqrt{F_{T}}\)，故 \(v\) 变为 \(\sqrt{1.10}\) 倍；又 \(f_{1}=v/(2L)\)，\(L\) 不变，故 \(f_{1}\) 也乘以 \(\sqrt{1.10}\approx 1.049\)，即升高约 \(4.9\%\) 到约 \(461\,\mathrm{Hz}\)。这就是弦乐调弦 (tuning) 的物理依据。</p>
+          <p><span class="ans">答案：\(v\approx 2.9\times10^{2}\,\mathrm{m/s}\)；\(F_{T}\approx 34\,\mathrm{N}\)；基频变为 \(\sqrt{1.10}\) 倍，约 \(461\,\mathrm{Hz}\)（升 4.9%）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 由快照与一点速度反演波函数 Reconstructing \(y(x,t)\)</h4>
+        <p class="example-statement">一列沿 \(+x\) 方向传播的正弦横波，振幅 \(A=8.0\,\mathrm{mm}\)，波长 \(\lambda=0.40\,\mathrm{m}\)，波速 \(v=20\,\mathrm{m/s}\)。在 \(t=0\) 时刻，\(x=0\) 处的质元位移 \(y(0,0)=+4.0\,\mathrm{mm}\)，且正<strong>向下</strong>运动（\(v_{y}<0\)）。(a) 求 \(k\)、\(\omega\)；(b) 求相位常数 \(\varphi\) 并写出 \(y(x,t)\)；(c) 求该点的最大横向速度 \(|v_{y}|_{\max}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \(k=2\pi/\lambda=2\pi/0.40=5\pi\,\mathrm{rad/m}\approx15.7\,\mathrm{rad/m}\)。\(\omega=vk=20\times5\pi=100\pi\,\mathrm{rad/s}\approx314\,\mathrm{rad/s}\)。</p>
+          <p class="step">(b) 设 \(y=A\sin(kx-\omega t+\varphi)\)。代入 \(t=0,x=0\)：
+            \[ A\sin\varphi=y(0,0)=4.0\,\mathrm{mm}\;\Longrightarrow\;\sin\varphi=\frac{4.0}{8.0}=0.5. \]
+            所以 \(\varphi=\pi/6\) 或 \(5\pi/6\)。再用横向速度定号：
+            \[ v_{y}=\frac{\partial y}{\partial t}=-A\omega\cos(kx-\omega t+\varphi),\quad v_{y}(0,0)=-A\omega\cos\varphi<0\;\Longrightarrow\;\cos\varphi>0. \]
+            因此 \(\varphi\) 在第一象限，\(\boxed{\varphi=\pi/6}\)。波函数为
+            \[ y(x,t)=8.0\times10^{-3}\sin\!\bigl(5\pi x-100\pi t+\tfrac{\pi}{6}\bigr)\;[\mathrm{m}]. \]</p>
+          <p class="step">(c) \(|v_{y}|_{\max}=A\omega=(8.0\times10^{-3})(100\pi)\approx 2.51\,\mathrm{m/s}\)。在 \(t=0,x=0\) 时刻实际值为 \(|v_{y}|=A\omega\cos(\pi/6)=2.51\times(\sqrt3/2)\approx2.18\,\mathrm{m/s}\)，方向向下。与波速 \(v=20\,\mathrm{m/s}\) 对比：质元速度仅为波速的约 11%。</p>
+          <p><span class="ans">答案：\(k=5\pi\,\mathrm{rad/m}\)、\(\omega=100\pi\,\mathrm{rad/s}\)；\(\varphi=\pi/6\)，\(y=8.0\times10^{-3}\sin(5\pi x-100\pi t+\pi/6)\,\mathrm{m}\)；\(|v_{y}|_{\max}\approx2.51\,\mathrm{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 波输运的功率 Power Transmitted</h4>
+        <p class="example-statement">一弦的线密度 \(\mu=0.050\,\mathrm{kg/m}\)，其上行波 \(y=0.080\sin(3.0\,x-60\,t)\)（SI）。求：(a) 波速；(b) 平均输运功率；(c) 若振幅减半而其他参数不变，功率变为几倍？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>读出 \(A=0.080\,\mathrm{m}\)，\(k=3.0\,\mathrm{rad/m}\)，\(\omega=60\,\mathrm{rad/s}\)。</p>
+          <p class="step">(a) \(v=\omega/k=60/3.0=20\,\mathrm{m/s}\)。</p>
+          <p class="step">(b) \[ P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v=\tfrac12(0.050)(60)^{2}(0.080)^{2}(20). \]
+            逐步计算：\(\omega^{2}=3600\)，\(A^{2}=6.4\times10^{-3}\)，故
+            \[ P_{\text{avg}}=\tfrac12(0.050)(3600)(6.4\times10^{-3})(20)=\tfrac12(0.050)(460.8)=11.5\,\mathrm{W}. \]</p>
+          <p class="step">(c) 因 \(P\propto A^{2}\)，振幅减半 → 功率乘以 \((1/2)^{2}=1/4\)，即 \(P\) 降为 \(2.88\,\mathrm{W}\)。这说明高保真音响「功率翻倍只相当于振幅 ×\(\sqrt{2}\)」，并不是直观的「功率 ×2 = 振幅 ×2」。</p>
+          <p><span class="ans">答案：\(v=20\,\mathrm{m/s}\)；\(P_{\text{avg}}\approx 11.5\,\mathrm{W}\)；振幅减半 → 功率降为 \(1/4\)（约 \(2.9\,\mathrm{W}\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 两点的相位差 Phase Difference</h4>
+        <p class="example-statement">弦上行波 \(y=0.10\sin(4.0\,x-10\,t)\)（SI）。求：(a) 波长与周期；(b) \(x_{1}=1.0\,\mathrm{m}\) 与 \(x_{2}=2.5\,\mathrm{m}\) 两点的相位差，化为 \([0,2\pi)\)；(c) 两点是否同相、反相或介于之间？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>读出 \(k=4.0\,\mathrm{rad/m}\)，\(\omega=10\,\mathrm{rad/s}\)。</p>
+          <p class="step">(a) \(\lambda=2\pi/k=2\pi/4=\pi/2\approx1.57\,\mathrm{m}\)；\(T=2\pi/\omega=2\pi/10\approx0.628\,\mathrm{s}\)。</p>
+          <p class="step">(b) \(\Delta x=1.5\,\mathrm{m}\)，相位差
+            \[ \Delta\Phi=k\,\Delta x=4.0\times1.5=6.0\,\mathrm{rad}. \]
+            化简：\(6.0-2\pi\approx 6.0-6.283=-0.283\,\mathrm{rad}\)，即等效相位差约 \(2\pi-0.283\approx6.00\,\mathrm{rad}\)；若想要 \([0,2\pi)\) 内的值，则 \(\Delta\Phi\bmod 2\pi=6.0\,\mathrm{rad}\)（本身已小于 \(2\pi\approx6.283\)）。换算成角度：\(6.0\times180/\pi\approx344^{\circ}\)。</p>
+          <p class="step">(c) 由于 \(\Delta x/\lambda=1.5/(\pi/2)\approx0.955\)，两点相隔接近一个完整波长但不到，相位差接近但略小于 \(2\pi\)，因此<strong>几乎同相</strong>（仅差约 \(16^{\circ}\)），振动步调非常接近。</p>
+          <p><span class="ans">答案：\(\lambda\approx1.57\,\mathrm{m}\)，\(T\approx0.628\,\mathrm{s}\)；\(\Delta\Phi=6.0\,\mathrm{rad}\approx344^{\circ}\)；两点几乎同相。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把波速当成质元速度。</strong>波速 \(v\) 是「形状」前进的速度，由介质决定且恒定；质元速度 \(v_{y}=\partial y/\partial t\) 是某固定点上下运动的速度，随时间位置变化，最大值 \(A\omega\)。通常 \(A\omega\ll v\)（钢琴弦差几十倍），但两者方向也不同（横波中 \(v\) 沿 \(x\)、\(v_{y}\) 沿 \(y\)）。</li>
+        <li><strong>搞错传播方向。</strong>记住口诀「<strong>负号 → 正方向</strong>」：相位写作 \(kx-\omega t\) 时波沿 \(+x\) 传播；写作 \(kx+\omega t\) 时沿 \(-x\)。这是因为「保持相位不变」要求 \(\Delta x=\pm v\,\Delta t\)，正负号决定 \(\Delta x\) 方向。</li>
+        <li><strong>误以为「\(v=\lambda f\)」可调频提速。</strong>\(v\) 由介质（弦上的 \(F_{T},\mu\)；声波的体积模量与密度）决定，是<strong>独立变量</strong>；\(f\) 由波源决定。改变波源频率只会让 \(\lambda=v/f\) 反比变化，\(v\) 不变。这是非色散介质的核心特征。</li>
+        <li><strong>把「张力」与「周期」记混。</strong>两者都常用 \(T\) 表示，本章为避免混淆，张力一律记 \(F_{T}\)，周期保留 \(T\)。</li>
+        <li><strong>能量正比于 \(A\)、\(\omega\)，而不是 \(A^{2}\)、\(\omega^{2}\)。</strong>功率 \(P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v\) 对振幅和频率都按平方标度。振幅加倍功率变 4 倍，不是 2 倍；频率加倍功率变 4 倍。</li>
+        <li><strong>把 \(v=\sqrt{F_{T}/\mu}\) 用于非线性情形。</strong>该公式要求小幅度近似（\(\partial y/\partial x\ll1\)）和均匀弦。大幅振动或变截面弦不适用，需非线性理论。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 横波 \(y=0.020\sin(\pi x-100\pi t)\)（SI）。求 \(A\)、\(\lambda\)、\(f\)、\(T\)、\(v\) 与传播方向。</summary>
+        <div class="hint">对照 \(A\sin(kx-\omega t)\)，读出 \(k,\omega\) 后用四个换算公式。注意 \(\pi x\) 的系数即 \(k\)。</div>
+        <div class="solution">读出 \(A=0.020\,\mathrm{m}=2.0\,\mathrm{cm}\)，\(k=\pi\,\mathrm{rad/m}\)，\(\omega=100\pi\,\mathrm{rad/s}\)。
+          \(\lambda=2\pi/k=2\pi/\pi=2.0\,\mathrm{m}\)；\(f=\omega/2\pi=100\pi/2\pi=50\,\mathrm{Hz}\)；
+          \(T=1/f=0.020\,\mathrm{s}\)；\(v=\omega/k=100\pi/\pi=100\,\mathrm{m/s}\)；时间项 \(-\omega t\) 为负 → 沿 \(+x\)。
+          <span class="ans">\(A=2.0\,\mathrm{cm},\,\lambda=2.0\,\mathrm{m},\,f=50\,\mathrm{Hz},\,T=20\,\mathrm{ms},\,v=100\,\mathrm{m/s},\,+x\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 直径 \(2.0\,\mathrm{mm}\) 的钢丝（密度 \(7.8\,\mathrm{g/cm^{3}}\)），张力 \(500\,\mathrm{N}\)。求线密度 \(\mu\) 与波速 \(v\)。</summary>
+        <div class="hint">线密度 = 体密度 × 横截面积；然后套 \(v=\sqrt{F_{T}/\mu}\)。</div>
+        <div class="solution">半径 \(r=1.0\times10^{-3}\,\mathrm{m}\)，截面积 \(\mathcal{A}=\pi r^{2}=\pi\times10^{-6}\,\mathrm{m^{2}}\)。
+          \(\mu=\rho\mathcal{A}=(7.8\times10^{3})(\pi\times10^{-6})\approx2.45\times10^{-2}\,\mathrm{kg/m}\)。
+          \(v=\sqrt{F_{T}/\mu}=\sqrt{500/0.0245}=\sqrt{2.04\times10^{4}}\approx1.43\times10^{2}\,\mathrm{m/s}\)。
+          <span class="ans">\(\mu\approx2.4\times10^{-2}\,\mathrm{kg/m}\)，\(v\approx143\,\mathrm{m/s}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 弦上正弦波 \(A=5.0\,\mathrm{mm}\)、\(f=100\,\mathrm{Hz}\)、\(v=80\,\mathrm{m/s}\)、\(\mu=0.020\,\mathrm{kg/m}\)。求平均输运功率。</summary>
+        <div class="hint">\(\omega=2\pi f\)，然后 \(P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v\)。</div>
+        <div class="solution">\(\omega=2\pi(100)=200\pi\approx628\,\mathrm{rad/s}\)。
+          \[ P=\tfrac12(0.020)(200\pi)^{2}(5.0\times10^{-3})^{2}(80)=\tfrac12(0.020)(3.95\times10^{5})(2.5\times10^{-5})(80)\approx7.9\,\mathrm{W}. \]
+          <span class="ans">\(P_{\text{avg}}\approx 7.9\,\mathrm{W}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 波长 \(\lambda=0.80\,\mathrm{m}\) 的波，沿其上相距 \(0.50\,\mathrm{m}\) 的两点相位差为多少？化为 \([0,2\pi)\) 并判断同相/反相。</summary>
+        <div class="hint">\(\Delta\Phi=(2\pi/\lambda)\Delta x\)；再与 \(0,\pi,2\pi\) 比较。</div>
+        <div class="solution">\(\Delta\Phi=2\pi(0.50)/0.80=1.25\pi=5\pi/4\,\mathrm{rad}\)。在 \([0,2\pi)\) 内即 \(5\pi/4\)（\(225^{\circ}\)）。既非同相（\(0\)）也非反相（\(\pi\)），介于之间，更接近反相。
+          <span class="ans">\(\Delta\Phi=5\pi/4\,\mathrm{rad}=225^{\circ}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）证明高斯波包 \(y=A\,e^{-(x-vt)^{2}/L^{2}}\) 满足经典波动方程（\(L\) 为常数），并说明它沿什么方向传播。</summary>
+        <div class="hint">把 \(y\) 视为 \(\xi=x-vt\) 的函数，应用 D2 的链式法则；不需要具体算二阶导的值，只需验证结构。</div>
+        <div class="solution">令 \(\xi=x-vt\)，则 \(y=A\,e^{-\xi^{2}/L^{2}}\equiv f(\xi)\)，属于 D2 讨论的 \(f(x-vt)\) 形式。链式法则给出
+          \(\partial^{2}y/\partial t^{2}=v^{2}f''(\xi)\)、\(\partial^{2}y/\partial x^{2}=f''(\xi)\)，
+          代入得 \(\partial^{2}y/\partial t^{2}=v^{2}\partial^{2}y/\partial x^{2}\)，对任意 \(f\)（高斯也含在内）恒成立。
+          由于 \(\xi=x-vt\) 保持不变要求 \(\Delta x=v\,\Delta t\)，波包沿 \(+x\) 方向以速率 \(v\) 传播。<span class="ans">满足波方程；沿 \(+x\) 传播，速率 \(v\)。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>行波 Traveling Wave。</strong>弦上的正弦横波 \(y=A\sin(kx\mp\omega t)\)。调节振幅 \(A\)、波长 \(\lambda\)、频率 \(f\)，切换传播方向；动画实时显示波形向左 / 右推进，并在波峰之间标注波长 \(\lambda\)。在 \(x=6\,\mathrm{cm}\) 处用红点标记一个<strong>固定质元</strong>，竖直箭头表示其横向速度 \(v_{y}\)——对比波形的整体推进（波速 \(v=\lambda f\)）与质元的上下摆动（\(|v_{y}|_{\max}=A\omega\)），直观感受「波速 ≠ 质元速度」。底部读出 \(v\)、\(|v_{y}|_{\max}\) 及二者比值。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="760" height="380"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Display scale (pixels per cm); physics units are cm, s, Hz -----
+          var PX_PER_CM = 12;
+          var OX = 56, OY = H / 2 + 20;
+          var X_MAX_CM = (W - OX - 26) / PX_PER_CM;     // drawable width in cm
+          var MARK_X_CM = 6.0;                            // x of the marked particle
+
+          var params = { A: 1.5, lam: 30, f: 1.5, dirPos: true };
+
+          function k()    { return 2 * Math.PI / Math.max(params.lam, 0.5); }
+          function omega() { return 2 * Math.PI * params.f; }
+          function vPhase() { return params.lam * params.f; }   // cm/s
+          function dirSign() { return params.dirPos ? +1 : -1; }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var tt = s.t;
+              var A_cm = Math.max(params.A, 0.0);
+              var lam = Math.max(params.lam, 0.5);
+              var kk = k(), ww = omega(), vv = vPhase(), sg = dirSign();
+              var Apx = A_cm * PX_PER_CM;
+
+              // ---- background grid + axes ----------------------------------
+              PS.drawGrid(ctx, { originX: OX, originY: OY, scale: PX_PER_CM, step: 5 });
+
+              // ---- equilibrium dashed line ---------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(W - 26, OY); ctx.stroke();
+              ctx.restore();
+
+              // ---- equilibrium axis arrow (x) ------------------------------
+              PS.drawArrow(ctx, OX, OY, W - 24, OY, PS.colors.axis);
+
+              // ---- wave curve ----------------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.4;
+              ctx.globalAlpha = 0.96;
+              ctx.beginPath();
+              var N = 240, i;
+              for (i = 0; i <= N; i++) {
+                var xc = (i / N) * X_MAX_CM;
+                var ph = kk * xc - sg * ww * tt;
+                var yc = A_cm * Math.sin(ph);
+                var px = OX + xc * PX_PER_CM;
+                var py = OY - yc * PX_PER_CM;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- wavelength bracket between two consecutive crests -------
+              // crest condition: sin(kx - sg ω t) = 1 → kx - sg ω t = π/2 + 2πm
+              var xCrest = (Math.PI / 2 + sg * ww * tt) / kk;
+              // bring first crest into [0, λ):
+              xCrest = ((xCrest % lam) + lam) % lam;
+              var xC1 = xCrest, xC2 = xCrest + lam;
+              if (xC2 * PX_PER_CM + OX > W - 30) { xC1 -= lam; xC2 -= lam; }
+              if (xC1 >= 0 && xC2 <= X_MAX_CM) {
+                var bracketY = OY - Apx - 22;
+                var p1 = OX + xC1 * PX_PER_CM, p2 = OX + xC2 * PX_PER_CM;
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.lineWidth = 1.6;
+                // horizontal bar
+                ctx.beginPath(); ctx.moveTo(p1, bracketY); ctx.lineTo(p2, bracketY); ctx.stroke();
+                // end ticks down to the wave crest
+                ctx.beginPath();
+                ctx.moveTo(p1, bracketY); ctx.lineTo(p1, OY - Apx);
+                ctx.moveTo(p2, bracketY); ctx.lineTo(p2, OY - Apx);
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, 'λ = ' + lam.toFixed(1) + ' cm', (p1 + p2) / 2 - 38, bracketY - 6,
+                  { font: 'bold 13px system-ui', color: PS.colors.accent2 });
+              }
+
+              // ---- marked particle (fixed x = MARK_X_CM) -------------------
+              var pmx = OX + MARK_X_CM * PX_PER_CM;
+              var phM = kk * MARK_X_CM - sg * ww * tt;
+              var yM = A_cm * Math.sin(phM);                  // cm
+              var vyM = -sg * A_cm * ww * Math.cos(phM);      // cm/s (∂y/∂t)
+              var pmy = OY - yM * PX_PER_CM;
+              // vertical guide
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.7;
+              ctx.setLineDash([3, 4]);
+              ctx.beginPath(); ctx.moveTo(pmx, OY); ctx.lineTo(pmx, pmy); ctx.stroke();
+              ctx.restore();
+              // particle dot
+              PS.drawCircle(ctx, pmx, pmy, 6, { fill: PS.colors.accent, stroke: '#ffffff', lineWidth: 2 });
+              PS.drawText(ctx, '质元 particle', pmx + 10, pmy - 8,
+                { font: '12px system-ui', color: PS.colors.accent });
+              // velocity arrow on particle (vertical, scaled)
+              var vScale = 5;  // px per (cm/s)
+              var vyArrowEnd = pmy - vyM * vScale;
+              if (Math.abs(vyM) > 0.05) {
+                PS.drawArrow(ctx, pmx, pmy, pmx, vyArrowEnd, PS.colors.accent, 'v_y');
+              }
+
+              // ---- direction arrow at top-right ---------------------------
+              var dirColor = sg > 0 ? PS.colors.primary : PS.colors.primary;
+              var dirY = 36;
+              if (sg > 0) PS.drawArrow(ctx, W - 170, dirY, W - 110, dirY, dirColor);
+              else        PS.drawArrow(ctx, W - 110, dirY, W - 170, dirY, dirColor);
+              PS.drawText(ctx, sg > 0 ? '传播 +x' : '传播 −x', W - 100, dirY + 4,
+                { font: 'bold 13px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, sg > 0 ? 'propagation +x' : 'propagation −x', W - 100, dirY + 20,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- readout panel (bottom-left) ----------------------------
+              var vyMax = A_cm * ww;
+              var rx = 14, ry = H - 96;
+              PS.drawText(ctx, '物理量 Physical quantities:', rx, ry,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'A = ' + A_cm.toFixed(2) + ' cm,   λ = ' + lam.toFixed(1) +
+                ' cm,   f = ' + params.f.toFixed(2) + ' Hz', rx, ry + 18,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '波速  v = λf = ' + vv.toFixed(1) + ' cm/s',
+                rx, ry + 36, { font: 'bold 12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, '质元最大横向速度  |v_y|_max = Aω = ' + vyMax.toFixed(1) + ' cm/s',
+                rx, ry + 54, { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '该质元瞬时  v_y = ' + vyM.toFixed(2) + ' cm/s   (|v_y|_max / v ≈ ' +
+                (vv > 0.01 ? (vyMax / vv).toFixed(3) : '—') + ')',
+                rx, ry + 72, { font: '12px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'A',   label: '振幅 A (cm)',     min: 0.2, max: 3.0, step: 0.1, value: 1.5 },
+            { type: 'slider', key: 'lam', label: '波长 λ (cm)',     min: 10,  max: 50,  step: 1,   value: 30 },
+            { type: 'slider', key: 'f',   label: '频率 f (Hz)',     min: 0.3, max: 3.0, step: 0.1, value: 1.5 },
+            { type: 'toggle', key: 'dirPos', label: '方向 +x（取消则沿 −x）/ Direction +x', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('A',      function (v) { params.A = v; });
+          ctl.on('lam',    function (v) { params.lam = v; });
+          ctl.on('f',      function (v) { params.f = v; });
+          ctl.on('dirPos', function (v) { params.dirPos = v; });
+          ctl.on('reset',  function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>机械波是<strong>扰动的传播</strong>，<em>输运能量而非物质</em>。横波振动 ⊥ 传播方向（如弦），纵波振动 ∥ 传播方向（如声波）。</li>
+        <li>从弦元在张力下的牛顿第二定律得经典一维波动方程 \(\partial^{2}y/\partial t^{2}=v^{2}\partial^{2}y/\partial x^{2}\)，波速 \(v=\sqrt{F_{T}/\mu}\) 仅由介质决定。</li>
+        <li>行波通解 \(y=f(x-vt)+g(x+vt)\)：负号 → \(+x\) 传播，正号 → \(-x\) 传播；对任意形状都成立（d'Alembert）。</li>
+        <li>正弦波 \(y=A\sin(kx-\omega t+\varphi)\) 中：\(k=2\pi/\lambda\)、\(\omega=2\pi f=2\pi/T\)、色散关系 \(v=\omega/k=\lambda f\)、相位 \(\Phi=kx-\omega t+\varphi\)。</li>
+        <li>两点相位差 \(\Delta\Phi=k\,\Delta x=2\pi\,\Delta x/\lambda\)；\(\Delta x=m\lambda\) 同相，\(\Delta x=(m+\tfrac12)\lambda\) 反相。</li>
+        <li>波速 \(v\)（介质决定、恒定）≠ 质元速度 \(v_{y}=\partial y/\partial t\)（随位置时间变化，\(|v_{y}|_{\max}=A\omega\)）。</li>
+        <li>行波能量均分 \(\langle dK/dx\rangle=\langle dU/dx\rangle=\tfrac14\mu A^{2}\omega^{2}\)；平均输运功率 \(P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v\)，对 \(A\)、\(\omega\) 均按平方标度。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\frac{\partial^{2}y}{\partial t^{2}}=v^{2}\frac{\partial^{2}y}{\partial x^{2}},\quad v=\sqrt{\frac{F_{T}}{\mu}},\quad y=A\sin(kx-\omega t+\varphi),\quad v=\frac{\omega}{k}=\lambda f,\quad P_{\text{avg}}=\tfrac12\mu\omega^{2}A^{2}v\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

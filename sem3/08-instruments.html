@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 光学仪器 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第8章 · 光学 Optics</p>
+      <h1>光学仪器 <span class="en-title">Optical Instruments</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>描述<strong>人眼</strong> (the eye) 的成像机制——角膜 (cornea) 与晶状体 (lens) 构成可调焦距的会聚系统，在视网膜 (retina) 上形成倒立实像；说明<strong>调节</strong> (accommodation) 如何改变晶状体焦距，定义<strong>近点</strong> (near point, \(N\approx 25\,\mathrm{cm}\)) 与<strong>远点</strong> (far point)。</li>
+        <li>区分四种常见<strong>视力缺陷</strong> (vision defects)：<strong>近视</strong> (myopia)、<strong>远视</strong> (hyperopia)、<strong>老花</strong> (presbyopia)、<strong>散光</strong> (astigmatism)，对每种缺陷指出病变根源、所用矫正透镜类型（会聚或发散），并用透镜公式 \(\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\) 计算<strong>矫正透镜的光焦度</strong> (corrective lens power in diopters, \(P=1/f\))。</li>
+        <li>计算<strong>放大镜</strong> (magnifying glass / simple magnifier) 的<strong>角放大率</strong> (angular magnification)： relaxed 眼（像在无穷远）\(M=N/f\)；眼置于焦点处 \(M=N/f+1\)。</li>
+        <li>计算<strong>复式显微镜</strong> (compound microscope) 的总放大率 \(M\approx M_{o}M_{e}=(-L/f_{o})(N/f_{e})\)，明确<strong>镜筒长度</strong> (tube length) \(L\) 的意义。</li>
+        <li>计算<strong>折射式望远镜</strong> (refracting telescope) 的角放大率 \(M=-f_{o}/f_{e}\) 与镜筒长度 \(=f_{o}+f_{e}\)，论证中间像是<strong>实像</strong>、最终像是<strong>位于无穷远的虚像</strong>。</li>
+        <li>说明<strong>球差</strong> (spherical aberration) 与<strong>色差</strong> (chromatic aberration) 的成因及常用减弱手段，并定性指出光学仪器的<strong>衍射分辨率极限</strong> (diffraction resolution limit, 第 10 章详述)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 人眼 The Eye</h3>
+      <p>人眼可简化为一个<strong>可调会聚透镜</strong> + <strong>屏幕</strong>系统：角膜 (cornea) 提供大部分折射（空气—水界面折射率差大），晶状体 (crystalline lens) 起微调作用，视网膜 (retina) 是光敏接收面。瞳孔 (pupil) 控制进光量，虹膜 (iris) 是其开合的肌肉。对于正常眼 (emmetropic eye)，远处物体经此系统成像于视网膜，倒立实像——大脑再将信号"翻转"解释。</p>
+      <p><strong>调节 (accommodation)</strong>：睫状肌 (ciliary muscle) 改变晶状体形状，从而改变其焦距。看近物时晶状体变凸、焦距变短（光焦度增大），使近物仍能成像于固定位置的视网膜上。眼能<strong>清晰聚焦的最近物距</strong>称为<strong>近点</strong> (near point) \(d_{\min}\)；青年正常眼 \(d_{\min}\approx 25\,\mathrm{cm}\)，约定记 \(N=25\,\mathrm{cm}\)。眼能<strong>清晰聚焦的最远物距</strong>称为<strong>远点</strong> (far point) \(d_{\max}\)；正常眼 \(d_{\max}=\infty\)（放松调节即可）。</p>
+      <p>约定：本章所有透镜公式中，物距 \(d_{o}>0\)（实物在透镜左侧），像距 \(d_{i}>0\) 表示实像（透镜右侧），\(d_{i}<0\) 表示虚像（透镜左侧）。焦距 \(f>0\) 为会聚透镜 (converging, 凸透镜)，\(f<0\) 为发散透镜 (diverging, 凹透镜)。</p>
+      <div class="formula">\[ \boxed{\;\;\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;\;}\qquad\text{(薄透镜方程 thin-lens equation)} \]</div>
+      <div class="key-terms">cornea (角膜), crystalline lens (晶状体), retina (视网膜), pupil (瞳孔), iris (虹膜), accommodation (调节), near point \(N\) (近点), far point (远点), emmetropic (正常眼)</div>
+
+      <h3>2. 视力缺陷与矫正 Vision Defects &amp; Correction</h3>
+      <p><strong>近视 (myopia, nearsightedness)</strong>：眼球过长或角膜/晶状体折光过强，远处物体成像落在视网膜<strong>前方</strong>——即便调节完全放松，晶状体光焦度仍嫌大。远点 \(d_{\max}<\infty\) 为有限值（如 \(50\,\mathrm{cm}\)）。矫正：在眼前加一片<strong>发散透镜</strong> (diverging lens, \(f<0\))，使无穷远物体先成一虚像位于远点处，眼再把这虚像当作"实物"看清。<strong>发散透镜的光焦度为负</strong>，即 \(P<0\)。</p>
+      <p><strong>远视 (hyperopia, farsightedness)</strong>：眼球过短或折光不足，近处物体成像落在视网膜<strong>后方</strong>——即便最大限度调节也无法看清近物。近点 \(d_{\min}>25\,\mathrm{cm}\)（如 \(80\,\mathrm{cm}\)）。矫正：加<strong>会聚透镜</strong> (converging lens, \(f>0\))，使放在正常阅读距离 \(N=25\,\mathrm{cm}\) 处的物体先成一虚像位于患者实际近点处（更远），眼即可看清。<strong>会聚透镜光焦度为正</strong>，\(P>0\)。</p>
+      <p><strong>老花 (presbyopia)</strong>：随年龄增长晶状体硬化、睫状肌力弱，调节能力下降，近点退移到 \(>25\,\mathrm{cm}\)（阅读困难）。机制同远视（近点退远），常用<strong>双光眼镜</strong> (bifocals) 或渐进多焦镜：上半视远、下半加正光焦度视近。</p>
+      <p><strong>散光 (astigmatism)</strong>：角膜（或晶状体）曲率在不同子午面上不一致，导致一个方向的焦距与正交方向不同；点物被成像为短线/椭圆。矫正用<strong>柱面透镜</strong> (cylindrical / toric lens) 在特定方位补足缺额的光焦度。</p>
+      <p><strong>光焦度 (lens power)</strong>：定义</p>
+      <div class="formula">\[ \boxed{\;\;P\equiv\frac{1}{f}\;\;} ,\qquad \text{单位屈光度 diopter (D) }= \mathrm{m}^{-1} \]</div>
+      <p><strong>注意 \(f\) 必须用米 (m)</strong>，不是厘米。\(f=0.50\,\mathrm{m}\Rightarrow P=+2.0\,\mathrm{D}\)；\(f=-0.25\,\mathrm{m}\Rightarrow P=-4.0\,\mathrm{D}\)。两片薄透镜紧密接触时，总光焦度 \(P_{\text{tot}}=P_{1}+P_{2}\)（焦距满足 \(1/f_{\text{tot}}=1/f_{1}+1/f_{2}\)）。</p>
+      <div class="key-terms">myopia (近视), hyperopia (远视), presbyopia (老花), astigmatism (散光), diopter (屈光度), cylindrical lens (柱面透镜), bifocals (双光眼镜)</div>
+
+      <h3>3. 照相机 The Camera</h3>
+      <p>照相机与人眼结构类似：会聚透镜（或透镜组）在感光面 (CCD/CMOS 或胶片) 上成倒立实像。与人眼不同，相机焦距一般固定（除变焦镜头），通过<strong>移动镜头组改变像距</strong>来对焦（而非改变 \(f\)）。光圈 (aperture) 控制进光量与景深 (depth of field)，快门 (shutter) 控制曝光时间。<strong>角放大概念在此不适用</strong>——相机记录的是横向 (lateral) 像高 \(h_{i}\approx f\tan\theta\)（\(\theta\) 为物对镜头的张角），因此长焦镜头 ("望远镜头") 对同一物体成更大的像。</p>
+      <div class="key-terms">camera (照相机), aperture (光圈), shutter (快门), depth of field (景深), focal length (焦距)</div>
+
+      <h3>4. 放大镜（简单放大镜）The Magnifying Glass (Simple Magnifier)</h3>
+      <p>裸眼观察近处小物体时，物体对眼所张的角 \(\theta_{0}\) 决定其在视网膜上成像的大小——把物体尽量靠近眼可增大 \(\theta_{0}\)，但受限于近点 \(N\)。物体高 \(h\) 置于近点处，\(\theta_{0}\approx h/N\)。</p>
+      <p>放大镜是一片<strong>短焦会聚透镜</strong>（典型 \(f=5\text{–}15\,\mathrm{cm}\)），把物体置于焦点之内（\(d_{o}<f\)），形成正立放大的<strong>虚像</strong>。两种使用方式：</p>
+      <p><strong>(a) relaxed 眼、像在无穷远</strong>（最舒适）：令 \(d_{o}=f\)，物体恰在焦点处，虚像在 \(-\infty\)。此时虚像对眼所张角 \(\theta=f\) 平面意义上的 \(\theta\approx h/f\)。角放大率：</p>
+      <div class="formula">\[ \boxed{\;\;M=\frac{\theta}{\theta_{0}}\approx\frac{h/f}{h/N}=\frac{N}{f}\;\;} \qquad(\text{relaxed eye, 像在无穷远}) \]</div>
+      <p><strong>(b) 眼置于透镜焦点附近、像在近点</strong>：把虚像调到位于眼前近点 \(N\) 处（仍在透镜左侧，\(d_{i}=-N\)），由薄透镜方程 \(1/f=1/d_{o}+1/(-N)\Rightarrow d_{o}=fN/(f+N)\)。横向放大率 \(m=-d_{i}/d_{o}=N/d_{o}=(N+f)/f\)，对应角放大率：</p>
+      <div class="formula">\[ \boxed{\;\;M=\frac{N}{f}+1\;\;} \qquad(\text{eye at near point, 像在近点}) \]</div>
+      <p>约定取 \(N=25\,\mathrm{cm}\) 为"标准近点"。商售放大镜常标 "\(5\times\)" 等数值，即按 \(M=N/f\) 标定（\(f=5\,\mathrm{cm}\Rightarrow M=5\times\)）。注意 \(M\) 是<strong>角放大率</strong>，不是横向放大率——后者在像在无穷远时无定义（像"无限大"也"无限远"，但角度有限）。</p>
+      <div class="key-terms">magnifying glass (放大镜), angular magnification \(M\) (角放大率), lateral magnification \(m\) (横向放大率), near point \(N\) (近点)</div>
+
+      <h3>5. 复式显微镜 The Compound Microscope</h3>
+      <p>显微镜用两片短焦会聚透镜串接：<strong>物镜</strong> (objective, \(f_{o}\) 极短，常 \(1\text{–}10\,\mathrm{mm}\) ) 与<strong>目镜</strong> (eyepiece, \(f_{e}\)，常 \(1\text{–}3\,\mathrm{cm}\) )。物体置于物镜焦点之外（\(d_{o}\) 略大于 \(f_{o}\)），物镜形成<strong>倒立放大的实中间像</strong> (real intermediate image)；该中间像落在目镜焦点之内，目镜作为放大镜将其进一步放大为正立（相对中间像）的<strong>虚像</strong>（通常在无穷远以便 relaxed 观察）。</p>
+      <p>约定<strong>镜筒长度</strong> (tube length) \(L\)：物镜第二焦点到中间像的距离（机械标准 \(L=160\,\mathrm{mm}=16\,\mathrm{cm}\)）。则物镜的横向放大率 \(m_{o}=-L/f_{o}\)；目镜作放大镜用 relaxed 形式 \(M_{e}=N/f_{e}\)。总角放大率：</p>
+      <div class="formula">\[ \boxed{\;\;M_{\text{micro}}=m_{o}\,M_{e}\approx\left(-\frac{L}{f_{o}}\right)\!\left(\frac{N}{f_{e}}\right)\;\;} \]</div>
+      <p>负号表示最终虚像相对于物体是倒立的（视野中上下颠倒）。典型 \(f_{o}=4.0\,\mathrm{mm}\)、\(f_{e}=2.5\,\mathrm{cm}\)、\(L=16\,\mathrm{cm}\)：\(m_{o}=-40\)、\(M_{e}=10\)，\(M=-400\times\)。</p>
+      <div class="key-terms">compound microscope (复式显微镜), objective (物镜), eyepiece (目镜), tube length \(L\) (镜筒长度), intermediate image (中间像)</div>
+
+      <h3>6. 折射式望远镜 The Refracting Telescope</h3>
+      <p>折射式望远镜 (refracting / Keplerian telescope) 也由两片会聚透镜构成，但与显微镜相反：物镜焦距 \(f_{o}\) <strong>长</strong>（收集远方物体光），目镜焦距 \(f_{e}\) <strong>短</strong>（放大）。两透镜安排使<strong>物镜第二焦点与目镜第一焦点重合</strong>——此时镜筒长度恰为</p>
+      <div class="formula">\[ \boxed{\;\;\ell=f_{o}+f_{e}\;\;} \]</div>
+      <p>远方物体（\(d_{o}\to\infty\)）经物镜在其焦平面上成倒立实中间像（像高 \(h_{i}=-f_{o}\tan\theta_{0}\)，\(\theta_{0}\) 为物体对物镜的张角）。该中间像恰位于目镜焦点处，故经目镜后出射<strong>平行光束</strong>（虚像在无穷远），其方向与原入射方向的夹角设为 \(\theta\)。由几何（见推导 8.2）：\(\tan\theta=h_{i}/f_{e}=f_{o}\tan\theta_{0}/f_{e}\)，小角下：</p>
+      <div class="formula">\[ \boxed{\;\;M_{\text{tele}}=\frac{\theta}{\theta_{0}}=-\frac{f_{o}}{f_{e}}\;\;} \]</div>
+      <p>负号表示倒像（地面观察时另加正像透镜或棱镜组，<strong>双筒望远镜</strong> binoculars 即如此）。增大 \(|M|\) 须增大 \(f_{o}\) 或减小 \(f_{e}\)。折射式望远镜受限于物镜直径（收集光强）与色差，现代大型天文望远镜都改用反射式（牛顿、卡塞格林），见 §7。</p>
+      <div class="key-terms">refracting telescope (折射式望远镜), Keplerian (开普勒式), intermediate image (中间像), virtual image at infinity (无穷远虚像)</div>
+
+      <h3>7. 像差 Aberrations</h3>
+      <p>薄透镜与傍轴近似 (paraxial approximation) 是理想化。实际透镜存在<strong>像差</strong> (aberrations)：</p>
+      <ul>
+        <li><strong>球差 (spherical aberration)</strong>：远轴光线 (marginal rays) 与傍轴光线 (paraxial rays) 经同一球面透镜后会聚到不同焦点——边缘光线焦距偏短。减弱手段：使用<strong>非球面透镜</strong> (aspheric lens)、缩小光圈（仅用中央傍轴区）、或采用形状因子优化的透镜（如 best-form lens）。</li>
+        <li><strong>色差 (chromatic aberration)</strong>：透镜材料的折射率随波长变化 (dispersion, 色散)——蓝光折射率较大，焦距较短，导致色边。减弱手段：用<strong>消色差双合透镜</strong> (achromatic doublet) ——把一块冕牌玻璃 (crown glass, 低色散) 的会聚透镜与一块火石玻璃 (flint glass, 高色散) 的发散透镜胶合，使两种波长（如红、蓝）焦点重合。</li>
+        <li>其他：<strong>彗差</strong> (coma)、<strong>像散</strong> (astigmatism of the lens, 非人眼)、<strong>畸变</strong> (distortion) 等。</li>
+      </ul>
+      <div class="key-terms">spherical aberration (球差), chromatic aberration (色差), dispersion (色散), aspheric lens (非球面透镜), achromatic doublet (消色差双合透镜), paraxial (傍轴)</div>
+
+      <h3>8. 衍射分辨率极限 Diffraction Resolution Limit</h3>
+      <p>即使消除所有像差，透镜的<strong>有限直径</strong>使光发生衍射——一个点物成像为一个<strong>艾里斑</strong> (Airy disk) 而非几何点。两个点物能被分辨的最小角距由 Rayleigh 判据给出 \(\theta_{\min}\approx 1.22\,\lambda/D\)（\(D\) 为透镜有效直径）。这决定了任何光学仪器（望远镜、显微镜、人眼）的<strong>极限分辨率</strong>。本章先点到为止，定量讨论放在<strong>第 10 章</strong>（光的衍射）。</p>
+      <div class="key-terms">Airy disk (艾里斑), Rayleigh criterion (瑞利判据), resolution limit (分辨率极限)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 8.1：放大镜的角放大率 \(M=N/f\)</h3>
+      <p class="step"><strong>设定：</strong> 高为 \(h\) 的小物体放在焦距 \(f\) 的会聚透镜焦点上（\(d_{o}=f\)），形成位于无穷远的虚像。眼贴近透镜观察。</p>
+      <p class="step"><strong>步骤 1（裸眼参考角 \(\theta_{0}\)）：</strong> 同一物体若仅用裸眼观察，最近可放近点 \(N\) 处（\(N\approx 25\,\mathrm{cm}\)），此时对眼所张角</p>
+      <div class="formula">\[ \theta_{0}\approx\frac{h}{N}\qquad(\text{小角近似}) \]</div>
+      <p class="step"><strong>步骤 2（经透镜后的角 \(\theta\)）：</strong> 物体在焦点处发出的光线经透镜后平行出射（由薄透镜方程 \(1/f=1/f+1/d_{i}\Rightarrow d_{i}=\infty\)）。从透镜（即眼）看去，物高的视角度等于物体对透镜中心的张角（平行光束的倾角等于物体在焦点处相对光心的角）：</p>
+      <div class="formula">\[ \theta\approx\frac{h}{f} \]</div>
+      <p class="step"><strong>步骤 3（角放大率）：</strong></p>
+      <div class="formula">\[ M=\frac{\theta}{\theta_{0}}=\frac{h/f}{h/N}=\frac{N}{f} \]</div>
+      <p class="step">若把像调到近点（\(d_{i}=-N\)），由薄透镜方程 \(d_{o}=fN/(f+N)\)，横向放大率 \(|m|=N/d_{o}=(f+N)/f\)，相应 \(M=N/f+1\)。两种形式都假设小角近似 \(\tan\theta\approx\theta\)。</p>
+
+      <h3>推导 8.2：折射望远镜 \(M=-f_{o}/f_{e}\) 与 \(\ell=f_{o}+f_{e}\)</h3>
+      <p class="step"><strong>设定：</strong> 远方物体张角 \(\theta_{0}\)（小角），物镜焦距 \(f_{o}\)，目镜焦距 \(f_{e}\)，二者共焦（物镜第二焦点 \(F_{o}'\) 与目镜第一焦点 \(F_{e}\) 重合）。眼贴近目镜观察。</p>
+      <p class="step"><strong>步骤 1（物镜像高）：</strong> 物在无穷远，物镜在其焦平面 \(F_{o}'\) 处成实中间像，像高</p>
+      <div class="formula">\[ h_{i}=-f_{o}\tan\theta_{0}\approx -f_{o}\,\theta_{0} \]</div>
+      <p>（负号表示倒立）。</p>
+      <p class="step"><strong>步骤 2（目镜出射角）：</strong> 中间像恰位于目镜焦点 \(F_{e}\)（与 \(F_{o}'\) 共焦），由 §4 放大镜推导同理，经目镜后成平行光，平行光的倾角等于中间像相对目镜光心的张角：</p>
+      <div class="formula">\[ \theta\approx\frac{|h_{i}|}{f_{e}}=\frac{f_{o}\,\theta_{0}}{f_{e}} \]</div>
+      <p class="step"><strong>步骤 3（角放大率与镜筒长度）：</strong> 考虑方向（倒像），</p>
+      <div class="formula">\[ M=\frac{\theta}{\theta_{0}}=-\frac{f_{o}}{f_{e}} \]</div>
+      <p>两透镜间距：物镜到共焦点为 \(f_{o}\)，共焦点到目镜为 \(f_{e}\)，故镜筒长 \(\ell=f_{o}+f_{e}\)。</p>
+      <p class="step"><strong>物理图像：</strong> 望远镜<strong>并不增大</strong>中间像的横向尺度（中间像甚至比物体本身小无数倍）；它做的是把入射光束的<strong>张角</strong>从 \(\theta_{0}\) 放大到 \(\theta\) —— retina 上的像高正比于张角，所以看上去被放大了。这也是望远镜能把暗淡的远方物体变亮的原因：物镜的大直径收集更多光通量，这些光最终被压缩到瞳孔大小的出射光束里（出射光瞳）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 近视眼的矫正（发散透镜）Myope's Diverging Lens</h4>
+        <p class="example-statement">一位近视者的远点为 \(d_{\max}=50\,\mathrm{cm}\)（即超过此距离的物体看不清）。求所需矫正透镜的焦距与光焦度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 矫正的物理要求：戴上眼镜后，无穷远处的物体经镜片所成的<strong>虚像</strong>恰好位于患者远点（\(d_{i}=-50\,\mathrm{cm}\)），眼再把这虚像看清。对该镜片用薄透镜方程：</p>
+          <div class="formula">\[ \frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}=\frac{1}{\infty}+\frac{1}{-50\,\mathrm{cm}}=0-\frac{1}{50\,\mathrm{cm}} \]</div>
+          <div class="formula">\[ \frac{1}{f}=-\frac{1}{50\,\mathrm{cm}}=-\frac{1}{0.50\,\mathrm{m}}=-2.0\,\mathrm{m}^{-1} \]</div>
+          <p class="step">故 \(f=-0.50\,\mathrm{m}\)（发散透镜），光焦度：</p>
+          <div class="formula">\[ P=\frac{1}{f}=\frac{1}{-0.50\,\mathrm{m}}=-2.0\,\mathrm{D} \]</div>
+          <p class="step"><strong>校核：</strong> \(P<0\) 与近视需发散透镜一致。常见近视度数 \(-2.0\,\mathrm{D}\) 即"200 度"（中国眼镜度数 \(=100\times|P|\) 屈光度数值），属轻中度近视。</p>
+          <p><span class="ans">\(f=-50\,\mathrm{cm}\)，\(P=-2.0\,\mathrm{D}\)（发散透镜）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 远视眼的矫正（会聚透镜）Hyperope's Converging Lens</h4>
+        <p class="example-statement">一位远视者的近点为 \(d_{\min}=80\,\mathrm{cm}\)（即近于此距离的物体看不清）。该人想舒适地阅读放在 \(d_{o}=25\,\mathrm{cm}\) 处的书。求所需矫正透镜的焦距与光焦度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 物理要求：戴镜后，\(25\,\mathrm{cm}\) 处的实物经镜片成一<strong>虚像</strong>位于患者近点 \(d_{i}=-80\,\mathrm{cm}\)（虚像更远，眼可看清）。代入薄透镜方程：</p>
+          <div class="formula">\[ \frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}=\frac{1}{25\,\mathrm{cm}}+\frac{1}{-80\,\mathrm{cm}} \]</div>
+          <p class="step">公分母 \(=25\times 80=2000\,\mathrm{cm^{2}}\)：</p>
+          <div class="formula">\[ \frac{1}{f}=\frac{80-25}{2000\,\mathrm{cm}}=\frac{55}{2000\,\mathrm{cm}}=2.75\times 10^{-2}\,\mathrm{cm}^{-1} \]</div>
+          <div class="formula">\[ f=\frac{2000}{55}\,\mathrm{cm}=36.36\,\mathrm{cm}=0.3636\,\mathrm{m} \]</div>
+          <p class="step">换算屈光度（用米！）：</p>
+          <div class="formula">\[ P=\frac{1}{f}=\frac{1}{0.3636\,\mathrm{m}}=2.75\,\mathrm{D} \]</div>
+          <p class="step"><strong>校核：</strong> \(P>0\) 为会聚透镜，与远视矫正一致。也可由"中间结果"直接：\(1/f=2.75\,\mathrm{m}^{-1}\)（因 \(1/0.25-1/0.80=4.00-1.25=2.75\)）。中国眼镜度数约 \(+275\) 度。</p>
+          <p><span class="ans">\(f\approx +36.4\,\mathrm{cm}\)，\(P=+2.75\,\mathrm{D}\)（会聚透镜）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 放大镜的角放大率 Magnifying Glass Angular Magnification</h4>
+        <p class="example-statement">一枚标注 \(f=10\,\mathrm{cm}\) 的会聚透镜用作放大镜，取 \(N=25\,\mathrm{cm}\)。求：(a) relaxed 眼（像在无穷远）时的角放大率；(b) 像调到近点（眼置于焦点处）时的角放大率；(c) (b) 情形下物体的实际物距 \(d_{o}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> relaxed 眼，\(d_{o}=f\)，像在无穷远：</p>
+          <div class="formula">\[ M=\frac{N}{f}=\frac{25\,\mathrm{cm}}{10\,\mathrm{cm}}=2.5\times \]</div>
+          <p class="step"><strong>(b)</strong> 像在近点：</p>
+          <div class="formula">\[ M=\frac{N}{f}+1=2.5+1=3.5\times \]</div>
+          <p class="step"><strong>(c)</strong> 由薄透镜方程 \(1/f=1/d_{o}+1/(-N)\)，故</p>
+          <div class="formula">\[ \frac{1}{d_{o}}=\frac{1}{f}+\frac{1}{N}=\frac{1}{10\,\mathrm{cm}}+\frac{1}{25\,\mathrm{cm}}=0.10+0.040=0.140\,\mathrm{cm}^{-1} \]</div>
+          <div class="formula">\[ d_{o}=\frac{1}{0.140}=7.14\,\mathrm{cm} \]</div>
+          <p class="step"><strong>解读：</strong> 物体须放在透镜焦点（\(f=10\,\mathrm{cm}\)）<strong>之内</strong>（\(d_{o}=7.14\,\mathrm{cm}<f\)），才能成正立放大虚像；情形 (b) 比情形 (a) 多一个单位的放大率，代价是必须把物体放得更近，且眼要费力调节（像在近点而非无穷远）。</p>
+          <p><span class="ans">(a) \(2.5\times\)；(b) \(3.5\times\)；(c) \(d_{o}\approx 7.14\,\mathrm{cm}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 复式显微镜的总放大率 Compound Microscope</h4>
+        <p class="example-statement">一显微镜物镜标 "\(40\times\)"、目镜标 "\(10\times\)"。厂家按 \(N=25\,\mathrm{cm}\) 标定，镜筒长度 \(L=16\,\mathrm{cm}\)。求：(a) 物镜焦距 \(f_{o}\)；(b) 目镜焦距 \(f_{e}\)；(c) 总放大率；(d) 镜筒中实中间像的位置与性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 由物镜横向放大率 \(|m_{o}|=L/f_{o}\)：</p>
+          <div class="formula">\[ f_{o}=\frac{L}{|m_{o}|}=\frac{16\,\mathrm{cm}}{40}=0.40\,\mathrm{cm}=4.0\,\mathrm{mm} \]</div>
+          <p class="step"><strong>(b)</strong> 目镜作放大镜 \(M_{e}=N/f_{e}\)：</p>
+          <div class="formula">\[ f_{e}=\frac{N}{M_{e}}=\frac{25\,\mathrm{cm}}{10}=2.5\,\mathrm{cm}=25\,\mathrm{mm} \]</div>
+          <p class="step"><strong>(c)</strong> 总放大率：</p>
+          <div class="formula">\[ M=m_{o}\,M_{e}=(-40)\times 10=-400\times \]</div>
+          <p class="step"><strong>(d)</strong> 中间像：物镜把位于其焦点稍外的物体成一<strong>倒立实像</strong>，位于物镜像方焦点之外 \(L=16\,\mathrm{cm}\) 处（即目镜焦点上）。该实像是被目镜进一步放大的"实物"。</p>
+          <p class="step"><strong>校核：</strong> 物镜 \(4\,\mathrm{mm}\) 焦距（短）、目镜 \(25\,\mathrm{mm}\) 焦距（中等），是典型中倍率生物显微镜配置。</p>
+          <p><span class="ans">(a) \(f_{o}=4.0\,\mathrm{mm}\)；(b) \(f_{e}=2.5\,\mathrm{cm}\)；(c) \(M=-400\times\)；(d) 倒立实中间像位于目镜焦点处</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 折射式望远镜 Refracting Telescope</h4>
+        <p class="example-statement">一开普勒折射式望远镜，物镜焦距 \(f_{o}=90\,\mathrm{cm}\)，目镜焦距 \(f_{e}=3.0\,\mathrm{cm}\)。求：(a) 角放大率；(b) 镜筒长度；(c) 用它观察与水平方向成 \(\theta_{0}=0.50^{\circ}\) 的远方物体时，出射光与轴的夹角 \(\theta\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 角放大率：</p>
+          <div class="formula">\[ M=-\frac{f_{o}}{f_{e}}=-\frac{90\,\mathrm{cm}}{3.0\,\mathrm{cm}}=-30\times \]</div>
+          <p class="step"><strong>(b)</strong> 镜筒长度：</p>
+          <div class="formula">\[ \ell=f_{o}+f_{e}=90+3.0=93\,\mathrm{cm} \]</div>
+          <p class="step"><strong>(c)</strong> 出射角：</p>
+          <div class="formula">\[ \theta=|M|\,\theta_{0}=30\times 0.50^{\circ}=15^{\circ} \]</div>
+          <p class="step"><strong>解读：</strong> 物体方向被"放大" 30 倍后呈现在眼前 \(15^{\circ}\) 处（注意倒像，实际方向反向）。放大率来自长 \(f_{o}\) + 短 \(f_{e}\) 的组合；要进一步增大 \(|M|\) 须增大 \(f_{o}\)（受限于机械长度）或减小 \(f_{e}\)（受限于目镜像差与出瞳距离）。</p>
+          <p><span class="ans">(a) \(M=-30\times\)；(b) \(\ell=93\,\mathrm{cm}\)；(c) \(|\theta|=15^{\circ}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>屈光度 \(P=1/f\) 中 \(f\) 必须用<strong>米</strong></strong>，不是厘米！常见错误：\(f=50\,\mathrm{cm}\) 直接写 \(P=1/50=0.02\,\mathrm{D}\)——丢了两个数量级。正确：\(P=1/0.50=2.0\,\mathrm{D}\)。注意中国眼镜处方的"度数" = \(100\times|P|\)（如 \(-2.0\,\mathrm{D}=-200\) 度），勿与屈光度混。</li>
+        <li><strong>角放大率 \(M\) 与横向放大率 \(m\) 是不同概念。</strong> 横向放大率 \(m=-d_{i}/d_{o}=h_{i}/h_{o}\) 描述像与物的<strong>线度</strong>之比，要求像距有限。角放大率 \(M=\theta/\theta_{0}\) 描述像对眼所张<strong>角</strong>与裸眼参考角之比，适用于像在无穷远的情形（此时 \(m\to\infty\) 无意义，但 \(M\) 有限）。放大镜、显微镜、望远镜都用角放大率。</li>
+        <li><strong>近视用发散透镜（\(P<0\)），远视用会聚透镜（\(P>0\)）——方向易混。</strong> 物理判据：近视眼折光过强，须用负透镜"减弱"系统总光焦度；远视眼折光不足，须用正透镜"增强"。一种记忆法："近视 near-sighted 能看清近处 → 拿走近处光焦度（负镜）；远视 far-sighted 能看清远处 → 加上视近所需光焦度（正镜）"。</li>
+        <li><strong>折射式望远镜成"实中间像 + 虚最终像"，不是两段都是实像或两段都是虚像。</strong> 物镜必成实像（否则目镜无"实物"可放大），目镜作为放大镜把该实像成虚像于无穷远。显微镜结构同此（物镜实中间像 + 目镜虚最终像）。学生常误以为最终像是实像——可观察屏幕上的像——其实最终像在视网膜之前并不实际存在光线汇聚。</li>
+        <li><strong>把矫正透镜光焦度算成"眼镜使物体真实移动"</strong>——不对。眼镜只是在物空间与眼之间插入一片透镜，使物体<strong>看起来</strong>位于患者能看清的距离（远点 / 近点）；物体的物理位置未变。薄透镜方程中代入的 \(d_{i}\) 是<strong>虚像</strong>位置，不是物体新位置。</li>
+        <li><strong>放大镜 "\(5\times\)" 与显微镜/望远镜 "\(400\times\)" 含义不同。</strong> 放大镜标的 \(M=N/f\)（角放大率，参考 \(N=25\,\mathrm{cm}\)）；显微镜/望远镜标的也是角放大率，但来自两级透镜组合。两者都不能简单理解为"物体线度被放大到 5 倍/400 倍"——那要看像距。放大率数值依赖约定的 \(N\)，不同厂家可能用不同约定。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 远点 \(200\,\mathrm{cm}\) 的近视者所需矫正透镜。一位近视者的远点为 \(d_{\max}=200\,\mathrm{cm}\)。求所需眼镜的焦距 \(f\) 与光焦度 \(P\)。</summary>
+        <div class="hint">无穷远物 → 虚像位于远点 \(d_{i}=-200\,\mathrm{cm}\)，代入 \(1/f=1/d_{o}+1/d_{i}\)。</div>
+        <div class="solution">\(1/f=1/\infty+1/(-200\,\mathrm{cm})=-1/200\,\mathrm{cm}=-1/(2.00\,\mathrm{m})\)。<br>故 \(f=-2.00\,\mathrm{m}\)，\(P=1/f=-0.50\,\mathrm{D}\)（发散透镜，约 \(-50\) 度）。属轻度近视。<br><span class="ans">\(f=-2.00\,\mathrm{m}\)，\(P=-0.50\,\mathrm{D}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 近点 \(125\,\mathrm{cm}\) 的远视者想读 \(25\,\mathrm{cm}\) 处的书。求所需矫正透镜 \(f\) 与 \(P\)。</summary>
+        <div class="hint">物 \(d_{o}=25\,\mathrm{cm}\)，虚像位于近点 \(d_{i}=-125\,\mathrm{cm}\)，用薄透镜方程。</div>
+        <div class="solution">\(1/f=1/25+1/(-125)=0.040-0.0080=0.032\,\mathrm{cm}^{-1}=3.2\,\mathrm{m}^{-1}\)。<br>故 \(f=1/0.032=31.25\,\mathrm{cm}=0.3125\,\mathrm{m}\)，\(P=+3.20\,\mathrm{D}\)（会聚透镜）。<br>校核用米：\(1/0.25-1/1.25=4.0-0.8=3.2\,\mathrm{D}\) ✓。<br><span class="ans">\(f\approx +31.3\,\mathrm{cm}\)，\(P=+3.20\,\mathrm{D}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 标 "\(8\times\)" 的放大镜。求焦距 \(f\)，并把物体放在焦点处时求角放大率（按 \(N=25\,\mathrm{cm}\) 标定）。</summary>
+        <div class="hint">\(M=N/f\)，反解 \(f=N/M\)。</div>
+        <div class="solution">\(f=N/M=25/8=3.125\,\mathrm{cm}\)。<br>若改用像在近点的方式，\(M=N/f+1=8+1=9\times\)，但需把物放在 \(d_{o}=fN/(f+N)=(3.125\times 25)/(3.125+25)=78.13/28.125=2.78\,\mathrm{cm}\) 处。<br><span class="ans">\(f\approx 3.13\,\mathrm{cm}\)；relaxed 模式 \(M=8\times\)，像在近点模式 \(M=9\times\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 复式显微镜：物镜 \(f_{o}=0.40\,\mathrm{cm}\)、目镜 \(f_{e}=2.0\,\mathrm{cm}\)、镜筒长 \(L=16\,\mathrm{cm}\)。求 (a) 物镜横向放大率；(b) 总角放大率（\(N=25\,\mathrm{cm}\)）。</summary>
+        <div class="hint">\(m_{o}=-L/f_{o}\)；\(M_{e}=N/f_{e}\)；\(M=m_{o}M_{e}\)。</div>
+        <div class="solution">(a) \(m_{o}=-L/f_{o}=-16/0.40=-40\)。<br>(b) \(M_{e}=N/f_{e}=25/2.0=12.5\)。<br>\(M=m_{o}M_{e}=(-40)(12.5)=-500\times\)。<br><span class="ans">(a) \(m_{o}=-40\)；(b) \(M=-500\times\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 折射式望远镜角放大率 \(-20\times\)、镜筒长 \(105\,\mathrm{cm}\)。求 \(f_{o}\) 与 \(f_{e}\)。</summary>
+        <div class="hint">由 \(M=-f_{o}/f_{e}\)、\(\ell=f_{o}+f_{e}\) 联立。</div>
+        <div class="solution">由 \(|M|=f_{o}/f_{e}=20\Rightarrow f_{o}=20f_{e}\)。代入 \(\ell=f_{o}+f_{e}=21f_{e}=105\,\mathrm{cm}\)，故 \(f_{e}=5.0\,\mathrm{cm}\)，\(f_{o}=100\,\mathrm{cm}\)。<br>校核：\(M=-100/5=-20\) ✓，\(\ell=100+5=105\,\mathrm{cm}\) ✓。<br><span class="ans">\(f_{o}=100\,\mathrm{cm}\)，\(f_{e}=5.0\,\mathrm{cm}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">折射式望远镜光路图 (Refracting telescope ray tracer)。两片会聚透镜（左：长焦物镜 objective，\(f_{o}\)；右：短焦目镜 eyepiece，\(f_{e}\)）按共焦放置，相距 \(\ell=f_{o}+f_{e}\)。三束<strong>平行入射光</strong>（来自远方物体，倾角 \(\alpha\)）从左侧进入：经物镜后汇聚于两透镜公共焦点处的<strong>实中间像</strong> (real intermediate image)，再发散至目镜，被目镜重新准直为<strong>平行出射光</strong>——即最终虚像位于无穷远。出射光与入射光的倾角比给出角放大率 \(M=-f_{o}/f_{e}\)。调节滑块 \(f_{o}\)、\(f_{e}\)（以及入射倾角 \(\alpha\)），观察中间像位置、出射光倾角、放大率如何变化。注意中间像始终落在公共焦点上；增大 \(f_{o}/f_{e}\) 比值即增大 \(|M|\)。坐标采用归一化像素（仅用于可视化）。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="780" height="380"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+          var AXIS = H / 2;                    // optical axis (horizontal)
+          var X_LEFT = 0;                       // left canvas edge
+          var X_RIGHT = W;
+
+          // Visual (pixel) focal lengths — purely for drawing; M = -fo/fe is
+          // dimensionless so the ratio is what carries the physics.
+          var params = {
+            fo: 200,    // objective focal length, px
+            fe: 60,     // eyepiece focal length, px
+            alpha: 0.18 // input ray slope (dimensionless angle, rad-ish)
+          };
+
+          // Three parallel input rays at these axis-offset heights (px).
+          var RAY_HEIGHTS = [-55, 0, 55];
+
+          function xObjective() { return 140; }                       // x of objective lens
+          function xCommon()    { return xObjective() + params.fo; }  // shared focal point
+          function xEyepiece()  { return xCommon()    + params.fe; }  // x of eyepiece lens
+
+          // Trace one ray through the system; returns segments for drawing.
+          // Input: y0 = ray height at x = X_LEFT (slope = alpha).
+          function traceRay(y0) {
+            var xL1 = xObjective();
+            var xF  = xCommon();
+            var xL2 = xEyepiece();
+            var m   = params.alpha;
+            // Segment 1: from left edge to objective (parallel ray, slope m)
+            var yL1 = y0 + m * (xL1 - X_LEFT);
+            // Segment 2: objective -> common focal point.
+            // Parallel rays at slope m focus at height -fo*m in the focal plane
+            // (negative sign = inverted intermediate image).
+            var yF = -params.fo * m;
+            // Segment 3: continue from F to eyepiece along the same straight line.
+            var slope2 = (yF - yL1) / (xF - xL1);
+            var yL2 = yF + slope2 * (xL2 - xF);
+            // After eyepiece: parallel output with slope m_out = -m * fo / fe
+            // (angular magnification = -fo/fe).
+            var mOut = -m * params.fo / params.fe;
+            // Extend to right edge
+            var yEnd = yL2 + mOut * (X_RIGHT - xL2);
+            return {
+              inA:  [X_LEFT, yL1],
+              inB:  [xL1, yL1],
+              midA: [xL1, yL1],
+              midB: [xF, yF],
+              midC: [xL2, yL2],
+              outA: [xL2, yL2],
+              outB: [X_RIGHT, yEnd]
+            };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t = t; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ---- Optical axis (dashed horizontal) ----------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.7;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([5, 5]);
+              ctx.beginPath();
+              ctx.moveTo(0, AXIS); ctx.lineTo(W, AXIS);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+
+              // Geometry
+              var xL1 = xObjective();
+              var xF  = xCommon();
+              var xL2 = xEyepiece();
+              var fitsCanvas = (xL2 + 30 < W);
+
+              // ---- Trace rays (draw input, middle, output segments) ------
+              // Color by segment for pedagogy.
+              for (var i = 0; i < RAY_HEIGHTS.length; i++) {
+                var r = traceRay(RAY_HEIGHTS[i]);
+                // Segment 1: parallel input (primary blue)
+                PS.drawArrow(ctx, r.inA[0], r.inA[1], r.inB[0], r.inB[1],
+                             PS.colors.primary);
+                // Segment 2 & 3: objective -> F -> eyepiece (purple trace)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(r.midA[0], r.midA[1]);
+                ctx.lineTo(r.midB[0], r.midB[1]);
+                ctx.lineTo(r.midC[0], r.midC[1]);
+                ctx.stroke();
+                ctx.restore();
+                // Segment 4: parallel output (green accent2)
+                PS.drawArrow(ctx, r.outA[0], r.outA[1], r.outB[0], r.outB[1],
+                             PS.colors.accent2);
+              }
+
+              // ---- Objective lens (vertical blue line with arrowheads) ---
+              drawLens(ctx, xL1, 110, PS.colors.primary, '物镜 Objective\nf_o = ' + params.fo + ' (px)');
+
+              // ---- Eyepiece lens -----------------------------------------
+              if (fitsCanvas) {
+                drawLens(ctx, xL2, 75, PS.colors.accent2, '目镜 Eyepiece\nf_e = ' + params.fe + ' (px)');
+              } else {
+                PS.drawText(ctx, '目镜出画 — 减小 f_o 或 f_e',
+                  xL1 + 20, AXIS - 100,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent, align: 'left' });
+              }
+
+              // ---- Common focal point (real intermediate image) ---------
+              var yF = -params.fo * params.alpha;
+              PS.drawCircle(ctx, xF, AXIS + yF, 4,
+                { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawText(ctx, '实中间像', xF, AXIS + yF - 12,
+                { font: 'bold 12px system-ui', color: PS.colors.accent, align: 'center' });
+              PS.drawText(ctx, 'Real intermediate image', xF, AXIS + yF + 16,
+                { font: '11px system-ui', color: PS.colors.accent, align: 'center' });
+              // Focal-point markers on axis (F_o' = F_e)
+              PS.drawCircle(ctx, xF, AXIS, 2.5, { fill: PS.colors.text });
+              PS.drawText(ctx, "F_o' = F_e", xF, AXIS + 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // ---- Input / output angle annotations ----------------------
+              PS.drawText(ctx, '平行入射 Parallel in (slope α = ' + params.alpha.toFixed(2) + ')',
+                12, 30,
+                { font: 'bold 12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, '平行出射 Parallel out (像在 ∞)',
+                W - 12, 30,
+                { font: 'bold 12px system-ui', color: PS.colors.accent2, align: 'right' });
+
+              // ---- Magnification readout ---------------------------------
+              var M = -params.fo / params.fe;
+              var mOut = -params.alpha * params.fo / params.fe;
+              var rx = 12, ry = H - 90;
+              PS.drawText(ctx, '物理量 Physical quantities:', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                '镜筒长度 Tube length  ℓ = f_o + f_e = ' + (params.fo + params.fe).toFixed(0) + ' (px)',
+                rx, ry + 20,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                '角放大率 Angular mag.  M = −f_o / f_e = ' + M.toFixed(2) + '×',
+                rx, ry + 40,
+                { font: 'bold 13px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx,
+                '出射 / 入射倾角比  |θ/α| = f_o / f_e = ' + (params.fo / params.fe).toFixed(2),
+                rx, ry + 60,
+                { font: '12px system-ui', color: PS.colors.accent2 });
+
+              // ---- Helper: draw a thin lens as a vertical double-arrow ---
+              function drawLens(ctx, x, halfH, color, label) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.2;
+                // central vertical line
+                ctx.beginPath();
+                ctx.moveTo(x, AXIS - halfH);
+                ctx.lineTo(x, AXIS + halfH);
+                ctx.stroke();
+                // little arrowheads top & bottom (lens shape convention)
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x, AXIS - halfH - 6);
+                ctx.lineTo(x - 5, AXIS - halfH + 2);
+                ctx.lineTo(x + 5, AXIS - halfH + 2);
+                ctx.closePath(); ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(x, AXIS + halfH + 6);
+                ctx.lineTo(x - 5, AXIS + halfH - 2);
+                ctx.lineTo(x + 5, AXIS + halfH - 2);
+                ctx.closePath(); ctx.fill();
+                ctx.restore();
+                // label
+                var lines = label.split('\n');
+                for (var k = 0; k < lines.length; k++) {
+                  PS.drawText(ctx, lines[k], x, AXIS - halfH - 14 - (lines.length - 1 - k) * 14,
+                    { font: '12px system-ui', color: color, align: 'center' });
+                }
+              }
+
+              // ---- Caption hint ------------------------------------------
+              PS.drawText(ctx,
+                '蓝=入射平行光   紫=经物镜汇聚到公共焦点再发散至目镜   绿=出射平行光',
+                W / 2, H - 8,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'fo',    label: '物镜焦距 f_o (px)', min: 120, max: 320, step: 5,  value: 200 },
+            { type: 'slider', key: 'fe',    label: '目镜焦距 f_e (px)', min: 30,  max: 120, step: 2,  value: 60  },
+            { type: 'slider', key: 'alpha', label: '入射倾角 α (slope)', min: 0.05, max: 0.30, step: 0.01, value: 0.18 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('fo',    function (v) { params.fo    = v; });
+          ctl.on('fe',    function (v) { params.fe    = v; });
+          ctl.on('alpha', function (v) { params.alpha = v; });
+          ctl.on('reset', function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>人眼</strong>：角膜 + 晶状体构成可调会聚系统，在视网膜成倒立实像。<strong>调节</strong>改变晶状体焦距；<strong>近点</strong> \(N\approx 25\,\mathrm{cm}\)、<strong>远点</strong>（正常 \(\infty\)）。</li>
+        <li><strong>视力缺陷</strong>：近视（远点有限，发散透镜 \(P<0\)）；远视（近点退远，会聚透镜 \(P>0\)）；老花（调节能力衰退，双光镜）；散光（角膜曲率不均，柱面透镜）。</li>
+        <li><strong>光焦度</strong> \(P=1/f\)，单位屈光度 (D)，\(f\) 用米。两片薄透镜密接 \(P_{\text{tot}}=P_{1}+P_{2}\)。</li>
+        <li><strong>照相机</strong>：固定 \(f\)、移动镜头组对焦，光圈控制光强/景深；像高 \(h_{i}\approx f\tan\theta\)。</li>
+        <li><strong>放大镜</strong>（角放大）：relaxed 眼 \(M=N/f\)；像在近点 \(M=N/f+1\)。</li>
+        <li><strong>复式显微镜</strong>：物镜横向 \(m_{o}=-L/f_{o}\)、目镜角放大 \(M_{e}=N/f_{e}\)，总 \(M\approx -(L/f_{o})(N/f_{e})\)。</li>
+        <li><strong>折射式望远镜</strong>：\(M=-f_{o}/f_{e}\)，镜筒长 \(\ell=f_{o}+f_{e}\)；实中间像 + 无穷远虚最终像。</li>
+        <li><strong>像差</strong>：球差（非球面 / 缩光圈）、色差（消色差双合）；其他彗差、像散、畸变。</li>
+        <li><strong>分辨率极限</strong>（第 10 章）：Rayleigh 判据 \(\theta_{\min}\approx 1.22\,\lambda/D\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\;\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;,\quad P=\frac{1}{f}\;[\mathrm{D}]\;,\quad M_{\text{mag}}=\frac{N}{f}\;,\quad M_{\text{micro}}\approx-\frac{L}{f_{o}}\cdot\frac{N}{f_{e}}\;,\quad M_{\text{tele}}=-\frac{f_{o}}{f_{e}}\;,\quad \ell=f_{o}+f_{e}\;\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

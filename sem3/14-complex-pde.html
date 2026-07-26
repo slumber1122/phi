@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第14章 · 复变函数与偏微分方程 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="14">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第14章 · 数学方法 Math Methods</p>
+      <h1>复变函数与偏微分方程 <span class="en-title">Complex Analysis &amp; PDEs</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>在直角坐标 <span>\(z=x+iy\)</span> 与极坐标 <span>\(z=re^{i\theta}\)</span>（欧拉形式 Euler form）两种形式下做复数运算，用棣莫弗公式 (de Moivre's formula) <span>\(z^{n}=r^{n}e^{in\theta}\)</span> 求幂，并写出 <span>\(n\)</span> 次单位根 (roots of unity) \(e^{2\pi ik/n}\)。</li>
+        <li>陈述<strong>解析函数</strong> (analytic / holomorphic function) 的定义，导出并验证 <strong>Cauchy–Riemann 方程</strong> <span>\(\partial u/\partial x=\partial v/\partial y\)</span>、<span>\(\partial u/\partial y=-\partial v/\partial x\)</span>，并由此说明解析函数的实部与虚部都是<strong>调和函数</strong> (harmonic)。</li>
+        <li>说明 <strong>Cauchy 定理</strong> \(\oint_{\gamma}f(z)\,\mathrm{d}z=0\)（在解析区域内）与 <strong>Cauchy 积分公式</strong> \(f(z_{0})=\tfrac{1}{2\pi i}\oint f(z)/(z-z_{0})\,\mathrm{d}z\) 的内容及其推论。</li>
+        <li>区分 <strong>Taylor 级数</strong>与 <strong>Laurent 级数</strong>，按极点 (pole)、本性奇点 (essential singularity) 对奇点分类，并用<strong>留数定理</strong> \(\oint f=2\pi i\sum\mathrm{Res}\) 计算实积分。</li>
+        <li>识别物理学三大<strong>偏微分方程</strong> (PDE)：波方程 \(\partial^{2}u/\partial t^{2}=v^{2}\nabla^{2}u\)、热/扩散方程 \(\partial u/\partial t=\alpha\nabla^{2}u\)、Laplace 方程 \(\nabla^{2}V=0\)，并说明各自对应的物理场景。</li>
+        <li>用<strong>分离变量法</strong> (separation of variables) 在简单区域上把解展开为 Fourier 模式（弦、杆）或特殊函数模式（连接第 5 章 Fourier 分析与第 13 章特殊函数）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 复数及其两种表示 Complex Numbers: Two Representations</h3>
+      <p>复数 (complex number) \(z=x+iy\)，其中 \(i^{2}=-1\)，\(x=\mathrm{Re}\,z\) 为实部 (real part)，\(y=\mathrm{Im}\,z\) 为虚部 (imaginary part)。<strong>直角形式</strong>：</p>
+      <div class="formula">\[ z=x+iy,\qquad z^{*}=x-iy\ \text{(复共轭 complex conjugate)},\qquad |z|=\sqrt{x^{2}+y^{2}} \]</div>
+      <p>利用 Euler 公式 \(e^{i\theta}=\cos\theta+i\sin\theta\)，得<strong>极坐标 / 欧拉形式</strong>：</p>
+      <div class="formula">\[ \boxed{\,z=re^{i\theta},\quad r=|z|,\quad \theta=\arg z=\mathrm{atan2}(y,x)\,} \]</div>
+      <p>欧拉形式下乘法、除法、幂都变得简单：\(z_{1}z_{2}=r_{1}r_{2}e^{i(\theta_{1}+\theta_{2})}\)，\(z_{1}/z_{2}=(r_{1}/r_{2})e^{i(\theta_{1}-\theta_{2})}\)。幂由<strong>棣莫弗公式</strong>给出：</p>
+      <div class="formula">\[ z^{n}=\bigl(re^{i\theta}\bigr)^{n}=r^{n}e^{in\theta}=r^{n}\bigl(\cos n\theta+i\sin n\theta\bigr) \]</div>
+      <p><strong>\(n\)</strong><strong>次方根</strong>（共 \(n\) 个，等间距分布在复平面半径 \(r^{1/n}\) 的圆上）：</p>
+      <div class="formula">\[ z^{1/n}=r^{1/n}\,e^{\,i(\theta+2\pi k)/n},\qquad k=0,1,\ldots,n-1 \]</div>
+      <p>特例：方程 \(z^{n}=1\) 的 \(n\) 个根称为<strong>单位根</strong> \(\omega_{k}=e^{2\pi ik/n}\)，它们之和为零 \(\sum_{k}\omega_{k}=0\)（因 \(z^{n}-1\) 的 \(z^{n-1}\) 项系数为 0），之积为 \((-1)^{n-1}\)。</p>
+      <div class="key-terms">complex conjugate (复共轭), modulus (模), argument (辐角), Euler's formula (欧拉公式), de Moivre's formula (棣莫弗公式), roots of unity (单位根)</div>
+
+      <h3>2. 解析函数与 Cauchy–Riemann 方程 Analytic Functions &amp; the Cauchy–Riemann Equations</h3>
+      <p>设 \(f(z)=u(x,y)+iv(x,y)\)。若 \(f\) 在某区域内<strong>处处可微</strong>（且导数与趋近方向无关），则称 \(f\) 在该区域<strong>解析</strong> (analytic) 或<strong>全纯</strong> (holomorphic)。<strong>充要条件</strong>（且 \(u,v\) 的偏导连续）为 <strong>Cauchy–Riemann 方程</strong>：</p>
+      <div class="formula">\[ \boxed{\,\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},\qquad \frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}\,} \]</div>
+      <p>解析函数的导数可写为 \(f'(z)=\partial u/\partial x+i\,\partial v/\partial x=\partial v/\partial y-i\,\partial u/\partial y\)（这四种写法在 CR 方程下都相等）。</p>
+      <p><strong>两个重要推论</strong>：(i) 解析函数的实部与虚部都是<strong>调和函数</strong>，即 \(\nabla^{2}u=0\)、\(\nabla^{2}v=0\)（对 CR 方程求偏导相加即得 \(u_{xx}+u_{yy}=0\)）；\(u\) 与 \(v\) 互称<strong>调和共轭</strong> (harmonic conjugate)。(ii) 解析的复映射在导数非零处<strong>保角</strong> (conformal)，即保持两曲线的夹角——这使复变函数成为二维势论 (2D potential theory) 的天然工具。</p>
+      <div class="key-terms">analytic / holomorphic (解析/全纯), Cauchy–Riemann equations (柯西–黎曼方程), harmonic function (调和函数), harmonic conjugate (调和共轭), conformal (保角)</div>
+
+      <h3>3. 围道积分与 Cauchy 定理 Contour Integrals &amp; Cauchy's Theorem</h3>
+      <p>沿复平面曲线 \(\gamma\) 的<strong>围道积分</strong>定义为 \(\oint_{\gamma}f(z)\,\mathrm{d}z=\int_{\gamma}(u+iv)(\mathrm{d}x+i\mathrm{d}y)\)。<strong>Cauchy 定理</strong>（简单陈述）：若 \(f\) 在单连通区域 \(D\) 内解析，\(\gamma\) 是 \(D\) 内的闭合曲线，则</p>
+      <div class="formula">\[ \boxed{\,\oint_{\gamma}f(z)\,\mathrm{d}z=0\,} \]</div>
+      <p>其更强的形式——<strong>Cauchy 积分公式</strong>——给出任意内部点的值：</p>
+      <div class="formula">\[ \boxed{\,f(z_{0})=\frac{1}{2\pi i}\oint_{\gamma}\frac{f(z)}{z-z_{0}}\,\mathrm{d}z\,} \]</div>
+      <p>逐次求导即得：解析函数<strong>无穷次可微</strong>，且 \(f^{(n)}(z_{0})=\dfrac{n!}{2\pi i}\displaystyle\oint_{\gamma}\dfrac{f(z)}{(z-z_{0})^{n+1}}\,\mathrm{d}z\)。这条惊人结论（"可微一次 ⇒ 无穷次可微"）是复分析与实分析的根本差异。</p>
+      <div class="key-terms">contour integral (围道积分), Cauchy's theorem (柯西定理), Cauchy integral formula (柯西积分公式), simply connected (单连通)</div>
+
+      <h3>4. Taylor 级数、Laurent 级数、极点与留数 Taylor / Laurent Series, Poles, Residues</h4>
+      <p>若 \(f\) 在 \(|z-z_{0}|&lt;R\) 内解析，则有 <strong>Taylor 级数</strong>：</p>
+      <div class="formula">\[ f(z)=\sum_{n=0}^{\infty}a_{n}(z-z_{0})^{n},\qquad a_{n}=\frac{f^{(n)}(z_{0})}{n!} \]</div>
+      <p>若 \(f\) 在环域 \(0&lt;|z-z_{0}|&lt;R\) 内解析（即 \(z_{0}\) 为孤立奇点 isolated singularity），则有<strong>Laurent 级数</strong>，含负幂项：</p>
+      <div class="formula">\[ f(z)=\sum_{n=-\infty}^{\infty}a_{n}(z-z_{0})^{n},\qquad a_{n}=\frac{1}{2\pi i}\oint\frac{f(z)}{(z-z_{0})^{n+1}}\,\mathrm{d}z \]</div>
+      <p>按负幂项的数目对奇点分类：(i) <strong>可去奇点</strong> (removable)：无负幂项，如 \(\sin z/z\)；(ii) <strong>极点</strong> (pole)：有限个负幂项，最高负幂 \(m\) 称为 \(m\) 阶极点；(iii) <strong>本性奇点</strong> (essential)：无穷多负幂项，如 \(e^{1/z}\) 在 \(z=0\)。</p>
+      <p>\((z-z_{0})^{-1}\) 的系数 \(a_{-1}\) 称为 \(f\) 在 \(z_{0}\) 处的<strong>留数</strong> (residue)：\(\mathrm{Res}_{z=z_{0}}f=a_{-1}\)。<strong>留数定理</strong>：</p>
+      <div class="formula">\[ \boxed{\,\oint_{\gamma}f(z)\,\mathrm{d}z=2\pi i\sum_{k}\mathrm{Res}_{z=z_{k}}f\,} \]</div>
+      <p>求和遍历 \(\gamma\) 内的全部奇点。对于<strong>一阶极点</strong>，\(\mathrm{Res}_{z=z_{0}}f=\lim_{z\to z_{0}}(z-z_{0})f(z)\)；对于 \(m\) 阶极点，\(\mathrm{Res}=\dfrac{1}{(m-1)!}\lim_{z\to z_{0}}\dfrac{\mathrm{d}^{\,m-1}}{\mathrm{d}z^{m-1}}\bigl[(z-z_{0})^{m}f(z)\bigr]\)。留数定理是计算许多<strong>实</strong>积分（有理函数、三角积分、高斯型积分）的利器。</p>
+      <div class="key-terms">Taylor series (泰勒级数), Laurent series (劳伦级数), isolated singularity (孤立奇点), removable/pole/essential singularity (可去/极/本性奇点), residue (留数), residue theorem (留数定理)</div>
+
+      <h3>5. 物理中的三大偏微分方程 The Three Big PDEs of Physics</h3>
+      <p>许多物理过程的时间–空间演化最终都化归三大类<strong>偏微分方程</strong> (partial differential equations, PDE)。它们都涉及 <strong>Laplace 算子</strong> (Laplacian) \(\nabla^{2}\)，在直角坐标下 \(\nabla^{2}=\partial^{2}/\partial x^{2}+\partial^{2}/\partial y^{2}+\partial^{2}/\partial z^{2}\)。</p>
+      <p><strong>(a) 波动方程 (Wave equation)</strong>，描述横向位移 \(u(\vec{r},t)\)（弦、膜、声波、电磁波）：</p>
+      <div class="formula">\[ \boxed{\,\frac{\partial^{2}u}{\partial t^{2}}=v^{2}\nabla^{2}u\,} \]</div>
+      <p>其中 \(v\) 是波速（弦上 \(v=\sqrt{T/\mu}\)，电磁波 \(v=c=1/\sqrt{\mu_{0}\varepsilon_{0}}\)）。二阶时间导 ⇒ <strong>时间反演不变</strong>，波形可左行/右行；类型：双曲型 (hyperbolic)。</p>
+      <p><strong>(b) 热 / 扩散方程 (Heat / diffusion equation)</strong>，描述温度 \(T\) 或粒子浓度 \(c\)：</p>
+      <div class="formula">\[ \boxed{\,\frac{\partial u}{\partial t}=\alpha\,\nabla^{2}u\,} \]</div>
+      <p>其中 \(\alpha\) 是<strong>热扩散率</strong> (thermal diffusivity)，单位 \(\mathrm{m^{2}/s}\)（典型值：铜 \(\alpha\approx1.1\times10^{-4}\,\mathrm{m^{2}/s}\)，水 \(\alpha\approx1.4\times10^{-7}\,\mathrm{m^{2}/s}\)）。一阶时间导 ⇒ <strong>不可逆</strong>，熵增；类型：抛物型 (parabolic)。</p>
+      <p><strong>(c) Laplace 方程 (Laplace's equation)</strong>，描述<strong>无源</strong>稳态势（静电场无电荷区、稳态温度、不可压缩无旋流）：</p>
+      <div class="formula">\[ \boxed{\,\nabla^{2}V=0\,} \]</div>
+      <p>对应无源区域的泊松方程 \(\nabla^{2}V=-\rho/\varepsilon_{0}\)。其解称为<strong>调和函数</strong>，与第 2 节中解析函数的实/虚部竟是同一类对象（二维 Laplace 方程的解恰是某解析函数的实部）！类型：椭圆型 (elliptic)。<strong>调和函数的极大极小值只能在边界达到</strong>（极大值原理 maximum principle），所以无源区不会有局部温度峰值。</p>
+      <div class="key-terms">wave equation (波动方程), heat / diffusion equation (热/扩散方程), Laplace's equation (拉普拉斯方程), Laplacian (拉普拉斯算子), thermal diffusivity (热扩散率), hyperbolic/parabolic/elliptic (双曲/抛物/椭圆型), maximum principle (极大值原理)</div>
+
+      <h3>6. 分离变量法 Separation of Variables</h3>
+      <p><strong>核心思想</strong>：把多变量未知函数写成若干单变量函数的乘积（如 \(u(x,t)=X(x)T(t)\)），代入 PDE 把偏微分方程<strong>拆成几个常微分方程</strong>，再用<strong>边界条件</strong> (boundary conditions, BCs) 筛选出允许的"模式" (modes)。</p>
+      <p>以一维波方程为例（详见推导节）：设 \(u(x,t)=X(x)T(t)\) 代入 \(u_{tt}=v^{2}u_{xx}\) 得</p>
+      <div class="formula">\[ \frac{X''(x)}{X(x)}=\frac{T''(t)}{v^{2}T(t)}=\text{常数}\equiv-\lambda \]</div>
+      <p>左边只依赖 \(x\)、右边只依赖 \(t\)，二者相等只能是同一常数 \(-\lambda\)。这就把 PDE 拆成 \(X''+\lambda X=0\) 与 \(T''+\lambda v^{2}T=0\) 两个 ODE。固定端边界条件 \(u(0,t)=u(L,t)=0\) 给出 \(X(0)=X(L)=0\)，于是 \(\lambda\) 只能取本征值 \(\lambda_{n}=(n\pi/L)^{2}\)，本征函数 \(X_{n}=\sin(n\pi x/L)\)。每个 \(n\) 给出<strong>简正模式</strong> (normal mode)，全体模式构成完备基，通解为它们的线性叠加：</p>
+      <div class="formula">\[ u(x,t)=\sum_{n=1}^{\infty}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\bigl[A_{n}\cos(\omega_{n}t)+B_{n}\sin(\omega_{n}t)\bigr],\quad \omega_{n}=\frac{n\pi v}{L} \]</div>
+      <p>这正是第 5 章 Fourier 分析的应用：把初始形状 \(u(x,0)\) 与初始速度 \(u_{t}(x,0)\) 展成 \(\sin(n\pi x/L)\) 的 Fourier 正弦级数即得 \(A_{n}\)、\(B_{n}\)。在更高维或柱/球坐标下，分离变量得到的不再是三角函数而是 Bessel、Legendre 等特殊函数——这就是与第 13 章的接口。</p>
+      <div class="key-terms">separation of variables (分离变量法), eigenvalue (本征值), eigenfunction (本征函数), normal mode (简正模式), boundary condition (边界条件)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 两端固定弦的简正模式 Normal Modes of a Fixed-End String</h2>
+      <p>考虑一根长 \(L\)、张力 \(T\)（N）、线密度 \(\mu\)（kg/m）的弦，两端固定。在小位移 \(u(x,t)\) 近似下，横向运动满足一维波方程：</p>
+      <div class="formula">\[ \frac{\partial^{2}u}{\partial t^{2}}=v^{2}\frac{\partial^{2}u}{\partial x^{2}},\qquad v=\sqrt{\frac{T}{\mu}} \]</div>
+      <p><strong>边界条件</strong> \(u(0,t)=0\)、\(u(L,t)=0\)（固定端）。</p>
+      <p><strong>步骤 1 — 分离变量</strong>。设 \(u(x,t)=X(x)T(t)\)（非平凡解）。代入方程：</p>
+      <div class="formula">\[ X(x)T''(t)=v^{2}X''(x)T(t)\ \Longrightarrow\ \frac{X''(x)}{X(x)}=\frac{T''(t)}{v^{2}T(t)} \]</div>
+      <p>左式仅是 \(x\) 的函数，右式仅是 \(t\) 的函数，相等只能是常数。为得到振动解（而非指数增长），常数必须取负值，记为 \(-\lambda\)，\(\lambda&gt;0\)：</p>
+      <div class="formula">\[ X''(x)+\lambda X(x)=0,\qquad T''(t)+\lambda v^{2}T(t)=0 \]</div>
+      <p><strong>步骤 2 — 边界条件筛选本征值</strong>。固定端给出 \(X(0)T(t)=0\)、\(X(L)T(t)=0\)，欲使 \(T(t)\not\equiv0\) 必有 \(X(0)=X(L)=0\)。解 \(X''+\lambda X=0\)：</p>
+      <div class="formula">\[ X(x)=C\cos(\sqrt{\lambda}\,x)+D\sin(\sqrt{\lambda}\,x) \]</div>
+      <p>\(X(0)=C=0\)；进而 \(X(L)=D\sin(\sqrt{\lambda}\,L)=0\)，若 \(D\neq0\) 则 \(\sin(\sqrt{\lambda}\,L)=0\)，即 \(\sqrt{\lambda}\,L=n\pi\)（\(n=1,2,3,\ldots\)）。故本征值与本征函数（Sturm–Liouville 问题）为：</p>
+      <div class="formula">\[ \lambda_{n}=\Bigl(\frac{n\pi}{L}\Bigr)^{2},\qquad X_{n}(x)=\sin\!\Bigl(\frac{n\pi x}{L}\Bigr),\qquad n=1,2,3,\ldots \]</div>
+      <p>注意 \(\lambda\leq0\) 时只有平凡解 \(X\equiv0\)（请自行验证），所以这些就是<strong>全部</strong>本征值。<strong>边界条件选出了允许的模式</strong>——这是分离变量法的核心机制。</p>
+      <p><strong>步骤 3 — 时间部分</strong>。把 \(\lambda_{n}\) 代入 \(T\) 方程：\(T''_{n}+\omega_{n}^{2}T_{n}=0\)，其中角频率 \(\omega_{n}=\sqrt{\lambda_{n}}\,v=n\pi v/L\)。解为 \(T_{n}(t)=a_{n}\cos\omega_{n}t+b_{n}\sin\omega_{n}t\)。</p>
+      <p><strong>步骤 4 — 叠加</strong>。波方程是<strong>线性</strong>的，所以全体模式的线性叠加仍是解：</p>
+      <div class="formula">\[ \boxed{\,u(x,t)=\sum_{n=1}^{\infty}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\bigl[A_{n}\cos(\omega_{n}t)+B_{n}\sin(\omega_{n}t)\bigr],\quad \omega_{n}=\frac{n\pi v}{L}=\frac{n\pi}{L}\sqrt{\frac{T}{\mu}}\,} \]</div>
+      <p><strong>步骤 5 — 初值条件确定系数</strong>。设初始位移 \(u(x,0)=f(x)\)、初始速度 \(u_{t}(x,0)=g(x)\)。在 \(t=0\)，\(\cos0=1\)、\(\sin0=0\)，故</p>
+      <div class="formula">\[ f(x)=\sum_{n}A_{n}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr),\qquad g(x)=\sum_{n}\omega_{n}B_{n}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr) \]</div>
+      <p>利用第 5 章正弦函数的正交性 \(\int_{0}^{L}\sin(n\pi x/L)\sin(m\pi x/L)\,\mathrm{d}x=(L/2)\delta_{nm}\)，两边乘 \(\sin(m\pi x/L)\) 积分得：</p>
+      <div class="formula">\[ A_{n}=\frac{2}{L}\int_{0}^{L}f(x)\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\mathrm{d}x,\qquad B_{n}=\frac{2}{\omega_{n}L}\int_{0}^{L}g(x)\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\mathrm{d}x \]</div>
+      <p>这就是 <strong>Fourier 正弦级数</strong>。频率 \(f_{n}=\omega_{n}/(2\pi)=nv/(2L)\)，\(n=1\) 即基频 (fundamental)，\(n=2,3,\ldots\) 即泛音 (overtones)；整数比正是<strong>和谐音程</strong>的数学根源（见第 2、8 章）。<strong>注</strong>：若弦从静止释放（\(g=0\)），则所有 \(B_{n}=0\)，解只剩余弦时间项——这正是本章仿真与例 3 的情形。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 14.1 复数运算与三次单位根 Complex Arithmetic &amp; Cube Roots of 8</h4>
+        <p class="example-statement">(a) 计算 \((3+4i)/(1-2i)\)（直角形式）。</p>
+        <p class="example-statement">(b) 求 \(z^{3}=8\) 的全部复根（极坐标形式），并验证它们之和为零。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>把分母实数化——分子分母同乘分母的复共轭 \((1+2i)^{*}=1+2i\)：</p>
+          <p>\[ \frac{3+4i}{1-2i}\cdot\frac{1+2i}{1+2i}=\frac{(3+4i)(1+2i)}{|1-2i|^{2}}=\frac{(3+6i+4i+8i^{2})}{1+4}=\frac{(3-8)+10i}{5}=\frac{-5+10i}{5} \]</p>
+          <p>\[ \boxed{\,\frac{3+4i}{1-2i}=-1+2i\,} \]</p>
+          <p class="step"><strong>解 (b)：</strong>把 \(8\) 写成极形式 \(8=8\,e^{i\cdot0}\)。三次方根公式 \(z_{k}=r^{1/3}e^{i(\theta+2\pi k)/3}\)，\(r^{1/3}=\sqrt[3]{8}=2\)，\(k=0,1,2\)：</p>
+          <p>\[ z_{0}=2e^{i\cdot0}=2 \]</p>
+          <p>\[ z_{1}=2e^{i\cdot2\pi/3}=2\Bigl(\cos\tfrac{2\pi}{3}+i\sin\tfrac{2\pi}{3}\Bigr)=2\Bigl(-\tfrac{1}{2}+i\tfrac{\sqrt{3}}{2}\Bigr)=-1+i\sqrt{3}\approx-1+1.732i \]</p>
+          <p>\[ z_{2}=2e^{i\cdot4\pi/3}=2\Bigl(-\tfrac{1}{2}-i\tfrac{\sqrt{3}}{2}\Bigr)=-1-i\sqrt{3}\approx-1-1.732i \]</p>
+          <p>三个根位于半径为 2 的圆上、彼此夹角 \(120^{\circ}\)。<strong>验证和为零</strong>：</p>
+          <p>\[ z_{0}+z_{1}+z_{2}=2+(-1+i\sqrt{3})+(-1-i\sqrt{3})=0\ \checkmark \]</p>
+          <p>这正对应 \(z^{3}-8=0\) 中 \(z^{2}\) 项系数为 0（Vieta 公式）。<span class="ans">三个根为 \(2\)、\(-1+i\sqrt{3}\)、\(-1-i\sqrt{3}\)；和为 0。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.2 用 Cauchy–Riemann 方程验证解析性 Testing Analyticity via Cauchy–Riemann</h4>
+        <p class="example-statement">(a) 验证 \(f(z)=z^{2}=u+iv\) 在全平面解析，并用 \(u_{x}\) 求出 \(f'(z)\) 在 \(z=1+2i\) 处的值。</p>
+        <p class="example-statement">(b) 说明 \(f(z)=z^{*}=x-iy\) 处处不解析。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>把 \(z^{2}\) 展开：\(z^{2}=(x+iy)^{2}=x^{2}-y^{2}+2ixy\)，所以</p>
+          <p>\[ u(x,y)=x^{2}-y^{2},\qquad v(x,y)=2xy \]</p>
+          <p>计算四个偏导：</p>
+          <p>\[ \frac{\partial u}{\partial x}=2x,\quad \frac{\partial u}{\partial y}=-2y,\quad \frac{\partial v}{\partial x}=2y,\quad \frac{\partial v}{\partial y}=2x \]</p>
+          <p>对照 CR 方程：\(u_{x}=2x=v_{y}\ \checkmark\)；\(u_{y}=-2y=-v_{x}\ \checkmark\)。各偏导处处连续，故 \(f\) 在全平面（整函数 entire）解析。导数：</p>
+          <p>\[ f'(z)=u_{x}+iv_{x}=2x+i(2y)=2(x+iy)=2z \]</p>
+          <p>在 \(z=1+2i\)：<span class="ans">\(f'(1+2i)=2(1+2i)=2+4i\)</span>。</p>
+          <p class="step"><strong>解 (b)：</strong>此时 \(u=x\)、\(v=-y\)。\(u_{x}=1\)，\(v_{y}=-1\)，\(u_{x}\neq v_{y}\)（除非处处不成立）。CR 方程处处不满足，<span class="ans">\(z^{*}\) 在任何点都不解析</span>。</p>
+          <p>这解释了为何"取共轭"虽几何上简单（关于实轴反射），却无法用幂级数表示——它是典型的<strong>非解析</strong>函数。这也说明 "<strong>解析</strong> ≠ <strong>光滑</strong>"：\(z^{*}\) 的实部与虚部都任意阶可微，但因不满足 CR 而非解析。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.3 拨弦的简正模式展开 Plucked String: Normal-Mode (Fourier) Expansion</h4>
+        <p class="example-statement">吉他弦长 \(L=0.64\,\mathrm{m}\)，张力 \(T=81\,\mathrm{N}\)，线密度 \(\mu=2.0\,\mathrm{g/m}=2.0\times10^{-3}\,\mathrm{kg/m}\)。弦被静态拨至中点 \(x_{0}=L/2\) 处、高度 \(h=1.0\,\mathrm{cm}=0.010\,\mathrm{m}\) 后于 \(t=0\) 静止释放。求：(a) 波速 \(v\) 与基频 \(f_{1}\)；(b) 初始形状的 Fourier 正弦系数 \(A_{n}\)（前三个非零项数值）；(c) 完整解 \(u(x,t)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>波速 \(v=\sqrt{T/\mu}=\sqrt{81/(2.0\times10^{-3})}=\sqrt{4.05\times10^{4}}=201.2\,\mathrm{m/s}\)。基频：</p>
+          <p>\[ f_{1}=\frac{v}{2L}=\frac{201.2}{2(0.64)}=157.2\,\mathrm{Hz}\quad(\text{约介于 }E_{3}=165\text{ 与 }E\flat_{3}=155\text{ 之间}) \]</p>
+          <p class="step"><strong>解 (b)：</strong>静止释放 ⇒ \(B_{n}=0\)，只需 \(A_{n}\)。初始形状为中点拨起的三角形：</p>
+          <p>\[ f(x)=u(x,0)=\begin{cases}h\,x/x_{0},&0\leq x\leq x_{0}\\[2pt] h\,(L-x)/(L-x_{0}),&x_{0}\leq x\leq L\end{cases} \]</p>
+          <p>用分段积分（或查三角波公式）得</p>
+          <p>\[ A_{n}=\frac{2}{L}\int_{0}^{L}f(x)\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\mathrm{d}x=\frac{2hL^{2}}{\pi^{2}x_{0}(L-x_{0})}\cdot\frac{\sin(n\pi x_{0}/L)}{n^{2}} \]</p>
+          <p>代入 \(x_{0}=L/2\)（中点）：\(\sin(n\pi/2)\) 在 \(n\) 为偶数时为零，在 \(n=1,5,9,\ldots\) 为 \(+1\)、\(n=3,7,11,\ldots\) 为 \(-1\)。系数（取绝对值前因子 \(\tfrac{2hL^{2}}{\pi^{2}(L/2)(L/2)}=\tfrac{8h}{\pi^{2}}\)）：</p>
+          <p>\[ A_{n}=\frac{8h}{\pi^{2}}\cdot\frac{\sin(n\pi/2)}{n^{2}},\qquad n=1,3,5,\ldots\ \text{（其余 }A_{n}=0\text{）} \]</p>
+          <p>\[ A_{1}=\frac{8(0.010)}{\pi^{2}}\cdot(+1)=8.11\times10^{-3}\,\mathrm{m}=8.11\,\mathrm{mm} \]</p>
+          <p>\[ A_{3}=\frac{8(0.010)}{9\pi^{2}}\cdot(-1)=-9.01\times10^{-4}\,\mathrm{m}=-0.901\,\mathrm{mm} \]</p>
+          <p>\[ A_{5}=\frac{8(0.010)}{25\pi^{2}}\cdot(+1)=3.24\times10^{-4}\,\mathrm{m}=0.324\,\mathrm{mm} \]</p>
+          <p>注意 \(|A_{n}|\propto1/n^{2}\)——这是因为初始位移连续（无跃变）；若初始形状有跃变（如方波）则 \(|A_{n}|\propto1/n\)（见第 5 章）。</p>
+          <p class="step"><strong>解 (c)：</strong>把系数代回通解（推导节公式），\(\omega_{n}=n\pi v/L=2\pi f_{1}\,n=988.1\,n\ \mathrm{rad/s}\)：</p>
+          <p>\[ \boxed{\,u(x,t)=\frac{8h}{\pi^{2}}\sum_{n=1,3,5,\ldots}\frac{\sin(n\pi/2)}{n^{2}}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\cos(\omega_{n}t)\,} \]</p>
+          <p><strong>自洽性检查</strong>：\(t=0\) 时 \(\cos0=1\)，部分和 \(S_{N}(x)=\frac{8h}{\pi^{2}}\sum_{n\,\mathrm{odd}}^{\leq N}\frac{\sin(n\pi/2)}{n^{2}}\sin(n\pi x/L)\) 收敛于三角形 \(f(x)\)。例如在中点 \(x=L/2\)：\(\sin(n\pi/2)=\pm1\)，求和 \(\sum_{n\,\mathrm{odd}}\frac{\sin^{2}(n\pi/2)}{n^{2}}=\sum_{n\,\mathrm{odd}}\frac{1}{n^{2}}=\frac{\pi^{2}}{8}\)，故 \(S_{\infty}(L/2)=\frac{8h}{\pi^{2}}\cdot\frac{\pi^{2}}{8}=h=0.010\,\mathrm{m}\checkmark\)。</p>
+          <p><span class="ans">\(v=201\,\mathrm{m/s}\)，\(f_{1}=157\,\mathrm{Hz}\)；\(A_{1}=+8.11\,\mathrm{mm}\)、\(A_{3}=-0.901\,\mathrm{mm}\)、\(A_{5}=+0.324\,\mathrm{mm}\)（仅奇次模式）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.4 铜杆的冷却（热方程） Cooling of a Copper Rod (Heat Equation)</h4>
+        <p class="example-statement">长 \(L=0.30\,\mathrm{m}\) 的细铜杆，热扩散率 \(\alpha=1.11\times10^{-4}\,\mathrm{m^{2}/s}\)。初始时整杆温度均匀 \(u(x,0)=u_{0}=100^{\circ}\mathrm{C}\)；\(t=0\) 起两端被突然夹到 \(0^{\circ}\mathrm{C}\) 冰水并保持：\(u(0,t)=u(L,t)=0\)。求：(a) 解 \(u(x,t)\) 的级数形式；(b) 杆中点温度 \(u(L/2,\,60\,\mathrm{s})\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>分离变量 \(u=X(x)T(t)\) 代入 \(u_{t}=\alpha u_{xx}\)。同波动方程的步骤得 \(X_{n}=\sin(n\pi x/L)\)，但<strong>时间部分是一阶</strong>：\(T'_{n}=-\alpha(n\pi/L)^{2}T_{n}\)，解为指数衰减：</p>
+          <p>\[ T_{n}(t)=e^{-n^{2}\pi^{2}\alpha t/L^{2}} \]</p>
+          <p>通解：</p>
+          <p>\[ u(x,t)=\sum_{n=1}^{\infty}A_{n}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)e^{-n^{2}\pi^{2}\alpha t/L^{2}} \]</p>
+          <p>由初始条件 \(u(x,0)=u_{0}\)（常数）确定 \(A_{n}\)（标准 Fourier 正弦系数）：</p>
+          <p>\[ A_{n}=\frac{2}{L}\int_{0}^{L}u_{0}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\mathrm{d}x=\frac{2u_{0}}{n\pi}\bigl[1-(-1)^{n}\bigr]=\begin{cases}\dfrac{4u_{0}}{n\pi},&n\ \text{奇}\\[4pt]0,&n\ \text{偶}\end{cases} \]</p>
+          <p>所以仅奇次模式存活：</p>
+          <p>\[ \boxed{\,u(x,t)=\frac{4u_{0}}{\pi}\sum_{n=1,3,5,\ldots}\frac{1}{n}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\exp\!\Bigl(-\frac{n^{2}\pi^{2}\alpha t}{L^{2}}\Bigr)\,} \]</p>
+          <p>定义<strong>基模时间常数</strong> \(\tau_{1}=L^{2}/(\pi^{2}\alpha)\)：</p>
+          <p>\[ \tau_{1}=\frac{(0.30)^{2}}{\pi^{2}(1.11\times10^{-4})}=\frac{0.090}{1.097\times10^{-3}}=82.0\,\mathrm{s} \]</p>
+          <p>高阶模式衰减速率按 \(n^{2}\) 加快（\(n=3\) 比 \(n=1\) 快 9 倍），所以<strong>短时间</strong>高阶模式显著、<strong>长时间</strong>只剩下基模 —— 这正是"低通滤波"特征。</p>
+          <p class="step"><strong>解 (b)：</strong>在中点 \(x=L/2\)，\(\sin(n\pi/2)=\pm1\)（奇数 \(n\)）。\(t=60\,\mathrm{s}\)，\(t/\tau_{1}=60/82.0=0.732\)：</p>
+          <p>\[ u(L/2,60)=\frac{4u_{0}}{\pi}\sum_{n\,\mathrm{odd}}\frac{\sin(n\pi/2)}{n}\,e^{-n^{2}\cdot0.732} \]</p>
+          <p>\[ n=1:\ \frac{4(100)}{\pi}\cdot1\cdot e^{-0.732}=127.3\times0.481=61.3^{\circ}\mathrm{C} \]</p>
+          <p>\[ n=3:\ \frac{400}{3\pi}\cdot(-1)\cdot e^{-6.59}=42.44\times(-0.00137)=-0.06^{\circ}\mathrm{C} \]</p>
+          <p>\[ n\geq5:\ \text{贡献}\lt10^{-4}\,\mathrm{C}\ \text{（可忽略）} \]</p>
+          <p>\[ u(L/2,60\,\mathrm{s})\approx61.3-0.06\approx61.2^{\circ}\mathrm{C} \]</p>
+          <p><strong>合理性</strong>：\(60\,\mathrm{s}&lt;\tau_{1}=82\,\mathrm{s}\)，温度应明显下降但未到稳态（\(0^{\circ}\mathrm{C}\)）。\(61^{\circ}\mathrm{C}\) 介于 100 与 0 之间，符合直觉。<span class="ans">杆中点在 \(60\,\mathrm{s}\) 时约 \(61^{\circ}\mathrm{C}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.5 方盒中的 Laplace 方程 Laplace's Equation in a Rectangular Box</h4>
+        <p class="example-statement">二维矩形区域 \(0\leq x\leq a\)、\(0\leq y\leq b\)，\(a=b=1\,\mathrm{m}\)。边界电势：\(V(x,0)=V(0,y)=V(a,y)=0\)，顶边 \(V(x,b)=V_{0}=100\,\mathrm{V}\)（常数）。求：(a) 电势 \(V(x,y)\) 的级数解；(b) 中心点 \((a/2,b/2)\) 的电势。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>Laplace 方程 \(\nabla^{2}V=V_{xx}+V_{yy}=0\)。分离变量 \(V=X(x)Y(y)\)，\(X''/X=-Y''/Y=-\lambda\)。三个边界为 0（\(x=0,x=a,y=0\)）选出 \(x\) 方向的正弦本征函数：</p>
+          <p>\[ X_{n}(x)=\sin\!\Bigl(\frac{n\pi x}{a}\Bigr),\qquad \lambda_{n}=\Bigl(\frac{n\pi}{a}\Bigr)^{2} \]</p>
+          <p>\(y\) 方程 \(Y''-\lambda Y=0\)，配合 \(Y(0)=0\) 选出双曲正弦 \(Y_{n}(y)=\sinh(n\pi y/a)\)（指数解 \(\sinh\) 而非 \(\sin\)，因为这里是椭圆型方程）。所以：</p>
+          <p>\[ V(x,y)=\sum_{n=1}^{\infty}C_{n}\sin\!\Bigl(\frac{n\pi x}{a}\Bigr)\sinh\!\Bigl(\frac{n\pi y}{a}\Bigr) \]</p>
+          <p>用顶边条件 \(V(x,b)=V_{0}\) 定 \(C_{n}\)：</p>
+          <p>\[ V_{0}=\sum_{n=1}^{\infty}\underbrace{C_{n}\sinh\!\Bigl(\frac{n\pi b}{a}\Bigr)}_{\displaystyle\equiv\,D_{n}}\sin\!\Bigl(\frac{n\pi x}{a}\Bigr) \]</p>
+          <p>把常数 \(V_{0}\) 在 \([0,a]\) 上展成 Fourier 正弦级数，\(D_{n}=\frac{2}{a}\int_{0}^{a}V_{0}\sin(n\pi x/a)\,\mathrm{d}x=\frac{2V_{0}}{n\pi}[1-(-1)^{n}]\)，奇 \(n\) 给 \(4V_{0}/(n\pi)\)、偶 \(n\) 为零。所以：</p>
+          <p>\[ \boxed{\,V(x,y)=\sum_{n=1,3,5,\ldots}\frac{4V_{0}}{n\pi\,\sinh(n\pi b/a)}\sin\!\Bigl(\frac{n\pi x}{a}\Bigr)\sinh\!\Bigl(\frac{n\pi y}{a}\Bigr)\,} \]</p>
+          <p class="step"><strong>解 (b)：</strong>代入 \(a=b=1\)、\(V_{0}=100\,\mathrm{V}\)，求中心 \((1/2,1/2)\)。已知 \(\sinh(\pi/2)=2.301\)、\(\sinh(\pi)=11.55\)、\(\sinh(3\pi/2)=55.65\)、\(\sinh(3\pi)=6195.8\)：</p>
+          <p>\[ V(1/2,1/2)=\sum_{n\,\mathrm{odd}}\frac{400}{n\pi\,\sinh(n\pi)}\sin\!\Bigl(\frac{n\pi}{2}\Bigr)\sinh\!\Bigl(\frac{n\pi}{2}\Bigr) \]</p>
+          <p>\[ n=1:\ \frac{400}{\pi\cdot11.55}\cdot(+1)\cdot2.301=\frac{400\cdot2.301}{36.27}=25.37\,\mathrm{V} \]</p>
+          <p>\[ n=3:\ \frac{400}{3\pi\cdot6195.8}\cdot(-1)\cdot55.65=\frac{-400\cdot55.65}{58\,400}=-0.381\,\mathrm{V} \]</p>
+          <p>\[ n\geq5:\ \text{贡献}\lt0.01\,\mathrm{V} \]</p>
+          <p>\[ V(1/2,1/2)\approx25.37-0.38\approx\boxed{\,24.99\,\mathrm{V}\,}\approx25.0\,\mathrm{V} \]</p>
+          <p><strong>对称性检验</strong>（极大值原理 + 叠加）：把"四条边各设为 \(V_{0}\)、其余三条为 0"的四个解叠加，由对称性它们在中心相等；叠加后四边都是 \(V_{0}\)，整个矩形为常数 \(V_{0}\)，故每个单独贡献 \(=V_{0}/4=25\,\mathrm{V}\ \checkmark\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.6 用留数定理计算实积分 Residue Theorem for a Real Integral</h4>
+        <p class="example-statement">用留数定理计算 \(I=\displaystyle\int_{0}^{\infty}\dfrac{\mathrm{d}x}{1+x^{2}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>考虑复函数 \(f(z)=\dfrac{1}{1+z^{2}}=\dfrac{1}{(z-i)(z+i)}\)。它在 \(z=\pm i\) 各有一个一阶极点。</p>
+          <p>取闭合围道 \(C\)：实轴上 \(-R\to R\)，加上上半平面半径 \(R\) 的半圆弧 \(\Gamma_{R}\)（\(R&gt;1\)）。围道内只含极点 \(z=i\)。</p>
+          <p>计算 \(z=i\) 处的留数（一阶极点公式）：</p>
+          <p>\[ \mathrm{Res}_{z=i}f(z)=\lim_{z\to i}(z-i)\,f(z)=\lim_{z\to i}\frac{1}{z+i}=\frac{1}{2i} \]</p>
+          <p>由留数定理：</p>
+          <p>\[ \oint_{C}f(z)\,\mathrm{d}z=2\pi i\cdot\frac{1}{2i}=\pi \]</p>
+          <p>拆开围道积分：\(\displaystyle\oint_{C}=\int_{-R}^{R}f(x)\,\mathrm{d}x+\int_{\Gamma_{R}}f(z)\,\mathrm{d}z\)。弧上 \(|f(z)|\sim1/R^{2}\)，弧长 \(\pi R\)，故 \(\bigl|\int_{\Gamma_{R}}\bigr|\leq\pi/R\to0\)（\(R\to\infty\)）。所以：</p>
+          <p>\[ \int_{-\infty}^{\infty}\frac{\mathrm{d}x}{1+x^{2}}=\pi \]</p>
+          <p>被积函数是偶函数，故 \(\displaystyle\int_{-\infty}^{\infty}=2\int_{0}^{\infty}\)：</p>
+          <p>\[ \boxed{\,I=\int_{0}^{\infty}\frac{\mathrm{d}x}{1+x^{2}}=\frac{\pi}{2}\,} \]</p>
+          <p><strong>独立验证</strong>：\(\displaystyle\int_{0}^{\infty}\frac{\mathrm{d}x}{1+x^{2}}=\bigl[\arctan x\bigr]_{0}^{\infty}=\frac{\pi}{2}-0=\frac{\pi}{2}\ \checkmark\)。</p>
+          <p><span class="ans">\(I=\pi/2\approx1.571\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>"解析 (analytic) 就是光滑 (smooth)"</strong>——错！\(f(z)=z^{*}=x-iy\) 的实部和虚部都任意阶可微，但 CR 方程处处不成立，<strong>处处不解析</strong>。解析性是<strong>复</strong>可微性，要求导数与趋近方向无关，远比实可微强（一旦一阶可微就无穷次可微、可展幂级数）。</li>
+        <li><strong>把分离变量法用于非线性 PDE</strong>——行不通。分离变量法依赖<strong>叠加原理</strong> (superposition)，只对<strong>线性</strong> PDE 有效（如波方程、热方程、Laplace 方程）。Navier–Stokes、浅水波等非线性方程不能简单叠加模式，必须用摄动、相似解、数值方法等。</li>
+        <li><strong>选错坐标系导致本征函数复杂化</strong>——分离变量法的效果取决于坐标是否与边界匹配。<strong>矩形边界</strong>用直角坐标得三角函数；<strong>圆形/柱形边界</strong>用极坐标得 Bessel 函数；<strong>球形边界</strong>用球坐标得 Legendre 多项式 \(P_{\ell}\) 与球面调和 \(Y_{\ell m}\)。强行用直角坐标处理圆盘会让边界条件无法分离。</li>
+        <li><strong>忘记边界条件筛选模式</strong>——通解 \(u=\sum(A_{n}\cos\omega_{n}t+B_{n}\sin\omega_{n}t)\sin(n\pi x/L)\) 中的 \(n\) 取值（\(n=1,2,\ldots\)）、\(\lambda_{n}=(n\pi/L)^{2}\) 是<strong>由 \(u(0,t)=u(L,t)=0\) 决定的</strong>，不是任意选取。改边界条件（如一端自由 \(u_{x}(L,t)=0\)）会得到不同的谱（如 \(n=1,3,5,\ldots\) 或半整数），频率也随之改变。</li>
+        <li><strong>混淆极点的阶数</strong>——计算留数前必须先判定极点阶数 \(m\)。\(f(z)=1/(z^{2}+1)\) 在 \(z=i\) 是<strong>一阶</strong>极点（\(\mathrm{Res}=1/(2i)\)），而 \(1/(z^{2}+1)^{2}\) 是<strong>二阶</strong>极点，留数需用 \(\mathrm{d}/\mathrm{d}z\) 公式，不能套一阶公式。错阶会得到完全错误的留数。</li>
+        <li><strong>波方程时间部分写成 \(e^{-\lambda t}\)</strong>——把波方程（双曲型，二阶时间）和热方程（抛物型，一阶时间）混淆。波方程时间部分是 \(T''+\lambda v^{2}T=0\)，给出 <strong>\(\cos\omega t\)、\(\sin\omega t\)</strong>（振荡、能量守恒）；热方程时间部分是 \(T'+\alpha\lambda T=0\)，给出 <strong>\(e^{-\alpha\lambda t}\)</strong>（衰减、能量耗散）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 复数幂与根。设 \(z=1+i\)。(a) 把 \(z\) 写成极形式 \(re^{i\theta}\)；(b) 计算 \(z^{8}\)；(c) 求 \(z\) 的三个立方根（数值）。</summary>
+        <div class="hint">利用 \(|1+i|=\sqrt{2}\)、\(\arg(1+i)=\pi/4\)；幂用棣莫弗，根用 \(z^{1/3}=r^{1/3}e^{i(\theta+2\pi k)/3}\)。</div>
+        <div class="solution">
+          <p>(a) \(r=\sqrt{2}\)、\(\theta=\pi/4\)，故 \(z=\sqrt{2}\,e^{i\pi/4}\)。</p>
+          <p>(b) \(z^{8}=(\sqrt{2})^{8}e^{i\cdot8\pi/4}=16\,e^{i2\pi}=16\)。</p>
+          <p>(c) \(z^{1/3}=2^{1/6}e^{i(\pi/4+2\pi k)/3}\)，\(k=0,1,2\)。\(2^{1/6}\approx1.122\)，角度分别为 \(\pi/12=15^{\circ}\)、\(3\pi/4=135^{\circ}\)、\(17\pi/12=255^{\circ}\)。</p>
+          <p>\(z_{0}\approx1.084+0.291i\)，\(z_{1}\approx-0.794+0.794i\)，\(z_{2}\approx-0.291-1.084i\)。</p>
+          <p><span class="ans">\(z=\sqrt{2}e^{i\pi/4}\)；\(z^{8}=16\)；立方根 \(z_{0}\approx1.084+0.291i\) 等。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 调和共轭。已知 \(u(x,y)=x^{2}-y^{2}\)（一调和函数），求其调和共轭 \(v(x,y)\)（使 \(f=u+iv\) 解析），并写出 \(f(z)\)。</summary>
+        <div class="hint">由 CR：\(v_{y}=u_{x}=2x\)，\(v_{x}=-u_{y}=2y\)。先积分其一再代入另一式定常数。</div>
+        <div class="solution">
+          <p>由 \(v_{y}=2x\) 对 \(y\) 积分：\(v=2xy+g(x)\)。</p>
+          <p>代入 \(v_{x}=2y+g'(x)=2y\) ⇒ \(g'(x)=0\) ⇒ \(g=C\)（常数）。取 \(C=0\)：\(v=2xy\)。</p>
+          <p>于是 \(f(z)=u+iv=(x^{2}-y^{2})+i(2xy)=(x+iy)^{2}=z^{2}\)。<span class="ans">\(v=2xy\)，\(f(z)=z^{2}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 钢弦的低音。一根长 \(L=0.90\,\mathrm{m}\) 的钢琴弦，线密度 \(\mu=5.0\,\mathrm{g/m}\)，要使其基频 \(f_{1}=65.4\,\mathrm{Hz}\)（C2 音）。求所需张力 \(T\)。若把弦在中点 \(x_{0}=L/2\) 拨至 \(h=8\,\mathrm{mm}\) 静止释放，写出完整解并指出前两个非零模式的频率。</summary>
+        <div class="hint">先用 \(f_{1}=v/(2L)=\sqrt{T/\mu}/(2L)\) 解 \(T\)。中点拨弦 ⇒ 仅奇次模式，系数 \(A_{n}=\frac{8h}{\pi^{2}}\sin(n\pi/2)/n^{2}\)。</div>
+        <div class="solution">
+          <p>由 \(f_{1}=\sqrt{T/\mu}/(2L)\) ⇒ \(T=\mu(2Lf_{1})^{2}=5.0\times10^{-3}\times(2\times0.90\times65.4)^{2}=5.0\times10^{-3}\times(117.7)^{2}=69.2\,\mathrm{N}\)。</p>
+          <p>波速 \(v=2Lf_{1}=117.7\,\mathrm{m/s}\)，角频率 \(\omega_{n}=n\pi v/L=2\pi f_{1}n=410.9\,n\ \mathrm{rad/s}\)。</p>
+          <p>解 \(u(x,t)=\frac{8h}{\pi^{2}}\sum_{n=1,3,5,\ldots}\frac{\sin(n\pi/2)}{n^{2}}\sin(n\pi x/L)\cos(\omega_{n}t)\)。</p>
+          <p>前两个非零模式频率：\(f_{1}=65.4\,\mathrm{Hz}\)（基频 C2）、\(f_{3}=3f_{1}=196\,\mathrm{Hz}\)（G3）。</p>
+          <p><span class="ans">\(T\approx69\,\mathrm{N}\)；前两个非零模式为 \(f_{1}=65.4\,\mathrm{Hz}\)、\(f_{3}=196\,\mathrm{Hz}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 留数定理。计算 \(\displaystyle\int_{0}^{2\pi}\frac{\mathrm{d}\theta}{5+4\cos\theta}\)。</summary>
+        <div class="hint">令 \(z=e^{i\theta}\)，则 \(\cos\theta=\tfrac{1}{2}(z+z^{-1})\)、\(\mathrm{d}\theta=\mathrm{d}z/(iz)\)，把实积分化为单位圆上的围道积分，找单位圆内的极点。</div>
+        <div class="solution">
+          <p>代 \(z=e^{i\theta}\)：\(\displaystyle I=\oint_{|z|=1}\frac{\mathrm{d}z/(iz)}{5+4\cdot\frac{z+z^{-1}}{2}}=\oint\frac{\mathrm{d}z}{iz}\cdot\frac{1}{5+2z+2/z}=\frac{1}{i}\oint\frac{\mathrm{d}z}{2z^{2}+5z+2}\)。</p>
+          <p>因式分解 \(2z^{2}+5z+2=(2z+1)(z+2)\)，故极点 \(z=-1/2\)（单位圆内）与 \(z=-2\)（单位圆外）。</p>
+          <p>在 \(z=-1/2\) 处留数：\(\mathrm{Res}=\lim_{z\to-1/2}\frac{1}{i}\cdot\frac{1}{2z+2\cdot2}\bigg|_{\text{求导}}\)。直接用公式 \(\mathrm{Res}\bigl[\frac{1}{(2z+1)(z+2)}\bigr]_{z=-1/2}=\frac{1}{(2)(-1/2+2)}=\frac{1}{2\cdot3/2}=\frac{1}{3}\)。乘以 \(1/i\) 因子：\(\mathrm{Res}=\frac{1}{i}\cdot\frac{1}{3}=\frac{1}{3i}\)。</p>
+          <p>由留数定理 \(I=2\pi i\cdot\frac{1}{3i}=\frac{2\pi}{3}\)。</p>
+          <p><span class="ans">\(I=2\pi/3\approx2.094\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. Laplace 方程的边界选模。例 5 的方盒中，如果把<strong>底</strong>边 \(y=0\) 设为 \(V_{0}\)、其余三边为 0，电势 \(V(x,y)\) 的级数形式是什么？由此说明中心电势仍是 \(V_{0}/4=25\,\mathrm{V}\)。</summary>
+        <div class="hint">交换 \(y\to b-y\)，或在 \(y\) 方向选 \(\sinh(n\pi(b-y)/a)\) 让 \(y=b\) 端为 0。</div>
+        <div class="solution">
+          <p>类比例 5：本征函数 \(\sin(n\pi x/a)\) 不变，\(y\) 部分需满足 \(Y(b)=0\)、\(Y(0)\) 自由，故取 \(Y_{n}(y)=\sinh\bigl(n\pi(b-y)/a\bigr)\)。</p>
+          <p>\[ V(x,y)=\sum_{n=1,3,5,\ldots}\frac{4V_{0}}{n\pi\,\sinh(n\pi b/a)}\sin\!\Bigl(\frac{n\pi x}{a}\Bigr)\sinh\!\Bigl(\frac{n\pi(b-y)}{a}\Bigr) \]</p>
+          <p>在中心 \((a/2,b/2)\)：\(\sinh(n\pi(b-y)/a)|_{y=b/2}=\sinh(n\pi/2)\)，与例 5 中 \(\sinh(n\pi\cdot1/2)\) 相同；故中心电势与例 5 相等。<span class="ans">由对称性，每条边单独贡献 \(V_{0}/4\)，中心 \(=25\,\mathrm{V}\)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 拨弦的简正模式 Plucked String: Normal Modes</h2>
+      <p class="sim-desc">一根两端固定的弦（吉他尺度长度 \(L=0.64\,\mathrm{m}\)，张力 \(T=81\,\mathrm{N}\)，线密度 \(\mu=2.0\,\mathrm{g/m}\)，对应波速 \(v=201\,\mathrm{m/s}\)、基频 \(f_{1}=157\,\mathrm{Hz}\)）。改变拨弦点位置 \(x_{0}/L\) 与模式数 \(N\)，观察弦的真实振动 \(u(x,t)=\sum_{n=1}^{N}b_{n}\sin(n\pi x/L)\cos(\omega_{n}t)\)，其中 \(b_{n}=\dfrac{2hL^{2}\sin(n\pi x_{0}/L)}{\pi^{2}x_{0}(L-x_{0})\,n^{2}}\)。<strong>绿色虚线</strong>为初始形状（三角波的 Fourier 部分和），<strong>蓝色实线</strong>为当前振动。注意：当中点 \(x_{0}/L=0.5\) 时偶次模式消失；当 \(x_{0}/L=1/k\)（\(k\) 整数）时第 \(k\) 的整数倍模式消失——这正是边界条件与对称性"选模"的体现。动画视觉频率做了约 \(1/150\) 的慢放以便观察（屏幕显示的仍是真实 \(f_{1}\)）。</p>
+      <div class="sim-container">
+        <canvas id="sim-14" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-14"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-14');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical parameters (guitar-like, fixed) ------------------
+          var L = 0.64;                                  // m
+          var T_tension = 81;                            // N
+          var mu = 2.0e-3;                               // kg/m
+          var v = Math.sqrt(T_tension / mu);            // m/s  ≈ 200.96
+          var f1 = v / (2 * L);                          // Hz   ≈ 157.0
+
+          // Visual slow-down: mode-1 on-screen oscillation rate (Hz)
+          var visualRate = 1.2;
+
+          var params = { pluck: 0.25, amp: 32, modes: 8 };
+          var bn = [];
+
+          function computeModes() {
+            bn = [];
+            var x0 = params.pluck * L;                  // pluck position (m)
+            // guard against x0 = 0 or L (singular), though slider is bounded
+            x0 = Math.max(0.005 * L, Math.min(0.995 * L, x0));
+            var h = 1.0;                                // unit shape amplitude
+            var prefactor = (2 * h * L * L) / (Math.PI * Math.PI * x0 * (L - x0));
+            var N = Math.max(1, Math.floor(params.modes));
+            for (var n = 1; n <= N; n++) {
+              bn.push(prefactor * Math.sin(n * Math.PI * x0 / L) / (n * n));
+            }
+          }
+          computeModes();
+
+          // ---- Canvas geometry ------------------------------------------
+          var SX0 = 60, SX1 = W - 60, SY = Math.round(H / 2) + 10;
+          var SPAN = SX1 - SX0;
+          var NSAMP = 260;
+
+          // Precompute the t=0 (initial) shape polygon for the dashed overlay.
+          function initialShape() {
+            var pts = [];
+            for (var i = 0; i <= NSAMP; i++) {
+              var xf = i / NSAMP;
+              var u = 0;
+              for (var n = 1; n <= bn.length; n++) {
+                u += bn[n - 1] * Math.sin(n * Math.PI * xf);
+              }
+              pts.push([SX0 + xf * SPAN, SY - u * params.amp]);
+            }
+            return pts;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var tt = s.t;
+
+              // ---- Equilibrium line -------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(SX0, SY); ctx.lineTo(SX1, SY); ctx.stroke();
+              ctx.restore();
+
+              // ---- Initial shape (t=0) dashed ---------------------------
+              var initPts = initialShape();
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1.4;
+              ctx.setLineDash([4, 3]);
+              ctx.beginPath();
+              for (var k = 0; k < initPts.length; k++) {
+                if (k === 0) ctx.moveTo(initPts[k][0], initPts[k][1]);
+                else ctx.lineTo(initPts[k][0], initPts[k][1]);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Current string shape u(x,t) --------------------------
+              var N = bn.length;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              for (var i = 0; i <= NSAMP; i++) {
+                var xf = i / NSAMP;
+                var u = 0;
+                for (var n = 1; n <= N; n++) {
+                  var omegaVis = 2 * Math.PI * visualRate * n;
+                  u += bn[n - 1] * Math.sin(n * Math.PI * xf) * Math.cos(omegaVis * tt);
+                }
+                var px = SX0 + xf * SPAN;
+                var py = SY - u * params.amp;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Fixed endpoints --------------------------------------
+              PS.drawCircle(ctx, SX0, SY, 5, { fill: PS.colors.accent });
+              PS.drawCircle(ctx, SX1, SY, 5, { fill: PS.colors.accent });
+
+              // ---- Pluck-position marker on the equilibrium line ---------
+              var x0px = SX0 + params.pluck * SPAN;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.globalAlpha = 0.45;
+              ctx.setLineDash([2, 3]);
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(x0px, SY - 60); ctx.lineTo(x0px, SY + 60); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, x0px, SY, 3.5, { fill: PS.colors.accent });
+
+              // ---- Labels / readouts ------------------------------------
+              PS.drawText(ctx, 'x = 0', SX0, SY + 26, { align: 'center', color: PS.colors.text, font: '12px system-ui, sans-serif' });
+              PS.drawText(ctx, 'x = L', SX1, SY + 26, { align: 'center', color: PS.colors.text, font: '12px system-ui, sans-serif' });
+
+              var titleFont = '14px system-ui, sans-serif';
+              var bodyFont = '12px system-ui, sans-serif';
+              PS.drawText(ctx, '两端固定弦 / Fixed-end string — 分离变量 + Fourier 模式叠加', W / 2, 24, { align: 'center', color: PS.colors.text, font: titleFont });
+              PS.drawText(ctx,
+                'L = ' + L.toFixed(2) + ' m,   T = ' + T_tension + ' N,   μ = ' + (mu * 1e3).toFixed(1) + ' g/m,   v = ' + v.toFixed(1) + ' m/s,   f₁ = ' + f1.toFixed(1) + ' Hz',
+                W / 2, 46, { align: 'center', color: PS.colors.text, font: bodyFont });
+              PS.drawText(ctx,
+                '模式数 N = ' + N + ',   拨弦位置 x₀/L = ' + params.pluck.toFixed(2) + '   (基模视觉频率 ≈ ' + visualRate + ' Hz，慢放约 ' + (f1 / visualRate).toFixed(0) + '×)',
+                W / 2, 66, { align: 'center', color: PS.colors.text, font: bodyFont });
+
+              // ---- Legend ------------------------------------------------
+              var lx = SX0 + 8, ly = SY - 110;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 26, ly); ctx.stroke();
+              PS.drawText(ctx, '当前形状 u(x,t)', lx + 32, ly + 4, { color: PS.colors.text, font: bodyFont });
+              ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 1.4; ctx.setLineDash([4, 3]);
+              ctx.beginPath(); ctx.moveTo(lx, ly + 18); ctx.lineTo(lx + 26, ly + 18); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '初始形状 u(x,0)', lx + 32, ly + 22, { color: PS.colors.text, font: bodyFont });
+
+              // ---- Footer hint ------------------------------------------
+              PS.drawText(ctx, '提示：尝试 x₀/L = 0.5（仅奇次模式）或 x₀/L = 1/3（mode 3,6,9… 消失）观察边界条件如何选模', W / 2, H - 14, { align: 'center', color: PS.colors.text, font: bodyFont });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-14'), [
+            { type: 'slider', key: 'pluck', label: '拨弦位置 x₀/L', min: 0.05, max: 0.95, step: 0.01, value: 0.25 },
+            { type: 'slider', key: 'modes', label: '模式数 N', min: 1, max: 30, step: 1, value: 8 },
+            { type: 'slider', key: 'amp', label: '显示振幅 (px)', min: 6, max: 60, step: 1, value: 32 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('pluck', function (val) { params.pluck = val; computeModes(); sim.reset(); });
+          ctl.on('modes', function (val) { params.modes = val; computeModes(); });
+          ctl.on('amp', function (val) { params.amp = val; });
+          ctl.on('reset', function () { computeModes(); sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>复数两种形式</strong>：直角 \(z=x+iy\)、欧拉 \(z=re^{i\theta}\)；幂用棣莫弗 \(z^{n}=r^{n}e^{in\theta}\)，\(n\) 次根 \(z^{1/n}=r^{1/n}e^{i(\theta+2\pi k)/n}\)，\(k=0,\ldots,n-1\)。</li>
+        <li><strong>解析函数</strong>：处处复可微 ⇔ Cauchy–Riemann 方程 \(u_{x}=v_{y}\)、\(u_{y}=-v_{x}\)（且偏导连续）。解析 ⇒ 无穷次可微、可展幂级数、\(u,v\) 调和 (\(\nabla^{2}u=\nabla^{2}v=0\))。</li>
+        <li><strong>Cauchy 定理 / 积分公式</strong>：\(\oint f=0\)（解析区域）；\(f(z_{0})=\frac{1}{2\pi i}\oint\frac{f(z)}{z-z_{0}}\,\mathrm{d}z\)。</li>
+        <li><strong>Laurent 级数与留数</strong>：在孤立奇点邻域 \(f=\sum a_{n}(z-z_{0})^{n}\)（含负幂）；奇点分类：可去 / 极点 / 本性。留数定理 \(\oint f=2\pi i\sum\mathrm{Res}\)，是计算实积分的利器。</li>
+        <li><strong>三大 PDE</strong>：波动 \(\boxed{u_{tt}=v^{2}\nabla^{2}u}\)（双曲，时间反演不变）；热/扩散 \(\boxed{u_{t}=\alpha\nabla^{2}u}\)（抛物，不可逆）；Laplace \(\boxed{\nabla^{2}V=0}\)（椭圆，无源稳态）。</li>
+        <li><strong>分离变量</strong>：设 \(u=X(x)T(t)\) 把线性 PDE 拆成 ODE，<strong>边界条件选出本征值与本征函数</strong>（矩形 ⇒ 三角函数；柱 ⇒ Bessel；球 ⇒ Legendre）。</li>
+        <li><strong>弦的简正模式</strong>：\(u(x,t)=\sum\sin(n\pi x/L)[A_{n}\cos\omega_{n}t+B_{n}\sin\omega_{n}t]\)，\(\omega_{n}=n\pi v/L\)，\(f_{n}=nv/(2L)\)。系数 \(A_{n}\)、\(B_{n}\) 由初始形状 / 速度的 Fourier 正弦级数确定（接第 5 章）。</li>
+        <li><strong>热杆冷却</strong>：\(u=\sum A_{n}\sin(n\pi x/L)e^{-n^{2}\pi^{2}\alpha t/L^{2}}\)，高阶模式按 \(n^{2}\) 加快衰减，长时间只剩基模。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,\text{解析}\iff u_{x}=v_{y},\ u_{y}=-v_{x};\qquad \oint f=2\pi i\textstyle\sum\mathrm{Res}\,} \]</div>
+      <div class="formula">\[ \boxed{\,u_{tt}=v^{2}\nabla^{2}u,\qquad u_{t}=\alpha\nabla^{2}u,\qquad \nabla^{2}V=0\,} \]</div>
+      <div class="formula">\[ \boxed{\,u(x,t)=\sum_{n=1}^{\infty}\sin\!\Bigl(\frac{n\pi x}{L}\Bigr)\bigl[A_{n}\cos\omega_{n}t+B_{n}\sin\omega_{n}t\bigr],\quad \omega_{n}=\frac{n\pi v}{L}\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

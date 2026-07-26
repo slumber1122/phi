@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 光的干涉 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第9章 · 光学 Optics</p>
+      <h1>光的干涉 <span class="en-title">Interference of Light</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>阐述两束光产生<strong>稳定干涉</strong> (stable interference) 所需的条件——<strong>相干性</strong> (coherence)、相同波长、相同偏振、相近振幅——并说明实验室里如何用<strong>分波前法</strong> (wavefront division, 如杨氏双缝) 与<strong>分振幅法</strong> (amplitude division, 如薄膜、迈克尔逊干涉仪) 从单一光源获取相干光束。</li>
+        <li>推导并应用<strong>杨氏双缝</strong> (Young's double-slit) 公式：路径差 \(\delta=d\sin\theta\) 在 \(m\lambda\) 处为亮纹、\((m+\tfrac12)\lambda\) 处为暗纹；小角下条纹间距 \(\Delta y=\lambda L/d\)。</li>
+        <li>从相量叠加 (phasor addition) 推出双缝<strong>强度分布</strong> \(I=I_{\max}\cos^{2}\!\big(\pi d\sin\theta/\lambda\big)\)，并说明 \(I_{\max}=4I_{0}\)。</li>
+        <li>判定光在界面反射时何时发生 <strong>\(\pi\) 相位突变</strong> (phase reversal on reflection at optically denser medium)，并将其纳入<strong>薄膜干涉</strong> (thin-film interference) 条件 \(2nt=m\lambda\) 或 \(2nt=(m+\tfrac12)\lambda\)（油膜、皂膜）。</li>
+        <li>用 <strong>迈克尔逊干涉仪</strong> (Michelson interferometer) 由条纹计数与动镜位移求波长 \(2\Delta d=N\lambda\)；计算<strong>牛顿环</strong> (Newton's rings) 各级半径 \(r_{m}=\sqrt{m\lambda R}\)。</li>
+        <li>解释<strong>相干长度</strong> (coherence length) \(\ell_{c}\approx\lambda^{2}/\Delta\lambda\) 的物理意义及其对可观测干涉的最大光程差的限制。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 稳定干涉的条件 Conditions for Stable Interference</h3>
+      <p>两束电磁波叠加产生的<strong>干涉</strong> (interference) 是<strong>波动性</strong>最直接的体现。要在屏幕上观察到<strong>稳定的</strong>（不随时间闪烁、移动的）干涉条纹，两束光必须满足：</p>
+      <ul>
+        <li><strong>相干 (coherent)</strong>：两束波在相遇点有<strong>恒定</strong>的相位差 \(\Delta\phi\)（不随时间漂移）。两个独立的灯泡（甚至两束同色激光）相位各自随机跳变，叠加后只能得到强度相加 \(I=I_{1}+I_{2}\)，看不到条纹。</li>
+        <li><strong>相同频率/波长</strong>（即同色）：不同 \(\lambda\) 的波叠加不会在同一位置稳定地"峰遇峰"或"峰遇谷"。</li>
+        <li><strong>相同偏振</strong> (polarization) 与<strong>相近振幅</strong>：正交偏振的波不发生干涉；振幅悬殊时条纹对比度 (contrast) \(\,V=(I_{\max}-I_{\min})/(I_{\max}+I_{\min})\,\) 降低。</li>
+      </ul>
+      <p>获取相干光的两种基本方法：<strong>分波前法</strong>（如杨氏双缝把同一波前切成两份）与<strong>分振幅法</strong>（如薄膜/迈克尔逊干涉仪用半透半反镜把同一束光的振幅分成两份）。两者都源自"同一发光原子同一跃迁事件"的光，因此天然相干。</p>
+      <div class="key-terms">interference (干涉), coherent (相干), coherence (相干性), wavefront division (分波前法), amplitude division (分振幅法), fringe contrast (条纹对比度)</div>
+
+      <h3>2. 杨氏双缝实验 Young's Double-Slit Experiment</h3>
+      <p>1801 年 Thomas Young 的实验首次"直接"显示光的波动性：单一狭缝后接两条相距 \(d\) 的窄缝 \(S_{1},S_{2}\)，两缝相当于两个同相相干次级源 (Huygens 次级波)。在距缝 \(L\,(L\gg d)\) 处的屏幕上观察到的明暗条纹<strong>等距</strong>排列。</p>
+      <p>设屏上一点 \(P\) 对两缝的张角为 \(\theta\)（自中央法线量起），则两束光到达 \(P\) 的<strong>路径差</strong> (path difference) 为</p>
+      <div class="formula">\[ \delta=r_{2}-r_{1}=d\sin\theta \]</div>
+      <p>叠加后相位差 \(\Delta\phi=(2\pi/\lambda)\,\delta\)。当两束光同相（\(\Delta\phi=2m\pi\)）时<strong>相长</strong>，反相时<strong>相消</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;\text{亮纹 bright:}\quad d\sin\theta=m\lambda,\quad m=0,\pm1,\pm2,\dots\;\;} \]</div>
+      <div class="formula">\[ \boxed{\;\;\text{暗纹 dark:}\quad d\sin\theta=\big(m+\tfrac12\big)\lambda,\quad m=0,\pm1,\pm2,\dots\;\;} \]</div>
+      <p>小角近似 \(\sin\theta\approx\tan\theta=y/L\) 下，第 \(m\) 级亮纹的横向位置 \(y_{m}=m\lambda L/d\)，相邻亮纹的<strong>条纹间距</strong> (fringe spacing)：</p>
+      <div class="formula">\[ \boxed{\;\;\Delta y=\frac{\lambda L}{d}\;\;} \]</div>
+      <p>典型数据 \(\lambda=550\,\mathrm{nm}\)、\(d=0.20\,\mathrm{mm}\)、\(L=1.5\,\mathrm{m}\) 给出 \(\Delta y\approx 4.1\,\mathrm{mm}\)，肉眼可辨。注意 \(d\) 越小、\(L\) 越大，条纹越疏。</p>
+      <div class="key-terms">path difference \(\delta\) (路径差), order \(m\) (级次), central bright fringe (中央亮纹), fringe spacing \(\Delta y\) (条纹间距)</div>
+
+      <h3>3. 双缝强度分布 Intensity Pattern</h3>
+      <p>每条缝单独在屏上产生的振幅为 \(E_{0}\)（强度 \(I_{0}\propto E_{0}^{2}\)）。两束相干光相量叠加后总振幅为</p>
+      <div class="formula">\[ E=2E_{0}\cos\!\Big(\frac{\Delta\phi}{2}\Big)=2E_{0}\cos\!\Big(\frac{\pi d\sin\theta}{\lambda}\Big) \]</div>
+      <p>取平方得强度：</p>
+      <div class="formula">\[ \boxed{\;\;I(\theta)=I_{\max}\cos^{2}\!\Big(\frac{\pi d\sin\theta}{\lambda}\Big),\qquad I_{\max}=4I_{0}\;\;} \]</div>
+      <p>即强度在 \(0\) 与 \(4I_{0}\) 之间余弦平方调制——这是<strong>纯粹的波动结果</strong>，光子图像里"亮纹"处光子到达率高、"暗纹"处为零，但<strong>总光强守恒</strong>：\(\langle I\rangle=2I_{0}=I_{1}+I_{2}\)，干涉只是把能量在空间上重新分配（见推导 9.1）。</p>
+      <div class="key-terms">intensity pattern (强度分布), phasor (相量), energy redistribution (能量重新分配)</div>
+
+      <h3>4. 反射时的相位突变 Phase Change on Reflection</h3>
+      <p>光在介质 (折射率 \(n\) 不同) 界面反射时，可能伴随<strong>\(\pi\) 相位突变</strong>（等效于附加 \(\lambda/2\) 路径），规律：</p>
+      <ul>
+        <li>由<strong>光疏</strong>介质入射到<strong>光密</strong>介质（\(n\) 增大）的反射光——有 \(\pi\) 突变（"硬反射"，类比绳端固定）。</li>
+        <li>由<strong>光密</strong>介质入射到<strong>光疏</strong>介质（\(n\) 减小）的反射光——<strong>无</strong> \(\pi\) 突变（"软反射"，类比绳端自由）。</li>
+      </ul>
+      <p>透射光<strong>从不</strong>发生 \(\pi\) 突变。\(\pi\) 突变只发生在反射，且只发生在"进入光密"那一次。这是分析<strong>薄膜干涉</strong>的关键。</p>
+      <div class="key-terms">phase reversal (相位突变), optically denser medium (光密介质), optically rarer medium (光疏介质)</div>
+
+      <h3>5. 薄膜干涉 Thin-Film Interference</h3>
+      <p>厚度 \(t\)、折射率 \(n\) 的透明薄膜（如水面油膜、皂膜）受正入射光照射。前表面反射光与膜内来回一次后从后表面出射的反射光发生叠加。来回一次的<strong>几何</strong>路程为 \(2t\)，但膜内光波长缩短为 \(\lambda/n\)，故<strong>光程</strong> (optical path) 为：</p>
+      <div class="formula">\[ \Lambda_{\text{膜}}=2nt \]</div>
+      <p>把两个反射波各自的 \(\pi\) 突变考虑进去（看哪一次有突变、哪一次没有），干涉条件为：</p>
+      <ul>
+        <li><strong>仅一次</strong> \(\pi\) 突变（典型：空气—水膜—空气的皂膜、空气—油膜—水）：
+          <div class="formula">\[ \text{相长反射:}\;2nt=\big(m+\tfrac12\big)\lambda\quad;\quad \text{相消反射:}\;2nt=m\lambda \]</div>
+        </li>
+        <li><strong>两次或零次</strong> \(\pi\) 突变（典型：空气—水—玻璃，两界面皆光密 → 两次突变，等效无净突变）：
+          <div class="formula">\[ \text{相长反射:}\;2nt=m\lambda\quad;\quad \text{相消反射:}\;2nt=\big(m+\tfrac12\big)\lambda \]</div>
+        </li>
+      </ul>
+      <p><strong>油膜彩色</strong>：白光含各种 \(\lambda\)，某厚度 \(t\) 恰使某一 \(\lambda\) 相长反射，相邻 \(\lambda\) 则相消——故油膜、皂泡表面呈现随厚度变化的彩色条纹。<strong>皂膜临近破裂时</strong> \(t\to 0\)，对可见光 \(2nt\to 0=m\lambda\) 取 \(m=0\)，对应"仅一次 \(\pi\) 突变"情形的<strong>相消</strong>反射，所以变黑。</p>
+      <div class="key-terms">thin-film interference (薄膜干涉), optical path (光程), refractive index \(n\) (折射率)</div>
+
+      <h3>6. 牛顿环 Newton's Rings</h3>
+      <p>在一块平玻璃板上放一曲率半径 \(R\) 很大的平凸透镜，透镜凸面与玻璃板之间形成<strong>空气薄膜</strong> (n≈1)，厚度 \(t\) 随到接触点距离 \(r\) 增大：\(t\approx r^{2}/(2R)\)（球面 sagitta 公式，\(r\ll R\)）。正入射单色光下，膜上下两表面的反射光干涉形成以接触点为圆心的同心<strong>环状条纹</strong>。</p>
+      <p>空气膜：上表面（玻璃→空气）光疏反射，<strong>无</strong> \(\pi\) 突变；下表面（空气→玻璃）光密反射，<strong>有</strong> \(\pi\) 突变。故净 \(\pi\) 突变为一次，与皂膜同：</p>
+      <div class="formula">\[ \text{亮环 bright:}\;2t=\big(m+\tfrac12\big)\lambda\;\Rightarrow\; r_{m}=\sqrt{\big(m+\tfrac12\big)\lambda R} \]</div>
+      <div class="formula">\[ \text{暗环 dark:}\;2t=m\lambda\;\Rightarrow\;\boxed{\;r_{m}=\sqrt{m\lambda R}\;},\quad m=0,1,2,\dots \]</div>
+      <p>中心 \(t=0\)、\(m=0\) 给出<strong>暗斑</strong>（实验上的关键判据，证明发生了一次 \(\pi\) 突变）。</p>
+      <div class="key-terms">Newton's rings (牛顿环), plano-convex lens (平凸透镜), radius of curvature \(R\) (曲率半径), air wedge (空气劈)</div>
+
+      <h3>7. 迈克尔逊干涉仪 Michelson Interferometer</h3>
+      <p>分振幅法的典范：单色光经 45° 半透半反镜 (beam splitter) 分成两束，分别射向可动镜 \(M_{1}\) 与固定镜 \(M_{2}\)，反射后再次汇合产生干涉。当 \(M_{1}\) 沿光路移动距离 \(\Delta d\)，两臂<strong>光程差</strong>改变 \(2\Delta d\)（一来一回），每变化一个 \(\lambda\) 视场中就有一条条纹移过（"明—暗—明"算一条）：</p>
+      <div class="formula">\[ \boxed{\;\;2\,\Delta d=N\lambda\;\;} \]</div>
+      <p>由此可由已知的 \(\Delta d\) 与计数 \(N\) 精测 \(\lambda\)，或反之校准长度（历史上迈克尔逊用它首次以镉红光波长标定米原器）。</p>
+      <div class="key-terms">Michelson interferometer (迈克尔逊干涉仪), beam splitter (分束镜), movable mirror (可动镜), fringe count (条纹计数)</div>
+
+      <h3>8. 相干性与相干长度 Coherence &amp; Coherence Length</h3>
+      <p>实际光源每次发光持续时间 \(\tau_{c}\) 有限（波列长度 \(\ell_{c}=c\tau_{c}\)），称为<strong>相干长度</strong>。当两束光的光程差超过 \(\ell_{c}\)，相遇的已是不同波列、彼此不相干，条纹消失。</p>
+      <div class="formula">\[ \ell_{c}\approx\frac{\lambda^{2}}{\Delta\lambda}\quad(\Delta\lambda\,\text{为谱线宽度}) \]</div>
+      <p>典型量级：白炽灯 \(\ell_{c}\sim\mu\mathrm{m}\)（几微米，只有紧邻薄膜才能干涉出彩色）；低压钠灯 \(\sim\,\mathrm{cm}\)；稳频 He-Ne 激光 \(\sim\,\mathrm{m}\) 至 \(\mathrm{km}\)。激光的极佳相干性是它成为干涉测量首选光源的原因。</p>
+      <div class="key-terms">coherence length \(\ell_{c}\) (相干长度), wave train (波列), spectral width \(\Delta\lambda\) (谱线宽度), laser (激光)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 9.1：双缝强度分布 \(I=I_{\max}\cos^{2}(\pi d\sin\theta/\lambda)\)</h3>
+      <p class="step"><strong>设定：</strong> 两缝 \(S_{1},S_{2}\) 出射的两束相干光在屏上 \(P\) 点相遇，电场（同频率、同方向偏振）为</p>
+      <div class="formula">\[ E_{1}=E_{0}\cos(\omega t)\;,\qquad E_{2}=E_{0}\cos(\omega t+\Delta\phi) \]</div>
+      <p>其中 \(\Delta\phi=(2\pi/\lambda)\delta=(2\pi/\lambda)\,d\sin\theta\)。</p>
+      <p class="step"><strong>步骤 1（合成振幅）：</strong> 两余弦相加，用和差化积：</p>
+      <div class="formula">\[ E=E_{1}+E_{2}=2E_{0}\cos\!\Big(\frac{\Delta\phi}{2}\Big)\cos(\omega t) \]</div>
+      <p>合成波仍是同频率的余弦，振幅为 \(|2E_{0}\cos(\Delta\phi/2)|\)。</p>
+      <p class="step"><strong>步骤 2（取时间平均强度）：</strong> 强度 \(\propto\) 振幅平方的时间平均。对余弦波，\(\langle\cos^{2}(\omega t)\rangle=1/2\)，所以单缝单独的强度 \(I_{0}\propto E_{0}^{2}/2\)。两缝同开时的强度为</p>
+      <div class="formula">\[ I=4I_{0}\cos^{2}\!\Big(\frac{\Delta\phi}{2}\Big)=4I_{0}\cos^{2}\!\Big(\frac{\pi d\sin\theta}{\lambda}\Big) \]</div>
+      <p class="step"><strong>步骤 3（识别 \(I_{\max}\)）：</strong> 当 \(\Delta\phi=0\)（中央），\(I=4I_{0}\)，记 \(I_{\max}=4I_{0}\)；当 \(\Delta\phi=\pi\)，\(I=0\)。</p>
+      <div class="formula">\[ \boxed{\;I(\theta)=I_{\max}\cos^{2}\!\Big(\frac{\pi d\sin\theta}{\lambda}\Big)\;,\quad I_{\max}=4I_{0}\;} \]</div>
+      <p class="step"><strong>能量守恒校核：</strong> \(\langle\cos^{2}\rangle=1/2\)，故条纹平均强度 \(\langle I\rangle=4I_{0}\cdot\tfrac12=2I_{0}=I_{1}+I_{2}\)，与非相干叠加一致——干涉只是把能量从暗纹转移到亮纹，<strong>不创造也不消灭</strong>。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 双缝条纹间距 Double-Slit Fringe Spacing</h4>
+        <p class="example-statement">一束氦氖激光 (\(\lambda=632.8\,\mathrm{nm}\)) 垂直照射相距 \(d=0.200\,\mathrm{mm}\) 的双缝，缝后 \(L=1.50\,\mathrm{m}\) 处放屏幕。求：(a) 条纹间距 \(\Delta y\)；(b) 第三级 (\(m=3\)) 亮纹到中心的距离；(c) 距中心第二条暗纹 (\(m=1\)，注意 \(\delta=(m+\tfrac12)\lambda\) 中 \(m=0\) 是第一条) 的位置。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 直接代入：</p>
+          <div class="formula">\[ \Delta y=\frac{\lambda L}{d}=\frac{(632.8\times10^{-9}\,\mathrm{m})(1.50\,\mathrm{m})}{0.200\times10^{-3}\,\mathrm{m}}=4.746\times10^{-3}\,\mathrm{m} \]</div>
+          <p class="step"><strong>(b)</strong> 第 \(m\) 级亮纹位置 \(y_{m}=m\Delta y\)。取 \(m=3\)：</p>
+          <div class="formula">\[ y_{3}=3\Delta y=3(4.746\,\mathrm{mm})=14.24\,\mathrm{mm}\approx 14.2\,\mathrm{mm} \]</div>
+          <p class="step"><strong>(c)</strong> 第二条暗纹对应 \(m=1\)（\(m=0\) 是中央两侧第一条暗纹）：\(y=(m+\tfrac12)\Delta y=\tfrac32\Delta y\)。</p>
+          <div class="formula">\[ y=\tfrac32(4.746\,\mathrm{mm})=7.12\,\mathrm{mm} \]</div>
+          <p class="step"><strong>校核：</strong> 小角判据 \(\sin\theta\approx y/L\)：\(14.2\,\mathrm{mm}/1.50\,\mathrm{m}\approx 9.5\times10^{-3}\)，远小于 1，小角近似成立。</p>
+          <p><span class="ans">(a) \(\Delta y=4.75\,\mathrm{mm}\)；(b) \(y_{3}=14.2\,\mathrm{mm}\)；(c) \(y=7.12\,\mathrm{mm}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 由条纹间距定波长 Determining λ from Fringe Spacing</h4>
+        <p class="example-statement">未知单色光垂直入射双缝（\(d=0.200\,\mathrm{mm}\)），缝屏距 \(L=2.00\,\mathrm{m}\)。测得第 5 级 (\(m=5\)) 亮纹距中心 \(y_{5}=29.45\,\mathrm{mm}\)。求波长 \(\lambda\)，并判断是何种光源。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(y_{m}=m\lambda L/d\)，反解</p>
+          <div class="formula">\[ \lambda=\frac{y_{m}\,d}{mL}=\frac{(29.45\times10^{-3}\,\mathrm{m})(0.200\times10^{-3}\,\mathrm{m})}{(5)(2.00\,\mathrm{m})} \]</div>
+          <div class="formula">\[ \lambda=\frac{5.890\times10^{-6}\,\mathrm{m^{2}}}{10.0\,\mathrm{m}}=5.89\times10^{-7}\,\mathrm{m}=589\,\mathrm{nm} \]</div>
+          <p class="step"><strong>解读：</strong> \(589\,\mathrm{nm}\) 正是低压钠灯的 D 双线主峰（钠 D 线 \(589.0/589.6\,\mathrm{nm}\)），故光源为钠灯。校核条纹间距 \(\Delta y=y_{5}/5=29.45/5=5.89\,\mathrm{mm}\)，与 \(\Delta y=\lambda L/d=589\,\mathrm{nm}\times2/(0.200\,\mathrm{mm})=5.89\,\mathrm{mm}\) 一致。</p>
+          <p><span class="ans">\(\lambda=589\,\mathrm{nm}\)（钠 D 线）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 水面油膜的厚度 Oil Slick on Water</h4>
+        <p class="example-statement">一层折射率 \(n=1.50\) 的薄油膜浮在水面（\(n_{\text{水}}=1.33\)）上，被正入射白光照射。求绿光 \(\lambda=540\,\mathrm{nm}\)（真空中波长）出现：(a) <strong>反射相长</strong>的最小非零膜厚 \(t\)；(b) <strong>反射相消</strong>的最小非零膜厚。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（分析两次 \(\pi\) 突变）：</strong> 上表面"空气→油"是光密反射，<strong>有</strong> \(\pi\) 突变；下表面"油→水"是光疏反射（\(1.50>1.33\)），<strong>无</strong> \(\pi\) 突变。两次反射净 \(\pi\) 突变次数为 1。</p>
+          <p class="step"><strong>步骤 2（条件）：</strong> 净一次 \(\pi\) 突变时，相长反射需 \(2nt=(m+\tfrac12)\lambda\)，相消反射需 \(2nt=m\lambda\)。</p>
+          <p class="step"><strong>(a)</strong> 相长最小非零厚度取 \(m=0\)：</p>
+          <div class="formula">\[ t_{\min}=\frac{\lambda}{4n}=\frac{540\,\mathrm{nm}}{4(1.50)}=\frac{540}{6.00}\,\mathrm{nm}=90.0\,\mathrm{nm} \]</div>
+          <p class="step"><strong>(b)</strong> 相消最小非零厚度取 \(m=1\)（\(m=0\) 给出 \(t=0\)，无意义）：</p>
+          <div class="formula">\[ t_{\min}=\frac{\lambda}{2n}=\frac{540\,\mathrm{nm}}{2(1.50)}=\frac{540}{3.00}\,\mathrm{nm}=180\,\mathrm{nm} \]</div>
+          <p class="step"><strong>解读：</strong> 油膜各处厚度不同，对应不同 \(\lambda\) 的相长反射，从而呈现彩色。注意<strong>光程用 \(2nt\)</strong>（含折射率），不是 \(2t\)——膜内波长被压缩为 \(\lambda/n\)。</p>
+          <p><span class="ans">(a) \(t=90.0\,\mathrm{nm}\)（相长）；(b) \(t=180\,\mathrm{nm}\)（相消）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 迈克尔逊干涉仪测波长 Michelson: λ from Fringe Count</h4>
+        <p class="example-statement">一台迈克尔逊干涉仪用未知单色光源。当可动镜缓慢平移 \(\Delta d=63.3\,\mathrm{\mu m}\) 时，观察者数得视场中正好有 \(N=200\) 条亮纹移过参考十字线。求光波波长 \(\lambda\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 动镜位移 \(\Delta d\) 引起的光程差变化为 \(2\Delta d\)（一来一回）。每移过一条条纹对应光程差变化一个 \(\lambda\)：</p>
+          <div class="formula">\[ 2\,\Delta d=N\lambda\quad\Longrightarrow\quad \lambda=\frac{2\,\Delta d}{N} \]</div>
+          <div class="formula">\[ \lambda=\frac{2(63.3\times10^{-6}\,\mathrm{m})}{200}=\frac{1.266\times10^{-4}\,\mathrm{m}}{200}=6.33\times10^{-7}\,\mathrm{m} \]</div>
+          <div class="formula">\[ \lambda=633\,\mathrm{nm} \]</div>
+          <p class="step"><strong>解读：</strong> 这是氦氖激光的标志性红光（\(632.8\,\mathrm{nm}\)，与计算值的微小差来自位移只取 3 位有效数字）。迈克尔逊干涉仪以此法可把 \(\lambda\) 测到 \(10^{-9}\) 量级，是历史上最精密的测长手段之一。</p>
+          <p><span class="ans">\(\lambda=633\,\mathrm{nm}\)（氦氖激光红光）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 牛顿环的直径 Newton's Rings Diameter</h4>
+        <p class="example-statement">平凸透镜（曲率半径 \(R=1.00\,\mathrm{m}\)）凸面朝下放在平玻璃板上，用钠光 \(\lambda=589\,\mathrm{nm}\) 正入射。透镜与玻璃板间为空气。求第 5 级暗环（\(m=5\)）的<strong>直径</strong>。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（相位突变）：</strong> 空气膜上表面"玻璃→空气"光疏反射（无突变）；下表面"空气→玻璃"光密反射（\(\pi\) 突变）。净一次 \(\pi\) 突变，与皂膜同，暗环条件 \(2t=m\lambda\)。</p>
+          <p class="step"><strong>步骤 2（几何）：</strong> 空气膜厚度 \(t=r^{2}/(2R)\)（球面 sagitta，\(r\ll R\)）。代入：</p>
+          <div class="formula">\[ 2\,\frac{r^{2}}{2R}=m\lambda\;\Longrightarrow\;r_{m}^{2}=m\lambda R\;\Longrightarrow\;r_{m}=\sqrt{m\lambda R} \]</div>
+          <p class="step"><strong>步骤 3（数值）：</strong> \(m=5\)：</p>
+          <div class="formula">\[ r_{5}=\sqrt{5(589\times10^{-9}\,\mathrm{m})(1.00\,\mathrm{m})}=\sqrt{2.945\times10^{-6}\,\mathrm{m^{2}}}=1.716\times10^{-3}\,\mathrm{m} \]</div>
+          <div class="formula">\[ r_{5}=1.72\,\mathrm{mm}\;\Longrightarrow\;\text{直径}\,D_{5}=2r_{5}=3.43\,\mathrm{mm} \]</div>
+          <p class="step"><strong>校核：</strong> \(r_{5}/R=1.7\times10^{-3}\)，小角/小量近似 \(t=r^{2}/(2R)\) 完全有效。中心 \(t=0,m=0\) 为暗斑，与实验一致。</p>
+          <p><span class="ans">第 5 级暗环直径 \(D_{5}=3.43\,\mathrm{mm}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>\(\pi\) 相位突变发生在"由光疏入射光密"的那一次反射</strong>，不要把"进入光密介质"误解为"在光密介质内的反射"。如空气—水—空气的皂膜：第一次反射在空气→水界面（光密，有突变），第二次反射在水→空气界面（光疏，无突变）——两次反射发生在不同界面，分别判断。</li>
+        <li><strong>两个独立光源不相干，不会出现条纹。</strong> 拿两只手电筒照同一屏幕，看到的只是强度相加 \(I=I_{1}+I_{2}\)，没有明暗条纹——因为它们各自发光的相位随机跳变，远快于人眼响应。必须用单一光源经分波前或分振幅法获得两束相干光。</li>
+        <li><strong>\(\Delta y=\lambda L/d\) 仅在小角近似 \(\sin\theta\approx y/L\) 下成立。</strong> 大角度（屏边或 \(d\) 很大）时必须用精确条件 \(d\sin\theta=m\lambda\)，否则会得出非等距条纹被误算成等距。判断：要求 \(y_{\max}\ll L\)。</li>
+        <li><strong>薄膜的光程是 \(2nt\)，不是 \(t\) 也不是 \(2t\)。</strong> 来回一次的几何路径是 \(2t\)，但膜内波长被压缩为 \(\lambda/n\)，所以光程要乘 \(n\)。漏掉 \(n\) 或漏掉因子 2 是最常见的初学错误。</li>
+        <li><strong>条纹级次 \(m\) 从 0 起算（中央亮纹 \(m=0\)），不是从 1。</strong> "第 3 级亮纹"通常指 \(m=3\)（含中央共第 4 条）。对暗纹，"距中心第 2 条暗纹"对应 \(\delta=(m+\tfrac12)\lambda\) 中的 \(m=1\)，要小心数清。</li>
+        <li><strong>迈克尔逊干涉仪动镜位移 \(\Delta d\) 对应光程差变化 \(2\Delta d\)，不是 \(\Delta d\)。</strong> 镜子移过 \(\lambda/2\)，光一来一回就改变 \(\lambda\)，正好一条条纹移过——所以 \(2\Delta d=N\lambda\)，不要写成 \(\Delta d=N\lambda\)。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 双缝 \(d=0.100\,\mathrm{mm}\)、\(\lambda=480\,\mathrm{nm}\)、\(L=1.20\,\mathrm{m}\)。求条纹间距 \(\Delta y\)。</summary>
+        <div class="hint">直接代 \(\Delta y=\lambda L/d\)，注意单位换算。</div>
+        <div class="solution">\[ \Delta y=\frac{(480\times10^{-9})(1.20)}{0.100\times10^{-3}}=5.76\times10^{-3}\,\mathrm{m} \]<br><span class="ans">\(\Delta y=5.76\,\mathrm{mm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 用氦氖激光 (\(\lambda=632.8\,\mathrm{nm}\))、\(L=2.00\,\mathrm{m}\)，测得条纹间距 \(\Delta y=2.50\,\mathrm{mm}\)。求缝距 \(d\)。</summary>
+        <div class="hint">由 \(\Delta y=\lambda L/d\) 反解 \(d=\lambda L/\Delta y\)。</div>
+        <div class="solution">\[ d=\frac{\lambda L}{\Delta y}=\frac{(632.8\times10^{-9})(2.00)}{2.50\times10^{-3}}=5.06\times10^{-4}\,\mathrm{m} \]<br><span class="ans">\(d=0.506\,\mathrm{mm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 空气中的皂膜 (\(n=1.33\))，被 \(\lambda=600\,\mathrm{nm}\) 的光正入射。求反射相消的最小非零膜厚。</summary>
+        <div class="hint">空气—膜—空气：仅一次 \(\pi\) 突变。相消 \(2nt=m\lambda\)，最小非零取 \(m=1\)。</div>
+        <div class="solution">仅一次 \(\pi\) 突变，反射相消条件 \(2nt=m\lambda\)。取 \(m=1\):\[ t=\frac{\lambda}{2n}=\frac{600\,\mathrm{nm}}{2(1.33)}=\frac{600}{2.66}\,\mathrm{nm}=226\,\mathrm{nm} \]<br><span class="ans">\(t_{\min}\approx 226\,\mathrm{nm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 迈克尔逊干涉仪用钠灯 (\(\lambda=589\,\mathrm{nm}\))。可动镜缓慢平移过程中数得 \(N=850\) 条亮纹移过。求镜位移 \(\Delta d\)。</summary>
+        <div class="hint">\(2\Delta d=N\lambda\)，故 \(\Delta d=N\lambda/2\)。</div>
+        <div class="solution">\[ \Delta d=\frac{N\lambda}{2}=\frac{(850)(589\times10^{-9}\,\mathrm{m})}{2}=2.50\times10^{-4}\,\mathrm{m} \]<br><span class="ans">\(\Delta d=0.250\,\mathrm{mm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 牛顿环装置中平凸透镜 \(R=80\,\mathrm{cm}\)，用 \(\lambda=589\,\mathrm{nm}\) 正入射。求第 3 级<strong>亮环</strong>的半径。</summary>
+        <div class="hint">亮环 \(2t=(m+\tfrac12)\lambda\)，\(t=r^{2}/(2R)\)，故 \(r_{m}=\sqrt{(m+\tfrac12)\lambda R}\)。注意中心是暗斑（\(m=0\)），"第 3 级亮环"对应 \(m=2\)。</div>
+        <div class="solution">中心 \(t=0\) 是暗斑（\(m=0\) 暗）。第一亮环 \(m=0\)（\(2t=\tfrac12\lambda\)），第三亮环对应 \(m=2\):\[ r_{2}=\sqrt{(2+\tfrac12)\lambda R}=\sqrt{2.5\,(589\times10^{-9})(0.80)}=\sqrt{1.178\times10^{-6}}\,\mathrm{m} \]\[ r_{2}=1.085\times10^{-3}\,\mathrm{m} \]<br><span class="ans">\(r_{2}\approx 1.09\,\mathrm{mm}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">杨氏双缝干涉图样 (Young's double-slit interference pattern)。<strong>左半</strong>示意两缝 \(S_{1},S_{2}\) 发出的圆形波前 (波前按波长 \(\lambda\) 着色) 在缝与屏之间相互叠加——波前密集相交处为相长、波前与"空隙"相遇处为相消。<strong>右半</strong>是屏上的真实强度分布 \(I=I_{\max}\cos^{2}(\pi d\sin\theta/\lambda)\)（用余弦平方调制的色带）以及叠加的 \(I(y)\) 曲线。拖动滑块改变缝距 \(d\)、波长 \(\lambda\)、屏距 \(L\)，观察条纹间距 \(\Delta y=\lambda L/d\)、亮纹/暗纹位置、可见区域内的级次数如何变化。波长 \(\lambda\) 同时控制波前与色带的<strong>颜色</strong>：450 nm 蓝、550 nm 绿、650 nm 红，所见即所得。坐标采用物理单位（\(d\) 用 μm，\(\lambda\) 用 nm，\(L\) 用 m），可见区自动随 \(\Delta y\) 适配以保持约 5 个亮纹可见。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="780" height="420"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;   // 780 x 420
+
+          // --- Physical parameters (real units) ---
+          var DEFAULTS = { d_um: 100, lambda_nm: 550, L_m: 1.50 };
+          var params = { d_um: DEFAULTS.d_um, lambda_nm: DEFAULTS.lambda_nm, L_m: DEFAULTS.L_m };
+
+          // --- Geometry of canvas regions ---
+          // Schematic (left): slits + wavefronts + screen line.
+          var SCH_X_SLIT = 60;
+          var SCH_Y_S1 = 200, SCH_Y_S2 = 230;          // visual gap = "d"
+          var SCH_X_SCREEN = 320;                        // schematic screen (vertical line)
+          var SCH_TOP = 40, SCH_BOT = 340;
+
+          // Pattern region (right of schematic screen).
+          var PAT_X0 = 340, PAT_X1 = 720;
+          var PAT_Y0 = 30,  PAT_Y1 = 350;
+          var Y_RANGE_MM;                                // recomputed each frame (auto-zoom)
+
+          function fringeSpacing_mm() {
+            // Δy(mm) = λ(nm)·L(m)/d(μm)  (dimensionally: 1e-9·1/(1e-6)·1e3 = 1)
+            return params.lambda_nm * params.L_m / params.d_um;
+          }
+          // The dimensionless phase argument for physical y in mm.
+          // π d y/(λL) with d[μm], y[mm], λ[nm], L[m] is already dimensionless.
+          function phaseArg(y_mm) {
+            return Math.PI * params.d_um * y_mm / (params.lambda_nm * params.L_m);
+          }
+          function intensity(y_mm) {
+            var c = Math.cos(phaseArg(y_mm));
+            return c * c;
+          }
+          function physicalY_mm(canvasY) {
+            // canvasY in [PAT_Y0, PAT_Y1] -> mm in [+Y_RANGE_MM, -Y_RANGE_MM]
+            return Y_RANGE_MM - (canvasY - PAT_Y0) * (2 * Y_RANGE_MM) / (PAT_Y1 - PAT_Y0);
+          }
+          function canvasY_fromMM(y_mm) {
+            return PAT_Y0 + (Y_RANGE_MM - y_mm) * (PAT_Y1 - PAT_Y0) / (2 * Y_RANGE_MM);
+          }
+
+          // --- Wavelength -> sRGB (visible band approximation) ---
+          function wavelengthToRGB(wl) {
+            var R, G, B, factor;
+            if (wl < 380) wl = 380;
+            if (wl > 780) wl = 780;
+            if (wl < 440)      { R = -(wl - 440) / 60; G = 0; B = 1; }
+            else if (wl < 490) { R = 0; G = (wl - 440) / 50; B = 1; }
+            else if (wl < 510) { R = 0; G = 1; B = -(wl - 510) / 20; }
+            else if (wl < 580) { R = (wl - 510) / 70; G = 1; B = 0; }
+            else if (wl < 645) { R = 1; G = -(wl - 645) / 65; B = 0; }
+            else               { R = 1; G = 0; B = 0; }
+            if (wl < 420)      factor = 0.3 + 0.7 * (wl - 380) / 40;
+            else if (wl < 700) factor = 1.0;
+            else               factor = 0.3 + 0.7 * (780 - wl) / 80;
+            return [Math.round(255 * R * factor),
+                    Math.round(255 * G * factor),
+                    Math.round(255 * B * factor)];
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t = t; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // Adaptive visible range: target ~5 fringes each side, clamped.
+              var dy = fringeSpacing_mm();
+              Y_RANGE_MM = Math.max(8, Math.min(40, 5 * dy));
+
+              var rgb = wavelengthToRGB(params.lambda_nm);
+              var lambdaColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+              drawSchematic(ctx, env.t, rgb);
+              drawFringeBand(ctx, rgb);
+              drawIntensityCurve(ctx);
+              drawFringeTicks(ctx, dy);
+              drawReadouts(ctx, dy, lambdaColor);
+            },
+          });
+
+          // ----- Schematic: slits, expanding wavefronts, screen line -----
+          function drawSchematic(ctx, t, rgb) {
+            var waveColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+            // Title
+            PS.drawText(ctx, '双缝 Double Slits', SCH_X_SLIT - 10, 26,
+              { font: 'bold 12px system-ui', color: PS.colors.text });
+
+            // Optical axis (dashed)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.globalAlpha = 0.7;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(SCH_X_SLIT, (SCH_Y_S1 + SCH_Y_S2) / 2);
+            ctx.lineTo(SCH_X_SCREEN, (SCH_Y_S1 + SCH_Y_S2) / 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            // Clip wavefronts to region between slits and screen
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(SCH_X_SLIT - 5, SCH_TOP, SCH_X_SCREEN - SCH_X_SLIT + 10, SCH_BOT - SCH_TOP);
+            ctx.clip();
+
+            // Expanding circular wavefronts (right-half arcs) from each slit.
+            var LAMBDA_PX = 24;
+            var N_WAVE = 12;
+            var speed = 22;                              // px/s
+            var phase = (t * speed) % LAMBDA_PX;
+            var maxR = (N_WAVE - 1) * LAMBDA_PX + phase;
+            for (var k = 0; k < N_WAVE; k++) {
+              var r = k * LAMBDA_PX + phase;
+              if (r < 2) continue;
+              var alpha = Math.max(0, 0.55 * (1 - r / maxR));
+              ctx.strokeStyle = waveColor;
+              ctx.globalAlpha = alpha;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.arc(SCH_X_SLIT, SCH_Y_S1, r, -Math.PI / 2, Math.PI / 2);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.arc(SCH_X_SLIT, SCH_Y_S2, r, -Math.PI / 2, Math.PI / 2);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            ctx.restore();
+
+            // Screen (vertical line)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(SCH_X_SCREEN, SCH_TOP - 8);
+            ctx.lineTo(SCH_X_SCREEN, SCH_BOT + 8);
+            ctx.stroke();
+            ctx.restore();
+            PS.drawText(ctx, '屏 Screen', SCH_X_SCREEN + 6, 26,
+              { font: 'bold 12px system-ui', color: PS.colors.axis });
+
+            // Slit point sources
+            PS.drawCircle(ctx, SCH_X_SLIT, SCH_Y_S1, 3.5,
+              { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+            PS.drawCircle(ctx, SCH_X_SLIT, SCH_Y_S2, 3.5,
+              { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+            PS.drawText(ctx, 'S₁', SCH_X_SLIT - 10, SCH_Y_S1 + 4,
+              { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            PS.drawText(ctx, 'S₂', SCH_X_SLIT - 10, SCH_Y_S2 + 4,
+              { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+
+            // Slit-separation dimension (d) on the left
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(SCH_X_SLIT - 30, SCH_Y_S1); ctx.lineTo(SCH_X_SLIT - 5, SCH_Y_S1);
+            ctx.moveTo(SCH_X_SLIT - 30, SCH_Y_S2); ctx.lineTo(SCH_X_SLIT - 5, SCH_Y_S2);
+            ctx.moveTo(SCH_X_SLIT - 30, SCH_Y_S1); ctx.lineTo(SCH_X_SLIT - 30, SCH_Y_S2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+            PS.drawText(ctx, 'd', SCH_X_SLIT - 38, (SCH_Y_S1 + SCH_Y_S2) / 2 + 4,
+              { font: 'italic 13px system-ui', color: PS.colors.text, align: 'center' });
+
+            // Screen-distance dimension (L) below
+            var yDim = SCH_BOT + 22;
+            PS.drawArrow(ctx, SCH_X_SLIT, yDim, SCH_X_SCREEN, yDim, PS.colors.text);
+            PS.drawText(ctx, 'L', (SCH_X_SLIT + SCH_X_SCREEN) / 2, yDim - 6,
+              { font: 'italic 13px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          // ----- Colored fringe band: each row tinted by I(y) -------
+          function drawFringeBand(ctx, baseRGB) {
+            for (var cy = PAT_Y0; cy <= PAT_Y1; cy++) {
+              var y_mm = physicalY_mm(cy);
+              var I = intensity(y_mm);                 // 0..1
+              var r = Math.round(baseRGB[0] * I);
+              var g = Math.round(baseRGB[1] * I);
+              var b = Math.round(baseRGB[2] * I);
+              ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+              ctx.fillRect(PAT_X0, cy, PAT_X1 - PAT_X0, 1);
+            }
+            // Outer frame
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(PAT_X0, PAT_Y0, PAT_X1 - PAT_X0, PAT_Y1 - PAT_Y0);
+            ctx.restore();
+          }
+
+          // ----- Intensity curve overlay -----
+          function drawIntensityCurve(ctx) {
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.globalAlpha = 0.75;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            var width = PAT_X1 - PAT_X0;
+            var started = false;
+            for (var cy = PAT_Y0; cy <= PAT_Y1; cy++) {
+              var y_mm = physicalY_mm(cy);
+              var I = intensity(y_mm);
+              var x = PAT_X0 + I * width;
+              if (!started) { ctx.moveTo(x, cy); started = true; }
+              else ctx.lineTo(x, cy);
+            }
+            ctx.stroke();
+            ctx.restore();
+            PS.drawText(ctx, 'I(y)', PAT_X0 + 6, PAT_Y0 + 14,
+              { font: 'italic 12px system-ui', color: PS.colors.text });
+          }
+
+          // ----- Tick marks at bright-fringe positions -----
+          function drawFringeTicks(ctx, dy) {
+            var mMax = Math.floor(Y_RANGE_MM / dy) + 1;
+            for (var m = -mMax; m <= mMax; m++) {
+              var y_mm = m * dy;
+              if (Math.abs(y_mm) > Y_RANGE_MM) continue;
+              var cy = canvasY_fromMM(y_mm);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(PAT_X1, cy); ctx.lineTo(PAT_X1 + 5, cy);
+              ctx.stroke();
+              ctx.restore();
+              if (Math.abs(m) <= 4) {
+                PS.drawText(ctx, 'm=' + m, PAT_X1 + 8, cy + 4,
+                  { font: '10px system-ui', color: PS.colors.text });
+              }
+            }
+          }
+
+          // ----- Text readouts (bottom of canvas) -----
+          function drawReadouts(ctx, dy, lambdaColor) {
+            var rx = 12, ry = H - 70;
+            PS.drawText(ctx, '物理量 Physical quantities:', rx, ry,
+              { font: 'bold 13px system-ui', color: PS.colors.text });
+            PS.drawText(ctx,
+              '条纹间距 Fringe spacing  Δy = λL/d = ' + dy.toFixed(2) + ' mm',
+              rx, ry + 18,
+              { font: '12px system-ui', color: PS.colors.text });
+            PS.drawText(ctx,
+              '参数  d = ' + params.d_um + ' μm,  λ = ' + params.lambda_nm +
+              ' nm,  L = ' + params.L_m.toFixed(2) + ' m',
+              rx, ry + 36,
+              { font: '12px system-ui', color: PS.colors.text });
+            // Wavelength swatch
+            ctx.save();
+            ctx.fillStyle = lambdaColor;
+            ctx.fillRect(rx + 320, ry + 26, 18, 14);
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(rx + 320, ry + 26, 18, 14);
+            ctx.restore();
+            PS.drawText(ctx, 'λ color', rx + 344, ry + 37,
+              { font: '11px system-ui', color: PS.colors.text });
+
+            PS.drawText(ctx,
+              '左: 双缝波前示意 (动画)   |   右: 屏上强度分布 I(y)=I_max cos²(πdy/λL)',
+              W / 2, H - 8,
+              { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'd',      label: '缝距 d (μm)',   min: 40,  max: 500, step: 5,    value: DEFAULTS.d_um },
+            { type: 'slider', key: 'lambda', label: '波长 λ (nm)',   min: 400, max: 700, step: 5,    value: DEFAULTS.lambda_nm },
+            { type: 'slider', key: 'L',      label: '屏距 L (m)',    min: 0.5, max: 3.0, step: 0.1,  value: DEFAULTS.L_m },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('d',      function (v) { params.d_um = v; });
+          ctl.on('lambda', function (v) { params.lambda_nm = v; });
+          ctl.on('L',      function (v) { params.L_m = v; });
+          ctl.on('reset',  function () {
+            params.d_um = DEFAULTS.d_um;
+            params.lambda_nm = DEFAULTS.lambda_nm;
+            params.L_m = DEFAULTS.L_m;
+            // Reset slider DOM positions to match defaults
+            var inputs = document.getElementById('controls-9')
+              .querySelectorAll('input[type=range]');
+            var keys = ['d', 'lambda', 'L'];
+            var vals = [DEFAULTS.d_um, DEFAULTS.lambda_nm, DEFAULTS.L_m];
+            for (var i = 0; i < inputs.length && i < keys.length; i++) {
+              inputs[i].value = vals[i];
+              // Trigger the ctrl-value display update via input event
+              inputs[i].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>稳定干涉条件</strong>：相干（恒定相位差）、相同 \(\lambda\)、相同偏振、相近振幅。获取相干光：分波前（杨氏双缝）或分振幅（薄膜、迈克尔逊）。</li>
+        <li><strong>杨氏双缝</strong>：路径差 \(\delta=d\sin\theta\)。亮纹 \(\delta=m\lambda\)、暗纹 \(\delta=(m+\tfrac12)\lambda\)。小角下条纹间距 \(\Delta y=\lambda L/d\)。</li>
+        <li><strong>强度分布</strong>：\(I=I_{\max}\cos^{2}(\pi d\sin\theta/\lambda)\)，\(I_{\max}=4I_{0}\)；平均强度 \(\langle I\rangle=2I_{0}\) 守恒。</li>
+        <li><strong>反射相位突变</strong>：仅"光疏→光密"反射有 \(\pi\) 突变；透射光无突变。</li>
+        <li><strong>薄膜干涉</strong>：光程 \(2nt\)。结合 \(\pi\) 突变次数判断相长/相消条件 (\(2nt=m\lambda\) 或 \((m+\tfrac12)\lambda\)）。皂膜、油膜彩色由此而来。</li>
+        <li><strong>牛顿环</strong>（空气膜、一次 \(\pi\) 突变）：暗环 \(r_{m}=\sqrt{m\lambda R}\)，中心为暗斑。</li>
+        <li><strong>迈克尔逊干涉仪</strong>：\(2\Delta d=N\lambda\)，可精密测 \(\lambda\) 或校准长度。</li>
+        <li><strong>相干长度</strong>：\(\ell_{c}\approx\lambda^{2}/\Delta\lambda\)，决定可观测干涉的最大光程差。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\;\delta=d\sin\theta\;,\quad \Delta y=\frac{\lambda L}{d}\;,\quad I=I_{\max}\cos^{2}\!\Big(\frac{\pi d\sin\theta}{\lambda}\Big)\;,\quad 2nt=m\lambda\;\text{或}\;(m+\tfrac12)\lambda\;,\quad r_{m}=\sqrt{m\lambda R}\;,\quad 2\Delta d=N\lambda\;,\quad \ell_{c}\approx\frac{\lambda^{2}}{\Delta\lambda}\;\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

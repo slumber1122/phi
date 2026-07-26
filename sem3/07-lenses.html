@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 面镜与透镜 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第7章 · 光学 Optics</p>
+      <h1>面镜与透镜 <span class="en-title">Mirrors &amp; Lenses</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>在<strong>近轴</strong> (paraxial) 近似下<strong>推导</strong>球面镜焦距 \(f=R/2\)（凹面镜 \(f>0\)、凸面镜 \(f<0\)），并讲清曲率中心 \(C\)、顶点 \(V\)、焦点 \(F\) 之间的几何关系。</li>
+        <li>应用<strong>镜方程 / 薄透镜方程</strong> \(1/f=1/d_{o}+1/d_{i}\) 与横向放大率 (lateral magnification) \(m=-d_{i}/d_{o}\) 求像距、像高、像的性质。</li>
+        <li>严格遵循"<strong>实为正</strong> (real-is-positive)"符号约定：实物 \(d_{o}>0\)、实像 \(d_{i}>0\)、凸面镜与发散透镜 \(f<0\)；并据此判定像的实/虚、正/倒、放大/缩小。</li>
+        <li>用<strong>三条特征光线</strong> (principal rays) 画出凹/凸面镜与收/发散透镜的光路图：平行→焦点、焦点→平行、过中心（曲率中心或透镜光心）。</li>
+        <li>用<strong>透镜制造方程</strong> (lensmaker's equation) \(1/f=(n-1)(1/R_{1}-1/R_{2})\) 由折射率与两个曲率半径计算薄透镜焦距。</li>
+        <li>处理<strong>透镜组</strong>：第一镜的像作为第二镜的物（含符号重新计算物距），求总放大率 \(M=m_{1}\,m_{2}\) 与最终像的位置和性质。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 球面镜与焦距 Spherical Mirrors &amp; Focal Length</h3>
+      <p>球面镜 (spherical mirror) 的反射面是球面的一部分。沿球面<strong>主轴</strong> (principal axis) —— 即过球心 \(C\) 与顶点 \(V\) 的直线 —— 入射、且与主轴夹角很小的光线称为<strong>近轴光线</strong> (paraxial rays)，满足 \(\sin\theta\approx\tan\theta\approx\theta\)。在此近似下，所有平行于主轴入射的光线经反射后交于主轴上同一点 —— <strong>焦点</strong> \(F\)，其到顶点的距离为<strong>焦距</strong> \(f\)。</p>
+      <p>对凹面镜 (concave mirror, 反射面是球面的内侧)，反射会聚光，\(F\) 在镜前（反射光一侧），\(f>0\)，称<strong>会聚镜</strong>。对凸面镜 (convex mirror, 反射面是球面的外侧)，反射发散光，反射光的反向延长线交于镜后一点 —— <strong>虚焦点</strong>，\(f<0\)，称<strong>发散镜</strong>。本章一律采用"<strong>实为正</strong>"符号约定（见 §3）。</p>
+      <div class="formula">\[ \boxed{\;f=\frac{R}{2}\;}\qquad(\text{球面镜，近轴；凹 }f>0\text{，凸 }f<0) \]</div>
+      <p>几何含义：焦点 \(F\) 恰在顶点 \(V\) 与曲率中心 \(C\) 的中点。注意此式仅在近轴近似下成立；远离主轴的光线反射后不严格交于 \(F\)，导致<strong>球面像差</strong> (spherical aberration)。</p>
+      <div class="key-terms">spherical mirror (球面镜), concave mirror (凹面镜), convex mirror (凸面镜), center of curvature \(C\) (曲率中心), vertex \(V\) (顶点), focal point \(F\) (焦点), focal length \(f\) (焦距), paraxial approximation (近轴近似), spherical aberration (球面像差)</div>
+
+      <h3>2. 镜方程与放大率 The Mirror Equation &amp; Magnification</h3>
+      <p>设物体在主轴上、距顶点 \(d_{o}\)（物距 object distance），像距顶点 \(d_{i}\)（像距 image distance）。在近轴与近轴成像条件下：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;}\qquad(\text{镜方程 mirror equation}) \]</div>
+      <p><strong>横向放大率</strong> (lateral magnification) 定义为像高 \(h_{i}\) 与物高 \(h_{o}\) 之比。由通过曲率中心的光线（沿原路返回）所成相似三角形，可严格得到：</p>
+      <div class="formula">\[ \boxed{\;m\equiv\frac{h_{i}}{h_{o}}=-\frac{d_{i}}{d_{o}}\;}\qquad(\text{负号反映 }d_{i}>0\text{ 时像倒立}) \]</div>
+      <p>同一组方程对薄透镜同样成立（形式不变），是几何光学的核心工具。</p>
+      <div class="key-terms">object distance \(d_{o}\) (物距), image distance \(d_{i}\) (像距), lateral magnification \(m\) (横向放大率), object/image height \(h_{o},h_{i}\) (物高/像高)</div>
+
+      <h3>3. 符号约定（实为正）The Real-Is-Positive Sign Convention</h3>
+      <p>本章统一采用以下约定（对镜与薄透镜都适用）：入射光约定从<strong>左侧</strong>射向元件。</p>
+      <ul>
+        <li><strong>物距 \(d_{o}\)</strong>：实物（入射光一侧）\(d_{o}>0\)；虚物（极少见，仅在透镜组中出现）\(d_{o}<0\)。</li>
+        <li><strong>像距 \(d_{i}\)</strong>：实像（出射光一侧，可投影到屏上）\(d_{i}>0\)；虚像（出射光的反向延长线形成，不可投影）\(d_{i}<0\)。<br>对<strong>面镜</strong>而言，"出射光一侧" = 镜前（与物同侧），故实像在镜前 \(d_{i}>0\)，虚像在镜后 \(d_{i}<0\)。</li>
+        <li><strong>焦距 \(f\)</strong>：会聚元件（凹面镜、会聚透镜）\(f>0\)；发散元件（凸面镜、发散透镜）\(f<0\)。</li>
+        <li><strong>像高 \(h_{i}\)</strong>：正立（与物同向）\(h_{i}>0\)；倒立 \(h_{i}<0\)。等价地，\(m>0\) 正立、\(m<0\) 倒立。</li>
+        <li><strong>放大判定</strong>：\(|m|>1\) 放大 (magnified)；\(|m|<1\) 缩小 (reduced)；\(|m|=1\) 等大。</li>
+      </ul>
+      <p>这套约定的优点：所有几何光学公式（镜方程、薄透镜方程、透镜制造方程）形式完全相同，只需正确带入符号。助记：<strong>"实的都是正的"</strong> —— 实物、实像、会聚（实焦点）一律取正。</p>
+      <div class="key-terms">real image (实像), virtual image (虚像), upright (正立), inverted (倒立), magnified (放大), reduced (缩小), real-is-positive convention (实为正约定)</div>
+
+      <h3>4. 三条特征光线 Three Principal Rays</h3>
+      <p>用<strong>作图法</strong>确定像的位置时，只需追踪从物体顶端发出的三条特殊光线中的任意两条，它们的交点（或反向延长线的交点）即为像顶。</p>
+      <p><strong>凹面镜（会聚镜）：</strong></p>
+      <ul>
+        <li><strong>① 平行光线</strong> (parallel ray)：平行于主轴入射，反射后过焦点 \(F\)。</li>
+        <li><strong>② 焦点光线</strong> (focal ray)：过焦点 \(F\) 入射，反射后平行于主轴。</li>
+        <li><strong>③ 中心光线</strong> (chief ray / center ray)：过曲率中心 \(C\) 入射，沿原路返回（因沿法线方向，入射角=反射角=0）。</li>
+      </ul>
+      <p><strong>凸面镜（发散镜）：</strong>平行光反射后<strong>似从虚焦点</strong>（镜后 \(F\)）发出；指向虚焦点的光线反射后平行；过 \(C\) 的光线沿原路返回。</p>
+      <p><strong>薄透镜（收敛 / 发散）：</strong>类似地，三条特征光线为：</p>
+      <ul>
+        <li><strong>① 平行光线</strong>：平行于主轴入射，出射后过像方焦点 \(F'\)（收敛透镜：实际穿过；发散透镜：出射光的反向延长线过物方焦点 \(F'\)，\(F'\) 在物方一侧）。</li>
+        <li><strong>② 焦点光线</strong>：过物方焦点 \(F\) 入射（收敛：实际过；发散：延长线过像方焦点 \(F\)），出射后平行于主轴。</li>
+        <li><strong>③ 光心光线</strong> (center ray)：过透镜光心 (optical center)，不偏折（薄透镜近似下两侧媒质相同、厚度可忽略，光线沿直线穿过）。</li>
+      </ul>
+      <p>用任意两条光线的交点定位像顶，第三条用作校验。注意发散透镜/凸面镜的三条出射光线总是<strong>发散</strong>的，它们的<strong>反向延长线</strong>交于虚像顶。</p>
+      <div class="key-terms">principal rays (特征光线), parallel ray (平行光线), focal ray (焦点光线), chief/center ray (光心/中心光线), optical center (光心)</div>
+
+      <h3>5. 薄透镜与薄透镜方程 Thin Lens &amp; Thin-Lens Equation</h3>
+      <p>薄透镜 (thin lens) 是厚度远小于两表面曲率半径的透镜，可视为两表面重合于一个平面（过光心）。由两个折射球面叠加（见 §推导 7.3）可得到与镜方程<strong>同型</strong>的薄透镜方程：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;},\qquad m=-\frac{d_{i}}{d_{o}}\qquad(\text{薄透镜 thin lens}) \]</div>
+      <p>会聚透镜 (converging lens, 双凸 biconvex，\(f>0\)) 把平行光会聚到像方焦点 \(F'\)；发散透镜 (diverging lens, 双凹 biconcave，\(f<0\)) 把平行光发散，反向延长线交于物方焦点 \(F'\)。薄透镜方程形式与镜方程相同 —— 这正是"实为正"约定的统一力量。</p>
+      <div class="key-terms">thin lens (薄透镜), converging lens (会聚透镜), diverging lens (发散透镜), biconvex (双凸), biconcave (双凹)</div>
+
+      <h3>6. 透镜制造方程 The Lensmaker's Equation</h3>
+      <p>透镜的焦距由其材料的折射率 \(n\)（相对于周围媒质，通常为空气 \(n_{\text{air}}\approx 1\)）和两个表面的曲率半径 \(R_{1},R_{2}\) 决定。在薄透镜近似下：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{f}=(n-1)\left(\frac{1}{R_{1}}-\frac{1}{R_{2}}\right)\;}\qquad(\text{透镜制造方程，空气中}) \]</div>
+      <p><strong>半径符号</strong>（实为正约定的延伸）：若球面<strong>球心</strong>在出射光一侧（透镜右侧），\(R>0\)；球心在入射光一侧（左侧），\(R<0\)。据此：</p>
+      <ul>
+        <li><strong>双凸</strong>透镜（中央厚、边缘薄）：左凸面球心在右侧 → \(R_{1}>0\)；右凸面球心在左侧 → \(R_{2}<0\)。故 \(1/R_{1}-1/R_{2}>0\)，且 \(n>1\)，得 \(f>0\)（会聚）。</li>
+        <li><strong>双凹</strong>透镜（中央薄、边缘厚）：\(R_{1}<0\)，\(R_{2}>0\)，\(1/R_{1}-1/R_{2}<0\)，得 \(f<0\)（发散）。</li>
+        <li><strong>对称双凸</strong>（\(|R_{1}|=|R_{2}|=R\)）：\(1/f=2(n-1)/R\)，对 \(n=1.5\) 的玻璃得 \(f=R\)。</li>
+      </ul>
+      <p>若透镜浸入其他媒质（如水，\(n_{\text{水}}=1.33\)），式中 \(n\) 应替换为相对折射率 \(n_{\text{透镜}}/n_{\text{媒质}}\)，焦距因此改变 —— 这是制造液态透镜与眼睛调焦的基础。</p>
+      <div class="key-terms">lensmaker's equation (透镜制造方程), radius of curvature \(R_{1},R_{2}\) (曲率半径), refractive index \(n\) (折射率), relative index (相对折射率)</div>
+
+      <h3>7. 像的分类与判据 Image Classification</h3>
+      <p>由 \(d_{i}\) 与 \(m\) 的符号与绝对值即可完整描述像：</p>
+      <ul>
+        <li><strong>实 / 虚</strong>：\(d_{i}>0\) 实像（出射光实际相交，可投影到屏上）；\(d_{i}<0\) 虚像（出射光的反向延长线相交，不可投影）。</li>
+        <li><strong>正立 / 倒立</strong>：\(m>0\) 正立（与物同向）；\(m<0\) 倒立。</li>
+        <li><strong>放大 / 缩小 / 等大</strong>：\(|m|>1\) 放大；\(|m|<1\) 缩小；\(|m|=1\) 等大。</li>
+      </ul>
+      <p>典型组合：凹面镜/会聚透镜在物体于 \(2f\) 之外时成<strong>实、倒、缩小</strong>的像（如照相机、眼睛）；物体于 \(f\) 与 \(2f\) 之间成<strong>实、倒、放大</strong>的像（如放映机）；物体于 \(f\) 内成<strong>虚、正、放大</strong>的像（如放大镜、化妆镜）。凸面镜/发散透镜对实物<strong>恒成</strong>虚、正、缩小的像。</p>
+
+      <h3>8. 透镜组 Combinations of Lenses</h3>
+      <p>多个透镜顺次排列时，<strong>第一镜的像作为第二镜的物</strong>，逐级成像。设两镜相距 \(L\)，第一镜成像于其右侧 \(d_{i1}\) 处，则该像到第二镜的距离为 \(L-d_{i1}\)：</p>
+      <ul>
+        <li>若 \(L-d_{i1}>0\)（像在第二镜<strong>左侧</strong>，即入射光一侧）→ 对第二镜是<strong>实物</strong>，\(d_{o2}=L-d_{i1}>0\)。</li>
+        <li>若 \(L-d_{i1}<0\)（像在第二镜<strong>右侧</strong>，即出射光一侧）→ 对第二镜是<strong>虚物</strong>，\(d_{o2}=L-d_{i1}<0\)。</li>
+      </ul>
+      <p>总横向放大率为各级之积：</p>
+      <div class="formula">\[ \boxed{\;M=m_{1}\,m_{2}\,m_{3}\cdots\;}\qquad(\text{透镜组总放大率}) \]</div>
+      <p>最终像的实/虚由最后一片透镜的 \(d_{i,\text{末}}\) 符号决定；正/倒由 \(M\) 符号决定。</p>
+      <div class="key-terms">object of 2nd lens (第二镜的物), virtual object (虚物), total magnification \(M\) (总放大率)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 7.1：球面镜焦距 \(f=R/2\)（近轴）</h3>
+      <p class="step"><strong>设定：</strong> 凹面镜顶点 \(V\) 在原点，主轴沿 \(x\) 轴，曲率中心 \(C\) 在 \((R,0)\) 处，球面方程 \((x-R)^{2}+y^{2}=R^{2}\)。一束平行于主轴的光线在高度 \(h\) 处（\((x_{0},h)\)，\(h\ll R\)）入射镜面。</p>
+      <p class="step"><strong>步骤 1（入射点法线）：</strong> 镜面在入射点的法线指向球心 \(C\)，故法线与主轴（\(-x\) 方向？此处取入射光沿 \(-x\)，反射光沿 \(+x\) 返回）的夹角 \(\alpha\) 满足 \(\sin\alpha=h/R\)。近轴下 \(\alpha\approx h/R\)。</p>
+      <p class="step"><strong>步骤 2（反射定律）：</strong> 入射光平行于主轴，与法线夹角为 \(\alpha\)，故反射光与法线夹角也为 \(\alpha\)，相对于原入射方向偏折 \(2\alpha\)。</p>
+      <p class="step"><strong>步骤 3（反射光与轴的交点）：</strong> 反射光向主轴折回，与轴的夹角为 \(2\alpha\)。它在高度 \(h\) 处出发，走到主轴（高度降为 0）所需水平距离 \(\Delta x\) 满足 \(\tan(2\alpha)\approx 2\alpha\approx h/\Delta x\)，故 \(\Delta x\approx h/(2\alpha)=h/(2h/R)=R/2\)。</p>
+      <div class="formula">\[ f=\Delta x=\frac{R}{2}\qquad(\text{近轴；所有平行光线均交于此点，即焦点 }F) \]</div>
+      <p class="step">对凸面镜，反射光发散，其反向延长线交于镜后 \(R/2\) 处 —— 虚焦点，故约定 \(f=-R/2<0\)。</p>
+
+      <h3>推导 7.2：镜方程 \(1/f=1/d_{o}+1/d_{i}\)</h3>
+      <p class="step"><strong>设定：</strong> 凹面镜，物体（高度 \(h_{o}\)）在距顶点 \(d_{o}\) 处（\(d_{o}>f\)，成实像于距顶点 \(d_{i}\) 处，像高 \(h_{i}\)，倒立故 \(h_{i}<0\)）。</p>
+      <p class="step"><strong>步骤 1（用光心光线）：</strong> 从物顶发出的光线经曲率中心 \(C\) 沿原路返回。该光线连接物顶与像顶，形成一对以镜面顶点 \(V\) 为顶的<strong>相似三角形</strong>（公共顶角在 \(V\)）：</p>
+      <div class="formula">\[ \frac{|h_{i}|}{h_{o}}=\frac{d_{i}}{d_{o}}\quad\Longrightarrow\quad m=\frac{h_{i}}{h_{o}}=-\frac{d_{i}}{d_{o}} \]</div>
+      <p class="step"><strong>步骤 2（用平行光线）：</strong> 从物顶发出的平行光经反射后过焦点 \(F\)（焦距 \(f=R/2\)）。这条反射光线也通过像顶。考察以镜面顶点 \(V\) 为顶、由该光线与主轴形成的三角形（顶点 \(V\)、过 \(F\) 的点、像顶投影点），与物顶对应的三角形相似：</p>
+      <div class="formula">\[ \frac{|h_{i}|}{h_{o}}=\frac{d_{i}-f}{f} \]</div>
+      <p class="step"><strong>步骤 3（联立两式）：</strong> 把步骤 1 的 \(|h_{i}|/h_{o}=d_{i}/d_{o}\) 代入步骤 2：</p>
+      <div class="formula">\[ \frac{d_{i}}{d_{o}}=\frac{d_{i}-f}{f}\quad\Longrightarrow\quad f\,d_{i}=d_{o}\,d_{i}-f\,d_{o}\quad\Longrightarrow\quad f(d_{o}+d_{i})=d_{o}\,d_{i} \]</div>
+      <div class="formula">\[ \boxed{\;\frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;} \]</div>
+      <p class="step">此推导在"实为正"约定下对凸面镜、虚像情形同样成立（\(d_{i}\) 取负自动处理）。</p>
+
+      <h3>推导 7.3：透镜制造方程（两球面折射叠加）</h3>
+      <p class="step"><strong>工具</strong>：单一折射球面（曲率半径 \(R\)，左媒质折射率 \(n_{1}\)、右媒质 \(n_{2}\)，实物 \(s>0\)、实像 \(s'>0\)）在近轴下的成像公式为</p>
+      <div class="formula">\[ \frac{n_{1}}{s}+\frac{n_{2}}{s'}=\frac{n_{2}-n_{1}}{R}\qquad(\text{球面折射公式，实为正}) \]</div>
+      <p class="step"><strong>设定：</strong> 空气中（\(n_{1}=1\)）一双凸薄透镜，折射率 \(n\)，两表面半径 \(R_{1}\)（左）、\(R_{2}\)（右），厚度 \(\to 0\)。物体在距透镜 \(d_{o}\) 处。</p>
+      <p class="step"><strong>步骤 1（第一表面成像）：</strong> 光从空气进入玻璃，半径 \(R_{1}\)，物距 \(s_{1}=d_{o}\)，像距（在玻璃内）\(s_{1}'\)：</p>
+      <div class="formula">\[ \frac{1}{d_{o}}+\frac{n}{s_{1}'}=\frac{n-1}{R_{1}}\qquad(\text{表面 1}) \]</div>
+      <p class="step"><strong>步骤 2（第二表面成像）：</strong> 第一表面的像（在玻璃内，距第一表面 \(s_{1}'\)）作为第二表面的<strong>物</strong>。薄透镜近似下第二表面紧贴第一表面，故此物在第二表面<strong>右侧</strong> \(s_{1}'\) 处 —— 在第二表面的<strong>出射光一侧</strong>，是<strong>虚物</strong>，物距 \(s_{2}=-s_{1}'\)。光从玻璃进入空气（\(n_{1}=n,n_{2}=1\)），半径 \(R_{2}\)，最终像距 \(s_{2}'=d_{i}\)：</p>
+      <div class="formula">\[ \frac{n}{-s_{1}'}+\frac{1}{d_{i}}=\frac{1-n}{R_{2}}=-\frac{n-1}{R_{2}}\qquad(\text{表面 2}) \]</div>
+      <p class="step"><strong>步骤 3（两式相加）：</strong> 含 \(s_{1}'\) 的两项相消：</p>
+      <div class="formula">\[ \frac{1}{d_{o}}+\frac{1}{d_{i}}=(n-1)\!\left(\frac{1}{R_{1}}-\frac{1}{R_{2}}\right) \]</div>
+      <p class="step"><strong>步骤 4（取 \(d_{o}\to\infty\)）：</strong> 平行光入射时 \(d_{i}=f\)：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{f}=(n-1)\!\left(\frac{1}{R_{1}}-\frac{1}{R_{2}}\right)\;}\qquad(\text{透镜制造方程}) \]</div>
+      <p class="step">校核：对称双凸玻璃（\(n=1.5\)，\(R_{1}=+R\)，\(R_{2}=-R\)）代入得 \(1/f=(0.5)(2/R)=1/R\)，即 \(f=R\)，与教科书一致。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 凹面镜·物体在曲率中心之外 Concave Mirror, Object Beyond C</h4>
+        <p class="example-statement">一凹面镜曲率半径 \(R=20\,\mathrm{cm}\)。高 \(h_{o}=3.0\,\mathrm{cm}\) 的物体立于主轴上、距顶点 \(d_{o}=30\,\mathrm{cm}\) 处。求像距、像高、放大率，并描述像的性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 焦距 \(f=R/2=+10\,\mathrm{cm}\)（凹面镜会聚，\(f>0\)）。代入镜方程：</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{f}-\frac{1}{d_{o}}=\frac{1}{10}-\frac{1}{30}=\frac{3-1}{30}=\frac{2}{30}=\frac{1}{15}\,\mathrm{cm^{-1}} \]</div>
+          <div class="formula">\[ d_{i}=15\,\mathrm{cm}\quad(\text{正，实像，在镜前}) \]</div>
+          <p class="step">放大率：</p>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{15}{30}=-0.50 \]</div>
+          <div class="formula">\[ h_{i}=m\,h_{o}=(-0.50)(3.0)=-1.5\,\mathrm{cm}\quad(\text{倒立，高度减半}) \]</div>
+          <p class="step">校核：物在 \(d_{o}=30\,\mathrm{cm}=3f\)，在 \(2f=20\,\mathrm{cm}\) 之外，按球面镜成像规律应得 \(f<d_{i}<2f\) 即 \(10<d_{i}<20\)，且实、倒、缩小 —— \(d_{i}=15\,\mathrm{cm}\) 落在 \((10,20)\) 内 ✓，\(|m|=0.5<1\) ✓。</p>
+          <p><span class="ans">\(d_{i}=+15\,\mathrm{cm}\)；\(m=-0.50\)；\(h_{i}=-1.5\,\mathrm{cm}\)。像为<strong>实像、倒立、缩小一半</strong>，位于镜前 \(15\,\mathrm{cm}\)（介于 \(F\) 与 \(C\) 之间）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 凹面镜·物体在焦点内（化妆镜）Concave Mirror, Object Inside f</h4>
+        <p class="example-statement">同一凹面镜（\(f=+10\,\mathrm{cm}\)），现将物体移到 \(d_{o}=6.0\,\mathrm{cm}\)（位于焦点 \(F\) 与顶点之间），物高 \(h_{o}=2.0\,\mathrm{cm}\)。求像距、像高、性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 代入镜方程：</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{10}-\frac{1}{6.0}=\frac{3-5}{30}=-\frac{2}{30}=-\frac{1}{15}\,\mathrm{cm^{-1}} \]</div>
+          <div class="formula">\[ d_{i}=-15\,\mathrm{cm}\quad(\text{负，虚像，在镜后}) \]</div>
+          <p class="step">放大率：</p>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{(-15)}{6.0}=+2.5 \]</div>
+          <div class="formula">\[ h_{i}=m\,h_{o}=(+2.5)(2.0)=+5.0\,\mathrm{cm} \]</div>
+          <p class="step">校核：物在 \(f\) 内，应成虚、正、放大像。\(m=+2.5>0\) 正立 ✓，\(|m|=2.5>1\) 放大 ✓，\(d_{i}<0\) 虚像 ✓。这是<strong>化妆镜 / 刮胡镜</strong>的工作原理：脸部位于 \(f\) 内，看到正立放大的虚像。</p>
+          <p><span class="ans">\(d_{i}=-15\,\mathrm{cm}\)；\(m=+2.5\)；\(h_{i}=+5.0\,\mathrm{cm}\)。像为<strong>虚像、正立、放大 2.5 倍</strong>，位于镜后 \(15\,\mathrm{cm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 凸面镜（防盗镜）Convex Mirror</h4>
+        <p class="example-statement">一凸面镜曲率半径 \(|R|=16\,\mathrm{cm}\)（按"实为正"约定，凸面镜 \(f<0\)，故 \(f=-R/2=-8.0\,\mathrm{cm}\)）。物体 \(h_{o}=1.8\,\mathrm{m}\) 高、立于 \(d_{o}=20\,\mathrm{m}\) 处（商店拐角防盗镜的典型尺度）。求像距、像高、性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(f=-8.0\,\mathrm{cm}=-0.080\,\mathrm{m}\)（注意单位统一为米）。代入：</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{f}-\frac{1}{d_{o}}=\frac{1}{-0.080}-\frac{1}{20.0}=-12.5-0.050=-12.55\,\mathrm{m^{-1}} \]</div>
+          <div class="formula">\[ d_{i}=\frac{1}{-12.55}=-0.0797\,\mathrm{m}\approx -8.0\,\mathrm{cm}\quad(\text{虚像，紧贴焦点后}) \]</div>
+          <p class="step">放大率：</p>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{(-0.0797)}{20.0}=+0.00399 \]</div>
+          <div class="formula">\[ h_{i}=m\,h_{o}=(0.00399)(1.8)=7.2\times 10^{-3}\,\mathrm{m}=7.2\,\mathrm{mm} \]</div>
+          <p class="step">校核：物远在 \(|f|\) 之外（\(d_{o}=20\,\mathrm{m}\gg |f|=0.08\,\mathrm{m}\)），像应几乎落在焦点处、强烈缩小 —— \(d_{i}\approx -8\,\mathrm{cm}\approx f\) ✓。\(|m|\approx 0.004\ll 1\) 缩小 ✓。凸面镜虽成缩小虚像，但<strong>视场极大</strong>，故适合作防盗镜、后视镜。</p>
+          <p><span class="ans">\(d_{i}\approx -8.0\,\mathrm{cm}\)；\(m\approx +0.0040\)；\(h_{i}\approx 7.2\,\mathrm{mm}\)。像为<strong>虚像、正立、强烈缩小</strong>，几乎贴在焦点后。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 会聚透镜·(a) 实像 (b) 虚像 Converging Lens</h4>
+        <p class="example-statement">一会聚透镜 \(f=+10\,\mathrm{cm}\)，物高 \(h_{o}=4.0\,\mathrm{cm}\)。(a) 物距 \(d_{o}=15\,\mathrm{cm}\)；(b) 物距 \(d_{o}=6.0\,\mathrm{cm}\)。分别求像距、放大率、性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) \(d_{o}=15\,\mathrm{cm}>f\)：</strong> 物在焦外，应成实像。</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{10}-\frac{1}{15}=\frac{3-2}{30}=\frac{1}{30}\,\mathrm{cm^{-1}}\quad\Longrightarrow\quad d_{i}=+30\,\mathrm{cm} \]</div>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{30}{15}=-2.0,\qquad h_{i}=(-2.0)(4.0)=-8.0\,\mathrm{cm} \]</div>
+          <p class="step">像位于透镜右侧 \(30\,\mathrm{cm}\)（=2f 处，物在 1.5f 处时像恰好落在 2f 外对应区域），<strong>实像、倒立、放大 2 倍</strong>（这是放映机、投影仪的工作区：物在 \(f\)–\(2f\) 之间，像在 \(2f\) 外、放大倒立）。</p>
+          <p class="step"><strong>(b) \(d_{o}=6.0\,\mathrm{cm}<f\)：</strong> 物在焦内，应成虚像。</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{10}-\frac{1}{6.0}=\frac{3-5}{30}=-\frac{1}{15}\,\mathrm{cm^{-1}}\quad\Longrightarrow\quad d_{i}=-15\,\mathrm{cm} \]</div>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{(-15)}{6.0}=+2.5,\qquad h_{i}=(+2.5)(4.0)=+10\,\mathrm{cm} \]</div>
+          <p class="step">像位于透镜<strong>左侧</strong>（与物同侧）\(15\,\mathrm{cm}\) 处，<strong>虚像、正立、放大 2.5 倍</strong>。这正是<strong>放大镜</strong>（magnifying glass）的工作原理：物体贴近透镜、位于焦内，眼睛看到的虚像正立放大。</p>
+          <p><span class="ans">(a) \(d_{i}=+30\,\mathrm{cm}\)，\(m=-2.0\)，实像、倒立、放大 2 倍；(b) \(d_{i}=-15\,\mathrm{cm}\)，\(m=+2.5\)，虚像、正立、放大 2.5 倍（放大镜模式）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 发散透镜 Diverging Lens</h4>
+        <p class="example-statement">一发散透镜 \(f=-8.0\,\mathrm{cm}\)，物 \(h_{o}=5.0\,\mathrm{cm}\)、\(d_{o}=12\,\mathrm{cm}\)。求像距、像高、性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(f<0\)。代入薄透镜方程：</p>
+          <div class="formula">\[ \frac{1}{d_{i}}=\frac{1}{f}-\frac{1}{d_{o}}=\frac{1}{-8.0}-\frac{1}{12}=\frac{-3-2}{24}=-\frac{5}{24}\,\mathrm{cm^{-1}} \]</div>
+          <div class="formula">\[ d_{i}=-\frac{24}{5}=-4.8\,\mathrm{cm}\quad(\text{负，虚像，与物同侧}) \]</div>
+          <p class="step">放大率：</p>
+          <div class="formula">\[ m=-\frac{d_{i}}{d_{o}}=-\frac{(-4.8)}{12}=+0.40,\qquad h_{i}=(+0.40)(5.0)=+2.0\,\mathrm{cm} \]</div>
+          <p class="step">校核：发散透镜对实物<strong>恒成</strong>虚、正、缩小像 —— \(d_{i}<0\) ✓，\(m>0\) ✓，\(|m|=0.4<1\) ✓。像落在物与透镜之间（\(|d_{i}|=4.8<d_{o}=12\)），紧靠透镜。注意 \(|d_{i}|<|f|=8\,\mathrm{cm}\) 是发散透镜的普遍特征。</p>
+          <p><span class="ans">\(d_{i}=-4.8\,\mathrm{cm}\)；\(m=+0.40\)；\(h_{i}=+2.0\,\mathrm{cm}\)。像为<strong>虚像、正立、缩小至 40%</strong>，位于透镜左侧 \(4.8\,\mathrm{cm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.6 两透镜系统（总放大率）Two-Lens System</h4>
+        <p class="example-statement">两片会聚透镜顺次排列：\(f_{1}=+10\,\mathrm{cm}\)，\(f_{2}=+5.0\,\mathrm{cm}\)，间距 \(L=40\,\mathrm{cm}\)。高 \(h_{o}=4.0\,\mathrm{cm}\) 的物体立于 \(L_{1}\) 前 \(d_{o1}=15\,\mathrm{cm}\)。求最终像的位置（相对 \(L_{2}\)）、总放大率 \(M\)、最终像的性质。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（透镜 1 成像）：</strong> 与例 7.4(a) 相同：</p>
+          <div class="formula">\[ \frac{1}{d_{i1}}=\frac{1}{10}-\frac{1}{15}=\frac{1}{30}\,\mathrm{cm^{-1}}\quad\Longrightarrow\quad d_{i1}=+30\,\mathrm{cm} \]</div>
+          <div class="formula">\[ m_{1}=-\frac{d_{i1}}{d_{o1}}=-\frac{30}{15}=-2.0,\qquad h_{i1}=(-2.0)(4.0)=-8.0\,\mathrm{cm}\;(\text{倒立}) \]</div>
+          <p class="step">此中间像在 \(L_{1}\) 右侧 \(30\,\mathrm{cm}\) 处，即距 \(L_{2}\)（\(L=40\,\mathrm{cm}\) 外）\(40-30=10\,\mathrm{cm}\)，且在 \(L_{2}\)<strong>左侧</strong>（入射光一侧）。</p>
+          <p class="step"><strong>步骤 2（以中间像为 \(L_{2}\) 的实物）：</strong> \(d_{o2}=+10\,\mathrm{cm}\)（实物，正）。\(f_{2}=+5.0\,\mathrm{cm}\)。注意 \(d_{o2}=2f_{2}\)：</p>
+          <div class="formula">\[ \frac{1}{d_{i2}}=\frac{1}{5.0}-\frac{1}{10}=\frac{2-1}{10}=\frac{1}{10}\,\mathrm{cm^{-1}}\quad\Longrightarrow\quad d_{i2}=+10\,\mathrm{cm} \]</div>
+          <div class="formula">\[ m_{2}=-\frac{d_{i2}}{d_{o2}}=-\frac{10}{10}=-1.0 \]</div>
+          <p class="step">最终像在 \(L_{2}\) 右侧 \(10\,\mathrm{cm}\) 处，倒立于中间像（即相对原物正立）。</p>
+          <p class="step"><strong>步骤 3（总放大率与最终像高）：</strong></p>
+          <div class="formula">\[ M=m_{1}\,m_{2}=(-2.0)(-1.0)=+2.0,\qquad h_{\text{final}}=M\,h_{o}=(+2.0)(4.0)=+8.0\,\mathrm{cm} \]</div>
+          <p class="step"><strong>步骤 4（性质总结）：</strong> \(d_{i2}=+10\,\mathrm{cm}>0\) → 最终像<strong>实</strong>（可在 \(L_{2}\) 后 \(10\,\mathrm{cm}\) 处的屏上接收）；\(M=+2.0>0\) → 相对原物<strong>正立</strong>；\(|M|=2\) → <strong>放大 2 倍</strong>，像高 \(8.0\,\mathrm{cm}\)。</p>
+          <p class="step">校核：\(M=m_{1}m_{2}>0\) 表明两次倒立相互抵消，最终正立；这种"两次成像"是<strong>显微镜、望远镜</strong>与<strong>惠更斯目镜</strong>的基本结构（下一章详谈）。</p>
+          <p><span class="ans">最终像位于 \(L_{2}\) 右侧 \(10\,\mathrm{cm}\)；\(M=+2.0\)；<strong>实像、正立、放大 2 倍</strong>，像高 \(8.0\,\mathrm{cm}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>符号记错（最高频错误）。</strong> "实为正"约定下，凹面镜 / 会聚透镜 \(f>0\)，凸面镜 / 发散透镜 \(f<0\)；实物 \(d_{o}>0\)；<strong>实像 \(d_{i}>0\)，虚像 \(d_{i}<0\)</strong>。学生最常把虚像代入 \(d_{i}>0\)，导致 \(m\) 符号翻转。补救办法：先判断像应是实还是虚（凹镜/会聚透镜 + 物在 \(f\) 外 → 实像；其他情形依作图），再带入符号。</li>
+        <li><strong>虚像的 \(d_{i}<0\)，不是"没有像"。</strong> 物体在会聚镜 / 会聚透镜焦内时，确实成像 —— 是<strong>虚像、正立、放大</strong>。学生常误以为"物在焦内不成像"或"成实像"。记住：放大镜、化妆镜都在此区工作。</li>
+        <li><strong>发散元件（凸面镜、发散透镜）\(f<0\)，对实物恒成虚像、正立、缩小。</strong> 不要把发散透镜的 \(f\) 取成正数；也不要期待发散透镜能把实物成实像（它不能 —— 出射光永远发散，只能反向延长成交点 = 虚像）。</li>
+        <li><strong>放大率符号的物理意义。</strong> \(m<0\) 表示<strong>倒立</strong>，不是"负的大小"；\(|m|\) 才是与 1 比较判定放大/缩小。学生常把 \(m=-2\) 误读为"缩小 2 倍"。正确：\(|m|=2\) 放大 2 倍，负号 → 倒立。</li>
+        <li><strong>透镜组中"像 → 物"的距离与符号。</strong> 第一镜的像到第二镜的距离是 \(L-d_{i1}\)，<strong>不是</strong> \(d_{i1}\)。若中间像落在第二镜<strong>左侧</strong>（入射光一侧）→ 实物 \(d_{o2}>0\)；落在<strong>右侧</strong>（出射光一侧）→ <strong>虚物</strong> \(d_{o2}<0\)。漏掉虚物情形的负号是组合系统的经典错误。</li>
+        <li><strong>\(d_{o}=f\) 时像在无穷远，不是"无解"。</strong> 此时 \(1/d_{i}=0\)，\(d_{i}\to\infty\)，出射光平行，不能成像于有限远。这是<strong>准直</strong>（collimation）原理：焦点上的点光源经会聚透镜变成平行光（手电筒、灯塔聚光系统的反向应用）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 凹面镜·中等物距：凹面镜 \(R=30\,\mathrm{cm}\)，物 \(d_{o}=20\,\mathrm{cm}\)、\(h_{o}=2.0\,\mathrm{cm}\)。求 \(d_{i}\)、\(m\)、像的性质。</summary>
+        <div class="hint">\(f=R/2=+15\,\mathrm{cm}\)。物在 \(f\) 与 \(2f\) 之间，应成实像、倒立、放大。</div>
+        <div class="solution">\(1/d_{i}=1/15-1/20=(4-3)/60=1/60\) → \(d_{i}=+60\,\mathrm{cm}\)。<br>\(m=-d_{i}/d_{o}=-60/20=-3.0\)。\(h_{i}=(-3.0)(2.0)=-6.0\,\mathrm{cm}\)。<br>校核：物在 \((f,2f)=(15,30)\) 内，像应在 \(2f=30\) 外、放大倒立 —— \(d_{i}=60>30\) ✓，\(|m|=3>1\) ✓。<br><span class="ans">\(d_{i}=+60\,\mathrm{cm}\)；\(m=-3.0\)；<strong>实像、倒立、放大 3 倍</strong>。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 放大镜（会聚透镜·焦内）：会聚透镜 \(f=+8.0\,\mathrm{cm}\)，物 \(d_{o}=5.0\,\mathrm{cm}\)、\(h_{o}=3.0\,\mathrm{cm}\)。求 \(d_{i}\)、\(m\)、像的性质。</summary>
+        <div class="hint">物在 \(f\) 内 → 虚像、正立、放大。\(|m|=f/(f-d_{o})\)。</div>
+        <div class="solution">\(1/d_{i}=1/8-1/5=(5-8)/40=-3/40\) → \(d_{i}=-40/3\approx -13.3\,\mathrm{cm}\)。<br>\(m=-d_{i}/d_{o}=-(-13.3)/5.0=+2.67\)。\(h_{i}=(+2.67)(3.0)=+8.0\,\mathrm{cm}\)。<br>校核：\(|m|=f/(f-d_{o})=8/(8-5)=8/3\approx 2.67\) ✓。<br><span class="ans">\(d_{i}\approx -13.3\,\mathrm{cm}\)；\(m\approx +2.67\)；<strong>虚像、正立、放大 2.67 倍</strong>，位于透镜左侧 \(13.3\,\mathrm{cm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 透镜制造方程：对称双凸玻璃透镜（\(n=1.50\)），两表面曲率半径大小均为 \(R=20\,\mathrm{cm}\)（\(R_{1}=+20\)，\(R_{2}=-20\)，单位 cm）。(a) 求焦距 \(f\)；(b) 若 \(d_{o}=30\,\mathrm{cm}\)、\(h_{o}=2.0\,\mathrm{cm}\)，求像。</summary>
+        <div class="hint">对称双凸 \(1/f=2(n-1)/R\)。</div>
+        <div class="solution">(a) 由透镜制造方程：\(1/f=(n-1)(1/R_{1}-1/R_{2})=(1.50-1)\,[\,1/20-1/(-20)\,]=(0.5)\,(2/20)=(0.5)(0.10)=0.050\,\mathrm{cm^{-1}}\)。<br>故 \(f=1/0.050=+20\,\mathrm{cm}\)（会聚）。<br>校核：对称双凸（\(|R_{1}|=|R_{2}|=R\)）有 \(1/f=2(n-1)/R\)；代入 \(n=1.5\) 得 \(f=R=20\,\mathrm{cm}\) ✓ —— 这是 "对称双凸玻璃（\(n=1.5\)）焦距等于单面曲率半径" 的常用结论。<br>(b) \(d_{o}=30>f=20\)，物在焦外 → 实像。\(1/d_{i}=1/f-1/d_{o}=1/20-1/30=(3-2)/60=1/60\) → \(d_{i}=+60\,\mathrm{cm}\)。<br>\(m=-d_{i}/d_{o}=-60/30=-2.0\)。\(h_{i}=(-2.0)(2.0)=-4.0\,\mathrm{cm}\)。<br>校核：物在 \((f,2f)=(20,40)\) 内，应成实像、倒立、放大、像在 \(2f=40\) 外 —— \(d_{i}=60>40\) ✓，\(|m|=2>1\) ✓。<br><span class="ans">(a) \(f=+20\,\mathrm{cm}\)；(b) \(d_{i}=+60\,\mathrm{cm}\)，\(m=-2.0\)，<strong>实像、倒立、放大 2 倍</strong>，像高 \(-4.0\,\mathrm{cm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 凸面镜：凸面镜 \(|R|=24\,\mathrm{cm}\)，物 \(d_{o}=18\,\mathrm{cm}\)、\(h_{o}=4.0\,\mathrm{cm}\)。求 \(d_{i}\)、\(m\)、像的性质。</summary>
+        <div class="hint">凸面镜 \(f=-R/2=-12\,\mathrm{cm}\)。代入镜方程。</div>
+        <div class="solution">\(f=-12\,\mathrm{cm}\)。\(1/d_{i}=1/(-12)-1/18=(-3-2)/36=-5/36\) → \(d_{i}=-36/5=-7.2\,\mathrm{cm}\)。<br>\(m=-d_{i}/d_{o}=-(-7.2)/18=+0.40\)。\(h_{i}=(+0.40)(4.0)=+1.6\,\mathrm{cm}\)。<br>校核：\(|d_{i}|=7.2<|f|=12\) ✓（凸面镜像恒落在 \(|f|\) 内）。\(|m|=0.4<1\) ✓。<br><span class="ans">\(d_{i}=-7.2\,\mathrm{cm}\)；\(m=+0.40\)；<strong>虚像、正立、缩小至 40%</strong>，位于镜后 \(7.2\,\mathrm{cm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 透镜组（含虚物）：\(L_{1}\)（\(f_{1}=+12\,\mathrm{cm}\)）与 \(L_{2}\)（\(f_{2}=+6.0\,\mathrm{cm}\)）相距 \(L=18\,\mathrm{cm}\)。物 \(d_{o1}=30\,\mathrm{cm}\)、\(h_{o}=3.0\,\mathrm{cm}\)。求最终像位置、总放大率、性质。</summary>
+        <div class="hint">先求 \(d_{i1}\)；若 \(d_{i1}>L\) 则中间像在 \(L_{2}\) 右侧 → \(L_{2}\) 的虚物 \(d_{o2}=L-d_{i1}<0\)。</div>
+        <div class="solution">\(L_{1}\)：\(1/d_{i1}=1/12-1/30=(5-2)/60=3/60=1/20\) → \(d_{i1}=+20\,\mathrm{cm}\)。<br>\(m_{1}=-d_{i1}/d_{o1}=-20/30=-2/3\)。<br>中间像在 \(L_{1}\) 右 \(20\,\mathrm{cm}\)，但 \(L_{2}\) 仅在 \(L=18\,\mathrm{cm}\) 处，故中间像落在 \(L_{2}\) <strong>右侧</strong> \(20-18=2\,\mathrm{cm}\)（出射光一侧）→ 对 \(L_{2}\) 是<strong>虚物</strong>：\(d_{o2}=L-d_{i1}=18-20=-2.0\,\mathrm{cm}\)。<br>\(L_{2}\)：\(1/d_{i2}=1/f_{2}-1/d_{o2}=1/6-1/(-2)=1/6+1/2=(1+3)/6=4/6=2/3\) → \(d_{i2}=+3/2=+1.5\,\mathrm{cm}\)。<br>\(m_{2}=-d_{i2}/d_{o2}=-(1.5)/(-2.0)=+0.75\)。<br>\(M=m_{1}m_{2}=(-2/3)(+0.75)=-0.50\)。\(h_{\text{final}}=M\,h_{o}=(-0.5)(3.0)=-1.5\,\mathrm{cm}\)。<br>最终像在 \(L_{2}\) 右 \(1.5\,\mathrm{cm}\)：\(d_{i2}>0\) <strong>实像</strong>，\(M<0\) <strong>倒立</strong>，\(|M|=0.5<1\) <strong>缩小至一半</strong>。<br><span class="ans">最终像位于 \(L_{2}\) 右侧 \(1.5\,\mathrm{cm}\)；\(M=-0.50\)；<strong>实像、倒立、缩小至一半</strong>（中间像对 \(L_{2}\) 是虚物 \(d_{o2}=-2.0\,\mathrm{cm}\)）。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">薄透镜光线追迹 (thin-lens ray tracer)。一个直立物体（绿色箭头）位于透镜左侧 \(d_{o}\) 处，三条<strong>特征光线</strong>从物顶发出，经透镜折射后会聚（或反向延长后会聚）于像顶。切换<strong>会聚 / 发散</strong>透镜，调节焦距 \(|f|\)、物距 \(d_{o}\)、物高 \(h_{o}\)，观察像随参数的变化。实像用<strong>实心红色箭头</strong>表示（位于透镜右侧，可投影），虚像用<strong>虚线红色箭头</strong>表示（位于透镜左侧，反向延长线相交而成）。三条光线分别用蓝（平行）、红（焦点）、紫（光心）三色绘制；虚像情形下，出射光的反向延长线用<strong>同色虚线</strong>延伸到像顶。右侧仪表盘实时显示 \(f\)、\(d_{o}\)、\(d_{i}\)、\(m\) 与像的性质（实/虚、正/倒、放大/缩小）。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          // Visualization scaling: 3.5 px per cm. Lens centered horizontally.
+          var PX = 3.5;
+          var LENSX = 380, AXISY = 210, LENSH = 160;
+
+          var params = { converging: true, fAbs: 15, do_cm: 25, ho_cm: 4 };
+
+          // ---- drawing helpers --------------------------------------------
+          function drawSeg(ctx, x1, y1, x2, y2, color, dashed) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.8;
+            if (dashed) ctx.setLineDash([6, 5]);
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+          }
+          function drawArr(ctx, x1, y1, x2, y2, color, solid) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.4;
+            if (!solid) ctx.setLineDash([6, 5]);
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+            ctx.setLineDash([]);
+            var a = Math.atan2(y2 - y1, x2 - x1);
+            var h = 10;
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - h * Math.cos(a - 0.4), y2 - h * Math.sin(a - 0.4));
+            ctx.lineTo(x2 - h * Math.cos(a + 0.4), y2 - h * Math.sin(a + 0.4));
+            ctx.closePath(); ctx.fill();
+            ctx.restore();
+          }
+          function drawLens(ctx, cx, cy, h, converging) {
+            var top = cy - h / 2, bot = cy + h / 2;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.fillStyle = PS.colors.text;
+            ctx.lineWidth = 2.4;
+            ctx.beginPath(); ctx.moveTo(cx, top); ctx.lineTo(cx, bot); ctx.stroke();
+            // arrowheads: converging → outward; diverging → inward
+            if (converging) {
+              ctx.beginPath();
+              ctx.moveTo(cx, top - 9);
+              ctx.lineTo(cx - 6, top + 1);
+              ctx.lineTo(cx + 6, top + 1);
+              ctx.closePath(); ctx.fill();
+              ctx.beginPath();
+              ctx.moveTo(cx, bot + 9);
+              ctx.lineTo(cx - 6, bot - 1);
+              ctx.lineTo(cx + 6, bot - 1);
+              ctx.closePath(); ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(cx, top + 9);
+              ctx.lineTo(cx - 6, top - 1);
+              ctx.lineTo(cx + 6, top - 1);
+              ctx.closePath(); ctx.fill();
+              ctx.beginPath();
+              ctx.moveTo(cx, bot - 9);
+              ctx.lineTo(cx - 6, bot + 1);
+              ctx.lineTo(cx + 6, bot + 1);
+              ctx.closePath(); ctx.fill();
+            }
+            PS.drawText(ctx, converging ? '会聚透镜 Converging' : '发散透镜 Diverging',
+              cx, top - 14,
+              { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+            ctx.restore();
+          }
+
+          // ---- simulation -------------------------------------------------
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static diagram, no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var f = params.converging ? +params.fAbs : -params.fAbs;  // cm
+              var do_cm = params.do_cm;
+              var ho_cm = params.ho_cm;
+              var fpx = f * PX, dopx = do_cm * PX, hopx = ho_cm * PX;
+
+              var Tx = LENSX - dopx, Ty = AXISY - hopx;          // object tip (canvas)
+              var diInf = false, di_cm, m;
+              var denom = 1 / f - 1 / do_cm;                        // = 1/di
+              if (Math.abs(denom) < 1e-5) { diInf = true; di_cm = 1e9; }
+              else di_cm = 1 / denom;
+              m = -di_cm / do_cm;
+
+              var isVirtual = di_cm < 0 && !diInf;
+              var isReal = di_cm > 0 && !diInf;
+
+              // image tip (canvas coords); may be off-screen for extreme di
+              var Ix = LENSX + di_cm * PX;
+              var Iy = AXISY + hopx * (di_cm / do_cm);   // = AXISY - m*hopx
+
+              // ---- optical axis ----------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.globalAlpha = 0.85;
+              ctx.setLineDash([6, 4]);
+              ctx.beginPath(); ctx.moveTo(20, AXISY); ctx.lineTo(W - 20, AXISY); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+
+              // ---- lens -----------------------------------------------
+              drawLens(ctx, LENSX, AXISY, LENSH, params.converging);
+
+              // ---- focal points at ±|f| --------------------------------
+              var fAbsPx = Math.abs(fpx);
+              PS.drawCircle(ctx, LENSX - fAbsPx, AXISY, 3.5, { fill: PS.colors.text });
+              PS.drawCircle(ctx, LENSX + fAbsPx, AXISY, 3.5, { fill: PS.colors.text });
+              PS.drawText(ctx, 'F', LENSX - fAbsPx, AXISY + 18,
+                { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, "F'", LENSX + fAbsPx, AXISY + 18,
+                { font: "bold 12px system-ui", color: PS.colors.text, align: 'center' });
+
+              // ---- object arrow ---------------------------------------
+              drawArr(ctx, LENSX - dopx, AXISY, LENSX - dopx, AXISY - hopx,
+                PS.colors.accent2, true);
+              PS.drawText(ctx, '物 Object', LENSX - dopx, AXISY - hopx - 10,
+                { font: 'bold 12px system-ui', color: PS.colors.accent2, align: 'center' });
+
+              // ---- ray geometry ---------------------------------------
+              // Ray 1 (parallel): lens hit at (LENSX, AXISY - hopx); outgoing slope = hopx/fpx
+              var L1x = LENSX, L1y = AXISY - hopx;
+              var m1 = hopx / fpx;     // dy/dx
+              // Ray 2 (focal): lens hit y = AXISY + hopx*fpx/(dopx - fpx); outgoing horizontal
+              var yL2 = AXISY + hopx * fpx / (dopx - fpx);
+              var L2x = LENSX, L2y = yL2;
+              // Ray 3 (center): through (LENSX, AXISY); slope = hopx/dopx
+              var L3x = LENSX, L3y = AXISY;
+              var m3 = hopx / dopx;
+
+              var xRight = W - 12;
+              function rightEnd(x0, y0, slope) {
+                return { x: xRight, y: y0 + slope * (xRight - x0) };
+              }
+
+              var c1 = PS.colors.primary;   // parallel ray
+              var c2 = PS.colors.accent;    // focal ray
+              var c3 = PS.colors.trace;     // center ray
+
+              // Ray 1: incoming + outgoing (+ dashed back-ext if virtual)
+              drawSeg(ctx, Tx, Ty, L1x, L1y, c1, false);
+              var r1o = rightEnd(L1x, L1y, m1);
+              drawSeg(ctx, L1x, L1y, r1o.x, r1o.y, c1, false);
+              if (isVirtual) drawSeg(ctx, L1x, L1y, Ix, AXISY - hopx + m1 * (Ix - L1x), c1, true);
+
+              // Ray 2: incoming + outgoing horizontal (+ dashed back-ext if virtual)
+              drawSeg(ctx, Tx, Ty, L2x, L2y, c2, false);
+              var r2o = rightEnd(L2x, L2y, 0);
+              drawSeg(ctx, L2x, L2y, r2o.x, r2o.y, c2, false);
+              if (isVirtual) drawSeg(ctx, L2x, L2y, Ix, L2y, c2, true);
+
+              // Ray 3: straight line object-tip -> center -> continues
+              var r3o = rightEnd(L3x, L3y, m3);
+              drawSeg(ctx, Tx, Ty, r3o.x, r3o.y, c3, false);
+              if (isVirtual) drawSeg(ctx, L3x, L3y, Ix, AXISY + m3 * (Ix - L3x), c3, true);
+
+              // ---- image arrow ----------------------------------------
+              var imgVisible = !diInf && (Ix > 30) && (Ix < W - 30);
+              if (imgVisible) {
+                var imgSolid = isReal;
+                drawArr(ctx, Ix, AXISY, Ix, Iy, PS.colors.accent, imgSolid);
+                PS.drawText(ctx, '像 Image', Ix, (Iy < AXISY ? Iy - 10 : Iy + 20),
+                  { font: 'bold 12px system-ui', color: PS.colors.accent, align: 'center' });
+              }
+
+              // ---- readout panel --------------------------------------
+              var rx = 14, ry = 18;
+              PS.drawText(ctx, '物理量 Physical quantities (cm):',
+                rx, ry, { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'f = ' + f.toFixed(1) + ' cm  (' + (params.converging ? '会聚 converging' : '发散 diverging') + ')',
+                rx, ry + 20, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'd_o = ' + do_cm.toFixed(1) + ' cm,   h_o = ' + ho_cm.toFixed(1) + ' cm',
+                rx, ry + 38, { font: '12px system-ui', color: PS.colors.accent2 });
+
+              if (diInf) {
+                PS.drawText(ctx, 'd_i = ∞  (物在焦点 object at focal point)',
+                  rx, ry + 58, { font: 'bold 12px system-ui', color: PS.colors.accent });
+                PS.drawText(ctx, '出射光平行，像在无穷远 (rays exit parallel)',
+                  rx, ry + 76, { font: '12px system-ui', color: PS.colors.text });
+              } else {
+                PS.drawText(ctx, 'd_i = ' + di_cm.toFixed(2) + ' cm',
+                  rx, ry + 58, { font: 'bold 12px system-ui', color: PS.colors.accent });
+                PS.drawText(ctx, 'm = -d_i / d_o = ' + m.toFixed(3),
+                  rx, ry + 76, { font: 'bold 12px system-ui', color: PS.colors.accent });
+                var nature = [];
+                nature.push(isReal ? '实 real' : '虚 virtual');
+                nature.push(m < 0 ? '倒立 inverted' : '正立 upright');
+                nature.push(Math.abs(m) > 1.001 ? '放大 magnified'
+                          : (Math.abs(m) < 0.999 ? '缩小 reduced' : '等大 same size'));
+                PS.drawText(ctx, '像的性质 nature: ' + nature.join('，'),
+                  rx, ry + 94, { font: 'bold 12px system-ui', color: PS.colors.primary });
+                if (!imgVisible) {
+                  PS.drawText(ctx, '(像在画外 image off-screen)',
+                    rx, ry + 112, { font: '11px system-ui', color: PS.colors.text });
+                }
+              }
+
+              // ---- legend ---------------------------------------------
+              PS.drawText(ctx,
+                '━ 平行光线 parallel  ━ 焦点光线 focal  ━ 光心光线 center',
+                W - 14, H - 14,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx,
+                '虚像 = 出射光反向延长线相交（虚线段）',
+                14, H - 14,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'toggle', key: 'converging', label: '会聚 Converging (关闭=发散 Diverging)', value: true },
+            { type: 'slider',  key: 'fAbs',  label: '焦距 |f| (cm)',   min: 5,  max: 40, step: 1,   value: 15 },
+            { type: 'slider',  key: 'do_cm', label: '物距 d_o (cm)',   min: 5,  max: 70, step: 1,   value: 25 },
+            { type: 'slider',  key: 'ho_cm', label: '物高 h_o (cm)',   min: 1,  max: 10, step: 0.5, value: 4 },
+            { type: 'button',  key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('converging', function (v) { params.converging = v; });
+          ctl.on('fAbs',       function (v) { params.fAbs     = v; });
+          ctl.on('do_cm',      function (v) { params.do_cm    = v; });
+          ctl.on('ho_cm',      function (v) { params.ho_cm    = v; });
+          ctl.on('reset',      function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>球面镜焦距</strong>：\(f=R/2\)（近轴）。凹面镜 \(f>0\)（会聚），凸面镜 \(f<0\)（发散）。</li>
+        <li><strong>镜方程 / 薄透镜方程</strong>（形式相同）：\(1/f=1/d_{o}+1/d_{i}\)。</li>
+        <li><strong>横向放大率</strong>：\(m=-d_{i}/d_{o}\)。\(m<0\) 倒立，\(m>0\) 正立；\(|m|>1\) 放大，\(|m|<1\) 缩小。</li>
+        <li><strong>符号约定（实为正）</strong>：实物 \(d_{o}>0\)；实像 \(d_{i}>0\)、虚像 \(d_{i}<0\)；会聚元件 \(f>0\)、发散元件 \(f<0\)。</li>
+        <li><strong>三条特征光线</strong>：① 平行→过焦点；② 过焦点→平行；③ 过曲率中心（镜，原路返回）或过光心（透镜，不偏折）。任意两线的交点定像顶。</li>
+        <li><strong>透镜制造方程</strong>：\(1/f=(n-1)(1/R_{1}-1/R_{2})\)（空气中）。\(R\) 符号：球心在出射侧 \(R>0\)。</li>
+        <li><strong>像的性质判据</strong>：\(d_{i}\) 正/负 → 实/虚；\(m\) 正/负 → 正立/倒立；\(|m|\) 与 1 比 → 放大/缩小。</li>
+        <li><strong>透镜组</strong>：第一镜的像 = 第二镜的物（\(d_{o2}=L-d_{i1}\)，含符号）；总放大率 \(M=m_{1}m_{2}\cdots\)。</li>
+        <li><strong>典型情形</strong>：会聚元件 + 物在 \(f\) 内 → 虚、正、放大（放大镜 / 化妆镜）；发散元件对实物恒成虚、正、缩小（防盗镜 / 近视眼镜的基本行为）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\;f=\frac{R}{2}\;,\quad \frac{1}{f}=\frac{1}{d_{o}}+\frac{1}{d_{i}}\;,\quad m=-\frac{d_{i}}{d_{o}}\;,\quad \frac{1}{f}=(n-1)\!\left(\frac{1}{R_{1}}-\frac{1}{R_{2}}\right)\;,\quad M=m_{1}m_{2}\cdots\;\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

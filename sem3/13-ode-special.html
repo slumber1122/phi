@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第13章 · 微分方程与特殊函数 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="13">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第13章 · 数学方法 Math Methods</p>
+      <h1>微分方程与特殊函数 <span class="en-title">ODEs &amp; Special Functions</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>对一个常微分方程 (ODE) 按<strong>阶数</strong> (order)、<strong>线性 / 非线性</strong> (linear/nonlinear)、<strong>齐次 / 非齐次</strong> (homogeneous/nonhomogeneous) 三种维度分类，并说明每种分类对应的求解策略。</li>
+        <li>对一阶线性 ODE \(y'+P(x)y=Q(x)\) 用<strong>积分因子</strong> (integrating factor) \(\mu(x)=e^{\int P\,\mathrm{d}x}\) 推出闭式通解，并处理初始条件。</li>
+        <li>识别并求解<strong>可分离变量</strong> (separable) ODE \(\mathrm{d}y/\mathrm{d}x=g(x)h(y)\)，注意分离时可能丢失的常数解。</li>
+        <li>对二阶常系数线性齐次 ODE \(y''+by'+cy=0\) 写出<strong>特征方程</strong> (characteristic equation) 并区分<strong>过阻尼 / 临界阻尼 / 欠阻尼</strong> (overdamped / critically damped / underdamped) 三种情形，将其与第一学期的阻尼振子联系。</li>
+        <li>解释为何变系数方程 (如 Legendre, Bessel) 无法用特征方程法，必须用<strong>级数解法</strong> (Frobenius method)；并能说出每个特殊函数对应的物理问题（球对称 ↔ Legendre，柱对称 ↔ Bessel）。</li>
+        <li>陈述 <strong>Rodrigues 公式</strong>与 <strong>Legendre 正交关系</strong> \(\int_{-1}^{1}P_{l}P_{m}\,\mathrm{d}x=\tfrac{2}{2l+1}\delta_{lm}\)，并用它们做函数展开（广义傅里叶级数，承第 5 章）。</li>
+        <li>识别 <strong>Sturm–Liouville 本征值问题</strong>的形式 \(\tfrac{\mathrm{d}}{\mathrm{d}x}\!\big[p(x)y'\big]-q(x)y+\lambda w(x)y=0\)，论证其本征函数的正交性，区分<strong>边值问题</strong> (BVP) 与初值问题 (IVP)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. ODE 的分类 Classifying ODEs</h3>
+      <p>含有一个自变量（这里记为 \(x\) 或 \(t\)）的未知函数 \(y(x)\) 及其各阶导数的方程称为<strong>常微分方程</strong> (ordinary differential equation, ODE)。三个最重要的分类维度是：</p>
+      <ul>
+        <li><strong>阶数 (order)</strong>：方程中出现的最高阶导数的阶数。例如 \(y''+\omega^{2}y=0\) 是二阶；\(\dot{N}=-\lambda N\) 是一阶。</li>
+        <li><strong>线性 vs 非线性 (linear / nonlinear)</strong>：若方程可写成 \(y\) 及其各阶导数的线性组合加非齐次项，即
+          \[ a_{n}(x)y^{(n)}+a_{n-1}(x)y^{(n-1)}+\cdots+a_{0}(x)y=f(x), \]
+          则为<strong>线性</strong>；否则为非线性。判据：未知函数及其导数只能以一次方出现，且不能有 \(y^{2}\)、\(\sin y\)、\(y\,y'\) 等耦合项。<br>
+          例：\(y''+\sin x\,y=0\) 线性；\(y\,y'=1\) 与 \(y''+y^{3}=0\) 非线性。</li>
+        <li><strong>齐次 vs 非齐次 (homogeneous / nonhomogeneous)</strong>：对线性 ODE，若右端项 \(f(x)\equiv 0\)，称为<strong>齐次</strong>；否则为<strong>非齐次</strong>。（线性齐次是「叠加原理」成立的必要条件，见误区 §1。）</li>
+      </ul>
+      <p>物理中线性齐次 ODE 通常描述无外力的「自由」系统（自由振动、自由扩散），而非齐次项对应外部驱动 (driving) 或源 (source)。</p>
+      <div class="key-terms">ODE (常微分方程), order (阶数), linear ODE (线性 ODE), nonlinear ODE (非线性 ODE), homogeneous (齐次), nonhomogeneous (非齐次), driving term (驱动项)</div>
+
+      <h3>2. 一阶线性 ODE 与积分因子 First-Order Linear ODE &amp; the Integrating Factor</h3>
+      <p>任何一阶线性 ODE 都可标准化为：</p>
+      <div class="formula">\[ \frac{\mathrm{d}y}{\mathrm{d}x}+P(x)\,y=Q(x) \]</div>
+      <p>关键是找一个<strong>积分因子</strong> (integrating factor) \(\mu(x)\)，使方程左端变成「某个积的全导数」。取</p>
+      <div class="formula">\[ \mu(x)=e^{\int P(x)\,\mathrm{d}x} \]</div>
+      <p>乘以方程两边后，左边恰好是 \(\tfrac{\mathrm{d}}{\mathrm{d}x}\!\big[\mu\,y\big]\)（用乘积法则 + \(\mu'=\mu P\) 即可验证）。于是两边对 \(x\) 积分一次便得：</p>
+      <div class="formula">\[ \boxed{\;y(x)=\frac{1}{\mu(x)}\bigg[\int^{x}\mu(s)\,Q(s)\,\mathrm{d}s+C\bigg],\qquad \mu(x)=e^{\int P(x)\,\mathrm{d}x}\;} \]</div>
+      <p>积分下限可任意选取，差别吸收进常数 \(C\)。这种解法「机械」但万能，对任意连续 \(P,Q\) 都有效。</p>
+      <div class="key-terms">integrating factor (积分因子), standard linear form (标准线性形式), general solution (通解)</div>
+
+      <h3>3. 可分离变量 ODE Separable ODEs</h3>
+      <p>若一阶 ODE 可写作：</p>
+      <div class="formula">\[ \frac{\mathrm{d}y}{\mathrm{d}x}=g(x)\,h(y) \]</div>
+      <p>即右端能分解成「只含 \(x\)」与「只含 \(y\)」两因子之积，则称<strong>可分离变量</strong> (separable)。把 \(y\) 与 \(\mathrm{d}y\) 一边、\(x\) 与 \(\mathrm{d}x\) 另一边：</p>
+      <div class="formula">\[ \frac{\mathrm{d}y}{h(y)}=g(x)\,\mathrm{d}x\quad\Longrightarrow\quad \int\frac{\mathrm{d}y}{h(y)}=\int g(x)\,\mathrm{d}x+C \]</div>
+      <p>两边各积一次即得隐式解。注意：若存在 \(y^{*}\) 使 \(h(y^{*})=0\)，则 \(y\equiv y^{*}\) 是<strong>常数解</strong>，分离步骤中除以 \(h(y)\) 时会丢失它，须单独补回（见误区 §4）。</p>
+      <div class="key-terms">separable ODE (可分离变量 ODE), implicit solution (隐式解), constant solution (常数解)</div>
+
+      <h3>4. 二阶常系数线性 ODE：特征方程 Constant-Coefficient 2nd-Order Linear ODE</h3>
+      <p>对无驱动、自由振动的线性系统，齐次方程为：</p>
+      <div class="formula">\[ y''+b\,y'+c\,y=0\qquad(b,c\in\mathbb{R}) \]</div>
+      <p>「常系数」意味着 \(b,c\) 是常数，此时指数函数 \(e^{rt}\) 是算符 \(\mathrm{d}/\mathrm{d}t\) 的本征函数，代入 \(y=e^{rt}\) 得到代数<strong>特征方程</strong> (characteristic equation)：</p>
+      <div class="formula">\[ r^{2}+b\,r+c=0\quad\Longrightarrow\quad r=\frac{-b\pm\sqrt{b^{2}-4c}}{2} \]</div>
+      <p>判别式 \(\Delta=b^{2}-4c\) 决定三种情形：</p>
+      <ul>
+        <li><strong>过阻尼 (overdamped), \(\Delta>0\)</strong>：两相异实根 \(r_{1,2}<0\)，
+          \(y=C_{1}e^{r_{1}t}+C_{2}e^{r_{2}t}\)。系统缓慢、无振荡地回到平衡。</li>
+        <li><strong>临界阻尼 (critically damped), \(\Delta=0\)</strong>：重根 \(r=-b/2\)，
+          \(y=(C_{1}+C_{2}t)e^{rt}\)。从过阻尼过渡到振荡的临界点，能最快无回弹地回到平衡（检流计、门吸设计的目标）。</li>
+        <li><strong>欠阻尼 (underdamped), \(\Delta<0\)</strong>：复根 \(r=-\gamma\pm i\omega_{d}\)，其中 \(\gamma=b/2\)、\(\omega_{d}=\tfrac{1}{2}\sqrt{-\Delta}\)。
+          \(y=e^{-\gamma t}\big[C_{1}\cos\omega_{d}t+C_{2}\sin\omega_{d}t\big]\)。<br>
+          振荡包络以 \(e^{-\gamma t}\) 衰减，<strong>阻尼振荡频率</strong> \(\omega_{d}<\omega_{0}\)。</li>
+      </ul>
+      <p><strong>与第一学期的联系</strong>：阻尼振子方程 \(m\ddot{x}+b\dot{x}+kx=0\) 正是上述形式，可对应 \(b_{\text{方程}}=b/m\)、\(c_{\text{方程}}=k/m=\omega_{0}^{2}\)，自然角频率 \(\omega_{0}=\sqrt{k/m}\)、阻尼率 \(\gamma=b/(2m)\)、阻尼频率 \(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)、品质因数 \(Q=\omega_{0}/(2\gamma)\)。判别式 \(\Delta\propto\gamma^{2}-\omega_{0}^{2}\)：\(\gamma>\omega_{0}\) 过阻尼，\(\gamma=\omega_{0}\) 临界阻尼，\(\gamma<\omega_{0}\) 欠阻尼。</p>
+      <div class="key-terms">characteristic equation (特征方程), discriminant (判别式), overdamped (过阻尼), critically damped (临界阻尼), underdamped (欠阻尼), damping rate (阻尼率)</div>
+
+      <h3>5. 变系数二阶线性 ODE 与级数解 Variable-Coefficient 2nd-Order ODEs &amp; Series Solutions</h3>
+      <p>一旦系数不再是常数——例如 \(y''+\tfrac{2}{x}y'-l(l+1)y/x^{2}=0\)——指数函数就不再是本征函数，特征方程法<strong>失效</strong>。普适做法是<strong>幂级数解法</strong> (Frobenius method)：在常点 (ordinary point) 附近设</p>
+      <div class="formula">\[ y(x)=\sum_{n=0}^{\infty}a_{n}\,x^{n} \]</div>
+      <p>代入方程，逐项求导，让同次幂系数相消，得到<strong>递推关系</strong> (recurrence relation)。从 \(a_{0},a_{1}\)（对应两个自由常数，正是二阶 ODE 应有的）出发生成整条级数。如果级数收敛且能被识别，就得到一个「新」的<strong>特殊函数</strong> (special function)。</p>
+      <p>这套方法产生大量经典特殊函数。每个都对应一类对称性下的偏微分方程（波动 / 扩散 / 薛定谔 / 拉普拉斯）经分离变量后所得的「径向 / 角向」方程：</p>
+      <ul>
+        <li><strong>Legendre 多项式 \(P_{l}(x)\)</strong>：来自<strong>球坐标</strong>下 Laplace 方程的角向部分（见 §6）。</li>
+        <li><strong>Bessel 函数 \(J_{n}(x)\)</strong>：来自<strong>柱坐标</strong>下波动 / Laplace 方程的径向部分（见 §7）。</li>
+        <li><strong>Hermite 多项式 \(H_{n}(x)\)</strong>：来自量子谐振子（一维薛定谔方程，本课程后续）。</li>
+        <li><strong>Laguerre 多项式 \(L_{n}(x)\)</strong>：来自氢原子的径向薛定谔方程。</li>
+        <li><strong>球谐函数 \(Y_{l}^{m}(\theta,\phi)\)</strong>：球面 Laplacian 的本征函数，\(=P_{l}^{m}(\cos\theta)e^{im\phi}\)，是氢原子角向波函数。</li>
+      </ul>
+      <p>这些「特殊函数」并不神秘——它们在各自对称性下扮演的角色，与 \(\sin\)、\(\cos\) 在直角坐标下扮演的角色完全相同：是某一本征值问题的本征函数，构成完备正交基。</p>
+      <div class="key-terms">power-series solution (幂级数解法), Frobenius method (Frobenius 方法), recurrence relation (递推关系), ordinary point (常点), special function (特殊函数)</div>
+
+      <h3>6. Legendre 多项式 Legendre Polynomials</h3>
+      <p>在<strong>球坐标</strong> \((r,\theta,\phi)\) 中，对具有<strong>轴对称</strong>（与 \(\phi\) 无关）的拉普拉斯方程 \(\nabla^{2}\Phi=0\)，分离变量 \(\Phi(r,\theta)=R(r)\,\Theta(\theta)\) 后，角向部分满足</p>
+      <div class="formula">\[ \frac{1}{\sin\theta}\frac{\mathrm{d}}{\mathrm{d}\theta}\!\left(\sin\theta\,\frac{\mathrm{d}\Theta}{\mathrm{d}\theta}\right)+l(l+1)\Theta=0 \]</div>
+      <p>作变量代换 \(x=\cos\theta\)，并令 \(y(x)=\Theta(\theta)\)，得<strong>Legendre 方程</strong> (Legendre's equation)：</p>
+      <div class="formula">\[ (1-x^{2})\,y''-2x\,y'+l(l+1)\,y=0 \]</div>
+      <p>要求解在 \(x=\pm1\)（即 \(\theta=0,\pi\)）处有限，必须 \(l=0,1,2,\ldots\) 取整数，得<strong>Legendre 多项式</strong> \(P_{l}(x)\)，这是<strong>本征值</strong>被边界条件「量子化」的最早实例之一。前几个：</p>
+      <div class="formula">\[ P_{0}=1,\quad P_{1}=x,\quad P_{2}=\tfrac{1}{2}(3x^{2}-1),\quad P_{3}=\tfrac{1}{2}(5x^{3}-3x),\quad P_{4}=\tfrac{1}{8}(35x^{4}-30x^{2}+3) \]</div>
+      <p><strong>Rodrigues 公式</strong>给出闭形式：</p>
+      <div class="formula">\[ P_{l}(x)=\frac{1}{2^{l}\,l!}\,\frac{\mathrm{d}^{l}}{\mathrm{d}x^{l}}\!\left[(x^{2}-1)^{l}\right] \]</div>
+      <p>它们满足<strong>正交归一关系</strong>（推导见 §D2）：</p>
+      <div class="formula">\[ \int_{-1}^{1}P_{l}(x)\,P_{m}(x)\,\mathrm{d}x=\frac{2}{2l+1}\,\delta_{lm} \]</div>
+      <p>即不同 \(l\) 的 Legendre 多项式互相正交，权重 \(w(x)=1\)。这意味着任何（足够好的）函数 \(f(x)\) 在 \([-1,1]\) 上可展开为 \(f=\sum_{l}a_{l}P_{l}\)，系数 \(a_{l}=\tfrac{2l+1}{2}\int_{-1}^{1}f P_{l}\,\mathrm{d}x\)——广义傅里叶级数（第 5 章）的典型例子。</p>
+      <div class="key-terms">Legendre equation (Legendre 方程), Legendre polynomial \(P_l\) (Legendre 多项式), Rodrigues formula (Rodrigues 公式), orthogonality (正交性), axial symmetry (轴对称)</div>
+
+      <h3>7. Bessel 函数 Bessel Functions</h3>
+      <p>在<strong>柱坐标</strong> \((r,\phi,z)\) 中分离变量解波动方程或拉普拉斯方程，径向部分满足<strong>Bessel 方程</strong>：</p>
+      <div class="formula">\[ x^{2}y''+x\,y'+(x^{2}-n^{2})\,y=0 \]</div>
+      <p>它的两个线性独立解是 \(J_{n}(x)\)（第一类 Bessel 函数，在 \(x=0\) 处有限）与 \(Y_{n}(x)\)（第二类，在 \(x=0\) 处发散）。物理问题通常只保留 \(J_{n}\)。\(J_{n}(x)\) 用<strong>级数</strong>表示：</p>
+      <div class="formula">\[ J_{n}(x)=\sum_{k=0}^{\infty}\frac{(-1)^{k}}{k!\,(k+n)!}\left(\frac{x}{2}\right)^{2k+n} \]</div>
+      <p>这是「衰减振荡型」函数：振幅大致按 \(1/\sqrt{x}\) 缓慢减小，过零点近似等距。<strong>零点</strong>是 Bessel 应用的核心，记 \(\alpha_{n,m}\) 为 \(J_{n}(x)\) 的第 \(m\) 个正零点。前几个：</p>
+      <div class="formula">\[ \alpha_{0,1}\approx2.4048,\ \alpha_{0,2}\approx5.5201,\ \alpha_{0,3}\approx8.6537,\ \alpha_{1,1}\approx3.8317,\ \alpha_{2,1}\approx5.1356 \]</div>
+      <p>经典应用是<strong>圆形鼓面</strong> (circular drumhead)：膜上半径 \(a\)、波速 \(v=\sqrt{F_{T}/\mu}\)（\(F_{T}\) 为面张力 N/m，\(\mu\) 为面密度 kg/m²）。边界条件 \(z(a,\phi,t)=0\) 给出 \(J_{n}(k_{n m}a)=0\)，即 \(k_{n m}=\alpha_{n,m}/a\)，于是简正频率（见例 13.5）</p>
+      <div class="formula">\[ f_{n m}=\frac{v}{2\pi a}\,\alpha_{n,m} \]</div>
+      <p>因为 \(\alpha_{n,m}\) 不是整数比，鼓的泛音<strong>不是谐和的</strong>——这正是鼓声「嘭」而非「嗡」、听起来比弦乐粗糙的数学原因。</p>
+      <div class="key-terms">Bessel equation (Bessel 方程), Bessel function of the first kind \(J_n\) (第一类 Bessel 函数), zero of a Bessel function (Bessel 零点), drumhead (鼓面), cylindrical coordinates (柱坐标)</div>
+
+      <h3>8. Hermite, Laguerre, 球谐函数——量子力学的伏笔 Hermite, Laguerre, Spherical Harmonics</h3>
+      <p>另两组特殊函数留待量子力学（后续章节）使用，这里只作一句话铺垫：</p>
+      <ul>
+        <li><strong>Hermite 多项式 \(H_{n}(x)\)</strong>：满足 Hermite 方程 \(y''-2x\,y'+2n\,y=0\)。它们是<strong>量子谐振子</strong>波函数 \(\psi_{n}(x)\propto H_{n}(\alpha x)\,e^{-\alpha^{2}x^{2}/2}\) 中的多项式因子；本征值 \(E_{n}=(n+\tfrac{1}{2})\hbar\omega\)。</li>
+        <li><strong>Laguerre 多项式 \(L_{n}(x)\)</strong> 与<strong>连带 Laguerre</strong> \(L_{n}^{k}(x)\)：出现在<strong>氢原子</strong>径向波函数中，本征值给出著名的氢能级 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\)。</li>
+        <li><strong>球谐函数 \(Y_{l}^{m}(\theta,\phi)\)</strong>：球面 Laplacian 的本征函数，\(Y_{l}^{m}\propto P_{l}^{m}(\cos\theta)e^{im\phi}\)，是氢原子角向波函数，也是「轨道」形状 (\(s,p,d,f\)) 的来源（\(l=0,1,2,3\) ↔ \(s,p,d,f\)）。</li>
+      </ul>
+      <div class="key-terms">Hermite polynomial \(H_n\) (Hermite 多项式), Laguerre polynomial \(L_n\) (Laguerre 多项式), spherical harmonics \(Y_l^m\) (球谐函数), quantum harmonic oscillator (量子谐振子), hydrogen atom (氢原子)</div>
+
+      <h3>9. Sturm–Liouville 本征值问题 Sturm–Liouville Eigenvalue Problems</h3>
+      <p>上面的 Legendre、Bessel、Hermite、Laguerre 方程有一个共同形式，都属<strong>Sturm–Liouville 型</strong>：</p>
+      <div class="formula">\[ \frac{\mathrm{d}}{\mathrm{d}x}\!\left[p(x)\,\frac{\mathrm{d}y}{\mathrm{d}x}\right]-q(x)\,y+\lambda\,w(x)\,y=0,\qquad a\le x\le b \]</div>
+      <p>配以适当<strong>边界条件</strong>（如两端 \(y=0\)，或自然边界 \(p=0\)），它构成<strong>本征值问题</strong> (eigenvalue problem)：仅对一组离散 \(\lambda_{n}\)（本征值）存在非平凡解 \(y_{n}\)（本征函数）。Sturm–Liouville 定理保证：</p>
+      <ul>
+        <li>本征值 \(\lambda_{n}\) 全为实数，可排成 \(\lambda_{1}<\lambda_{2}<\cdots\to\infty\)；</li>
+        <li>本征函数关于权重 \(w(x)\) <strong>正交</strong>：\(\int_{a}^{b}w\,y_{n}y_{m}\,\mathrm{d}x=0\)（\(n\ne m\)）；</li>
+        <li>本征函数族在加权 \(L^{2}\) 空间中<strong>完备</strong>——任意（足够好的）函数可展为它们的级数。</li>
+      </ul>
+      <p>把 §6 中 Legendre 方程化为 S–L 形：\(p=1-x^{2},\ q=0,\ w=1,\ \lambda=l(l+1)\)。把 §7 Bessel 方程化成 S–L：\(p=x,\ q=n^{2}/x,\ w=x,\ \lambda=1\)。傅里叶级数（第 5 章）本身就是一个 Sturm–Liouville 问题（\(p=1,w=1\)）。这套框架是「数学物理中所有正交展开的统一理论」。</p>
+      <div class="key-terms">Sturm–Liouville problem (Sturm–Liouville 问题), eigenvalue (本征值), eigenfunction (本征函数), weight function (权函数), completeness (完备性)</div>
+
+      <h3>10. 边值问题 vs 初值问题 Boundary-Value vs Initial-Value Problems</h3>
+      <p>对 \(n\) 阶 ODE 需要 \(n\) 个条件才能定解。<strong>何时给</strong>这些条件是关键：</p>
+      <ul>
+        <li><strong>初值问题 (IVP)</strong>：\(n\) 个条件全部给在同一点 \(x=x_{0}\)（如 \(y(x_{0}),y'(x_{0})\)）。Picard–Lindelöf 定理保证：只要方程右端在 \((x_{0},y_{0})\) 附近关于 \(y\) Lipschitz 连续，则解<strong>存在且唯一</strong>。</li>
+        <li><strong>边值问题 (BVP)</strong>：条件分布在两个或更多不同点上（如弦两端固定 \(y(0)=y(L)=0\)）。BVP 一般没有唯一性保证——这正是<strong>本征值问题</strong>的温床：只有特定的 \(\lambda\) 才有非平凡解。例如两端固定弦给出 \(k_{n}=n\pi/L\)、\(n=1,2,\ldots\)。</li>
+      </ul>
+      <div class="key-terms">IVP (初值问题), BVP (边值问题), existence and uniqueness (存在唯一性), Picard–Lindelöf theorem (Picard–Lindelöf 定理)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>D1. 由指数试探导出特征方程与三种阻尼 From \(e^{rt}\) to the Three Damping Cases</h3>
+      <p>考虑齐次常系数方程：</p>
+      <div class="formula">\[ y''+b\,y'+c\,y=0,\qquad b,c\in\mathbb{R}. \]</div>
+      <p><strong>第 1 步：试 \(y=e^{rt}\)。</strong> 因 \(\mathrm{d}/\mathrm{d}t\) 作用在 \(e^{rt}\) 上只乘 \(r\)，二阶导只乘 \(r^{2}\)，故</p>
+      <div class="formula">\[ y'=r e^{rt},\qquad y''=r^{2}e^{rt}. \]</div>
+      <p>代入：</p>
+      <div class="formula">\[ r^{2}e^{rt}+b\,r e^{rt}+c\,e^{rt}=e^{rt}\big(r^{2}+br+c\big)=0. \]</div>
+      <p>由于 \(e^{rt}\ne 0\) 对所有 \(t\) 成立，非平凡解要求</p>
+      <div class="formula">\[ \boxed{\;r^{2}+b\,r+c=0\;}\qquad\text{(characteristic equation)} \]</div>
+      <p><strong>第 2 步：分三种情形写出通解。</strong>记判别式 \(\Delta=b^{2}-4c\)。</p>
+      <p>(i) <strong>\(\Delta>0\)</strong>（过阻尼）：两相异实根 \(r_{1,2}=(-b\pm\sqrt{\Delta})/2\)。两个独立解 \(e^{r_{1}t},e^{r_{2}t}\) 线性无关，通解为</p>
+      <div class="formula">\[ y=C_{1}e^{r_{1}t}+C_{2}e^{r_{2}t}. \]</div>
+      <p>(ii) <strong>\(\Delta=0\)</strong>（临界阻尼）：重根 \(r=-b/2\)，第二个独立解需用「降次」法或极限 \(r_{2}\to r_{1}\) 得出为 \(t\,e^{rt}\)：</p>
+      <div class="formula">\[ y=(C_{1}+C_{2}t)\,e^{rt}. \]</div>
+      <p>(iii) <strong>\(\Delta<0\)</strong>（欠阻尼）：复根 \(r=-b/2\pm i\omega_{d}\)，\(\omega_{d}=\tfrac{1}{2}\sqrt{-\Delta}\)。复解 \(e^{(-b/2\pm i\omega_{d})t}\) 的实虚部给出一对实独立解：</p>
+      <div class="formula">\[ y=e^{-bt/2}\big[C_{1}\cos\omega_{d}t+C_{2}\sin\omega_{d}t\big]=A\,e^{-bt/2}\cos(\omega_{d}t-\varphi). \]</div>
+      <p><strong>第 3 步：联系力学。</strong>把 \(m\ddot{x}+b_{\text{mech}}\dot{x}+kx=0\) 两边除以 \(m\)：\(\ddot{x}+(b_{\text{mech}}/m)\dot{x}+(k/m)x=0\)，对应 \(b=b_{\text{mech}}/m,\ c=k/m=\omega_{0}^{2}\)。判别式</p>
+      <div class="formula">\[ \Delta=\left(\tfrac{b_{\text{mech}}}{m}\right)^{2}-4\tfrac{k}{m}=\frac{4}{m^{2}}\!\left[\gamma^{2}-\omega_{0}^{2}\right],\quad \gamma\equiv\tfrac{b_{\text{mech}}}{2m} \]</div>
+      <p>故 \(\gamma\lessgtr\omega_{0}\) 正对应过 / 临 / 欠阻尼的判据——这就是第一学期讲过的内容，只是现在用「特征方程」一气呵成推出。 ∎</p>
+
+      <h3>D2. Legendre 多项式的正交性 Orthogonality of \(P_{l}(x)\)</h3>
+      <p>把 §6 的 Legendre 方程改写为 <strong>Sturm–Liouville 自伴形式</strong>：</p>
+      <div class="formula">\[ \frac{\mathrm{d}}{\mathrm{d}x}\!\left[(1-x^{2})\,\frac{\mathrm{d}P_{l}}{\mathrm{d}x}\right]+l(l+1)P_{l}=0. \]</div>
+      <p>对 \(P_{l}\) 与 \(P_{m}\)（\(l\ne m\)）各写一遍，分别乘以 \(P_{m},P_{l}\) 再相减，得</p>
+      <div class="formula">\[ P_{m}\,\frac{\mathrm{d}}{\mathrm{d}x}\!\left[(1-x^{2})P_{l}'\right]-P_{l}\,\frac{\mathrm{d}}{\mathrm{d}x}\!\left[(1-x^{2})P_{m}'\right]+\big[l(l+1)-m(m+1)\big]P_{l}P_{m}=0. \]</div>
+      <p>对前两项用乘积法则，可见它们合成一个<strong>全导数</strong>：</p>
+      <div class="formula">\[ \frac{\mathrm{d}}{\mathrm{d}x}\!\left[(1-x^{2})\big(P_{m}P_{l}'-P_{l}P_{m}'\big)\right]+\big[l(l+1)-m(m+1)\big]P_{l}P_{m}=0. \]</div>
+      <p>从 \(-1\) 到 \(1\) 积分：</p>
+      <div class="formula">\[ \big[(1-x^{2})(P_{m}P_{l}'-P_{l}P_{m}')\big]_{-1}^{1}+\big[l(l+1)-m(m+1)\big]\int_{-1}^{1}P_{l}P_{m}\,\mathrm{d}x=0. \]</div>
+      <p>第一项因 \((1-x^{2})\big|_{\pm1}=0\) 而为零；又 \(l\ne m\Rightarrow l(l+1)\ne m(m+1)\)，所以</p>
+      <div class="formula">\[ \boxed{\;\int_{-1}^{1}P_{l}(x)\,P_{m}(x)\,\mathrm{d}x=0,\qquad l\ne m\;} \]</div>
+      <p>这一推导是 Sturm–Liouville 理论的样板，对任何 S–L 问题都成立——权重正交性并非 Legendre 独有，而是来自自伴算符的<strong>对称性</strong>。 ∎</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 13.1 RC 电路放电（可分离） Discharging RC Circuit (Separable)</h4>
+        <p class="example-statement">一个电容 \(C=2.0\,\mu\mathrm{F}\) 充电到 \(V_{0}=12\,\mathrm{V}\) 后，\(t=0\) 时刻通过电阻 \(R=500\,\mathrm{k\Omega}\) 放电。求电压 \(v(t)\) 与 \(t=2.0\,\mathrm{s}\) 时的电压。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>基尔霍夫电压定律给出 \(v=iR\)，而电容电流 \(i=-C\,\mathrm{d}v/\mathrm{d}t\)（放电方向规定），故</p>
+          <div class="formula">\[ RC\,\frac{\mathrm{d}v}{\mathrm{d}t}=-v \]</div>
+          <p class="step">这是<strong>可分离变量</strong> ODE：</p>
+          <div class="formula">\[ \frac{\mathrm{d}v}{v}=-\frac{\mathrm{d}t}{RC}\;\Longrightarrow\; \ln v=-\frac{t}{RC}+C' \]</div>
+          <p class="step">两边取指数：\(v(t)=A\,e^{-t/(RC)}\)。由 \(v(0)=V_{0}=12\,\mathrm{V}\) 得 \(A=12\)。计算时间常数：</p>
+          <div class="formula">\[ \tau=RC=500\times10^{3}\,\Omega\times2.0\times10^{-6}\,\mathrm{F}=1.0\,\mathrm{s} \]</div>
+          <p class="step">所以</p>
+          <div class="formula">\[ v(t)=12\,e^{-t/(1.0\,\mathrm{s})}\,\mathrm{V} \]</div>
+          <p class="step">\(t=2.0\,\mathrm{s}\) 时：</p>
+          <div class="formula">\[ v(2.0\,\mathrm{s})=12\,e^{-2.0}\,\mathrm{V}\approx12\times0.1353\,\mathrm{V}\approx1.62\,\mathrm{V} \]</div>
+          <p>电压在 \(2\) 个时间常数后衰减到初值的 \(e^{-2}\approx13.5\%\)，即 <span class="ans">\(\boxed{v(2.0\,\mathrm{s})\approx1.62\,\mathrm{V}}\)</span>。 \(\blacklozenge\)</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.2 RL 电路（积分因子法） RL Circuit with Exponential Drive (Integrating Factor)</h4>
+        <p class="example-statement">一串联 RL 电路，\(R=10\,\Omega\)、\(L=2.0\,\mathrm{H}\)，电源 \(V_{s}(t)=20\,e^{-3t}\,\mathrm{V}\)（\(t\ge0\)）在 \(t=0\) 接入。初态 \(i(0)=0\)。求 \(i(t)\)，并算出峰值电流出现的时刻与大小。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>基尔霍夫电压方程为</p>
+          <div class="formula">\[ L\frac{\mathrm{d}i}{\mathrm{d}t}+Ri=V_{s}(t) \]</div>
+          <p class="step">除以 \(L\)，化为标准一阶线性形式：</p>
+          <div class="formula">\[ \frac{\mathrm{d}i}{\mathrm{d}t}+\underbrace{\frac{R}{L}}_{P}\,i=\underbrace{\frac{V_{s}(t)}{L}}_{Q(t)},\qquad P=\frac{10}{2.0}=5\,\mathrm{s}^{-1},\quad Q(t)=\frac{20}{2.0}e^{-3t}=10\,e^{-3t}\,\mathrm{A/s} \]</div>
+          <p class="step"><strong>积分因子</strong>：</p>
+          <div class="formula">\[ \mu(t)=e^{\int P\,\mathrm{d}t}=e^{5t} \]</div>
+          <p class="step">乘方程两边，左端变成 \(\tfrac{\mathrm{d}}{\mathrm{d}t}[\mu i]\)：</p>
+          <div class="formula">\[ \frac{\mathrm{d}}{\mathrm{d}t}\!\big[i\,e^{5t}\big]=10\,e^{-3t}\cdot e^{5t}=10\,e^{2t} \]</div>
+          <p class="step">两边积分：</p>
+          <div class="formula">\[ i\,e^{5t}=\int 10\,e^{2t}\,\mathrm{d}t=5\,e^{2t}+C \]</div>
+          <p class="step">除回 \(\mu\)：</p>
+          <div class="formula">\[ i(t)=5\,e^{-3t}+C\,e^{-5t}\quad(\mathrm{A}) \]</div>
+          <p class="step">由 \(i(0)=0\)：\(0=5+C\Rightarrow C=-5\)，故</p>
+          <div class="formula">\[ \boxed{\,i(t)=5\big(e^{-3t}-e^{-5t}\big)\,\mathrm{A}\,} \]</div>
+          <p class="step"><strong>峰值</strong>：令 \(\mathrm{d}i/\mathrm{d}t=0\)：</p>
+          <div class="formula">\[ -15\,e^{-3t}+25\,e^{-5t}=0\;\Longrightarrow\;e^{2t}=\frac{25}{15}=\frac{5}{3} \]</div>
+          <div class="formula">\[ t_{\text{peak}}=\tfrac{1}{2}\ln\tfrac{5}{3}\approx0.255\,\mathrm{s} \]</div>
+          <div class="formula">\[ i_{\max}=5\big(e^{-0.766}-e^{-1.277}\big)\approx5(0.465-0.279)\approx0.93\,\mathrm{A} \]</div>
+          <p>电流先升后降，<span class="ans">\(\boxed{i_{\max}\approx0.93\,\mathrm{A}\text{ 出现在 }t\approx0.255\,\mathrm{s}}\)</span>。 \(\blacklozenge\)</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.3 阻尼振子（特征方程，分类阻尼） Damped Oscillator (Characteristic Equation)</h4>
+        <p class="example-statement">质量 \(m=0.50\,\mathrm{kg}\) 的物体系在弹簧 \(k=50\,\mathrm{N/m}\) 上，阻尼系数 \(b=1.4\,\mathrm{kg/s}\)。从 \(x_{0}=0.20\,\mathrm{m}\) 由静止释放。判断阻尼类型，写出 \(x(t)\)，并求品质因数 \(Q\) 与一周内振幅衰减比。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>运动方程 \(m\ddot{x}+b\dot{x}+kx=0\)，除以 \(m=0.50\)：</p>
+          <div class="formula">\[ \ddot{x}+2.8\,\dot{x}+100\,x=0 \]</div>
+          <p class="step">特征方程：</p>
+          <div class="formula">\[ r^{2}+2.8\,r+100=0,\qquad \Delta=2.8^{2}-4\cdot100=7.84-400=-392.16<0 \]</div>
+          <p class="step">\(\Delta<0\) → <strong>欠阻尼</strong>。计算各量：</p>
+          <div class="formula">\[ \omega_{0}=\sqrt{\frac{k}{m}}=\sqrt{100}=10\,\mathrm{rad/s},\quad \gamma=\frac{b}{2m}=\frac{1.4}{1.0}=1.4\,\mathrm{s}^{-1} \]</div>
+          <div class="formula">\[ \omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}=\sqrt{100-1.96}=\sqrt{98.04}\approx9.90\,\mathrm{rad/s} \]</div>
+          <p class="step">通解：</p>
+          <div class="formula">\[ x(t)=e^{-\gamma t}\big[A\cos\omega_{d}t+B\sin\omega_{d}t\big] \]</div>
+          <p class="step">由 \(x(0)=0.20\)：\(A=0.20\,\mathrm{m}\)。<br>由 \(\dot{x}(0)=0=-\gamma A+\omega_{d}B\)，得 \(B=\gamma A/\omega_{d}=\frac{1.4\times0.20}{9.90}\approx0.0283\,\mathrm{m}\)。故</p>
+          <div class="formula">\[ \boxed{\,x(t)=e^{-1.4t}\big[0.20\cos(9.90\,t)+0.0283\sin(9.90\,t)\big]\,\mathrm{m}\,} \]</div>
+          <p class="step"><strong>品质因数</strong>：</p>
+          <div class="formula">\[ Q=\frac{\omega_{0}}{2\gamma}=\frac{10}{2.8}\approx3.57 \]</div>
+          <p class="step"><strong>一周内衰减</strong>：\(T_{d}=2\pi/\omega_{d}\approx0.635\,\mathrm{s}\)，包络衰减比</p>
+          <div class="formula">\[ \frac{A(t+T_{d})}{A(t)}=e^{-\gamma T_{d}}=e^{-1.4\times0.635}\approx e^{-0.889}\approx0.41 \]</div>
+          <p>每周振幅减为 <span class="ans">\(\boxed{Q\approx3.57,\ \text{每周振幅减为约 }41\%}\)</span>。 \(\blacklozenge\)</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.4 Legendre 正交性验证 Verifying a Legendre Orthogonality Identity</h4>
+        <p class="example-statement">(a) 用 \(P_{2}=\tfrac{1}{2}(3x^{2}-1)\)、\(P_{3}=\tfrac{1}{2}(5x^{3}-3x)\) 显式验证 \(\int_{-1}^{1}P_{2}P_{3}\,\mathrm{d}x=0\)。<br>(b) 验证 \(\int_{-1}^{1}[P_{2}(x)]^{2}\,\mathrm{d}x=\tfrac{2}{5}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>展开乘积：</p>
+          <div class="formula">\[ P_{2}P_{3}=\tfrac{1}{4}(3x^{2}-1)(5x^{3}-3x)=\tfrac{1}{4}\big[15x^{5}-9x^{3}-5x^{3}+3x\big]=\tfrac{1}{4}\big[15x^{5}-14x^{3}+3x\big] \]</div>
+          <p class="step">每一项都是 \(x\) 的<strong>奇次幂</strong>，在对称区间 \([-1,1]\) 上积分为零：</p>
+          <div class="formula">\[ \int_{-1}^{1}P_{2}P_{3}\,\mathrm{d}x=\tfrac{1}{4}\big[15\cdot0-14\cdot0+3\cdot0\big]=0\;\checkmark \]</div>
+          <p class="step">这与正交关系 \(\int_{-1}^{1}P_{l}P_{m}\,\mathrm{d}x=\tfrac{2}{2l+1}\delta_{lm}\)（\(l=2,m=3\)）一致。</p>
+          <p class="step"><strong>解 (b)：</strong></p>
+          <div class="formula">\[ [P_{2}]^{2}=\tfrac{1}{4}(9x^{4}-6x^{2}+1) \]</div>
+          <div class="formula">\[ \int_{-1}^{1}[P_{2}]^{2}\,\mathrm{d}x=\tfrac{1}{4}\left[9\cdot\frac{2}{5}-6\cdot\frac{2}{3}+1\cdot2\right]=\tfrac{1}{4}\left[\frac{18}{5}-4+2\right]=\tfrac{1}{4}\cdot\frac{8}{5}=\frac{2}{5}\;\checkmark \]</div>
+          <p class="step">与公式预测 \(\tfrac{2}{2l+1}\big|_{l=2}=\tfrac{2}{5}\) 完全一致。<span class="ans">\(\boxed{\int_{-1}^{1}P_{2}P_{3}\,\mathrm{d}x=0,\ \int_{-1}^{1}[P_{2}]^{2}\,\mathrm{d}x=\tfrac{2}{5}}\)</span>。 \(\blacklozenge\)</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.5 圆鼓的简正频率（Bessel 零点） Normal Frequencies of a Circular Drum (Bessel Zeros)</h4>
+        <p class="example-statement">一圆形鼓面膜半径 \(a=0.20\,\mathrm{m}\)、面密度 \(\mu=0.40\,\mathrm{kg/m^{2}}\)、面张力 \(F_{T}=800\,\mathrm{N/m}\)。求 (a) 基频 \(f_{01}\)；(b) 第一泛音 \(f_{11}\) 与基频之比。已知 \(J_{n}\) 的零点：\(\alpha_{0,1}=2.4048,\ \alpha_{1,1}=3.8317\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>膜上波速</p>
+          <div class="formula">\[ v=\sqrt{\frac{F_{T}}{\mu}}=\sqrt{\frac{800}{0.40}}=\sqrt{2000}\approx44.7\,\mathrm{m/s} \]</div>
+          <p class="step">本征模式 \(z_{nm}\propto J_{n}(k_{nm}r)\cos(n\phi)\cos(\omega t)\)，边界条件 \(z(a)=0\Rightarrow J_{n}(k_{nm}a)=0\)，即</p>
+          <div class="formula">\[ k_{nm}=\frac{\alpha_{n,m}}{a},\qquad f_{nm}=\frac{\omega_{nm}}{2\pi}=\frac{v\,k_{nm}}{2\pi}=\frac{v}{2\pi a}\,\alpha_{n,m} \]</div>
+          <p class="step">公共系数：</p>
+          <div class="formula">\[ \frac{v}{2\pi a}=\frac{44.7}{2\pi\cdot0.20}\approx35.6\,\mathrm{Hz} \]</div>
+          <p class="step">(a) 基频取最小零点 \(\alpha_{0,1}=2.4048\)（轴对称模式，\(n=0,m=1\)）：</p>
+          <div class="formula">\[ \boxed{\,f_{01}=35.6\times2.4048\approx85.6\,\mathrm{Hz}\,} \]</div>
+          <p class="step">(b) 第一泛音是次小零点 \(\alpha_{1,1}=3.8317\)：</p>
+          <div class="formula">\[ f_{11}=35.6\times3.8317\approx136\,\mathrm{Hz} \]</div>
+          <p class="step">比值</p>
+          <div class="formula">\[ \frac{f_{11}}{f_{01}}=\frac{\alpha_{1,1}}{\alpha_{0,1}}=\frac{3.8317}{2.4048}\approx1.59 \]</div>
+          <p>注意这个比值既不是 \(2\) 也不是任何简单有理数——鼓的泛音<strong>不谐和</strong>，<span class="ans">\(\boxed{f_{01}\approx85.6\,\mathrm{Hz},\ f_{11}\approx136\,\mathrm{Hz},\ f_{11}/f_{01}\approx1.59}\)</span>。 \(\blacklozenge\)</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>存在唯一性不是免费的 (existence &amp; uniqueness are not free)。</strong>「给定初始条件就有唯一解」只对<strong>满足 Lipschitz 条件</strong>的方程成立。反例：\(y'=\sqrt{y},\ y(0)=0\) 同时有平凡解 \(y\equiv0\) 和非平凡解 \(y=x^{2}/4\)（\(x\ge0\)）——因 \(\sqrt{y}\) 在 \(y=0\) 处不可微。在物理上，这意味着奇异点（碰撞、相变）处需要额外物理判据。</li>
+        <li><strong>叠加原理只对<strong>线性</strong> ODE 成立 (superposition holds only for linear ODEs)。</strong>若 \(y_{1},y_{2}\) 是 \(y'+P y=Q\) 的解，则 \(C_{1}y_{1}+C_{2}y_{2}\) 一般不是解；只有<strong>齐次线性</strong>方程的解空间才是线性空间。对非线性 \(y'=y^{2}\)，两个解之和甚至不再满足方程。</li>
+        <li><strong>常系数 ≠ 变系数 (constant vs variable coefficients require different methods)。</strong>「设 \(y=e^{rt}\)」仅当系数为常数时有效——它依赖 \(\mathrm{d}/\mathrm{d}t\) 与常系数对易。遇到 \(y''+x\,y=0\)（Airy）或 Legendre / Bessel 等<strong>变系数</strong>方程，必须改用<strong>级数解</strong>或查特殊函数表；硬套特征方程会得到错误结果。</li>
+        <li><strong>分离变量时丢失常数解 (losing constant solutions when separating)。</strong>解 \(y'=xy^{1/3}\) 时除以 \(y^{1/3}\) 默认 \(y\ne0\)；但 \(y\equiv0\) 也是解（且不包含在通解族中），须单独列出。物理上对应「平衡态」。</li>
+        <li><strong>初值 vs 边值（IVP vs BVP）不能混为一谈。</strong>IVP 在同一点给 \(n\) 个条件，几乎总有唯一解；BVP 把条件分散在两端，可能<strong>无解</strong>、<strong>唯一解</strong>、或<strong>无穷多解</strong>（本征值问题）。求「弦的简正模式」是 BVP / 本征值问题，不是「初值问题」——少了 \(\lambda\) 这一自由度。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 牛顿冷却（可分离）。一把 80 °C 的金属勺放入 20 °C 的茶中，10 s 后勺温降至 60 °C。再过多久勺温降到 30 °C？设冷却定律 \(\dot{T}=-k(T-T_{\text{env}})\)。</summary>
+        <div class="hint">先解 ODE 得 \(T(t)-T_{\text{env}}=(T_{0}-T_{\text{env}})e^{-kt}\)，由 \(t=10\,\mathrm{s}\) 时 \(T=60\,^{\circ}\mathrm{C}\) 解出 \(k\)。</div>
+        <div class="solution">
+          <p>通解：\(T(t)=20+60\,e^{-kt}\)。由 \(T(10)=60\)：\(40=60\,e^{-10k}\Rightarrow e^{10k}=1.5\Rightarrow k=\tfrac{\ln1.5}{10}\approx0.0405\,\mathrm{s}^{-1}\)。</p>
+          <p>求 \(\tau\) 使 \(T(\tau)=30\)：\(10=60\,e^{-k\tau}\Rightarrow e^{k\tau}=6\Rightarrow\tau=\tfrac{\ln6}{k}\approx\tfrac{1.792}{0.0405}\approx44.2\,\mathrm{s}\)。</p>
+          <p>故从 \(t=0\) 起算共约 \(44\,\mathrm{s}\)，从 \(t=10\,\mathrm{s}\)（60 °C）起再等约 <span class="ans">\(\boxed{\approx34\,\mathrm{s}}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一阶线性 ODE（积分因子）。解 \(y'+\tfrac{2}{x}y=x^{2}\)，\(y(1)=3\)。</summary>
+        <div class="hint">\(P(x)=2/x\)，故 \(\mu=e^{\int2/x\,\mathrm{d}x}=x^{2}\)。乘方程两边后左端应是 \(\tfrac{\mathrm{d}}{\mathrm{d}x}[x^{2}y]\)。</div>
+        <div class="solution">
+          <p>\(\mu=x^{2}\)，方程变为 \(\tfrac{\mathrm{d}}{\mathrm{d}x}[x^{2}y]=x^{4}\)。积分：\(x^{2}y=\tfrac{x^{5}}{5}+C\)，故</p>
+          <p>\(y=\tfrac{x^{3}}{5}+\tfrac{C}{x^{2}}\)。</p>
+          <p>由 \(y(1)=3\)：\(3=\tfrac{1}{5}+C\Rightarrow C=\tfrac{14}{5}\)。<span class="ans">\(\boxed{y(x)=\tfrac{x^{3}}{5}+\tfrac{14}{5x^{2}}}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 二阶常系数（过阻尼）。\(y''+5y'+4y=0\)，\(y(0)=1,\ y'(0)=0\)。判断类型，求 \(y(t)\) 与 \(y(2)\)。</summary>
+        <div class="hint">特征方程 \(r^{2}+5r+4=0\) 因式分解为 \((r+1)(r+4)=0\)。</div>
+        <div class="solution">
+          <p>特征根 \(r_{1}=-1,\ r_{2}=-4\)，判别式 \(25-16=9>0\) → <strong>过阻尼</strong>。</p>
+          <p>\(y=C_{1}e^{-t}+C_{2}e^{-4t}\)。<br>由 \(y(0)=1\)：\(C_{1}+C_{2}=1\)。<br>由 \(y'(0)=0=-C_{1}-4C_{2}\)，联立解得 \(C_{1}=\tfrac{4}{3},\ C_{2}=-\tfrac{1}{3}\)。</p>
+          <p><span class="ans">\(\boxed{y(t)=\tfrac{1}{3}(4e^{-t}-e^{-4t})}\)</span>。 \(y(2)=\tfrac{1}{3}(4e^{-2}-e^{-8})\approx\tfrac{1}{3}(0.5413-0.000335)\approx0.180\)。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Rodrigues 公式。用 \(P_{3}(x)=\tfrac{1}{8}\tfrac{\mathrm{d}^{3}}{\mathrm{d}x^{3}}\!\big[(x^{2}-1)^{3}\big]\) 验证 \(P_{3}=\tfrac{1}{2}(5x^{3}-3x)\)。</summary>
+        <div class="hint">\((x^{2}-1)^{3}=x^{6}-3x^{4}+3x^{2}-1\)，逐阶求导。</div>
+        <div class="solution">
+          <p>\((x^{2}-1)^{3}=x^{6}-3x^{4}+3x^{2}-1\)。</p>
+          <p>一阶导：\(6x^{5}-12x^{3}+6x\)。二阶导：\(30x^{4}-36x^{2}+6\)。三阶导：\(120x^{3}-72x=24(5x^{3}-3x)\)。</p>
+          <p>乘以 \(1/2^{3}3!=1/48\)：\(P_{3}=\tfrac{24}{48}(5x^{3}-3x)=\tfrac{1}{2}(5x^{3}-3x)\)。<span class="ans">\(\checkmark\)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 圆鼓第二泛音。同一鼓面（\(a=0.20\,\mathrm{m},\ v=44.7\,\mathrm{m/s}\)），求 \(f_{21}\) 与 \(f_{02}\)。已知 \(\alpha_{2,1}=5.1356,\ \alpha_{0,2}=5.5201\)。两者哪个更低？</summary>
+        <div class="hint">用例 13.5 中的 \(\tfrac{v}{2\pi a}\approx35.6\,\mathrm{Hz}\)，分别乘两个零点。</div>
+        <div class="solution">
+          <p>\(f_{21}=35.6\times5.1356\approx183\,\mathrm{Hz}\)；\(f_{02}=35.6\times5.5201\approx197\,\mathrm{Hz}\)。</p>
+          <p>故 <span class="ans">\(\boxed{f_{21}\approx183\,\mathrm{Hz}\text{ 更低}}\)</span>。鼓的前几个模式按 \(f_{01}&lt;f_{11}&lt;f_{21}\approx f_{02}&lt;\cdots\) 排列，正是「\(J_{n}\) 零点表」的具体体现。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>特殊函数绘图仪 (special-function plotter)</strong>。选择一种特殊函数（按钮）并拖动阶数 \(n\) 滑块，画出对应函数在合适范围内的曲线，<strong>红点</strong>标出并标注其前若干个<strong>零点</strong>。曲线对每种函数自适应缩放；Hermite 与 Laguerre 因随 \(n\) 快速发散，绘图时已对最大幅值归一化（图上注明）。尝试观察：(i) \(P_{l}\) 在 \([-1,1]\) 内恰有 \(l\) 个零点；(ii) \(J_{n}\) 的零点近似等距但不严格相等；(iii) \(H_{n}\) 在 \([-5,5]\) 有 \(n\) 个零点；(iv) \(L_{n}\) 在 \([0,\infty)\) 有 \(n\) 个零点。</p>
+      <div class="sim-container">
+        <canvas id="sim-13" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-13"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-13');
+          var W = canvas.width, H = canvas.height; // 720 x 440
+
+          // ---------- Layout ----------
+          var LEFT = 70, RIGHT = W - 30;     // 70 .. 690
+          var TOP = 60, BOTTOM = H - 50;     // 60 .. 390
+          var PW = RIGHT - LEFT;             // 620
+          var PH = BOTTOM - TOP;             // 330
+          var YZERO = TOP + PH / 2;          // 225
+
+          // ---------- Parameters ----------
+          var params = {
+            fn: 'legendre',   // 'legendre' | 'bessel' | 'hermite' | 'laguerre'
+            n: 2,
+          };
+
+          // ---------- Special-function evaluators ----------
+          // Legendre P_n(x) via recurrence
+          function legendre(n, x) {
+            if (n === 0) return 1;
+            if (n === 1) return x;
+            var p0 = 1, p1 = x, p2;
+            for (var k = 1; k < n; k++) {
+              p2 = ((2 * k + 1) * x * p1 - k * p0) / (k + 1);
+              p0 = p1; p1 = p2;
+            }
+            return p1;
+          }
+
+          // Bessel J_n(x) via series, J_n(x) = Σ (-1)^k (x/2)^(2k+n) / (k!(k+n)!)
+          function besselJ(n, x) {
+            if (x < 1e-12) return (n === 0) ? 1 : 0;
+            var xh = x / 2;
+            // a_0 = (x/2)^n / n!
+            var fact_n = 1;
+            for (var i = 2; i <= n; i++) fact_n *= i;
+            var a = Math.pow(xh, n) / fact_n;
+            var sum = a;
+            for (var k = 1; k < 80; k++) {
+              a *= -(xh * xh) / (k * (n + k));
+              sum += a;
+              if (Math.abs(a) < 1e-15 * Math.abs(sum)) break;
+            }
+            return sum;
+          }
+
+          // Physicist's Hermite H_n(x) via recurrence
+          function hermiteH(n, x) {
+            if (n === 0) return 1;
+            if (n === 1) return 2 * x;
+            var h0 = 1, h1 = 2 * x, h2;
+            for (var k = 1; k < n; k++) {
+              h2 = 2 * x * h1 - 2 * k * h0;
+              h0 = h1; h1 = h2;
+            }
+            return h1;
+          }
+
+          // Standard Laguerre L_n(x) via recurrence
+          function laguerreL(n, x) {
+            if (n === 0) return 1;
+            if (n === 1) return 1 - x;
+            var l0 = 1, l1 = 1 - x, l2;
+            for (var k = 1; k < n; k++) {
+              l2 = ((2 * k + 1 - x) * l1 - k * l0) / (k + 1);
+              l0 = l1; l1 = l2;
+            }
+            return l1;
+          }
+
+          // ---------- Domain & function metadata ----------
+          // Each fn has its own x-range, evaluator, suggested y-scale floor, and label.
+          var META = {
+            legendre: {
+              f: function (n, x) { return legendre(n, x); },
+              xmin: -1, xmax: 1, xname: 'x', xrange: 'x ∈ [-1, 1]',
+              scaleFloor: 1.05,
+              short: 'P', symbol: 'P_' + params.n + '(x)', normNote: ''
+            },
+            bessel: {
+              f: function (n, x) { return besselJ(n, x); },
+              xmin: 0, xmax: 20, xname: 'x', xrange: 'x ∈ [0, 20]',
+              scaleFloor: 0.45,
+              short: 'J', symbol: 'J_' + params.n + '(x)', normNote: ''
+            },
+            hermite: {
+              f: function (n, x) { return hermiteH(n, x); },
+              xmin: -5, xmax: 5, xname: 'x', xrange: 'x ∈ [-5, 5]',
+              scaleFloor: 0.0, short: 'H',
+              symbol: 'H_' + params.n + '(x)  (normalized)', normNote: 'normalized to max|f| = 1'
+            },
+            laguerre: {
+              f: function (n, x) { return laguerreL(n, x); },
+              xmin: 0, xmax: 20, xname: 'x', xrange: 'x ∈ [0, 20]',
+              scaleFloor: 0.0, short: 'L',
+              symbol: 'L_' + params.n + '(x)  (normalized)', normNote: 'normalized to max|f| = 1'
+            },
+          };
+
+          // ---------- Map x-data to pixel ----------
+          function xToPx(x, xmin, xmax) {
+            return LEFT + (x - xmin) / (xmax - xmin) * PW;
+          }
+          function yToPx(y, scale) {
+            return YZERO - (y / scale) * (PH / 2 - 12);
+          }
+
+          // ---------- Compute zeros by sampling ----------
+          function findZeros(feval, n, xmin, xmax, N) {
+            N = N || 1500;
+            var zeros = [];
+            var dx = (xmax - xmin) / N;
+            var prev = feval(n, xmin);
+            for (var i = 1; i <= N; i++) {
+              var x = xmin + i * dx;
+              var cur = feval(n, x);
+              if (prev === 0) {
+                zeros.push(xmin + (i - 1) * dx);
+              } else if (prev * cur < 0) {
+                // linear interpolation refine
+                var xt = xmin + (i - 1) * dx - prev * dx / (cur - prev);
+                zeros.push(xt);
+              }
+              prev = cur;
+            }
+            return zeros;
+          }
+
+          // ---------- Simulation ----------
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static plot */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var meta = META[params.fn];
+              var n = params.n;
+              var xmin = meta.xmin, xmax = meta.xmax;
+
+              // Sample curve, compute max |f|
+              var NS = 1200;
+              var xs = new Array(NS + 1);
+              var ys = new Array(NS + 1);
+              var maxAbs = 0;
+              for (var i = 0; i <= NS; i++) {
+                var x = xmin + (xmax - xmin) * i / NS;
+                var y = meta.f(n, x);
+                xs[i] = x; ys[i] = y;
+                if (isFinite(y) && Math.abs(y) > maxAbs) maxAbs = Math.abs(y);
+              }
+              var scale = Math.max(maxAbs, meta.scaleFloor);
+
+              // ----- Header text -----
+              var fullName = {
+                legendre: 'Legendre 勒让德',
+                bessel: 'Bessel 贝塞尔',
+                hermite: 'Hermite 厄米',
+                laguerre: 'Laguerre 拉盖尔'
+              }[params.fn];
+              PS.drawText(ctx,
+                '特殊函数 Special Function: ' + fullName +
+                '   |   阶 order n = ' + n +
+                '   |   ' + meta.xrange,
+                LEFT, 28, { font: '14px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                meta.symbol +
+                (meta.normNote ? '   ·   ' + meta.normNote : ''),
+                LEFT, 48, { font: '12px system-ui', color: PS.colors.accent });
+
+              // ----- Plot box -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(LEFT, TOP, PW, PH);
+              ctx.restore();
+
+              // ----- ±scale reference lines -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([3, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(LEFT, yToPx(scale, scale));
+              ctx.lineTo(RIGHT, yToPx(scale, scale));
+              ctx.moveTo(LEFT, yToPx(-scale, scale));
+              ctx.lineTo(RIGHT, yToPx(-scale, scale));
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '+' + scale.toFixed(2), LEFT - 6, yToPx(scale, scale) + 3,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '-' + scale.toFixed(2), LEFT - 6, yToPx(-scale, scale) + 3,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // ----- y = 0 axis -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.moveTo(LEFT, YZERO);
+              ctx.lineTo(RIGHT, YZERO);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '0', LEFT - 6, YZERO + 3,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // ----- x-axis ticks -----
+              var xticks = 10;
+              for (var t = 0; t <= xticks; t++) {
+                var xv = xmin + (xmax - xmin) * t / xticks;
+                var px = xToPx(xv, xmin, xmax);
+                ctx.save();
+                ctx.strokeStyle = PS.colors.grid;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(px, BOTTOM);
+                ctx.lineTo(px, BOTTOM + 5);
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, xv.toFixed(1), px, BOTTOM + 16,
+                  { font: '10px system-ui', color: PS.colors.text, align: 'center' });
+              }
+              PS.drawText(ctx, meta.xname, (LEFT + RIGHT) / 2, BOTTOM + 32,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // ----- Plot the curve -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              var started = false;
+              for (var i = 0; i <= NS; i++) {
+                if (!isFinite(ys[i])) { started = false; continue; }
+                var px = xToPx(xs[i], xmin, xmax);
+                var py = yToPx(ys[i], scale);
+                if (!started) { ctx.moveTo(px, py); started = true; }
+                else { ctx.lineTo(px, py); }
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ----- Zero markers -----
+              var zeros = findZeros(meta.f, n, xmin, xmax, 2000);
+              // Limit display to avoid clutter
+              var maxZerosToShow = 12;
+              var zerosShow = zeros.slice(0, maxZerosToShow);
+              zerosShow.forEach(function (z, idx) {
+                var px = xToPx(z, xmin, xmax);
+                PS.drawCircle(ctx, px, YZERO, 4, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+                // label above axis, alternating offset for readability
+                var labelY = (idx % 2 === 0) ? YZERO - 14 : YZERO + 22;
+                PS.drawText(ctx, z.toFixed(2), px, labelY,
+                  { font: '10px system-ui', color: PS.colors.accent, align: 'center' });
+              });
+
+              // ----- Footer note -----
+              var zeroCountMsg = '检测到 detected zeros: ' + zeros.length +
+                (zeros.length > maxZerosToShow ? '（仅显示前 ' + maxZerosToShow + '）' : '');
+              PS.drawText(ctx,
+                zeroCountMsg +
+                '   ·   理论 theory: P,H,L 在其定义域各有 n 个零点；J 有无穷多（此处仅显示定义域内）',
+                LEFT, H - 12, { font: '11px system-ui', color: PS.colors.text });
+
+              // ----- Legend (top-right) -----
+              var legX = RIGHT - 200, legY = TOP + 6;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.2;
+              ctx.beginPath(); ctx.moveTo(legX, legY); ctx.lineTo(legX + 18, legY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, fullName, legX + 24, legY + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+              PS.drawCircle(ctx, legX + 9, legY + 16, 4,
+                { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+              PS.drawText(ctx, '零点 zero', legX + 24, legY + 20,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          // ---------- Controls ----------
+          var ctl = PS.makeControls(document.getElementById('controls-13'), [
+            { type: 'button', key: 'legendre', label: 'Legendre Pₗ(x)' },
+            { type: 'button', key: 'bessel',   label: 'Bessel Jₙ(x)' },
+            { type: 'button', key: 'hermite',  label: 'Hermite Hₙ(x)' },
+            { type: 'button', key: 'laguerre', label: 'Laguerre Lₙ(x)' },
+            { type: 'slider', key: 'n', label: '阶数 order n', min: 0, max: 8, step: 1, value: 2 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('legendre', function () { params.fn = 'legendre'; });
+          ctl.on('bessel',   function () { params.fn = 'bessel'; });
+          ctl.on('hermite',  function () { params.fn = 'hermite'; });
+          ctl.on('laguerre', function () { params.fn = 'laguerre'; });
+          ctl.on('n', function (v) { params.n = v; });
+          ctl.on('reset', function () {
+            params.fn = 'legendre';
+            params.n = 2;
+            // Reflect slider in DOM (API does not auto-refresh)
+            var sliders = document.getElementById('controls-13').querySelectorAll('input[type=range]');
+            sliders.forEach(function (el) { el.value = String(2); });
+            ctl.set('n', 2);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>分类</strong>：按阶数（最高导数阶）、线性 / 非线性（未知函数及其导数是否仅线性出现）、齐次 / 非齐次（右端项是否为零）三维分类。叠加原理只对<strong>线性齐次</strong>方程成立。</li>
+        <li><strong>一阶线性 ODE</strong> \(y'+P(x)y=Q(x)\)：积分因子 \(\mu=e^{\int P\,\mathrm{d}x}\)，通解 \(y=\mu^{-1}\!\left[\int\mu Q\,\mathrm{d}x+C\right]\)。</li>
+        <li><strong>可分离变量</strong> \(\mathrm{d}y/\mathrm{d}x=g(x)h(y)\)：\(\int\mathrm{d}y/h(y)=\int g\,\mathrm{d}x+C\)；注意 \(h(y)=0\) 给出的常数解。</li>
+        <li><strong>二阶常系数齐次</strong> \(y''+by'+cy=0\)：特征方程 \(r^{2}+br+c=0\)，判别式 \(\Delta=b^{2}-4c\)。 \(\Delta&gt;0\) 过阻尼（两实根）；\(\Delta=0\) 临界阻尼（重根，第二解 \(t e^{rt}\)）；\(\Delta&lt;0\) 欠阻尼（复根 \(e^{-\gamma t}[C_{1}\cos\omega_{d}t+C_{2}\sin\omega_{d}t]\)）。力学对应：\(\omega_{0}=\sqrt{k/m}\)、\(\gamma=b_{\text{mech}}/(2m)\)、\(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)、\(Q=\omega_{0}/(2\gamma)\)。</li>
+        <li><strong>级数解法</strong>：变系数 ODE 用 \(y=\sum a_{n}x^{n}\) 代入，由递推关系生成。导出 Legendre、Bessel、Hermite、Laguerre 等特殊函数。</li>
+        <li><strong>Legendre \(P_{l}(x)\)</strong>：球对称拉普拉斯角向，\((1-x^{2})y''-2xy'+l(l+1)y=0\)；Rodrigues \(P_{l}=\frac{1}{2^{l}l!}\frac{\mathrm{d}^{l}}{\mathrm{d}x^{l}}(x^{2}-1)^{l}\)；正交 \(\int_{-1}^{1}P_{l}P_{m}=\frac{2}{2l+1}\delta_{lm}\)。</li>
+        <li><strong>Bessel \(J_{n}(x)\)</strong>：柱对称径向，\(x^{2}y''+xy'+(x^{2}-n^{2})y=0\)；零点 \(\alpha_{n,m}\) 决定鼓面频率 \(f_{nm}=\frac{v}{2\pi a}\alpha_{n,m}\)，非整数比 → 泛音不谐和。</li>
+        <li><strong>其他</strong>：Hermite（量子谐振子）、Laguerre（氢原子径向）、球谐 \(Y_{l}^{m}\)（氢原子角向）。</li>
+        <li><strong>Sturm–Liouville</strong>：\(\frac{\mathrm{d}}{\mathrm{d}x}[p y']-q y+\lambda w y=0\)，配边条件成本征值问题；本征值实、本征函数关于权 \(w\) 正交且完备。统一了傅里叶、Legendre、Bessel 等所有正交展开。</li>
+        <li><strong>IVP vs BVP</strong>：IVP 同点 \(n\) 个条件，Lipschitz 下存在唯一；BVP 多点条件，可能 0/1/无穷多解——本征值问题的来源。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\mu(x)=e^{\int P\,\mathrm{d}x},\qquad y=\frac{1}{\mu}\!\left[\int\mu Q\,\mathrm{d}x+C\right]\;} \]</div>
+      <div class="formula">\[ \boxed{\;r^{2}+br+c=0,\quad \Delta=b^{2}-4c\;\Rightarrow\;\begin{cases}\Delta&gt;0:&y=C_{1}e^{r_{1}t}+C_{2}e^{r_{2}t}\\ \Delta=0:&y=(C_{1}+C_{2}t)e^{rt}\\ \Delta&lt;0:&y=e^{-\gamma t}[C_{1}\cos\omega_{d}t+C_{2}\sin\omega_{d}t]\end{cases}} \]</div>
+      <div class="formula">\[ \boxed{\;\int_{-1}^{1}P_{l}P_{m}\,\mathrm{d}x=\frac{2}{2l+1}\delta_{lm},\qquad f_{nm}^{\text{drum}}=\frac{v}{2\pi a}\alpha_{n,m}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

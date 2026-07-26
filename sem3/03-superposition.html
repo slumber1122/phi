@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 叠加·干涉·驻波 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第3章 · 机械波与声 Mechanical Waves &amp; Sound</p>
+      <h1>叠加·干涉·驻波 <span class="en-title">Superposition &amp; Standing Waves</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>阐述<strong>叠加原理</strong> (superposition principle)：在线性介质中，多列波的合位移等于各波位移的代数和，并据此推出相长/相消干涉 (constructive/destructive interference) 条件 \(\Delta L=m\lambda\) 与 \(\Delta L=(m+\tfrac{1}{2})\lambda\)。</li>
+        <li>由两列频率相近的同向波之和导出<strong>拍</strong> (beats)，并计算拍频 \(f_{\text{beat}}=|f_{1}-f_{2}|\)。</li>
+        <li>从两列等幅反向行波 \(A\sin(kx-\omega t)\) 与 \(A\sin(kx+\omega t)\) 之和导出<strong>驻波</strong> (standing wave) \(y=2A\sin(kx)\cos(\omega t)\)，并指出波节 (nodes)、波腹 (antinodes) 的位置。</li>
+        <li>对两端固定的弦，由边界条件 \(y(0,t)=y(L,t)=0\) 量子化波数 \(k_{n}=n\pi/L\)，从而写出允许的频率 \(f_{n}=nv/(2L)\) 与波长 \(\lambda_{n}=2L/n\)。</li>
+        <li>区分声管中的两种边界（开-开管 \(f_{n}=nv/2L\)；闭-开管 \(f_{n}=nv/4L\)，仅奇 \(n\)），解释为什么闭管只存在奇次谐波。</li>
+        <li>用<strong>共振</strong> (resonance) 条件——驱动力频率等于某个允许模式频率——预测弦/管的响应，并解释能量选择吸收的物理图像。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 叠加原理 The Superposition Principle</h3>
+      <p>线性介质中，多列波<strong>互不干扰地穿过</strong>，合位移是各波位移的<strong>矢量和</strong>（标量波情形为代数和）：</p>
+      <div class="formula">\[ y(\vec{r},t)=\sum_{i}y_{i}(\vec{r},t) \]</div>
+      <p>这是线性波动方程的直接推论——若每个 \(y_{i}\) 都满足 \(\partial^{2}y/\partial t^{2}=v^{2}\nabla^{2}y\)，则其和也满足（方程是线性的）。叠加失效的典型情形包括大幅振动（非线性弹簧/大振幅声波→冲击波）、不同频率在不同介质中的色散介质中传播（线性但不同频率速度不同，叠加仍成立但脉冲形状改变）。</p>
+      <div class="key-terms">superposition principle (叠加原理), linear medium (线性介质), wave equation (波动方程)</div>
+
+      <h3>2. 干涉：相长与相消 Interference</h3>
+      <p>考虑两列同频率、同振动方向、来自不同路径的波在某点 \(P\) 相遇：\(y_{1}=A\sin(kr_{1}-\omega t)\)，\(y_{2}=A\sin(kr_{2}-\omega t)\)。其和为：</p>
+      <div class="formula">\[ y=2A\cos\!\left(\frac{k\,\Delta L}{2}\right)\sin(k\bar{r}-\omega t),\qquad \Delta L\equiv r_{2}-r_{1} \]</div>
+      <p>振幅由<strong>路径差</strong> \(\Delta L\) 决定：</p>
+      <ul>
+        <li><strong>相长干涉</strong> (constructive)：\(\Delta L=m\lambda\)（\(m=0,1,2,\ldots\)），两波同相到达，振幅取最大 \(2A\)。</li>
+        <li><strong>相消干涉</strong> (destructive)：\(\Delta L=(m+\tfrac{1}{2})\lambda\)，两波反相到达，合振幅为零。</li>
+      </ul>
+      <p>此即<strong>杨氏双缝</strong> (Young's double-slit) 与所有干涉实验的核心条件（第 9 章将详述）。</p>
+      <div class="key-terms">interference (干涉), path difference \(\Delta L\) (路径差), constructive (相长), destructive (相消)</div>
+
+      <h3>3. 拍 Beats</h3>
+      <p>两列<strong>同振幅、同方向、频率略不同</strong> \(f_{1},f_{2}\)（\(|f_{1}-f_{2}|\ll f_{1},f_{2}\)）的波叠加：</p>
+      <div class="formula">\[ y=\underbrace{2A\cos\!\bigl(2\pi\tfrac{f_{1}-f_{2}}{2}\,t\bigr)}_{\text{包络 envelope}}\;\cos\!\bigl(2\pi\,\bar{f}\,t\bigr),\qquad \bar{f}=\tfrac{f_{1}+f_{2}}{2} \]</div>
+      <p>包络每周期使振幅出现两次极大，故<strong>拍频</strong> (beat frequency)：</p>
+      <div class="formula">\[ \boxed{\,f_{\text{beat}}=|f_{1}-f_{2}|\,} \]</div>
+      <p>钢琴调律师正是通过听拍音把两根弦调到同频：拍音消失即对准。注意：包络振荡频率是 \(|f_{1}-f_{2}|/2\)，但拍音（响度起伏）频率是 \(|f_{1}-f_{2}|\)——这是常见混淆点。</p>
+      <div class="key-terms">beats (拍), beat frequency \(f_{\text{beat}}\) (拍频), envelope (包络)</div>
+
+      <h3>4. 驻波：两列等幅反向行波之和</h3>
+      <p>将一列右行波 \(y_{1}=A\sin(kx-\omega t)\) 与一列等幅左行波 \(y_{2}=A\sin(kx+\omega t)\) 相加。利用和差化积 \(\sin\alpha+\sin\beta=2\sin\tfrac{\alpha+\beta}{2}\cos\tfrac{\alpha-\beta}{2}\)：</p>
+      <div class="formula">\[ \boxed{\,y(x,t)=2A\sin(kx)\cos(\omega t)\,} \]</div>
+      <p>此时波形<strong>不再传播</strong>——空间部分 \(\sin(kx)\) 与时间部分 \(\cos(\omega t)\) 完全分离。每个 \(x\) 处的质点作 SHM，振幅为 \(2A|\sin(kx)|\)。</p>
+      <ul>
+        <li><strong>波节</strong> (nodes)：\(\sin(kx)=0\Rightarrow kx=n\pi\)，即 \(x=n\lambda/2\)（\(n=0,1,2,\ldots\)）。此处质点始终不动。</li>
+        <li><strong>波腹</strong> (antinodes)：\(|\sin(kx)|=1\Rightarrow kx=(n+\tfrac{1}{2})\pi\)，即 \(x=(2n+1)\lambda/4\)。此处振幅最大，为 \(2A\)。</li>
+      </ul>
+      <p>相邻波节间距 \(\lambda/2\)，相邻波腹间距亦 \(\lambda/2\)，波节与相邻波腹间距 \(\lambda/4\)。</p>
+      <div class="key-terms">standing wave (驻波), traveling wave (行波), node (波节), antinode (波腹)</div>
+
+      <h3>5. 两端固定弦上的谐波</h3>
+      <p>长 \(L\) 的弦两端固定，边界条件 \(y(0,t)=0\)、\(y(L,t)=0\)。前者自动满足（\(\sin 0=0\)）；后者要求：</p>
+      <div class="formula">\[ \sin(kL)=0\;\Rightarrow\;k_{n}=\frac{n\pi}{L},\qquad \lambda_{n}=\frac{2\pi}{k_{n}}=\frac{2L}{n},\quad n=1,2,3,\ldots \]</div>
+      <p>由 \(v=f\lambda\) 得<strong>允许的频率</strong>（即<strong>简正模式</strong> normal modes）：</p>
+      <div class="formula">\[ \boxed{\,f_{n}=\frac{nv}{2L},\qquad \lambda_{n}=\frac{2L}{n}\,} \]</div>
+      <p>\(n=1\) 为<strong>基频</strong> (fundamental) \(f_{1}=v/(2L)\)；\(n=2,3,\ldots\) 为<strong>泛音</strong> (overtones)，频率是基频的整数倍——构成<strong>谐波系列</strong> (harmonic series)。波速 \(v=\sqrt{T/\mu}\)，\(T\) 为张力 (tension)，\(\mu\) 为线密度 (linear mass density)。</p>
+      <div class="key-terms">boundary condition (边界条件), fundamental frequency (基频), overtone (泛音), harmonic (谐波), normal mode (简正模式)</div>
+
+      <h3>6. 声管中的驻波 Standing Sound Waves in Pipes</h3>
+      <p>管中声波是<strong>纵波</strong>（空气柱的压缩与稀疏），边界条件取决于管端是开还是闭：</p>
+      <ul>
+        <li><strong>闭端</strong> (closed end)：空气无法振动，<strong>声压波节</strong>、<strong>位移波腹</strong>。</li>
+        <li><strong>开端</strong> (open end)：与大气相通，<strong>声压波腹</strong>、<strong>位移波节</strong>。</li>
+      </ul>
+      <p>对<strong>两端开口管</strong> (open-open pipe)，两端皆为位移波节，与两端固定弦同构：</p>
+      <div class="formula">\[ f_{n}=\frac{nv}{2L},\qquad n=1,2,3,\ldots\quad\text{(开-开管)} \]</div>
+      <p>对<strong>一端闭合管</strong> (closed-open pipe)，闭端为位移波节、开端为位移波腹，于是基频对应 \(L=\lambda/4\)。允许波长 \(\lambda_{n}=4L/n\)，但只有<strong>奇数 \(n\)</strong> 同时满足两端边界：</p>
+      <div class="formula">\[ \boxed{\,f_{n}=\frac{nv}{4L},\qquad n=1,3,5,\ldots\quad\text{(闭-开管，仅奇次谐波)}\,} \]</div>
+      <p>因此闭管的泛音序列是 \(f_{1},3f_{1},5f_{1},\ldots\)——这就是单簧管音色"空灵"的物理原因（缺偶次谐波）。空气柱中声速约 \(v\approx 343\,\mathrm{m/s}\)（\(20^{\circ}\!\text{C}\)）。</p>
+      <div class="key-terms">longitudinal wave (纵波), open pipe (开管), closed pipe (闭管), pressure node (声压波节), displacement node (位移波节)</div>
+
+      <h3>7. 共振 Resonance</h3>
+      <p>当周期性驱动力（如弓拉动弦、嘴唇吹管口）的频率<strong>恰好等于</strong>系统的某个简正模式频率 \(f_{n}\) 时，能量持续注入该模式而阻尼较小，振幅急剧增大——此即<strong>共振</strong>。条件：</p>
+      <div class="formula">\[ f_{\text{drive}}=f_{n}\quad\text{（某个允许模式）} \]</div>
+      <p>弦/管有一系列分立的允许频率，故共振峰呈"梳齿"状（与第 8 章单一 \(\omega_{0}\) 的振子不同）。共振是能量的选择性吸收：能量只注入匹配的模式，其余模式几乎不被激发。这就是为什么拨动一根弦会自然发出其简正模式的叠加（傅里叶分析见第 5 章）。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 3.1：两列反向行波 → 驻波</h3>
+      <p class="step"><strong>步骤 1：</strong> 取等幅反向行波 \(y_{1}=A\sin(kx-\omega t)\) 与 \(y_{2}=A\sin(kx+\omega t)\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 求和，用和差化积恒等式 \(\sin\alpha+\sin\beta=2\sin\tfrac{\alpha+\beta}{2}\cos\tfrac{\alpha-\beta}{2}\)，其中 \(\alpha=kx-\omega t\)、\(\beta=kx+\omega t\)：</p>
+      <div class="formula">\[ y=y_{1}+y_{2}=2A\sin\!\left(\tfrac{(kx-\omega t)+(kx+\omega t)}{2}\right)\cos\!\left(\tfrac{(kx-\omega t)-(kx+\omega t)}{2}\right)=2A\sin(kx)\cos(\omega t) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 空间部分 \(\sin(kx)\) 与时间部分 \(\cos(\omega t)\) 完全分离，波形<strong>不传播</strong>。能量也不能像行波那样沿 \(x\) 输运——它局域在相邻波节之间的"环" (loops) 内来回转化（动能 ↔ 势能）。</p>
+
+      <h3>推导 3.2：两端固定弦的量子化条件</h3>
+      <p class="step"><strong>步骤 1：</strong> 驻波解 \(y=2A\sin(kx)\cos(\omega t)\) 已自动满足 \(x=0\) 处 \(y(0,t)=0\)。</p>
+      <p class="step"><strong>步骤 2：</strong> \(x=L\) 处的边界条件 \(y(L,t)=0\) 要求：</p>
+      <div class="formula">\[ \sin(kL)=0\;\Longrightarrow\;kL=n\pi,\quad n=1,2,3,\ldots \]</div>
+      <p class="step"><strong>步骤 3：</strong> 由 \(k=2\pi/\lambda\) 与 \(v=f\lambda=\omega/k\) 得：</p>
+      <div class="formula">\[ \lambda_{n}=\frac{2\pi}{k_{n}}=\frac{2L}{n},\qquad f_{n}=\frac{v}{\lambda_{n}}=\frac{nv}{2L},\qquad \omega_{n}=\frac{n\pi v}{L} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 第 \(n\) 模式弦上有 \(n\) 个"环"（相邻波节之间的区域），即弦长恰为 \(n\) 个半波长：\(L=n\cdot\lambda_{n}/2\)。</p>
+
+      <h3>推导 3.3：闭-开管仅奇次谐波</h3>
+      <p class="step"><strong>步骤 1：</strong> 设管长 \(L\)，闭端 \(x=0\)（位移波节），开端 \(x=L\)（位移波腹）。通解取 \(y(x,t)=X(x)\cos(\omega t)\)，其中 \(X(x)=C\sin(kx)+D\cos(kx)\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 由 \(X(0)=0\) 得 \(D=0\)，即 \(X(x)=C\sin(kx)\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 由 \(x=L\) 为波腹要求 \(\mathrm{d}X/\mathrm{d}x|_{x=L}=0\)（位移极大）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}X}{\mathrm{d}x}=Ck\cos(kx),\qquad \cos(kL)=0\;\Longrightarrow\;kL=\frac{(2m+1)\pi}{2},\;m=0,1,2,\ldots \]</div>
+      <p class="step"><strong>步骤 4：</strong> 故 \(k_{n}=(2m+1)\pi/(2L)\)，令 \(n=2m+1\) 为奇数：</p>
+      <div class="formula">\[ \lambda_{n}=\frac{4L}{n},\qquad f_{n}=\frac{nv}{4L},\qquad n=1,3,5,\ldots \]</div>
+      <p>闭管基频 \(f_{1}=v/(4L)\)，恰好是同长开-开管基频的一半。</p>
+
+      <h3>推导 3.4：拍频公式</h3>
+      <p>取 \(y_{1}=A\cos(2\pi f_{1}t)\)、\(y_{2}=A\cos(2\pi f_{2}t)\)（同 \(x\) 处、同方向）。求和再用和差化积：</p>
+      <div class="formula">\[ y=2A\cos\!\bigl[2\pi\tfrac{f_{1}-f_{2}}{2}t\bigr]\cos(2\pi\bar{f}\,t) \]</div>
+      <p>包络 \(|2A\cos(\pi(f_{1}-f_{2})t)|\) 的<strong>过零</strong>相邻间距为 \(1/|f_{1}-f_{2}|\) 的一半，即两个相邻极大间距 \(1/|f_{1}-f_{2}|\)。所以响度起伏频率（"听到的拍")为 \(|f_{1}-f_{2}|\)，与 \(f_{1},f_{2}\) 的具体数值无关。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 两列同向波叠加</h4>
+        <p class="example-statement">弦上两列同方向传播的横波：\(y_{1}=3.0\sin(2.5x-120t)\,\mathrm{mm}\)，\(y_{2}=3.0\sin(2.5x-120t+\pi/2)\,\mathrm{mm}\)（\(x\) 以 \(\mathrm{m}\) 计，\(t\) 以 \(\mathrm{s}\) 计）。求合波的振幅与初相位，写出合波方程，并求波速与波长。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 两波同频同向，相位差 \(\varphi=\pi/2\)。同振幅两波叠加结果 \(y=2A\cos(\varphi/2)\sin(kx-\omega t+\varphi/2)\)。</p>
+          <p class="step">代入 \(A=3.0\,\mathrm{mm}\)、\(\varphi=\pi/2\)：</p>
+          <div class="formula">\[ A_{\text{合}}=2A\cos(\varphi/2)=6.0\cos(\pi/4)=6.0\times 0.707=4.24\,\mathrm{mm} \]</div>
+          <div class="formula">\[ \varphi_{\text{合}}=\varphi/2=\pi/4 \]</div>
+          <p class="step">故合波方程：</p>
+          <div class="formula">\[ y=4.24\sin(2.5x-120t+\pi/4)\,\mathrm{mm} \]</div>
+          <p class="step">波速 \(v=\omega/k=120/2.5=48\,\mathrm{m/s}\)；波长 \(\lambda=2\pi/k=2\pi/2.5=2.51\,\mathrm{m}\)。校验：因相位差为 \(\pi/2\)（既非完全同相也非完全反相），合振幅 \(4.24\,\mathrm{mm}\) 介于 \(0\) 与 \(6\,\mathrm{mm}\) 之间，合理。</p>
+          <p><span class="ans">\(A_{\text{合}}=4.24\,\mathrm{mm},\;\varphi_{\text{合}}=\pi/4;\;v=48\,\mathrm{m/s},\;\lambda=2.51\,\mathrm{m}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 拍频</h4>
+        <p class="example-statement">两支音叉，标称频率 \(f_{1}=440\,\mathrm{Hz}\)（标准 A4）与 \(f_{2}=444\,\mathrm{Hz}\)。同时敲击，求拍频、拍周期与合成声波的平均频率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 拍频：</p>
+          <div class="formula">\[ f_{\text{beat}}=|f_{1}-f_{2}|=|440-444|=4\,\mathrm{Hz} \]</div>
+          <p class="step">拍周期：</p>
+          <div class="formula">\[ T_{\text{beat}}=\frac{1}{f_{\text{beat}}}=\frac{1}{4}=0.250\,\mathrm{s} \]</div>
+          <p class="step">平均频率 \(\bar{f}=(f_{1}+f_{2})/2=442\,\mathrm{Hz}\)——人耳听到的"中央音高"。在 \(0.250\,\mathrm{s}\) 内人耳听到 4 次"强—弱—强"的响度起伏。</p>
+          <p class="step">调音含义：若把 \(f_{2}\) 缓慢调向 \(440\,\mathrm{Hz}\)，拍频减小；拍消失即对准 \(440\,\mathrm{Hz}\)。这就是钢琴调律师用拍的方法。</p>
+          <p><span class="ans">\(f_{\text{beat}}=4\,\mathrm{Hz},\;T_{\text{beat}}=0.250\,\mathrm{s},\;\bar{f}=442\,\mathrm{Hz}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 弦上的允许谐波</h4>
+        <p class="example-statement">长 \(L=0.60\,\mathrm{m}\) 的弦，线密度 \(\mu=4.0\times 10^{-3}\,\mathrm{kg/m}\)，张力 \(T=230\,\mathrm{N}\)。求波速、基频与第一、二、三阶泛音的频率与波长，并写出第 \(n=3\) 模式弦上波节的位置。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 波速：</p>
+          <div class="formula">\[ v=\sqrt{\frac{T}{\mu}}=\sqrt{\frac{230}{4.0\times 10^{-3}}}=\sqrt{5.75\times 10^{4}}=240\,\mathrm{m/s} \]</div>
+          <p class="step">基频 \(f_{1}=v/(2L)=240/(1.20)=200\,\mathrm{Hz}\)；波长 \(\lambda_{1}=2L=1.20\,\mathrm{m}\)。</p>
+          <p class="step">由 \(f_{n}=nv/(2L)=n\cdot 200\,\mathrm{Hz}\)、\(\lambda_{n}=2L/n\) 列出：</p>
+          <div class="formula">\[ \begin{array}{c|c|c}n & f_{n}\,(\mathrm{Hz}) & \lambda_{n}\,(\mathrm{m})\\ \hline 1 & 200 & 1.20\\ 2 & 400 & 0.60\\ 3 & 600 & 0.40\end{array} \]</div>
+          <p class="step">第 \(n=3\) 模式弦上有 \(n+1=4\) 个波节（含两端），位置：</p>
+          <div class="formula">\[ x_{p}=\frac{pL}{n}=\frac{p\cdot 0.60}{3}=0,\;0.20,\;0.40,\;0.60\,\mathrm{m}\quad(p=0,1,2,3) \]</div>
+          <p class="step">弦上有 3 个"环"，每环含 1 个波腹；波腹位于 \(x=(p+\tfrac{1}{2})L/n=0.10,0.30,0.50\,\mathrm{m}\)。</p>
+          <p><span class="ans">\(v=240\,\mathrm{m/s};\;f_{1}=200\,\mathrm{Hz},f_{2}=400\,\mathrm{Hz},f_{3}=600\,\mathrm{Hz};\;\lambda_{1}=1.20\,\mathrm{m},\lambda_{2}=0.60\,\mathrm{m},\lambda_{3}=0.40\,\mathrm{m}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 开管 vs 闭管</h4>
+        <p class="example-statement">两支长 \(L=0.80\,\mathrm{m}\) 的管，一为两端开口（开-开管），一为一端闭合（闭-开管）。空气声速 \(v=343\,\mathrm{m/s}\)。分别求前三个允许频率，并比较基频。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（开-开管）：</strong> \(f_{n}=nv/(2L)\)，\(n=1,2,3,\ldots\)：</p>
+          <div class="formula">\[ f_{1}=\frac{343}{1.60}=214\,\mathrm{Hz},\quad f_{2}=429\,\mathrm{Hz},\quad f_{3}=643\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>解（闭-开管）：</strong> \(f_{n}=nv/(4L)\)，仅奇 \(n\)：</p>
+          <div class="formula">\[ f_{1}=\frac{343}{3.20}=107\,\mathrm{Hz},\quad f_{3}=321\,\mathrm{Hz},\quad f_{5}=536\,\mathrm{Hz} \]</div>
+          <p class="step">比较：闭管基频（\(107\,\mathrm{Hz}\)）恰为同长开管基频（\(214\,\mathrm{Hz}\)）的<strong>一半</strong>——因为闭管基频对应 \(L=\lambda/4\)，开管基频对应 \(L=\lambda/2\)。闭管只发奇次谐波（\(107,321,536,\ldots\,\mathrm{Hz}\)），缺少 \(214\,\mathrm{Hz},429\,\mathrm{Hz}\) 等；这就是单簧管、长笛的不同音色来源。</p>
+          <p><span class="ans">开-开管：\(214,429,643\,\mathrm{Hz}\)；闭-开管：\(107,321,536\,\mathrm{Hz}\)；闭管基频 = 开管基频 / 2</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 驱动弦的共振条件</h4>
+        <p class="example-statement">长 \(L=0.50\,\mathrm{m}\)、\(\mu=5.0\times 10^{-3}\,\mathrm{kg/m}\) 的弦，张力 \(T=80\,\mathrm{N}\)，一端接电磁驱动器。求 (a) 弦的简正模式频率序列；(b) 若驱动频率 \(f_{\text{drive}}=253\,\mathrm{Hz}\)，弦是否发生共振？若发生，对应哪个模式？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 波速 \(v=\sqrt{T/\mu}=\sqrt{80/(5.0\times 10^{-3})}=\sqrt{1.6\times 10^{4}}=126.5\,\mathrm{m/s}\)。</p>
+          <p class="step">(a) 简正模式频率 \(f_{n}=nv/(2L)=n\cdot 126.5/1.0\)：</p>
+          <div class="formula">\[ f_{n}=126.5\,n\,\mathrm{Hz}\;\Rightarrow\;f_{1}=126.5\,\mathrm{Hz},\;f_{2}=253\,\mathrm{Hz},\;f_{3}=379.5\,\mathrm{Hz},\ldots \]</div>
+          <p class="step">(b) 比较 \(f_{\text{drive}}=253\,\mathrm{Hz}\) 与模式序列：\(253\,\mathrm{Hz}\approx f_{2}\)。两者差异仅来自 \(v\) 的舍入（精确值 \(v=\sqrt{16000}=126.491\ldots\)，\(f_{2}=2\times 126.491=252.98\,\mathrm{Hz}\)，与 \(253\,\mathrm{Hz}\) 仅差 \(0.02\,\mathrm{Hz}\)）。</p>
+          <p class="step">故发生共振，激发的是<strong>第二谐波（\(n=2\)）</strong>模式——弦上出现两个"环"，中点为波节，\(L/4\) 与 \(3L/4\) 处为波腹。若驱动频率介于两模式之间（如 \(190\,\mathrm{Hz}\)），则无匹配模式，弦几乎不振。</p>
+          <p><span class="ans">\((a)\;f_{n}=126.5\,n\,\mathrm{Hz};\;(b)\;\)是，\(f_{\text{drive}}\approx f_{2}=253\,\mathrm{Hz}\)，共振于 \(n=2\) 模式</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误以为闭-开管也含偶次谐波。</strong>闭-开管只允许<strong>奇次</strong>谐波 \(f_{n}=nv/(4L)\)（\(n=1,3,5,\ldots\)）。闭端必须为位移波节、开端必须为位移波腹，偶次 \(n\) 不能同时满足这两个条件。基频也并非 \(v/(2L)\) 而是 \(v/(4L)\)。</li>
+        <li><strong>混淆波节与波腹。</strong>波节 (node) 是<strong>振幅为零</strong>处，质点始终不动；波腹 (antinode) 是<strong>振幅最大</strong>处。注意弦上波节对应声管中的<strong>位移</strong>波节——但<strong>声压</strong>分布恰好相反（声压波腹恰为位移波节）。开管的"开端"是位移波节、声压波腹，这一相反关系是高频错点。</li>
+        <li><strong>误以为驻波"传输能量"。</strong>行波携带能量沿 \(x\) 传播；理想驻波是两列等幅反向行波之和，<strong>净能流为零</strong>。能量局域在相邻波节之间的"环"内，在动能（质点过平衡位置时）与势能（质点达最大位移时）之间来回转化。只在驻波被"打破"（如辐射到空气中）时才有净能流。</li>
+        <li><strong>混淆"拍"与"干涉"。</strong>干涉通常指两列<strong>同频</strong>波叠加，结果在空间形成稳定强弱分布（与时间无关的条纹）；拍是两列<strong>频率略不同</strong>的波在<strong>同一地点</strong>叠加，结果强弱随时间缓慢起伏。两者数学都是正弦求和，但物理图像不同。</li>
+        <li><strong>用 \(\Delta L=m\lambda\) 时忘掉半波损失。</strong>当波从一种介质反射并发生相位反转（如弦上波从固定端反射、声波从闭端反射）时，反射波相当于多走了 \(\lambda/2\) 的路程，有效路径差需补正 \(\lambda/2\)。薄膜干涉同样要考虑两个反射面是否有半波损失之差（第 9 章）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 同向两波叠加：\(y_{1}=2.0\sin(3.0x-90t)\,\mathrm{cm}\)，\(y_{2}=2.0\sin(3.0x-90t+2\pi/3)\,\mathrm{cm}\)。求合波振幅与相位，并写出合波方程。</summary>
+        <div class="hint">用 \(A_{\text{合}}=2A\cos(\varphi/2)\)、\(\varphi_{\text{合}}=\varphi/2\)。</div>
+        <div class="solution">\(A_{\text{合}}=2(2.0)\cos(\pi/3)=4.0\times 0.5=2.0\,\mathrm{cm}\)；\(\varphi_{\text{合}}=\pi/3\)。<br>合波：\(y=2.0\sin(3.0x-90t+\pi/3)\,\mathrm{cm}\)。<br>注：相位差 \(120^{\circ}\) 使合振幅恰与单波振幅相等——既不全加（\(2A\)）也不全消（\(0\)）。<br><span class="ans">\(A_{\text{合}}=2.0\,\mathrm{cm},\;\varphi_{\text{合}}=\pi/3\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 拍频与未知频率：已知音叉 A 为 \(f_{A}=523\,\mathrm{Hz}\)（C5），与未知音叉 B 同时发声听到 \(3\,\mathrm{Hz}\) 的拍。在 B 上粘一小块橡皮泥后拍频升为 \(4\,\mathrm{Hz}\)。求 B 的原频率。</summary>
+        <div class="hint">拍频给出 \(|f_{A}-f_{B}|\) 两种可能；粘橡皮泥降低 \(f_{B}\)，看拍频升还是降即可定符号。</div>
+        <div class="solution">拍频 \(3\,\mathrm{Hz}\)：\(f_{B}=523\pm 3=520\) 或 \(526\,\mathrm{Hz}\)。<br>粘橡皮泥使 \(f_{B}\) 减小。若 \(f_{B}=526\,\mathrm{Hz}\)，减小后 \(|523-f_{B}|\) 增大 → 拍频升，符合 \(3\to 4\,\mathrm{Hz}\)。<br>若 \(f_{B}=520\,\mathrm{Hz}\)，减小后 \(|523-f_{B}|\) 减小 → 拍频降，不符。<br><span class="ans">\(f_{B}=526\,\mathrm{Hz}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 弦上谐波：\(L=0.80\,\mathrm{m}\)，\(T=120\,\mathrm{N}\)，\(\mu=3.0\times 10^{-3}\,\mathrm{kg/m}\)。求前三个允许频率。若拨弦时同时激发 \(n=1\) 与 \(n=2\)，弦上波节总数（含两端）至少为多少？</summary>
+        <div class="hint">\(v=\sqrt{T/\mu}\)，\(f_{n}=nv/(2L)\)。</div>
+        <div class="solution">\(v=\sqrt{120/(3.0\times 10^{-3})}=\sqrt{4.0\times 10^{4}}=200\,\mathrm{m/s}\)。<br>\(f_{1}=200/(1.60)=125\,\mathrm{Hz}\)，\(f_{2}=250\,\mathrm{Hz}\)，\(f_{3}=375\,\mathrm{Hz}\)。<br>\(n=1\) 模式波节仅在两端（\(0,L\)），共 2 个；\(n=2\) 模式波节在 \(0,L/2,L\)，共 3 个。两模式叠加为复合波形，<strong>纯驻波意义的"波节"</strong>对所有时刻不动者只剩两端 2 个（其他点的运动不会同时为零）。<br><span class="ans">\(f_{1}=125\,\mathrm{Hz},\,f_{2}=250\,\mathrm{Hz},\,f_{3}=375\,\mathrm{Hz}\)；公共波节 2 个（两端）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 闭管长度：要制作一根基频为 \(f_{1}=256\,\mathrm{Hz}\)（中音 C）的闭-开管（如单簧管的简化模型），空气声速 \(v=343\,\mathrm{m/s}\)，应取管长多少？此管第一泛音频率是多少？</summary>
+        <div class="hint">闭-开管 \(f_{1}=v/(4L)\)，第一泛音是 \(f_{3}=3f_{1}\)（无偶次）。</div>
+        <div class="solution">由 \(f_{1}=v/(4L)\) 得 \(L=v/(4f_{1})=343/(4\times 256)=343/1024=0.335\,\mathrm{m}\)。<br>闭管无 \(f_{2}\)，第一泛音是 \(f_{3}=3f_{1}=3\times 256=768\,\mathrm{Hz}\)。<br>对比：同长开-开管基频会是 \(v/(2L)=343/0.670=512\,\mathrm{Hz}\)，比闭管高一倍。<br><span class="ans">\(L=0.335\,\mathrm{m}\)；第一泛音 \(f_{3}=768\,\mathrm{Hz}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 路径差干涉：两个同相相干扬声器 \(S_{1},S_{2}\)，频率 \(f=680\,\mathrm{Hz}\)，声速 \(v=340\,\mathrm{m/s}\)。一听者位于 \(S_{1}\) 正前方 \(3.0\,\mathrm{m}\) 处，距 \(S_{2}\) 为 \(5.0\,\mathrm{m}\)。判断听者位置是相长还是相消干涉，并求路径差。</summary>
+        <div class="hint">先求 \(\lambda=v/f\)，再看 \(\Delta L/\lambda\) 是整数（相长）还是半整数（相消）。</div>
+        <div class="solution">\(\lambda=v/f=340/680=0.50\,\mathrm{m}\)。<br>\(\Delta L=|r_{2}-r_{1}|=|5.0-3.0|=2.0\,\mathrm{m}\)。<br>\(\Delta L/\lambda=2.0/0.50=4\)（整数 \(m=4\)），故为<strong>相长干涉</strong>，听者位置声音加强。<br>若听者向一侧移动使 \(\Delta L=2.25\,\mathrm{m}\)（\(m+\tfrac{1}{2}=4.5\) 个 \(\lambda\)），将变为相消干涉（静点）。<br><span class="ans">\(\Delta L=2.0\,\mathrm{m}=4\lambda\)，相长干涉</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">两端固定弦上的驻波 (standing wave on a string fixed at both ends)。选择谐波次数 \(n\)，观察驻波 \(y=2A\sin(n\pi x/L)\cos(\omega t)\) 的实时演化。绿点标出<strong>波节</strong>（始终不动），绿圈标出<strong>波腹</strong>位置（其上的蓝点显示该位置的实时位移）。虚线给出 \(\pm 2A\sin(kx)\) 包络。打开"显示分量行波"开关可看到两列反向行波 \(A\sin(kx-\omega t)\) 与 \(A\sin(kx+\omega t)\)（红、紫虚线）——它们的和恰为驻波。下方实时显示 \(f_{n}=nv/(2L)\)（取 \(v=200\,\mathrm{m/s},\;L=1.0\,\mathrm{m}\) 作为典型弦参数）。注：为便于观察，动画频率已被人为放慢；物理频率 \(f_{n}\) 以读数为准。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="720" height="400"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height; // 720 x 400
+
+          // Display-only physical parameters (typical string).
+          var V_PHYS = 200;   // wave speed (m/s)
+          var L_PHYS = 1.0;   // string length (m)
+
+          // Visualization parameters (decoupled from physical f_n for clarity).
+          var A_PEAK = 70;            // peak standing-wave amplitude in pixels (= 2A)
+          var OMEGA_VIS = Math.PI;    // rad/s; T_vis = 2 s (slow enough to see)
+
+          // String drawing region.
+          var X_LEFT = 60;
+          var X_RIGHT = W - 60;       // 660
+          var L_PX = X_RIGHT - X_LEFT;// 600
+          var Y_CENTER = H / 2 + 15;  // 215, leave room for title
+
+          var params = {
+            n: 2,
+            showComponents: false,
+          };
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var n = params.n;
+              var t = s.t;
+              var coswt = Math.cos(OMEGA_VIS * t);
+
+              // Title
+              PS.drawText(ctx, '两端固定弦上的驻波 Standing Wave on a String Fixed at Both Ends',
+                16, 24, { font: '14px system-ui', color: PS.colors.text });
+
+              // Equilibrium axis (dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(X_LEFT, Y_CENTER);
+              ctx.lineTo(X_RIGHT, Y_CENTER);
+              ctx.stroke();
+              ctx.restore();
+
+              // Envelope ±A_PEAK · |sin(nπ x_rel)| (faint)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.30;
+              ctx.lineWidth = 1.2;
+              for (var sign = -1; sign <= 1; sign += 2) {
+                ctx.beginPath();
+                for (var i = 0; i <= L_PX; i++) {
+                  var xRel = i / L_PX;
+                  var envY = sign * A_PEAK * Math.sin(n * Math.PI * xRel);
+                  var px = X_LEFT + i;
+                  var py = Y_CENTER - envY;
+                  if (i === 0) ctx.moveTo(px, py);
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // Optional: two counter-propagating component waves (dashed)
+              if (params.showComponents) {
+                var Acomp = A_PEAK / 2; // each component has amplitude A; standing wave peak = 2A
+                // Right-going: y1 = A sin(k x_rel' − ω t), with k x_rel' = nπ x_rel
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                ctx.setLineDash([6, 3]);
+                // Right-going (red)
+                ctx.strokeStyle = PS.colors.accent;
+                ctx.globalAlpha = 0.85;
+                ctx.beginPath();
+                for (var i = 0; i <= L_PX; i++) {
+                  var xRel = i / L_PX;
+                  var phase = n * Math.PI * xRel;
+                  var y1 = Acomp * Math.sin(phase - OMEGA_VIS * t);
+                  var px = X_LEFT + i;
+                  var py = Y_CENTER - y1;
+                  if (i === 0) ctx.moveTo(px, py);
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                // Left-going (purple)
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.beginPath();
+                for (var i = 0; i <= L_PX; i++) {
+                  var xRel = i / L_PX;
+                  var phase = n * Math.PI * xRel;
+                  var y2 = Acomp * Math.sin(phase + OMEGA_VIS * t);
+                  var px = X_LEFT + i;
+                  var py = Y_CENTER - y2;
+                  if (i === 0) ctx.moveTo(px, py);
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // Standing wave (solid bold)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              for (var i = 0; i <= L_PX; i++) {
+                var xRel = i / L_PX;
+                var y = A_PEAK * Math.sin(n * Math.PI * xRel) * coswt;
+                var px = X_LEFT + i;
+                var py = Y_CENTER - y;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Fixed-end walls (hatched)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(X_LEFT, Y_CENTER - 90);
+              ctx.lineTo(X_LEFT, Y_CENTER + 90);
+              ctx.moveTo(X_RIGHT, Y_CENTER - 90);
+              ctx.lineTo(X_RIGHT, Y_CENTER + 90);
+              ctx.stroke();
+              ctx.lineWidth = 1;
+              for (var hy = -90; hy <= 90; hy += 9) {
+                ctx.beginPath();
+                ctx.moveTo(X_LEFT - 9, Y_CENTER + hy + 9);
+                ctx.lineTo(X_LEFT, Y_CENTER + hy);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(X_RIGHT + 9, Y_CENTER + hy + 9);
+                ctx.lineTo(X_RIGHT, Y_CENTER + hy);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // Nodes: at x_rel = p/n for p = 0,...,n  (filled red dots on axis)
+              for (var p = 0; p <= n; p++) {
+                var xRel = p / n;
+                var px = X_LEFT + xRel * L_PX;
+                PS.drawCircle(ctx, px, Y_CENTER, 5.5, {
+                  fill: PS.colors.accent,
+                  stroke: '#fff', lineWidth: 1.5,
+                });
+              }
+
+              // Antinodes: at x_rel = (p+0.5)/n for p = 0,...,n-1 (open green ring + live blue dot)
+              for (var p = 0; p < n; p++) {
+                var xRel = (p + 0.5) / n;
+                var px = X_LEFT + xRel * L_PX;
+                PS.drawCircle(ctx, px, Y_CENTER, 5.5, {
+                  stroke: PS.colors.accent2, lineWidth: 2,
+                });
+                var yNow = A_PEAK * Math.sin(n * Math.PI * xRel) * coswt;
+                PS.drawCircle(ctx, px, Y_CENTER - yNow, 3.5, {
+                  fill: PS.colors.primary,
+                });
+              }
+
+              // Length label
+              PS.drawText(ctx, 'L = ' + L_PHYS.toFixed(1) + ' m',
+                (X_LEFT + X_RIGHT) / 2, Y_CENTER + 108, {
+                  font: '12px system-ui', color: PS.colors.text, align: 'center',
+                });
+
+              // Live readouts
+              var f1 = V_PHYS / (2 * L_PHYS);
+              var fn = n * f1;
+              var lamN = 2 * L_PHYS / n;
+              PS.drawText(ctx,
+                'n = ' + n + '    →    f_' + n + ' = n·v/(2L) = ' + fn.toFixed(0) +
+                ' Hz    (基频 f₁ = ' + f1.toFixed(0) + ' Hz)',
+                16, H - 28, { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'λ_' + n + ' = 2L/n = ' + lamN.toFixed(2) + ' m    ' +
+                '(v = ' + V_PHYS + ' m/s,  L = ' + L_PHYS.toFixed(1) + ' m)    ' +
+                '节点 ' + (n + 1) + ' 个 · 波腹 ' + n + ' 个',
+                16, H - 12, { font: '12px system-ui', color: PS.colors.text });
+
+              // Legend (top-right)
+              var legX = W - 220;
+              var legY = 30;
+              PS.drawCircle(ctx, legX + 6, legY - 4, 4, { fill: PS.colors.accent });
+              PS.drawText(ctx, '节点 node (不动)', legX + 18, legY, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawCircle(ctx, legX + 6, legY + 12, 4, { stroke: PS.colors.accent2, lineWidth: 1.5 });
+              PS.drawText(ctx, '波腹 antinode', legX + 18, legY + 16, { font: '11px system-ui', color: PS.colors.text });
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(legX, legY + 28); ctx.lineTo(legX + 12, legY + 28); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '合驻波 standing', legX + 18, legY + 32, { font: '11px system-ui', color: PS.colors.text });
+              if (params.showComponents) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent; ctx.lineWidth = 1.6; ctx.setLineDash([4, 2]);
+                ctx.beginPath(); ctx.moveTo(legX, legY + 44); ctx.lineTo(legX + 12, legY + 44); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, '反向行波 components', legX + 18, legY + 48, { font: '11px system-ui', color: PS.colors.text });
+              }
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'n', label: '谐波次数 n', min: 1, max: 5, step: 1, value: 2 },
+            { type: 'toggle', key: 'showComponents', label: '显示分量行波 show counter-propagating components', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('n', function (v) { params.n = v; });
+          ctl.on('showComponents', function (v) { params.showComponents = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>叠加原理</strong>：线性介质中合位移 = 各波位移之和。同频同向两波叠加得振幅 \(2A\cos(\varphi/2)\)、相移 \(\varphi/2\)。</li>
+        <li><strong>干涉条件</strong>（路径差）：相长 \(\Delta L=m\lambda\)；相消 \(\Delta L=(m+\tfrac{1}{2})\lambda\)。</li>
+        <li><strong>拍</strong>：两列频率相近的波叠加，包络振荡频率 \(|f_{1}-f_{2}|/2\)，<strong>拍频（响度起伏）\(f_{\text{beat}}=|f_{1}-f_{2}|\)</strong>。</li>
+        <li><strong>驻波</strong>：两列等幅反向行波之和 \(y=2A\sin(kx)\cos(\omega t)\)。波节 \(kx=n\pi\)（\(x=n\lambda/2\)）；波腹 \(kx=(n+\tfrac{1}{2})\pi\)。能量局域，<strong>净能流为零</strong>。</li>
+        <li><strong>两端固定弦</strong>：\(k_{n}=n\pi/L\)，\(f_{n}=nv/(2L)\)，\(\lambda_{n}=2L/n\)，\(n=1,2,3,\ldots\)。波速 \(v=\sqrt{T/\mu}\)。</li>
+        <li><strong>声管</strong>：开-开管 \(f_{n}=nv/2L\)（全部谐波）；闭-开管 \(f_{n}=nv/(4L)\)，仅奇 \(n\)（基频为同长开管的一半）。</li>
+        <li><strong>共振</strong>：驱动力频率等于某简正模式频率时能量选择性注入，振幅剧增。弦/管的响应呈"梳齿"状分立共振峰。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,\Delta L=m\lambda\;(\text{相长}),\quad \Delta L=(m+\tfrac{1}{2})\lambda\;(\text{相消});\quad f_{\text{beat}}=|f_{1}-f_{2}|\;} \]</div>
+      <div class="formula">\[ \boxed{\,y=2A\sin(kx)\cos(\omega t);\quad f_{n}=\frac{nv}{2L}\;(\text{弦/开-开管});\quad f_{n}=\frac{nv}{4L}\;(\text{闭-开管},\,n=1,3,5,\ldots)\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

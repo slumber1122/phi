@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 偏振 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第11章 · 光学 Optics</p>
+      <h1>偏振 <span class="en-title">Polarization</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>解释为什么<strong>偏振</strong> (polarization) 是<strong>横波</strong> (transverse wave) 独有的性质——纵波的振荡方向与传播方向一致，无偏振可言；据此理解为何声波无偏振而光波有。</li>
+        <li>区分<strong>未偏振光</strong> (unpolarized light)、<strong>线偏振</strong> (linear)、<strong>圆偏振</strong> (circular) 与<strong>椭圆偏振</strong> (elliptical) 的电场矢量端点轨迹，并指出它们由两个正交分量振幅比与相位差决定。</li>
+        <li>对线偏振光通过检偏器 (analyzer) 的情形，由电场分解导出<strong>马吕斯定律</strong> \(I=I_{0}\cos^{2}\theta\)；对未偏振光通过起偏器得到 \(I_{0}=I_{\text{in}}/2\)。</li>
+        <li>解释<strong>三偏振片悖论</strong> (three-polarizer paradox)：两正交偏振片透射为零，但中间插入一片 \(45^{\circ}\) 偏振片后透射恢复为 \(I_{\text{in}}/8\)。</li>
+        <li>由反射光线与折射光线正交的几何条件导出<strong>布儒斯特角</strong> \(\tan\theta_{B}=n_{2}/n_{1}\)，并说明此时反射光为完全的<strong>s 偏振</strong>。</li>
+        <li>用<strong>瑞利散射</strong> \(I_{\text{scat}}\propto 1/\lambda^{4}\) 解释蓝天，并预测天光在与太阳成 \(90^{\circ}\) 方向上<strong>完全线偏振</strong>。</li>
+        <li>用<strong>双折射</strong> (birefringence) 解释波片：四分之一波片 (λ/4) 产生 \(\pi/2\) 相位差将线偏振变为圆偏振；半波片 (λ/2) 将线偏振方向旋转 \(2\theta\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 偏振是横波的固有性质 Polarization Is Unique to Transverse Waves</h3>
+      <p>电磁 (EM) 波中电场 \(\vec{E}\) 与磁场 \(\vec{B}\) 都<strong>垂直于</strong>传播方向 \(\hat{k}\)，且彼此垂直——这是<strong>横波</strong> (transverse wave)。偏振 (polarization) 描述的就是 \(\vec{E}\) 振动方向（<strong>约定以电场方向为偏振方向</strong>，因为视觉与感光器件主要响应电场）。</p>
+      <p>对一个沿 \(+z\) 传播的波，\(\vec{E}\) 只能有 \(E_{x}\)、\(E_{y}\) 分量——其 (x, y) 平面内端点的轨迹决定偏振态。共有三类典型偏振：</p>
+      <ul>
+        <li><strong>线偏振</strong> (linearly polarized)：\(\vec{E}\) 沿固定方向振荡，端点轨迹为一直线。例如 \(\vec{E}=E_{0}\cos(kz-\omega t)\,\hat{\imath}\)。</li>
+        <li><strong>圆偏振</strong> (circularly polarized)：两正交分量振幅相等、相位差 \(\pm\pi/2\)，端点轨迹为圆。例如 \(\vec{E}=E_{0}[\cos(kz-\omega t)\,\hat{\imath}\pm\sin(kz-\omega t)\,\hat{\jmath}]\)，\(+\) 号为右旋 (right-circular)、\(-\) 号为左旋 (left-circular)。</li>
+        <li><strong>椭圆偏振</strong> (elliptically polarized)：最一般的情形，两分量振幅或相位差任意，端点轨迹为椭圆。线偏振与圆偏振是椭圆偏振的两个极端。</li>
+      </ul>
+      <p>普通光源（太阳、灯泡）由大量原子独立发光组成，各原子的 \(\vec{E}\) 方向随机分布，宏观上<strong>无偏振倾向</strong>——此即<strong>未偏振光</strong> (unpolarized light)。</p>
+      <div class="key-terms">transverse wave (横波), polarization (偏振), linear polarization (线偏振), circular polarization (圆偏振), elliptical polarization (椭圆偏振), unpolarized light (未偏振光)</div>
+
+      <h3>2. 产生偏振光的方法 Ways to Produce Polarized Light</h3>
+      <p>从未偏振光获得线偏振光，主要有四种物理机制：</p>
+      <ul>
+        <li><strong>偏振片</strong> (polaroid / polarizer)：长链状聚合物分子（如 H 片）强烈吸收平行于链方向的 \(\vec{E}\)，只让垂直分量透过。透光方向称为<strong>透光轴</strong> (transmission axis)。</li>
+        <li><strong>反射</strong> (reflection)：自然光在介质表面反射时，垂直于入射面的 s 分量比平行于入射面的 p 分量反射率更高，反射光部分偏振。在<strong>布儒斯特角</strong> (Brewster's angle) 处反射光为完全 s 偏振。</li>
+        <li><strong>散射</strong> (scattering)：未偏振光被分子散射后，垂直于原光束的方向上的散射光是线偏振的。</li>
+        <li><strong>双折射</strong> (birefringence)：方解石等晶体对 o 光 (ordinary) 与 e 光 (extraordinary) 有不同折射率，可将任意光分成两束正交线偏振光。</li>
+      </ul>
+      <div class="key-terms">polarizer (起偏器), analyzer (检偏器), transmission axis (透光轴), plane of incidence (入射面), s-polarization (s 偏振), p-polarization (p 偏振)</div>
+
+      <h3>3. 马吕斯定律 Malus's Law</h3>
+      <p>设线偏振光振幅 \(E_{0}\)、强度 \(I_{0}\) 沿起偏器轴方向，射入透光轴与起偏器轴夹角 \(\theta\) 的检偏器。将 \(E_{0}\) 分解：</p>
+      <div class="formula">\[ E_{\parallel}=E_{0}\cos\theta\;(\text{平行于检偏器轴, 透过}),\qquad E_{\perp}=E_{0}\sin\theta\;(\text{垂直, 被吸收}) \]</div>
+      <p>光强正比于振幅平方，故<strong>透射光强</strong> (transmitted intensity)：</p>
+      <div class="formula">\[ \boxed{\,I=I_{0}\cos^{2}\theta\,}\qquad\text{(马吕斯定律 Malus's Law)} \]</div>
+      <p><strong>未偏振光通过偏振片</strong>：未偏振光的 \(\vec{E}\) 方向均匀分布于 \(0\le\theta<2\pi\)，每个分量透过率为 \(\cos^{2}\theta\)，平均值 \(\langle\cos^{2}\theta\rangle=1/2\)：</p>
+      <div class="formula">\[ \boxed{\,I_{0}=\tfrac{1}{2}I_{\text{in}}\,}\qquad\text{(未偏振光过一片理想偏振片)} \]</div>
+      <div class="key-terms">Malus's law (马吕斯定律), transmitted intensity (透射光强)</div>
+
+      <h3>4. 三偏振片"悖论" The Three-Polarizer Paradox</h3>
+      <p>两片<strong>正交</strong> (crossed) 偏振片（轴相互垂直）按马吕斯定律 \(I=I_{0}\cos^{2}90^{\circ}=0\)，<strong>完全不透光</strong>。但若在中间插入第三片，使其轴与第一片成 \(45^{\circ}\)：</p>
+      <div class="formula">\[ I_{1}=\tfrac{1}{2}I_{\text{in}},\quad I_{2}=I_{1}\cos^{2}45^{\circ}=\tfrac{1}{4}I_{\text{in}},\quad I_{3}=I_{2}\cos^{2}45^{\circ}=\tfrac{1}{8}I_{\text{in}} \]</div>
+      <p>插入"挡光"的偏振片后反而有光透射——这正说明偏振片并非简单的"过滤器"，它<strong>对透过分量重新投影</strong>，每次投影都改变偏振态。这是量子测量概念的宏观对应：每一次"测量"（偏振片）都改变系统状态。</p>
+      <div class="key-terms">crossed polarizers (正交偏振片), three-polarizer paradox (三偏振片悖论)</div>
+
+      <h3>5. 布儒斯特角与反射起偏 Brewster's Angle</h3>
+      <p>未偏振光以特殊角 \(\theta_{B}\) 入射电介质表面时，<strong>反射光为完全线偏振</strong>（垂直于入射面，s 偏振）。此角满足：</p>
+      <div class="formula">\[ \boxed{\,\tan\theta_{B}=\frac{n_{2}}{n_{1}}\,}\qquad\text{(布儒斯特定律 Brewster's law)} \]</div>
+      <p>物理图像：在 \(\theta_{B}\) 处，<strong>反射光线与折射光线恰好正交</strong> (\(\theta_{B}+\theta_{r}=90^{\circ}\))。入射光中的 p 分量驱动介质中电子沿折射光方向振动，而振动电荷沿自身振动方向不能辐射——故 p 分量无反射，只有 s 分量被反射。</p>
+      <div class="key-terms">Brewster's angle (布儒斯特角), angle of incidence (入射角), angle of refraction (折射角)</div>
+
+      <h3>6. 散射起偏与蓝天 Polarization by Scattering</h3>
+      <p>入射未偏振光的 \(\vec{E}\) 驱动空气分子中的电子振动，振动的电子再向各方向辐射（偶极辐射）。偶极辐射强度沿偶极矩方向的分布为 \(I\propto\sin^{2}\psi\)（\(\psi\) 为观察方向与偶极振动的夹角）——<strong>沿偶极振动方向无辐射</strong>。</p>
+      <p>结果：在与入射方向成 \(90^{\circ}\) 方向观察到的散射光是<strong>完全线偏振</strong>的（电场垂直于"入射—散射"平面）。同时，瑞利 (Rayleigh) 给出散射强度随波长变化：</p>
+      <div class="formula">\[ I_{\text{scat}}\propto\frac{1}{\lambda^{4}} \]</div>
+      <p>蓝光 (\(\sim 450\,\mathrm{nm}\)) 的散射约为红光 (\(\sim 650\,\mathrm{nm}\)) 的 \((650/450)^{4}\approx 4.4\) 倍——这就是<strong>天空是蓝色的</strong>、<strong>日落是红色的</strong>的物理原因。蜜蜂与北极燕鸥等动物利用天光的偏振模式导航。</p>
+      <div class="key-terms">Rayleigh scattering (瑞利散射), dipole radiation (偶极辐射), polarization by scattering (散射起偏)</div>
+
+      <h3>7. 双折射与波片 Birefringence and Wave Plates</h3>
+      <p><strong>双折射晶体</strong> (birefringent crystal，如方解石 \(\mathrm{CaCO_{3}}\)、石英) 对两正交偏振方向有不同折射率 \(n_{o}\)、\(n_{e}\)。一束入射光被分成两束正交线偏振光，且两者在晶体内传播速度不同。这造成<strong>相位差</strong>：</p>
+      <div class="formula">\[ \Delta\varphi=\frac{2\pi}{\lambda_{0}}\,(n_{e}-n_{o})\,d \]</div>
+      <p>其中 \(d\) 为晶体厚度。把晶体的两个正交方向分别称为<strong>快轴</strong> (fast axis) 与<strong>慢轴</strong> (slow axis)，控制 \(d\) 即可设计特定相位差：</p>
+      <ul>
+        <li><strong>四分之一波片</strong> (\(\lambda/4\) plate)：\(\Delta\varphi=\pi/2\)。入射光偏振方向与快轴成 \(45^{\circ}\) 时，两等幅正交分量产生 \(\pi/2\) 相位差，输出<strong>圆偏振</strong>光。</li>
+        <li><strong>半波片</strong> (\(\lambda/2\) plate)：\(\Delta\varphi=\pi\)。线偏振方向相对快轴成 \(\theta\) 时，输出仍为线偏振，但方向被<strong>旋转 \(2\theta\)</strong>（关于快轴的镜像）。</li>
+      </ul>
+      <div class="key-terms">birefringence (双折射), ordinary ray (o 光), extraordinary ray (e 光), quarter-wave plate (四分之一波片), half-wave plate (半波片), fast/slow axis (快/慢轴)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 11.1：马吕斯定律</h3>
+      <p class="step"><strong>步骤 1：</strong> 设入射线偏振光 \(\vec{E}_{\text{in}}=E_{0}\cos(kz-\omega t)\,\hat{\imath}\)，强度 \(I_{0}\propto E_{0}^{2}\)。检偏器透光轴 \(\hat{a}\) 与 \(\hat{\imath}\) 成角 \(\theta\)，可写 \(\hat{a}=\cos\theta\,\hat{\imath}+\sin\theta\,\hat{\jmath}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 检偏器只允许 \(\vec{E}\) 沿 \(\hat{a}\) 方向的分量透过，由投影：</p>
+      <div class="formula">\[ E_{\text{out}}=\vec{E}_{\text{in}}\cdot\hat{a}=E_{0}\cos\theta\,\cos(kz-\omega t) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 透射光振幅为 \(E_{0}\cos\theta\)，时间平均强度正比于振幅平方：</p>
+      <div class="formula">\[ I=I_{0}\cos^{2}\theta \]</div>
+      <p class="step"><strong>步骤 4（未偏振光情形）：</strong> 未偏振光的 \(\hat{\imath}\) 方向在 \(0\) 到 \(2\pi\) 内均匀分布。每个方向的分量透过率为 \(\cos^{2}\theta\)，对所有方向取平均：</p>
+      <div class="formula">\[ I=\frac{1}{2\pi}\int_{0}^{2\pi}I_{\text{in}}\cos^{2}\theta\,\mathrm{d}\theta=\frac{I_{\text{in}}}{2\pi}\cdot\pi=\frac{I_{\text{in}}}{2} \]</div>
+
+      <h3>推导 11.2：布儒斯特角</h3>
+      <p class="step"><strong>步骤 1：</strong> 考察未偏振光以入射角 \(\theta_{i}\) 从介质 1 (\(n_{1}\)) 入射到介质 2 (\(n_{2}\))。反射光在入射面内偏离法线 \(\theta_{i}\)；折射光在入射面内偏离法线 \(\theta_{r}\)（朝法线另一侧）。</p>
+      <p class="step"><strong>步骤 2：</strong> 入射光的 p 分量（平行于入射面）驱动介质 2 中的电子沿折射光方向（即 \(\vec{k}_{r}\) 方向）偏振振动；这些加速电荷会向各方向辐射，构成反射光的 p 分量。但偶极辐射沿自身振动方向<strong>无辐射</strong>。</p>
+      <p class="step"><strong>步骤 3：</strong> 若反射光方向恰好平行于折射光方向（从而平行于电子振动方向），则 p 分量反射为零。此时反射光方向与折射光方向正交：</p>
+      <div class="formula">\[ \theta_{i}+\theta_{r}=90^{\circ}\quad\Longrightarrow\quad \sin\theta_{r}=\sin(90^{\circ}-\theta_{i})=\cos\theta_{i} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 代入斯涅尔定律 \(n_{1}\sin\theta_{i}=n_{2}\sin\theta_{r}=n_{2}\cos\theta_{i}\)：</p>
+      <div class="formula">\[ \frac{\sin\theta_{i}}{\cos\theta_{i}}=\tan\theta_{i}=\frac{n_{2}}{n_{1}}\quad\Longrightarrow\quad\theta_{i}=\theta_{B}=\arctan\!\left(\frac{n_{2}}{n_{1}}\right) \]</div>
+
+      <h3>推导 11.3：三偏振片"悖论"</h3>
+      <p class="step"><strong>步骤 1（无中间片）：</strong> 设三片顺序为 P1 (\(0^{\circ}\))、P3 (\(90^{\circ}\))。未偏振光 \(I_{\text{in}}\) 经 P1 后 \(I_{1}=I_{\text{in}}/2\)。P3 与 P1 正交，马吕斯定律：</p>
+      <div class="formula">\[ I_{3}=I_{1}\cos^{2}90^{\circ}=\frac{I_{\text{in}}}{2}\times 0=0 \]</div>
+      <p class="step"><strong>步骤 2（插入中间片 P2 在 \(45^{\circ}\)）：</strong> 经 P1 后仍为 \(I_{1}=I_{\text{in}}/2\)。P2 与 P1 夹角 \(45^{\circ}\)：</p>
+      <div class="formula">\[ I_{2}=I_{1}\cos^{2}45^{\circ}=\frac{I_{\text{in}}}{2}\cdot\frac{1}{2}=\frac{I_{\text{in}}}{4} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 此时经 P2 后光的偏振方向已被旋转至 \(45^{\circ}\)，与 P3 (\(90^{\circ}\)) 的夹角也是 \(45^{\circ}\)：</p>
+      <div class="formula">\[ I_{3}=I_{2}\cos^{2}45^{\circ}=\frac{I_{\text{in}}}{4}\cdot\frac{1}{2}=\boxed{\,\frac{I_{\text{in}}}{8}\,} \]</div>
+      <p class="step"><strong>步骤 4（一般化）：</strong> 若中间片角度为 \(\phi\)（\(0<\phi<90^{\circ}\)），三片总透射率为：</p>
+      <div class="formula">\[ \frac{I_{3}}{I_{\text{in}}}=\frac{1}{2}\cos^{2}\phi\cos^{2}(90^{\circ}-\phi)=\frac{1}{2}\cos^{2}\phi\sin^{2}\phi=\frac{1}{8}\sin^{2}(2\phi) \]</div>
+      <p>在 \(\phi=45^{\circ}\) 处取最大值 \(1/8\)。</p>
+
+      <h3>推导 11.4：半波片旋转偏振面</h3>
+      <p class="step"><strong>步骤 1：</strong> 设入射线偏振方向与波片快轴 (x) 成 \(\theta\)，振幅 \(E_{0}\)。沿快轴、慢轴分解：</p>
+      <div class="formula">\[ E_{x}=E_{0}\cos\theta\cos(kz-\omega t),\qquad E_{y}=E_{0}\sin\theta\cos(kz-\omega t) \]</div>
+      <p class="step"><strong>步骤 2：</strong> 半波片在 \(y\) 分量上引入 \(\pi\) 相位差（\(E_{y}\) 反号），\(E_{x}\) 不变：</p>
+      <div class="formula">\[ E_{x}'=E_{0}\cos\theta\cos(kz-\omega t),\qquad E_{y}'=-E_{0}\sin\theta\cos(kz-\omega t) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 输出仍是线偏振（两分量同相位），但与快轴的夹角 \(\theta'\) 满足：</p>
+      <div class="formula">\[ \tan\theta'=\frac{|E_{y}'|}{|E_{x}'|}=\tan\theta\quad\text{但位于快轴另一侧}\quad\Longrightarrow\quad\theta'=-\theta \]</div>
+      <p>故偏振方向相对原方向<strong>旋转了 \(2\theta\)</strong>（关于快轴的镜像）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 未偏振光经过两片偏振片</h4>
+        <p class="example-statement">强度 \(I_{\text{in}}=10.0\,\mathrm{mW/cm^{2}}\) 的未偏振光，垂直入射到两片理想的线偏振片。第一片透光轴竖直；第二片透光轴与第一片成 \(\theta=30^{\circ}\)。求每片偏振片后的光强。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 未偏振光经过第一片偏振片，强度减半（不论首片的轴指向何方）：</p>
+          <div class="formula">\[ I_{0}=\frac{I_{\text{in}}}{2}=\frac{10.0}{2}=5.0\,\mathrm{mW/cm^{2}} \]</div>
+          <p class="step">线偏振光经过第二片（与第一片夹 \(30^{\circ}\)），由马吕斯定律：</p>
+          <div class="formula">\[ I=I_{0}\cos^{2}\theta=5.0\times\cos^{2}30^{\circ}=5.0\times\left(\frac{\sqrt{3}}{2}\right)^{2}=5.0\times 0.750=3.75\,\mathrm{mW/cm^{2}} \]</div>
+          <p class="step">校验：两片正交（\(\theta=90^{\circ}\)）时 \(I=0\)；两片平行（\(\theta=0\))时 \(I=I_{0}=5.0\,\mathrm{mW/cm^{2}}\)。\(\theta=30^{\circ}\) 时介于二者之间且接近最大值，合理。</p>
+          <p><span class="ans">\(I_{0}=5.0\,\mathrm{mW/cm^{2}};\;I=3.75\,\mathrm{mW/cm^{2}}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 三偏振片悖论的定量计算</h4>
+        <p class="example-statement">强度 \(I_{\text{in}}=16.0\,\mathrm{mW/cm^{2}}\) 的未偏振光依次通过三片偏振片，透光轴方向分别为 \(0^{\circ}\)（竖直）、\(45^{\circ}\)、\(90^{\circ}\)（水平）。求：(a) 仅保留第一片与第三片（移除中间片）时的透射光强；(b) 三片都存在时的透射光强；(c) 把中间片方向改为 \(30^{\circ}\)，再求透射光强。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 仅两片正交偏振片。第一片把未偏振光减半：</p>
+          <div class="formula">\[ I_{1}=\frac{I_{\text{in}}}{2}=\frac{16.0}{2}=8.0\,\mathrm{mW/cm^{2}} \]</div>
+          <p class="step">第三片与第一片夹 \(90^{\circ}\)：</p>
+          <div class="formula">\[ I_{3}=I_{1}\cos^{2}90^{\circ}=8.0\times 0=0 \]</div>
+          <p class="step"><strong>解 (b)：</strong> 加入 \(45^{\circ}\) 中间片。经 P1：\(I_{1}=8.0\,\mathrm{mW/cm^{2}}\)（偏振化方向变为 \(0^{\circ}\)）。经 P2 (\(45^{\circ}\))：</p>
+          <div class="formula">\[ I_{2}=I_{1}\cos^{2}45^{\circ}=8.0\times 0.5=4.0\,\mathrm{mW/cm^{2}} \]</div>
+          <p class="step">偏振化方向变为 \(45^{\circ}\)，与 P3 (\(90^{\circ}\)) 的夹角也是 \(45^{\circ}\)：</p>
+          <div class="formula">\[ I_{3}=I_{2}\cos^{2}45^{\circ}=4.0\times 0.5=2.0\,\mathrm{mW/cm^{2}}=\frac{I_{\text{in}}}{8} \]</div>
+          <p class="step">"挡光"的中间片反而使透射从 \(0\) 升到 \(2.0\,\mathrm{mW/cm^{2}}\)——这并非悖论，而是每次投影都改变了偏振态。</p>
+          <p class="step"><strong>解 (c)：</strong> 中间片改为 \(30^{\circ}\)。经 P2：\(I_{2}=I_{1}\cos^{2}30^{\circ}=8.0\times 0.75=6.0\,\mathrm{mW/cm^{2}}\)。P3 (\(90^{\circ}\)) 与 P2 (\(30^{\circ}\)) 夹 \(60^{\circ}\)：</p>
+          <div class="formula">\[ I_{3}=I_{2}\cos^{2}60^{\circ}=6.0\times 0.25=1.5\,\mathrm{mW/cm^{2}} \]</div>
+          <p class="step">用一般公式校验：\(I_{3}/I_{\text{in}}=\tfrac{1}{8}\sin^{2}(2\phi)=\tfrac{1}{8}\sin^{2}60^{\circ}=\tfrac{1}{8}\times 0.75=0.09375\)，\(I_{3}=16.0\times 0.09375=1.5\,\mathrm{mW/cm^{2}}\) ✓。\(\phi=45^{\circ}\) 时取最大值 \(I_{\text{in}}/8=2.0\,\mathrm{mW/cm^{2}}\)。</p>
+          <p><span class="ans">\((a)\;0;\;(b)\;2.0\,\mathrm{mW/cm^{2}};\;(c)\;1.5\,\mathrm{mW/cm^{2}}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 空气到玻璃的布儒斯特角</h4>
+        <p class="example-statement">未偏振光从空气 (\(n_{1}=1.00\)) 入射到折射率 \(n_{2}=1.50\) 的玻璃板。(a) 求布儒斯特角 \(\theta_{B}\)；(b) 求此角对应的折射角 \(\theta_{r}\)；(c) 验证反射光与折射光线正交；(d) 描述反射光与折射光各自的偏振状态。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由布儒斯特定律：</p>
+          <div class="formula">\[ \tan\theta_{B}=\frac{n_{2}}{n_{1}}=\frac{1.50}{1.00}=1.50 \]</div>
+          <div class="formula">\[ \theta_{B}=\arctan(1.50)=56.3^{\circ} \]</div>
+          <p class="step"><strong>解 (b)：</strong> 由几何条件 \(\theta_{B}+\theta_{r}=90^{\circ}\)（在布儒斯特角处反射光线与折射光线正交）：</p>
+          <div class="formula">\[ \theta_{r}=90^{\circ}-\theta_{B}=90^{\circ}-56.3^{\circ}=33.7^{\circ} \]</div>
+          <p class="step"><strong>校验 (用斯涅尔定律)：</strong> \(n_{1}\sin\theta_{B}=1.00\times\sin 56.3^{\circ}=0.832\)；\(n_{2}\sin\theta_{r}=1.50\times\sin 33.7^{\circ}=1.50\times 0.555=0.832\) ✓。</p>
+          <p class="step"><strong>解 (c)：</strong> 反射光与折射光都在入射面内。反射光与法线夹角 \(\theta_{B}=56.3^{\circ}\)（在法线另一侧），折射光与法线夹角 \(\theta_{r}=33.7^{\circ}\)。两光线之间的夹角为 \(180^{\circ}-56.3^{\circ}-33.7^{\circ}=90^{\circ}\) ✓。</p>
+          <p class="step"><strong>解 (d)：</strong> 反射光为<strong>完全 s 偏振</strong>（电场垂直于入射面），p 分量为零。折射光则因失去了一部分 s 分量（反射带走的）而<strong>部分 p 偏振</strong>（沿入射面的 p 分量占比增加）。</p>
+          <p class="step">数值意义：摄影中使用的<strong>偏振滤镜</strong>正是利用此原理——调整镜头角度使阳光在水面、玻璃表面的反射以接近 \(\theta_{B}\) 入射，偏振片即可滤除大部分刺眼反光。</p>
+          <p><span class="ans">\(\theta_{B}=56.3^{\circ};\;\theta_{r}=33.7^{\circ};\;\)反射光为 s 偏振，折射光为部分 p 偏振</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 未偏振光经起偏器与检偏器（双步）</h4>
+        <p class="example-statement">未偏振光强度 \(I_{\text{in}}=8.0\,\mathrm{W/m^{2}}\)，依次通过两片偏振片。第一片作为起偏器；第二片作为检偏器，透光轴与第一片成 \(\theta=60^{\circ}\)。求：(a) 第一片后的光强 \(I_{0}\)；(b) 第二片后的光强 \(I\)；(c) 第二片透光轴的电场分量透过率（振幅比与强度比）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 未偏振光经起偏器，强度减半：</p>
+          <div class="formula">\[ I_{0}=\frac{I_{\text{in}}}{2}=\frac{8.0}{2}=4.0\,\mathrm{W/m^{2}} \]</div>
+          <p class="step"><strong>解 (b)：</strong> 经检偏器（夹角 \(60^{\circ}\)）：</p>
+          <div class="formula">\[ I=I_{0}\cos^{2}\theta=4.0\times\cos^{2}60^{\circ}=4.0\times\left(\frac{1}{2}\right)^{2}=4.0\times 0.25=1.0\,\mathrm{W/m^{2}} \]</div>
+          <p class="step"><strong>解 (c)：</strong> 振幅透过率 = 电场分量投影 \(E_{\parallel}/E_{0}=\cos 60^{\circ}=0.500\)。强度透过率 = 振幅平方 = \(\cos^{2}60^{\circ}=0.250\)。注意"光强透过率 = 振幅透过率的平方"，这是马吕斯定律 \(\cos^{2}\theta\) 中平方的来源。</p>
+          <p class="step">总光强比 \(I/I_{\text{in}}=1.0/8.0=0.125=1/8\)。两片偏振片组合的最大透射率为 \(1/2\)（两片平行时），最小为 \(0\)（两片正交时）。\(\theta=60^{\circ}\) 给出 \(I/I_{\text{in}}=1/8\)，介于极值之间。</p>
+          <p><span class="ans">\((a)\;I_{0}=4.0\,\mathrm{W/m^{2}};\;(b)\;I=1.0\,\mathrm{W/m^{2}};\;(c)\;\)振幅比 \(0.500\)，强度比 \(0.250\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 液晶显示器 (LCD) 的工作原理</h4>
+        <p class="example-statement">液晶显示器 (LCD) 的基本结构：背光 → 起偏器（轴竖直）→ 液晶盒 → 检偏器（轴水平，与起偏器正交）→ 彩色滤光片。无电压时液晶分子把线偏振光的偏振面旋转 \(90^{\circ}\)，光通过检偏器（亮）；加电压时液晶分子定向排列、不旋转偏振面，光被检偏器阻挡（暗）。设背光为未偏振光 \(I_{\text{in}}\)，求：(a) 无电压（旋转 \(90^{\circ}\)）时的透射光强；(b) 加足够电压（不旋转）时的透射光强；(c) 中等电压使液晶旋转 \(45^{\circ}\) 时的透射光强。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 设经起偏器后 \(I_{1}=I_{\text{in}}/2\)，偏振方向竖直 (\(0^{\circ}\))。</p>
+          <p class="step"><strong>解 (a)：</strong> 无电压时液晶将偏振面旋转 \(90^{\circ}\)，光以 \(90^{\circ}\) 偏振方向进入检偏器（轴在 \(90^{\circ}\)，与旋转后的光平行）：</p>
+          <div class="formula">\[ I_{\text{bright}}=I_{1}\cos^{2}0^{\circ}=\frac{I_{\text{in}}}{2}\times 1=\frac{I_{\text{in}}}{2} \]</div>
+          <p class="step"><strong>解 (b)：</strong> 加电压时不旋转，光仍以 \(0^{\circ}\) 偏振方向进入检偏器（轴在 \(90^{\circ}\)，正交）：</p>
+          <div class="formula">\[ I_{\text{dark}}=I_{1}\cos^{2}90^{\circ}=\frac{I_{\text{in}}}{2}\times 0=0 \]</div>
+          <p class="step"><strong>解 (c)：</strong> 旋转 \(45^{\circ}\)，光以 \(45^{\circ}\) 偏振方向进入 \(90^{\circ}\) 检偏器，夹角 \(45^{\circ}\)：</p>
+          <div class="formula">\[ I_{\text{mid}}=I_{1}\cos^{2}45^{\circ}=\frac{I_{\text{in}}}{2}\times\frac{1}{2}=\frac{I_{\text{in}}}{4} \]</div>
+          <p class="step">通过调节液晶上的电压（从而旋转角度），可连续控制每个像素的透射光强从 \(0\) 到 \(I_{\text{in}}/2\)——这就是灰度成像的物理基础。彩色则由附加的 RGB 滤光片实现。注意：实际 LCD 由于偏振片非理想（透过率 \(\sim 80\%\)）、彩色滤光片吸收等，最大亮度远低于 \(I_{\text{in}}/2\)，但工作原理如上。</p>
+          <p><span class="ans">\((a)\;I_{\text{in}}/2;\;(b)\;0;\;(c)\;I_{\text{in}}/4\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把未偏振光过偏振片的透过率写成 \(\cos^{2}\theta\)。</strong>马吕斯定律 \(I=I_{0}\cos^{2}\theta\) 仅适用于<strong>入射光本身已经线偏振</strong>的情况。未偏振光的 \(\vec{E}\) 方向在所有角度上均匀分布，必须先对所有方向取 \(\cos^{2}\theta\) 的平均（\(=1/2\)），所以未偏振光过一片理想偏振片后强度变为 \(I_{\text{in}}/2\)，与偏振片朝向无关。</li>
+        <li><strong>认为两片正交偏振片之间不能插入任何"挡光"元件。</strong>恰恰相反：在两正交偏振片之间插入一片透光轴与第一片成 \(45^{\circ}\) 的偏振片后，光会重新出现（\(I_{\text{in}}/8\)）。原因是偏振片不是简单"吸收器"——它每次都<strong>把入射光投影到自身轴方向</strong>，从而改变偏振态。这与量子测量后状态改变极相似。</li>
+        <li><strong>混淆布儒斯特角处的反射光线与折射光线方向。</strong>在 \(\theta_{B}\) 处，反射光线与折射光线<strong>正交</strong>（\(90^{\circ}\) 夹角），而非"反射角等于折射角"。后者毫无意义——它们本来就在不同介质中以不同法线参考。物理本质是：折射光中的 p 偏振电场驱动电子沿折射方向振动，振动电荷沿自身方向不辐射，故 p 分量反射为零，反射光只剩 s 偏振。</li>
+        <li><strong>用磁场方向定义偏振方向。</strong>约定<strong>以电场方向</strong>定义偏振。这是因为电场对电荷的作用（\(q\vec{E}\)）远强于磁场（\(v\vec{B}\)，\(v\ll c\) 时可忽略），故感光器件、视网膜、化学样品主要响应电场。\(\vec{B}\) 始终与 \(\vec{E}\) 垂直且同相，描述一个波只需一个矢量。</li>
+        <li><strong>混淆线偏振、圆偏振、椭圆偏振的条件。</strong>圆偏振<strong>不仅</strong>需要两正交分量相位差 \(\pi/2\)，<strong>还要求两分量振幅相等</strong>（输入线偏振必须与波片轴成 \(45^{\circ}\)）。若振幅不等且相位差 \(\pi/2\)，得到的是<strong>椭圆</strong>偏振而非圆偏振。半波片不改变偏振的"类型"（线→线），只改变线偏振的方向；四分之一波片才改变偏振类型（线→椭圆/圆）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 两片偏振片：未偏振光 \(I_{\text{in}}=12.0\,\mathrm{mW/cm^{2}}\)，依次经过两片偏振片，第二片与第一片成 \(60^{\circ}\)。求第二片后的光强 \(I\)。若把第二片旋转至与第一片成 \(0^{\circ}\)（平行），光强变为多少？</summary>
+        <div class="hint">先减半，再用马吕斯定律。</div>
+        <div class="solution">第一片：\(I_{0}=I_{\text{in}}/2=6.0\,\mathrm{mW/cm^{2}}\)。<br>第二片 (\(60^{\circ}\))：\(I=I_{0}\cos^{2}60^{\circ}=6.0\times 0.25=1.5\,\mathrm{mW/cm^{2}}\)。<br>平行时：\(I=I_{0}\cos^{2}0^{\circ}=6.0\,\mathrm{mW/cm^{2}}\)。<br>最大透射率为 \(I_{\text{in}}/2=6.0\)，对应两片平行。<br><span class="ans">\(1.5\,\mathrm{mW/cm^{2}};\;6.0\,\mathrm{mW/cm^{2}}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 三片偏振片：未偏振光依次经过透光轴为 \(0^{\circ}\)、\(30^{\circ}\)、\(90^{\circ}\) 的三片偏振片。求总透射率 \(I_{3}/I_{\text{in}}\)。若把中间片改为 \(45^{\circ}\)，透射率变为多少？哪种情况更亮？</summary>
+        <div class="hint">用 \(I_{3}/I_{\text{in}}=\tfrac{1}{8}\sin^{2}(2\phi)\)，\(\phi\) 为中间片角度。</div>
+        <div class="solution">\(\phi=30^{\circ}\)：\(I_{3}/I_{\text{in}}=\tfrac{1}{8}\sin^{2}60^{\circ}=\tfrac{1}{8}\times 0.75=0.0938\)。<br>\(\phi=45^{\circ}\)：\(I_{3}/I_{\text{in}}=\tfrac{1}{8}\sin^{2}90^{\circ}=\tfrac{1}{8}=0.125\)。<br>\(\phi=45^{\circ}\) 更亮（取最大值）。<br>分步校验 (\(\phi=30^{\circ}\))：\(I_{1}=I_{\text{in}}/2\)，\(I_{2}=I_{1}\cos^{2}30^{\circ}=0.375\,I_{\text{in}}\)，\(I_{3}=I_{2}\cos^{2}60^{\circ}=0.0938\,I_{\text{in}}\) ✓。<br><span class="ans">\(\phi=30^{\circ}:\;0.0938;\;\phi=45^{\circ}:\;0.125\)，\(45^{\circ}\) 最亮</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 水面的布儒斯特角：光从空气 (\(n_{1}=1.00\)) 入射到水 (\(n_{2}=1.33\))。求 \(\theta_{B}\) 与对应的折射角。若用未偏振光以 \(\theta_{B}\) 入射，反射光的偏振方向是什么？</summary>
+        <div class="hint">\(\tan\theta_{B}=n_{2}/n_{1}\)，\(\theta_{r}=90^{\circ}-\theta_{B}\)。</div>
+        <div class="solution">\(\tan\theta_{B}=1.33/1.00=1.33\)，\(\theta_{B}=\arctan(1.33)=53.1^{\circ}\)。<br>\(\theta_{r}=90^{\circ}-53.1^{\circ}=36.9^{\circ}\)。<br>校验：\(1.00\sin 53.1^{\circ}=0.799\)；\(1.33\sin 36.9^{\circ}=1.33\times 0.600=0.799\) ✓。<br>反射光为完全的 s 偏振（电场垂直于入射面）。这就是为什么偏振太阳镜（透光轴竖直）能滤掉水面、路面的大多数反射眩光——这些反射光的主要分量是水平的 s 偏振。<br><span class="ans">\(\theta_{B}=53.1^{\circ},\;\theta_{r}=36.9^{\circ};\;\)反射光为 s 偏振（垂直入射面）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 偏振太阳镜：未偏振的阳光以接近 \(\theta_{B}\) 的角度从湖面反射（\(n=1.33\)）。偏振太阳镜的透光轴竖直，因此<strong>阻挡水平方向的 s 偏振反射光</strong>。若不戴眼镜时反射光入射眼内的强度为 \(I_{r}\)（其中 s 分量占 \(100\%\)、p 分量占 \(0\%\)，因在 \(\theta_{B}\) 处），戴眼镜后透过多少？若入射角偏离 \(\theta_{B}\) 一段距离使 s 分量只占反射光的 \(80\%\)（p 占 \(20\%\)），透过率为多少？</summary>
+        <div class="hint">理想偏振片对正交分量透过 \(0\)，对平行分量透过 \(1\)。</div>
+        <div class="solution">在 \(\theta_{B}\) 处，反射光 \(100\%\) 为 s 偏振（水平）。太阳镜透光轴竖直，与水平 s 偏振正交，透过率 \(\cos^{2}90^{\circ}=0\)——完全消除眩光。<br>偏离 \(\theta_{B}\) 时，s 占 \(80\%\)、p 占 \(20\%\)。透光轴竖直的太阳镜透过 p 分量（平行于入射面，含竖直分量）而阻挡 s 分量。<br>透过率 \(=20\%\)，即透过光强为 \(0.20\,I_{r}\)。<br>这就是为什么偏振太阳镜在水面、湿路面、雪地特别有效——这些光滑表面在接近 \(\theta_{B}\) 时反射光高度 s 偏振。<br><span class="ans">\(0;\;0.20\,I_{r}\)（透过 \(20\%\)）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 半波片旋转偏振方向：线偏振光（沿竖直方向）入射到半波片，半波片的快轴与竖直方向成 \(\theta=30^{\circ}\)。求出射光的偏振方向（相对原方向旋转了多少度）？若改用四分之一波片（快轴仍 \(30^{\circ}\)），出射光是什么偏振态？</summary>
+        <div class="hint">半波片将偏振方向相对快轴镜像，等价于旋转 \(2\theta\)。四分之一波片在两正交分量间引入 \(\pi/2\) 相位差。</div>
+        <div class="solution"><strong>半波片：</strong>偏振方向相对快轴 (\(30^{\circ}\)) 镜像。原方向 \(0^{\circ}\)（竖直），镜像后为 \(60^{\circ}\)（\(30^{\circ}+30^{\circ}\)），即相对原方向旋转了 \(60^{\circ}\)（\(=2\theta=2\times 30^{\circ}\)）。<br><strong>四分之一波片：</strong>把 \(\vec{E}\) 沿快轴 (\(30^{\circ}\)) 与慢轴 (\(120^{\circ}\)) 分解，两分量振幅为 \(E_{0}\cos 30^{\circ}=0.866\,E_{0}\) 与 \(E_{0}\sin 30^{\circ}=0.500\,E_{0}\)（不等），相位差变为 \(\pi/2\)。<br>振幅不等且相位差 \(\pi/2\) → <strong>椭圆偏振</strong>（轴沿快/慢轴方向，长短轴比 \(0.866:0.500\)）。<br>要把线偏振变成<strong>圆</strong>偏振，输入偏振方向必须与快轴成 \(45^{\circ}\)（使两分量等幅）。<br><span class="ans">半波片：偏振方向旋转 \(60^{\circ}\)；四分之一波片：椭圆偏振（非圆偏振）</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">马吕斯定律 / 偏振片演示 (Malus's law polarizer demo)。未偏振光从左侧光源发出，依次经过<strong>起偏器 P₁</strong>（轴竖直）与<strong>检偏器 P₂</strong>（轴可调，与竖直方向成 \(\theta\)）。上半部为侧视图：橙色随机箭头表示未偏振（电场方向随机），蓝色正弦波为线偏振（沿 P₁ 轴竖直振荡），绿色正弦波振幅 \(\propto\cos\theta\)（沿 P₂ 轴方向）。下半部为检偏器处的<strong>电场分解图</strong>：蓝色 \(\vec{E}_{0}\) 沿 P₁ 轴、绿色分量 \(\vec{E}_{\parallel}=\vec{E}_{0}\cos\theta\) 沿 P₂ 轴透过、灰色 \(\vec{E}_{\perp}=\vec{E}_{0}\sin\theta\) 被阻挡。右下角强度条显示 \(I/I_{0}=\cos^{2}\theta\) 的实时数值。拖动滑块改变 \(\theta\)，观察 \(\theta=0^{\circ}\)（最亮）、\(\theta=90^{\circ}\)（全黑）、\(\theta=180^{\circ}\)（最亮）等情形。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="720" height="420"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;  // 720 x 420
+
+          var params = { thetaDeg: 45 };
+
+          // ---- Layout: top = side view, bottom = decomposition + bar ----
+          var BEAM_Y = 105;
+          var SRC_X  = 55, P1_X = 260, P2_X = 500, SCR_X = 665;
+
+          // Wave visualization (decoupled from real optical frequency)
+          var K_WAVE = 0.055;     // rad/px  → λ_vis ≈ 114 px
+          var OMEGA  = 3.0;       // rad/s
+          var AMP    = 36;        // peak amplitude (px) between P1 and P2
+
+          // Decomposition circle
+          var DC_CX = 165, DC_CY = 320, DC_R = 70;
+
+          // Intensity bar
+          var BAR_X = 330, BAR_Y = 305, BAR_W = 350, BAR_H = 28;
+
+          // pseudo-random hash for unpolarized arrows
+          function hash(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var t = s.t;
+              var th   = params.thetaDeg * Math.PI / 180;
+              var cosT = Math.cos(th), sinT = Math.sin(th);
+              var ratio = cosT * cosT;            // I/I0
+              var phase = OMEGA * t;               // wave phase
+              var Eval  = Math.cos(phase);         // instantaneous E0/|E0|, oscillating in [-1, +1]
+
+              // ---------- Title ----------
+              PS.drawText(ctx, "马吕斯定律 Malus's Law:  未偏振 → P₁ → P₂(θ) → 屏",
+                16, 22, { font: '14px system-ui', color: PS.colors.text });
+
+              // ============== TOP: side view of optical setup ==============
+
+              // Beam axis (dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(SRC_X, BEAM_Y); ctx.lineTo(SCR_X, BEAM_Y); ctx.stroke();
+              ctx.restore();
+
+              // Source (yellow glow)
+              PS.drawCircle(ctx, SRC_X, BEAM_Y, 13,
+                { fill: '#facc15', stroke: '#a16207', lineWidth: 1.5 });
+              PS.drawText(ctx, '光源 source', SRC_X - 22, BEAM_Y + 30,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // --- Source -> P1 : unpolarized (random-direction short arrows) ---
+              ctx.save();
+              ctx.lineWidth = 1.6;
+              var nArr = 7;
+              var segL = P1_X - SRC_X - 30;
+              // angle changes every ~1/8 s to mimic random polarization direction
+              var seed = Math.floor(t * 9);
+              for (var i = 1; i <= nArr; i++) {
+                var frac = i / (nArr + 1);
+                var xa = SRC_X + 18 + frac * segL;
+                var a = (hash(seed * 13.1 + i * 7.3) * 2 - 1) * Math.PI;
+                var L = 16;
+                PS.drawArrow(ctx,
+                  xa - L / 2 * Math.cos(a), BEAM_Y - L / 2 * Math.sin(a),
+                  xa + L / 2 * Math.cos(a), BEAM_Y + L / 2 * Math.sin(a),
+                  PS.colors.accent);
+              }
+              ctx.restore();
+              PS.drawText(ctx, '未偏振 unpolarized',
+                (SRC_X + P1_X) / 2 - 45, BEAM_Y - 38,
+                { font: '10px system-ui', color: PS.colors.accent });
+
+              // --- Polarizer P1 (edge-on slab, vertical transmission axis) ---
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.fillRect(P1_X - 7, BEAM_Y - 48, 14, 96);
+              ctx.strokeRect(P1_X - 7, BEAM_Y - 48, 14, 96);
+              ctx.restore();
+              // transmission axis (bold vertical)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 3.5;
+              ctx.beginPath();
+              ctx.moveTo(P1_X, BEAM_Y - 40);
+              ctx.lineTo(P1_X, BEAM_Y + 40);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '起偏器 P₁', P1_X - 26, BEAM_Y - 56,
+                { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '轴 ↕ (竖直)', P1_X - 32, BEAM_Y + 62,
+                { font: '10px system-ui', color: PS.colors.primary });
+
+              // --- P1 -> P2 : vertically polarized sinusoidal wave ---
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var started = false;
+              for (var xp = P1_X + 14; xp <= P2_X - 14; xp += 2) {
+                var y = AMP * Math.sin(K_WAVE * (xp - P1_X) - phase);
+                var py = BEAM_Y - y;
+                if (!started) { ctx.moveTo(xp, py); started = true; }
+                else ctx.lineTo(xp, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '线偏振 (沿 P₁)   I₀ = I_in/2',
+                (P1_X + P2_X) / 2 - 65, BEAM_Y - 56,
+                { font: '10px system-ui', color: PS.colors.primary });
+
+              // --- Analyzer P2 (slab with transmission axis at angle θ) ---
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.fillRect(P2_X - 7, BEAM_Y - 48, 14, 96);
+              ctx.strokeRect(P2_X - 7, BEAM_Y - 48, 14, 96);
+              ctx.restore();
+              // transmission axis at angle θ drawn as bold line tilted in side view
+              // (the tilt is schematic; in real 3D it is a rotation about the beam axis)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 3.5;
+              ctx.beginPath();
+              ctx.moveTo(P2_X - 33 * sinT, BEAM_Y - 40 * cosT);
+              ctx.lineTo(P2_X + 33 * sinT, BEAM_Y + 40 * cosT);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '检偏器 P₂', P2_X - 26, BEAM_Y - 56,
+                { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '轴倾斜 θ = ' + params.thetaDeg.toFixed(0) + '°',
+                P2_X - 44, BEAM_Y + 62,
+                { font: '10px system-ui', color: PS.colors.accent2 });
+
+              // --- P2 -> Screen : amplitude AMP*cos(θ), polarized along P2 axis ---
+              // In the side view, only the y-component is visible. We render it as a sinusoid
+              // scaled by |cos θ| and phase-matched to the previous segment.
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var started2 = false;
+              var amp2 = AMP * Math.abs(cosT);
+              // sign of cos θ flips the phase at θ > 90°; track it so the wave is continuous
+              var sgn = cosT >= 0 ? 1 : -1;
+              for (var xp2 = P2_X + 14; xp2 <= SCR_X - 10; xp2 += 2) {
+                var y2 = sgn * amp2 * Math.sin(K_WAVE * (xp2 - P2_X) - phase);
+                var py2 = BEAM_Y - y2;
+                if (!started2) { ctx.moveTo(xp2, py2); started2 = true; }
+                else ctx.lineTo(xp2, py2);
+              }
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'I = I₀ cos²θ',
+                (P2_X + SCR_X) / 2 - 32, BEAM_Y - 56,
+                { font: '10px system-ui', color: PS.colors.accent2 });
+
+              // --- Screen / detector ---
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.fillRect(SCR_X - 4, BEAM_Y - 48, 8, 96);
+              ctx.strokeRect(SCR_X - 4, BEAM_Y - 48, 8, 96);
+              ctx.restore();
+              // Brightness ∝ cos²θ
+              PS.drawCircle(ctx, SCR_X + 12, BEAM_Y, 14, {
+                fill: 'rgba(250,204,21,' + (0.12 + 0.85 * ratio).toFixed(3) + ')',
+                stroke: '#a16207', lineWidth: 1.5,
+              });
+              PS.drawText(ctx, '屏 screen', SCR_X - 8, BEAM_Y + 62,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // Divider line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.7;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(0, 220); ctx.lineTo(W, 220); ctx.stroke();
+              ctx.restore();
+
+              // ============== BOTTOM: E-field decomposition + intensity bar ==============
+
+              PS.drawText(ctx,
+                '检偏器处的电场分解 E-field decomposition at analyzer',
+                16, 240, { font: '12px system-ui', color: PS.colors.text });
+
+              // Decomposition circle outline
+              PS.drawCircle(ctx, DC_CX, DC_CY, DC_R,
+                { stroke: PS.colors.grid, lineWidth: 1.5 });
+
+              // P1 axis (vertical, faint dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.globalAlpha = 0.45;
+              ctx.setLineDash([4, 3]);
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(DC_CX, DC_CY - DC_R + 3);
+              ctx.lineTo(DC_CX, DC_CY + DC_R - 3);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, "P₁轴", DC_CX - 28, DC_CY - DC_R + 2,
+                { font: '10px system-ui', color: PS.colors.primary });
+
+              // P2 axis (tilted at angle θ from vertical, faint dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.45;
+              ctx.setLineDash([4, 3]);
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(DC_CX - DC_R * Math.sin(th), DC_CY - DC_R * Math.cos(th));
+              ctx.lineTo(DC_CX + DC_R * Math.sin(th), DC_CY + DC_R * Math.cos(th));
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, "P₂轴",
+                DC_CX + (DC_R + 4) * Math.sin(th) + 2,
+                DC_CY + (DC_R + 4) * Math.cos(th),
+                { font: '10px system-ui', color: PS.colors.accent2 });
+
+              // E0 vector along P1 axis (oscillating, sign included)
+              var E0mag = (DC_R - 6) * Eval;          // signed, oscillates as cos(ωt)
+              PS.drawArrow(ctx, DC_CX, DC_CY, DC_CX, DC_CY - E0mag,
+                PS.colors.primary, null);
+              PS.drawText(ctx, 'E₀', DC_CX + 6, DC_CY - E0mag + (Eval >= 0 ? -2 : 12),
+                { font: 'bold 12px system-ui', color: PS.colors.primary });
+
+              // E_parallel = E0 cos θ along P2 axis (oscillating in sync with E0)
+              var Epar = E0mag * cosT;                // signed scalar along P2 axis unit
+              var dxP = Epar * Math.sin(th);
+              var dyP = -Epar * Math.cos(th);
+              PS.drawArrow(ctx, DC_CX, DC_CY, DC_CX + dxP, DC_CY + dyP,
+                PS.colors.accent2, null);
+              PS.drawText(ctx, 'E₀cosθ',
+                DC_CX + dxP + 6 * (sinT >= 0 ? 1 : -1),
+                DC_CY + dyP - 2 * (cosT >= 0 ? 1 : -1),
+                { font: 'bold 11px system-ui', color: PS.colors.accent2 });
+
+              // Dashed perpendicular drop from tip of E0 to tip of E_parallel (projection)
+              ctx.save();
+              ctx.strokeStyle = '#94a3b8';
+              ctx.setLineDash([3, 3]);
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(DC_CX, DC_CY - E0mag);
+              ctx.lineTo(DC_CX + dxP, DC_CY + dyP);
+              ctx.stroke();
+              ctx.restore();
+
+              // Right-angle marker at the projection foot (small square)
+              // Build two short edges perpendicular to P2 axis at the foot point
+              var sq = 6;
+              var footX = DC_CX + dxP, footY = DC_CY + dyP;
+              // unit along P2 axis (toward center if Epar negative): u = (sin θ, -cos θ)
+              var ux = Math.sin(th), uy = -Math.cos(th);
+              // unit perpendicular (toward E0 tip side): n = (cos θ, sin θ)
+              var nx = Math.cos(th), ny = Math.sin(th);
+              ctx.save();
+              ctx.strokeStyle = '#94a3b8';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(footX + sq * nx, footY + sq * ny);
+              ctx.lineTo(footX + sq * nx + sq * ux, footY + sq * ny + sq * uy);
+              ctx.lineTo(footX + sq * ux, footY + sq * uy);
+              ctx.stroke();
+              ctx.restore();
+
+              // Legend for decomposition
+              var legX = 260, legY = 260;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(legX, legY); ctx.lineTo(legX + 18, legY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E₀  入射电场 (沿 P₁)',
+                legX + 24, legY + 4, { font: '11px system-ui', color: PS.colors.text });
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(legX, legY + 18); ctx.lineTo(legX + 18, legY + 18); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E₀cosθ  透射分量 (沿 P₂)',
+                legX + 24, legY + 22, { font: '11px system-ui', color: PS.colors.text });
+              ctx.save();
+              ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2; ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(legX, legY + 36); ctx.lineTo(legX + 18, legY + 36); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E₀sinθ  被阻挡分量',
+                legX + 24, legY + 40, { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- Intensity bar ----
+              PS.drawText(ctx, '透射光强 Transmitted intensity  I/I₀ = cos²θ',
+                BAR_X, 290, { font: '12px system-ui', color: PS.colors.text });
+
+              // Bar background
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.fillRect(BAR_X, BAR_Y, BAR_W, BAR_H);
+              ctx.strokeRect(BAR_X, BAR_Y, BAR_W, BAR_H);
+              ctx.restore();
+
+              // Bar fill (width ∝ cos²θ)
+              var fillW = BAR_W * ratio;
+              ctx.save();
+              // gradient: pale to bright yellow
+              var grad = ctx.createLinearGradient(BAR_X, 0, BAR_X + BAR_W, 0);
+              grad.addColorStop(0, '#fef9c3');
+              grad.addColorStop(1, '#facc15');
+              ctx.fillStyle = grad;
+              ctx.fillRect(BAR_X, BAR_Y, fillW, BAR_H);
+              ctx.restore();
+
+              // Tick at cos²θ = 1 (right end)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([2, 2]);
+              ctx.beginPath();
+              ctx.moveTo(BAR_X + BAR_W, BAR_Y - 5);
+              ctx.lineTo(BAR_X + BAR_W, BAR_Y + BAR_H + 5);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '0', BAR_X, BAR_Y + BAR_H + 16,
+                { font: '10px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'I₀', BAR_X + BAR_W - 4, BAR_Y + BAR_H + 16,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              // current value label inside / above the fill
+              PS.drawText(ctx, ratio.toFixed(3),
+                BAR_X + fillW + 6, BAR_Y + BAR_H / 2 + 4,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+
+              // Live numeric readout
+              PS.drawText(ctx,
+                'θ = ' + params.thetaDeg.toFixed(0) + '°    ' +
+                'cos θ = ' + cosT.toFixed(3) + '    ' +
+                'cos² θ = ' + ratio.toFixed(3),
+                BAR_X, BAR_Y + BAR_H + 32,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              // Formula reminder (very bottom)
+              PS.drawText(ctx,
+                "I = I₀ cos²θ   ·   (未偏振光过 P₁ 后 I₀ = I_in/2)",
+                BAR_X, H - 8,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'thetaDeg', label: '检偏器角度 θ (°) analyzer angle',
+              min: 0, max: 180, step: 1, value: 45 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('thetaDeg', function (v) { params.thetaDeg = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>偏振是横波独有性质</strong>：电磁波中 \(\vec{E}\) 在与 \(\hat{k}\) 垂直的平面内振荡；约定<strong>以电场方向</strong>定义偏振方向。三类典型偏振：线、圆（等幅正交分量相位差 \(\pm\pi/2\)）、椭圆（最一般）。</li>
+        <li><strong>马吕斯定律</strong>：线偏振光经过检偏器，\(I=I_{0}\cos^{2}\theta\)；未偏振光经过起偏器，\(I_{0}=I_{\text{in}}/2\)。</li>
+        <li><strong>三偏振片"悖论"</strong>：正交偏振片之间插入 \(45^{\circ}\) 中间片，透射从 \(0\) 恢复到 \(I_{\text{in}}/8\)；一般中间角 \(\phi\) 给出 \(I_{3}/I_{\text{in}}=\tfrac{1}{8}\sin^{2}(2\phi)\)。</li>
+        <li><strong>布儒斯特角</strong>：\(\tan\theta_{B}=n_{2}/n_{1}\)，此时反射光完全 s 偏振，且反射光线 ⟂ 折射光线 (\(\theta_{B}+\theta_{r}=90^{\circ}\))。</li>
+        <li><strong>散射起偏</strong>：偶极辐射沿自身方向无辐射，故 \(90^{\circ}\) 散射光为完全线偏振；瑞利散射 \(I_{\text{scat}}\propto 1/\lambda^{4}\) 解释蓝天与红色日落。</li>
+        <li><strong>双折射与波片</strong>：相位差 \(\Delta\varphi=(2\pi/\lambda_{0})(n_{e}-n_{o})d\)。λ/4 片产生 \(\pi/2\)（\(45^{\circ}\) 入射时线→圆）；λ/2 片产生 \(\pi\)（线偏振方向旋转 \(2\theta\)）。</li>
+        <li><strong>应用</strong>：偏振太阳镜（滤除水面/路面 s 偏振眩光）、LCD（两正交偏振片间用液晶控制旋转角度）、摄影偏振镜（增强蓝天对比、消除反射）、应力检测（光弹性）、3D 电影（左右眼不同圆偏振）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,I=I_{0}\cos^{2}\theta\,;\qquad I_{0}=\tfrac{1}{2}I_{\text{in}}\;\text{(未偏振过偏振片)}\,} \]</div>
+      <div class="formula">\[ \boxed{\,\tan\theta_{B}=\frac{n_{2}}{n_{1}}\,;\qquad \theta_{B}+\theta_{r}=90^{\circ}\,} \]</div>
+      <div class="formula">\[ \boxed{\,I_{\text{scat}}\propto\frac{1}{\lambda^{4}}\,;\qquad \Delta\varphi=\frac{2\pi}{\lambda_{0}}(n_{e}-n_{o})d\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

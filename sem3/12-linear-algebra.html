@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 线性代数 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第12章 · 数学方法 Math Methods</p>
+      <h1>线性代数 <span class="en-title">Linear Algebra</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>把<strong>矢量</strong> (vector) 与<strong>矩阵</strong> (matrix) 视作线性代数的基本对象，写出矩阵——矢量乘法 \(A\vec{x}\) 与矩阵——矩阵乘法 \(AB\) 的<strong>行乘列</strong>规则，并解释为何 \(AB\neq BA\) 一般成立。</li>
+        <li>计算 \(2\times 2\)、\(3\times 3\) 矩阵的<strong>行列式</strong> (determinant)，解释 \(\det A\) 是 \(A\) 作用于空间时的<strong>面积/体积缩放因子</strong>，并说明 \(\det A=0\) 与<strong>不可逆</strong> (singular) 的等价性。</li>
+        <li>对 \(2\times 2\) 矩阵直接写出<strong>逆矩阵</strong> (inverse) \(A^{-1}\)，并用 \(AA^{-1}=I\) 验证；用<strong>高斯消元</strong> (Gaussian elimination) 解 \(3\times 3\) 线性方程组。</li>
+        <li>由 <strong>本征值方程</strong> \(A\vec{v}=\lambda\vec{v}\) 与<strong>特征多项式</strong> \(\det(A-\lambda I)=0\) 求 \(2\times 2\) 矩阵的本征值 (eigenvalue) 与本征矢量 (eigenvector)。</li>
+        <li>对<strong>对称矩阵</strong> \(S=S^{\mathsf{T}}\) 完成正交对角化 \(S=ODO^{\mathsf{T}}\)，并指出对称矩阵的本征矢量彼此<strong>正交</strong>。</li>
+        <li>把上述工具用到三个物理情境：(i) <strong>耦合振子</strong>与<strong>简正模</strong> (coupled oscillators / normal modes)——对角化刚度矩阵得到简正频率；(ii) <strong>惯量张量</strong> (inertia tensor)——本征矢量即<strong>主轴</strong>、本征值即<strong>主转动惯量</strong>；(iii) 一句话预告量子力学——可观测量算符的本征矢 = 本征态，本征值 = 测量可能结果。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 矢量与矩阵 Vectors &amp; Matrices</h3>
+      <p>物理中的 \(n\) 维<strong>矢量</strong> (column vector) 写作 \(\vec{x}=(x_{1},x_{2},\ldots,x_{n})^{\mathsf{T}}\)。一个 \(m\times n\) <strong>矩阵</strong> (matrix) \(A\) 是 \(m\) 行 \(n\) 列的数表 \(A_{ij}\)，可视为把 \(\mathbb{R}^{n}\) 中矢量映射到 \(\mathbb{R}^{m}\) 的<strong>线性变换</strong> (linear transformation)：\(A\vec{x}\) 的第 \(i\) 分量是 \(A\) 的第 \(i\) 行与 \(\vec{x}\) 的<strong>点积</strong> (dot product)。</p>
+      <div class="formula">\[ (A\vec{x})_{i}=\sum_{j=1}^{n}A_{ij}x_{j} \]</div>
+      <p><strong>矩阵乘法</strong> (matrix multiplication) \(AB\) 定义为 \((AB)_{ij}=\sum_{k}A_{ik}B_{kj}\)——"行乘列"。即<strong>用 \(A\) 的行去点乘 \(B\) 的列</strong>。乘积只有当 \(A\) 的列数 = \(B\) 的行数时才有定义。</p>
+      <div class="formula">\[ [AB]_{ij}=A_{i1}B_{1j}+A_{i2}B_{2j}+\cdots=\sum_{k}A_{ik}B_{kj} \]</div>
+      <p>关键性质：矩阵乘法<strong>满足结合律</strong> \((AB)C=A(BC)\)、<strong>不满足交换律</strong> \(AB\neq BA\)（一般情形）、<strong>对加法有分配律</strong> \(A(B+C)=AB+AC\)。当 \(AB=BA\) 时称 \(A,B\) <strong>可对易</strong> (commute)。<strong>转置</strong> (transpose) \(A^{\mathsf{T}}\) 满足 \((AB)^{\mathsf{T}}=B^{\mathsf{T}}A^{\mathsf{T}}\)（顺序颠倒！）。</p>
+      <div class="key-terms">column vector (列矢量), matrix (矩阵), linear transformation (线性变换), matrix multiplication (矩阵乘法), transpose \(A^{\mathsf{T}}\) (转置), commute (可对易)</div>
+
+      <h3>2. 行列式：几何与代数 Determinant — Geometry &amp; Algebra</h3>
+      <p><strong>行列式</strong> \(\det A\)（亦记作 \(|A|\)）是方阵的一个数，几何上等于 "\(A\) 把空间缩放了多少倍"：对 \(2\times 2\)，是由 \(A\) 的两个列矢量张成的<strong>平行四边形的有向面积</strong>；对 \(3\times 3\)，是<strong>平行六面体的有向体积</strong>。</p>
+      <div class="formula">\[ \det\!\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}=ad-bc \]</div>
+      <p>\(3\times 3\) 情形用 Laplace 展开（沿第一行）：</p>
+      <div class="formula">\[ \det\!\begin{pmatrix}a&amp;b&amp;c\\d&amp;e&amp;f\\g&amp;h&amp;i\end{pmatrix}=a(ei-fh)-b(di-fg)+c(dh-eg) \]</div>
+      <p>三条核心性质：(i) \(\det(AB)=\det A\cdot\det B\)；(ii) \(\det A^{\mathsf{T}}=\det A\)；(iii) <strong>\(\det A=0\iff A\) 不可逆</strong>（"压扁"了空间，丢失了维度信息，无复原之路）。若 \(\det A>0\)，\(A\) 保向（旋转 + 伸缩）；若 \(\det A<0\)，\(A\) 反向（含一次反射）；\(\det A=\pm 1\) 时面积/体积不变。</p>
+      <div class="key-terms">determinant \(\det A\) (行列式), oriented area/volume (有向面积/体积), singular (奇异/不可逆), Laplace expansion (拉普拉斯展开)</div>
+
+      <h3>3. 逆矩阵 Matrix Inverse</h3>
+      <p>若存在方阵 \(A^{-1}\) 使得 \(AA^{-1}=A^{-1}A=I\)（\(I\) 为单位矩阵），则 \(A\) <strong>可逆</strong> (invertible)。可逆的充要条件是 \(\det A\neq 0\)。对 \(2\times 2\)：</p>
+      <div class="formula">\[ \boxed{\;A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix},\qquad A^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix}=\frac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix}\;} \]</div>
+      <p>口诀："主对角 swap，副对角 negate，再除以 \(\det\)"。注意 \((AB)^{-1}=B^{-1}A^{-1}\)（顺序颠倒——"穿袜再穿鞋，反过来脱"）。</p>
+      <div class="key-terms">invertible (可逆), inverse \(A^{-1}\) (逆矩阵), identity matrix \(I\) (单位矩阵)</div>
+
+      <h3>4. 解线性方程组：高斯消元 Solving Linear Systems — Gaussian Elimination</h3>
+      <p>线性方程组 \(A\vec{x}=\vec{b}\) 的标准解法是<strong>高斯消元</strong> (Gaussian elimination)：对<strong>增广矩阵</strong> \([A\,|\,\vec{b}]\) 反复做三种<strong>初等行变换</strong> (elementary row operations)：(1) 两行交换；(2) 一行乘非零常数；(3) 一行加上另一行的倍数。目标：把 \(A\) 化为<strong>上三角</strong> (upper triangular) 形式（前向消元），然后从最后一行开始<strong>回代</strong> (back-substitution) 求解。</p>
+      <p>解的存在唯一性（方阵情形 \(n\times n\)）：\(\det A\neq 0\) \(\iff\) 唯一解 \(\vec{x}=A^{-1}\vec{b}\)；\(\det A=0\) 时要么无解（不相容）要么无穷多解（\(\vec{b}\) 落在 \(A\) 的列空间里时）。</p>
+      <div class="key-terms">Gaussian elimination (高斯消元), augmented matrix (增广矩阵), elementary row operation (初等行变换), back-substitution (回代), upper triangular (上三角)</div>
+
+      <h3>5. 本征值与本征矢量 Eigenvalues &amp; Eigenvectors</h3>
+      <p>对方阵 \(A\)，若存在非零矢量 \(\vec{v}\) 与标量 \(\lambda\) 使 \(A\vec{v}=\lambda\vec{v}\)，则称 \(\vec{v}\) 为 \(A\) 的<strong>本征矢量</strong> (eigenvector)、\(\lambda\) 为对应的<strong>本征值</strong> (eigenvalue)。<strong>几何含义</strong>：本征矢量是<strong>方向不变的</strong>方向——\(A\) 作用其上只<strong>伸缩</strong>（\(|\lambda|>1\) 放大、\(|\lambda|<1\) 缩小、\(\lambda<0\) 反向再伸缩、\(\lambda=0\) 压扁到原点）。</p>
+      <p>本征方程 \((A-\lambda I)\vec{v}=\vec{0}\) 有非零解 \(\iff\det(A-\lambda I)=0\)。这是 \(\lambda\) 的 \(n\) 次多项式，称为<strong>特征多项式</strong> (characteristic polynomial)：</p>
+      <div class="formula">\[ \boxed{\;\det(A-\lambda I)=0\quad\Longrightarrow\quad\text{本征值}\;\lambda_{1},\ldots,\lambda_{n}\;} \]</div>
+      <p>对 \(2\times 2\) 矩阵 \(A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}\)，特征多项式为：</p>
+      <div class="formula">\[ \lambda^{2}-(a+d)\,\lambda+(ad-bc)=0,\qquad \lambda^{2}-(\mathrm{tr}\,A)\,\lambda+\det A=0 \]</div>
+      <p>即本征值只依赖 <strong>迹</strong> (trace) \(\mathrm{tr}\,A=a+d\) 与 \(\det A\) 两个不变量：\(\lambda_{1,2}=\tfrac{1}{2}\bigl[\mathrm{tr}\,A\pm\sqrt{(\mathrm{tr}\,A)^{2}-4\det A}\bigr]\)。判别式 \(\Delta=(a-d)^{2}+4bc<0\) 时本征值为<strong>共轭复数</strong>——\(A\) 含旋转分量（无实的"不动方向"）。求出 \(\lambda\) 后，代回 \((A-\lambda I)\vec{v}=\vec{0}\) 解出本征矢量。</p>
+      <div class="key-terms">eigenvalue \(\lambda\) (本征值/特征值), eigenvector \(\vec{v}\) (本征矢量/特征矢量), characteristic polynomial \(\det(A-\lambda I)\) (特征多项式), trace \(\mathrm{tr}\,A\) (迹)</div>
+
+      <h3>6. 对角化与对称矩阵 Diagonalization; Symmetric Matrices</h3>
+      <p>若 \(n\times n\) 矩阵 \(A\) 有 \(n\) 个线性无关的本征矢量，把它们作为列排成 \(P=[\vec{v}_{1}\,\vec{v}_{2}\,\cdots\,\vec{v}_{n}]\)，则：</p>
+      <div class="formula">\[ \boxed{\;A=PDP^{-1},\qquad D=\mathrm{diag}(\lambda_{1},\lambda_{2},\ldots,\lambda_{n})\;} \]</div>
+      <p>此时 \(A\) 称为<strong>可对角化</strong> (diagonalizable)，\(D\) 是本征值在对角线上的矩阵。<strong>对称矩阵</strong> \(S=S^{\mathsf{T}}\) 永远可对角化（"实谱定理"），且本征值全实、不同本征值的本征矢量<strong>两两正交</strong>。若把本征矢量<strong>归一化</strong> (normalize) 后排成正交矩阵 \(O\)（满足 \(O^{\mathsf{T}}O=I\)），则：</p>
+      <div class="formula">\[ S=ODO^{\mathsf{T}},\qquad O^{\mathsf{T}}=O^{-1} \]</div>
+      <p>物理意义：\(O\) 是一次<strong>旋转</strong>（"换到本征矢量为基的坐标系"），\(D\) 在新基下只是<strong>沿各轴独立伸缩</strong>。这就是"找<strong>主轴</strong>"(principal axes) 的过程。线性代数的事实：并非所有矩阵都可对角化（<strong>亏损</strong>矩阵 defective，如剪切的 \(\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\) 只有一个本征矢量），但<strong>物理上常遇到的对称/厄米矩阵</strong>总是好矩阵。</p>
+      <div class="key-terms">diagonalizable (可对角化), symmetric matrix \(S=S^{\mathsf{T}}\) (对称矩阵), orthogonal matrix \(O\) (正交矩阵), principal axes (主轴), defective (亏损/不可对角化)</div>
+
+      <h3>7. 物理应用一：耦合振子与简正模 Coupled Oscillators &amp; Normal Modes</h3>
+      <p>两质量均为 \(m\) 的振子由弹簧耦合：左右两根外弹簧劲度 \(k\)，中间耦合弹簧 \(k_{c}\)。位移 \(x_{1},x_{2}\)，则</p>
+      <div class="formula">\[ m\ddot{x}_{1}=-(k+k_{c})x_{1}+k_{c}x_{2},\qquad m\ddot{x}_{2}=k_{c}x_{1}-(k+k_{c})x_{2} \]</div>
+      <p>写成矩阵形式 \(m\ddot{\vec{x}}=-K\vec{x}\)，其中<strong>刚度矩阵</strong> (stiffness matrix)：</p>
+      <div class="formula">\[ K=\begin{pmatrix}k+k_{c} &amp; -k_{c}\\ -k_{c} &amp; k+k_{c}\end{pmatrix} \]</div>
+      <p>\(K\) 是<strong>对称矩阵</strong>，正交对角化给出本征矢量 \((1,1)/\sqrt{2}\)（同相 mode，弹簧 \(k_{c}\) 不被拉伸，本征值 \(k\)）与 \((1,-1)/\sqrt{2}\)（反相 mode，\(k_{c}\) 被拉伸最厉害，本征值 \(k+2k_{c}\)）。设解 \(\vec{x}(t)=\vec{a}\cos(\omega t)\)，得 \(K\vec{a}=\omega^{2}m\,\vec{a}\)——本征值问题！简正频率：</p>
+      <div class="formula">\[ \boxed{\;\omega_{1}=\sqrt{\frac{k+2k_{c}}{m}}\;\text{(反相)},\qquad \omega_{2}=\sqrt{\frac{k}{m}}\;\text{(同相)}\;} \]</div>
+      <p>一般运动是两个简正模式的任意叠加。这就是第 3 章/第 8 章简正模式的<strong>代数根源</strong>：耦合系统的运动方程在<strong>主轴坐标</strong>下解耦为独立简谐振子。</p>
+
+      <h3>8. 物理应用二：惯量张量 Inertia Tensor</h3>
+      <p>刚体绕原点的<strong>惯量张量</strong> (inertia tensor) 是对称矩阵：</p>
+      <div class="formula">\[ I_{ij}=\int\rho(\vec{r})\bigl(r^{2}\delta_{ij}-x_{i}x_{j}\bigr)\,\mathrm{d}^{3}r\;\;\Longleftrightarrow\;\;I=\begin{pmatrix}I_{xx}&amp;I_{xy}&amp;I_{xz}\\I_{yx}&amp;I_{yy}&amp;I_{yz}\\I_{zx}&amp;I_{zy}&amp;I_{zz}\end{pmatrix} \]</div>
+      <p>其中 \(I_{xx}=\int\rho\,(y^{2}+z^{2})\,\mathrm{d}^{3}r\)（绕 \(x\) 轴的转动惯量），\(I_{xy}=-\int\rho\,xy\,\mathrm{d}^{3}r\)（惯量积，negative sign convention）。角动量与角速度关系 \(\vec{L}=I\vec{\omega}\)——一般 \(\vec{L}\) <strong>不</strong>沿 \(\vec{\omega}\)！把 \(I\) 正交对角化：本征矢量 = <strong>主轴</strong> (principal axes)，本征值 = <strong>主转动惯量</strong> \(I_{1},I_{2},I_{3}\)。在主轴坐标下 \(I=\mathrm{diag}(I_{1},I_{2},I_{3})\)，\(\vec{L}\) 与 \(\vec{\omega}\) 沿主轴分量成正比。这是第 6 章刚体转动的核心代数。</p>
+
+      <h3>9. 物理应用三：量子力学算符（预告） QM Operators — Preview</h3>
+      <p>在量子力学里，每个物理可观察量 (observable) 由一个<strong>厄米算符</strong> (Hermitian operator) \(\hat{A}\)——"实对称矩阵"在无穷维空间的推广——表示。其本征方程 \(\hat{A}\,|\psi_{n}\rangle=a_{n}|\psi_{n}\rangle\) 给出：<strong>本征态</strong> \(|\psi_{n}\rangle\) 是测量时确定得到某值的态，<strong>本征值</strong> \(a_{n}\) 是测量可能得到的实数值。例如能量本征值方程 \(\hat{H}|\psi_{n}\rangle=E_{n}|\psi_{n}\rangle\) 就是定态薛定谔方程。线性代数的本征值理论，正是量子力学的代数骨架。</p>
+      <div class="key-terms">Hermitian operator (厄米算符), observable (可观测量), eigenstate (本征态), measurement (测量)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 12.1：\(\det(AB)=\det A\cdot\det B\)（\(2\times 2\) 情形）</h3>
+      <p class="step"><strong>步骤 1：</strong> 设 \(A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}\)、\(B=\begin{pmatrix}e&amp;f\\g&amp;h\end{pmatrix}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 矩阵乘积 \(AB=\begin{pmatrix}ae+bg &amp; af+bh\\ce+dg &amp; cf+dh\end{pmatrix}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 直接展开 \(\det(AB)=(ae+bg)(cf+dh)-(af+bh)(ce+dg)\)：</p>
+      <div class="formula">\[ =\underbrace{aecf+aedh+bgcf+bgdh}_{\text{四项}}-\underbrace{(afce+afdg+bhce+bhdg)}_{\text{四项}} \]</div>
+      <p class="step"><strong>步骤 4：</strong> \(aecf\) 与 \(afce=aecf\) 相消；\(bgdh\) 与 \(bhdg=bgdh\) 相消。剩下：</p>
+      <div class="formula">\[ \det(AB)=aedh+bgcf-(afdg+bhce)=ad(eh-fg)+bc(gf-eh) \]</div>
+      <p class="step"><strong>步骤 5：</strong> 注意 \(gf-eh=-(eh-fg)\)，所以 \(\det(AB)=(ad-bc)(eh-fg)=\det A\cdot\det B\)。证毕。<strong>几何解读</strong>：先以 \(B\) 把面积乘 \(\det B\)，再以 \(A\) 乘 \(\det A\)，净缩放为乘积。</p>
+
+      <h3>推导 12.2：\(\det A=0\iff A\) 不可逆</h3>
+      <p class="step"><strong>步骤 1（\(\Leftarrow\)）：</strong> 若 \(A\) 可逆，\(AA^{-1}=I\)。两边取行列式：\(\det(A)\det(A^{-1})=\det I=1\)，故 \(\det A\neq 0\)（且 \(\det A^{-1}=1/\det A\)）。</p>
+      <p class="step"><strong>步骤 2（\(\Rightarrow\)）：</strong> 设 \(\det A=0\)，则 \(A\) 的列矢量 \(\vec{c}_{1},\vec{c}_{2}\) 张成的平行四边形<strong>面积为零</strong>，意味着 \(\vec{c}_{1},\vec{c}_{2}\) <strong>共线</strong>（线性相关）。于是存在非零矢量 \(\vec{v}\)（例如与 \(\vec{c}_{1}\) 在 \(\vec{c}_{2}\) 方向投影的差）使 \(A\vec{v}=\vec{0}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 若 \(A^{-1}\) 存在，左乘 \(A^{-1}\) 得 \(\vec{v}=A^{-1}\vec{0}=\vec{0}\)，矛盾。故 \(A\) 不可逆。证毕。<strong>物理解读</strong>：\(A\) 把平面"压扁"为一条线，信息丢失，无逆可复原。</p>
+
+      <h3>推导 12.3：对称矩阵不同本征值的本征矢量正交</h3>
+      <p class="step"><strong>步骤 1：</strong> 设 \(S=S^{\mathsf{T}}\)，\(S\vec{v}_{1}=\lambda_{1}\vec{v}_{1}\)、\(S\vec{v}_{2}=\lambda_{2}\vec{v}_{2}\)，\(\lambda_{1}\neq\lambda_{2}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 考虑标量 \(\vec{v}_{1}^{\mathsf{T}}S\vec{v}_{2}\)。一方面 \(\vec{v}_{1}^{\mathsf{T}}S\vec{v}_{2}=\vec{v}_{1}^{\mathsf{T}}(\lambda_{2}\vec{v}_{2})=\lambda_{2}\,(\vec{v}_{1}\!\cdot\!\vec{v}_{2})\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 另一方面 \(\vec{v}_{1}^{\mathsf{T}}S\vec{v}_{2}=(\vec{v}_{1}^{\mathsf{T}}S)\vec{v}_{2}\)。因 \(S\) 对称，\(\vec{v}_{1}^{\mathsf{T}}S=(S^{\mathsf{T}}\vec{v}_{1})^{\mathsf{T}}=(S\vec{v}_{1})^{\mathsf{T}}=(\lambda_{1}\vec{v}_{1})^{\mathsf{T}}=\lambda_{1}\vec{v}_{1}^{\mathsf{T}}\)。所以 \(\vec{v}_{1}^{\mathsf{T}}S\vec{v}_{2}=\lambda_{1}(\vec{v}_{1}\!\cdot\!\vec{v}_{2})\)。</p>
+      <p class="step"><strong>步骤 4：</strong> 两个表达式相等：\(\lambda_{2}(\vec{v}_{1}\!\cdot\!\vec{v}_{2})=\lambda_{1}(\vec{v}_{1}\!\cdot\!\vec{v}_{2})\)，即 \((\lambda_{2}-\lambda_{1})(\vec{v}_{1}\!\cdot\!\vec{v}_{2})=0\)。由 \(\lambda_{1}\neq\lambda_{2}\) 得 \(\vec{v}_{1}\!\cdot\!\vec{v}_{2}=0\)。证毕。这是物理上"主轴总两两正交"的代数根源。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 用高斯消元解 \(3\times 3\) 线性方程组</h4>
+        <p class="example-statement">解方程组</p>
+        <div class="formula">\[ \begin{cases}x+y+z=6\\2x-y+z=3\\x+2y-z=2\end{cases} \]</div>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 写出增广矩阵 \([A\,|\,\vec{b}]\)：</p>
+          <div class="formula">\[ \left(\begin{array}{ccc|c}1&amp;1&amp;1&amp;6\\2&amp;-1&amp;1&amp;3\\1&amp;2&amp;-1&amp;2\end{array}\right) \]</div>
+          <p class="step"><strong>前向消元 1：</strong> \(R_{2}\to R_{2}-2R_{1}\)、\(R_{3}\to R_{3}-R_{1}\)（消去第一列下方元素）：</p>
+          <div class="formula">\[ \left(\begin{array}{ccc|c}1&amp;1&amp;1&amp;6\\0&amp;-3&amp;-1&amp;-9\\0&amp;1&amp;-2&amp;-4\end{array}\right) \]</div>
+          <p class="step"><strong>前向消元 2：</strong> 为方便，\(R_{2}\leftrightarrow R_{3}\) 交换：</p>
+          <div class="formula">\[ \left(\begin{array}{ccc|c}1&amp;1&amp;1&amp;6\\0&amp;1&amp;-2&amp;-4\\0&amp;-3&amp;-1&amp;-9\end{array}\right) \]</div>
+          <p class="step"><strong>前向消元 3：</strong> \(R_{3}\to R_{3}+3R_{2}\)：</p>
+          <div class="formula">\[ \left(\begin{array}{ccc|c}1&amp;1&amp;1&amp;6\\0&amp;1&amp;-2&amp;-4\\0&amp;0&amp;-7&amp;-21\end{array}\right) \]</div>
+          <p class="step">已得上三角形式。注意中间做过一次行交换 \(R_{2}\leftrightarrow R_{3}\)，故 \(\det A=-\bigl[1\cdot 1\cdot(-7)\bigr]=7\neq 0\)（行交换会改变行列式符号），故唯一解。<strong>回代</strong>：</p>
+          <p class="step">由 \(R_{3}\)：\(-7z=-21\Rightarrow z=3\)。</p>
+          <p class="step">由 \(R_{2}\)：\(y-2z=-4\Rightarrow y-6=-4\Rightarrow y=2\)。</p>
+          <p class="step">由 \(R_{1}\)：\(x+y+z=6\Rightarrow x+2+3=6\Rightarrow x=1\)。</p>
+          <p><span class="ans">唯一解 \(\vec{x}=(x,y,z)=(1,\,2,\,3)\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 \(2\times 2\) 行列式、逆矩阵，并用其解 \(A\vec{x}=\vec{b}\)</h4>
+        <p class="example-statement">设 \(A=\begin{pmatrix}3&amp;1\\2&amp;4\end{pmatrix}\)，\(\vec{b}=\begin{pmatrix}5\\6\end{pmatrix}\)。(a) 求 \(\det A\)；(b) 求 \(A^{-1}\) 并用 \(AA^{-1}=I\) 验证；(c) 用 \(A^{-1}\) 解 \(A\vec{x}=\vec{b}\)；(d) 几何上解释 \(\det A\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(\det A=ad-bc=3\cdot 4-1\cdot 2=12-2=10\)。</p>
+          <p class="step">(b) 用公式 \(A^{-1}=\dfrac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix}\)：</p>
+          <div class="formula">\[ A^{-1}=\frac{1}{10}\begin{pmatrix}4&amp;-1\\-2&amp;3\end{pmatrix}=\begin{pmatrix}0.4&amp;-0.1\\-0.2&amp;0.3\end{pmatrix} \]</div>
+          <p class="step">验证：\(AA^{-1}=\begin{pmatrix}3&amp;1\\2&amp;4\end{pmatrix}\begin{pmatrix}0.4&amp;-0.1\\-0.2&amp;0.3\end{pmatrix}\)。第 (1,1) 元 \(3(0.4)+1(-0.2)=1.2-0.2=1\) ✓；第 (1,2) 元 \(3(-0.1)+1(0.3)=-0.3+0.3=0\) ✓；第 (2,1) 元 \(2(0.4)+4(-0.2)=0.8-0.8=0\) ✓；第 (2,2) 元 \(2(-0.1)+4(0.3)=-0.2+1.2=1\) ✓。故 \(AA^{-1}=I\)。</p>
+          <p class="step">(c) \(\vec{x}=A^{-1}\vec{b}=\dfrac{1}{10}\begin{pmatrix}4&amp;-1\\-2&amp;3\end{pmatrix}\begin{pmatrix}5\\6\end{pmatrix}=\dfrac{1}{10}\begin{pmatrix}20-6\\-10+18\end{pmatrix}=\dfrac{1}{10}\begin{pmatrix}14\\8\end{pmatrix}=\begin{pmatrix}1.4\\0.8\end{pmatrix}\)。</p>
+          <p class="step">验证：\(A\vec{x}=\begin{pmatrix}3&amp;1\\2&amp;4\end{pmatrix}\begin{pmatrix}1.4\\0.8\end{pmatrix}=\begin{pmatrix}4.2+0.8\\2.8+3.2\end{pmatrix}=\begin{pmatrix}5\\6\end{pmatrix}=\vec{b}\) ✓</p>
+          <p class="step">(d) \(A\) 的两个列矢量 \(\vec{c}_{1}=(3,2)^{\mathsf{T}}\)、\(\vec{c}_{2}=(1,4)^{\mathsf{T}}\) 张成的平行四边形面积为 \(|\det A|=10\)（单位坐标方块面积的 10 倍）。\(\det A>0\) 还说明 \(A\) 保向（无反射）。</p>
+          <p><span class="ans">\((a)\;\det A=10;\;(b)\;A^{-1}=\tfrac{1}{10}\begin{pmatrix}4&amp;-1\\-2&amp;3\end{pmatrix};\;(c)\;\vec{x}=(1.4,\,0.8);\;(d)\;\text{面积}=10\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 \(2\times 2\) 矩阵的本征值与本征矢量（非对称）</h4>
+        <p class="example-statement">设 \(A=\begin{pmatrix}4&amp;1\\2&amp;3\end{pmatrix}\)。(a) 求本征值；(b) 求对应本征矢量；(c) 验证 \(A\vec{v}=\lambda\vec{v}\)；(d) 这两个本征矢量正交吗？为什么？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 迹 \(\mathrm{tr}\,A=4+3=7\)，\(\det A=4\cdot 3-1\cdot 2=10\)。特征多项式 \(\lambda^{2}-7\lambda+10=0\)，因式分解为 \((\lambda-5)(\lambda-2)=0\)，故 \(\lambda_{1}=5,\;\lambda_{2}=2\)。</p>
+          <p class="step">(b) <strong>\(\lambda_{1}=5\)：</strong> 解 \((A-5I)\vec{v}=\vec{0}\)，即 \(\begin{pmatrix}-1&amp;1\\2&amp;-2\end{pmatrix}\begin{pmatrix}v_{1}\\v_{2}\end{pmatrix}=\vec{0}\)。第一行 \(-v_{1}+v_{2}=0\Rightarrow v_{2}=v_{1}\)，取 \(\vec{v}_{1}=(1,1)^{\mathsf{T}}\)（或归一化为 \((1,1)/\sqrt{2}\)）。</p>
+          <p class="step"><strong>\(\lambda_{2}=2\)：</strong> \((A-2I)\vec{v}=\vec{0}\)，即 \(\begin{pmatrix}2&amp;1\\2&amp;1\end{pmatrix}\begin{pmatrix}v_{1}\\v_{2}\end{pmatrix}=\vec{0}\)。第一行 \(2v_{1}+v_{2}=0\Rightarrow v_{2}=-2v_{1}\)，取 \(\vec{v}_{2}=(1,-2)^{\mathsf{T}}\)。</p>
+          <p class="step">(c) 验证：\(A\vec{v}_{1}=\begin{pmatrix}4&amp;1\\2&amp;3\end{pmatrix}\begin{pmatrix}1\\1\end{pmatrix}=\begin{pmatrix}5\\5\end{pmatrix}=5\vec{v}_{1}\) ✓</p>
+          <p class="step">\(A\vec{v}_{2}=\begin{pmatrix}4&amp;1\\2&amp;3\end{pmatrix}\begin{pmatrix}1\\-2\end{pmatrix}=\begin{pmatrix}4-2\\2-6\end{pmatrix}=\begin{pmatrix}2\\-4\end{pmatrix}=2\vec{v}_{2}\) ✓</p>
+          <p class="step">(d) \(\vec{v}_{1}\cdot\vec{v}_{2}=1\cdot 1+1\cdot(-2)=-1\neq 0\)，<strong>不正交</strong>。原因：\(A\) <strong>不是对称矩阵</strong>（\(A_{12}=1\neq 2=A_{21}\)）。推导 12.3 的正交性只对对称矩阵成立。</p>
+          <p><span class="ans">\((a)\;\lambda_{1}=5,\,\lambda_{2}=2;\;(b)\;\vec{v}_{1}=(1,1),\,\vec{v}_{2}=(1,-2);\;(c)\;\text{已验证};\;(d)\;\text{不正交，因 }A\neq A^{\mathsf{T}}\text{。}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 耦合振子的简正模（对称矩阵对角化）</h4>
+        <p class="example-statement">两个质量均为 \(m=1.0\,\mathrm{kg}\) 的振子，外弹簧劲度 \(k=6.0\,\mathrm{N/m}\)，耦合弹簧 \(k_{c}=2.0\,\mathrm{N/m}\)。刚度矩阵 \(K=\begin{pmatrix}k+k_{c} &amp; -k_{c}\\ -k_{c} &amp; k+k_{c}\end{pmatrix}=\begin{pmatrix}8&amp;-2\\-2&amp;8\end{pmatrix}\,\mathrm{N/m}\)。(a) 求本征值与本征矢量；(b) 求简正频率；(c) 写出对角化 \(K=ODO^{\mathsf{T}}\)；(d) 若 \(t=0\) 时 \(x_{1}=A,\,x_{2}=0\)，写出之后两质量位移。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(\mathrm{tr}\,K=16\)，\(\det K=64-4=60\)。特征方程 \(\lambda^{2}-16\lambda+60=0\)，\(\lambda=\dfrac{16\pm\sqrt{256-240}}{2}=\dfrac{16\pm 4}{2}\)，即 \(\lambda_{1}=10\)、\(\lambda_{2}=6\)（单位 \(\mathrm{N/m}\)）。</p>
+          <p class="step">本征矢量：\(\lambda_{1}=10\)：\((K-10I)=\begin{pmatrix}-2&amp;-2\\-2&amp;-2\end{pmatrix}\)，方程 \(-2v_{1}-2v_{2}=0\Rightarrow v_{1}=-v_{2}\)，取归一化 \(\vec{v}_{1}=\dfrac{1}{\sqrt{2}}(1,-1)^{\mathsf{T}}\)（反相 mode）。</p>
+          <p class="step">\(\lambda_{2}=6\)：\((K-6I)=\begin{pmatrix}2&amp;-2\\-2&amp;2\end{pmatrix}\)，方程 \(2v_{1}-2v_{2}=0\Rightarrow v_{1}=v_{2}\)，取归一化 \(\vec{v}_{2}=\dfrac{1}{\sqrt{2}}(1,1)^{\mathsf{T}}\)（同相 mode）。</p>
+          <p class="step">检验正交：\(\vec{v}_{1}\cdot\vec{v}_{2}=\tfrac{1}{2}(1\cdot 1+(-1)\cdot 1)=0\) ✓（对称矩阵本征矢量正交，与例 12.3 对照）。</p>
+          <p class="step">(b) 简正频率：\(\omega_{i}=\sqrt{\lambda_{i}/m}\)：</p>
+          <div class="formula">\[ \omega_{1}=\sqrt{10/1.0}=3.16\,\mathrm{rad/s},\qquad \omega_{2}=\sqrt{6/1.0}=2.45\,\mathrm{rad/s} \]</div>
+          <p class="step">对应周期 \(T_{1}=2\pi/\omega_{1}=1.99\,\mathrm{s}\)、\(T_{2}=2\pi/\omega_{2}=2.57\,\mathrm{s}\)。<strong>反相 mode 频率更高</strong>（耦合弹簧被拉伸，提供额外恢复力）——物理上合理。</p>
+          <p class="step">(c) 把本征矢量作为列排成正交矩阵 \(O=\dfrac{1}{\sqrt{2}}\begin{pmatrix}1&amp;1\\-1&amp;1\end{pmatrix}\)（\(O^{\mathsf{T}}O=I\)，\(O^{\mathsf{T}}=O^{-1}\)），则：</p>
+          <div class="formula">\[ K=ODO^{\mathsf{T}}=\frac{1}{\sqrt{2}}\begin{pmatrix}1&amp;1\\-1&amp;1\end{pmatrix}\begin{pmatrix}10&amp;0\\0&amp;6\end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix}1&amp;-1\\1&amp;1\end{pmatrix} \]</div>
+          <p class="step">\(O\) 代表把坐标系旋转 \(-45^{\circ}\)（到主轴 \(\vec{v}_{1},\vec{v}_{2}\)）。在主轴坐标 \(q_{1},q_{2}\) 下，运动方程 \(m\ddot{q}_{i}=-\lambda_{i}q_{i}\) 是两个<strong>解耦的</strong>独立简谐振子。</p>
+          <p class="step">(d) 初条件 \(\vec{x}(0)=(A,0)^{\mathsf{T}}\)。投影到主轴：\(q_{1}(0)=\vec{v}_{1}\cdot\vec{x}(0)=A/\sqrt{2}\)、\(q_{2}(0)=\vec{v}_{2}\cdot\vec{x}(0)=A/\sqrt{2}\)，且 \(\dot{q}_{i}(0)=0\)。故</p>
+          <div class="formula">\[ \vec{x}(t)=\frac{A}{\sqrt{2}}\vec{v}_{1}\cos\omega_{1}t+\frac{A}{\sqrt{2}}\vec{v}_{2}\cos\omega_{2}t=\frac{A}{2}\begin{pmatrix}1\\-1\end{pmatrix}\cos(3.16\,t)+\frac{A}{2}\begin{pmatrix}1\\1\end{pmatrix}\cos(2.45\,t) \]</div>
+          <p class="step">即 \(x_{1}(t)=\tfrac{A}{2}[\cos(3.16\,t)+\cos(2.45\,t)]\)，\(x_{2}(t)=\tfrac{A}{2}[\cos(2.45\,t)-\cos(3.16\,t)]\)。两频率之差产生<strong>拍</strong> (beat)：能量在两振子间周期性地来回传递。</p>
+          <p><span class="ans">\((a)\;\lambda_{1}=10,\vec{v}_{1}=\tfrac{1}{\sqrt{2}}(1,-1);\;\lambda_{2}=6,\vec{v}_{2}=\tfrac{1}{\sqrt{2}}(1,1);\;(b)\;\omega_{1}=3.16,\omega_{2}=2.45\,\mathrm{rad/s};\;(c)\;K=ODO^{\mathsf{T}}\text{ 已写出};\;(d)\;x_{1,2}(t)\text{ 已写出，含拍频 }\Delta\omega=0.71\,\mathrm{rad/s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 把矩阵当作线性变换来"看"</h4>
+        <p class="example-statement">设 \(A=\begin{pmatrix}2&amp;1\\1&amp;2\end{pmatrix}\)。把单位矢量 \(\hat{\imath}=(1,0)^{\mathsf{T}}\)、\(\hat{\jmath}=(0,1)^{\mathsf{T}}\) 与单位圆 \(x^{2}+y^{2}=1\) 在 \(A\) 下的像求出来，并从本征值/本征矢量的角度解释为何单位圆变成这种特定的椭圆。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(A\) 作用于基矢量：\(A\hat{\imath}=\begin{pmatrix}2&amp;1\\1&amp;2\end{pmatrix}\begin{pmatrix}1\\0\end{pmatrix}=\begin{pmatrix}2\\1\end{pmatrix}\)（即 \(A\) 的第一列）；\(A\hat{\jmath}=\begin{pmatrix}2&amp;1\\1&amp;2\end{pmatrix}\begin{pmatrix}0\\1\end{pmatrix}=\begin{pmatrix}1\\2\end{pmatrix}\)（即 \(A\) 的第二列）。<strong>矩阵的列就是基矢量的像</strong>，这是把矩阵当作线性变换的核心。</p>
+          <p class="step">单位圆 \((\cos\theta,\sin\theta)\) 的像：\(A(\cos\theta,\sin\theta)^{\mathsf{T}}=(2\cos\theta+\sin\theta,\,\cos\theta+2\sin\theta)^{\mathsf{T}}\)。它是 \(\mathbb{R}^{2}\) 中的一个椭圆。</p>
+          <p class="step">本征值/本征矢量：\(\mathrm{tr}\,A=4\)，\(\det A=3\)，特征方程 \(\lambda^{2}-4\lambda+3=0\)，根 \(\lambda_{1}=3,\,\lambda_{2}=1\)。</p>
+          <p class="step">\(\lambda_{1}=3\)：\((A-3I)=\begin{pmatrix}-1&amp;1\\1&amp;-1\end{pmatrix}\Rightarrow\vec{v}_{1}=\tfrac{1}{\sqrt{2}}(1,1)^{\mathsf{T}}\)。</p>
+          <p class="step">\(\lambda_{2}=1\)：\((A-I)=\begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix}\Rightarrow\vec{v}_{2}=\tfrac{1}{\sqrt{2}}(1,-1)^{\mathsf{T}}\)。</p>
+          <p class="step"><strong>解释</strong>：在 \(\vec{v}_{1}=(1,1)/\sqrt{2}\) 方向（\(45^{\circ}\)）上，\(A\) 把矢量拉长到 \(3\) 倍；在正交方向 \(\vec{v}_{2}=(1,-1)/\sqrt{2}\)（\(-45^{\circ}\)）上长度不变（\(\lambda=1\)）。所以单位圆变成<strong>长半轴 \(3\)、短半轴 \(1\)、长轴沿 \(45^{\circ}\)</strong> 的椭圆，<strong>面积</strong>为 \(\pi\cdot 3\cdot 1=3\pi=\pi\det A\) ✓。\(A\) 等价于"旋转 \(-45^{\circ}\)、沿 \(x\) 轴拉 3 倍、沿 \(y\) 轴不变、再转回"——即 \(A=ODO^{\mathsf{T}}\)，\(O\) 把坐标转 \(\pm 45^{\circ}\)、\(D=\mathrm{diag}(3,1)\)。</p>
+          <p><span class="ans">\(A\hat{\imath}=(2,1),\,A\hat{\jmath}=(1,2)\)；单位圆变为长半轴 \(3\) 沿 \(45^{\circ}\)、短半轴 \(1\) 沿 \(-45^{\circ}\) 的椭圆；面积 \(=3\pi=\pi\det A\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误以为矩阵乘法可交换。</strong> 一般 \(AB\neq BA\)。例如 \(\begin{pmatrix}0&amp;1\\0&amp;0\end{pmatrix}\begin{pmatrix}0&amp;0\\1&amp;0\end{pmatrix}=\begin{pmatrix}1&amp;0\\0&amp;0\end{pmatrix}\) 但反过来给 \(\begin{pmatrix}0&amp;0\\0&amp;1\end{pmatrix}\)。这不仅影响代数（\((A+B)^{2}=A^{2}+AB+BA+B^{2}\)，<em>不</em>是 \(A^{2}+2AB+B^{2}\)），也影响物理：量子力学中坐标 \(\hat{x}\) 与动量 \(\hat{p}\) 不对易（\([\hat{x},\hat{p}]=i\hbar\neq 0\)）正是不确定性原理的根源。</li>
+        <li><strong>看到 \(\det A=0\) 还硬求逆。</strong> \(\det A=0\iff A\) 不可逆（"奇异" singular）。此时方程组 \(A\vec{x}=\vec{b}\) 要么无解（\(\vec{b}\) 不在列空间）要么有无穷多解（\(\vec{b}\) 在列空间，但解空间是一直线/平面）。在物理上 \(\det A=0\) 意味着系统<strong>丢失了一个自由度</strong>——例如简正模计算里出现零本征值对应"零模"（自由刚体平移或刚体转动）。</li>
+        <li><strong>把任意矩阵的本征矢量误以为彼此正交。</strong> <strong>只有对称（或厄米）矩阵</strong>的不同本征值对应的本征矢量才正交（推导 12.3）。非对称矩阵（例 12.3）本征矢量一般<strong>不正交</strong>。物理上"主轴总正交"是因为惯量张量、刚度矩阵这类物理矩阵都是对称的——不是所有矩阵都有此福利。</li>
+        <li><strong>认为所有方阵都可对角化。</strong> 不可对角化的"亏损" (defective) 矩阵存在，最简单的例子是<strong>剪切矩阵</strong> \(\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\)：特征多项式 \((1-\lambda)^{2}=0\) 给出 \(\lambda=1\)（重根），但 \((A-I)=\begin{pmatrix}0&amp;1\\0&amp;0\end{pmatrix}\) 的零空间只有 \(1\) 维（\(\vec{v}\propto(1,0)\)），凑不出两个独立的本征矢量。<strong>对称矩阵永远可对角化</strong>是实谱定理的福音，但不要把它推广到一切矩阵。</li>
+        <li><strong>混淆"迹"与"行列式"作为唯一不变量。</strong> \(2\times 2\) 矩阵的本征值由 \(\mathrm{tr}\,A\) 与 \(\det A\) 唯一决定（特征多项式 \(\lambda^{2}-(\mathrm{tr}\,A)\lambda+\det A\)），但 \(3\times 3\) 及以上还需要其他不变量（如 \(\sum\lambda_{i}\lambda_{j}\)）。不要无脑用 \(\mathrm{tr}\) 和 \(\det\) 套解所有尺寸的矩阵。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 解下列线性方程组（用高斯消元），并计算系数矩阵的行列式验证唯一解：</summary>
+        <div class="hint">把增广矩阵化成上三角，再回代。\(\det\neq 0\) 保证唯一解。</div>
+        <div class="solution">\(\begin{cases}2x+y-z=8\\-3x-y+2z=-11\\-2x+y+2z=-3\end{cases}\)<br>
+        增广矩阵：\(\left(\begin{array}{ccc|c}2&amp;1&amp;-1&amp;8\\-3&amp;-1&amp;2&amp;-11\\-2&amp;1&amp;2&amp;-3\end{array}\right)\)。<br>
+        \(R_{2}\to R_{2}+\tfrac{3}{2}R_{1}\)、\(R_{3}\to R_{3}+R_{1}\)：<br>
+        \(\left(\begin{array}{ccc|c}2&amp;1&amp;-1&amp;8\\0&amp;\tfrac{1}{2}&amp;\tfrac{1}{2}&amp;1\\0&amp;2&amp;1&amp;5\end{array}\right)\)。<br>
+        \(R_{3}\to R_{3}-4R_{2}\)：<br>
+        \(\left(\begin{array}{ccc|c}2&amp;1&amp;-1&amp;8\\0&amp;\tfrac{1}{2}&amp;\tfrac{1}{2}&amp;1\\0&amp;0&amp;-1&amp;1\end{array}\right)\)。<br>
+        回代：\(z=-1\)；\(\tfrac{1}{2}y+\tfrac{1}{2}(-1)=1\Rightarrow y=3\)；\(2x+3-(-1)=8\Rightarrow x=2\)。<br>
+        \(\det A=2\cdot\tfrac{1}{2}\cdot(-1)=-1\neq 0\) ✓<br>
+        <span class="ans">\(\vec{x}=(2,\,3,\,-1)\)，\(\det A=-1\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 设 \(A=\begin{pmatrix}1&amp;2\\3&amp;4\end{pmatrix}\)。求 \(\det A\)、\(A^{-1}\)、本征值与本征矢量，并验证 \(\lambda_{1}+\lambda_{2}=\mathrm{tr}\,A\)、\(\lambda_{1}\lambda_{2}=\det A\)。</summary>
+        <div class="hint">用 \(2\times 2\) 公式 \(A^{-1}=\tfrac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix}\)；特征方程 \(\lambda^{2}-(\mathrm{tr}\,A)\lambda+\det A=0\)。</div>
+        <div class="solution">\(\det A=1\cdot 4-2\cdot 3=4-6=-2\)。<br>
+        \(A^{-1}=\dfrac{1}{-2}\begin{pmatrix}4&amp;-2\\-3&amp;1\end{pmatrix}=\begin{pmatrix}-2&amp;1\\1.5&amp;-0.5\end{pmatrix}\)。<br>
+        验证：\(AA^{-1}=\begin{pmatrix}1&amp;2\\3&amp;4\end{pmatrix}\begin{pmatrix}-2&amp;1\\1.5&amp;-0.5\end{pmatrix}=\begin{pmatrix}-2+3&amp;1-1\\-6+6&amp;3-2\end{pmatrix}=I\) ✓<br>
+        特征方程：\(\lambda^{2}-5\lambda-2=0\)，根 \(\lambda=\dfrac{5\pm\sqrt{25+8}}{2}=\dfrac{5\pm\sqrt{33}}{2}\)。<br>
+        \(\lambda_{1}\approx\dfrac{5+5.744}{2}=5.372\)、\(\lambda_{2}\approx\dfrac{5-5.744}{2}=-0.372\)。<br>
+        检验：和 \(=5=\mathrm{tr}\,A\) ✓；积 \(=\tfrac{25-33}{4}=-2=\det A\) ✓<br>
+        \(\lambda_{1}=5.372\)：\((A-\lambda_{1}I)\) 第一行 \((1-5.372,\,2)=(-4.372,\,2)\)，给 \(\vec{v}_{1}\propto(2,\,4.372)\)，归一化 \(\vec{v}_{1}\approx(0.416,\,0.910)\)。<br>
+        \(\lambda_{2}=-0.372\)：\((1+0.372,\,2)=(1.372,\,2)\)，给 \(\vec{v}_{2}\propto(2,\,-1.372)\)，归一化 \(\vec{v}_{2}\approx(0.825,\,-0.566)\)。<br>
+        内积 \(\vec{v}_{1}\cdot\vec{v}_{2}\approx 0.416\cdot 0.825+0.910\cdot(-0.566)=0.343-0.515=-0.172\neq 0\)（不正交——因 \(A\) 不对称）。<br>
+        <span class="ans">\(\det A=-2;\;A^{-1}=\begin{pmatrix}-2&amp;1\\1.5&amp;-0.5\end{pmatrix};\;\lambda_{1,2}=\dfrac{5\pm\sqrt{33}}{2}\approx 5.372,\,-0.372;\;\vec{v}_{1}\approx(0.416,0.910),\vec{v}_{2}\approx(0.825,-0.566)\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 三个相同质量 \(m=1\,\mathrm{kg}\) 的振子排成一线，由相同弹簧 \(k=4\,\mathrm{N/m}\) 串联耦合（两端固定）：\(m\ddot{x}_{1}=-k\,x_{1}-k(x_{1}-x_{2})\)、\(m\ddot{x}_{2}=-k(x_{2}-x_{1})-k(x_{2}-x_{3})\)、\(m\ddot{x}_{3}=-k(x_{3}-x_{2})-k\,x_{3}\)。求简正频率与对应本征模式（位移形状）。</summary>
+        <div class="hint">写出 \(3\times 3\) 刚度矩阵 \(K\)（对称！），解本征值问题 \(K\vec{v}=\lambda\vec{v}\)。三个本征模式分别为两端同向、反对称、最高频"两端往中心"模式。</div>
+        <div class="solution">刚度矩阵 \(K=k\begin{pmatrix}2&amp;-1&amp;0\\-1&amp;2&amp;-1\\0&amp;-1&amp;2\end{pmatrix}\)（\(k=4\,\mathrm{N/m}\)）。<br>
+        特征多项式 \(\det(K-\lambda I)=0\)，令 \(\mu=\lambda/k\)，则 \(\det\!\begin{pmatrix}2-\mu&amp;-1&amp;0\\-1&amp;2-\mu&amp;-1\\0&amp;-1&amp;2-\mu\end{pmatrix}=0\)。<br>
+        展开（沿第一行）：\((2-\mu)[(2-\mu)^{2}-1]-(-1)[-1(2-\mu)-0]=0\)<br>
+        \(=(2-\mu)[(2-\mu)^{2}-1]-(2-\mu)=0\)<br>
+        \(=(2-\mu)[(2-\mu)^{2}-2]=0\)<br>
+        根：\(2-\mu=0\Rightarrow\mu=2\)；\(2-\mu=\pm\sqrt{2}\Rightarrow\mu=2\mp\sqrt{2}\)。<br>
+        \(\mu_{1}=2-\sqrt{2}\approx 0.586\)（最低频，两端同向）、\(\mu_{2}=2\)、\(\mu_{3}=2+\sqrt{2}\approx 3.414\)（最高频）。<br>
+        频率 \(\omega_{i}=\sqrt{\lambda_{i}/m}=\sqrt{k\mu_{i}/m}=\sqrt{4\mu_{i}}\)：<br>
+        \(\omega_{1}=\sqrt{4(2-\sqrt{2})}=\sqrt{2(4-2\sqrt{2})}\approx\sqrt{2.343}\approx 1.531\,\mathrm{rad/s}\)<br>
+        \(\omega_{2}=\sqrt{8}\approx 2.828\,\mathrm{rad/s}\)<br>
+        \(\omega_{3}=\sqrt{4(2+\sqrt{2})}\approx\sqrt{13.657}\approx 3.696\,\mathrm{rad/s}\)<br>
+        本征模式（代入 \((K-\lambda I)\vec{v}=0\) 求）：<br>
+        \(\bullet\;\mu_{1}=2-\sqrt{2}\)：\(\vec{v}_{1}\propto(1,\,\sqrt{2},\,1)\)——两端同向同幅，中间幅度最大。<br>
+        \(\bullet\;\mu_{2}=2\)：\(\vec{v}_{2}\propto(1,\,0,\,-1)\)——反对称，中间不动。<br>
+        \(\bullet\;\mu_{3}=2+\sqrt{2}\)：\(\vec{v}_{3}\propto(1,\,-\sqrt{2},\,1)\)——两端同向同幅，中间反向最大。<br>
+        三个本征模式两两正交（对称矩阵！）——可作三个独立的简谐振子叠加。<br>
+        <span class="ans">\(\omega_{1}\approx 1.53,\;\omega_{2}\approx 2.83,\;\omega_{3}\approx 3.70\,\mathrm{rad/s}\)；模式形状 \((1,\sqrt{2},1)\)、\((1,0,-1)\)、\((1,-\sqrt{2},1)\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 惯量张量：三个质量均为 \(m=2.0\,\mathrm{kg}\) 的质点分别位于 \((1,1,0)\)、\((2,0,0)\)、\((0,2,0)\)。求关于原点的惯量张量 \(I\)，再求其本征值（主转动惯量）与本征矢量（主轴）。</summary>
+        <div class="hint">\(I_{xx}=\sum m(y^{2}+z^{2})\)，\(I_{xy}=-\sum m\,xy\)。所有点 \(z=0\)，所以 \(I_{xz}=I_{yz}=0\)，张量只有 \(I_{xx},I_{yy},I_{zz},I_{xy}\) 非零，化为 \(2\times 2\) 块对角处理。</div>
+        <div class="solution">三个质点：\((1,1,0)\)、\((2,0,0)\)、\((0,2,0)\)，各 \(m=2.0\,\mathrm{kg}\)。<br>
+        \(I_{xx}=\sum m(y^{2}+z^{2})=2(1^{2}+0)+2(0+0)+2(2^{2}+0)=2+0+8=10\,\mathrm{kg\,m^{2}}\)。<br>
+        \(I_{yy}=\sum m(x^{2}+z^{2})=2(1)+2(4)+2(0)=2+8+0=10\,\mathrm{kg\,m^{2}}\)。<br>
+        \(I_{zz}=\sum m(x^{2}+y^{2})=2(2)+2(4)+2(4)=4+8+8=20\,\mathrm{kg\,m^{2}}\)。<br>
+        \(I_{xy}=-\sum m\,xy=-[2(1)(1)+2(2)(0)+2(0)(2)]=-2\,\mathrm{kg\,m^{2}}\)。<br>
+        \(I_{xz}=-\sum m\,xz=0\)、\(I_{yz}=-\sum m\,yz=0\)。<br>
+        张量：\(I=\begin{pmatrix}10&amp;-2&amp;0\\-2&amp;10&amp;0\\0&amp;0&amp;20\end{pmatrix}\,\mathrm{kg\,m^{2}}\)。<br>
+        块对角，\(z\) 轴已经是主轴（本征值 \(20\)，本征矢量 \(\hat{z}\)）。剩 \(xy\) 块 \(\begin{pmatrix}10&amp;-2\\-2&amp;10\end{pmatrix}\)：<br>
+        \(\mathrm{tr}=20\)、\(\det=100-4=96\)。特征方程 \(\lambda^{2}-20\lambda+96=0\)，根 \(\lambda=\dfrac{20\pm\sqrt{400-384}}{2}=\dfrac{20\pm 4}{2}=12\) 或 \(8\)。<br>
+        \(\lambda=12\)：\(\begin{pmatrix}-2&amp;-2\\-2&amp;-2\end{pmatrix}\Rightarrow\vec{v}\propto(1,-1)\)，归一 \(\tfrac{1}{\sqrt{2}}(1,-1,0)\)。<br>
+        \(\lambda=8\)：\(\begin{pmatrix}2&amp;-2\\-2&amp;2\end{pmatrix}\Rightarrow\vec{v}\propto(1,1)\)，归一 \(\tfrac{1}{\sqrt{2}}(1,1,0)\)。<br>
+        <strong>主轴</strong>：旋转 \(45^{\circ}\)（沿 \((1,1)\) 与 \((1,-1)\)）。<strong>主转动惯量</strong>：\(I_{1}=8\)、\(I_{2}=12\)、\(I_{3}=20\,\mathrm{kg\,m^{2}}\)。在主轴坐标下 \(I=\mathrm{diag}(8,12,20)\)，绕主轴的 \(\vec{L}\) 与 \(\vec{\omega}\) 平行。<br>
+        <span class="ans">\(I=\begin{pmatrix}10&amp;-2&amp;0\\-2&amp;10&amp;0\\0&amp;0&amp;20\end{pmatrix}\,\mathrm{kg\,m^{2}}\)；主转动惯量 \(8,\,12,\,20\,\mathrm{kg\,m^{2}}\)；主轴 \(\tfrac{1}{\sqrt{2}}(1,1,0)\)、\(\tfrac{1}{\sqrt{2}}(1,-1,0)\)、\((0,0,1)\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 设二维旋转矩阵 \(R_{\theta}=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\\sin\theta&amp;\cos\theta\end{pmatrix}\)。求其本征值与本征矢量。结果说明了什么几何事实？\(\det R_{\theta}\) 是多少？</summary>
+        <div class="hint">\(\mathrm{tr}\,R=2\cos\theta\)、\(\det R=\cos^{2}\theta+\sin^{2}\theta=1\)。判别式 \((\mathrm{tr})^{2}-4\det\) 何时非负？</div>
+        <div class="solution">\(\mathrm{tr}\,R=2\cos\theta\)、\(\det R=1\)。<br>
+        特征方程 \(\lambda^{2}-2\cos\theta\,\lambda+1=0\)，根：<br>
+        \(\lambda=\dfrac{2\cos\theta\pm\sqrt{4\cos^{2}\theta-4}}{2}=\cos\theta\pm i\sin\theta=e^{\pm i\theta}\)。<br>
+        当 \(\theta\neq 0,\pi\) 时本征值是<strong>共轭复数</strong> \(e^{\pm i\theta}\)，<strong>无实的本征矢量</strong>——几何上这意味着<strong>纯旋转</strong>不变任何实方向（除恒等变换 \(\theta=0\) 与反射型 \(\theta=\pi\)）。复本征值的模 \(\|e^{\pm i\theta}\|=1\) 说明旋转<strong>保长度</strong>。<br>
+        \(\det R=1\)&gt;0 保向，与"旋转不翻转空间"一致。事实上 \(R_{\theta}\) 是正交矩阵（\(R^{\mathsf{T}}R=I\)），所有正交矩阵的本征值模为 1，对应在复平面上单位圆上的转动。<br>
+        <span class="ans">本征值 \(\lambda=e^{\pm i\theta}\)（复数，模为 1）；实本征矢量仅 \(\theta=0\) 时存在；\(\det R_{\theta}=1\)（旋转保向保面积）</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">二维线性变换 (2D linear transformation) 与本征矢量。拖动滑块改变 \(2\times 2\) 矩阵 \(A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}\) 的四个元素，观察：(1) <strong>单位圆</strong>（淡灰虚线）→ <strong>椭圆</strong>（蓝色实线）；(2) 基矢量 \(\hat{\imath}\)（红，从 \((1,0)\) → \((a,c)\)）、\(\hat{\jmath}\)（橙，从 \((0,1)\) → \((b,d)\)）；(3) 当本征值为实数时画出 <strong>本征矢量方向</strong>（绿线）——它们沿自身所在直线只被<strong>伸缩</strong>（或反向），绿色箭头是 \(A\vec{v}=\lambda\vec{v}\) 的像，标注本征值；(4) 实时显示 \(\det A\)、\(\mathrm{tr}\,A\) 与两个本征值。试着构造：纯旋转（\(a=d=0,b=-1,c=1\)，本征值变复数！）、剪切（\(a=d=1,b=1,c=0\)，亏损不可对角化）、反射（\(\det A<0\)）、纯伸缩（\(b=c=0\)）。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="720" height="460"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height; // 720 x 460
+
+          // ---- Layout ----
+          var OX = W / 2;            // 360 (origin x in px)
+          var OY = H / 2;            // 230
+          var SCALE = 60;            // 60 px = 1 unit → visible range ±6
+
+          // ---- Parameters (matrix entries) ----
+          var DEFAULT = { a: 1.4, b: 0.6, c: 0.6, d: 1.2 };
+          var params = { a: DEFAULT.a, b: DEFAULT.b, c: DEFAULT.c, d: DEFAULT.d };
+
+          // world → pixel
+          function wx(xw) { return OX + xw * SCALE; }
+          function wy(yw) { return OY - yw * SCALE; }  // flip y so +y is up
+
+          // ---- Eigen computation for 2×2 real matrix ----
+          function eigen(a, b, c, d) {
+            var tr = a + d;
+            var det = a * d - b * c;
+            var disc = tr * tr - 4 * det;     // = (a-d)² + 4bc
+            if (disc >= -1e-12) {
+              var sq = Math.sqrt(Math.max(0, disc));
+              var l1 = (tr + sq) / 2;
+              var l2 = (tr - sq) / 2;
+              function evec(l) {
+                // null space of [[a-l, b],[c, d-l]]
+                var vx, vy;
+                if (Math.abs(c) > 1e-9) { vx = l - d; vy = c; }
+                else if (Math.abs(b) > 1e-9) { vx = b; vy = l - a; }
+                else {
+                  // diagonal matrix
+                  if (Math.abs(l - a) < 1e-9) { vx = 1; vy = 0; }
+                  else { vx = 0; vy = 1; }
+                }
+                var m = Math.hypot(vx, vy) || 1;
+                return { x: vx / m, y: vy / m };
+              }
+              return { real: true, l1: l1, l2: l2, v1: evec(l1), v2: evec(l2), disc: disc };
+            } else {
+              return { real: false, re: tr / 2, im: Math.sqrt(-disc) / 2, disc: disc };
+            }
+          }
+
+          // ---- Simulation (static draw each frame) ----
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* nothing to integrate; pure viz */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var a = params.a, b = params.b, c = params.c, d = params.d;
+
+              // grid + axes
+              PS.drawGrid(ctx, { originX: OX, originY: OY, scale: SCALE, step: 1 });
+
+              // title and live readout
+              var det = a * d - b * c;
+              var tr = a + d;
+              var E = eigen(a, b, c, d);
+              var eigStr = E.real
+                ? 'λ₁ = ' + E.l1.toFixed(2) + ',  λ₂ = ' + E.l2.toFixed(2)
+                : 'λ = ' + E.re.toFixed(2) + ' ± ' + E.im.toFixed(2) + ' i  (复本征值, 含旋转)';
+
+              PS.drawText(ctx,
+                'A = ( a, b ; c, d ) = ( ' + a.toFixed(2) + ', ' + b.toFixed(2) +
+                ' ; ' + c.toFixed(2) + ', ' + d.toFixed(2) + ' )',
+                14, 22, { font: '14px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'det A = ' + det.toFixed(3) + '   |   tr A = ' + tr.toFixed(2) +
+                '   |   ' + eigStr,
+                14, 42, { font: '13px system-ui', color: PS.colors.text });
+
+              // === original unit circle (light dashed) ===
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              for (var i = 0; i <= 120; i++) {
+                var th = 2 * Math.PI * i / 120;
+                var px = wx(Math.cos(th));
+                var py = wy(Math.sin(th));
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // === transformed ellipse (unit circle image) ===
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              for (var i = 0; i <= 200; i++) {
+                var th = 2 * Math.PI * i / 200;
+                var cxw = Math.cos(th), cyw = Math.sin(th);
+                var txw = a * cxw + b * cyw;
+                var tyw = c * cxw + d * cyw;
+                var px = wx(txw);
+                var py = wy(tyw);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.closePath();
+              ctx.stroke();
+              ctx.restore();
+
+              // === original basis vectors i_hat, j_hat (dashed gray) ===
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.fillStyle = PS.colors.axis;
+              ctx.lineWidth = 1.4;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(wx(1), wy(0)); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(wx(0), wy(1)); ctx.stroke();
+              ctx.setLineDash([]);
+              PS.drawText(ctx, 'î', wx(1) + 6, wy(0) - 4,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'ĵ', wx(0) + 6, wy(1) + 4,
+                { font: '12px system-ui', color: PS.colors.text });
+              ctx.restore();
+
+              // === transformed basis vectors A·î = (a, c), A·ĵ = (b, d) ===
+              PS.drawArrow(ctx, OX, OY, wx(a), wy(c), PS.colors.accent, 'Aî=(a,c)');
+              PS.drawArrow(ctx, OX, OY, wx(b), wy(d), '#ea580c', 'Aĵ=(b,d)');
+
+              // === eigenvectors (only when real) ===
+              if (E.real && Math.abs(E.l1 - E.l2) > 1e-9) {
+                // distinct real eigenvalues → two invariant lines
+                drawEigenLine(ctx, E.v1, E.l1, 'λ₁');
+                drawEigenLine(ctx, E.v2, E.l2, 'λ₂');
+              } else if (E.real) {
+                // repeated real eigenvalue: only one eigendirection unless A is λI
+                // If A is λI (b=c=0, a=d=λ), every direction is invariant — show note instead.
+                if (Math.abs(b) < 1e-9 && Math.abs(c) < 1e-9) {
+                  PS.drawText(ctx, 'A = λI：所有方向都是本征方向 (任意伸缩)',
+                    14, H - 12, { font: '12px system-ui', color: PS.colors.text });
+                } else {
+                  drawEigenLine(ctx, E.v1, E.l1, 'λ (重根)');
+                }
+              }
+
+              function drawEigenLine(ctx, v, lambda, lbl) {
+                // invariant line through origin: span of v
+                // draw the line in light green dashed, then the image arrow A·v = λ·v
+                var L = 6; // line extent in world units
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = 0.5;
+                ctx.setLineDash([5, 4]);
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(wx(-L * v.x), wy(-L * v.y));
+                ctx.lineTo(wx(L * v.x), wy(L * v.y));
+                ctx.stroke();
+                ctx.restore();
+
+                // image of unit eigenvector: A v = λ v, so it's just scaled by λ
+                var tipx = lambda * v.x;
+                var tipy = lambda * v.y;
+                PS.drawArrow(ctx, OX, OY, wx(tipx), wy(tipy), PS.colors.accent2,
+                  lbl + '=' + lambda.toFixed(2));
+                // small marker for the unit eigenvector itself
+                PS.drawCircle(ctx, wx(v.x), wy(v.y), 4,
+                  { fill: PS.colors.accent2 });
+              }
+
+              // === Footer note ===
+              var note;
+              if (!E.real) {
+                note = '判别式 Δ = (a-d)² + 4bc < 0 → 复本征值，A 含旋转分量，无实的本征方向';
+              } else if (Math.abs(E.l1 - E.l2) < 1e-9) {
+                note = '本征值重根：若 A≠λI 则只有一个本征方向（亏损矩阵，不可对角化，如剪切）';
+              } else if (Math.abs(det) < 0.05) {
+                note = 'det ≈ 0：A 把平面"压扁"，不可逆（奇异）';
+              } else {
+                note = '两个实本征矢量（绿）方向不变，仅被 λ 伸缩；|det A| = 单位圆变成椭圆的面积倍数';
+              }
+              PS.drawText(ctx, note, 14, H - 12,
+                { font: '12px system-ui', color: PS.colors.text });
+            },
+          });
+
+          // ---- Controls ----
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'a', label: 'a', min: -2, max: 2, step: 0.05, value: DEFAULT.a },
+            { type: 'slider', key: 'b', label: 'b', min: -2, max: 2, step: 0.05, value: DEFAULT.b },
+            { type: 'slider', key: 'c', label: 'c', min: -2, max: 2, step: 0.05, value: DEFAULT.c },
+            { type: 'slider', key: 'd', label: 'd', min: -2, max: 2, step: 0.05, value: DEFAULT.d },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset (单位阵)' },
+            { type: 'button', key: 'shear', label: '剪切 Shear' },
+            { type: 'button', key: 'rot',   label: '旋转 90°' },
+          ]);
+          ['a','b','c','d'].forEach(function (k) {
+            ctl.on(k, function (v) { params[k] = v; });
+          });
+          function syncSliders() {
+            var sliders = document.getElementById('controls-12').querySelectorAll('input[type=range]');
+            ['a','b','c','d'].forEach(function (k, i) {
+              params[k] = DEFAULT[k];
+              ctl.set(k, DEFAULT[k]);
+              if (sliders[i]) sliders[i].value = String(DEFAULT[k]);
+            });
+          }
+          ctl.on('reset', function () { syncSliders(); sim.reset(); });
+          ctl.on('shear', function () {
+            params.a = 1; params.b = 1; params.c = 0; params.d = 1;
+            var sliders = document.getElementById('controls-12').querySelectorAll('input[type=range]');
+            ['a','b','c','d'].forEach(function (k, i) {
+              ctl.set(k, params[k]);
+              if (sliders[i]) sliders[i].value = String(params[k]);
+            });
+          });
+          ctl.on('rot', function () {
+            // 90° rotation: a=0, b=-1, c=1, d=0
+            params.a = 0; params.b = -1; params.c = 1; params.d = 0;
+            var sliders = document.getElementById('controls-12').querySelectorAll('input[type=range]');
+            ['a','b','c','d'].forEach(function (k, i) {
+              ctl.set(k, params[k]);
+              if (sliders[i]) sliders[i].value = String(params[k]);
+            });
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>矩阵——矢量乘法</strong>：\((A\vec{x})_{i}=\sum_{j}A_{ij}x_{j}\)。<strong>矩阵——矩阵乘法</strong>：\((AB)_{ij}=\sum_{k}A_{ik}B_{kj}\)（行乘列）。\(AB\neq BA\) 一般成立。</li>
+        <li><strong>行列式</strong>：\(2\times 2\)，\(\det\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}=ad-bc\)。几何意义 = 列矢量张成的<strong>有向面积/体积</strong>。\(\det(AB)=\det A\cdot\det B\)。\(\det A=0\iff A\) 不可逆。</li>
+        <li><strong>逆矩阵</strong>：\(AA^{-1}=I\)。\(2\times 2\)：\(A^{-1}=\dfrac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix}\)。穿袜脱袜：\((AB)^{-1}=B^{-1}A^{-1}\)。</li>
+        <li><strong>高斯消元</strong>：对增广矩阵 \([A\,|\,\vec{b}]\) 做初等行变换化为上三角，再回代。本质是把 \(A\) 分解为 \(LU\)（下三角 × 上三角）。</li>
+        <li><strong>本征值问题</strong>：\(A\vec{v}=\lambda\vec{v}\)，\(\det(A-\lambda I)=0\)。\(2\times 2\)：\(\lambda^{2}-(\mathrm{tr}\,A)\lambda+\det A=0\)。</li>
+        <li><strong>对角化</strong>：\(A=PDP^{-1}\)，\(D\) 由本征值构成。对称矩阵 \(S=S^{\mathsf{T}}\) 总可正交对角化 \(S=ODO^{\mathsf{T}}\)，\(O\) 由<strong>正交归一</strong>本征矢量排成；不同本征值的本征矢量两两正交。</li>
+        <li><strong>物理应用</strong>：耦合振子 \(K\vec{a}=\omega^{2}m\vec{a}\) → 简正模频率 = \(\sqrt{\lambda_{i}/m}\)；惯量张量本征矢量 = 主轴，本征值 = 主转动惯量；量子力学中算符的本征态/本征值 = 测量结果。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;A^{-1}=\frac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix},\qquad \det(A-\lambda I)=0,\qquad S=ODO^{\mathsf{T}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;K\vec{a}=\omega^{2}m\,\vec{a}\;\Rightarrow\;\omega_{i}=\sqrt{\lambda_{i}/m}\quad\text{(简正模)},\qquad \vec{L}=I\vec{\omega}\;\xrightarrow{\text{主轴}}\;\vec{L}\parallel\vec{\omega}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 几何光学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第6章 · 光学 Optics</p>
+      <h1>几何光学 <span class="en-title">Geometric Optics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>阐明<strong>光线模型</strong> (ray model) 成立的条件——波长 \(\lambda\) 远小于孔径或障碍物尺度——并说明这一近似等价于<strong>波动方程在 \(\lambda\to 0\) 极限下</strong>的几何光学极限 (geometric-optics limit)。</li>
+        <li>应用<strong>反射定律</strong> (law of reflection) 与<strong>斯涅尔定律</strong> (Snell's law) \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\)，并强调所有入射角、反射角、折射角都<strong>从法线 (normal) 量起</strong>。</li>
+        <li>由 \(n=c/v\) 计算<strong>折射率</strong> (index of refraction)，论证 \(n\geq 1\)，并指出光从真空进入介质后<strong>频率不变、波长变短、相速变慢</strong>。</li>
+        <li>由 \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\) 推出<strong>临界角</strong> (critical angle) \(\sin\theta_{c}=n_{2}/n_{1}\)（\(n_{1}>n_{2}\)），判断<strong>全内反射</strong> (total internal reflection, TIR) 发生条件，并解释光纤、潜望镜、双色镜等器件原理。</li>
+        <li>用<strong>惠更斯原理</strong> (Huygens' principle) 通过作图法推导反射定律与折射定律，理解折射的物理根源在于不同介质中光速不同。</li>
+        <li>用<strong>费马原理</strong> (Fermat's principle of least time) 严格推导反射定律与 Snell 定律，并理解「光程」与「时间」等价的深层意义。</li>
+        <li>解释<strong>色散</strong> (dispersion) 现象：\(n=n(\lambda)\) 使不同颜色的光在棱镜中以不同角度偏折，形成光谱；分析彩虹形成的两次折射加一次全内反射的几何。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 光线模型与几何光学极限 The Ray Model &amp; the Geometric-Optics Limit</h3>
+      <p>光本质上是一种电磁波 (electromagnetic wave)，但当波长 \(\lambda\) 远小于所涉孔径、障碍物或界面的特征尺度时，<strong>衍射 (diffraction) 与干涉 (interference)</strong> 现象几乎不可察觉，光看起来沿<strong>直线传播</strong>。这种「波长趋零」的极限称作<strong>几何光学极限</strong> (geometric-optics limit)，此时我们用一组带方向的直线——<strong>光线</strong> (rays)——来描写光的传播路径，而不再关心波的相位结构。</p>
+      <p>更精确地说：把波动方程 \(\partial^{2}E/\partial t^{2}=v^{2}\nabla^{2}E\) 在 \(\lambda\to 0\) 下做渐近分析（严格理论即<strong>几何绕射理论</strong> / Keller et al.），可以得到光线沿<strong>程函方程</strong> (eikonal equation) \(\lvert\nabla\mathcal{S}\rvert^{2}=n^{2}\) 描写的曲线传播，\(\mathcal{S}\) 为光程函数。本章不展开此理论，只取其结论：在几何光学近似下，<em>光沿直线传播，遇到界面遵循反射定律与折射定律</em>。</p>
+      <p>典型判据：人眼瞳孔直径约 \(3\,\mathrm{mm}\)，远大于可见光波长 \(\lambda\sim 5\times10^{-7}\,\mathrm{m}\)，比值 \(\sim 6\times10^{3}\)，故日常光学（透镜、镜子、棱镜）均可用光线模型。但针孔直径小到 \(10\,\mu\mathrm{m}\) 时，衍射图样就开始显著，几何光学失效。</p>
+      <div class="key-terms">ray (光线), geometric-optics limit (几何光学极限), eikonal equation (程函方程), diffraction (衍射)</div>
+
+      <h3>2. 反射定律 Law of Reflection</h3>
+      <p>一束光遇到光滑界面（如镜面、玻璃表面）时，部分光被反射回原介质。实验与理论都给出：</p>
+      <div class="formula">\[ \theta_{i}=\theta_{r}\qquad(\text{入射角}=\text{反射角，均由法线量起}) \]</div>
+      <p>此外，<strong>入射光线、反射光线、法线</strong>三者共面（称作<strong>入射面</strong> plane of incidence）。注意：所有角度一律从法线量起，不能从界面量起，这是初学者最常见的错误。</p>
+      <p>光滑表面（反射定律逐点成立）称为<strong>镜面反射</strong> (specular reflection)；粗糙表面因各点法线方向不同，反射光向各方向散开，称为<strong>漫反射</strong> (diffuse reflection)。日常物体之所以「可见」多亏漫反射——纯镜面物体除非恰好朝向你，否则你看不见它本身。</p>
+      <div class="key-terms">law of reflection (反射定律), angle of incidence (入射角), angle of reflection (反射角), normal (法线), plane of incidence (入射面), specular reflection (镜面反射), diffuse reflection (漫反射)</div>
+
+      <h3>3. 折射率 Index of Refraction</h3>
+      <p>真空中光速为常数 \(c=2.998\times10^{8}\,\mathrm{m/s}\)（近似 \(3.0\times10^{8}\,\mathrm{m/s}\)）。在透明介质中，光与介质中的束缚电子相互作用，<strong>相速</strong> (phase speed) 变慢：</p>
+      <div class="formula">\[ \boxed{\;v=\frac{c}{n}\;}\qquad\Longleftrightarrow\qquad n\equiv\frac{c}{v} \]</div>
+      <p>比例系数 \(n\) 即该介质的<strong>折射率</strong> (index of refraction)，无量纲。由于 \(v\leq c\)（狭义相对论要求），有 \(n\geq 1\)。常见值：</p>
+      <ul>
+        <li>真空：\(n=1\)（精确）</li>
+        <li>空气（STP）：\(n=1.0003\)（近似取 1）</li>
+        <li>水（\(20^{\circ}\mathrm{C}\)）：\(n=1.333\)</li>
+        <li>冕牌玻璃 (crown glass)：\(n\approx 1.52\)</li>
+        <li>火石玻璃 (flint glass)：\(n\approx 1.62\)</li>
+        <li>金刚石 (diamond)：\(n\approx 2.42\)（高折射率使钻石璀璨）</li>
+      </ul>
+      <p><strong>频率不变性</strong>是关键：光从一种介质进入另一种介质时，<em>频率 \(f\) 由波源决定，跨界面时连续、不变</em>（这是边界条件相容性所要求）。由 \(v=\lambda f\)，\(v\) 变慢则 \(\lambda\) 必然变短：</p>
+      <div class="formula">\[ \lambda_{\text{介质}}=\frac{v}{f}=\frac{c/n}{f}=\frac{\lambda_{0}}{n} \]</div>
+      <p>其中 \(\lambda_{0}=c/f\) 为真空波长。例如绿光 \(\lambda_{0}=550\,\mathrm{nm}\) 进入玻璃（\(n=1.5\)）后波长变为 \(367\,\mathrm{nm}\)，但<strong>仍然是绿色</strong>——颜色由频率（而非波长）决定。</p>
+      <div class="key-terms">index of refraction (折射率), phase speed (相速), frequency invariance (频率不变), wavelength shortening (波长变短)</div>
+
+      <h3>4. 斯涅尔定律 Snell's Law</h3>
+      <p>光从一种介质进入另一种介质（界面光滑）时，除部分反射外，一般还有部分<strong>折射</strong> (refraction) 进入另一介质。折射方向由 Snell 定律给出：</p>
+      <div class="formula">\[ \boxed{\;n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\;} \]</div>
+      <p>其中 \(\theta_{1},\theta_{2}\) 分别是入射角与折射角（均从法线量起），\(n_{1},n_{2}\) 是两介质的折射率。Snell 定律可改写为：</p>
+      <div class="formula">\[ \sin\theta_{2}=\frac{n_{1}}{n_{2}}\sin\theta_{1} \]</div>
+      <p>定性结论：</p>
+      <ul>
+        <li>当 \(n_{2}>n_{1}\)（光从光疏进入光密，如空气→水），\(\sin\theta_{2}<\sin\theta_{1}\)，<strong>光线向法线弯曲</strong>（\(\theta_{2}<\theta_{1}\)）。</li>
+        <li>当 \(n_{2}<n_{1}\)（光从光密进入光疏，如水→空气），\(\sin\theta_{2}>\sin\theta_{1}\)，<strong>光线远离法线弯曲</strong>。</li>
+        <li>垂直入射（\(\theta_{1}=0\)）时 \(\theta_{2}=0\)，光线方向不变，但有反射与折射的强度分配。</li>
+      </ul>
+      <p>Snell 定律最早由荷兰数学家 Willebrord Snellius 于 1621 年通过实验发现，但其物理根源可由惠更斯原理（下节）或费马原理（推导节）严格导出。</p>
+      <div class="key-terms">refraction (折射), Snell's law (斯涅尔定律), optically dense medium (光密介质), optically rare medium (光疏介质)</div>
+
+      <h3>5. 全内反射与临界角 Total Internal Reflection &amp; Critical Angle</h3>
+      <p>当光从光密介质射向光疏介质（\(n_{1}>n_{2}\)）时，折射角 \(\theta_{2}\) 大于入射角 \(\theta_{1}\)；随 \(\theta_{1}\) 增大，\(\theta_{2}\) 率先到达 \(90^{\circ}\)。此时的入射角称为<strong>临界角</strong> (critical angle) \(\theta_{c}\)：</p>
+      <div class="formula">\[ n_{1}\sin\theta_{c}=n_{2}\sin 90^{\circ}=n_{2}\qquad\Longrightarrow\qquad \boxed{\;\sin\theta_{c}=\frac{n_{2}}{n_{1}}\;}\quad(n_{1}>n_{2}) \]</div>
+      <p>当 \(\theta_{1}>\theta_{c}\)，方程 \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\) 无实数解（因 \(\sin\theta_{2}\) 将大于 1），<em>不存在折射光线</em>——所有入射能量都被反射回原介质，这种现象称为<strong>全内反射</strong> (total internal reflection, TIR)。</p>
+      <p>典型临界角数值：水→空气 \(\theta_{c}=\arcsin(1/1.333)\approx 48.6^{\circ}\)；玻璃→空气 \(\theta_{c}=\arcsin(1/1.50)\approx 41.8^{\circ}\)；金刚石→空气 \(\theta_{c}=\arcsin(1/2.42)\approx 24.4^{\circ}\)（金刚石临界角小，故易发生 TIR，是其闪烁的原因之一）。</p>
+      <p><strong>关键判据</strong>：TIR 只在光从光密（\(n\) 大）走向光疏（\(n\) 小）时才可能发生；反向（光疏 → 光密）一定有折射光，不可能 TIR。</p>
+      <p><strong>应用</strong>：光纤（optical fiber）利用芯-包层界面的 TIR 把光约束在纤芯中无损传播，是现代通信的基石；双筒望远镜中的<strong>正置棱镜</strong> (Porro prism) 用两次 TIR 实现全反射，比镀银镜更亮；反射式望远镜的副镜有时也用 TIR 棱镜。</p>
+      <div class="key-terms">total internal reflection / TIR (全内反射), critical angle (临界角), optical fiber (光纤), Porro prism (正置棱镜)</div>
+
+      <h3>6. 惠更斯原理 Huygens' Principle</h3>
+      <p>荷兰物理学家 Christiaan Huygens（1678）提出：<em>波前 (wavefront) 上每一点都可视为发出次级球面子波 (secondary spherical wavelets) 的新波源；经过时间 \(\Delta t\) 后，新波前是这些子波的包络 (envelope)。</em></p>
+      <p>用 Huygens 作图法可直接导出反射定律与 Snell 定律：</p>
+      <ul>
+        <li><strong>反射</strong>：平面波 \(AB\) 以角度 \(\theta_{1}\) 入射到镜面，\(A\) 先到达镜面并发出子波；当 \(B\) 传到镜面 \(B'\) 时（耗时 \(\Delta t=B B'/v\)），\(A\) 处的子波已扩展到半径 \(r=v\Delta t=BB'\) 的半球。新波前 \(A'B'\)（即子波包络的切面）与镜面夹角等于 \(\theta_{1}\)，由几何对称即 \(\theta_{r}=\theta_{1}\)。</li>
+        <li><strong>折射</strong>：同理，但子波在介质 2 中以速度 \(v_{2}=c/n_{2}\) 传播，在介质 1 中以 \(v_{1}=c/n_{1}\) 传播。由几何关系 \(\sin\theta_{1}=v_{1}\Delta t/AB\)、\(\sin\theta_{2}=v_{2}\Delta t/AB\)，相除即得 \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\)。这正说明<strong>折射的物理根源是光在不同介质中速度不同</strong>。</li>
+      </ul>
+      <p>惠更斯原理是纯粹的几何构造，但它不仅给出了正确的反射与折射定律，还自然解释了<strong>衍射</strong>（当障碍物尺度与 \(\lambda\) 相当时，子波包络偏离直线）。它是「波动性」最低限度的体现——几何光学是其在 \(\lambda\to 0\) 下的特例。</p>
+      <div class="key-terms">Huygens' principle (惠更斯原理), wavefront (波前), secondary wavelet (次级子波), envelope (包络)</div>
+
+      <h3>7. 费马原理 Fermat's Principle of Least Time</h3>
+      <p>法国数学家 Pierre de Fermat（1662）提出： <em>光在两点之间沿所需<strong>时间最短</strong>（更严格地：取极值 / stationary）的路径传播。</em>由于时间 \(t=\int ds/v=(1/c)\int n\,ds\)，时间最短等价于<strong>光程</strong> (optical path length) \(\int n\,ds\) 取极值。</p>
+      <div class="formula">\[ \delta\!\int_{A}^{B}n\,ds=0\qquad\text{(变分为零，即路径取极值)} \]</div>
+      <p>费马原理是几何光学的「最小作用量原理」，<em>由它可统一推导反射定律与 Snell 定律</em>（推导见下节）。它还预言：在折射率连续变化的介质（如大气层、海市蜃楼）中，光线沿<strong>弯曲路径</strong>传播，使光线「绕过」最短几何距离但走时间最短的轨迹。</p>
+      <p>费马原理的哲学意义在物理史上引发过大争论：光仿佛「知道」哪条路最快。现代理解：波动叠加使非极值路径相消干涉，只剩极值路径有可观的概率振幅——这是量子电动力学的经典极限。</p>
+      <div class="key-terms">Fermat's principle (费马原理), optical path length (光程), stationary path (极值路径)</div>
+
+      <h3>8. 色散：棱镜与彩虹 Dispersion: Prisms &amp; Rainbows</h3>
+      <p>对所有透明介质，折射率 \(n\) 实际上<strong>依赖于波长</strong>：\(n=n(\lambda)\)，这种现象称为<strong>色散</strong> (dispersion)。对大多数透明材料，「<strong>正常色散</strong>」(normal dispersion) 下短波长（蓝紫光）折射率较大，长波长（红光）折射率较小。</p>
+      <p>典型冕牌玻璃在可见光范围内：\(n(\text{紫}\,420\,\mathrm{nm})\approx 1.530\)，\(n(\text{红}\,700\,\mathrm{nm})\approx 1.513\)。色散能力由 <strong>Abbé 数</strong> \(V_{D}=(n_{D}-1)/(n_{F}-n_{C})\) 量化（\(D,F,C\) 是特定夫琅禾费谱线）。Abbé 数越大，色散越弱。</p>
+      <p><strong>棱镜分光</strong>：白光通过三角棱镜，因不同颜色折射率不同，折射角不同，被分解成彩色光谱。在<strong>最小偏向角</strong> (minimum deviation) 配置下（光线对称穿过棱镜），有</p>
+      <div class="formula">\[ n=\frac{\sin\!\bigl(\tfrac{A+\delta_{m}}{2}\bigr)}{\sin\!\bigl(\tfrac{A}{2}\bigr)} \]</div>
+      <p>其中 \(A\) 为棱镜顶角 (apex angle)，\(\delta_{m}\) 为最小偏向角。这是测量透明固体折射率最准确的方法之一。</p>
+      <p><strong>彩虹</strong>：日光进入球形水滴时折射（首次），在水滴内表面发生<strong>全内反射</strong>（一次），再折射出水滴。两次折射间的色散使不同颜色以略不同的角度出射。笛卡尔 (Descartes, 1637) 用几何光学首次定量分析了彩虹，得出主虹 (primary rainbow) 的<strong>笛卡尔角</strong>约 \(42^{\circ}\)（红光在外、紫光在内）。副虹 (secondary rainbow) 经两次内反射，角约 \(51^{\circ}\)，颜色顺序反转。</p>
+      <div class="key-terms">dispersion (色散), normal dispersion (正常色散), Abbe number (阿贝数), prism (棱镜), apex angle (顶角), minimum deviation (最小偏向角), rainbow (彩虹), Descartes' ray (笛卡尔光线)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>D1. 由费马原理导出 Snell 定律 Deriving Snell's Law from Fermat's Principle</h3>
+      <p>设有两个点 \(A\) 与 \(B\)，分别在折射率为 \(n_{1}\)、\(n_{2}\) 的两种介质中，界面为一平面（取为 \(y=0\)，\(y>0\) 为介质 1，\(y<0\) 为介质 2）。设 \(A=(x_{A},y_{A})\)（\(y_{A}>0\)），\(B=(x_{B},y_{B})\)（\(y_{B}<0\)）。光从 \(A\) 出发，在界面上某点 \(P=(x,0)\) 折射后到达 \(B\)。问：\(x\) 取何值时，光程 \(\Lambda=n_{1}|AP|+n_{2}|PB|\) 取极值？</p>
+
+      <p><strong>第 1 步：写出光程。</strong></p>
+      <p>记 \(L_{1}=|AP|=\sqrt{(x-x_{A})^{2}+y_{A}^{2}}\)，\(L_{2}=|PB|=\sqrt{(x_{B}-x)^{2}+y_{B}^{2}}\)。光程：
+        \[ \Lambda(x)=n_{1}L_{1}+n_{2}L_{2}. \]</p>
+
+      <p><strong>第 2 步：费马条件 \(\mathrm{d}\Lambda/\mathrm{d}x=0\)。</strong></p>
+      <p>对 \(x\) 求导：
+        \[ \frac{\mathrm{d}\Lambda}{\mathrm{d}x}=n_{1}\cdot\frac{x-x_{A}}{L_{1}}+n_{2}\cdot\frac{-(x_{B}-x)}{L_{2}}=0. \]
+        注意到 \((x-x_{A})/L_{1}\) 正是入射角 \(\theta_{1}\) 的正弦（入射光线水平位移除以光线长度），而 \((x_{B}-x)/L_{2}\) 是折射角 \(\theta_{2}\) 的正弦。故
+        \[ n_{1}\sin\theta_{1}-n_{2}\sin\theta_{2}=0. \]</p>
+
+      <p><strong>第 3 步：读出 Snell 定律。</strong></p>
+      <div class="formula">\[ \boxed{\;n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\;} \]</div>
+      <p>二阶导 \(\mathrm{d}^{2}\Lambda/\mathrm{d}x^{2}>0\)（光程是 \(x\) 的凸函数），故这是<strong>极小值</strong>——光程取<strong>最短</strong>，与费马原理一致。</p>
+
+      <h3>D2. 由费马原理导出反射定律 Deriving the Law of Reflection from Fermat</h3>
+      <p>设 \(A\)、\(B\) 在同一种介质中（\(n=1\)），都位于镜面（仍取为 \(y=0\)）上方，求光线经镜面反射从 \(A\) 到 \(B\) 的路径。设 \(A=(x_{A},y_{A})\)，\(B=(x_{B},y_{B})\)，\(y_{A},y_{B}>0\)，反射点 \(P=(x,0)\)。光程：
+        \[ \Lambda(x)=\sqrt{(x-x_{A})^{2}+y_{A}^{2}}+\sqrt{(x_{B}-x)^{2}+y_{B}^{2}}. \]</p>
+      <p>对 \(x\) 求导并令其为零：
+        \[ \frac{x-x_{A}}{L_{1}}-\frac{x_{B}-x}{L_{2}}=0\quad\Longrightarrow\quad \sin\theta_{i}=\sin\theta_{r}, \]
+        其中 \(\theta_{i}\) 为入射角、\(\theta_{r}\) 为反射角（均由法线量起）。两角都在 \([0,\pi/2]\) 内故相等：</p>
+      <div class="formula">\[ \boxed{\;\theta_{i}=\theta_{r}\;} \]</div>
+      <p><strong>等效镜像法</strong>：可证此极值路径等价于「\(B\) 关于镜面的镜像 \(B'\) 与 \(A\) 的直线」与镜面交点。这是研究反射光学的强大几何工具。</p>
+
+      <h3>D3. 临界角与全内反射的几何 The Critical Angle &amp; TIR</h3>
+      <p>由 Snell 定律 \(\sin\theta_{2}=(n_{1}/n_{2})\sin\theta_{1}\)。设 \(n_{1}>n_{2}\)（光密 → 光疏），则 \(n_{1}/n_{2}>1\)。<strong>临界角</strong> \(\theta_{c}\) 定义为 \(\theta_{2}=90^{\circ}\) 时的 \(\theta_{1}\)：</p>
+      <div class="formula">\[ \sin\theta_{c}=\frac{n_{2}}{n_{1}}\cdot\sin 90^{\circ}=\frac{n_{2}}{n_{1}}\quad\Longrightarrow\quad \theta_{c}=\arcsin\!\bigl(n_{2}/n_{1}\bigr) \]</div>
+      <p>当 \(\theta_{1}>\theta_{c}\)，\(\sin\theta_{2}=(n_{1}/n_{2})\sin\theta_{1}>1\)，无实数解。物理上：介质 2 中不存在能匹配入射波相位的折射波，能量只能全部反射回介质 1。<em>电磁理论的严格分析</em>（Fresnel 方程）显示，在 TIR 情形下介质 2 中存在一个沿界面方向衰减的<strong>隐失波</strong> (evanescent wave)，但其时间平均 Poynting 矢量垂直界面分量为零，故没有能量传入介质 2。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 光在玻璃中的速度与波长 Speed &amp; Wavelength Inside Glass</h4>
+        <p class="example-statement">一束单色绿光，真空波长 \(\lambda_{0}=550\,\mathrm{nm}\)，进入一块折射率 \(n=1.52\) 的冕牌玻璃。求：(a) 玻璃中光速 \(v\)；(b) 光的频率 \(f\)（真空中与玻璃中各多少）；(c) 玻璃中光的波长 \(\lambda\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 \(n=c/v\)，
+            \[ v=\frac{c}{n}=\frac{3.00\times10^{8}}{1.52}=1.97\times10^{8}\,\mathrm{m/s}. \]
+            约为真空中光速的 \(2/3\)。</p>
+          <p class="step">(b) 频率由波源决定，跨介质<strong>不变</strong>。在真空中：
+            \[ f=\frac{c}{\lambda_{0}}=\frac{3.00\times10^{8}}{550\times10^{-9}}=5.45\times10^{14}\,\mathrm{Hz}. \]
+            玻璃中频率仍为 \(f=5.45\times10^{14}\,\mathrm{Hz}\)。</p>
+          <p class="step">(c) 玻璃中波长：
+            \[ \lambda=\frac{\lambda_{0}}{n}=\frac{550\,\mathrm{nm}}{1.52}=362\,\mathrm{nm}. \]
+            校验：\(v=f\lambda=(5.45\times10^{14})(362\times10^{-9})=1.97\times10^{8}\,\mathrm{m/s}\)，与 (a) 一致 ✓。</p>
+          <p><span class="ans">答案：\(v=1.97\times10^{8}\,\mathrm{m/s}\)；\(f=5.45\times10^{14}\,\mathrm{Hz}\)（介质内外相同）；\(\lambda=362\,\mathrm{nm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 玻璃平板的侧向位移 Lateral Shift Through a Glass Slab</h4>
+        <p class="example-statement">空气中一束光以入射角 \(\theta_{1}=45^{\circ}\)（从法线量起）打到一块厚度 \(t=10.0\,\mathrm{cm}\)、折射率 \(n=1.50\) 的平行平面玻璃板上。求：(a) 玻璃中的折射角 \(\theta_{2}\)；(b) 出射光线相对于入射光线延续方向的<strong>侧向位移</strong> \(d\)；(c) 出射方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 Snell 定律（空气 \(n_{\text{air}}\approx 1\)）：
+            \[ \sin\theta_{2}=\frac{\sin 45^{\circ}}{1.50}=\frac{0.7071}{1.50}=0.4714, \]
+            \[ \theta_{2}=\arcsin(0.4714)=28.13^{\circ}. \]</p>
+          <p class="step">(b) 在玻璃内行进距离为 \(t/\cos\theta_{2}\)，光在板内的水平位移与出射后再折射回原方向造成的几何关系给出经典公式：
+            \[ d=\frac{t\,\sin(\theta_{1}-\theta_{2})}{\cos\theta_{2}}. \]
+            代入：
+            \[ d=\frac{(10.0\,\mathrm{cm})\,\sin(45^{\circ}-28.13^{\circ})}{\cos 28.13^{\circ}}=\frac{(10.0)\,(0.2902)}{0.8820}=3.29\,\mathrm{cm}. \]</p>
+          <p class="step">(c) 玻璃板两表面平行，光线两次折射方向变化抵消，<strong>出射光线与入射光线平行</strong>（无方向偏转），只是侧移了 \(3.29\,\mathrm{cm}\)。这是「平行平板不改变像的方向」的基础。</p>
+          <p><span class="ans">答案：\(\theta_{2}=28.1^{\circ}\)；侧向位移 \(d\approx 3.29\,\mathrm{cm}\)；出射光线平行于入射光线。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 水中物体的表观深度 Apparent Depth of a Submerged Object</h4>
+        <p class="example-statement">一枚硬币静止在水池底部，实际深度 \(d=2.00\,\mathrm{m}\)。水的折射率 \(n_{\text{水}}=1.333\)，空气 \(n_{\text{空}}\approx 1.000\)。从空气正上方接近法线方向观察时，硬币的<strong>表观深度</strong> \(d'\) 为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>设硬币位于 \(P\) 点，深度 \(d\)。考虑从 \(P\) 发出的两条相近光线，它们与法线夹角为 \(\theta_{\text{水}}\)（水中），折射入空气后变为 \(\theta_{\text{空}}\)，由 Snell 定律 \(n_{\text{水}}\sin\theta_{\text{水}}=n_{\text{空}}\sin\theta_{\text{空}}\)。折射光的反向延长线交于 \(P'\)（虚像），其深度 \(d'\)。</p>
+          <p class="step">近法线近似（\(\sin\theta\approx\tan\theta\)）下，由几何 \(\tan\theta_{\text{水}}=x/d\)、\(\tan\theta_{\text{空}}=x/d'\)，其中 \(x\) 是出射点偏离法线的水平距离。两式相除并代入 Snell：
+            \[ \frac{d'}{d}=\frac{\tan\theta_{\text{水}}}{\tan\theta_{\text{空}}}\approx\frac{\sin\theta_{\text{水}}}{\sin\theta_{\text{空}}}=\frac{n_{\text{空}}}{n_{\text{水}}}, \]
+            \[ \boxed{\;d'=\frac{n_{\text{空}}}{n_{\text{水}}}\,d=\frac{d}{n_{\text{水}}}\;}\quad(n_{\text{空}}=1). \]</p>
+          <p class="step">代入数值：
+            \[ d'=\frac{2.00\,\mathrm{m}}{1.333}=1.50\,\mathrm{m}. \]</p>
+          <p class="step">硬币看起来比实际浅 \(50\,\mathrm{cm}\)！这就是为什么站在岸边的人常<strong>低估水池深度</strong>——一个对跳水者是危险的物理陷阱。同理，从水底向上看空气中物体，表观距离会变远（\(d'_{\text{空气}}=n_{\text{水}}\cdot d_{\text{空气}}\)）。</p>
+          <p><span class="ans">答案：\(d'=1.50\,\mathrm{m}\)（实际深度 \(2.00\,\mathrm{m}\) 的 \(1/n\) 倍）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 临界角与全内反射（水面与光纤） Critical Angle &amp; TIR</h4>
+        <p class="example-statement">(a) 光从水（\(n_{1}=1.333\)）射向空气（\(n_{2}=1.000\)），求临界角 \(\theta_{c}\)。<br>(b) 一根阶跃折射率光纤 (step-index fiber)，纤芯 \(n_{\text{芯}}=1.500\)，包层 \(n_{\text{包}}=1.460\)。求纤芯-包层界面的临界角。<br>(c) 水中一条鱼以 \(\theta_{1}=60^{\circ}\) 向水面发射光线。是否会有光折射入空气？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 \(\sin\theta_{c}=n_{2}/n_{1}\)：
+            \[ \sin\theta_{c}=\frac{1.000}{1.333}=0.7502,\quad \theta_{c}=\arcsin(0.7502)=48.6^{\circ}. \]
+            即水中的光以大于 \(48.6^{\circ}\) 的入射角射向水面时，全部被反射回水中。这解释了为何<strong>潜泳者向上看时</strong>整个水面上半球被压缩到一个半顶角 \(48.6^{\circ}\) 的圆锥内（称「Snell 窗」/ Snell's window）。</p>
+          <p class="step">(b) 对光纤：
+            \[ \sin\theta_{c}=\frac{n_{\text{包}}}{n_{\text{芯}}}=\frac{1.460}{1.500}=0.9733,\quad \theta_{c}=\arcsin(0.9733)=76.7^{\circ}. \]
+            只要在纤芯内传播的光线，与芯-包层界面法线的夹角超过 \(76.7^{\circ}\)（即非常接近沿界面方向），就会被 TIR 困在纤芯中传播——这就是长距离光纤通信的物理基础。光纤通信链路可跨洋传输数 \(10^{3}\,\mathrm{km}\) 而无需中继。</p>
+          <p class="step">(c) \(\theta_{1}=60^{\circ}>\theta_{c}=48.6^{\circ}\)，<strong>全内反射</strong>，<em>没有光折射入空气</em>。鱼「看不见」这个方向的空气世界；对应的，岸上的人也看不到这条鱼朝该方向发的光。</p>
+          <p><span class="ans">答案：(a) \(\theta_{c}=48.6^{\circ}\)；(b) \(\theta_{c}=76.7^{\circ}\)；(c) 全内反射，无折射光。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 棱镜最小偏向角与色散 Minimum Deviation &amp; Dispersion of a Prism</h4>
+        <p class="example-statement">一个顶角 \(A=60^{\circ}\) 的三棱镜。白光以最小偏向角入射。已知该棱镜玻璃对紫光（\(420\,\mathrm{nm}\)）的折射率 \(n_{v}=1.540\)，对红光（\(700\,\mathrm{nm}\)）\(n_{r}=1.510\)。求：(a) 紫光的偏向角 \(\delta_{v}\)；(b) 红光的偏向角 \(\delta_{r}\)；(c) 紫光与红光的<strong>角色散</strong> \(\Delta\delta\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>最小偏向角公式：
+            \[ n=\frac{\sin\!\bigl(\tfrac{A+\delta_{m}}{2}\bigr)}{\sin\!\bigl(\tfrac{A}{2}\bigr)}. \]
+            对 \(A=60^{\circ}\)，\(\sin(A/2)=\sin 30^{\circ}=0.5000\)，故
+            \[ \sin\!\Bigl(\frac{60^{\circ}+\delta_{m}}{2}\Bigr)=0.5000\,n. \]</p>
+          <p class="step">(a) 紫光 \(n_{v}=1.540\)：
+            \[ \sin\!\Bigl(\frac{60^{\circ}+\delta_{v}}{2}\Bigr)=0.5000\times 1.540=0.7700, \]
+            \[ \frac{60^{\circ}+\delta_{v}}{2}=\arcsin(0.7700)=50.35^{\circ}, \]
+            \[ \delta_{v}=2\times 50.35^{\circ}-60^{\circ}=40.71^{\circ}. \]</p>
+          <p class="step">(b) 红光 \(n_{r}=1.510\)：
+            \[ \sin\!\Bigl(\frac{60^{\circ}+\delta_{r}}{2}\Bigr)=0.7550, \]
+            \[ \frac{60^{\circ}+\delta_{r}}{2}=\arcsin(0.7550)=49.03^{\circ}, \]
+            \[ \delta_{r}=2\times 49.03^{\circ}-60^{\circ}=38.05^{\circ}. \]</p>
+          <p class="step">(c) 角色散（紫光偏向角减红光偏向角）：
+            \[ \Delta\delta=\delta_{v}-\delta_{r}=40.71^{\circ}-38.05^{\circ}=2.66^{\circ}. \]
+            即紫光被偏折得更厉害——这正是棱镜把白光分解成彩虹光谱的定量体现（紫光在外侧、红光在内侧）。</p>
+          <p><span class="ans">答案：\(\delta_{v}=40.71^{\circ}\)；\(\delta_{r}=38.05^{\circ}\)；角色散 \(\Delta\delta=2.66^{\circ}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「光在介质中频率变低」——错。</strong>光的频率由波源决定，跨介质时<strong>始终不变</strong>（这是界面边界条件的相容性要求：两侧 \(E_{y}\)、\(B_{z}\) 必须以相同频率振动才能匹配）。变的是<strong>波长和相速</strong>：\(v=c/n\)、\(\lambda=\lambda_{0}/n\)。所以「光的颜色」（由频率决定）在水中和空气中相同。</li>
+        <li><strong>「全内反射只要 \(n_{1}\neq n_{2}\) 就可能」——错。</strong>TIR 只在光从<strong>光密射向光疏</strong>（\(n_{1}>n_{2}\)）时才可能发生。从空气射入水（\(n_{1}<n_{2}\)）一定会有折射光，无论入射角多大。</li>
+        <li><strong>「\(n\) 可能小于 1」——错（对常规透明介质）。</strong>狭义相对论要求介质中信息传播速度 \(v\leq c\)，故<strong>相折射率</strong> \(n=c/v\geq 1\)。（例外：等离子体或金属在某些频率有 \(n<1\)，对应反常色散，但此时相速虽超 \(c\)，<em>信号速度</em>仍不超过 \(c\)。）</li>
+        <li><strong>角度从「界面」量起而非从「法线」量起——常见错误。</strong>反射定律 \(\theta_{i}=\theta_{r}\)、Snell 定律 \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\) 中的所有角度都<strong>从法线（界面的垂线）量起</strong>。如果从界面量起，公式要相应改成余弦形式，极易混淆。养成「先画法线」的习惯。</li>
+        <li><strong>把 Snell 定律的 \(n_{1},n_{2}\) 写反。</strong>正确版本是 \(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\)，其中 \(n_{1}\) 与 \(\theta_{1}\) 是<strong>同侧</strong>（入射侧）的量。误用 \(n_{2}\sin\theta_{1}=n_{1}\sin\theta_{2}\) 会让 TIR 条件反掉，得出「水 → 空气 不可能 TIR」的荒谬结论。</li>
+        <li><strong>以为「光程最短」就是「几何距离最短」。</strong>费马原理要求的是<strong>光程</strong> \(\int n\,ds\) 取极值（通常是极小），不是几何距离。所以光从 A 到 B 经过折射率不同的两种介质时，并不走直线——它会「绕远」在光密介质中走更少的距离，从而减少总光程（即总时间）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 空气中的光以 \(\theta_{1}=30^{\circ}\) 入射到平板玻璃（\(n=1.52\)）表面。求玻璃中的折射角 \(\theta_{2}\)。</summary>
+        <div class="hint">直接套 Snell 定律，空气 \(n\approx 1\)。</div>
+        <div class="solution">由 Snell 定律：
+          \[ \sin\theta_{2}=\frac{n_{1}\sin\theta_{1}}{n_{2}}=\frac{1.00\times\sin 30^{\circ}}{1.52}=\frac{0.500}{1.52}=0.3289, \]
+          \[ \theta_{2}=\arcsin(0.3289)=19.2^{\circ}. \]
+          折射角小于入射角（光线向法线弯），符合「光疏 → 光密」的规律。
+          <span class="ans">\(\theta_{2}=19.2^{\circ}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 游泳池实际深度 \(d=2.50\,\mathrm{m}\)。从正上方接近法线观察，表观深度 \(d'\) 为多少？（水的 \(n=1.333\)。）</summary>
+        <div class="hint">用表观深度公式 \(d'=d/n\)（近法线近似，空气侧 \(n=1\)）。</div>
+        <div class="solution">\[ d'=\frac{d}{n}=\frac{2.50\,\mathrm{m}}{1.333}=1.875\,\mathrm{m}\approx 1.88\,\mathrm{m}. \]
+          池底看上去比实际浅约 \(62\,\mathrm{cm}\)。
+          <span class="ans">\(d'\approx 1.88\,\mathrm{m}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 光从玻璃（\(n=1.50\)）射入空气（\(n=1.00\)）。求临界角 \(\theta_{c}\)。若入射角 \(\theta_{1}=50^{\circ}\)，是否发生全内反射？</summary>
+        <div class="hint">\(\sin\theta_{c}=n_{2}/n_{1}\)；比较 \(\theta_{1}\) 与 \(\theta_{c}\)。</div>
+        <div class="solution">\[ \sin\theta_{c}=\frac{n_{2}}{n_{1}}=\frac{1.00}{1.50}=0.6667,\quad \theta_{c}=\arcsin(0.6667)=41.8^{\circ}. \]
+          由于 \(\theta_{1}=50^{\circ}>\theta_{c}=41.8^{\circ}\)，<strong>发生全内反射</strong>，无折射光进入空气。
+          <span class="ans">\(\theta_{c}=41.8^{\circ}\)；\(\theta_{1}=50^{\circ}>\theta_{c}\)，发生 TIR。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 钠黄光（真空中 \(\lambda_{0}=589\,\mathrm{nm}\)）进入金刚石（\(n=2.42\)）。求：(a) 金刚石中光速；(b) 频率；(c) 金刚石中波长。</summary>
+        <div class="hint">\(v=c/n\)，\(f=c/\lambda_{0}\)（不变），\(\lambda=\lambda_{0}/n\)。</div>
+        <div class="solution">(a) \(v=c/n=3.00\times10^{8}/2.42=1.24\times10^{8}\,\mathrm{m/s}\)。<br>
+          (b) \(f=c/\lambda_{0}=3.00\times10^{8}/(589\times10^{-9})=5.09\times10^{14}\,\mathrm{Hz}\)（介质中相同）。<br>
+          (c) \(\lambda=\lambda_{0}/n=589\,\mathrm{nm}/2.42=243\,\mathrm{nm}\)。<br>
+          校验 \(v=f\lambda=(5.09\times10^{14})(243\times10^{-9})=1.24\times10^{8}\,\mathrm{m/s}\) ✓。
+          <span class="ans">\(v=1.24\times10^{8}\,\mathrm{m/s}\)；\(f=5.09\times10^{14}\,\mathrm{Hz}\)；\(\lambda=243\,\mathrm{nm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）请用费马原理证明：在折射率连续变化的分层介质中（\(n=n(y)\)），光线满足 \(n(y)\sin\theta(y)=\text{常数}\)，其中 \(\theta(y)\) 是光线与 \(y\) 方向的夹角。这条规律称作<strong>射线方程的不变量</strong> (Bouguer's invariant)，可解释海市蜃楼。</summary>
+        <div class="hint">把介质看成很多层薄分层，每层间用 Snell 定律；让层数趋于零、层厚趋于零取极限。</div>
+        <div class="solution">把连续介质离散化为 \(N\) 层薄层，每层折射率 \(n_{i}\)，光线与 \(y\) 轴夹角 \(\theta_{i}\)。在每对相邻层应用 Snell 定律：
+          \[ n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}=\cdots=n_{N}\sin\theta_{N}. \]
+          因此整条路径上 \(n(y)\sin\theta(y)\) 是<strong>不变量</strong>，记作 \(K\)。当 \(n(y)\) 随高度变化（如沙漠地表附近热空气 \(n\) 小、上方冷空气 \(n\) 大），光线弯曲。若 \(n\) 随高度增加，光线向上弯曲形成<strong>上现蜃景</strong> (superior mirage)；反之形成<strong>下现蜃景</strong> (inferior mirage)。
+          <span class="ans">\(\boxed{n(y)\sin\theta(y)=\text{常数}}\)（分层介质的 Snell 不变量）。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>折射与全内反射 Refraction &amp; Total Internal Reflection。</strong>光线从介质 1（上半区，折射率 \(n_{1}\)）以入射角 \(\theta_{1}\)（从法线量起）射向与介质 2（下半区，\(n_{2}\)）的水平界面。滑动三个滑块改变 \(n_{1}\)、\(n_{2}\)、\(\theta_{1}\)，画面实时显示<strong>入射光线（蓝）</strong>、<strong>反射光线（红）</strong>、<strong>折射光线（绿）</strong>。当 \(n_{1}>n_{2}\) 且 \(\theta_{1}\) 超过临界角 \(\theta_{c}\) 时，折射光消失，发生<strong>全内反射</strong>（反射光加粗显示）；同时在下半区用虚线标出 \(\theta_{c}\) 方向作为视觉参照。读出 Snell 定律算得的 \(\theta_{2}\) 与 \(\theta_{c}\)。试试默认参数（\(n_{1}=1.50,n_{2}=1.00,\theta_{1}=30^{\circ}\)），再把 \(\theta_{1}\) 慢慢加大越过 \(41.8^{\circ}\)——观察折射光骤然消失的瞬间。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="800" height="420"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+
+          var params = { n1: 1.50, n2: 1.00, theta1: 30 };
+
+          // angle-arc helper (canvas: 0 rad along +x, increases clockwise)
+          function drawAngleArc(ctx, cx, cy, r, a1, a2, color, label) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, a1, a2, false);
+            ctx.stroke();
+            var am = (a1 + a2) / 2;
+            var lx = cx + (r + 14) * Math.cos(am);
+            var ly = cy + (r + 14) * Math.sin(am);
+            ctx.fillStyle = color;
+            ctx.font = 'bold 13px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, lx, ly);
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; }, // static scene; redraw each frame
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var cx = W / 2, cy = H / 2;
+              var n1 = params.n1, n2 = params.n2;
+              var t1Deg = params.theta1;
+              var t1 = t1Deg * Math.PI / 180;
+
+              // ---- two media shaded backgrounds ---------------------------
+              ctx.save();
+              ctx.fillStyle = 'rgba(37, 99, 235, 0.07)';   // medium 1 (top)
+              ctx.fillRect(0, 0, W, cy);
+              ctx.fillStyle = 'rgba(220, 38, 38, 0.06)';   // medium 2 (bottom)
+              ctx.fillRect(0, cy, W, H - cy);
+              ctx.restore();
+
+              // ---- interface (horizontal) ---------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+              ctx.restore();
+
+              // ---- normal (vertical dashed) -------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([5, 5]);
+              ctx.beginPath(); ctx.moveTo(cx, 18); ctx.lineTo(cx, H - 18); ctx.stroke();
+              ctx.restore();
+
+              // ---- medium labels ------------------------------------------
+              PS.drawText(ctx, '介质 1 / Medium 1   n₁ = ' + n1.toFixed(2),
+                14, 30, { font: 'bold 13px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, '介质 2 / Medium 2   n₂ = ' + n2.toFixed(2),
+                14, H - 30, { font: 'bold 13px system-ui', color: PS.colors.accent });
+
+              // ---- compute refraction -------------------------------------
+              var sinT2 = (n1 / n2) * Math.sin(t1);
+              var hasTIR = (n1 > n2) && (sinT2 > 1.0);
+              var t2 = hasTIR ? 0 : Math.asin(sinT2);
+              var hasCritical = (n1 > n2);
+              var tCrit = hasCritical ? Math.asin(n2 / n1) : NaN;
+
+              var L = 150;   // ray length in pixels (keeps rays clear of readout panel)
+
+              // ---- critical-angle reference (dashed into lower medium) ----
+              if (hasCritical) {
+                var cEnd = { x: cx + L * Math.sin(tCrit), y: cy + L * Math.cos(tCrit) };
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = hasTIR ? 0.85 : 0.35;
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = hasTIR ? 1.8 : 1.2;
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cEnd.x, cEnd.y); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, 'θ_c = ' + (tCrit * 180 / Math.PI).toFixed(1) + '°',
+                  cEnd.x + 6, cEnd.y + 14,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+              }
+
+              // ---- incident ray (upper-left → hit point) ------------------
+              var incStart = { x: cx - L * Math.sin(t1), y: cy - L * Math.cos(t1) };
+              PS.drawArrow(ctx, incStart.x, incStart.y, cx, cy, PS.colors.primary);
+              PS.drawText(ctx, '入射 incident', incStart.x - 16, incStart.y + 16,
+                { font: '12px system-ui', color: PS.colors.primary });
+
+              // ---- reflected ray (hit point → upper-right) ----------------
+              // TIR case: bolder to convey "all energy reflected"
+              var refEnd = { x: cx + L * Math.sin(t1), y: cy - L * Math.cos(t1) };
+              if (hasTIR) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent;
+                ctx.fillStyle = PS.colors.accent;
+                ctx.lineWidth = 3.4;
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(refEnd.x, refEnd.y); ctx.stroke();
+                // arrowhead
+                var a = Math.atan2(refEnd.y - cy, refEnd.x - cx);
+                var h = 11;
+                ctx.beginPath();
+                ctx.moveTo(refEnd.x, refEnd.y);
+                ctx.lineTo(refEnd.x - h * Math.cos(a - 0.4), refEnd.y - h * Math.sin(a - 0.4));
+                ctx.lineTo(refEnd.x - h * Math.cos(a + 0.4), refEnd.y - h * Math.sin(a + 0.4));
+                ctx.closePath(); ctx.fill();
+                ctx.restore();
+              } else {
+                PS.drawArrow(ctx, cx, cy, refEnd.x, refEnd.y, PS.colors.accent);
+              }
+              PS.drawText(ctx, '反射 reflected', refEnd.x - 16, refEnd.y + 16,
+                { font: '12px system-ui', color: PS.colors.accent });
+
+              // ---- refracted ray (hit point → lower medium) ---------------
+              if (!hasTIR) {
+                var trEnd = { x: cx + L * Math.sin(t2), y: cy + L * Math.cos(t2) };
+                PS.drawArrow(ctx, cx, cy, trEnd.x, trEnd.y, PS.colors.accent2);
+                PS.drawText(ctx, '折射 refracted', trEnd.x - 12, trEnd.y - 8,
+                  { font: '12px system-ui', color: PS.colors.accent2 });
+              }
+
+              // ---- hit point ---------------------------------------------
+              PS.drawCircle(ctx, cx, cy, 4.5, { fill: PS.colors.text });
+
+              // ---- angle arcs & labels -----------------------------------
+              // θ₁ on incident side (upper-left): from -π/2 - t1 to -π/2
+              drawAngleArc(ctx, cx, cy, 38, -Math.PI / 2 - t1, -Math.PI / 2,
+                PS.colors.primary, 'θ₁');
+              // reflected θ₁ (upper-right)
+              drawAngleArc(ctx, cx, cy, 46, -Math.PI / 2, -Math.PI / 2 + t1,
+                PS.colors.accent, 'θ₁');
+              // θ₂ on refracted side (lower-right)
+              if (!hasTIR) {
+                drawAngleArc(ctx, cx, cy, 38, Math.PI / 2 - t2, Math.PI / 2,
+                  PS.colors.accent2, 'θ₂');
+              }
+
+              // ---- TIR warning banner near hit ----------------------------
+              if (hasTIR) {
+                PS.drawText(ctx, '⚠ 全内反射 / TIR  (无折射光)', cx + 18, cy + 22,
+                  { font: 'bold 14px system-ui', color: PS.colors.accent });
+              }
+
+              // ---- readout panel (top-right) -----------------------------
+              var rx = W - 232, ry = 30;
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.globalAlpha = 0.85;
+              ctx.fillRect(rx - 8, ry - 18, 232, 154);
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 1;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(rx - 8, ry - 18, 232, 154);
+              ctx.restore();
+
+              PS.drawText(ctx, 'Snell 定律 / Law:', rx, ry,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'n₁ sinθ₁ = n₂ sinθ₂', rx, ry + 18,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'n₁ = ' + n1.toFixed(2) + ',  n₂ = ' + n2.toFixed(2) + ',  θ₁ = ' + t1Deg.toFixed(0) + '°',
+                rx, ry + 36, { font: '12px system-ui', color: PS.colors.text });
+
+              if (!hasTIR) {
+                var t2deg = t2 * 180 / Math.PI;
+                PS.drawText(ctx, '→ θ₂ = ' + t2deg.toFixed(1) + '°',
+                  rx, ry + 56, { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+              } else {
+                PS.drawText(ctx, '→ 折射光不存在 (TIR)',
+                  rx, ry + 56, { font: 'bold 12px system-ui', color: PS.colors.accent });
+              }
+
+              if (hasCritical) {
+                var tcdeg = tCrit * 180 / Math.PI;
+                PS.drawText(ctx, '临界角 θ_c = arcsin(n₂/n₁)',
+                  rx, ry + 80, { font: '12px system-ui', color: PS.colors.text });
+                PS.drawText(ctx, '       = ' + tcdeg.toFixed(1) + '°',
+                  rx, ry + 98, { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+                if (hasTIR) {
+                  PS.drawText(ctx, 'θ₁ = ' + t1Deg.toFixed(0) + '° > θ_c = ' + tcdeg.toFixed(1) + '° → TIR',
+                    rx, ry + 118, { font: 'bold 11px system-ui', color: PS.colors.accent });
+                } else {
+                  PS.drawText(ctx, 'θ₁ = ' + t1Deg.toFixed(0) + '° ≤ θ_c = ' + tcdeg.toFixed(1) + '° → 折射',
+                    rx, ry + 118, { font: '11px system-ui', color: PS.colors.text });
+                }
+              } else {
+                PS.drawText(ctx, 'n₁ ≤ n₂：不可能发生 TIR',
+                  rx, ry + 80, { font: '12px system-ui', color: PS.colors.text });
+                PS.drawText(ctx, '(no critical angle, light goes dense→rare? no)',
+                  rx, ry + 98, { font: '11px system-ui', color: PS.colors.text });
+              }
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'n1',     label: '折射率 n₁ (medium 1)', min: 1.00, max: 2.50, step: 0.01, value: 1.50 },
+            { type: 'slider', key: 'n2',     label: '折射率 n₂ (medium 2)', min: 1.00, max: 2.50, step: 0.01, value: 1.00 },
+            { type: 'slider', key: 'theta1', label: '入射角 θ₁ (°, from normal)', min: 0, max: 89, step: 1, value: 30 },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('n1',     function (v) { params.n1 = v; });
+          ctl.on('n2',     function (v) { params.n2 = v; });
+          ctl.on('theta1', function (v) { params.theta1 = v; });
+          ctl.on('reset',  function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>几何光学极限</strong>：当 \(\lambda\to 0\)（或 \(\lambda\ll\) 孔径），光的波动性可忽略，可用<strong>光线</strong>模型（直线传播 + 反射定律 + Snell 定律）描写。</li>
+        <li><strong>反射定律</strong>：\(\theta_{i}=\theta_{r}\)，入射光、反射光、法线共面；所有角从法线量起。</li>
+        <li><strong>折射率</strong>：\(n=c/v\geq 1\)。<strong>频率跨介质不变</strong>，<strong>波长变短</strong> \(\lambda=\lambda_{0}/n\)，<strong>相速变慢</strong> \(v=c/n\)。</li>
+        <li><strong>Snell 定律</strong>：\(n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2}\)。可由<strong>惠更斯原理</strong>或<strong>费马原理</strong>推导。</li>
+        <li><strong>临界角与全内反射</strong>（仅当 \(n_{1}>n_{2}\)）：\(\sin\theta_{c}=n_{2}/n_{1}\)；\(\theta_{1}>\theta_{c}\) 时无折射光，全部能量反射回原介质。光纤、棱镜式双筒望远镜、宝石闪烁均依赖 TIR。</li>
+        <li><strong>费马原理</strong>：光走「光程 \(\int n\,ds\) 取极值」的路径。是几何光学的最小作用量原理，统一推出反射与 Snell 定律。</li>
+        <li><strong>色散</strong>：\(n=n(\lambda)\)（正常色散下短波长 \(n\) 较大）。棱镜分解白光成光谱；彩虹由水滴中两次折射 + 一次 TIR 形成。</li>
+        <li><strong>表观深度</strong>（近法线观察）：水中物体 \(d'=d/n\)，看上去比实际浅。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;v=\frac{c}{n},\quad \lambda=\frac{\lambda_{0}}{n},\quad \theta_{i}=\theta_{r},\quad n_{1}\sin\theta_{1}=n_{2}\sin\theta_{2},\quad \sin\theta_{c}=\frac{n_{2}}{n_{1}}\;(n_{1}>n_{2}),\quad n=\frac{\sin\!\bigl(\tfrac{A+\delta_{m}}{2}\bigr)}{\sin\!\bigl(\tfrac{A}{2}\bigr)}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

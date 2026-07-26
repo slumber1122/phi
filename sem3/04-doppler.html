@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 多普勒效应 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第4章 · 机械波与声 Mechanical Waves &amp; Sound</p>
+      <h1>多普勒效应 <span class="en-title">The Doppler Effect</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从"波在介质中以速率 \(v\) 传播、源/观察者在介质中运动"的物理图像出发，<strong>推导</strong>（而非死记）经典多普勒公式 \(f'=f\,(v\pm v_{o})/(v\mp v_{s})\)，并讲清上下两个符号分别对应何种运动方向。</li>
+        <li>区分<strong>运动源</strong> (moving source) 与<strong>运动观察者</strong> (moving observer) 两种情形，论证在存在介质 (medium) 时二者在物理上<strong>不对称</strong>——即便相对速率相同，所得 \(f'\) 也不同。</li>
+        <li>计算一个匀速运动的源<strong>经过</strong> (passing) 静止观察者前后观察到的频率比 \(f'_{\text{rec}}/f'_{\text{app}}=(v-v_{s})/(v+v_{s})\)，解释救护车音调"骤降"的体验。</li>
+        <li>导出<strong>马赫锥</strong> (Mach cone) 的半顶角 \(\sin\theta=v/v_{s}\)（\(v_{s}>v\) 时），并用 <strong>Mach 数</strong> \(M=v_{s}/v\) 描述超音速运动；说明<strong>音爆</strong> (sonic boom) 的成因。</li>
+        <li>列举多普勒效应在<strong>雷达测速</strong> (police/weather radar)、<strong>医学超声</strong> (Doppler ultrasound)、<strong>天文红移</strong> (astronomical redshift) 等领域的应用，并估算量级。</li>
+        <li>说明经典多普勒公式仅适用于<strong>介质中的机械波</strong> (mechanical waves in a medium)；对真空中的光 (light)，须用第一学期学过的<strong>相对论多普勒效应</strong> (relativistic Doppler effect)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 现象与定义 Phenomenon &amp; Definition</h3>
+      <p>当波源 (source) 与观察者 (observer) 之间沿<strong>视线方向</strong> (line of sight) 存在相对运动时，观察者接收到的频率 \(f'\) 与源实际振动频率 \(f\) 不同——此即<strong>多普勒效应</strong> (Doppler effect, Christian Doppler, 1842)。最直观的体验：救护车驶来时汽笛声"升高"（\(f'>f\)），驶离时"降低"（\(f'<f\)）；其物理根源是波在介质中以有限速率 \(v\) 传播，运动改变了波前 (wavefront) 在空间中的疏密分布。</p>
+      <p>本章讨论经典声波（机械波）情形：介质 (medium) 存在，波速 \(v\) 由介质的弹性与惯性决定（如空气 \(20^{\circ}\mathrm{C}\) 时 \(v\approx 343\,\mathrm{m/s}\)）。对真空中的电磁波，请见 §7 的相对论注记。</p>
+      <div class="key-terms">Doppler effect (多普勒效应), source (波源), observer (观察者), wavefront (波前), medium (介质), line of sight (视线方向)</div>
+
+      <h3>2. 情形 A：静止源 + 运动观察者 Stationary Source, Moving Observer</h3>
+      <p>源静止于介质中，发射频率 \(f\)，波在介质中以速率 \(v\) 传播，波长 \(\lambda=v/f\) 由源决定、在整个介质中均匀分布。观察者以速率 \(v_{o}\) 朝源运动，则波前<strong>相对于观察者</strong>的速率为 \(v+v_{o}\)，连续两个波前到达观察者的时间间隔为 \(\lambda/(v+v_{o})\)，故：</p>
+      <div class="formula">\[ \boxed{\;f'_{\text{obs}}=f\,\frac{v+v_{o}}{v}\;}\qquad(\text{观察者向源运动 toward source}) \]</div>
+      <p>若观察者反向（远离源）运动，则 \(v_{o}\) 取负号：\(f'=f(v-v_{o,\text{away}})/v\)。<strong>符号约定</strong>：\(v_{o}\) 始终取"朝向源"为正。物理图像：观察者主动"撞上"波前的速率变快，单位时间内撞上的波前数（即频率）增多。</p>
+      <div class="key-terms">wavelength \(\lambda\) (波长), source frequency \(f\) (源频率), observed frequency \(f'\) (观察频率)</div>
+
+      <h3>3. 情形 B：运动源 + 静止观察者 Moving Source, Stationary Observer</h3>
+      <p>源以速率 \(v_{s}\) 朝观察者运动。源每振动一个周期 \(T=1/f\)，就向前发出一个波前，同时自己向观察者方向移动了 \(v_{s}T\)。于是<strong>前方</strong>（观察者一侧）相邻波前之间的间距被压缩为：</p>
+      <div class="formula">\[ \lambda'=\lambda-v_{s}T=\frac{v}{f}-\frac{v_{s}}{f}=\frac{v-v_{s}}{f}\qquad(\text{源前方 ahead of source}) \]</div>
+      <p>这些被压缩的波前仍以介质速率 \(v\) 传播，故静止观察者接收到的频率：</p>
+      <div class="formula">\[ \boxed{\;f'_{\text{obs}}=f\,\frac{v}{v-v_{s}}\;}\qquad(\text{源向观察者运动 source toward observer}) \]</div>
+      <p>若源远离观察者，则分母换作 \(v+v_{s}\)（前方变后方，波前被拉开）。<strong>符号约定</strong>：\(v_{s}\) 始终取"朝向观察者"为正，代入分母时为减号。</p>
+      <p><strong>关键不对称：</strong> 情形 A 得 \(f'/f=(v+v_{o})/v\)，情形 B 得 \(f'/f=v/(v-v_{s})\)。即使 \(v_{o}=v_{s}\)（相对速率相同），两者结果不同——例如取 \(v_{o}=v_{s}=v/4\)，A 给 \(f'/f=5/4=1.25\)，B 给 \(f'/f=4/3\approx 1.333\)。原因：介质提供了一个绝对参考系，"谁在动"有物理差别。这正是机械波与电磁波的本质差异之一。</p>
+      <div class="key-terms">compressed wavelength (压缩波长), source speed \(v_{s}\) (源速度), observer speed \(v_{o}\) (观察者速度), asymmetry (不对称性)</div>
+
+      <h3>4. 通用公式（源与观察者都运动）General Formula</h3>
+      <p>把情形 A 与 B 复合：先用源的运动会"重塑"波长（情形 B 的 \(\lambda'\)），再让运动观察者以相对速率扫过这些波前（情形 A）。结果：</p>
+      <div class="formula">\[ \boxed{\;\;f'_{\text{obs}}=f\,\frac{v\pm v_{o}}{v\mp v_{s}}\;\;} \]</div>
+      <p><strong>符号约定（必记）：</strong> <em>上方符号对应"相向运动 / approaching"，下方符号对应"背向运动 / receding"。</em> 即：</p>
+      <ul>
+        <li>观察者<strong>朝</strong>源运动 → 取 \(+v_{o}\)（分子变大，\(f'\) 升高）；<strong>远</strong>离 → 取 \(-v_{o}\)。</li>
+        <li>源<strong>朝</strong>观察者运动 → 取 \(-v_{s}\)（分母变小，\(f'\) 升高）；<strong>远</strong>离 → 取 \(+v_{s}\)。</li>
+      </ul>
+      <p>助记口诀（"<strong>接近 → 频率升高</strong>"）：要让 \(f'\) 升高，分子应变大、分母应变小——这就锁定了符号。物理图像永远比死记硬背可靠。</p>
+      <div class="key-terms">approaching (相向/接近), receding (背向/远离), sign convention (符号约定)</div>
+
+      <h3>5. 源经过观察者时的"频率骤降" Frequency Drop as Source Passes</h3>
+      <p>设源以速率 \(v_{s}\) 沿直线匀速经过静止观察者。恰在<strong>经过前</strong>一瞬间（源正在接近，但还未到达观察者位置），观察者听到的频率：</p>
+      <div class="formula">\[ f'_{\text{app}}=f\,\frac{v}{v-v_{s}} \]</div>
+      <p>恰在<strong>经过后</strong>一瞬间（源开始远离），观察者听到的频率：</p>
+      <div class="formula">\[ f'_{\text{rec}}=f\,\frac{v}{v+v_{s}} \]</div>
+      <p>两者之比为：</p>
+      <div class="formula">\[ \frac{f'_{\text{rec}}}{f'_{\text{app}}}=\frac{v-v_{s}}{v+v_{s}} \]</div>
+      <p>这是经过瞬间观察到的"骤降"。<strong>注：</strong>实际中频率并非瞬时跳变——源经过时短暂地处于"横切"位置（视线方向与速度垂直），此时一阶多普勒移为零，频率连续地从 \(f'_{\text{app}}\) 平滑过渡到 \(f'_{\text{rec}}\)；过渡时长约为源尺度除以 \(v_{s}\)。例：救护车 \(v_{s}=30\,\mathrm{m/s}\)，\(v=343\,\mathrm{m/s}\)，比值 \(=313/373\approx 0.839\)，即<strong>骤降约 16%</strong>，人耳非常明显。</p>
+      <div class="key-terms">frequency drop (频率骤降), transverse passage (横切经过)</div>
+
+      <h3>6. 冲击波与音爆 Shock Waves &amp; the Sonic Boom</h3>
+      <p>当 \(v_{s}>v\)（源超过波速），源跑到自己产生的波前<strong>前面</strong>。每一时刻发出的球面子波 (spherical wavelets) 都被源甩在身后；这些子波的<strong>包络</strong> (envelope) 形成一个锥形波前——<strong>马赫锥</strong> (Mach cone)。设源在 \(t=0\) 位于原点，时刻 \(t\) 位于 \(x=v_{s}t\)；它于 \(\tau=0\) 发出的子波在时刻 \(t\) 是半径 \(vt\) 的球面（球心仍在原点）。从源当前位置 \((v_{s}t,0)\) 向该球面所作切线，与源运动方向（\(-x\) 方向）的夹角 \(\theta\) 满足：</p>
+      <div class="formula">\[ \boxed{\;\sin\theta=\frac{v}{v_{s}}=\frac{1}{M}\;},\qquad M\equiv\frac{v_{s}}{v}\;\;(\text{Mach number}) \]</div>
+      <p>\(M\) 称 <strong>Mach 数</strong>。源恰好以波速运动（\(M=1\)）时 \(\theta=90^{\circ}\)，波前在源前方无限堆积（线性理论预言 \(f'\to\infty\)，实际由于非线性效应形成弱激波）；\(M>1\) 时 \(\theta<90^{\circ}\)，锥变窄。<strong>音爆</strong> (sonic boom) 即马赫锥扫过观察者时所有堆积波前同时到达造成的剧烈压强脉冲——这是<strong>单个</strong>瞬间事件，不是一个"持续的声音"。超音速飞机的锥扫过地面听众只需零点几秒，听到的就是双爆炸声（机首与机尾各产生一道激波）。</p>
+      <div class="key-terms">shock wave (冲击波), Mach cone (马赫锥), Mach number \(M\) (Mach 数), sonic boom (音爆), envelope (包络), wavelets (子波)</div>
+
+      <h3>7. 相对论多普勒效应（光的情形）Relativistic Doppler Effect for Light</h3>
+      <p>经典多普勒公式预设了一个<strong>介质</strong>参考系，波速 \(v\) 与源、观察者各自的运动是相对于介质而言的。但电磁波无需介质（真空即可传播），不存在"绝对静止"参考系。因此<strong>对光波必须使用第一学期讲过的相对论多普勒公式</strong>：</p>
+      <div class="formula">\[ f'_{\text{light}}=f\sqrt{\frac{1-\beta}{1+\beta}},\qquad \beta\equiv\frac{v_{\text{rel}}}{c}\quad(\text{源与观察者相互远离 receding}) \]</div>
+      <p>低速（\(\beta\ll 1\)）时它退化为经典一阶近似 \(f'\approx f(1-\beta)\)。本章后续公式<strong>仅适用于介质中的机械波</strong>（声、水波、地震波等），不可套用于星光红移 (astronomical redshift) 等问题。</p>
+      <div class="key-terms">relativistic Doppler effect (相对论多普勒效应), vacuum (真空), redshift (红移)</div>
+
+      <h3>8. 应用 Applications</h3>
+      <ul>
+        <li><strong>雷达测速 (police &amp; weather radar)：</strong> 警用雷达向车辆发射微波（\(\sim 10\,\mathrm{GHz}\)），车辆反射回的波经历<strong>两次</strong>多普勒移频（车辆先作"运动观察者"再作"运动源"），回波频偏 \(\Delta f\approx 2fv_{s}/c\)。气象雷达同理，通过雨滴/冰晶的回波测降水速度并识别风暴旋转（多普勒天气雷达）。</li>
+        <li><strong>医学多普勒超声 (medical Doppler ultrasound)：</strong> 超声探头（\(\sim 2\text{–}10\,\mathrm{MHz}\)）发射声波，血液中红细胞反射回来，频偏正比于血流速度，用于心脏瓣膜反流、动脉狭窄等诊断（无创、实时）。</li>
+        <li><strong>天文红移 (astronomical redshift)：</strong> 星系光谱吸收线的频率比实验室中低（波长变长 = 红移），Hubble 据此推断远方星系都在远离我们，且远离速度正比于距离——大爆炸宇宙学的关键证据。<em>注：</em> 这里要用相对论多普勒公式（或更精确的宇宙学红移），但物理直觉一脉相承。</li>
+        <li><strong>蝙蝠与海豚的回声定位 (echolocation)：</strong> 蝙蝠发出 \(30\text{–}80\,\mathrm{kHz}\) 超声脉冲，从飞虫反射的回波因虫子运动而移频，蝙蝠据此判断相对速度（参见练习 3）。</li>
+        <li><strong>光谱线多普勒展宽 (Doppler broadening)：</strong> 气体原子因热运动速度不同（Maxwell 分布），各自发射的光略有不同移频，谱线展宽为 \(\Delta f/f\sim\sqrt{kT/mc^{2}}\)，可由展宽反推温度。</li>
+      </ul>
+      <div class="key-terms">Doppler radar (多普勒雷达), ultrasound (超声), redshift (红移), echolocation (回声定位), Doppler broadening (多普勒展宽)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 4.1：运动观察者（情形 A）</h3>
+      <p class="step"><strong>设定：</strong> 源静止于介质中，发射频率 \(f\)、周期 \(T=1/f\)。波以速率 \(v\) 在介质中传播，波长 \(\lambda=vT=v/f\)。观察者以速率 \(v_{o}\) 朝源运动（即沿波传播的反方向运动）。</p>
+      <p class="step"><strong>步骤 1（相对速率）：</strong> 在观察者参考系中，波前以速率 \(v+v_{o}\) 掠过（波朝观察者走 \(v\)，观察者主动迎上去 \(v_{o}\)）。</p>
+      <p class="step"><strong>步骤 2（连续波前到达的时间间隔）：</strong> 相邻波前在空间中相距 \(\lambda\)，被观察者以相对速率 \(v+v_{o}\) 扫过，故到达周期：</p>
+      <div class="formula">\[ T'=\frac{\lambda}{v+v_{o}}=\frac{v}{f(v+v_{o})} \]</div>
+      <p class="step"><strong>步骤 3（取倒数）：</strong></p>
+      <div class="formula">\[ f'=\frac{1}{T'}=f\,\frac{v+v_{o}}{v} \]</div>
+      <p class="step">若观察者反向运动（远离），把 \(v_{o}\to-v_{o}\) 代入即可。</p>
+
+      <h3>推导 4.2：运动源（情形 B）</h3>
+      <p class="step"><strong>设定：</strong> 观察者静止。源以速率 \(v_{s}\) 朝观察者方向运动，发射频率 \(f\)。</p>
+      <p class="step"><strong>步骤 1（重塑波长）：</strong> 设 \(t=0\) 时刻源在 \(x=0\) 发出波前 #1。一个周期 \(T=1/f\) 后，源已移动到 \(x=v_{s}T\)，此时发出波前 #2。两波前在源前方（\(x>0\)）的间距为</p>
+      <div class="formula">\[ \lambda'=vT-v_{s}T=(v-v_{s})T=\frac{v-v_{s}}{f} \]</div>
+      <p>（前方波前 #1 已走出去 \(vT\)，而源紧追了 \(v_{s}T\)，故间距被压缩。）源后方（\(x<0\)）的间距则为 \(\lambda'_{\text{behind}}=(v+v_{s})/f\)。</p>
+      <p class="step"><strong>步骤 2（静止观察者接收）：</strong> 波仍以介质速率 \(v\) 到达观察者，故</p>
+      <div class="formula">\[ f'=\frac{v}{\lambda'}=f\,\frac{v}{v-v_{s}}\qquad(\text{源前方，向观察者运动}) \]</div>
+      <p class="step"><strong>步骤 3（不对称的物理根源）：</strong> 在情形 A 中，\(\lambda\) 不变（源静止），改变的是"扫过波前的速率"；在情形 B 中，扫过的速率不变（观察者静止），改变的是 \(\lambda\) 本身。两者数学结果不同，正因为介质定义了一个绝对静止系。</p>
+
+      <h3>推导 4.3：马赫锥半顶角 \(\sin\theta=v/v_{s}\)</h3>
+      <p class="step"><strong>设定：</strong> 源沿 \(+x\) 方向以 \(v_{s}>v\) 匀速运动，\(t=0\) 时位于原点。考察时刻 \(t\) 源在 \(S=(v_{s}t,0)\)。源在过去任意时刻 \(\tau\in[0,t]\) 发出的球面子波，到时刻 \(t\) 是半径 \(v(t-\tau)\)、球心位于 \((v_{s}\tau,0)\) 的球面。</p>
+      <p class="step"><strong>步骤 1（求包络）：</strong> 马赫锥是所有这些球面的<strong>公共切面</strong>。考虑 \(t\) 时刻所有子球的左半部分（源已跑在前面），它们的包络是一个以源 \(S\) 为顶点、向 \(-x\) 方向张开的锥。</p>
+      <p class="step"><strong>步骤 2（取最早发出的子波）：</strong> 取 \(\tau=0\) 的子波：球心 \(O=(0,0)\)、半径 \(vt\)。从源 \(S=(v_{s}t,0)\) 作该球的切线，切点为 \(P\)。则 \(OP\perp SP\)，三角形 \(OPS\) 在 \(P\) 处为直角，斜边为 \(OS=v_{s}t\)，直角边 \(OP=vt\)。</p>
+      <p class="step"><strong>步骤 3（读出角度）：</strong> 设 \(\angle OSP=\theta\)（即锥的半顶角，从源运动方向反向量起）。则：</p>
+      <div class="formula">\[ \sin\theta=\frac{OP}{OS}=\frac{vt}{v_{s}t}=\frac{v}{v_{s}}=\frac{1}{M} \]</div>
+      <p class="step">对所有 \(\tau\in[0,t]\) 重复论证，得同一 \(\theta\) ——证实所有子波同时切于同一锥面，形成冲击波阵面 (shock front)。锥面以速率 \(v_{s}\) 随源前进，扫过观察者时即产生音爆。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 驶来的救护车 Approaching Ambulance</h4>
+        <p class="example-statement">救护车汽笛静止时频率 \(f=700\,\mathrm{Hz}\)，以 \(v_{s}=30\,\mathrm{m/s}\)（\(\approx 108\,\mathrm{km/h}\)）直线驶向路边静止听众。空气温度下声速 \(v=343\,\mathrm{m/s}\)。求听众听到的频率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 这是"运动源 + 静止观察者"（情形 B），源<strong>朝向</strong>观察者，分母取 \(-v_{s}\)：</p>
+          <div class="formula">\[ f'=f\,\frac{v}{v-v_{s}}=700\times\frac{343}{343-30}=700\times\frac{343}{313} \]</div>
+          <p class="step">计算比值：</p>
+          <div class="formula">\[ \frac{343}{313}=1.0958 \]</div>
+          <p class="step">代入：</p>
+          <div class="formula">\[ f'=700\times 1.0958=767.1\,\mathrm{Hz} \]</div>
+          <p class="step">校核：\(v_{s}/v=30/343\approx 0.0875\)（约 8.75%），频率升高约 \(1/(1-0.0875)-1\approx 9.6\%\)，与具体计算一致。可见即便 8.75% 的速率比，频率移位已近 10%，人耳可分辨（人耳对频率差的阈值约 1%）。</p>
+          <p><span class="ans">\(f'\approx 767\,\mathrm{Hz}\)（比源频率高 \(67\,\mathrm{Hz}\)，约 \(+9.6\%\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 救护车驶离 Receding Ambulance</h4>
+        <p class="example-statement">救护车从听众身旁驶过并继续以 \(v_{s}=30\,\mathrm{m/s}\) 远去。其他参数同例 4.1。求 (a) 此时听众听到的频率；(b) 与例 4.1 中接近时的频率相比，骤降了多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 解：</strong> 源<strong>远离</strong>观察者，分母取 \(+v_{s}\)：</p>
+          <div class="formula">\[ f'_{\text{rec}}=f\,\frac{v}{v+v_{s}}=700\times\frac{343}{343+30}=700\times\frac{343}{373} \]</div>
+          <p class="step">比值：</p>
+          <div class="formula">\[ \frac{343}{373}=0.9196,\qquad f'_{\text{rec}}=700\times 0.9196=643.7\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>(b) 与接近时相比：</strong> 例 4.1 中 \(f'_{\text{app}}=767.1\,\mathrm{Hz}\)。骤降量：</p>
+          <div class="formula">\[ \Delta f'=f'_{\text{app}}-f'_{\text{rec}}=767.1-643.7=123.4\,\mathrm{Hz} \]</div>
+          <p class="step">比值：</p>
+          <div class="formula">\[ \frac{f'_{\text{rec}}}{f'_{\text{app}}}=\frac{v-v_{s}}{v+v_{s}}=\frac{313}{373}=0.839 \]</div>
+          <p class="step">即<strong>频率骤降约 16.1%</strong>。这就是救护车驶过时"音调明显掉下来"的物理来源——人耳对这种比例的频率变化极为敏感。</p>
+          <p><span class="ans">\(f'_{\text{rec}}\approx 644\,\mathrm{Hz}\)；骤降 \(123\,\mathrm{Hz}\)（约 16%）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 运动观察者走近静止源 Moving Observer Toward Stationary Source</h4>
+        <p class="example-statement">一只 \(440\,\mathrm{Hz}\)（标准音 \(A_{4}\)）的扬声器静止于实验室中。一位学生以 \(v_{o}=2.0\,\mathrm{m/s}\)（步行速度）朝扬声器走去。声速 \(v=343\,\mathrm{m/s}\)。求学生听到的频率，并与"扬声器以 \(2.0\,\mathrm{m/s}\) 朝学生运动"的情形比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 学生运动（情形 A）：</strong> 分子取 \(+v_{o}\)：</p>
+          <div class="formula">\[ f'_{A}=f\,\frac{v+v_{o}}{v}=440\times\frac{343+2.0}{343}=440\times\frac{345}{343}=440\times 1.00583=442.6\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>(b) 扬声器运动（情形 B）：</strong> 分母取 \(-v_{s}\)（\(v_{s}=2.0\,\mathrm{m/s}\)）：</p>
+          <div class="formula">\[ f'_{B}=f\,\frac{v}{v-v_{s}}=440\times\frac{343}{343-2.0}=440\times\frac{343}{341}=440\times 1.00587=442.6\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>(c) 比较与解读：</strong> 两种情形下 \(f'\) 几乎相同（差 \(0.016\,\mathrm{Hz}\)，不可察觉）。这是因为 \(v_{o},v_{s}\ll v\) 时，一阶近似相同：\(f'/f\approx 1+v_{\text{rel}}/v\)。但要强调：在高速（\(v_{o},v_{s}\) 接近 \(v\)）时差异显著——例如 \(v_{o}=v_{s}=v/2\) 时，\(f'_{A}/f=3/2=1.500\)，而 \(f'_{B}/f=v/(v-v/2)=2.000\)，差 33%。<strong>低速近似下"对称"，高速下"不对称"</strong>——这正是机械波介质的物理效应。</p>
+          <p><span class="ans">(a) 学生动：\(f'\approx 442.6\,\mathrm{Hz}\)；(b) 扬声器动：\(f'\approx 442.6\,\mathrm{Hz}\)（低速下近似相等，但公式并不相同）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 高铁驶过的频率骤降 High-Speed Train Passing</h4>
+        <p class="example-statement">一列高铁以 \(v_{s}=70\,\mathrm{m/s}\)（\(\approx 252\,\mathrm{km/h}\)）匀速通过站台。机车汽笛静止时频率 \(f=500\,\mathrm{Hz}\)，声速 \(v=343\,\mathrm{m/s}\)。求 (a) 驶近时；(b) 驶离时；(c) 站台听众听到的频率比值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 驶近：</strong></p>
+          <div class="formula">\[ f'_{\text{app}}=500\times\frac{343}{343-70}=500\times\frac{343}{273}=500\times 1.2564=628.2\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>(b) 驶离：</strong></p>
+          <div class="formula">\[ f'_{\text{rec}}=500\times\frac{343}{343+70}=500\times\frac{343}{413}=500\times 0.8305=415.3\,\mathrm{Hz} \]</div>
+          <p class="step"><strong>(c) 比值：</strong></p>
+          <div class="formula">\[ \frac{f'_{\text{rec}}}{f'_{\text{app}}}=\frac{273}{413}=0.661\quad\Longrightarrow\quad\text{骤降约}\;33.9\% \]</div>
+          <p class="step">与例 4.2（\(v_{s}=30\,\mathrm{m/s}\)，降 16%）对比可见：源越快，骤降越剧烈；当 \(v_{s}\to v\) 时比值趋于 0，频率比趋于零（线性理论在 \(v_{s}\to v^{-}\) 时 \(f'_{\text{app}}\to\infty\)，实际上非线性效应会形成弱激波）。</p>
+          <p><span class="ans">(a) \(628\,\mathrm{Hz}\)；(b) \(415\,\mathrm{Hz}\)；(c) 比值 0.66（降约 34%）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 超音速战斗机的马赫锥 Supersonic Jet Mach Cone</h4>
+        <p class="example-statement">一架战斗机以 \(v_{s}=1.5\,v\)（即 Mach 1.5）在空中水平飞行，\(v=343\,\mathrm{m/s}\)。求 (a) 马赫锥半顶角；(b) 锥面与飞行方向的夹角；(c) 地面听众在飞机正下方多远距离外会先听到音爆（取飞行高度 \(h=10\,\mathrm{km}\)）？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 半顶角 \(\theta\)：</strong></p>
+          <div class="formula">\[ \sin\theta=\frac{v}{v_{s}}=\frac{1}{1.5}=0.667,\qquad \theta=\arcsin(0.667)=41.81^{\circ} \]</div>
+          <p class="step"><strong>(b) 锥面与飞行方向夹角：</strong> 注意 \(\theta\) 是从源运动方向<strong>反向</strong>（\(-x\)）量起的半顶角，所以锥面与飞行方向 \(+x\) 之间的夹角为 \(180^{\circ}-\theta=138.2^{\circ}\)，或者说锥面"向后张开"两侧与 \(-x\) 各成 \(41.8^{\circ}\)。</p>
+          <p class="step"><strong>(c) 几何定位音爆落点：</strong> 锥面与地面相交的位置在飞机<strong>后方</strong>水平距离 \(d=h\tan\theta\) 处（飞机在 \(h\) 高度，锥面以 \(\theta\) 向下/向后展开）：</p>
+          <div class="formula">\[ \tan\theta=\tan 41.81^{\circ}=0.894,\qquad d=h\tan\theta=(10\,\mathrm{km})(0.894)=8.94\,\mathrm{km} \]</div>
+          <p class="step">即地面听众在飞机<strong>身后</strong>约 \(9\,\mathrm{km}\) 处首次听到音爆；飞机本身早已飞过头顶（在头顶时无声，因锥尚未到达地面）。这也解释了"音爆拖在飞机后面"的现象。</p>
+          <p class="step"><strong>校核：</strong> 战斗机实际速率 \(v_{s}=1.5\times 343=514.5\,\mathrm{m/s}\approx 1.5\,M\)（Mach 1.5，约 \(1850\,\mathrm{km/h}\)），符合典型超音速巡航。</p>
+          <p><span class="ans">(a) \(\theta\approx 41.8^{\circ}\)；(b) 与飞行方向夹 \(138.2^{\circ}\)；(c) 飞机身后约 \(8.9\,\mathrm{km}\) 处</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>符号记错（最常见错误）。</strong> 公式 \(f'=f(v\pm v_{o})/(v\mp v_{s})\) 的<strong>上下必须配套</strong>：上+下− 用于相向运动，上−下+ 用于背向。<strong>补救办法不是死记</strong>，而是回想"接近 → \(f'\) 升高"——要让分数变大，分子得变大、分母得变小，这就锁定了符号。</li>
+        <li><strong>多普勒移位需要<strong>视线方向上的相对运动</strong>。</strong> 若源以恒定速度做"横切"运动（瞬时速度垂直于源—观察者连线），一阶多普勒移为<strong>零</strong>（只在相对论情形才有横多普勒移，量级 \(\beta^{2}\)）。学生常误以为"只要在动就有移位"。在源<strong>正好经过</strong>观察者那一瞬间，源—观察者连线方向上的速度分量快速由 \(+v_{s}\) 过渡到 \(-v_{s}\)，频率平滑地由 \(f'_{\text{app}}\) 过渡到 \(f'_{\text{rec}}\)——<strong>不是</strong>瞬时跳变。</li>
+        <li><strong>经典多普勒公式只适用于<strong>介质中的机械波</strong>（声、水波、地震波等），不可用于光。</strong> 对光，介质不存在，必须用相对论多普勒公式（见 §7）。常见错误：把 \(f'=fv/(v-v_{s})\) 套用于星系红移，得到的"退行速度"在 \(v\sim c\) 时严重偏离正确值。</li>
+        <li><strong>冲击波（马赫锥）<strong>仅当</strong> \(v_{s}>v\) 才存在。</strong> 学生在 \(v_{s}<v\) 时也试图画"锥"，其实那时波前在前方堆积但<strong>不形成包络锥</strong>（每个波前仍是独立的圆/球面）。\(v_{s}=v\) 是奇异极限（线性理论 \(f'\to\infty\)），不可代入分母为零的公式。</li>
+        <li><strong>运动源 ≠ 运动观察者（即便相对速率相同）。</strong> 由于介质的存在，"源动、观察者静"与"观察者动、源静"在物理上不对称，公式不同。学生常错误地用"伽利略相对性"以为两者等价。这种不对称在 \(v_{s},v_{o}\ll v\) 时近似相等（一阶相同），但在高速时差异巨大（见例 4.3）。</li>
+        <li><strong>音爆不是"超音速飞机持续发出的声音"。</strong> 它是马赫锥阵面<strong>扫过观察者那一瞬</strong>的压强脉冲，对地面听众是一个（或两个：机首 + 机尾）短促爆炸声，而非持续轰鸣。飞行员自己听不到音爆，因为他/她一直在锥顶之外（锥被飞机拖着走）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 接近与远离的汽车喇叭：一辆汽车以 \(v_{s}=25\,\mathrm{m/s}\) 驶来，喇叭静止频率 \(f=400\,\mathrm{Hz}\)，声速 \(v=343\,\mathrm{m/s}\)。求 (a) 驶近时路旁听众听到的频率；(b) 驶离时听到的频率；(c) 两者比值。</summary>
+        <div class="hint">套用 \(f'=fv/(v\mp v_{s})\)；驶近分母取 \(-v_{s}\)，驶离取 \(+v_{s}\)。</div>
+        <div class="solution">(a) \(f'_{\text{app}}=400\times 343/(343-25)=400\times 343/318=400\times 1.0786=431.4\,\mathrm{Hz}\)。<br>(b) \(f'_{\text{rec}}=400\times 343/(343+25)=400\times 343/368=400\times 0.9321=372.8\,\mathrm{Hz}\)。<br>(c) 比值 \(=318/368=0.864\)，骤降约 13.6%。<br><span class="ans">(a) \(431\,\mathrm{Hz}\)；(b) \(373\,\mathrm{Hz}\)；(c) 比值 0.864</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 自行车手与火车（两者都动）：火车汽笛 \(f=500\,\mathrm{Hz}\)，火车以 \(v_{s}=30\,\mathrm{m/s}\) 驶近；自行车手以 \(v_{o}=5.0\,\mathrm{m/s}\) 迎着火车骑行。声速 \(v=343\,\mathrm{m/s}\)。求自行车手听到的频率。</summary>
+        <div class="hint">通用公式 \(f'=f(v+v_{o})/(v-v_{s})\)（相向运动取上+下−）。</div>
+        <div class="solution">\(f'=500\times\dfrac{343+5.0}{343-30}=500\times\dfrac{348}{313}=500\times 1.1118=555.9\,\mathrm{Hz}\)。<br>对比：若只有火车动（\(v_{o}=0\)），\(f'=500\times 343/313=547.9\,\mathrm{Hz}\)；若只有自行车手（\(v_{s}=0\)）动，\(f'=500\times 348/343=507.3\,\mathrm{Hz}\)。两者叠加并非简单相加（因公式为乘积形式），但低速下接近。<br><span class="ans">\(f'\approx 556\,\mathrm{Hz}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 蝙蝠的回声定位（两次多普勒移）：蝙蝠发出 \(f=60\,\mathrm{kHz}\) 超声脉冲，飞虫以 \(v=5.0\,\mathrm{m/s}\) 朝蝙蝠飞来（蝙蝠可视为静止）。空气声速 \(v_{\text{air}}=343\,\mathrm{m/s}\)。(a) 飞虫"听到"的频率；(b) 飞虫将此频率的声波散射回蝙蝠，蝙蝠"听到"的回波频率；(c) 回波相对于蝙蝠原发射频率的偏移 \(\Delta f\)。</summary>
+        <div class="hint">第一步：源（蝙蝠）静、观察者（虫）动 → \(f_{1}=f(v+v_{\text{bug}})/v\)。第二步：把虫视为以 \(v_{\text{bug}}\) 朝蝙蝠运动的"运动源"反射 \(f_{1}\) → \(f_{2}=f_{1}\,v/(v-v_{\text{bug}})\)。两次都取"相向"。</div>
+        <div class="solution">(a) \(f_{1}=60{,}000\times(343+5)/343=60{,}000\times 348/343=60{,}000\times 1.01458=60{,}875\,\mathrm{Hz}\)。<br>(b) \(f_{2}=f_{1}\times 343/(343-5)=60{,}875\times 343/338=60{,}875\times 1.01479=61{,}775\,\mathrm{Hz}\)。<br>(c) \(\Delta f=f_{2}-f=61{,}775-60{,}000=1{,}775\,\mathrm{Hz}\approx 1.8\,\mathrm{kHz}\)。<br>校核：低速近似 \(\Delta f\approx 2fv_{\text{bug}}/v_{\text{air}}=2\times 60{,}000\times 5/343=1{,}749\,\mathrm{Hz}\) ✓（差 1.5%，符合二阶小量修正）。蝙蝠听觉皮质能分辨几十 Hz 的偏移，故轻松测出虫的相对速度。<br><span class="ans">(a) \(60.88\,\mathrm{kHz}\)；(b) \(61.78\,\mathrm{kHz}\)；(c) \(\Delta f\approx 1.77\,\mathrm{kHz}\)（约 3.0%）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Mach 2.5 战斗机的马赫锥：一架战斗机以 Mach 2.5 飞行（\(v=343\,\mathrm{m/s}\)）。(a) 马赫锥半顶角 \(\theta\)；(b) 飞机实际速率（\(\mathrm{km/h}\)）；(c) 飞行高度 \(h=8.0\,\mathrm{km}\) 时，地面听众在飞机身后多远外听到音爆？</summary>
+        <div class="hint">\(\sin\theta=1/M\)；\(\tan\theta=d/h\)。</div>
+        <div class="solution">(a) \(\sin\theta=1/2.5=0.400\)，\(\theta=\arcsin(0.400)=23.58^{\circ}\)。<br>(b) \(v_{s}=2.5\times 343=857.5\,\mathrm{m/s}=3087\,\mathrm{km/h}\)。<br>(c) \(\tan 23.58^{\circ}=0.4364\)，\(d=h\tan\theta=8.0\times 0.4364=3.49\,\mathrm{km}\)。<br>对比例 4.5（Mach 1.5）\(d\approx 8.9\,\mathrm{km}\)：Mach 越高，锥越窄，音爆落点离飞机正下方越近。<br><span class="ans">(a) \(\theta\approx 23.6^{\circ}\)；(b) \(\approx 3.09\times 10^{3}\,\mathrm{km/h}\)；(c) 约 \(3.5\,\mathrm{km}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 由频率骤降反推源速：一列火车经过站台，听众听到汽笛频率从 \(560\,\mathrm{Hz}\)（驶近）骤降到 \(420\,\mathrm{Hz}\)（驶离）。声速 \(v=343\,\mathrm{m/s}\)。求 (a) 汽笛的静止频率 \(f\)；(b) 火车速率 \(v_{s}\)。</summary>
+        <div class="hint">用 \(f'_{\text{app}}=fv/(v-v_{s})\)、\(f'_{\text{rec}}=fv/(v+v_{s})\)，两式相除消去 \(f\)。</div>
+        <div class="solution">两式相除：\(f'_{\text{app}}/f'_{\text{rec}}=(v+v_{s})/(v-v_{s})\)。代入：\(560/420=(343+v_{s})/(343-v_{s})\)，即 \(4/3=(343+v_{s})/(343-v_{s})\)。<br>解：\(4(343-v_{s})=3(343+v_{s})\Rightarrow 1372-4v_{s}=1029+3v_{s}\Rightarrow 343=7v_{s}\Rightarrow v_{s}=49.0\,\mathrm{m/s}\approx 176\,\mathrm{km/h}\)。<br>再求 \(f\)：\(f=f'_{\text{app}}(v-v_{s})/v=560\times(343-49)/343=560\times 294/343=560\times 0.8571=480.0\,\mathrm{Hz}\)。<br>校核用 rec：\(f=f'_{\text{rec}}(v+v_{s})/v=420\times 392/343=420\times 1.1429=480.0\,\mathrm{Hz}\) ✓。<br><span class="ans">(a) \(f=480\,\mathrm{Hz}\)；(b) \(v_{s}=49\,\mathrm{m/s}\approx 176\,\mathrm{km/h}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">多普勒效应与马赫锥 (Doppler effect and Mach cone)。一个运动的声源（红色圆）以速率 \(v_{s}\) 沿水平线匀速向右运动（到达右边界后从左边重新出现），按固定周期发出 expanding 球面波前（蓝色圆环）。波前以恒定波速 \(v=343\,\mathrm{m/s}\) 在介质中传播；右侧的<strong>静止观察者</strong>（蓝色圆）记录到达的频率 \(f'\)。调节 \(v_{s}/v\) 滑块（取值 \(0\text{–}2.0\)，可超过 1）观察：<strong>前方波前堆积（频率升高）、后方散开（频率降低）</strong>；当 \(v_{s}>v\) 时源跑到自己波前的前面，所有子波的包络形成<strong>马赫锥</strong>，半顶角 \(\theta=\arcsin(v/v_{s})\)。观察者是否在源的前方（接近）或后方（远离）决定 \(f'\) 的符号方向。所有计算使用经典多普勒公式 \(f'=fv/(v\mp v_{s})\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical constants (SI) ------------------------------------
+          var V_SOUND = 343;                 // speed of sound in air at 20°C, m/s
+
+          // ---- Visualization scaling (decoupled from real wave speed) -----
+          var VIS_V       = 105;             // visual wave speed, px/s
+          var EMIT_PERIOD = 0.75;            // visual seconds between wavefront emissions
+
+          var params = {
+            vsRatio: 0.5,                    // v_s / v  (dimensionless; can exceed 1)
+            fSrc:    440,                    // source frequency, Hz
+          };
+
+          function visVs()  { return params.vsRatio * VIS_V; }
+
+          // ---- Simulation -------------------------------------------------
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return {
+                sourceX: 40,
+                sourceY: H / 2 + 10,
+                nextEmitT: 0,
+                fronts: [],
+                obsX: W - 120,
+                obsY: H / 2 + 10,
+              };
+            },
+            step: function (dt, t, s) {
+              var vis_vs = visVs();
+
+              // Move source rightward; wrap around at right edge
+              s.sourceX += vis_vs * dt;
+              if (s.sourceX > W + 60) s.sourceX = -40;
+
+              // Emit new circular wavefronts at the source's own fixed period
+              var guard = 0;
+              while (t >= s.nextEmitT && guard < 24) {
+                s.fronts.push({ x: s.sourceX, y: s.sourceY, tEmit: s.nextEmitT });
+                s.nextEmitT += EMIT_PERIOD;
+                guard++;
+              }
+
+              // Cull wavefronts whose radius exceeds the canvas diagonal
+              var maxR = Math.hypot(W, H) + 80;
+              s.fronts = s.fronts.filter(function (f) {
+                var age = t - f.tEmit;
+                return age * VIS_V < maxR;
+              });
+            },
+            draw: function (ctx, s, env) {
+              var t = env.t;
+              PS.clear(ctx);
+
+              var ratio = params.vsRatio;
+
+              // ---- Midline (source trajectory) -----------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath();
+              ctx.moveTo(0, s.sourceY);
+              ctx.lineTo(W, s.sourceY);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+
+              // ---- Wavefronts (expanding circles) -------------------------
+              ctx.save();
+              ctx.lineWidth = 1.6;
+              ctx.strokeStyle = PS.colors.primary;
+              for (var i = 0; i < s.fronts.length; i++) {
+                var f = s.fronts[i];
+                var age = t - f.tEmit;
+                var r = age * VIS_V;
+                if (r < 0.5) continue;
+                ctx.globalAlpha = 0.78 * Math.max(0.12, 1 - age / 7);
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, r, 0, Math.PI * 2);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- Mach cone half-angle (computed for any ratio ≥ 1; clamped) ---
+              // At ratio = 1 the cone degenerates to a flat plane (θ = 90°); we
+              // still draw a near-flat cone when ratio is slightly above 1.
+              var theta = (ratio >= 1)
+                ? Math.asin(Math.min(1, 1 / Math.max(1e-6, ratio)))
+                : 0;
+              if (ratio > 1) {
+                var coneLen = 760;
+                var cx0 = s.sourceX, cy0 = s.sourceY;
+                var xTip = cx0 - coneLen * Math.cos(theta);
+                var yUp  = cy0 - coneLen * Math.sin(theta);
+                var yDn  = cy0 + coneLen * Math.sin(theta);
+                ctx.save();
+                // Soft fill of the cone interior
+                ctx.fillStyle = PS.colors.accent;
+                ctx.globalAlpha = 0.10;
+                ctx.beginPath();
+                ctx.moveTo(cx0, cy0);
+                ctx.lineTo(xTip, yUp);
+                ctx.lineTo(xTip, yDn);
+                ctx.closePath();
+                ctx.fill();
+                // Cone edges
+                ctx.strokeStyle = PS.colors.accent;
+                ctx.lineWidth = 2.2;
+                ctx.globalAlpha = 0.95;
+                ctx.beginPath();
+                ctx.moveTo(cx0, cy0); ctx.lineTo(xTip, yUp);
+                ctx.moveTo(cx0, cy0); ctx.lineTo(xTip, yDn);
+                ctx.stroke();
+                // Angle arc at the apex (between -x and upper edge)
+                var arcR = 56;
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.lineWidth = 1.6;
+                ctx.globalAlpha = 0.95;
+                ctx.beginPath();
+                ctx.arc(cx0, cy0, arcR, Math.PI - theta, Math.PI + theta);
+                ctx.stroke();
+                // θ label inside the cone
+                var lblX = cx0 - (arcR + 18);
+                var lblY = cy0 + 4;
+                PS.drawText(ctx, 'θ', lblX, lblY,
+                  { font: 'bold 15px system-ui', color: PS.colors.accent2, align: 'center' });
+                ctx.restore();
+              }
+
+              // ---- Source (moving) ----------------------------------------
+              PS.drawCircle(ctx, s.sourceX, s.sourceY, 9,
+                { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 2 });
+              PS.drawText(ctx, '源 Source', s.sourceX, s.sourceY - 18,
+                { font: 'bold 13px system-ui', color: PS.colors.text, align: 'center' });
+              // Velocity arrow
+              if (visVs() > 0.5) {
+                PS.drawArrow(ctx, s.sourceX + 11, s.sourceY,
+                                 s.sourceX + 11 + 40, s.sourceY,
+                                 PS.colors.accent, 'v_s');
+              }
+
+              // ---- Observer (stationary) ----------------------------------
+              PS.drawCircle(ctx, s.obsX, s.obsY, 9,
+                { fill: PS.colors.primary, stroke: PS.colors.text, lineWidth: 2 });
+              PS.drawText(ctx, '观察者 Observer', s.obsX, s.obsY - 18,
+                { font: 'bold 13px system-ui', color: PS.colors.primary, align: 'center' });
+
+              // ---- Determine approaching/receding & compute f' ------------
+              var approaching = s.sourceX < s.obsX;
+              var fObs = null;
+              if (ratio < 1) {
+                fObs = approaching
+                  ? params.fSrc / (1 - ratio)
+                  : params.fSrc / (1 + ratio);
+              }
+
+              // ---- Readout panel (top-left) -------------------------------
+              var rx = 14, ry = 18;
+              PS.drawText(ctx, '物理量 Physical quantities (SI):', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v (波速 wave speed) = ' + V_SOUND + ' m/s',
+                rx, ry + 20, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'v_s = ' + ratio.toFixed(2) + ' v  =  ' + (ratio * V_SOUND).toFixed(0) + ' m/s',
+                rx, ry + 38, { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx,
+                'f (源 source) = ' + params.fSrc.toFixed(0) + ' Hz',
+                rx, ry + 56, { font: '12px system-ui', color: PS.colors.text });
+
+              if (fObs !== null) {
+                var col   = approaching ? PS.colors.accent2 : PS.colors.primary;
+                var label = approaching ? '接近 approaching ↑' : '远离 receding ↓';
+                var sign  = approaching ? '−' : '+';
+                PS.drawText(ctx, '观察者状态: ' + label, rx, ry + 78,
+                  { font: 'bold 12px system-ui', color: col });
+                PS.drawText(ctx,
+                  "f' = f·v / (v " + sign + " v_s) = " + fObs.toFixed(1) + ' Hz',
+                  rx, ry + 96, { font: 'bold 13px system-ui', color: col });
+              } else {
+                var mach = ratio;
+                var deg  = (theta * 180 / Math.PI).toFixed(1);
+                var tag  = (mach > 1) ? '超音速 Supersonic: v_s > v!'
+                                      : '音障 Sonic limit: v_s = v (Mach 1)';
+                PS.drawText(ctx, tag, rx, ry + 78,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent });
+                PS.drawText(ctx,
+                  'Mach ' + mach.toFixed(2) + ',  θ = arcsin(v/v_s) = ' + deg + '°',
+                  rx, ry + 96, { font: 'bold 12px system-ui', color: PS.colors.accent });
+                PS.drawText(ctx,
+                  '观察者收到冲击波 (sonic boom)，无稳定频率',
+                  rx, ry + 114, { font: '11px system-ui', color: PS.colors.text });
+              }
+
+              // ---- Side annotations (fixed positions) ---------------------
+              PS.drawText(ctx,
+                '前方 ahead: 波前堆积 → f′↑',
+                W - 14, H - 38,
+                { font: '11px system-ui', color: PS.colors.accent2, align: 'right' });
+              PS.drawText(ctx,
+                '后方 behind: 波前散开 → f′↓',
+                14, H - 38,
+                { font: '11px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx,
+                '动画为可视化缩放；物理波速恒为 343 m/s',
+                W - 14, H - 16,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'vsRatio', label: '源速 / 波速  v_s / v  (Mach 数)', min: 0, max: 2.0, step: 0.05, value: 0.5 },
+            { type: 'slider', key: 'fSrc',    label: '源频率 f (Hz)',                  min: 200, max: 800, step: 10,  value: 440 },
+            { type: 'button', key: 'reset',   label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('vsRatio', function (v) { params.vsRatio = v; });
+          ctl.on('fSrc',    function (v) { params.fSrc    = v; });
+          ctl.on('reset',   function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>多普勒效应</strong>：源与观察者沿视线方向有相对运动时，观察频率 \(f'\neq f\)。物理根源：波在介质中以有限速率 \(v\) 传播，相对运动改变了波前到达观察者的时间间隔。</li>
+        <li><strong>运动观察者（源静）</strong>：\(f'=f(v\pm v_{o})/v\)，上+下−对应朝向 / 远离源。波长不变，扫过速率变。</li>
+        <li><strong>运动源（观察者静）</strong>：\(f'=fv/(v\mp v_{s})\)，上−下+对应朝向 / 远离观察者。波长被压缩 / 拉伸。</li>
+        <li><strong>通用公式</strong>（两者都动）：\(f'=f(v\pm v_{o})/(v\mp v_{s})\)。符号约定：<strong>上方对应相向，下方对应背向</strong>。助记："接近 → 频率升高"。</li>
+        <li><strong>非对称性</strong>：由于介质存在，\(v_{o}=v_{s}\) 时情形 A、B 给出不同 \(f'\)；只在 \(v_{o},v_{s}\ll v\) 一阶近似下相同。</li>
+        <li><strong>频率骤降</strong>：源以 \(v_{s}\) 经过静止观察者，\(f'_{\text{rec}}/f'_{\text{app}}=(v-v_{s})/(v+v_{s})\)。</li>
+        <li><strong>马赫锥</strong>（\(v_{s}>v\)）：\(\sin\theta=v/v_{s}=1/M\)，\(M=v_{s}/v\) 为 Mach 数。锥面（冲击波阵面）扫过观察者时产生<strong>音爆</strong>。</li>
+        <li><strong>相对论多普勒</strong>（光，无介质）：\(f'=f\sqrt{(1-\beta)/(1+\beta)}\)（相互远离）。经典公式只适用于介质中的机械波。</li>
+        <li><strong>应用</strong>：雷达测速（双次移频 \(\Delta f\approx 2fv/c\)）、医学超声、天文红移、回声定位、谱线展宽。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\;f'=f\,\frac{v\pm v_{o}}{v\mp v_{s}}\;,\quad \frac{f'_{\text{rec}}}{f'_{\text{app}}}=\frac{v-v_{s}}{v+v_{s}}\;,\quad \sin\theta=\frac{v}{v_{s}}=\frac{1}{M}\;\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

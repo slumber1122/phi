@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 傅里叶分析 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第三学期 · 第5章 · 机械波与声 Mechanical Waves &amp; Sound</p>
+      <h1>傅里叶分析 <span class="en-title">Fourier Analysis</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述<strong>傅里叶定理</strong> (Fourier's theorem)：任何满足狄利克雷条件 (Dirichlet conditions) 的周期函数都可表示为正弦/余弦函数的无穷和，并写出<strong>三角形式</strong>与<strong>复指数形式</strong>的傅里叶级数。</li>
+        <li>用正交性 <span>\(\int_{0}^{T}\sin(n\omega t)\sin(m\omega t)\,\mathrm{d}t=\tfrac{T}{2}\delta_{nm}\)</span> 等公式导出系数 \(a_{0}\)、\(a_{n}\)、\(b_{n}\)、\(c_{n}\) 的积分表达式。</li>
+        <li>写出<strong>方波</strong> (square wave)、<strong>锯齿波</strong> (sawtooth wave) 与<strong>三角波</strong> (triangle wave) 的傅里叶展开前若干项，并解释方波"只含奇次谐波、振幅 \(\propto 1/n\)"的成因。</li>
+        <li>陈述<strong>Parseval 定理</strong>：时域平均功率等于频谱分量功率之和 \(\overline{f^{2}}=a_{0}^{2}/4+\tfrac{1}{2}\sum(a_{n}^{2}+b_{n}^{2})\)，并由此推导 \(\sum_{n\,\text{odd}}1/n^{2}=\pi^{2}/8\)。</li>
+        <li>区分<strong>相速度</strong> (phase velocity) \(v_{p}=\omega/k\) 与<strong>群速度</strong> (group velocity) \(v_{g}=\mathrm{d}\omega/\mathrm{d}k\)，解释为何 \(v_{g}\) 才是能量与信息传播的速度，且 \(v_{p}>c\) 并不违反相对论。</li>
+        <li>用 <span>\(\Delta k\cdot\Delta x\gtrsim 1\)</span> 解释<strong>波包</strong> (wave packet) 的空间局域化与频谱宽度之间的制约（不确定性原理的"经典前奏"）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 傅里叶定理 Fourier's Theorem</h3>
+      <p>设 \(f(t)\) 是周期为 \(T\) 的函数，基本角频率 <span>\(\omega_{1}=2\pi/T\)</span>。若 \(f(t)\) 在一个周期内分段光滑（<strong>狄利克雷条件</strong>：有限个极值、有限个第一类间断点），则可展成：</p>
+      <div class="formula">\[ f(t)=\frac{a_{0}}{2}+\sum_{n=1}^{\infty}\bigl[a_{n}\cos(n\omega_{1}t)+b_{n}\sin(n\omega_{1}t)\bigr] \]</div>
+      <p>这就是<strong>傅里叶级数</strong> (Fourier series)。物理意义：任何周期波形都是若干<strong>简谐波</strong> (harmonics)——基频 (fundamental) \(f_{1}=1/T\) 及其整数倍 \(nf_{1}\)——的叠加。这正是第 3 章两端固定弦为何以其简正模式 \(f_{n}=nv/(2L)\) 之叠加来运动的原因：简正模式正是该弦本征的"傅里叶基"。</p>
+      <div class="key-terms">Fourier's theorem (傅里叶定理), Dirichlet conditions (狄利克雷条件), fundamental frequency (基频), harmonic (谐波)</div>
+
+      <h3>2. 三角形式的系数 Fourier Coefficients (Trigonometric Form)</h3>
+      <p>利用三角函数在一个周期上的<strong>正交性</strong>：</p>
+      <div class="formula">\[ \int_{0}^{T}\cos(n\omega_{1}t)\cos(m\omega_{1}t)\,\mathrm{d}t=\frac{T}{2}\delta_{nm},\quad \int_{0}^{T}\sin(n\omega_{1}t)\sin(m\omega_{1}t)\,\mathrm{d}t=\frac{T}{2}\delta_{nm} \]</div>
+      <div class="formula">\[ \int_{0}^{T}\cos(n\omega_{1}t)\sin(m\omega_{1}t)\,\mathrm{d}t=0 \]</div>
+      <p>两边乘以相应的 \(\cos\) 或 \(\sin\) 再积一个周期，得：</p>
+      <div class="formula">\[ \boxed{\,a_{0}=\frac{2}{T}\int_{0}^{T}f(t)\,\mathrm{d}t,\quad a_{n}=\frac{2}{T}\int_{0}^{T}f(t)\cos(n\omega_{1}t)\,\mathrm{d}t,\quad b_{n}=\frac{2}{T}\int_{0}^{T}f(t)\sin(n\omega_{1}t)\,\mathrm{d}t\,} \]</div>
+      <p>\(a_{0}/2\) 是 \(f(t)\) 的直流分量 (DC component) 即平均值；\(a_{n},b_{n}\) 是第 \(n\) 阶谐波的余弦/正弦分量。<strong>对称性简化</strong>：若 \(f\) 是偶函数则所有 \(b_{n}=0\)（纯余弦级数）；若 \(f\) 是奇函数则所有 \(a_{n}=0\)（纯正弦级数）。</p>
+      <div class="key-terms">DC component (直流分量), orthogonality (正交性), even/odd symmetry (偶/奇对称性)</div>
+
+      <h3>3. 复指数形式 Complex-Exponential Form</h3>
+      <p>用 Euler 公式 \(e^{i\theta}=\cos\theta+i\sin\theta\) 把 \(\cos,\sin\) 合并为复指数，得最简洁的形式：</p>
+      <div class="formula">\[ \boxed{\,f(t)=\sum_{n=-\infty}^{\infty}c_{n}\,e^{in\omega_{1}t},\qquad c_{n}=\frac{1}{T}\int_{0}^{T}f(t)\,e^{-in\omega_{1}t}\,\mathrm{d}t\,} \]</div>
+      <p>对实函数有 \(c_{-n}=c_{n}^{*}\)（共轭对称），故 \(|c_{n}|\) 与三角形式的关系为 \(|c_{n}|=\tfrac{1}{2}\sqrt{a_{n}^{2}+b_{n}^{2}}\)（\(n\geq 1\)），\(c_{0}=a_{0}/2\)。复形式在量子力学、信号处理、解波方程时几乎是唯一便利的写法。</p>
+      <div class="key-terms">Euler's formula (欧拉公式), complex Fourier coefficient \(c_n\) (复傅里叶系数), conjugate symmetry (共轭对称)</div>
+
+      <h3>4. 方波的傅里叶级数 Square Wave Spectrum</h3>
+      <p>定义振幅 \(A\)、周期 \(T\) 的<strong>奇方波</strong>：</p>
+      <div class="formula">\[ f(t)=\begin{cases}+A,&0<t<T/2\\-A,&T/2<t<T\end{cases}\qquad f(t+T)=f(t) \]</div>
+      <p>由于 \(f\) 是<strong>奇函数</strong>（若以 \(t=0\) 为对称中心选取），所有 \(a_{n}=0\)。计算 \(b_{n}\)（取 \(\omega_{1}T=2\pi\)）：</p>
+      <div class="formula">\[ b_{n}=\frac{2}{T}\!\int_{0}^{T}\!f(t)\sin(n\omega_{1}t)\,\mathrm{d}t=\frac{4A}{T}\!\int_{0}^{T/2}\!\sin(n\omega_{1}t)\,\mathrm{d}t=\frac{4A}{n\pi}\cdot\frac{1-(-1)^{n}}{2} \]</div>
+      <p>即偶数 \(n\) 为零，奇数 \(n=1,3,5,\ldots\) 给出 \(b_{n}=4A/(n\pi)\)。故：</p>
+      <div class="formula">\[ \boxed{\,f_{\text{square}}(t)=\frac{4A}{\pi}\Bigl[\sin\omega_{1}t+\frac{\sin 3\omega_{1}t}{3}+\frac{\sin 5\omega_{1}t}{5}+\cdots\Bigr]\,} \]</div>
+      <p>关键特征：(i) <strong>只含奇次谐波</strong>——因为方波在半周期处关于 \(t=T/4\) 反对称（半波对称 half-wave symmetry），自动剔除偶次谐波；(ii) 振幅 <strong>\(\propto 1/n\)</strong>——这是<em>跃变</em>波形的"印记"，反映其间断性。</p>
+      <div class="key-terms">square wave (方波), half-wave symmetry (半波对称), harmonic content (谐波含量)</div>
+
+      <h3>5. 锯齿波的傅里叶级数 Sawtooth Wave Spectrum</h3>
+      <p>定义振幅 \(\pm A\)、周期 \(T\) 的<strong>锯齿波</strong>（一个周期内 \(f(t)=2At/T\)，在 \(t=T\) 处跃回 \(-A\)）：取以 \(t=0\) 为中心的对称形式 \(f(t)=2At/T\)，\(-T/2<t<T/2\)。这是<strong>奇函数</strong>，\(a_{n}=0\)；分部积分得：</p>
+      <div class="formula">\[ b_{n}=\frac{2}{T}\!\int_{-T/2}^{T/2}\!\frac{2At}{T}\sin(n\omega_{1}t)\,\mathrm{d}t=\frac{2A}{\pi}(-1)^{n+1}\frac{1}{n} \]</div>
+      <div class="formula">\[ \boxed{\,f_{\text{saw}}(t)=\frac{2A}{\pi}\Bigl[\sin\omega_{1}t-\frac{\sin 2\omega_{1}t}{2}+\frac{\sin 3\omega_{1}t}{3}-\cdots\Bigr]\,} \]</div>
+      <p>与方波不同，锯齿波<strong>含全部谐波</strong>（\(n=1,2,3,\ldots\)），振幅仍 <strong>\(\propto 1/n\)</strong>（因为也有跃变）。三角波 (triangle wave) 由于<strong>连续</strong>但导数有跃变，振幅下降更快 \(\propto 1/n^{2}\)。</p>
+      <div class="key-terms">sawtooth wave (锯齿波), triangle wave (三角波), asymptotic decay (渐近衰减)</div>
+
+      <h3>6. Parseval 定理 Parseval's Theorem</h3>
+      <p>信号在一个周期上的<strong>平均功率</strong> (mean-square value) 在时域与频域相等：</p>
+      <div class="formula">\[ \boxed{\,\frac{1}{T}\int_{0}^{T}\!|f(t)|^{2}\,\mathrm{d}t=\frac{a_{0}^{2}}{4}+\frac{1}{2}\sum_{n=1}^{\infty}\bigl(a_{n}^{2}+b_{n}^{2}\bigr)=\sum_{n=-\infty}^{\infty}|c_{n}|^{2}\,} \]</div>
+      <p>对方波 \(f^{2}=A^{2}\)，所以 \(A^{2}=\tfrac{1}{2}\sum_{n\,\text{odd}}(4A/(n\pi))^{2}=\tfrac{8A^{2}}{\pi^{2}}\sum_{n\,\text{odd}}1/n^{2}\)，给出著名的 \(\sum_{n\,\text{odd}}1/n^{2}=\pi^{2}/8\)。这就是<strong>能量守恒</strong>在频域的体现。</p>
+
+      <h3>7. 傅里叶变换（非周期脉冲） The Fourier Transform</h3>
+      <p>令 \(T\to\infty\)，离散谱 \(n\omega_{1}\) 变为连续变量 \(\omega\)，求和变积分：</p>
+      <div class="formula">\[ \boxed{\,F(\omega)=\int_{-\infty}^{\infty}f(t)\,e^{-i\omega t}\,\mathrm{d}t,\qquad f(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(\omega)\,e^{i\omega t}\,\mathrm{d}\omega\,} \]</div>
+      <p>典型：宽 \(\tau\) 的矩形脉冲的频谱是 \(\mathrm{sinc}\) 函数 \(F(\omega)\propto\sin(\omega\tau/2)/\omega\)，<strong>第一个零点</strong>在 \(\omega\sim 2\pi/\tau\)——脉冲越窄，频谱越宽。这就是 <strong>\(\Delta\omega\cdot\Delta t\gtrsim 2\pi\)</strong> 的具体体现。</p>
+
+      <h3>8. 波包：相速度 vs 群速度 Wave Packets — Phase vs Group Velocity</h3>
+      <p>真实物理波总是有限宽度的<strong>波包</strong>：若干频率相近的简谐波叠加形成的"包络"。考虑两列波 \(y_{1}=A\cos(k_{1}x-\omega_{1}t)\) 与 \(y_{2}=A\cos(k_{2}x-\omega_{2}t)\)：</p>
+      <div class="formula">\[ y=2A\cos\!\Bigl(\tfrac{\Delta k}{2}x-\tfrac{\Delta\omega}{2}t\Bigr)\cos(\bar{k}x-\bar{\omega}t),\quad \Delta k=k_{2}-k_{1},\;\Delta\omega=\omega_{2}-\omega_{1} \]</div>
+      <p>"载波"\(\cos(\bar{k}x-\bar{\omega}t)\) 以<strong>相速度</strong> \(v_{p}=\bar{\omega}/\bar{k}\) 行进；"包络"\(\cos(\Delta k\,x/2-\Delta\omega\,t/2)\) 以<strong>群速度</strong>传播：</p>
+      <div class="formula">\[ \boxed{\,v_{g}=\frac{\mathrm{d}\omega}{\mathrm{d}k}\Big|_{k=\bar{k}},\qquad v_{p}=\frac{\omega}{k}\,} \]</div>
+      <p><strong>能量与信息以群速度传播</strong>——它对应波包的"包络"移动速度。在<strong>非色散介质</strong>（如真空中的电磁波、理想弦上的横波）\(\omega=ck\)，\(v_{g}=v_{p}=c\)。在<strong>色散介质</strong>中二者不同：深水波 \(\omega=\sqrt{gk}\) 给出 \(v_{g}=v_{p}/2\)（海面波包"落后"于个别波峰）；等离子体中 \(\omega^{2}=\omega_{p}^{2}+c^{2}k^{2}\) 给出 \(v_{p}>c\)、\(v_{g}<c\)、\(v_{p}v_{g}=c^{2}\)。</p>
+      <div class="key-terms">wave packet (波包), phase velocity \(v_p\) (相速度), group velocity \(v_g\) (群速度), dispersion relation (色散关系)</div>
+
+      <h3>9. 局域化与带宽：\(\Delta k\cdot\Delta x\gtrsim 1\)</h3>
+      <p>把若干波数 \(k\) 邻近的简谐波叠加形成空间局域的波包。空间宽度 \(\Delta x\) 与波数展宽 \(\Delta k\) 互为傅里叶变换对，必然满足：</p>
+      <div class="formula">\[ \boxed{\,\Delta k\cdot\Delta x\gtrsim 1,\qquad \Delta\omega\cdot\Delta t\gtrsim 1\,} \]</div>
+      <p>要使波包"更窄"，必须叠加更多 \(k\) 成分（更宽的谱）。这是<strong>经典波动力学的不确定性</strong>，也是量子力学 \(\Delta p\,\Delta x\gtrsim\hbar/2\)（其中 \(p=\hbar k\)）的物理根源。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 5.1：用正交性提取系数 \(a_{n}\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 设 \(f(t)=a_{0}/2+\sum_{m}[a_{m}\cos(m\omega_{1}t)+b_{m}\sin(m\omega_{1}t)]\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 两边乘 \(\cos(n\omega_{1}t)\)（\(n\geq 1\)）并对一个周期 \(0\to T\) 积分。由正交性，右边除 \(m=n\) 的 \(a_{n}\cos^{2}(n\omega_{1}t)\) 项外都为零：</p>
+      <div class="formula">\[ \int_{0}^{T}f(t)\cos(n\omega_{1}t)\,\mathrm{d}t=a_{n}\int_{0}^{T}\cos^{2}(n\omega_{1}t)\,\mathrm{d}t=a_{n}\cdot\frac{T}{2} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 解出 \(a_{n}=\dfrac{2}{T}\displaystyle\int_{0}^{T}f(t)\cos(n\omega_{1}t)\,\mathrm{d}t\)。同理乘 \(\sin(n\omega_{1}t)\) 得 \(b_{n}\)；乘 \(1\)（即"零频"余弦）得 \(a_{0}T/2=\int f\,\mathrm{d}t\)。</p>
+
+      <h3>推导 5.2：方波系数 \(b_{n}=4A/(n\pi)\)（奇 \(n\)）</h3>
+      <p class="step"><strong>步骤 1：</strong> 取 \(\omega_{1}=2\pi/T\)，方波 \(f(t)=+A\)（\(0<t<T/2\)）、\(-A\)（\(T/2<t<T\)），是奇函数关于 \(t=0\)（重新对称化后），故 \(a_{n}=0\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 计算 \(b_{n}=\dfrac{2}{T}\displaystyle\int_{0}^{T}f(t)\sin(n\omega_{1}t)\,\mathrm{d}t=\dfrac{2}{T}\Bigl[A\int_{0}^{T/2}\sin(n\omega_{1}t)\,\mathrm{d}t-A\int_{T/2}^{T}\sin(n\omega_{1}t)\,\mathrm{d}t\Bigr]\)。</p>
+      <p class="step"><strong>步骤 3：</strong> \(\displaystyle\int_{0}^{T/2}\sin(n\omega_{1}t)\,\mathrm{d}t=\Bigl[-\tfrac{\cos(n\omega_{1}t)}{n\omega_{1}}\Bigr]_{0}^{T/2}=\tfrac{1-\cos(n\pi)}{n\omega_{1}}=\tfrac{1-(-1)^{n}}{n\omega_{1}}\)；类似 \(\displaystyle\int_{T/2}^{T}=-\tfrac{1-(-1)^{n}}{n\omega_{1}}\)（反向，故负号消失后还加一负号得 \(\tfrac{(-1)^{n}-1}{n\omega_{1}}+\) 余项，最终结果相同）。</p>
+      <p class="step"><strong>步骤 4：</strong> 合并：\(b_{n}=\dfrac{2A}{T}\cdot\dfrac{2[1-(-1)^{n}]}{n\omega_{1}}=\dfrac{4A[1-(-1)^{n}]}{2\pi n}\)。偶 \(n\) 为零；奇 \(n\)：\(b_{n}=\dfrac{4A}{n\pi}\)。证毕。</p>
+
+      <h3>推导 5.3：群速度 \(v_{g}=\mathrm{d}\omega/\mathrm{d}k\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 取频率相近的两列波 \(y_{1}=A\cos(k_{1}x-\omega_{1}t)\)、\(y_{2}=A\cos(k_{2}x-\omega_{2}t)\)，记 \(\bar{k},\bar{\omega}\) 为平均，\(\Delta k,\Delta\omega\) 为差。</p>
+      <p class="step"><strong>步骤 2：</strong> 用和差化积：</p>
+      <div class="formula">\[ y=2A\cos\!\bigl(\tfrac{\Delta k}{2}x-\tfrac{\Delta\omega}{2}t\bigr)\cos(\bar{k}x-\bar{\omega}t) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 载波 \(\cos(\bar{k}x-\bar{\omega}t)\) 的等相面 \(\bar{k}x-\bar{\omega}t=\text{const}\) 给 \(v_{p}=\mathrm{d}x/\mathrm{d}t=\bar{\omega}/\bar{k}\)。</p>
+      <p class="step"><strong>步骤 4：</strong> 包络 \(\cos(\Delta k\,x/2-\Delta\omega\,t/2)\) 的等相面 \(\Delta k\,x-\Delta\omega\,t=\text{const}\) 给 \(v_{\text{env}}=\Delta\omega/\Delta k\)。取 \(\Delta k\to 0\) 极限得 \(v_{g}=\mathrm{d}\omega/\mathrm{d}k\)。物理上包络携带着能量，所以 \(v_{g}\) 是信号（信息）速度。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 方波的傅里叶级数前四项</h4>
+        <p class="example-statement">考虑振幅 \(A=1\,\mathrm{V}\)、周期 \(T=2\pi/\omega_{1}=1\,\mathrm{ms}\) 的方波电压信号（在 \(0<t<T/2\) 取 \(+1\,\mathrm{V}\)，\(T/2<t<T\) 取 \(-1\,\mathrm{V}\)）。写出其傅里叶级数，给出前四个非零谐波（频率、振幅），并求前四项部分和在 \(t=T/4\) 处的值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 这是奇方波，\(a_{0}=a_{n}=0\)，\(b_{n}=4A/(n\pi)\)（\(n\) 奇）。代入 \(A=1\,\mathrm{V}\)：</p>
+          <div class="formula">\[ v(t)=\frac{4}{\pi}\Bigl[\sin\omega_{1}t+\tfrac{1}{3}\sin 3\omega_{1}t+\tfrac{1}{5}\sin 5\omega_{1}t+\tfrac{1}{7}\sin 7\omega_{1}t+\cdots\Bigr]\,\mathrm{V} \]</div>
+          <p class="step">基频 \(f_{1}=1/T=1/(1\,\mathrm{ms})=1.0\,\mathrm{kHz}\)，\(\omega_{1}=2\pi f_{1}=6283\,\mathrm{rad/s}\)。前四个非零谐波：</p>
+          <div class="formula">\[ \begin{array}{c|c|c}n& f_{n}=nf_{1}\,(\mathrm{kHz})& \text{振幅 }4/(n\pi)\,(\mathrm{V})\\ \hline 1 & 1.0 & 1.273\\ 3 & 3.0 & 0.424\\ 5 & 5.0 & 0.255\\ 7 & 7.0 & 0.182\end{array} \]</div>
+          <p class="step">在 \(t=T/4\) 即 \(\omega_{1}t=\pi/2\) 处，方波取 \(+1\,\mathrm{V}\)。前四项部分和（注意 \(\sin(n\pi/2)=(-1)^{(n-1)/2}\) 对奇 \(n\)）：</p>
+          <div class="formula">\[ v_{4}(T/4)=\frac{4}{\pi}\Bigl[1+\tfrac{1}{3}(-1)+\tfrac{1}{5}(1)+\tfrac{1}{7}(-1)\Bigr]=\frac{4}{\pi}\Bigl[1-0.333+0.200-0.143\Bigr]=\frac{4}{\pi}(0.724)=0.922\,\mathrm{V} \]</div>
+          <p class="step">与真值 \(+1\,\mathrm{V}\) 偏差 \(7.8\%\)——四项已相当接近。继续加项会进一步收敛，但间断点附近永远会有约 \(9\%\) 的 Gibbs 振荡过冲。</p>
+          <p><span class="ans">\(v(t)=\frac{4}{\pi}\sum_{n\,\text{odd}}\frac{\sin n\omega_{1}t}{n}\,\mathrm{V}\)；前四项频率 \(1,3,5,7\,\mathrm{kHz}\)，振幅 \(1.273,0.424,0.255,0.182\,\mathrm{V}\)；\(v_{4}(T/4)=0.922\,\mathrm{V}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 锯齿波的傅里叶级数</h4>
+        <p class="example-statement">一锯齿波 \(f(t)=A\,t/T\)（在 \(0<t<T\) 内由 \(0\) 线性上升到 \(A\)，再跃回 \(0\)）。取 \(A=2.0\,\mathrm{V}\)，\(T=0.50\,\mathrm{s}\)。写出其傅里叶级数并求前三阶谐波的振幅。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 这种"由 0 上升到 A"的锯齿可改写为奇对称中心形式（以 \(t=T/2\) 为对称中心，重新原点化）应用现成公式。直接计算：\(a_{0}=\frac{2}{T}\int_{0}^{T}(At/T)\,\mathrm{d}t=A\)（直流分量 \(=A/2=1.0\,\mathrm{V}\)，即平均值）。\(a_{n}=\frac{2}{T}\int_{0}^{T}(At/T)\cos(n\omega_{1}t)\,\mathrm{d}t=0\)（分部积分两次回代，周期边界相消，仅 \(\cos 0\) 贡献被积函数的奇性给出零）。</p>
+          <p class="step">\(b_{n}=\frac{2}{T}\int_{0}^{T}(At/T)\sin(n\omega_{1}t)\,\mathrm{d}t\)。分部积分 \(\int_{0}^{T}t\sin(n\omega_{1}t)\,\mathrm{d}t=\bigl[-t\cos(n\omega_{1}t)/(n\omega_{1})\bigr]_{0}^{T}+\int_{0}^{T}\cos(n\omega_{1}t)/(n\omega_{1})\,\mathrm{d}t=-T\cos(n\pi)/(n\omega_{1})+0=-T(-1)^{n}/(n\omega_{1})\)。</p>
+          <p class="step">故 \(b_{n}=\dfrac{2A}{T^{2}}\cdot\dfrac{-T(-1)^{n}}{n\omega_{1}}=\dfrac{-2A(-1)^{n}}{n\omega_{1}T}=\dfrac{-2A(-1)^{n}}{n\cdot 2\pi}=\dfrac{A(-1)^{n+1}}{n\pi}\)。代入 \(A=2.0\,\mathrm{V}\)：\(b_{n}=\dfrac{2.0(-1)^{n+1}}{n\pi}\,\mathrm{V}\)。</p>
+          <div class="formula">\[ f(t)=\frac{A}{2}+\frac{A}{\pi}\Bigl[\sin\omega_{1}t-\tfrac{1}{2}\sin 2\omega_{1}t+\tfrac{1}{3}\sin 3\omega_{1}t-\cdots\Bigr] \]</div>
+          <p class="step">前三阶谐波振幅：\(A/\pi=0.637\,\mathrm{V}\)、\(A/(2\pi)=0.318\,\mathrm{V}\)、\(A/(3\pi)=0.212\,\mathrm{V}\)。基频 \(f_{1}=1/T=2.0\,\mathrm{Hz}\)，第二、三谐波 \(4.0\,\mathrm{Hz}\)、\(6.0\,\mathrm{Hz}\)。注意锯齿波<strong>含全部谐波</strong>，与方波不同。</p>
+          <p><span class="ans">\(f(t)=1.0+\frac{2.0}{\pi}\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin(n\omega_{1}t)\,\mathrm{V}\)；前 3 谐波振幅 \(0.637,\,0.318,\,0.212\,\mathrm{V}\)；频率 \(2.0,\,4.0,\,6.0\,\mathrm{Hz}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 深水波的相速度 vs 群速度</h4>
+        <p class="example-statement">深水表面重力波的色散关系为 \(\omega(k)=\sqrt{gk}\)，其中 \(g=9.81\,\mathrm{m/s^{2}}\)。一波包中心波长 \(\lambda=10\,\mathrm{m}\)（即 \(k=2\pi/\lambda\)）。求：(a) 相速度 \(v_{p}\)；(b) 群速度 \(v_{g}\)；(c) 单个波峰相对波包移动 \(100\,\mathrm{m}\) 所需的时间差（设波包行进 \(100\,\mathrm{m}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \(k=2\pi/\lambda=2\pi/10=0.628\,\mathrm{rad/m}\)。角频率 \(\omega=\sqrt{gk}=\sqrt{9.81\times 0.628}=\sqrt{6.163}=2.48\,\mathrm{rad/s}\)。</p>
+          <p class="step">(a) 相速度：</p>
+          <div class="formula">\[ v_{p}=\frac{\omega}{k}=\frac{2.48}{0.628}=3.95\,\mathrm{m/s} \]</div>
+          <p class="step">(b) 群速度：</p>
+          <div class="formula">\[ v_{g}=\frac{\mathrm{d}\omega}{\mathrm{d}k}=\frac{\mathrm{d}}{\mathrm{d}k}\sqrt{gk}=\frac{g}{2\sqrt{gk}}=\frac{1}{2}\sqrt{\frac{g}{k}}=\frac{v_{p}}{2}=1.97\,\mathrm{m/s} \]</div>
+          <p class="step">(c) 波包行进 \(100\,\mathrm{m}\) 用时 \(t_{g}=100/v_{g}=100/1.97=50.6\,\mathrm{s}\)；单个波峰用 \(t_{p}=100/v_{p}=100/3.95=25.3\,\mathrm{s}\)。两者相差 \(25.3\,\mathrm{s}\)——也就是说，波包前沿不断"生出"新波峰，后沿波峰不断消失。在海上你会看到：波峰从波包后部冒出，向前穿过整个波包，再在前部消失。</p>
+          <p><span class="ans">\((a)\;v_{p}=3.95\,\mathrm{m/s};\;(b)\;v_{g}=1.97\,\mathrm{m/s}=v_{p}/2;\;(c)\;\Delta t=25.3\,\mathrm{s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 Gibbs 现象与 N 项部分和的过冲</h4>
+        <p class="example-statement">方波 \(f(t)=\mathrm{sgn}(\sin\omega_{1}t)\)，振幅 \(A=1\)。其傅里叶部分和为 \(S_{N}(t)=\frac{4}{\pi}\sum_{n=1,3,\ldots}^{2N-1}\frac{\sin(n\omega_{1}t)}{n}\)（共 \(N\) 项）。求：(a) \(S_{N}\) 在间断点 \(t=0^{+}\)（即 \(\omega_{1}t\to 0^{+}\)）邻域内第一个极大值的位置与高度；(b) \(N\to\infty\) 时过冲的极限值（Gibbs 常数）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 第一个极大满足 \(\mathrm{d}S_{N}/\mathrm{d}t=0\)。把求和换为积分近似（\(N\) 大时）：\(\sum_{n\,\text{odd}}^{2N-1}\frac{\cos(nx)}{n}\approx\int_{0}^{2N}\frac{\cos(ux)}{u}\,\mathrm{d}u\)，求导后第一极大位于 \(\int_{0}^{2N}\cos(ux)\,\mathrm{d}u=0\Rightarrow\sin(2Nx)=0\)，即 \(x_{1}=\pi/(2N)\)（\(\omega_{1}t\) 的值）。</p>
+          <p class="step">在该位置（用换元 \(v=\pi u\)，奇 n 的步长 \(\Delta n=2\) 对应 \(\Delta u=1/N\)）：</p>
+          <div class="formula">\[ S_{N}(x_{1})\to\frac{4}{\pi}\cdot\frac{1}{2}\int_{0}^{\pi}\frac{\sin v}{v}\,\mathrm{d}v=\frac{2}{\pi}\,\mathrm{Si}(\pi) \]</div>
+          <p class="step">查表 \(\mathrm{Si}(\pi)=1.85194\)（不是 \(\pi/2=1.5708\)！）。故峰高：</p>
+          <div class="formula">\[ S_{N}(x_{1})\to\frac{2}{\pi}\times 1.85194=1.179\;\Rightarrow\;\text{过冲}=\frac{1.179-1}{2}=0.0895\approx 9\% \]</div>
+          <p class="step">(b) 单边过冲（占<strong>跃变幅度</strong>的分数）为 \(\tfrac{1}{\pi}\mathrm{Si}(\pi)-\tfrac{1}{2}\approx 0.0895\)，即约 <strong>8.95%</strong> 的 Wilbraham–Gibbs 常数。注意此处跃变 \(|(+1)-(-1)|=2\)，所以峰高 \(1.179\) 相对于<strong>函数值</strong> \(+1\) 高出 \(17.9\%\)，但相对于<strong>跃变量</strong>是 \(8.95\%\)——后者才是文献里的 Gibbs 常数。<strong>关键：这个过冲量与 \(N\) 无关</strong>——加更多项只让振荡"挤"得更靠近间断点，振幅却不减小。这是傅里叶级数在间断点不收敛于函数值、而收敛于左、右极限平均（这里 \((+1-1)/2=0\)）的体现。</p>
+          <p><span class="ans">第一个极大位于 \(\omega_{1}t\approx\pi/(2N)\)；峰高 \(S_{N}\to 1.179\)（相对函数值过冲 17.9%，相对跃变量 \(\approx 8.95\%\) 的 Gibbs 常数，与 \(N\) 无关）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 AM 调幅信号的频谱</h4>
+        <p class="example-statement">一调幅 (AM) 信号 \(v(t)=A_{c}[1+m\cos(\omega_{m}t)]\cos(\omega_{c}t)\)，载波频率 \(f_{c}=1.00\,\mathrm{MHz}\)，调制音频 \(f_{m}=5.0\,\mathrm{kHz}\)，调制度 \(m=0.5\)，\(A_{c}=10.0\,\mathrm{V}\)。求其频谱（各分量频率与振幅），并确定该电台应分配的射频带宽。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 展开乘积：\(v(t)=A_{c}\cos\omega_{c}t+\tfrac{mA_{c}}{2}\cos(\omega_{c}+\omega_{m})t+\tfrac{mA_{c}}{2}\cos(\omega_{c}-\omega_{m})t\)。</p>
+          <p class="step">三条谱线（设 \(A_{c}=10.0\,\mathrm{V}\)、\(m=0.5\)）：</p>
+          <div class="formula">\[ \begin{array}{c|c|c}\text{分量} & f\,(\mathrm{kHz}) & \text{振幅}\,(\mathrm{V})\\ \hline \text{载波 carrier} & 1000.0 & 10.0\\ \text{上边带 USB} & 1005.0 & 2.5\\ \text{下边带 LSB} & 995.0 & 2.5\end{array} \]</div>
+          <p class="step">两个边带 (sidebands) 位于 \(f_{c}\pm f_{m}\)，振幅为 \(\tfrac{mA_{c}}{2}=\tfrac{0.5\times 10}{2}=2.5\,\mathrm{V}\)。载波本身不携带信息——信息全在边带的振幅/相位变化里。</p>
+          <p class="step">射频带宽：从下边带到上边带共 \(\Delta f=2f_{m}=2\times 5.0=10.0\,\mathrm{kHz}\)。这就是 AM 广播每个电台分配 \(10\,\mathrm{kHz}\)（北美标准）的物理依据。若音频最高 \(f_{m}=5\,\mathrm{kHz}\)，需要 \(10\,\mathrm{kHz}\) 带宽；若要提高音质至 \(f_{m}=20\,\mathrm{kHz}\)（FM 模式），需 \(40\,\mathrm{kHz}\) 以上带宽。</p>
+          <p><span class="ans">载波 \(1000.0\,\mathrm{kHz}/10.0\,\mathrm{V}\)；边带 \(1005.0\) 与 \(995.0\,\mathrm{kHz}/2.5\,\mathrm{V}\)；带宽 \(\Delta f=10.0\,\mathrm{kHz}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误以为增加 \(N\) 能消除 Gibbs 过冲。</strong>方波等含间断的波形，傅里叶部分和的过冲<strong>不会随 \(N\) 增大而消失</strong>——它稳定在间断幅度的约 \(8.95\%\)（Wilbraham–Gibbs 常数）。增大 \(N\) 只是让振荡更紧密地"挤"向间断点。傅里叶级数在间断点收敛于<strong>左、右极限的算术平均</strong>，而不是函数值（函数在该处根本无定义）。</li>
+        <li><strong>把相速度 \(v_{p}\) 当成信号速度。</strong>相速度只是<strong>等相面</strong>移动速度，可以超过 \(c\)（甚至为负）而不违反相对论——因为它不携带信息或能量。<strong>信息、能量以群速度 \(v_{g}=\mathrm{d}\omega/\mathrm{d}k\) 传播</strong>，在相对论性介质中始终有 \(v_{g}\leq c\)。例如等离子体中电磁波 \(v_{p}>c\) 但 \(v_{g}<c\) 且 \(v_{p}v_{g}=c^{2}\)。</li>
+        <li><strong>混淆"频谱"与"波形"。</strong>波形是<strong>时域</strong>表示 \(f(t)\)；频谱是<strong>频域</strong>表示——\(|c_{n}|\) 或 \(|F(\omega)|\) 给出各频率分量的振幅。\(\sin(n\omega_{1}t)\) 是时域中的一个波；系数 \(b_{n}\)（一个数）是它在频域的一条谱线。两者通过傅里叶变换对偶，但概念上完全不同。</li>
+        <li><strong>忘掉波形的对称性可以大大简化系数计算。</strong>偶函数 → 纯余弦级数（\(b_{n}=0\)）；奇函数 → 纯正弦级数（\(a_{n}=0\)）；半波对称 \(f(t+T/2)=-f(t)\) → 所有<strong>偶</strong>次谐波为零（方波、三角波均如此）。先用对称性"砍掉"一半的系数再算，是高效策略。</li>
+        <li><strong>误以为"窄波包 = 窄频谱"。</strong>正相反，\(\Delta k\cdot\Delta x\gtrsim 1\) 是<strong>反比关系</strong>——空间上越窄的波包（小 \(\Delta x\)），波数展宽越大（大 \(\Delta k\)）；时间上越短的脉冲（小 \(\Delta t\)），频率展宽越大（大 \(\Delta\omega\)）。这与量子力学中 \(\Delta p\,\Delta x\gtrsim\hbar/2\) 完全同构（\(p=\hbar k\)）。"无限窄"的 δ 脉冲的频谱是平坦的（所有频率等量）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 计算方波 \(f(t)=\mathrm{sgn}(\sin\omega_{1}t)\)（\(A=1\)）的 Parseval 检验：用前 3 个非零谐波的 Parseval 部分和估计 \(\overline{f^{2}}\)，再与精确值比较。</summary>
+        <div class="hint">Parseval: \(\overline{f^{2}}=\tfrac{1}{2}\sum b_{n}^{2}\)；方波精确 \(\overline{f^{2}}=1\)。前 3 个 \(b_{n}\) 为 \(4/\pi,4/(3\pi),4/(5\pi)\)。</div>
+        <div class="solution">部分和：\(\overline{f^{2}}_{(3)}=\tfrac{1}{2}\bigl[(4/\pi)^{2}+(4/(3\pi))^{2}+(4/(5\pi))^{2}\bigr]=\tfrac{1}{2}\cdot\tfrac{16}{\pi^{2}}\bigl[1+\tfrac{1}{9}+\tfrac{1}{25}\bigr]\)<br>= \(\tfrac{8}{\pi^{2}}\cdot 1.151=0.933\)。<br>精确值 \(1\)，相对偏差 \(6.7\%\)。加上更多项单调趋向 1（且 \(\sum_{n\,\text{odd}}1/n^{2}=\pi^{2}/8\) 给出严格等式）。</div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 写出周期 \(T=2\pi/\omega_{1}\)、振幅 \(A\) 的<strong>三角波</strong>（偶函数，在 \(t=0\) 取 \(A\)、\(t=\pm T/4\) 取 0、\(t=\pm T/2\) 取 \(-A\)，分段线性）的傅里叶级数，并解释为什么其系数比方波下降得更快。</summary>
+        <div class="hint">偶函数 → 纯余弦级数 \(a_{n}\)；分段线性，导数有跃变。预期 \(a_{n}\propto 1/n^{2}\)。</div>
+        <div class="solution">该三角波 \(f(t)\) 在一个周期上 \(f=A(1-4|t|/T)\)（\(|t|<T/2\)），是偶函数。\(a_{n}=\frac{2}{T}\int_{-T/2}^{T/2}A(1-4|t|/T)\cos(n\omega_{1}t)\,\mathrm{d}t\)，分段积分两次（分部积分 + 周期边界）得 \(a_{n}=\dfrac{4A}{\pi^{2}n^{2}}(1-\cos n\pi)\)，偶 \(n\) 为 0，奇 \(n\) 为 \(\dfrac{8A}{\pi^{2}n^{2}}\)。<br>\[ f(t)=\frac{8A}{\pi^{2}}\sum_{n\,\text{odd}}\frac{\cos(n\omega_{1}t)}{n^{2}}=\frac{8A}{\pi^{2}}\Bigl[\cos\omega_{1}t+\tfrac{\cos 3\omega_{1}t}{9}+\tfrac{\cos 5\omega_{1}t}{25}+\cdots\Bigr] \]<br>下降规律 \(\propto 1/n^{2}\)（而非方波的 \(1/n\)），原因是<strong>三角波连续</strong>（仅导数跃变），间断函数的傅里叶系数 \(\propto 1/n\)，连续但导数跃变 \(\propto 1/n^{2}\)，更光滑 \(\propto 1/n^{k+1}\)。</div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一根长 \(L=0.50\,\mathrm{m}\)、张力 \(T=80\,\mathrm{N}\)、线密度 \(\mu=5.0\times 10^{-3}\,\mathrm{kg/m}\) 的弦，中点被拨动（初始形状为三角形，峰在中点）。求弦的基频与第 2、第 3 阶谐波频率，并解释为什么拨弦中点几乎不激发第 2 谐波。</summary>
+        <div class="hint">\(v=\sqrt{T/\mu}\)，\(f_{n}=nv/(2L)\)。第 \(n\) 简正模式形状 \(\sin(n\pi x/L)\) 在中点取值 \(\sin(n\pi/2)\)。</div>
+        <div class="solution">\(v=\sqrt{80/(5.0\times 10^{-3})}=\sqrt{1.6\times 10^{4}}=126.5\,\mathrm{m/s}\)。<br>\(f_{1}=v/(2L)=126.5/1.00=126.5\,\mathrm{Hz}\)；\(f_{2}=253\,\mathrm{Hz}\)；\(f_{3}=379.5\,\mathrm{Hz}\)。<br>初始形状（中点峰三角）关于中点对称，傅里叶系数正比于 \(\int_{0}^{L}f_{0}(x)\sin(n\pi x/L)\,\mathrm{d}x\)。对偶 \(n\)，\(\sin(n\pi x/L)\) 关于中点反对称而 \(f_{0}\) 对称，积分为零 → 偶次谐波不激发。中点拨动特别强调奇次谐波，所以音色"圆润"。<br>若在 \(x=L/4\) 拨动则会激发偶次谐波，音色更"鼻音"。</div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 高频同轴电缆中电磁波的色散关系为 \(\omega^{2}=\omega_{0}^{2}+c^{2}k^{2}\)（\(\omega_{0}\) 为截止频率）。求相速度 \(v_{p}\) 与群速度 \(v_{g}\) 的表达式，验证 \(v_{p}v_{g}=c^{2}\)，并讨论当 \(\omega\to\omega_{0}^{+}\) 时各极限值。</summary>
+        <div class="hint">\(v_{p}=\omega/k\)；\(v_{g}=\mathrm{d}\omega/\mathrm{d}k\)。先求 \(k(\omega)=\tfrac{1}{c}\sqrt{\omega^{2}-\omega_{0}^{2}}\)。</div>
+        <div class="solution">由 \(\omega^{2}=\omega_{0}^{2}+c^{2}k^{2}\)：\(k(\omega)=\tfrac{1}{c}\sqrt{\omega^{2}-\omega_{0}^{2}}\)。<br>\(v_{p}=\dfrac{\omega}{k}=\dfrac{c\omega}{\sqrt{\omega^{2}-\omega_{0}^{2}}}\)；<br>\(v_{g}=\dfrac{\mathrm{d}\omega}{\mathrm{d}k}=\dfrac{c^{2}k}{\omega}=\dfrac{c\sqrt{\omega^{2}-\omega_{0}^{2}}}{\omega}\)。<br>验证：\(v_{p}v_{g}=\dfrac{c\omega}{\sqrt{\omega^{2}-\omega_{0}^{2}}}\cdot\dfrac{c\sqrt{\omega^{2}-\omega_{0}^{2}}}{\omega}=c^{2}\) ✓<br>当 \(\omega\to\omega_{0}^{+}\)：\(k\to 0\)、\(v_{p}\to\infty\)（但波长趋于无穷，无信号意义）、\(v_{g}\to 0\)（波包停在入口）。当 \(\omega\to\infty\)：\(v_{p}\to c\)、\(v_{g}\to c\)（高频无色散）。相速度超光速但群速度始终 \(<c\)，相对论无虞。</div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 高斯波包 \(f(x)=e^{-x^{2}/(2\sigma^{2})}\cos(k_{0}x)\) 的空间宽度 \(\Delta x\approx\sigma\)。其傅里叶变换给出 \(|F(k)|\propto e^{-\sigma^{2}(k-k_{0})^{2}/2}\)，对应波数宽度 \(\Delta k\approx 1/\sigma\)。验证 \(\Delta k\cdot\Delta x\approx 1\)。若电子以该波包描述且 \(\sigma=1.0\,\mathrm{nm}\)，求其动量不确定度 \(\Delta p\) 与对应速度不确定度（电子质量 \(m_{e}=9.11\times 10^{-31}\,\mathrm{kg}\)，\(\hbar=1.055\times 10^{-34}\,\mathrm{J\,s}\)）。</summary>
+        <div class="hint">\(\Delta k\cdot\Delta x\approx 1\)；\(\Delta p=\hbar\Delta k\)；\(\Delta v=\Delta p/m_{e}\)。</div>
+        <div class="solution">\(\Delta x\approx\sigma=1.0\,\mathrm{nm}=1.0\times 10^{-9}\,\mathrm{m}\)；\(\Delta k\approx 1/\sigma=1.0\times 10^{9}\,\mathrm{m^{-1}}\)。积 \(\Delta x\Delta k\approx 1\) ✓<br>\(\Delta p=\hbar\Delta k=(1.055\times 10^{-34})(1.0\times 10^{9})=1.055\times 10^{-25}\,\mathrm{kg\,m/s}\)。<br>\(\Delta v=\Delta p/m_{e}=1.055\times 10^{-25}/9.11\times 10^{-31}=1.16\times 10^{5}\,\mathrm{m/s}\)。<br>这就是量子力学 \(\Delta x\,\Delta p\sim\hbar\) 的来源——一个 \(1\,\mathrm{nm}\) 局域的电子固有地有约 \(10^{5}\,\mathrm{m/s}\) 的速度不确定度。该波包的群速度由 \(v_{g}=\mathrm{d}\omega/\mathrm{d}k=\hbar k_{0}/m_{e}\) 给出（自由粒子色散 \(\omega=\hbar k^{2}/2m_{e}\)）。</div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">傅里叶合成 (Fourier synthesis)。选择目标波形 (square 方波 / sawtooth 锯齿 / triangle 三角)，调节<strong>谐波个数 \(N\)</strong>，把 \(N\) 个谐波相加得到合成波（蓝色实线），与理想目标（虚线）对比。下方实时显示<strong>振幅谱</strong>：红色柱为已包含的谐波 (\(n\leq N\))，灰色柱为尚未包含的。随 \(N\) 增大合成波逐渐收敛到目标；间断处方波/锯齿波始终可见 <strong>Gibbs 振荡</strong>（约 9% 过冲，不随 \(N\) 消失）。三角波由于连续光滑，几乎无 Gibbs 现象。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height; // 720 x 440
+
+          // ---------- Layout ----------
+          var X_LEFT = 60;
+          var X_RIGHT = W - 30;       // 690
+          var L_PX = X_RIGHT - X_LEFT; // 630
+          var WAVE_TOP = 50;
+          var WAVE_BOTTOM = 240;
+          var Y_WAVE_CENTER = (WAVE_TOP + WAVE_BOTTOM) / 2;  // 145
+          var A_PX = 75;              // pixels for amplitude = 1
+          var SPEC_TOP = 280;
+          var SPEC_BOTTOM = 410;
+          var SPEC_AXIS_Y = SPEC_BOTTOM;
+
+          // ---------- Parameters ----------
+          var params = {
+            target: 'square',   // 'square' | 'sawtooth' | 'triangle'
+            N: 5,
+          };
+
+          // ---------- Fourier coefficients (b_n for sine series, a_n for cosine series) ----------
+          // Square (odd):  b_n = 4/(π n) for odd n; 0 for even.
+          // Sawtooth (odd): b_n = 2 (-1)^(n+1) / (π n)   [sawtooth peak ±1]
+          // Triangle (even): a_n = 8 / (π² n²) for odd n; 0 for even.  (cosine series)
+          function coeff(target, n) {
+            if (target === 'square') {
+              return (n % 2 === 1) ? 4 / (Math.PI * n) : 0;
+            } else if (target === 'sawtooth') {
+              return 2 * Math.pow(-1, n + 1) / (Math.PI * n);
+            } else if (target === 'triangle') {
+              if (n % 2 === 0) return 0;
+              return 8 / (Math.PI * Math.PI * n * n);
+            }
+            return 0;
+          }
+
+          // returns {useCos: bool, coef: number}
+          function coeffInfo(target, n) {
+            return { useCos: (target === 'triangle'), value: coeff(target, n) };
+          }
+
+          // Ideal target value at θ (in [-π, π])
+          function targetValue(target, theta) {
+            if (target === 'square') {
+              return (theta >= 0) ? 1 : -1;
+            } else if (target === 'sawtooth') {
+              return theta / Math.PI;
+            } else if (target === 'triangle') {
+              return 1 - 2 * Math.abs(theta) / Math.PI;
+            }
+            return 0;
+          }
+
+          // Synthesized sum of first N harmonics at θ
+          function synthValue(target, N, theta) {
+            var s = 0;
+            var info;
+            for (var n = 1; n <= N; n++) {
+              info = coeffInfo(target, n);
+              if (info.useCos) s += info.value * Math.cos(n * theta);
+              else s += info.value * Math.sin(n * theta);
+            }
+            return s;
+          }
+
+          // Map θ ∈ [-π, π] to canvas x
+          function thetaToPx(theta) {
+            return X_LEFT + (theta + Math.PI) / (2 * Math.PI) * L_PX;
+          }
+
+          // ---------- Simulation ----------
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* purely static; nothing to integrate */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var targetName = {
+                square: '方波 square',
+                sawtooth: '锯齿波 sawtooth',
+                triangle: '三角波 triangle'
+              }[params.target];
+
+              // Title
+              PS.drawText(ctx,
+                '傅里叶合成 Fourier Synthesis — 目标 target: ' + targetName +
+                '   |   谐波数 N = ' + params.N,
+                14, 26, { font: '14px system-ui', color: PS.colors.text });
+
+              // === WAVE PLOT ===
+              // Box
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(X_LEFT, WAVE_TOP, L_PX, WAVE_BOTTOM - WAVE_TOP);
+              ctx.restore();
+
+              // Zero axis (dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(X_LEFT, Y_WAVE_CENTER);
+              ctx.lineTo(X_RIGHT, Y_WAVE_CENTER);
+              ctx.stroke();
+              ctx.restore();
+
+              // ±1 reference lines
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath();
+              ctx.moveTo(X_LEFT, Y_WAVE_CENTER - A_PX);
+              ctx.lineTo(X_RIGHT, Y_WAVE_CENTER - A_PX);
+              ctx.moveTo(X_LEFT, Y_WAVE_CENTER + A_PX);
+              ctx.lineTo(X_RIGHT, Y_WAVE_CENTER + A_PX);
+              ctx.stroke();
+              ctx.restore();
+
+              PS.drawText(ctx, '+1', X_LEFT - 6, Y_WAVE_CENTER - A_PX + 4,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '0', X_LEFT - 6, Y_WAVE_CENTER + 4,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '−1', X_LEFT - 6, Y_WAVE_CENTER + A_PX + 4,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // θ axis labels
+              PS.drawText(ctx, '−π', X_LEFT, WAVE_BOTTOM + 14,
+                { font: '10px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '0', thetaToPx(0), WAVE_BOTTOM + 14,
+                { font: '10px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, 'π', X_RIGHT, WAVE_BOTTOM + 14,
+                { font: '10px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '相位 θ = ω₁t  (one period)',
+                (X_LEFT + X_RIGHT) / 2, WAVE_BOTTOM + 28,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // Ideal target (dashed), avoiding jump-stroke
+              var M = 1200;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.8;
+              ctx.setLineDash([5, 4]);
+              var prevV = null;
+              ctx.beginPath();
+              for (var i = 0; i <= M; i++) {
+                var theta = -Math.PI + (2 * Math.PI) * i / M;
+                var v = targetValue(params.target, theta);
+                var px = thetaToPx(theta);
+                var py = Y_WAVE_CENTER - A_PX * v;
+                if (i === 0) { ctx.moveTo(px, py); }
+                else if (prevV !== null && Math.abs(v - prevV) > 1.5) {
+                  ctx.moveTo(px, py);
+                } else { ctx.lineTo(px, py); }
+                prevV = v;
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Synthesized wave (solid bold), with soft clamp to ±1.5 to keep Gibbs peak visible but bounded
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              for (var i = 0; i <= M; i++) {
+                var theta = -Math.PI + (2 * Math.PI) * i / M;
+                var v = synthValue(params.target, params.N, theta);
+                if (v > 1.5) v = 1.5;
+                if (v < -1.5) v = -1.5;
+                var px = thetaToPx(theta);
+                var py = Y_WAVE_CENTER - A_PX * v;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // === SPECTRUM PLOT ===
+              PS.drawText(ctx,
+                '振幅谱 amplitude spectrum  |cₙ|  (“bₙ” for sine, “aₙ” for triangle)',
+                14, SPEC_TOP - 8,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              // Compute max coefficient up to n=20 for normalization
+              var N_MAX_BARS = 20;
+              var maxAbs = 0;
+              for (var n = 1; n <= N_MAX_BARS; n++) {
+                var b = Math.abs(coeff(params.target, n));
+                if (b > maxAbs) maxAbs = b;
+              }
+              var SPEC_H = SPEC_AXIS_Y - (SPEC_TOP + 10);
+              var barStep = L_PX / (N_MAX_BARS + 1);
+
+              // Axis line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(X_LEFT, SPEC_AXIS_Y);
+              ctx.lineTo(X_RIGHT, SPEC_AXIS_Y);
+              ctx.stroke();
+              ctx.restore();
+
+              // Bars
+              for (var n = 1; n <= N_MAX_BARS; n++) {
+                var bv = Math.abs(coeff(params.target, n));
+                var h = maxAbs > 0 ? (bv / maxAbs) * SPEC_H : 0;
+                var bx = X_LEFT + n * barStep;
+                var by = SPEC_AXIS_Y - h;
+                var inSum = (n <= params.N);
+                ctx.fillStyle = inSum ? PS.colors.accent : PS.colors.grid;
+                ctx.fillRect(bx - barStep * 0.35, by, barStep * 0.7, h);
+                // Show value above the bar for included harmonics (first few)
+                if (inSum && bv > 0 && n <= 7) {
+                  PS.drawText(ctx, bv.toFixed(2), bx, by - 4,
+                    { font: '9px system-ui', color: PS.colors.text, align: 'center' });
+                }
+                // n label
+                PS.drawText(ctx, '' + n, bx, SPEC_AXIS_Y + 12,
+                  { font: '9px system-ui', color: PS.colors.text, align: 'center' });
+              }
+
+              PS.drawText(ctx, '谐波次数 n (harmonic index)',
+                (X_LEFT + X_RIGHT) / 2, SPEC_AXIS_Y + 26,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // === LEGEND (top-right of wave plot) ===
+              var legX = X_RIGHT - 220;
+              var legY = WAVE_TOP + 8;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(legX, legY); ctx.lineTo(legX + 18, legY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '前 N=' + params.N + ' 项合成 synthesized', legX + 24, legY + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1.8; ctx.setLineDash([5, 4]);
+              ctx.beginPath(); ctx.moveTo(legX, legY + 16); ctx.lineTo(legX + 18, legY + 16); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '理想目标 ideal target', legX + 24, legY + 20,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillRect(legX, legY + 28, 14, 9);
+              PS.drawText(ctx, '已含谐波 included (n ≤ N)', legX + 24, legY + 36,
+                { font: '11px system-ui', color: PS.colors.text });
+              ctx.fillStyle = PS.colors.grid;
+              ctx.fillRect(legX, legY + 40, 14, 9);
+              PS.drawText(ctx, '未含谐波 omitted', legX + 24, legY + 48,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // === FOOTER NOTE ===
+              PS.drawText(ctx,
+                '观察：N 增大 → 合成波 → 目标；方波/锯齿波间断处可见 Gibbs 过冲 (~9%, 与 N 无关)；三角波连续光滑，几乎无振荡',
+                14, H - 8,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          // ---------- Controls ----------
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'button', key: 'square',   label: '方波 square' },
+            { type: 'button', key: 'sawtooth', label: '锯齿 sawtooth' },
+            { type: 'button', key: 'triangle', label: '三角 triangle' },
+            { type: 'slider', key: 'N', label: '谐波数 N', min: 1, max: 20, step: 1, value: 5 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('square',   function () { params.target = 'square'; });
+          ctl.on('sawtooth', function () { params.target = 'sawtooth'; });
+          ctl.on('triangle', function () { params.target = 'triangle'; });
+          ctl.on('N', function (v) { params.N = v; });
+          ctl.on('reset', function () {
+            params.target = 'square';
+            params.N = 5;
+            // Reflect in UI controls
+            ctl.set('N', 5);
+            // Update the slider DOM to match (the API doesn't auto-refresh)
+            var sliders = document.getElementById('controls-5').querySelectorAll('input[type=range]');
+            sliders.forEach(function (el) { el.value = String(5); });
+            // Trigger redraw (sim is static, so force a frame by reset)
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>傅里叶定理</strong>：满足狄利克雷条件的周期函数 \(f(t)\)（周期 \(T\)、\(\omega_{1}=2\pi/T\)）可展开为正弦/余弦的无穷和。</li>
+        <li><strong>三角形式系数</strong>：\(a_{0}=\tfrac{2}{T}\int_{0}^{T}f\,\mathrm{d}t\)，\(a_{n}=\tfrac{2}{T}\int_{0}^{T}f\cos(n\omega_{1}t)\,\mathrm{d}t\)，\(b_{n}=\tfrac{2}{T}\int_{0}^{T}f\sin(n\omega_{1}t)\,\mathrm{d}t\)。偶函数 → \(b_{n}=0\)；奇函数 → \(a_{n}=0\)。</li>
+        <li><strong>复指数形式</strong>：\(f=\sum c_{n}e^{in\omega_{1}t}\)，\(c_{n}=\tfrac{1}{T}\int_{0}^{T}f\,e^{-in\omega_{1}t}\,\mathrm{d}t\)。</li>
+        <li><strong>典型波形</strong>：方波 \(=\tfrac{4A}{\pi}\sum_{n\,\text{odd}}\tfrac{\sin n\omega_{1}t}{n}\)（仅奇次，\(\propto 1/n\)）；锯齿波 \(=\tfrac{2A}{\pi}\sum_{n}(-1)^{n+1}\tfrac{\sin n\omega_{1}t}{n}\)（全谐波，\(\propto 1/n\)）；三角波 \(=\tfrac{8A}{\pi^{2}}\sum_{n\,\text{odd}}\tfrac{\cos n\omega_{1}t}{n^{2}}\)（仅奇次，\(\propto 1/n^{2}\)，连续光滑）。</li>
+        <li><strong>Parseval 定理</strong>：\(\tfrac{1}{T}\int_{0}^{T}|f|^{2}=\tfrac{a_{0}^{2}}{4}+\tfrac{1}{2}\sum(a_{n}^{2}+b_{n}^{2})=\sum|c_{n}|^{2}\)。</li>
+        <li><strong>傅里叶变换</strong>：\(F(\omega)=\int f(t)e^{-i\omega t}\,\mathrm{d}t\)，\(f(t)=\tfrac{1}{2\pi}\int F(\omega)e^{i\omega t}\,\mathrm{d}\omega\)。脉冲宽 \(\tau\) ↔ 频谱宽 \(\sim 1/\tau\)。</li>
+        <li><strong>相速度 vs 群速度</strong>：\(v_{p}=\omega/k\)（等相面），\(v_{g}=\mathrm{d}\omega/\mathrm{d}k\)（包络，能量/信息）。非色散 \(\omega=ck\)：\(v_{p}=v_{g}=c\)。色散介质中二者不同。</li>
+        <li><strong>局域化</strong>：\(\Delta k\cdot\Delta x\gtrsim 1\)、\(\Delta\omega\cdot\Delta t\gtrsim 1\)——窄脉冲必含宽频谱，是量子不确定性的经典根源。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,f(t)=\frac{a_{0}}{2}+\sum_{n=1}^{\infty}\bigl[a_{n}\cos n\omega_{1}t+b_{n}\sin n\omega_{1}t\bigr]=\sum_{n=-\infty}^{\infty}c_{n}e^{in\omega_{1}t}\,} \]</div>
+      <div class="formula">\[ \boxed{\,v_{p}=\frac{\omega}{k},\qquad v_{g}=\frac{\mathrm{d}\omega}{\mathrm{d}k},\qquad \Delta k\cdot\Delta x\gtrsim 1\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
