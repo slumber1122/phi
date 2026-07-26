@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 电容与电介质 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第6章 · 静电学 Electrostatics</p>
+      <h1>电容与电介质 <span class="en-title">Capacitance &amp; Dielectrics</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>用<b>电容器</b> (capacitor) 的最一般定义——任意两个带有等量异号电荷的导体——推导并应用 \(Q=CV\) 与 \(C=Q/V\)。</li>
+        <li>对<b>平行板电容器</b> (parallel-plate capacitor) 推导并使用 \(C=\varepsilon_{0}A/d\)；同样推导<b>球形</b> (spherical) 与<b>同轴</b> (coaxial) 电容器的电容公式。</li>
+        <li>化简电容器的<b>串联</b> (series, \(\tfrac{1}{C}=\sum\tfrac{1}{C_i}\)) 与<b>并联</b> (parallel, \(C=\sum C_i\)) 网络，求等效电容与各电容器上的电压/电荷。</li>
+        <li>计算电容器储存的<b>能量</b> \(U=\tfrac{1}{2}CV^{2}=\tfrac{Q^{2}}{2C}=\tfrac{1}{2}QV\)，以及静电场的<b>能量密度</b> \(u=\tfrac{1}{2}\varepsilon_{0}E^{2}\)。</li>
+        <li>解释<b>电介质</b> (dielectric) 的<b>极化</b> (polarization) 机制：插入电介质使电容增大为 \(\kappa\) 倍（\(\kappa\ge 1\) 为相对介电常数）。</li>
+        <li>区分<b>电池连接</b> (V 恒定) 与<b>孤立电容器</b> (Q 恒定) 两种情形下插入电介质时 \(C,Q,V,U\) 如何变化。</li>
+        <li>使用<b>电位移</b> (electric displacement) \(\vec{D}=\varepsilon\vec{E}=\varepsilon_{0}\vec{E}+\vec{P}\) 与有介质时的高斯定理 \(\oint\vec{D}\cdot d\vec{A}=Q_{\text{free}}\)。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电容器与电容 Capacitor &amp; Capacitance</h3>
+      <p><b>电容器</b> (capacitor) 是由任意两个<b>相互绝缘的导体</b> (two insulated conductors) 构成的器件，称为两个<b>极板</b> (plates)。当两极板之间加上电压 \(V\)（即电势差），一个极板带电荷 \(+Q\)，另一个带 \(-Q\)。实验与理论都表明：电量 \(Q\) 与电压 \(V\) 成正比，比例系数即为<b>电容</b> (capacitance)：</p>
+      <div class="formula">\[ Q \;=\; C\,V,\qquad C \;=\; \frac{Q}{V}. \]</div>
+      <p>电容的国际单位是<b>法拉</b> (farad)：\(1\,\mathrm{F}=1\,\mathrm{C/V}\)。实际电容器常用微法 (\(1\,\mathrm{\mu F}=10^{-6}\,\mathrm{F}\))、纳法 (\(\mathrm{nF}\))、皮法 (\(1\,\mathrm{pF}=10^{-12}\,\mathrm{F}\))。注意电容 \(C\) <b>只取决于几何形状与介质</b>，与 \(Q\)、\(V\) 无关——把 \(Q\)、\(V\) 同时加倍时 \(C\) 不变。</p>
+
+      <h3>2. 平行板电容器 Parallel-Plate Capacitor</h3>
+      <p>两块面积各为 \(A\)、相距 \(d\)（\(d^{2}\ll A\)，忽略边缘效应）的平行导体板。极板带电 \(\pm Q\) 时，面电荷密度 \(\sigma=Q/A\)。由高斯定理，两板之间为均匀电场 \(E=\sigma/\varepsilon_{0}=Q/(\varepsilon_{0}A)\)，板外电场为零。电压 \(V=Ed\)，故</p>
+      <div class="formula">\[ \boxed{\,C \;=\; \dfrac{\varepsilon_{0} A}{d}\,}\qquad(\text{真空平行板电容器}). \]</div>
+      <p>若板间充满相对介电常数为 \(\kappa\) 的均匀电介质，则 \(C=\kappa\varepsilon_{0}A/d=\varepsilon A/d\)，其中 \(\varepsilon=\kappa\varepsilon_{0}\) 称为该介质的<b>电容率</b> (permittivity)。</p>
+
+      <h3>3. 球形电容器 Spherical Capacitor</h3>
+      <p>由两个同心球形导体壳组成，内球半径 \(a\)、外球半径 \(b\)（\(b>a\)），内球带 \(+Q\)、外球带 \(-Q\)。两球之间电场 \(E(r)=Q/(4\pi\varepsilon_{0}r^{2})\)，电压</p>
+      <div class="formula">\[ V \;=\; \int_{a}^{b} E\,dr \;=\; \frac{Q}{4\pi\varepsilon_{0}}\!\left(\frac{1}{a}-\frac{1}{b}\right) \;=\; \frac{Q}{4\pi\varepsilon_{0}}\cdot\frac{b-a}{ab}. \]</div>
+      <p>故电容</p>
+      <div class="formula">\[ \boxed{\,C \;=\; 4\pi\varepsilon_{0}\,\frac{ab}{b-a}\,}. \]</div>
+      <p>当 \(b\to\infty\)，得孤立球导体电容 \(C=4\pi\varepsilon_{0}a\)（以无穷远为「另一极板」）。</p>
+
+      <h3>4. 同轴（圆柱形）电容器 Cylindrical / Coaxial Capacitor</h3>
+      <p>两同轴圆柱面，内半径 \(a\)、外半径 \(b\)、长度 \(L\)（\(L\gg b\)，忽略端效应），单位长度带电 \(\lambda=Q/L\)。径向电场 \(E(r)=\lambda/(2\pi\varepsilon_{0}r)\)，电压 \(V=\dfrac{\lambda}{2\pi\varepsilon_{0}}\ln(b/a)\)。故</p>
+      <div class="formula">\[ \boxed{\,C \;=\; \dfrac{2\pi\varepsilon_{0} L}{\ln(b/a)}\,},\qquad \dfrac{C}{L}=\dfrac{2\pi\varepsilon_{0}}{\ln(b/a)}. \]</div>
+
+      <h3>5. 串联与并联 Series &amp; Parallel Combinations</h3>
+      <p><b>并联</b> (parallel)：各电容器两端电压相同（均为 \(V\)），总电量 \(Q=\sum_i Q_i=\sum_i C_i V\)，故</p>
+      <div class="formula">\[ C_{\text{eq}} \;=\; \sum_{i} C_{i}\qquad(\text{并联 parallel}). \]</div>
+      <p><b>串联</b> (series)：各电容器电量相同（均为 \(Q\)，由静电感应保证），总电压 \(V=\sum_i V_i=\sum_i Q/C_i\)，故</p>
+      <div class="formula">\[ \frac{1}{C_{\text{eq}}} \;=\; \sum_{i}\frac{1}{C_{i}}\qquad(\text{串联 series}). \]</div>
+      <p>关键直觉：<b>并联使电容增大</b>（相当于增大极板面积），<b>串联使电容减小</b>——串联等效电容比<b>任何一个</b>分电容都小（相当于增大板间距）。</p>
+
+      <h3>6. 储存的能量 Energy Stored</h3>
+      <p>给电容器充电，需要外力（如电池）做功把微小电荷 \(dQ'\) 从一板搬到另一板克服已有电压 \(V(Q')=Q'/C\)：\(dW=V\,dQ'=(Q'/C)\,dQ'\)。从 \(0\) 充到 \(Q\) 总功为</p>
+      <div class="formula">\[ W \;=\; \int_{0}^{Q}\frac{Q'}{C}\,dQ' \;=\; \frac{Q^{2}}{2C}. \]</div>
+      <p>这些功以静电势能的形式储存起来，等价地用 \(Q=CV\) 改写：</p>
+      <div class="formula">\[ \boxed{\,U \;=\; \frac{Q^{2}}{2C} \;=\; \frac{1}{2}CV^{2} \;=\; \frac{1}{2}QV\,}. \]</div>
+
+      <h3>7. 电场能量密度 Energy Density of the Electric Field</h3>
+      <p>把电容器储存的能量看成「分布在板间电场中」，则单位体积的能量为</p>
+      <div class="formula">\[ \boxed{\,u \;=\; \frac{1}{2}\varepsilon_{0}E^{2}\,}\qquad(\text{真空中}), \]</div>
+      <p>充满线性电介质时为 \(u=\tfrac{1}{2}\varepsilon E^{2}=\tfrac{1}{2}\vec{E}\cdot\vec{D}\)。这一公式对<b>任意</b>静电场（不仅平行板）都成立——能量「住在场里」，是麦克斯韦理论的核心思想之一。</p>
+
+      <h3>8. 电介质、极化与电位移 Dielectrics, Polarization &amp; Displacement</h3>
+      <p>插入两板间的<b>电介质</b> (dielectric) 是绝缘体，但其分子在电场作用下发生<b>极化</b> (polarization)：分子中的正、负电荷中心发生微小相对位移，整体呈现<b>电偶极矩</b> (electric dipole moment)。极化强度 \(\vec{P}\) 定义为单位体积内的电偶极矩。在均匀线性介质中 \(\vec{P}=\varepsilon_{0}\chi_{e}\vec{E}\)，其中 \(\chi_{e}\) 为电极化率。</p>
+      <p>极化在介质表面产生<b>束缚电荷</b> (bound charge) \(\sigma_{b}=\vec{P}\cdot\hat{n}\)，其方向与板上的自由电荷相反，从而<b>削弱</b>介质内的电场。结果：在保持极板自由电荷 \(Q_{\text{free}}\) 不变时，介质内 \(E\) 减小为 \(E_{0}/\kappa\)，电压随之减小，因此电容增大为</p>
+      <div class="formula">\[ C \;=\; \kappa\, C_{0},\qquad \kappa \;=\; \frac{\varepsilon}{\varepsilon_{0}} \;=\; 1+\chi_{e}\;\ge\; 1. \]</div>
+      <p>\(\kappa\) 称为<b>相对介电常数</b> (dielectric constant / relative permittivity)。真空 \(\kappa=1\)；空气 \(\kappa\approx 1.00059\)；玻璃 \(\kappa\approx 5\)；纯水 \(\kappa\approx 80\)。</p>
+      <p>引入<b>电位移</b> (electric displacement)</p>
+      <div class="formula">\[ \vec{D} \;=\; \varepsilon_{0}\vec{E}+\vec{P} \;=\; \varepsilon\vec{E},\qquad(\text{线性各向同性介质}), \]</div>
+      <p>则<b>有介质时的高斯定理</b>（Gauss's law with dielectrics）只计<b>自由电荷</b>：</p>
+      <div class="formula">\[ \boxed{\,\oint_{S}\vec{D}\cdot d\vec{A} \;=\; Q_{\text{free,enc}}\,}. \]</div>
+      <p>对比 \(\oint\varepsilon_{0}\vec{E}\cdot d\vec{A}=Q_{\text{tot}}=Q_{\text{free}}+Q_{\text{bound}}\)：\(\vec{D}\) 自动「忽略」束缚电荷，是处理含介质问题的便利工具。</p>
+
+      <div class="key-terms">
+        capacitor (电容器), capacitance (电容), farad (法拉), parallel-plate capacitor (平行板电容器), spherical capacitor (球形电容器), coaxial capacitor (同轴电容器), series/parallel (串联/并联), energy density (能量密度), dielectric (电介质), dielectric constant κ (相对介电常数), permittivity ε (电容率), polarization P (极化强度), bound charge (束缚电荷), free charge (自由电荷), electric displacement D (电位移), Gauss's law with dielectrics (有介质的高斯定理).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：平行板电容器 \(C=\varepsilon_{0}A/d\)（从高斯定理到电容）</h3>
+      <p>设两块面积各为 \(A\)、相距 \(d\) 的导体板，分别带 \(+Q\)、\(-Q\)。忽略边缘效应（\(A\gg d^{2}\)）。</p>
+      <p class="step"><strong>步骤 1（求 E）：</strong>面电荷密度 \(\sigma=Q/A\)。作一圆柱形高斯面，使其一个端面在导体板内部、另一个在两板之间。导体内 \(E=0\)（静电平衡），由高斯定理：
+      \[ \varepsilon_{0} E\,A_{\text{cap}}=\sigma A_{\text{cap}}\;\Longrightarrow\;E=\frac{\sigma}{\varepsilon_{0}}=\frac{Q}{\varepsilon_{0}A}. \]
+      方向由正极板垂直指向负极板。两板之外，两块板的电场相消，\(E=0\)。</p>
+      <p class="step"><strong>步骤 2（求 V）：</strong>板间电场均匀，电势差为
+      \[ V \;=\; \int_{+}^{-} E\,dl \;=\; E\,d \;=\; \frac{Q\,d}{\varepsilon_{0}A}. \]</p>
+      <p class="step"><strong>步骤 3（求 C）：</strong>由定义 \(C=Q/V\)：
+      \[ C \;=\; \frac{Q}{Qd/(\varepsilon_{0}A)} \;=\; \frac{\varepsilon_{0}A}{d}. \]
+      几何上极其合理：\(A\) 增大 → 容纳更多电荷每伏特，\(C\) 增大；\(d\) 增大 → 同样 \(Q\) 下 \(V\) 增大，\(C\) 减小。</p>
+
+      <h3>推导 2：能量密度 \(u=\tfrac{1}{2}\varepsilon_{0}E^{2}\)</h3>
+      <p>从平行板电容器的储能出发：\(U=\tfrac{1}{2}CV^{2}\)，其中 \(C=\varepsilon_{0}A/d\)，\(V=Ed\)。</p>
+      <p class="step"><strong>步骤 1：</strong>代入 \(C\) 与 \(V\)：
+      \[ U \;=\; \tfrac{1}{2}\!\left(\frac{\varepsilon_{0}A}{d}\right)(Ed)^{2} \;=\; \tfrac{1}{2}\varepsilon_{0}E^{2}\,(A\,d). \]</p>
+      <p class="step"><strong>步骤 2：</strong>板间电场仅存在于体积 \(A\,d\) 内，故能量密度
+      \[ u \;=\; \frac{U}{\text{Vol}} \;=\; \frac{U}{A\,d} \;=\; \tfrac{1}{2}\varepsilon_{0}E^{2}. \]</p>
+      <p class="step"><strong>步骤 3（一般性）：</strong>虽然推导用了平行板，但结果是<b>普遍的</b>：任意静电场分布的总能量 \(U=\int \tfrac{1}{2}\varepsilon_{0}E^{2}\,d\tau\)，对全部空间积分。这是「能量存储在场中」这一观点的定量基础。含介质时替换为 \(\tfrac{1}{2}\varepsilon E^{2}\)。</p>
+
+      <h3>推导 3：串联等效电容 \(\tfrac{1}{C_{\text{eq}}}=\sum\tfrac{1}{C_i}\)</h3>
+      <p class="step"><strong>步骤 1：</strong>三个电容器 \(C_1, C_2, C_3\) 串联接在电源两端。由静电感应，相邻极板上的电荷等量异号，<b>每个电容器上电量相同</b>，记作 \(Q\)。</p>
+      <p class="step"><strong>步骤 2：</strong>各电容器上电压 \(V_i=Q/C_i\)，总电压 \(V=\sum_i V_i=Q\sum_i(1/C_i)\)。</p>
+      <p class="step"><strong>步骤 3：</strong>等效电容定义为 \(C_{\text{eq}}=Q/V\)，故
+      \[ \frac{1}{C_{\text{eq}}} \;=\; \frac{V}{Q} \;=\; \sum_{i}\frac{1}{C_i}. \]
+      <b>注意</b>：\(1/C_{\text{eq}}>\max_i(1/C_i)\)，故 \(C_{\text{eq}}<\min_i C_i\)——串联<b>减小</b>电容。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 平行板电容器的电容、电量与场强</h4>
+        <p class="example-statement">一空气平行板电容器极板面积 \(A=200\,\mathrm{cm^{2}}=2.00\times10^{-2}\,\mathrm{m^{2}}\)，板间距 \(d=1.0\,\mathrm{mm}=1.0\times10^{-3}\,\mathrm{m}\)。接在 \(V=12\,\mathrm{V}\) 电池上。求：(a) 电容 \(C\)；(b) 极板电量 \(Q\)；(c) 板间场强 \(E\)；(d) 储存能量 \(U\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(C=\dfrac{\varepsilon_{0}A}{d}=\dfrac{(8.854\times10^{-12})(2.00\times10^{-2})}{1.0\times10^{-3}}=1.77\times10^{-10}\,\mathrm{F}\)。</p>
+          <p class="step">(b) \(Q=CV=(1.77\times10^{-10})(12)=2.12\times10^{-9}\,\mathrm{C}\)。</p>
+          <p class="step">(c) \(E=\dfrac{V}{d}=\dfrac{12}{1.0\times10^{-3}}=1.2\times10^{4}\,\mathrm{V/m}\)。</p>
+          <p class="step">(d) \(U=\tfrac{1}{2}CV^{2}=\tfrac{1}{2}(1.77\times10^{-10})(12)^{2}=1.27\times10^{-8}\,\mathrm{J}\)。</p>
+          <p>结果：\(C=\)<span class="ans">\(1.77\times10^{-10}\,\mathrm{F}\approx 177\,\mathrm{pF}\)</span>，\(Q=\)<span class="ans">\(2.12\,\mathrm{nC}\)</span>，\(E=\)<span class="ans">\(1.2\times10^{4}\,\mathrm{V/m}\)</span>，\(U=\)<span class="ans">\(12.7\,\mathrm{nJ}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 串并联网络的等效电容与电压分配</h4>
+        <p class="example-statement">如图，\(C_{1}=4.0\,\mathrm{\mu F}\) 与 \(C_{2}=6.0\,\mathrm{\mu F}\) 串联组成一条支路，再与 \(C_{3}=3.0\,\mathrm{\mu F}\) 并联后接到 \(V=12\,\mathrm{V}\) 电池上。求：(a) 等效电容 \(C_{\text{eq}}\)；(b) 电池输出的总电量 \(Q_{\text{tot}}\)；(c) 各电容器上的电压与电量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 先求串联支路：\(C_{12}=\dfrac{C_{1}C_{2}}{C_{1}+C_{2}}=\dfrac{(4.0)(6.0)}{4.0+6.0}=2.4\,\mathrm{\mu F}\)。</p>
+          <p class="step">再与 \(C_3\) 并联：\(C_{\text{eq}}=C_{12}+C_{3}=2.4+3.0=5.4\,\mathrm{\mu F}\)。</p>
+          <p class="step">(b) \(Q_{\text{tot}}=C_{\text{eq}}V=(5.4)(12)=64.8\,\mathrm{\mu C}\)。</p>
+          <p class="step">(c) 并联支路两端电压均为 \(12\,\mathrm{V}\)。\(C_3\) 上的电量：\(Q_{3}=C_{3}V=(3.0)(12)=36\,\mathrm{\mu C}\)。</p>
+          <p class="step">串联支路的电量（两电容器相同）：\(Q_{1}=Q_{2}=Q_{\text{tot}}-Q_{3}=64.8-36=28.8\,\mathrm{\mu C}\)。</p>
+          <p class="step">各电压：\(V_{1}=\dfrac{Q_{1}}{C_{1}}=\dfrac{28.8}{4.0}=7.2\,\mathrm{V}\)，\(V_{2}=\dfrac{Q_{2}}{C_{2}}=\dfrac{28.8}{6.0}=4.8\,\mathrm{V}\)。检验：\(V_{1}+V_{2}=12.0\,\mathrm{V}\) ✓。</p>
+          <p>结果：\(C_{\text{eq}}=\)<span class="ans">\(5.4\,\mathrm{\mu F}\)</span>，\(Q_{\text{tot}}=\)<span class="ans">\(64.8\,\mathrm{\mu C}\)</span>；\(V_{1}=\)<span class="ans">\(7.2\,\mathrm{V}\)</span>，\(V_{2}=\)<span class="ans">\(4.8\,\mathrm{V}\)</span>，\(V_{3}=\)<span class="ans">\(12\,\mathrm{V}\)</span>；\(Q_{1}=Q_{2}=\)<span class="ans">\(28.8\,\mathrm{\mu C}\)</span>，\(Q_{3}=\)<span class="ans">\(36\,\mathrm{\mu C}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 储能与能量密度</h4>
+        <p class="example-statement">一空气平行板电容器，\(A=50\,\mathrm{cm^{2}}=5.0\times10^{-3}\,\mathrm{m^{2}}\)，\(d=1.0\,\mathrm{mm}\)，充电至 \(V=200\,\mathrm{V}\)。求：(a) 电容 \(C\)；(b) 储存能量 \(U\)；(c) 板间能量密度 \(u\)，并用 \(u\times\text{Vol}\) 验证 (b)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(C=\dfrac{\varepsilon_{0}A}{d}=\dfrac{(8.854\times10^{-12})(5.0\times10^{-3})}{1.0\times10^{-3}}=4.43\times10^{-11}\,\mathrm{F}=44.3\,\mathrm{pF}\)。</p>
+          <p class="step">(b) \(U=\tfrac{1}{2}CV^{2}=\tfrac{1}{2}(4.43\times10^{-11})(200)^{2}=\tfrac{1}{2}(4.43\times10^{-11})(4.0\times10^{4})=8.86\times10^{-7}\,\mathrm{J}\)。</p>
+          <p class="step">(c) 板间场强 \(E=\dfrac{V}{d}=\dfrac{200}{1.0\times10^{-3}}=2.0\times10^{5}\,\mathrm{V/m}\)。</p>
+          <p class="step">能量密度 \(u=\tfrac{1}{2}\varepsilon_{0}E^{2}=\tfrac{1}{2}(8.854\times10^{-12})(2.0\times10^{5})^{2}=\tfrac{1}{2}(8.854\times10^{-12})(4.0\times10^{10})=0.177\,\mathrm{J/m^{3}}\)。</p>
+          <p class="step">板间体积 \(\text{Vol}=A\,d=(5.0\times10^{-3})(1.0\times10^{-3})=5.0\times10^{-6}\,\mathrm{m^{3}}\)。</p>
+          <p class="step">验证：\(U'=u\times\text{Vol}=(0.177)(5.0\times10^{-6})=8.85\times10^{-7}\,\mathrm{J}\)，与 (b) 完全一致 ✓。</p>
+          <p>结果：\(C=\)<span class="ans">\(44.3\,\mathrm{pF}\)</span>，\(U=\)<span class="ans">\(8.86\times10^{-7}\,\mathrm{J}=0.886\,\mathrm{\mu J}\)</span>，\(u=\)<span class="ans">\(0.177\,\mathrm{J/m^{3}}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 电介质插入——电池连接 vs 断开</h4>
+        <p class="example-statement">一平行板电容器，原为真空，电容 \(C_{0}=100\,\mathrm{pF}\)，接在 \(V_{0}=10\,\mathrm{V}\) 电池上达到平衡。现把一块 \(\kappa=3.0\) 的电介质板完全填满板间空间。比较两种情形下 \(C,Q,V,U\) 的变化：(a) 插入过程中<b>电池保持连接</b>；(b) 插入前<b>先断开电池</b>。</p>
+        <div class="example-solution">
+          <p class="step"><strong>初态（两种情形相同）：</strong> \(C_{0}=100\,\mathrm{pF}\)，\(V_{0}=10\,\mathrm{V}\)，\(Q_{0}=C_{0}V_{0}=1000\,\mathrm{pC}=1.0\,\mathrm{nC}\)，\(U_{0}=\tfrac{1}{2}C_{0}V_{0}^{2}=\tfrac{1}{2}(100\times10^{-12})(100)=5.0\,\mathrm{nJ}\)。</p>
+          <p class="step"><strong>(a) 电池连接 (V 恒定)：</strong>电压始终为电池电压 \(V=V_{0}=10\,\mathrm{V}\)。插入电介质后电容
+          \[ C=\kappa C_{0}=3.0\times100=300\,\mathrm{pF}. \]
+          电量 \(Q=CV=3.0\,Q_{0}=3.0\,\mathrm{nC}\)（电池被「拉」去做功搬运更多电荷）。</p>
+          <p class="step">能量 \(U=\tfrac{1}{2}CV^{2}=3.0\,U_{0}=15\,\mathrm{nJ}\)（增加 200%）。</p>
+          <p class="step">板间场强 \(E=V/d\) 不变（电压和距离都没变），介质内极化方向与 \(\vec{E}\) 一致。</p>
+          <p class="step"><strong>(b) 断开电池 (Q 恒定)：</strong>电量保持 \(Q=Q_{0}=1.0\,\mathrm{nC}\)。电容仍增大为 \(C=\kappa C_{0}=300\,\mathrm{pF}\)。</p>
+          <p class="step">电压 \(V=\dfrac{Q}{C}=\dfrac{V_{0}}{\kappa}=\dfrac{10}{3.0}=3.33\,\mathrm{V}\)（下降到 \(1/\kappa\)）。</p>
+          <p class="step">能量 \(U=\dfrac{Q^{2}}{2C}=\dfrac{U_{0}}{\kappa}=\dfrac{5.0}{3.0}=1.67\,\mathrm{nJ}\)（<b>减小</b>！电介质「吸入」时被电场极化，对介质做负功，把电容器能量转移为介质的极化能与（理想无损情形下）可输出功）。</p>
+          <p class="step">板间场强 \(E=V/d=E_{0}/\kappa\)——介质内场强被极化电荷抵消一部分。</p>
+          <p>结果（括号内为相对于初态的倍率）：</p>
+          <p>(a) 电池连接：\(C=\)<span class="ans">\(300\,\mathrm{pF}\)（×3）</span>，\(Q=\)<span class="ans">\(3.0\,\mathrm{nC}\)（×3）</span>，\(V=\)<span class="ans">\(10\,\mathrm{V}\)（×1）</span>，\(U=\)<span class="ans">\(15\,\mathrm{nJ}\)（×3）</span>。</p>
+          <p>(b) 断开电池：\(C=\)<span class="ans">\(300\,\mathrm{pF}\)（×3）</span>，\(Q=\)<span class="ans">\(1.0\,\mathrm{nC}\)（×1）</span>，\(V=\)<span class="ans">\(3.33\,\mathrm{V}\)（×1/3）</span>，\(U=\)<span class="ans">\(1.67\,\mathrm{nJ}\)（×1/3）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 球形电容器的电容与中场强</h4>
+        <p class="example-statement">一同心球形电容器，内球半径 \(a=1.0\,\mathrm{cm}\)，外球半径 \(b=2.5\,\mathrm{cm}\)，两球之间为真空。(a) 求电容 \(C\)；(b) 若两球间加上 \(V=100\,\mathrm{V}\) 的电压，求内球电量 \(Q\) 与储存的能量 \(U\)；(c) 求两球中间位置 \(r=1.75\,\mathrm{cm}\) 处的场强。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 球形电容器公式：\(C=4\pi\varepsilon_{0}\,\dfrac{ab}{b-a}\)。</p>
+          <p class="step">\(4\pi\varepsilon_{0}=1.11265\times10^{-10}\,\mathrm{F/m}\)。</p>
+          <p class="step">\(\dfrac{ab}{b-a}=\dfrac{(0.010)(0.025)}{0.015}=\dfrac{2.5\times10^{-4}}{1.5\times10^{-2}}=1.667\times10^{-2}\,\mathrm{m}\)。</p>
+          <p class="step">\(C=(1.11265\times10^{-10})(1.667\times10^{-2})=1.85\times10^{-12}\,\mathrm{F}=1.85\,\mathrm{pF}\)。</p>
+          <p class="step">(b) \(Q=CV=(1.85\times10^{-12})(100)=1.85\times10^{-10}\,\mathrm{C}=185\,\mathrm{pC}\)。</p>
+          <p class="step">\(U=\tfrac{1}{2}CV^{2}=\tfrac{1}{2}(1.85\times10^{-12})(100)^{2}=9.27\times10^{-9}\,\mathrm{J}=9.27\,\mathrm{nJ}\)。</p>
+          <p class="step">(c) 球壳之间电场 \(E(r)=\dfrac{Q}{4\pi\varepsilon_{0}r^{2}}\)。</p>
+          <p class="step">在 \(r=1.75\,\mathrm{cm}=1.75\times10^{-2}\,\mathrm{m}\)：
+          \(E=\dfrac{1.85\times10^{-10}}{(1.11265\times10^{-10})(1.75\times10^{-2})^{2}}=\dfrac{1.85\times10^{-10}}{3.408\times10^{-14}}=5.43\times10^{3}\,\mathrm{V/m}\)。</p>
+          <p>结果：\(C=\)<span class="ans">\(1.85\,\mathrm{pF}\)</span>，\(Q=\)<span class="ans">\(185\,\mathrm{pC}\)</span>，\(U=\)<span class="ans">\(9.27\,\mathrm{nJ}\)</span>，\(E(1.75\,\mathrm{cm})=\)<span class="ans">\(5.4\times10^{3}\,\mathrm{V/m}\)</span>。注意 \(E\propto 1/r^{2}\) 在球壳间不均匀。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>电池连接 vs 断开：物理完全不同。</b>插入电介质时 \(C\) 总是变为 \(\kappa C_{0}\)；但<b>其余各量</b>取决于约束：<b>电池连接</b>时 \(V\) 不变、\(Q\) 与 \(U\) 都乘以 \(\kappa\)；<b>断开电池</b>时 \(Q\) 不变、\(V\) 与 \(U\) 都除以 \(\kappa\)（\(U\) <b>减小</b>！）。永远先问「什么保持不变？」</li>
+        <li><b>「串联的电容更大」——错。</b>串联等效电容 \(1/C_{\text{eq}}=\sum 1/C_i\)，结果 \(C_{\text{eq}}<\min_i C_i\)。增大电容要并联（对应面积相加）；减小电容要串联（对应间距相加）。</li>
+        <li><b>误认为 \(\kappa\) 可以小于 1。</b>对一切稳定电介质，\(\kappa\ge 1\)（真空为 1）。电介质只能<b>削弱</b>电场、<b>增大</b>电容，不可能反过来。</li>
+        <li><b>把 \(C\) 当成 \(Q\) 或 \(V\) 的函数。</b>\(C\) 只取决于<b>几何</b>（\(A,d\)，或 \(a,b,L\)）与<b>介质</b>（\(\kappa\)）。公式 \(C=Q/V\) 是<b>定义</b>，不是「\(C\) 与 \(Q\) 成正比」——\(Q\) 与 \(V\) 同步变化，比值不变。</li>
+        <li><b>混淆 \(\vec{D}\) 与 \(\vec{E}\)。</b>有介质时高斯定理的两种形式：\(\oint\varepsilon_{0}\vec{E}\cdot d\vec{A}=Q_{\text{free}}+Q_{\text{bound}}\)（含所有电荷），\(\oint\vec{D}\cdot d\vec{A}=Q_{\text{free}}\)（仅自由电荷）。若题目只给自由电荷，用 \(\vec{D}\) 简洁；若涉及所有电荷或力（\(q\vec{E}\)），用 \(\vec{E}\)。</li>
+        <li><b>「能量公式用哪一个？」</b>三种形式 \(U=\tfrac{1}{2}CV^{2}=\tfrac{Q^{2}}{2C}=\tfrac{1}{2}QV\) 完全等价。但选择「<b>不变量</b>」对应的公式最简：\(V\) 已知用 \(U=\tfrac{1}{2}CV^{2}\)，\(Q\) 已知用 \(U=\tfrac{Q^{2}}{2C}\)。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 三电容混联：\(C_1=C_2=2.0\,\mathrm{\mu F}\) 并联后再与 \(C_3=3.0\,\mathrm{\mu F}\) 串联，接 \(V=18\,\mathrm{V}\) 电池。求 \(C_{\text{eq}}\)、各电容器上的电量与电压。</summary>
+        <div class="hint">并联得 \(C_{12}=C_1+C_2\)，再串联 \(C_3\)。串联时电量相同，并联时电压相同。</div>
+        <div class="solution">
+          \(C_{12}=2.0+2.0=4.0\,\mathrm{\mu F}\)。
+          \(\dfrac{1}{C_{\text{eq}}}=\dfrac{1}{4.0}+\dfrac{1}{3.0}=\dfrac{7}{12}\)，故 \(C_{\text{eq}}=\dfrac{12}{7}=1.71\,\mathrm{\mu F}\)。
+          总电量 \(Q=C_{\text{eq}}V=(1.71)(18)=30.9\,\mathrm{\mu C}\)。这是 \(C_3\) 上的电量，也是并联组的总电量。
+          \(V_{3}=\dfrac{Q}{C_3}=\dfrac{30.9}{3.0}=10.3\,\mathrm{V}\)；并联组电压 \(V_{12}=\dfrac{Q}{C_{12}}=\dfrac{30.9}{4.0}=7.7\,\mathrm{V}\)（检验 \(10.3+7.7=18\) ✓）。
+          \(Q_1=Q_2=C_1 V_{12}=(2.0)(7.7)=15.4\,\mathrm{\mu C}\)。
+          <span class="ans">\(C_{\text{eq}}=1.71\,\mathrm{\mu F}\)；\(V_1=V_2=7.7\,\mathrm{V}\)，\(V_3=10.3\,\mathrm{V}\)；\(Q_1=Q_2=15.4\,\mathrm{\mu C}\)，\(Q_3=30.9\,\mathrm{\mu C}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一空气平行板电容器 \(A=0.040\,\mathrm{m^{2}}\)，\(d=2.0\,\mathrm{mm}\)，充电到 \(V=500\,\mathrm{V}\) 后<b>断开</b>电池。再把 \(\kappa=4.0\) 的电介质完全填入。求电容、电量、电压、能量在填入前后的变化。</summary>
+        <div class="hint">断开电池意味着 \(Q\) 不变。填入电介质使 \(C\to\kappa C\)。</div>
+        <div class="solution">
+          初态：\(C_{0}=\dfrac{\varepsilon_{0}A}{d}=\dfrac{(8.854\times10^{-12})(0.040)}{2.0\times10^{-3}}=1.77\times10^{-10}\,\mathrm{F}=177\,\mathrm{pF}\)。
+          \(Q_{0}=C_{0}V=(1.77\times10^{-10})(500)=8.85\times10^{-8}\,\mathrm{C}=88.5\,\mathrm{nC}\)（不变）。
+          末态：\(C=\kappa C_{0}=4.0\times177=708\,\mathrm{pF}\)；\(Q=88.5\,\mathrm{nC}\)；
+          \(V=\dfrac{Q}{C}=\dfrac{V_{0}}{\kappa}=\dfrac{500}{4.0}=125\,\mathrm{V}\)；
+          \(U=\dfrac{Q^{2}}{2C}=\dfrac{U_{0}}{\kappa}\)，其中 \(U_{0}=\tfrac{1}{2}C_{0}V_{0}^{2}=\tfrac{1}{2}(1.77\times10^{-10})(500)^{2}=2.21\times10^{-5}\,\mathrm{J}\)，故 \(U=5.53\times10^{-6}\,\mathrm{J}\)。
+          <span class="ans">\(C:177\to708\,\mathrm{pF}\)；\(Q:88.5\,\mathrm{nC}\)（不变）；\(V:500\to125\,\mathrm{V}\)；\(U:22.1\to5.53\,\mathrm{\mu J}\)</span>。
+          能量减少的部分对应把电介质「吸」入时电场对介质做的正功。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 同轴电缆单位长度电容：内导体半径 \(a=1.0\,\mathrm{mm}\)，外导体半径 \(b=5.0\,\mathrm{mm}\)，其间填充 \(\kappa=2.3\) 的聚乙烯。求单位长度电容 \(C/L\)（\(\mathrm{pF/m}\)）。</summary>
+        <div class="hint">用 \(C/L=\dfrac{2\pi\varepsilon_{0}\kappa}{\ln(b/a)}\)。</div>
+        <div class="solution">
+          \(\ln(b/a)=\ln(5.0)=1.609\)。
+          \(C/L=\dfrac{2\pi(8.854\times10^{-12})(2.3)}{1.609}=\dfrac{1.279\times10^{-10}}{1.609}=7.95\times10^{-11}\,\mathrm{F/m}=79.5\,\mathrm{pF/m}\)。
+          <span class="ans">\(C/L\approx 79.5\,\mathrm{pF/m}\)</span>。这是真实同轴电缆（如 RG-58）量级（约 100 pF/m）。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 雷暴云能量：假设两块平行的大平板（云底与地面）相距 \(d=1.0\,\mathrm{km}\)，面积 \(A=100\,\mathrm{km^{2}}\)，板间空气近似为真空且场强 \(E=3.0\times10^{5}\,\mathrm{V/m}\)（接近空气击穿）。估算储存的总静电能。</summary>
+        <div class="hint">用 \(U=u\times\text{Vol}=\tfrac{1}{2}\varepsilon_{0}E^{2}\,A\,d\)。</div>
+        <div class="solution">
+          \(A=100\,\mathrm{km^{2}}=1.0\times10^{8}\,\mathrm{m^{2}}\)，\(d=1.0\times10^{3}\,\mathrm{m}\)，\(\text{Vol}=1.0\times10^{11}\,\mathrm{m^{3}}\)。
+          \(u=\tfrac{1}{2}\varepsilon_{0}E^{2}=\tfrac{1}{2}(8.854\times10^{-12})(3.0\times10^{5})^{2}=\tfrac{1}{2}(8.854\times10^{-12})(9.0\times10^{10})=0.398\,\mathrm{J/m^{3}}\)。
+          \(U=u\times\text{Vol}=(0.398)(1.0\times10^{11})=3.98\times10^{10}\,\mathrm{J}\)。
+          <span class="ans">\(U\approx 4\times10^{10}\,\mathrm{J}\)</span>，相当于约 10 吨 TNT 当量——雷暴释放的能量极为巨大（实际放电只释放其中一部分）。
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">平行板电容器实时演示：调节极板面积 \(A\)、间距 \(d\)、电介质常数 \(\kappa\) 与电压 \(V\)，观察电容 \(C=\kappa\varepsilon_{0}A/d\)、电量 \(Q=CV\)、储能 \(U=\tfrac{1}{2}CV^{2}\) 与板间场强 \(E=V/d\) 的实时变化。画面显示两块极板（红色为正、蓝色为负）、连接电池的导线、向下的均匀电场（紫色箭头）；当 \(\kappa>1\) 时，板间出现绿色电介质，显示极化的束缚电荷（顶部 \(-b\)、底部 \(+b\)）与定向电偶极矩。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical constants ----
+          var EPS0 = 8.854e-12; // F/m, vacuum permittivity
+
+          // ---- Canvas layout (fixed in pixels; values labelled) ----
+          var plateLeft = 110, plateRight = 510;
+          var plateTopY = 90, plateBotY = 280;   // gap (visual) = 190 px
+          var plateThk = 6;
+
+          // ---- Default parameters ----
+          var DEFAULTS = { A_cm: 100, d_mm: 1.0, kappa: 1.0, V: 9.0 };
+          var params = Object.assign({}, DEFAULTS);
+
+          function compute() {
+            var A = params.A_cm * 1e-4;            // m^2
+            var d = params.d_mm * 1e-3;            // m
+            var C0 = EPS0 * A / d;                 // F (vacuum)
+            var C = params.kappa * C0;             // F (with dielectric)
+            var Q = C * params.V;                  // C
+            var U = 0.5 * C * params.V * params.V; // J
+            var E = params.V / d;                  // V/m
+            return { A: A, d: d, C0: C0, C: C, Q: Q, U: U, E: E };
+          }
+
+          function supDigits(n) {
+            var map = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
+                        '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+            return String(n).split('').map(function (c) { return map[c] || c; }).join('');
+          }
+          function fmtSci(v, unit) {
+            if (Math.abs(v) < 1e-30) return '0 ' + unit;
+            var exp = Math.floor(Math.log10(Math.abs(v)));
+            var mant = v / Math.pow(10, exp);
+            return mant.toFixed(2) + '×10' + supDigits(exp) + ' ' + unit;
+          }
+
+          // No time-evolution needed: physics is steady-state. Step is a no-op;
+          // createSim calls draw every frame so slider changes appear live.
+          var sim = PS.createSim(canvas, {
+            fps: 30,
+            state: function () { return {}; },
+            step: function () {},
+            draw: function (ctx) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var r = compute();
+
+              PS.drawText(ctx, 'Parallel-Plate Capacitor · 平行板电容器',
+                W / 2, 18, { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              var posColor = C.accent;   // + plate
+              var negColor = C.primary;  // − plate
+
+              // ---- Dielectric fill (if κ > 1) ----
+              if (params.kappa > 1.0 + 1e-6) {
+                ctx.save();
+                ctx.fillStyle = 'rgba(80, 180, 90, 0.18)';
+                ctx.fillRect(plateLeft, plateTopY, plateRight - plateLeft, plateBotY - plateTopY);
+                ctx.strokeStyle = C.accent2;
+                ctx.setLineDash([6, 3]); ctx.lineWidth = 1;
+                ctx.strokeRect(plateLeft, plateTopY, plateRight - plateLeft, plateBotY - plateTopY);
+                ctx.restore();
+              }
+
+              // ---- Field lines (E from + to −, i.e. downward) ----
+              var nFL = 7;
+              var fieldColor = C.trace;
+              for (var i = 0; i < nFL; i++) {
+                var xf = plateLeft + (i + 0.5) * (plateRight - plateLeft) / nFL;
+                PS.drawArrow(ctx, xf, plateTopY + 3, xf, plateBotY - 3, fieldColor);
+              }
+              PS.drawText(ctx, 'E', plateRight + 14, (plateTopY + plateBotY) / 2,
+                { font: 'italic bold 14px system-ui', color: fieldColor, baseline: 'middle' });
+
+              // ---- Dielectric polarization (dipoles aligned with E, pointing down) ----
+              if (params.kappa > 1.0 + 1e-6) {
+                var nD = 4;
+                var yU = plateTopY + 35, yD = plateBotY - 35;
+                ctx.save();
+                ctx.lineWidth = 1.4;
+                ctx.strokeStyle = C.accent2;
+                for (var j = 0; j < nD; j++) {
+                  var xd = plateLeft + (j + 0.5) * (plateRight - plateLeft) / nD;
+                  // dipole: − charge above, + charge below (moment p points down with E)
+                  PS.drawCircle(ctx, xd, yU, 3.5, { fill: C.accent2 });
+                  PS.drawCircle(ctx, xd, yD, 3.5, { fill: C.accent2, stroke: C.text, lineWidth: 1 });
+                  ctx.beginPath();
+                  ctx.moveTo(xd, yU + 5);
+                  ctx.lineTo(xd, yD - 5);
+                  ctx.stroke();
+                }
+                ctx.restore();
+                // Bound surface charges (top: −b, bottom: +b)
+                var nB = 6;
+                ctx.save();
+                ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillStyle = C.accent2;
+                for (var k = 0; k < nB; k++) {
+                  var xb = plateLeft + (k + 0.5) * (plateRight - plateLeft) / nB;
+                  ctx.fillText('−_b', xb, plateTopY + 14);
+                  ctx.fillText('+_b', xb, plateBotY - 14);
+                }
+                ctx.restore();
+              }
+
+              // ---- Plates ----
+              ctx.save();
+              ctx.fillStyle = posColor;
+              ctx.fillRect(plateLeft, plateTopY - plateThk, plateRight - plateLeft, plateThk);
+              ctx.fillStyle = negColor;
+              ctx.fillRect(plateLeft, plateBotY, plateRight - plateLeft, plateThk);
+              ctx.restore();
+
+              // ---- Free-charge symbols on plates ----
+              var qNc = Math.abs(r.Q) * 1e9; // nC
+              var nSym = Math.max(2, Math.min(15, Math.round(qNc * 3)));
+              ctx.save();
+              ctx.font = 'bold 14px system-ui';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              for (var s = 0; s < nSym; s++) {
+                var xs = plateLeft + (s + 0.5) * (plateRight - plateLeft) / nSym;
+                ctx.fillStyle = posColor;
+                ctx.fillText('+', xs, plateTopY - plateThk - 9);
+                ctx.fillStyle = negColor;
+                ctx.fillText('−', xs, plateBotY + plateThk + 11);
+              }
+              ctx.restore();
+
+              // ---- Plate labels ----
+              PS.drawText(ctx, '+Q', plateLeft - 6, plateTopY - 3,
+                { font: 'bold 12px system-ui', color: posColor, align: 'right', baseline: 'middle' });
+              PS.drawText(ctx, '−Q', plateLeft - 6, plateBotY + 3,
+                { font: 'bold 12px system-ui', color: negColor, align: 'right', baseline: 'top' });
+
+              // ---- Battery + wires on the left ----
+              var batX = 60, batMidY = (plateTopY + plateBotY) / 2;
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 2; ctx.fillStyle = C.bg;
+              // top wire
+              ctx.beginPath();
+              ctx.moveTo(plateLeft, plateTopY - plateThk / 2);
+              ctx.lineTo(batX, plateTopY - plateThk / 2);
+              ctx.lineTo(batX, batMidY - 7);
+              ctx.stroke();
+              // battery: long line (+) on top, short line (−) on bottom
+              ctx.lineWidth = 2.5;
+              ctx.beginPath(); ctx.moveTo(batX - 14, batMidY - 7); ctx.lineTo(batX + 14, batMidY - 7); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(batX - 7, batMidY + 4); ctx.lineTo(batX + 7, batMidY + 4); ctx.stroke();
+              ctx.lineWidth = 2;
+              // bottom wire
+              ctx.beginPath();
+              ctx.moveTo(batX, batMidY + 4);
+              ctx.lineTo(batX, plateBotY + plateThk / 2);
+              ctx.lineTo(plateLeft, plateBotY + plateThk / 2);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, params.V.toFixed(1) + ' V', batX, batMidY - 20,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+
+              // ---- Live readouts ----
+              var rx0 = 28, ry0 = 312;
+              PS.drawText(ctx, 'C  = κε₀A/d = ' + fmtSci(r.C, 'F') + '   (' + (r.C * 1e12).toFixed(2) + ' pF)',
+                rx0, ry0, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'Q  = C·V   = ' + fmtSci(r.Q, 'C'),
+                rx0, ry0 + 14, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'U  = ½ C V² = ' + fmtSci(r.U, 'J'),
+                rx0, ry0 + 28, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'E  = V / d = ' + fmtSci(r.E, 'V/m') + (params.kappa > 1 + 1e-6 ? '   (E₀/κ inside dielectric if isolated)' : ''),
+                rx0, ry0 + 42, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx,
+                params.kappa > 1 + 1e-6
+                  ? '介质 dielectric κ = ' + params.kappa.toFixed(1) + '，C = ' + params.kappa.toFixed(1) + ' × C₀ (= ' + (r.C0 * 1e12).toFixed(2) + ' pF)'
+                  : '真空/空气 vacuum，C₀ = ' + (r.C0 * 1e12).toFixed(2) + ' pF',
+                rx0, ry0 + 56, { font: '11px system-ui', color: C.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'A_cm',  label: '极板面积 A (cm²)',  min: 20,  max: 500, step: 10,  value: DEFAULTS.A_cm },
+            { type: 'slider', key: 'd_mm',  label: '极板间距 d (mm)',   min: 0.3, max: 5.0, step: 0.1, value: DEFAULTS.d_mm },
+            { type: 'slider', key: 'kappa', label: '介电常数 κ',         min: 1.0, max: 5.0, step: 0.1, value: DEFAULTS.kappa },
+            { type: 'slider', key: 'V',     label: '电压 V (V)',         min: 0,   max: 24,  step: 0.5, value: DEFAULTS.V },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('A_cm',  function (v) { params.A_cm = v; });
+          ctl.on('d_mm',  function (v) { params.d_mm = v; });
+          ctl.on('kappa', function (v) { params.kappa = v; });
+          ctl.on('V',     function (v) { params.V = v; });
+
+          // Reset: restore defaults in params AND reflect them in the slider DOM.
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            var container = document.getElementById('controls-6');
+            var inputs = container.querySelectorAll('input[type=range]');
+            var valSpans = container.querySelectorAll('.ctrl-value');
+            var keys = ['A_cm', 'd_mm', 'kappa', 'V'];
+            var steps = [10, 0.1, 0.1, 0.5];
+            keys.forEach(function (k, idx) {
+              inputs[idx].value = DEFAULTS[k];
+              ctl.set(k, DEFAULTS[k]);
+              var dec = Math.max(0, -Math.floor(Math.log10(steps[idx]) + 1e-9));
+              valSpans[idx].textContent = Number(DEFAULTS[k]).toFixed(dec);
+            });
+          });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><b>电容定义</b> \(C=Q/V\)，单位法拉 \(\mathrm{F}\)；只取决于几何与介质，与 \(Q,V\) 无关。</li>
+        <li><b>三种典型几何</b>：平行板 \(C=\varepsilon_{0}A/d\)；球形 \(C=4\pi\varepsilon_{0}\,ab/(b-a)\)；同轴 \(C=2\pi\varepsilon_{0}L/\ln(b/a)\)。</li>
+        <li><b>组合</b>：并联 \(C=\sum_i C_i\)（电压相同）；串联 \(1/C=\sum_i 1/C_i\)（电量相同）；串联使电容减小，并联使电容增大。</li>
+        <li><b>储能</b> \(U=\tfrac{1}{2}CV^{2}=\tfrac{Q^{2}}{2C}=\tfrac{1}{2}QV\)；<b>能量密度</b> \(u=\tfrac{1}{2}\varepsilon_{0}E^{2}\)（普遍成立，含介质时换为 \(\tfrac{1}{2}\varepsilon E^{2}\)）。</li>
+        <li><b>电介质</b>使电容增大为 \(\kappa\) 倍：\(C=\kappa C_{0}\)，\(\kappa\ge 1\)。<b>电池连接</b>下 \(V\) 不变、\(Q,U\) 乘以 \(\kappa\)；<b>断开电池</b>下 \(Q\) 不变、\(V,U\) 除以 \(\kappa\)。</li>
+        <li><b>电位移</b> \(\vec{D}=\varepsilon_{0}\vec{E}+\vec{P}=\varepsilon\vec{E}\)；<b>有介质高斯定理</b> \(\oint\vec{D}\cdot d\vec{A}=Q_{\text{free}}\)（仅计自由电荷）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,Q=CV,\;\; C_{\parallel}=\tfrac{\varepsilon_{0}A}{d},\;\; \tfrac{1}{C_{\text{series}}}=\sum_i\tfrac{1}{C_i},\;\; C_{\parallel}=\sum_i C_i,\;\; U=\tfrac{1}{2}CV^{2},\;\; u=\tfrac{1}{2}\varepsilon_{0}E^{2},\;\; C=\kappa C_{0},\;\; \oint\vec{D}\cdot d\vec{A}=Q_{\text{free}}\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

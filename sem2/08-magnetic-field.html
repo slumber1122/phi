@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 磁场与洛伦兹力 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第8章 · 磁学与感应 Magnetism &amp; Induction</p>
+      <h1>磁场与洛伦兹力 <span class="en-title">Magnetic Field &amp; Lorentz Force</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用洛伦兹力 (Lorentz force) 公式 \(\vec{F}=q\,\vec{v}\times\vec{B}\) 计算运动电荷在磁场中所受的力，并用右手定则 (right-hand rule) 判定方向；理解为何磁力永远与速度垂直。</li>
+        <li>由洛伦兹力导出载流导线受力 \(\vec{F}=I\vec{L}\times\vec{B}\)，并计算两根平行载流导线之间的相互作用力。</li>
+        <li>分析带电粒子在均匀磁场中的运动：分解为垂直分量 \(v_{\perp}\)（作圆周运动）与平行分量 \(v_{\parallel}\)（不受力），从而得到螺旋运动 (helical motion)。</li>
+        <li>推导并运用回旋半径 (cyclotron radius) \(r=mv_{\perp}/(|q|B)\)、回旋频率 \(\omega_{c}=|q|B/m\) 与周期 \(T=2\pi m/(|q|B)\)。</li>
+        <li>理解速度选择器 (velocity selector) 与质谱仪 (mass spectrometer) 的工作原理，并据此完成定量计算。</li>
+        <li>论证磁力对运动电荷<strong>不做功</strong>（\(P=\vec{F}\cdot\vec{v}=0\)），并解释磁场线为什么总是闭合回路（无磁单极）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 磁场 \(\vec{B}\)</h3>
+      <p>磁场 (magnetic field) \(\vec{B}\) 是空间中的一种矢量场，可由永磁体、电流或变化的电场产生。它的操作型定义依赖于<strong>运动</strong>电荷所受的力（见下文洛伦兹力）。SI 单位为<strong>特斯拉</strong> (tesla, T)：</p>
+      <div class="formula">\[ 1\,\mathrm{T}=1\,\frac{\mathrm{N}}{\mathrm{A\cdot m}}=1\,\frac{\mathrm{kg}}{\mathrm{A\cdot s^{2}}} \]</div>
+      <p>常见量级：地球表面磁场约 \(25\text{–}65\,\mathrm{\mu T}\)；冰箱贴约 \(5\,\mathrm{mT}\)；医用核磁共振 (MRI) 约 \(1.5\text{–}3\,\mathrm{T}\)；强场实验室磁体可达 \(45\,\mathrm{T}\)。CGS 单位为高斯 (gauss, G)，\(1\,\mathrm{T}=10^{4}\,\mathrm{G}\)。</p>
+      <div class="key-terms">magnetic field \(\vec{B}\) (磁场), tesla \(\mathrm{T}\) (特斯拉), gauss \(\mathrm{G}\) (高斯)</div>
+
+      <h3>2. 洛伦兹力 \(\vec{F}=q\,\vec{v}\times\vec{B}\)</h3>
+      <p>一个电荷 \(q\) 以速度 \(\vec{v}\) 在磁场 \(\vec{B}\) 中运动时受到的<strong>磁力</strong> (magnetic force) 为：</p>
+      <div class="formula">\[ \vec{F}=q\,\vec{v}\times\vec{B} \]</div>
+      <p>这是<strong>洛伦兹力</strong>（磁分量）。注意它与电场力 \(q\vec{E}\) 有三点根本不同：</p>
+      <ul>
+        <li><strong>依赖于速度</strong>：静止电荷不受磁力；只有运动电荷才受力。</li>
+        <li><strong>方向与 \(\vec{v}\) 垂直</strong>：因此磁力只改变运动方向，不改变速率（见误区 1）。</li>
+        <li><strong>大小</strong>：\(F=|q|\,v\,B\sin\theta\)，其中 \(\theta\) 为 \(\vec{v}\) 与 \(\vec{B}\) 的夹角。当 \(\vec{v}\parallel\vec{B}\) 时 \(\sin\theta=0\)，磁力为零；当 \(\vec{v}\perp\vec{B}\) 时磁力最大。</li>
+      </ul>
+      <p>完整的洛伦兹力（含电场）写作 \(\vec{F}=q(\vec{E}+\vec{v}\times\vec{B})\)，本章聚焦磁分量。<strong>右手定则</strong> (right-hand rule) 用于判定方向：四指由 \(\vec{v}\) 沿小于 \(180^{\circ}\) 的方向转向 \(\vec{B}\)，拇指指向 \(\vec{v}\times\vec{B}\)；若 \(q>0\)，此即 \(\vec{F}\) 的方向；若 \(q<0\)（如电子），方向反向。</p>
+      <div class="key-terms">Lorentz force (洛伦兹力), magnetic force (磁力), right-hand rule (右手定则)</div>
+
+      <h3>3. 载流导线所受的磁力 \(\vec{F}=I\vec{L}\times\vec{B}\)</h3>
+      <p>一段长度为 \(L\)、通有电流 \(I\) 的直导线在均匀磁场中所受合力为：</p>
+      <div class="formula">\[ \vec{F}=I\,\vec{L}\times\vec{B} \]</div>
+      <p>其中 \(\vec{L}\) 是大小为 \(L\)、方向沿电流方向的矢量。当导线与 \(\vec{B}\) 垂直时，\(F=ILB\)。该公式的推导见下节——本质上就是导线内所有运动载流子 (charge carriers) 所受洛伦兹力之和。</p>
+      <p>对任意形状的导线（在均匀磁场中），可对线元积分 \(\mathrm{d}\vec{F}=I\,\mathrm{d}\vec{l}\times\vec{B}\)。一个重要推论：闭合载流回路在<strong>均匀</strong>磁场中所受合力为零（\(\oint\mathrm{d}\vec{l}=0\)），但可能受到力矩——这正是直流电动机和磁偶极矩 (magnetic dipole moment) 的工作原理（下一章讨论）。</p>
+      <div class="key-terms">current-carrying wire (载流导线), current element \(\mathrm{d}\vec{l}\) (电流元)</div>
+
+      <h3>4. 带电粒子在均匀磁场中的运动</h3>
+      <p>设 \(\vec{B}=B\hat{z}\) 为均匀磁场。把速度分解为垂直分量 \(v_{\perp}\)（在 \(xy\) 平面内）与平行分量 \(v_{\parallel}=v_{z}\)（沿 \(\hat{z}\)）。</p>
+      <p><strong>(a) 垂直分量 → 圆周运动。</strong> 因 \(\vec{F}\perp\vec{v}\)，磁力提供向心力 \(qv_{\perp}B=mv_{\perp}^{2}/r\)，由此解得：</p>
+      <div class="formula">\[ \boxed{\;r=\frac{mv_{\perp}}{|q|B}\;}\qquad\text{（回旋半径 cyclotron radius）} \]</div>
+      <p>角速度（<strong>回旋频率</strong>，cyclotron frequency）：</p>
+      <div class="formula">\[ \boxed{\;\omega_{c}=\frac{|q|B}{m}\;},\qquad T=\frac{2\pi}{\omega_{c}}=\frac{2\pi m}{|q|B},\qquad f_{c}=\frac{\omega_{c}}{2\pi} \]</div>
+      <p>一个值得惊叹的事实：<strong>\(\omega_{c}\) 与 \(v\)、\(r\) 都无关</strong>——快粒子画大圈、慢粒子画小圈，但绕一圈用时相同。这正是回旋加速器 (cyclotron) 得以工作的物理基础。</p>
+      <p><strong>(b) 平行分量 → 不受力。</strong> 由于 \(\vec{v}_{\parallel}\parallel\vec{B}\)，\(\vec{v}_{\parallel}\times\vec{B}=0\)，故 \(v_{\parallel}\) 守恒——粒子沿磁场方向匀速漂移。</p>
+      <p><strong>(c) 一般情形 → 螺旋运动。</strong> 当两个分量都存在时，粒子绕磁力线作圆周运动的同时沿磁力线漂移，轨迹是一条螺旋线 (helix)。螺旋的轴沿 \(\vec{B}\)，半径 \(r=mv_{\perp}/(|q|B)\)，<strong>螺距</strong> (pitch) 为：</p>
+      <div class="formula">\[ p=v_{\parallel}\,T=\frac{2\pi m v_{\parallel}}{|q|B} \]</div>
+      <p>带电粒子被磁场"约束"在磁力线附近的现象，是等离子体物理、磁瓶 (magnetic bottle)、范艾伦辐射带与聚变装置（托卡马克）的核心机制。</p>
+      <div class="key-terms">cyclotron radius \(r\) (回旋半径), cyclotron frequency \(\omega_{c}\) (回旋频率), helical motion (螺旋运动), pitch \(p\) (螺距), guiding center (引导中心)</div>
+
+      <h3>5. 磁力不做功</h3>
+      <p>磁力的功率为：</p>
+      <div class="formula">\[ P=\vec{F}\cdot\vec{v}=q(\vec{v}\times\vec{B})\cdot\vec{v}\equiv 0 \]</div>
+      <p>因为 \(\vec{v}\times\vec{B}\perp\vec{v}\)。所以磁力对电荷<strong>不做功</strong>——它只改变动量的方向，不改变其大小；动能 \(K=\tfrac{1}{2}mv^{2}\) 严格守恒。这是磁场与电场的本质区别（电场 \(q\vec{E}\) 可以对电荷做功）。</p>
+
+      <h3>6. 无磁单极：磁场线是闭合回路</h3>
+      <p>电场线发自正电荷、止于负电荷；但磁场线<strong>没有起点也没有终点</strong>——它们是闭合回路，或者延伸到无穷远。等效地，<strong>磁单极子</strong> (magnetic monopole) 不存在（至少在经典电磁学中），这与高斯磁定律 (Gauss's law for magnetism) 一致：</p>
+      <div class="formula">\[ \oint_{\partial V}\vec{B}\cdot\mathrm{d}\vec{A}=0\qquad\Longleftrightarrow\qquad \nabla\cdot\vec{B}=0 \]</div>
+      <p>即穿过任意闭合曲面的磁通量为零——进入的磁通等于出来的磁通。这就是为什么条形磁铁的磁场线从 N 极"出来"后必定弯回 S 极，再通过磁体内部回到 N 极，形成闭合环。狄拉克曾在 1931 年指出，若存在磁单极子，则电荷必须是量子化的——但至今实验上未发现。</p>
+      <div class="key-terms">magnetic monopole (磁单极子), Gauss's law for magnetism (高斯磁定律), magnetic field line (磁场线)</div>
+
+      <h3>7. 应用：速度选择器与质谱仪</h3>
+      <p><strong>速度选择器</strong> (velocity selector)：让相互垂直的电场 \(\vec{E}\) 和磁场 \(\vec{B}\) 叠加，电场力 \(qE\) 与磁场力 \(qvB\) 方向相反。仅当 \(qE=qvB\)，即</p>
+      <div class="formula">\[ v=\frac{E}{B} \]</div>
+      <p>的粒子才能直线穿过而不偏转；其他速度的粒子将被偏向一侧。这是质谱仪的关键前置部件。</p>
+      <p><strong>质谱仪</strong> (mass spectrometer)：先经速度选择器获得单一速度 \(v\)，再让粒子进入仅含磁场 \(B_{2}\) 的区域，作半径 \(r=mv/(|q|B_{2})\) 的半圆，最后打在感光板或探测器上。不同质量（或不同电荷态）的粒子半径不同，据此被分离——这正是同位素 (isotope) 分析的原理。</p>
+      <div class="key-terms">velocity selector (速度选择器), mass spectrometer (质谱仪), isotope (同位素)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 8.1：由洛伦兹力导出载流导线受力 \(\vec{F}=I\vec{L}\times\vec{B}\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 考虑一段长 \(L\)、截面积 \(A\) 的直导线，载流子数密度为 \(n\)，每个载流子电量为 \(q\)，漂移速度 (drift velocity) 为 \(\vec{v}_{d}\)。导线内载流子总数 \(N=nAL\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 每个载流子受洛伦兹力 \(q\vec{v}_{d}\times\vec{B}\)。所有载流子受力方向相同，故合力 \(\vec{F}=nAL\,q\,\vec{v}_{d}\times\vec{B}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 电流的定义为 \(I=nq v_{d}A\)（截面单位时间通过的电量）。注意 \(nq v_{d}A\,\vec{L}=I\,\vec{L}\)（方向沿电流方向），故：</p>
+      <div class="formula">\[ \vec{F}=nAL\,q\,\vec{v}_{d}\times\vec{B}=(nqv_{d}A)\,\vec{L}\times\vec{B}=I\,\vec{L}\times\vec{B} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 量纲校核：\([I][L][B]=\mathrm{A\cdot m\cdot T}=\mathrm{A\cdot m\cdot kg/(A\,s^{2})}=\mathrm{kg\,m/s^{2}}=\mathrm{N}\) ✓。</p>
+
+      <h3>推导 8.2：圆周运动、回旋半径与回旋频率</h3>
+      <p class="step"><strong>步骤 1：</strong> 取 \(\vec{B}=B\hat{z}\)，粒子初速度 \(\vec{v}=v_{\perp}\hat{x}\)。计算洛伦兹力：</p>
+      <div class="formula">\[ \vec{F}=q\,\vec{v}\times\vec{B}=q\,v_{\perp}B\,(\hat{x}\times\hat{z})=-qv_{\perp}B\,\hat{y} \]</div>
+      <p class="step"><strong>步骤 2：</strong> 力的大小 \(F=|q|v_{\perp}B\)，方向始终垂直于 \(\vec{v}\)（在 \(xy\) 平面内）。这正是匀速圆周运动的向心力的特征：</p>
+      <div class="formula">\[ |q|v_{\perp}B=\frac{mv_{\perp}^{2}}{r}\;\Longrightarrow\;r=\frac{mv_{\perp}}{|q|B} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 角速度 \(\omega=v_{\perp}/r=v_{\perp}\cdot|q|B/(mv_{\perp})=|q|B/m\)。注意 \(v_{\perp}\) 消去：</p>
+      <div class="formula">\[ \omega_{c}=\frac{|q|B}{m}\;(\text{与 }v_{\perp}\text{ 无关！}),\qquad T=\frac{2\pi}{\omega_{c}}=\frac{2\pi m}{|q|B} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 旋转方向：\(q>0\) 时绕 \(\vec{B}\) 顺时针（从 \(+\hat{z}\) 方向看），\(q<0\) 时逆时针。粒子的"引导中心" (guiding center) 相对粒子的位置矢量为 \(-r\,\hat{F}/|\hat{F}|\)，即沿力的方向后退 \(r\)。</p>
+
+      <h3>推导 8.3：磁力不做功</h3>
+      <p class="step"><strong>步骤 1：</strong> 动能变化率 \(\mathrm{d}K/\mathrm{d}t=\mathrm{d}(\tfrac{1}{2}mv^{2})/\mathrm{d}t=m\vec{v}\cdot\dot{\vec{v}}=\vec{v}\cdot(m\vec{a})=\vec{v}\cdot\vec{F}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 代入 \(\vec{F}=q\vec{v}\times\vec{B}\)：</p>
+      <div class="formula">\[ \frac{\mathrm{d}K}{\mathrm{d}t}=\vec{v}\cdot(q\,\vec{v}\times\vec{B})=q\,\vec{v}\cdot(\vec{v}\times\vec{B})=0 \]</div>
+      <p class="step">最后一步用了恒等式 \(\vec{a}\cdot(\vec{a}\times\vec{b})=0\)（标量三重积中两个矢量相同）。因此 \(K\) 守恒，速率 \(v=|\vec{v}|\) 不变——磁力只能"扭弯"轨迹，不能"加速"粒子。</p>
+
+      <h3>推导 8.4：速度选择器条件 \(v=E/B\)</h3>
+      <p class="step">设 \(\vec{E}=E\hat{y}\)，\(\vec{B}=B\hat{z}\)，粒子以 \(\vec{v}=v\hat{x}\) 入射。对正电荷：</p>
+      <div class="formula">\[ \vec{F}_{E}=qE\,\hat{y},\qquad \vec{F}_{B}=q\,\vec{v}\times\vec{B}=qvB\,(\hat{x}\times\hat{z})=-qvB\,\hat{y} \]</div>
+      <p class="step">两力方向相反。令合力为零得 \(qE=qvB\)，即 \(v=E/B\)。注意此条件与 \(q\) 无关，对正负电荷同样适用；速度高于 \(E/B\) 的粒子被磁场"推回"（磁力占优），低于 \(E/B\) 的粒子被电场"拉走"。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 质子的回旋半径与周期</h4>
+        <p class="example-statement">一质子（\(m_{p}=1.67\times 10^{-27}\,\mathrm{kg}\)，\(q=+e=1.60\times 10^{-19}\,\mathrm{C}\)）以 \(v=2.0\times 10^{6}\,\mathrm{m/s}\) 的速率垂直射入 \(B=0.50\,\mathrm{T}\) 的均匀磁场。求回旋半径 \(r\)、回旋角频率 \(\omega_{c}\)、周期 \(T\) 与频率 \(f\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(r=mv/(|q|B)\)：</p>
+          <div class="formula">\[ r=\frac{(1.67\times 10^{-27})(2.0\times 10^{6})}{(1.60\times 10^{-19})(0.50)}=\frac{3.34\times 10^{-21}}{8.0\times 10^{-20}}=4.17\times 10^{-2}\,\mathrm{m}=4.17\,\mathrm{cm} \]</div>
+          <p class="step">回旋角频率：</p>
+          <div class="formula">\[ \omega_{c}=\frac{|q|B}{m}=\frac{(1.60\times 10^{-19})(0.50)}{1.67\times 10^{-27}}=4.79\times 10^{7}\,\mathrm{rad/s} \]</div>
+          <p class="step">周期与频率：</p>
+          <div class="formula">\[ T=\frac{2\pi}{\omega_{c}}=\frac{2\pi}{4.79\times 10^{7}}=1.31\times 10^{-7}\,\mathrm{s}=131\,\mathrm{ns} \]</div>
+          <div class="formula">\[ f=\frac{1}{T}=7.63\times 10^{6}\,\mathrm{Hz}=7.63\,\mathrm{MHz} \]</div>
+          <p class="step">校核：\(r=v/\omega_{c}=(2.0\times 10^{6})/(4.79\times 10^{7})=4.17\times 10^{-2}\,\mathrm{m}\) ✓</p>
+          <p><span class="ans">\(r=4.17\,\mathrm{cm},\;\omega_{c}=4.79\times 10^{7}\,\mathrm{rad/s},\;T=131\,\mathrm{ns},\;f=7.63\,\mathrm{MHz}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 载流直导线所受的磁力</h4>
+        <p class="example-statement">一段长 \(L=0.25\,\mathrm{m}\) 的水平直导线沿 \(+x\) 方向通有 \(I=6.0\,\mathrm{A}\) 电流，置于沿 \(+y\) 方向、大小 \(B=0.040\,\mathrm{T}\) 的均匀磁场中。求导线所受磁力（大小与方向）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(\vec{F}=I\vec{L}\times\vec{B}\)，其中 \(\vec{L}=0.25\,\hat{x}\,\mathrm{m}\)，\(\vec{B}=0.040\,\hat{y}\,\mathrm{T}\)：</p>
+          <div class="formula">\[ \vec{L}\times\vec{B}=(0.25)(0.040)\,(\hat{x}\times\hat{y})=0.010\,\hat{z}\;(\mathrm{m\cdot T}) \]</div>
+          <p class="step">乘以电流：</p>
+          <div class="formula">\[ \vec{F}=I\,\vec{L}\times\vec{B}=(6.0)(0.010\,\hat{z})=0.060\,\hat{z}\,\mathrm{N} \]</div>
+          <p class="step">大小 \(F=ILB\sin 90^{\circ}=(6.0)(0.25)(0.040)=0.060\,\mathrm{N}\)。方向：\(+\hat{z}\)，即若 \(x\) 向右、\(y\) 向上，则力"指出纸面"。右手定则可同样验证：四指由 \(+x\) 转向 \(+y\)，拇指指向 \(+z\)。</p>
+          <p><span class="ans">\(\vec{F}=0.060\,\hat{z}\,\mathrm{N}\)（\(0.060\,\mathrm{N}\)，指出纸面）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 速度选择器</h4>
+        <p class="example-statement">一束质子沿 \(+x\) 方向射入速度选择器。器内有相互垂直的均匀电场 \(E=2.0\times 10^{4}\,\mathrm{V/m}\)（沿 \(+y\)）和磁场 \(B=0.040\,\mathrm{T}\)（沿 \(+z\)）。求能直线穿过、不偏转的质子速率，并描述速度偏离此值时质子的偏转方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 对正电荷 \(q>0\)：</p>
+          <ul>
+            <li>电场力 \(\vec{F}_{E}=qE\,\hat{y}\)（指向 \(+y\)）。</li>
+            <li>磁场力 \(\vec{F}_{B}=q\vec{v}\times\vec{B}=qvB(\hat{x}\times\hat{z})=-qvB\,\hat{y}\)（指向 \(-y\)）。</li>
+          </ul>
+          <p class="step">两力方向相反。不偏转条件 \(F_{E}=F_{B}\)：</p>
+          <div class="formula">\[ qE=qvB\;\Longrightarrow\;v=\frac{E}{B}=\frac{2.0\times 10^{4}}{0.040}=5.0\times 10^{5}\,\mathrm{m/s} \]</div>
+          <p class="step"><strong>讨论：</strong> 当 \(v>E/B\)，\(qvB>qE\)，磁力占优 → 质子偏向 \(-y\)；当 \(v<E/B\)，电场力占优 → 质子偏向 \(+y\)。该条件与 \(q\) 无关，故对电子、离子等同样适用（读者可验证：负电荷的两力同时反向，结论一致）。</p>
+          <p><span class="ans">\(v=5.0\times 10^{5}\,\mathrm{m/s}\)；更快偏向 \(-y\)，更慢偏向 \(+y\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 质谱仪分离氯同位素</h4>
+        <p class="example-statement">氯有两种稳定同位素 \({}^{35}\mathrm{Cl}\) 与 \({}^{37}\mathrm{Cl}\)。经速度选择器选出 \(v=1.0\times 10^{5}\,\mathrm{m/s}\) 后， singly-ionized（\(q=+e\)）的氯离子进入垂直于速度的均匀磁场 \(B_{2}=0.20\,\mathrm{T}\)，作半圆圆周运动后打在探测器上。已知 \(1\,\mathrm{u}=1.66\times 10^{-27}\,\mathrm{kg}\)，\(e=1.60\times 10^{-19}\,\mathrm{C}\)。求两种离子各自的回旋半径，以及它们在探测器上的间距。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 两种离子的质量：</p>
+          <div class="formula">\[ m_{35}=35\times 1.66\times 10^{-27}=5.81\times 10^{-26}\,\mathrm{kg} \]</div>
+          <div class="formula">\[ m_{37}=37\times 1.66\times 10^{-27}=6.14\times 10^{-26}\,\mathrm{kg} \]</div>
+          <p class="step">由 \(r=mv/(|q|B_{2})\)：</p>
+          <div class="formula">\[ r_{35}=\frac{(5.81\times 10^{-26})(1.0\times 10^{5})}{(1.60\times 10^{-19})(0.20)}=\frac{5.81\times 10^{-21}}{3.20\times 10^{-20}}=0.182\,\mathrm{m}=18.2\,\mathrm{cm} \]</div>
+          <div class="formula">\[ r_{37}=\frac{(6.14\times 10^{-26})(1.0\times 10^{5})}{(1.60\times 10^{-19})(0.20)}=\frac{6.14\times 10^{-21}}{3.20\times 10^{-20}}=0.192\,\mathrm{m}=19.2\,\mathrm{cm} \]</div>
+          <p class="step">离子转半圈后到达的位置距入射点为直径 \(2r\)。故两种离子在探测器上的间距：</p>
+          <div class="formula">\[ \Delta x=2(r_{37}-r_{35})=2(0.192-0.182)=0.020\,\mathrm{m}=2.0\,\mathrm{cm} \]</div>
+          <p class="step">精确计算：\(r_{35}=0.1813\,\mathrm{m}\)，\(r_{37}=0.1917\,\mathrm{m}\)，\(\Delta x=2(0.0104)=2.07\,\mathrm{cm}\)。质荷比 \(m/q\) 相差约 \(5.7\%\)（37/35），半径也相差 \(5.7\%\)；分辨率足以清晰区分。</p>
+          <p><span class="ans">\(r_{35}\approx 18.2\,\mathrm{cm},\;r_{37}\approx 19.2\,\mathrm{cm},\;\text{间距}\approx 2.07\,\mathrm{cm}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 两根平行载流导线之间的力</h4>
+        <p class="example-statement">两根长直平行导线相距 \(d=2.0\,\mathrm{cm}\)，均通以同向电流 \(I_{1}=I_{2}=10\,\mathrm{A}\)。求单位长度导线所受的力 \(F/L\)，以及 \(L=1.0\,\mathrm{m}\) 段上的合力，并判断是吸引还是排斥。取 \(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{T\cdot m/A}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由第 9 章将证明的安培公式，导线 1 在距离 \(d\) 处产生的磁场大小为：</p>
+          <div class="formula">\[ B_{1}=\frac{\mu_{0}I_{1}}{2\pi d}=\frac{(4\pi\times 10^{-7})(10)}{2\pi(0.020)}=\frac{2.0\times 10^{-6}}{0.020}=1.0\times 10^{-4}\,\mathrm{T} \]</div>
+          <p class="step">导线 2 中长 \(L\) 的一段处于此磁场中，所受磁力大小：</p>
+          <div class="formula">\[ F=I_{2}L\,B_{1}\;\Longrightarrow\;\frac{F}{L}=I_{2}B_{1}=(10)(1.0\times 10^{-4})=1.0\times 10^{-3}\,\mathrm{N/m} \]</div>
+          <p class="step">\(L=1.0\,\mathrm{m}\) 段上：\(F=1.0\times 10^{-3}\,\mathrm{N}=1.0\,\mathrm{mN}\)。</p>
+          <p class="step">等价地，直接用公式 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\) 也得到 \(1.0\times 10^{-3}\,\mathrm{N/m}\)。<strong>方向</strong>：由右手定则，导线 2 处 \(\vec{B}_{1}\) 的方向使 \(\vec{F}=I_{2}\vec{L}\times\vec{B}_{1}\) 指向导线 1——故同向电流<strong>相吸</strong>；反向电流则相斥。这正是安培 (Ampère) 最早用来定义电流单位的实验。</p>
+          <p><span class="ans">\(F/L=1.0\times 10^{-3}\,\mathrm{N/m}\)（吸引）；\(L=1.0\,\mathrm{m}\) 段上 \(F=1.0\,\mathrm{mN}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误以为磁力可以加速（做功于）电荷。</strong>磁力始终 \(\perp\vec{v}\)，\(P=\vec{F}\cdot\vec{v}=0\)，所以<strong>动能不变、速率不变</strong>。磁力只能改变运动方向。要加速电荷必须靠电场 \(\vec{E}\)。</li>
+        <li><strong>对负电荷用右手定则时忘了反向。</strong>公式 \(\vec{F}=q\vec{v}\times\vec{B}\) 中，右手定则给出的是 \(\vec{v}\times\vec{B}\) 的方向；若 \(q<0\)（如电子、阴离子），\(\vec{F}\) 与之相反。常见错误：用右手得到 \(\vec{v}\times\vec{B}\) 后就直接当作 \(\vec{F}\)。对负电荷应换用左手，或在脑中把结果反向。</li>
+        <li><strong>把回旋半径公式中的 \(v\) 误用为总速率。</strong>正确公式是 \(r=mv_{\perp}/(|q|B)\)，其中 \(v_{\perp}\) 是<strong>垂直于 \(\vec{B}\) 的分量</strong>。平行分量 \(v_{\parallel}\) 不影响半径，只决定螺旋的螺距。在一般情形下 \(v=\sqrt{v_{\perp}^{2}+v_{\parallel}^{2}}\)，直接代入会得到错误答案。</li>
+        <li><strong>把回旋频率 \(\omega_{c}\) 当作与 \(v\) 有关。</strong>\(\omega_{c}=|q|B/m\) 与速度无关——这是回旋加速器的核心。常见错误：把 \(v\) 或 \(r\) 代进 \(\omega_{c}\)。事实上快慢粒子画不同大小的圆，但绕一圈用时相同。</li>
+        <li><strong>误以为磁场线有起点和终点。</strong>电场线发自正电荷止于负电荷，但<strong>磁场线是闭合回路</strong>——没有磁单极子（\(\nabla\cdot\vec{B}=0\)）。条形磁铁的 N、S 极并不是磁场的"源"与"汇"，线从 N 极"出"只是为了在磁体外部走一条大弯路，最终通过磁体内部回到 N 极。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 同动能下，质子与电子的回旋半径比较：动能为 \(K=1.0\,\mathrm{keV}\) 的质子与电子各自垂直射入 \(B=0.10\,\mathrm{T}\) 的均匀磁场，求各自的回旋半径与比值。（\(m_{p}=1.673\times 10^{-27}\,\mathrm{kg}\)，\(m_{e}=9.11\times 10^{-31}\,\mathrm{kg}\)，\(e=1.602\times 10^{-19}\,\mathrm{C}\)，\(1\,\mathrm{eV}=1.602\times 10^{-19}\,\mathrm{J}\)）</summary>
+        <div class="hint">先由 \(v=\sqrt{2K/m}\) 求每种粒子的速度，再用 \(r=mv/(|e|B)\)。注意 \(r\propto\sqrt{m}\)（同动能时）。</div>
+        <div class="solution">\(K=1.602\times 10^{-16}\,\mathrm{J}\)。<br>质子：\(v_{p}=\sqrt{2K/m_{p}}=\sqrt{2(1.602\times 10^{-16})/(1.673\times 10^{-27})}=\sqrt{1.915\times 10^{11}}=4.38\times 10^{5}\,\mathrm{m/s}\)。<br>\(r_{p}=m_{p}v_{p}/(eB)=(1.673\times 10^{-27})(4.38\times 10^{5})/((1.602\times 10^{-19})(0.10))=4.57\times 10^{-2}\,\mathrm{m}=4.57\,\mathrm{cm}\)。<br>电子：\(v_{e}=\sqrt{2K/m_{e}}=\sqrt{2(1.602\times 10^{-16})/(9.11\times 10^{-31})}=\sqrt{3.52\times 10^{14}}=1.87\times 10^{7}\,\mathrm{m/s}\)。<br>\(r_{e}=m_{e}v_{e}/(eB)=(9.11\times 10^{-31})(1.87\times 10^{7})/((1.602\times 10^{-19})(0.10))=1.06\times 10^{-3}\,\mathrm{m}=1.06\,\mathrm{mm}\)。<br>比值 \(r_{p}/r_{e}=4.57\,\mathrm{cm}/0.106\,\mathrm{cm}\approx 42.8\)，恰为 \(\sqrt{m_{p}/m_{e}}=\sqrt{1836}\approx 42.8\)。<br><span class="ans">\(r_{p}=4.57\,\mathrm{cm},\;r_{e}=1.06\,\mathrm{mm},\;r_{p}/r_{e}\approx 42.8\)（\(r\propto\sqrt{m}\)）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 载流导线受力：长 \(L=0.50\,\mathrm{m}\) 的直导线通有 \(I=12\,\mathrm{A}\) 电流，方向与均匀磁场 \(B=0.080\,\mathrm{T}\) 成 \(30^{\circ}\) 角。求导线所受磁力的大小。若将导线垂直于磁场放置，力变为多少？</summary>
+        <div class="hint">\(F=ILB\sin\theta\)，\(\theta\) 是 \(\vec{L}\) 与 \(\vec{B}\) 的夹角。</div>
+        <div class="solution">\(F=ILB\sin\theta=(12)(0.50)(0.080)\sin 30^{\circ}=0.48\times 0.5=0.24\,\mathrm{N}\)。<br>垂直时（\(\theta=90^{\circ}\)）：\(F=ILB=(12)(0.50)(0.080)=0.48\,\mathrm{N}\)（加倍）。<br>平行时（\(\theta=0\)）：\(F=0\)。<br><span class="ans">\(30^{\circ}\) 时 \(F=0.24\,\mathrm{N}\)；垂直时 \(F=0.48\,\mathrm{N}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 速度选择器：电场 \(E=3.0\times 10^{4}\,\mathrm{V/m}\)，磁场 \(B=0.075\,\mathrm{T}\)，相互垂直。求能直线穿过的粒子速率。若一电子以 \(v=2.0\times 10^{5}\,\mathrm{m/s}\) 入射，它会偏向哪一侧？</summary>
+        <div class="hint">穿透条件 \(v=E/B\)。比较 \(v\) 与 \(E/B\) 判断哪个力占优。</div>
+        <div class="solution">穿透速率 \(v_{0}=E/B=3.0\times 10^{4}/0.075=4.0\times 10^{5}\,\mathrm{m/s}\)。<br>电子以 \(v=2.0\times 10^{5}\,\mathrm{m/s}<v_{0}\) 入射，故 \(|qvB|<|qE|\)，电场力占优。对电子（\(q<0\)），电场力方向与 \(\vec{E}\) 相反，磁场力也反向（因 \(q<0\)）；合力沿电场力方向。所以电子偏向电场力所指那一侧（即 \(-\vec{E}\) 方向）。<br><span class="ans">\(v_{0}=4.0\times 10^{5}\,\mathrm{m/s}\)；该电子偏向 \(-\vec{E}\) 一侧</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 螺旋运动的螺距：一电子（\(m_{e}=9.11\times 10^{-31}\,\mathrm{kg}\)）在 \(B=0.10\,\mathrm{T}\) 的均匀磁场中运动，速度分量 \(v_{\perp}=2.0\times 10^{6}\,\mathrm{m/s}\)、\(v_{\parallel}=1.0\times 10^{6}\,\mathrm{m/s}\)。求回旋半径 \(r\)、周期 \(T\) 和螺距 \(p\)。</summary>
+        <div class="hint">\(r=mv_{\perp}/(|e|B)\)，\(T=2\pi m/(|e|B)\)，\(p=v_{\parallel}T\)。</div>
+        <div class="solution">\(r=\frac{(9.11\times 10^{-31})(2.0\times 10^{6})}{(1.602\times 10^{-19})(0.10)}=\frac{1.82\times 10^{-24}}{1.602\times 10^{-20}}=1.14\times 10^{-4}\,\mathrm{m}=0.114\,\mathrm{mm}\)。<br>\(T=\frac{2\pi(9.11\times 10^{-31})}{(1.602\times 10^{-19})(0.10)}=\frac{5.72\times 10^{-30}}{1.602\times 10^{-20}}=3.57\times 10^{-10}\,\mathrm{s}=0.357\,\mathrm{ns}\)。<br>\(p=v_{\parallel}T=(1.0\times 10^{6})(3.57\times 10^{-10})=3.57\times 10^{-4}\,\mathrm{m}=0.357\,\mathrm{mm}\)。<br>注意：电子的回旋频率极高（\(\omega_{c}=|e|B/m_{e}=1.76\times 10^{10}\,\mathrm{rad/s}=17.6\,\mathrm{Grad/s}\)），所以周期是纳秒量级。<br><span class="ans">\(r=0.114\,\mathrm{mm},\;T=0.357\,\mathrm{ns},\;p=0.357\,\mathrm{mm}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 两根平行导线——单位与方向：三根长直平行导线各通有 \(I=5.0\,\mathrm{A}\)，位于边长 \(d=2.0\,\mathrm{cm}\) 的等边三角形三个顶点上，相邻两导线电流同向。求其中一根导线单位长度所受的合力大小与方向（按对称性论证）。</summary>
+        <div class="hint">先算一根导线对另一根的力 \(F/L=\mu_{0}I^{2}/(2\pi d)\)，再对两根邻接导线的力求矢量和（两个等大、夹角 \(60^{\circ}\) 的力合成）。</div>
+        <div class="solution">单位长度上每对导线之间的力 \(f=\mu_{0}I^{2}/(2\pi d)=(4\pi\times 10^{-7})(5.0)^{2}/(2\pi\times 0.020)=2\times 10^{-7}\times 25/0.020=2.5\times 10^{-4}\,\mathrm{N/m}\)，方向沿两导线连线、互相吸引（指向对方）。<br>对某一根导线，受另外两根的力各为 \(f\)，分别沿两条连线指向另外两根，两力夹角 \(60^{\circ}\)。<br>合力大小 \(F_{\text{合}}/L=2f\cos(30^{\circ})=2(2.5\times 10^{-4})(0.866)=4.33\times 10^{-4}\,\mathrm{N/m}\)，方向沿三角形中线指向三角形中心。<br><span class="ans">\(|F_{\text{合}}|/L=4.33\times 10^{-4}\,\mathrm{N/m}\)，方向指向三角形几何中心</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">带电粒子在均匀磁场中的运动 (charged particle in a uniform magnetic field)。磁场 \(\vec{B}=B\hat{z}\) 沿水平方向（图中带箭头的浅色线）。粒子初速度的垂直分量 \(v_{\perp}\) 使其绕磁力线作圆周运动，平行分量 \(v_{\parallel}\) 使其沿磁力线漂移——合起来就是<strong>螺旋线</strong>。调节电荷 \(q\)、质量 \(m\)、\(v_{\perp}\)、\(v_{\parallel}\) 与磁场 \(B\)，观察轨迹如何变化；面板上实时显示由解析公式 \(r=mv_{\perp}/(|q|B)\)、\(T=2\pi m/(|q|B)\) 计算的真实物理半径与周期。注意 \(\vec{F}\) 箭头始终与 \(\vec{v}\) 垂直——这就是"磁力不做功"。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          // --- Physical constants (for the displayed, real-physics values) ---
+          var QE = 1.602176634e-19;     // elementary charge (C)
+          var MP = 1.67262192369e-27;   // proton mass (kg)
+          var VREF = 1.0e5;             // speed unit: 1e5 m/s
+          var B_REF = 5.0e-3;           // B value (T) corresponding to B_demo = 1
+          // Demo units are coherent inside the integrator: q [e], m [m_p],
+          //   v [1e5 m/s], B [B_REF]. In these units omega_demo = qB/m and
+          //   r_demo = m v_perp / (|q| B). Animation time = real seconds.
+
+          var PX_PER_DM = 150;          // pixels per demo-meter
+          // 3D-like projection: yaw around y (so world-z is ~horizontal),
+          //   pitch around x (slight tilt down to see xy gyration plane).
+          var cTH = Math.cos(1.40), sTH = Math.sin(1.40);  // yaw  ~80 deg
+          var cPH = Math.cos(0.35), sPH = Math.sin(0.35);  // pitch ~20 deg
+          var CX = W * 0.5, CY = H * 0.54;
+
+          function project(x, y, z, camZ) {
+            camZ = camZ || 0;
+            var rx = x, ry = y, rz = z - camZ;
+            var x1 =  rx * cTH + rz * sTH;
+            var y1 =  ry;
+            var z1 = -rx * sTH + rz * cTH;
+            var x2 = x1;
+            var y2 = y1 * cPH - z1 * sPH;
+            return { sx: CX + x2 * PX_PER_DM, sy: CY - y2 * PX_PER_DM };
+          }
+
+          // --- Slider parameters ---
+          var params = {
+            qE: 1.0,      // charge in units of e (sign matters!)
+            mP: 1.0,      // mass in units of m_p
+            vperp: 1.0,   // v_perp in units of 1e5 m/s
+            vpar: 0.0,    // v_parallel in units of 1e5 m/s
+            BT: 10,       // B in mT
+          };
+
+          // Demo-unit accessors (for integration)
+          function qD()  { return params.qE; }
+          function mD()  { return Math.abs(params.mP) < 0.05 ? 0.05 : params.mP; }
+          function vDp() { return params.vperp; }
+          function vDz() { return params.vpar; }
+          function BD()  { return (params.BT * 1e-3) / B_REF; }
+
+          // Real-SI accessors (for the displayed analytic values)
+          function qSI()  { return params.qE * QE; }
+          function mSI()  { return mD() * MP; }
+          function vpSI() { return params.vperp * VREF; }
+          function vzSI() { return params.vpar * VREF; }
+          function BSI()  { return params.BT * 1e-3; }
+
+          function radiusSI() {
+            var qB = Math.abs(qSI()) * BSI();
+            if (qB < 1e-30) return Infinity;
+            return mSI() * vpSI() / qB;
+          }
+          function omegaSI() { return Math.abs(qSI()) * BSI() / mSI(); }
+          function periodSI() {
+            var w = omegaSI();
+            if (w < 1e-9) return Infinity;
+            return 2 * Math.PI / w;
+          }
+          function keSI() {
+            var v2 = vpSI() * vpSI() + vzSI() * vzSI();
+            return 0.5 * mSI() * v2;
+          }
+
+          // Smart formatting for display
+          function fmtR(m) {
+            if (!isFinite(m)) return '∞';
+            if (m >= 1) return m.toFixed(3) + ' m';
+            if (m >= 0.01) return (m * 100).toFixed(2) + ' cm';
+            if (m >= 1e-3) return (m * 1e3).toFixed(2) + ' mm';
+            if (m >= 1e-6) return (m * 1e6).toFixed(2) + ' μm';
+            return (m * 1e9).toFixed(2) + ' nm';
+          }
+          function fmtT(s) {
+            if (!isFinite(s)) return '∞';
+            if (s >= 1) return s.toFixed(3) + ' s';
+            if (s >= 1e-3) return (s * 1e3).toFixed(2) + ' ms';
+            if (s >= 1e-6) return (s * 1e6).toFixed(3) + ' μs';
+            return (s * 1e9).toFixed(2) + ' ns';
+          }
+          function fmtW(r) {
+            if (r >= 1e9) return (r / 1e9).toFixed(2) + ' Grad/s';
+            if (r >= 1e6) return (r / 1e6).toFixed(2) + ' Mrad/s';
+            if (r >= 1e3) return (r / 1e3).toFixed(2) + ' krad/s';
+            return r.toFixed(2) + ' rad/s';
+          }
+          function fmtE(eV) {
+            if (eV >= 1e6) return (eV / 1e6).toFixed(2) + ' MeV';
+            if (eV >= 1e3) return (eV / 1e3).toFixed(2) + ' keV';
+            return eV.toFixed(2) + ' eV';
+          }
+
+          // --- Trace of recent positions (world coords) ---
+          var TRACE_MAX = 800;
+          var trace = [];
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () {
+              trace = [];
+              return {
+                x: 0, y: 0, z: 0,
+                vx: vDp(), vy: 0, vz: vDz(),
+                t: 0,
+              };
+            },
+            step: function (dt, t, s) {
+              var q = qD(), m = mD(), B = BD();
+              var qm = q / m;
+              // Sub-step so RK4 stays accurate even at high qB/m.
+              var omega = Math.abs(qm) * B;
+              var nSub = Math.max(1, Math.ceil(omega * dt / 0.12));
+              var h = dt / nSub;
+              for (var k = 0; k < nSub; k++) {
+                var deriv = function (st) {
+                  var vx = st[3], vy = st[4];
+                  // B = (0,0,B):  v x B = (vy*B, -vx*B, 0)
+                  return [st[3], st[4], st[5],
+                          qm * vy * B,
+                          -qm * vx * B,
+                          0];
+                };
+                var ns = PS.integrate(deriv,
+                  [s.x, s.y, s.z, s.vx, s.vy, s.vz], s.t, h, 'rk4');
+                s.x = ns[0]; s.y = ns[1]; s.z = ns[2];
+                s.vx = ns[3]; s.vy = ns[4]; s.vz = ns[5];
+                s.t += h;
+              }
+              trace.push({ x: s.x, y: s.y, z: s.z });
+              if (trace.length > TRACE_MAX) trace.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var camZ = s.z;          // camera follows drift
+              var q = qD(), B = BD();
+              var hasField = (Math.abs(q) > 1e-9 && B > 1e-9);
+
+              // --- Background: B-field arrows at fixed world z (scroll past) ---
+              ctx.save();
+              var arrowGridX = [-0.18, 0.0, 0.18];
+              var arrowGridY = [-0.13, 0.13];
+              var zStart = Math.floor((camZ - 0.18) / 0.06) * 0.06;
+              for (var zw = zStart; zw <= camZ + 0.18; zw += 0.06) {
+                for (var gi = 0; gi < arrowGridX.length; gi++) {
+                  for (var gj = 0; gj < arrowGridY.length; gj++) {
+                    var p1 = project(arrowGridX[gi], arrowGridY[gj], zw, camZ);
+                    var p2 = project(arrowGridX[gi], arrowGridY[gj], zw + 0.035, camZ);
+                    ctx.globalAlpha = 0.22;
+                    PS.drawArrow(ctx, p1.sx, p1.sy, p2.sx, p2.sy, PS.colors.grid);
+                  }
+                }
+              }
+              ctx.globalAlpha = 1;
+              // B label near top-left of field
+              var labelP = project(0.20, 0.16, camZ - 0.05, camZ);
+              PS.drawText(ctx, 'B →', labelP.sx + 6, labelP.sy - 4,
+                { font: '13px system-ui', color: PS.colors.axis });
+              ctx.restore();
+
+              // --- Predicted guiding-center circle (analytic r) ---
+              if (hasField && params.vperp > 1e-6) {
+                var rD = Math.abs(mD() * vDp() / (Math.abs(q) * B));
+                var gcY = -Math.sign(q) * rD;   // for v start in +x
+                var gcX = 0;
+                // draw the orbit as a faint dashed ellipse (project a circle)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = 0.45;
+                ctx.setLineDash([4, 4]);
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                var NPT = 64;
+                for (var i = 0; i <= NPT; i++) {
+                  var ang = (i / NPT) * 2 * Math.PI;
+                  var wx = gcX + rD * Math.cos(ang);
+                  var wy = gcY + rD * Math.sin(ang);
+                  // guiding-center orbit is in the plane perpendicular to B at the
+                  // particle's current drift depth (camZ), so it stays screen-fixed.
+                  var pp = project(wx, wy, camZ, camZ);
+                  if (i === 0) ctx.moveTo(pp.sx, pp.sy);
+                  else ctx.lineTo(pp.sx, pp.sy);
+                }
+                ctx.stroke();
+                ctx.restore();
+                // guiding-center dot
+                var gcp = project(gcX, gcY, camZ, camZ);
+                PS.drawCircle(ctx, gcp.sx, gcp.sy, 2.5, { fill: PS.colors.accent2 });
+              }
+
+              // --- Trace (recent trajectory) ---
+              if (trace.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                for (var ti = 0; ti < trace.length; ti++) {
+                  var tp = trace[ti];
+                  var pp = project(tp.x, tp.y, tp.z, camZ);
+                  if (ti === 0) ctx.moveTo(pp.sx, pp.sy);
+                  else ctx.lineTo(pp.sx, pp.sy);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // --- Particle ---
+              var pos = project(s.x, s.y, s.z, camZ);
+              var pColor = (q >= 0) ? PS.colors.accent : PS.colors.primary;
+              PS.drawCircle(ctx, pos.sx, pos.sy, 7, {
+                fill: pColor, stroke: PS.colors.text, lineWidth: 2,
+              });
+              var sign = params.qE > 0 ? '+' : (params.qE < 0 ? '−' : '');
+              PS.drawText(ctx, sign, pos.sx, pos.sy + 3.5, {
+                font: 'bold 13px system-ui', color: '#fff', align: 'center',
+              });
+
+              // --- Velocity & force vectors (projected at particle) ---
+              // velocity (demo units)
+              var vx = s.vx, vy = s.vy, vz = s.vz;
+              var vMag = Math.hypot(vx, vy, vz);
+              if (vMag > 1e-6) {
+                var vScale = 55;  // px per (demo-m/s)
+                var vep = project(vx * vScale / PX_PER_DM,
+                                  vy * vScale / PX_PER_DM,
+                                  vz * vScale / PX_PER_DM, 0);
+                // direction from origin in screen space:
+                var vdx = vep.sx - CX, vdy = vep.sy - CY;
+                var vlen = Math.hypot(vdx, vdy);
+                var vDrawLen = Math.min(95, vMag * 55);
+                if (vlen > 1e-3) {
+                  var ux = vdx / vlen, uy = vdy / vlen;
+                  PS.drawArrow(ctx, pos.sx, pos.sy,
+                    pos.sx + ux * vDrawLen, pos.sy + uy * vDrawLen,
+                    PS.colors.accent2, 'v');
+                }
+              }
+              // force F = q v x B ; with B = (0,0,B): F = q*B*(vy, -vx, 0)
+              if (hasField) {
+                var Fx = q * B * vy, Fy = -q * B * vx;
+                var FMag = Math.hypot(Fx, Fy);
+                if (FMag > 1e-6) {
+                  var fRef = Math.abs(q) * B * Math.max(vDp(), 0.1); // reference scale
+                  var fDrawLen = Math.min(95, (FMag / fRef) * 55);
+                  var fep = project(Fx * 55 / PX_PER_DM, Fy * 55 / PX_PER_DM, 0, 0);
+                  var fdx = fep.sx - CX, fdy = fep.sy - CY;
+                  var flen = Math.hypot(fdx, fdy);
+                  if (flen > 1e-3) {
+                    var fux = fdx / flen, fuy = fdy / flen;
+                    PS.drawArrow(ctx, pos.sx, pos.sy,
+                      pos.sx + fux * fDrawLen, pos.sy + fuy * fDrawLen,
+                      PS.colors.accent, 'F');
+                  }
+                }
+              }
+
+              // --- HUD: parameters (top-left) ---
+              ctx.save();
+              ctx.globalAlpha = 0.95;
+              PS.drawText(ctx, '参数 Parameters', 14, 20,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              var qStr = (params.qE > 0 ? '+' : '') + params.qE.toFixed(1) + ' e';
+              PS.drawText(ctx, 'q = ' + qStr, 14, 38,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'm = ' + params.mP.toFixed(2) + ' m_p', 14, 54,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v⊥ = ' + (params.vperp).toFixed(2) + ' ×10⁵ m/s',
+                14, 70, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v∥ = ' + (params.vpar).toFixed(2) + ' ×10⁵ m/s',
+                14, 86, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'B = ' + params.BT.toFixed(1) + ' mT',
+                14, 102, { font: '12px system-ui', color: PS.colors.text });
+              ctx.restore();
+
+              // --- HUD: analytic predictions (top-right) ---
+              ctx.save();
+              ctx.globalAlpha = 0.95;
+              PS.drawText(ctx, '解析值 Analytic (真实 SI)', W - 14, 20,
+                { font: 'bold 13px system-ui', color: PS.colors.text, align: 'right' });
+              var rSIval = radiusSI(), T_SIval = periodSI(), wSIval = omegaSI();
+              PS.drawText(ctx, 'r = mv⊥/(|q|B) = ' + fmtR(rSIval), W - 14, 38,
+                { font: '12px system-ui', color: PS.colors.accent2, align: 'right' });
+              PS.drawText(ctx, 'T = 2πm/(|q|B) = ' + fmtT(T_SIval), W - 14, 54,
+                { font: '12px system-ui', color: PS.colors.accent2, align: 'right' });
+              PS.drawText(ctx, 'ω_c = |q|B/m = ' + fmtW(wSIval), W - 14, 70,
+                { font: '12px system-ui', color: PS.colors.accent2, align: 'right' });
+              var ke_eV = keSI() / QE;
+              PS.drawText(ctx, 'KE = ½mv² = ' + fmtE(ke_eV) + '  (const)',
+                W - 14, 86, { font: '12px system-ui', color: PS.colors.trace, align: 'right' });
+              ctx.restore();
+
+              // --- Status line (bottom) ---
+              var status;
+              if (Math.abs(params.qE) < 1e-6) {
+                status = 'q = 0：无磁力，粒子作匀速直线运动';
+              } else if (params.BT < 1e-6) {
+                status = 'B = 0：无磁力，粒子作匀速直线运动';
+              } else if (params.vperp < 1e-6) {
+                status = 'v⊥ = 0：仅沿 B 漂移，无圆周运动';
+              } else if (params.vpar < 1e-6) {
+                status = 'v∥ = 0：纯圆周运动 (circular)';
+              } else {
+                status = 'v⊥, v∥ ≠ 0：螺旋运动 (helical)';
+              }
+              PS.drawText(ctx, status, 14, H - 12,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              // Right-corner mode tag
+              var modeText = (params.vpar > 1e-6 && params.vperp > 1e-6) ? '螺旋 HELIX'
+                           : (params.vperp < 1e-6 ? '直线 DRIFT' : '圆周 CIRCLE');
+              PS.drawText(ctx, modeText, W - 14, H - 12,
+                { font: 'bold 12px system-ui', color: PS.colors.primary, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'qE', label: '电荷 q (×e)', min: -3, max: 3, step: 0.5, value: 1.0 },
+            { type: 'slider', key: 'mP', label: '质量 m (×m_p)', min: 0.1, max: 4, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'vperp', label: 'v⊥ (×10⁵ m/s)', min: 0, max: 4, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'vpar', label: 'v∥ (×10⁵ m/s)', min: 0, max: 2.5, step: 0.1, value: 0.0 },
+            { type: 'slider', key: 'BT', label: '磁场 B (mT)', min: 1, max: 40, step: 1, value: 10 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('qE', function (v) { params.qE = v; });
+          ctl.on('mP', function (v) { params.mP = v; });
+          ctl.on('vperp', function (v) { params.vperp = v; });
+          ctl.on('vpar', function (v) { params.vpar = v; });
+          ctl.on('BT', function (v) { params.BT = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>洛伦兹力</strong>：\(\vec{F}=q\vec{v}\times\vec{B}\)，\(F=|q|vB\sin\theta\)。磁力垂直于 \(\vec{v}\) 与 \(\vec{B}\)，对负电荷反向；它<strong>依赖于速度</strong>，与电场力本质不同。</li>
+        <li><strong>载流导线</strong>：\(\vec{F}=I\vec{L}\times\vec{B}\)，方向由右手定则给出。两根平行导线同向电流相吸、反向相斥，单位长度受力 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\)。</li>
+        <li><strong>圆周运动</strong>：回旋半径 \(r=mv_{\perp}/(|q|B)\)，回旋频率 \(\omega_{c}=|q|B/m\)，周期 \(T=2\pi m/(|q|B)\)。注意 \(\omega_{c}\) <strong>与速度无关</strong>——回旋加速器的物理基础。</li>
+        <li><strong>螺旋运动</strong>：\(v_{\parallel}\) 不受力（守恒），粒子沿 \(\vec{B}\) 漂移；螺距 \(p=v_{\parallel}T\)。一般情形：圆周运动（\(v_{\perp}\)）+ 漂移（\(v_{\parallel}\)）= 螺旋线。</li>
+        <li><strong>磁力不做功</strong>：\(\vec{F}\cdot\vec{v}=q(\vec{v}\times\vec{B})\cdot\vec{v}=0\)。动能守恒，速率不变。</li>
+        <li><strong>无磁单极</strong>：\(\nabla\cdot\vec{B}=0\)，磁场线是闭合回路。</li>
+        <li><strong>应用</strong>：速度选择器 \(v=E/B\)；质谱仪用 \(r=mv/(|q|B)\) 分离不同质量。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\vec{F}=q\,\vec{v}\times\vec{B},\quad \vec{F}_{\text{wire}}=I\vec{L}\times\vec{B},\quad r=\frac{mv_{\perp}}{|q|B},\quad \omega_{c}=\frac{|q|B}{m},\quad T=\frac{2\pi m}{|q|B},\quad v_{\text{selector}}=\frac{E}{B}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

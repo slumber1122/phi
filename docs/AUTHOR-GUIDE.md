@@ -2,6 +2,8 @@
 
 **所有章节子智能体必须先读本文件，再写章节。** 严格遵循以下规范，保证 20 章 + 附录风格、结构、技术实现完全一致。
 
+> **多学期说明 Multi-semester note：** 本教程按学期组织。每学期内容放在各自子目录（第一学期= `mechanics/` 等已有目录；**第二学期 = `sem2/`**；后续 `sem3/`…）。**章号每学期重新从 1 开始**；`<body data-chapter="N">` 填本学期内的章号即可（导航完全按 URL 工作，不会与第一学期章号冲突）。`<p class="chapter-number">` 写成 `"第X学期 · 第N章 · 分部名 Part name"`。上下章链接仍由 `nav.js` 按 URL 自动跨学期填充，照常留空 `.prev`/`.next` 即可。资源路径仍是 `../css/style.css`、`../js/...`（章节页始终在子目录一层）。
+
 仓库根目录：`/Users/wade/github/phi`。已建好的引擎文件（**直接引用，不要重写**）：
 - `css/style.css` — 主题与全部样式类
 - `js/math-config.js` — MathJax 配置与加载（`defer`）

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 电势 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第4章 · 静电学 Electrostatics</p>
+      <h1>电势 <span class="en-title">Electric Potential</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>区分<b>电势能</b> (electric potential energy) \(U\) 与<b>电势</b> (electric potential) \(V=U/q\)，理解二者均依赖参考点但 \(\Delta V\) 不依赖。</li>
+        <li>用点电荷公式 \(V=kQ/r\) 与<b>叠加原理</b> (superposition) 计算任意离散电荷分布的电势。</li>
+        <li>从给定的 \(V(x,y,z)\) 通过<b>梯度</b> \(\vec{E}=-\nabla V\) 反求电场。</li>
+        <li>解释<b>等势面</b> (equipotential surface) 与电场线处处<b>垂直</b>，沿等势面移动电荷不做功。</li>
+        <li>计算连续分布（如带电环轴上）的电势，以及平行板间的<b>电势差</b> \(\Delta V=Ed\)。</li>
+        <li>用 \(W=q\Delta V\) 计算把电荷从无穷远移入既有电荷组态所需的功 (work to assemble)。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电势能 Electric Potential Energy</h3>
+      <p>两个点电荷 \(q_{1},q_{2}\) 间距为 \(r\) 时，体系的<b>电势能</b> (electric potential energy) 为：</p>
+      <div class="formula">\[ U \;=\; \frac{k\,q_{1}q_{2}}{r} \;=\; \frac{1}{4\pi\varepsilon_{0}}\frac{q_{1}q_{2}}{r}. \]</div>
+      <p>其中 \(k=8.99\times10^{9}\,\mathrm{N\,m^{2}/C^{2}}\)。同号电荷 \(U>0\)（排斥，远离释放势能）；异号 \(U<0\)（吸引）。约定 \(U(\infty)=0\)。</p>
+
+      <h3>2. 电势 Electric Potential</h3>
+      <p><b>电势</b> (electric potential) \(V\) 定义为<b>单位试探电荷</b>的电势能：</p>
+      <div class="formula">\[ V \;=\; \frac{U}{q}, \qquad [\,V\,]=\,\mathrm{V}=\mathrm{J/C}. \]</div>
+      <p>电势是<b>标量场</b>。等价定义：把单位正电荷从参考点（通常取无穷远，\(V(\infty)=0\)）缓慢移到场点 \(P\)，外力所做的功即 \(V(P)\)。也可写成电场的线积分（注意符号）：</p>
+      <div class="formula">\[ V(P) \;=\; -\int_{\infty}^{P} \vec{E}\cdot d\vec{l}, \qquad V_{B}-V_{A} \;=\; -\int_{A}^{B}\vec{E}\cdot d\vec{l}. \]</div>
+      <p>由此立见：沿 \(\vec{E}\) 方向移动，\(V\) 降低（电场指向电势<b>减小最快</b>的方向）。</p>
+
+      <h3>3. 点电荷的电势 Potential of a Point Charge</h3>
+      <p>对点电荷 \(Q\) 产生的电场 \(E=kQ/r^{2}\) 沿径向积分：</p>
+      <div class="formula">\[ V(r) \;=\; -\int_{\infty}^{r} \frac{kQ}{r'^{2}}\,dr' \;=\; \frac{kQ}{r}. \]</div>
+      <p>注意与电场 \(E\propto 1/r^{2}\) 不同，电势 \(V\propto 1/r\) 衰减更慢，且正电荷产生正电势、负电荷产生负电势。</p>
+
+      <h3>4. 叠加原理 Superposition</h3>
+      <p>因为 \(V\) 是标量，多个电荷共同产生的电势是<b>代数和</b>（不必像 \(\vec{E}\) 那样矢量加法）：</p>
+      <div class="formula">\[ V(\vec{r}) \;=\; \sum_{i=1}^{N} \frac{kQ_{i}}{r_{i}}, \qquad V(\vec{r}) \;=\; \int \frac{k\,dq}{r}. \]</div>
+      <p>这是处理复杂电荷分布的利器：很多场合算 \(V\) 比算 \(\vec{E}\) 容易得多（标量积分 vs 矢量积分）。</p>
+
+      <h3>5. 电场是电势的负梯度 Field as Negative Gradient</h3>
+      <p>对 \(V(B)-V(A)=-\int_{A}^{B}\vec{E}\cdot d\vec{l}\) 取微分，得：</p>
+      <div class="formula">\[ \vec{E} \;=\; -\nabla V \;=\; -\!\left(\pdv{V}{x}\hat{x}+\pdv{V}{y}\hat{y}+\pdv{V}{z}\hat{z}\right). \]</div>
+      <p>物理：\(\vec{E}\) 指向 \(V\) 下降最快的方向（最陡下降线），数值等于该方向的<b>方向导数</b>最大值。已知 \(V(x,y,z)\) 可立刻微分得 \(\vec{E}\)，比直接积分容易。</p>
+
+      <h3>6. 等势面 Equipotential Surfaces</h3>
+      <p>电势相等的点组成的曲面叫<b>等势面</b> (equipotential surface)：<b>等势面处处与电场线垂直</b>。原因：沿等势面 \(dV=0\)，故 \(\vec{E}\cdot d\vec{l}=0\)，即 \(\vec{E}\perp d\vec{l}\)。推论：</p>
+      <ul>
+        <li>沿等势面移动电荷，电场力做功为零；</li>
+        <li>导体静电平衡时表面是等势面，且导体内部 \(V\) 处处相同（因为 \(\vec{E}=0\) 在内部）。</li>
+      </ul>
+
+      <h3>7. 连续分布的电势：带电环轴线 Potential on the Axis of a Charged Ring</h3>
+      <p>半径 \(R\)、总电量 \(Q\) 均匀分布的圆环，其轴线上距环心 \(z\) 处的电势（每段电荷元 \(dq\) 到场点距离都是 \(\sqrt{R^{2}+z^{2}}\)）：</p>
+      <div class="formula">\[ V(z) \;=\; \int \frac{k\,dq}{\sqrt{R^{2}+z^{2}}} \;=\; \frac{kQ}{\sqrt{R^{2}+z^{2}}}. \]</div>
+      <p>环心处 \(V(0)=kQ/R\)（不为零！），而 \(\vec{E}(0)=0\)——这是「\(V\neq0\) 但 \(E=0\)」的经典例子。</p>
+
+      <h3>8. 平行板间的电势差 Potential Difference Between Plates</h3>
+      <p>两块带等量异号电荷的平行板之间电场近似均匀 \(\vec{E}=E\hat{x}\)（\(E=\sigma/\varepsilon_{0}\)）。沿板间距 \(d\) 的电势差：</p>
+      <div class="formula">\[ \Delta V \;=\; V_{+}-V_{-} \;=\; -\int_{+}^{-}\vec{E}\cdot d\vec{l} \;=\; E\,d. \]</div>
+      <p>单位 \(\mathrm{V/m}=\mathrm{N/C}\)：电场既可视为「力/电荷」，也可视为「电势/距离」。</p>
+
+      <h3>9. 组装电荷所需的功 Work to Assemble a Charge Configuration</h3>
+      <p>把第 \(i\) 个电荷从无穷远移到既有电荷 \((1,\dots,i-1)\) 已就位的位置，外力所做的功等于 \(q_{i}\) 乘以该处的电势：</p>
+      <div class="formula">\[ W_{i} \;=\; q_{i}\,V_{i}(\text{由 }q_{1},\dots,q_{i-1}\text{ 产生}), \qquad U_{\text{total}} \;=\; \sum_{i<j}\frac{k\,q_{i}q_{j}}{r_{ij}}. \]</div>
+      <p>这个 \(U_{\text{total}}\) 就是组装整个组态所需的<b>总功</b>，也是体系的电势能（与顺序无关，因为每对 \(ij\) 只计一次）。</p>
+
+      <h3>10. 泊松方程与拉普拉斯方程 Poisson &amp; Laplace Equations</h3>
+      <p>把 \(\vec{E}=-\nabla V\) 代入高斯定律 \(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\)，得<b>泊松方程</b>：</p>
+      <div class="formula">\[ \nabla^{2} V \;=\; -\frac{\rho}{\varepsilon_{0}}. \]</div>
+      <p>在无电荷区域 \(\rho=0\)，化为<b>拉普拉斯方程</b> \(\nabla^{2}V=0\)。给定边界条件解这两方程是静电学的主线任务（镜像法、分离变量法等均围绕它）。</p>
+
+      <div class="key-terms">
+        electric potential energy (电势能), electric potential (电势), volt (伏特), potential difference (电势差), superposition (叠加原理), gradient (梯度), equipotential surface (等势面), conservative field (保守场), reference point (参考点), Poisson's equation (泊松方程), Laplace's equation (拉普拉斯方程).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：从环路定理到 \(\vec{E}=-\nabla V\)</h3>
+      <p>静电场是保守场（环路积分为零）：\(\oint\vec{E}\cdot d\vec{l}=0\)。由此定义标量势 \(V\)：</p>
+      <p class="step"><strong>步骤 1：</strong> 定义 \(V(B)-V(A)=-\int_{A}^{B}\vec{E}\cdot d\vec{l}\)。保守性保证此值只依赖端点。</p>
+      <p class="step"><strong>步骤 2：</strong> 取 \(A\) 与 \(B\) 无限邻近，\(d\vec{l}=(dx,dy,dz)\)，则
+      \[ dV \;=\; \pdv{V}{x}dx+\pdv{V}{y}dy+\pdv{V}{z}dz. \]</p>
+      <p class="step"><strong>步骤 3：</strong> 由定义 \(dV=-\vec{E}\cdot d\vec{l}=-E_{x}\,dx-E_{y}\,dy-E_{z}\,dz\)。两式对任意 \((dx,dy,dz)\) 成立，比较系数：
+      \[ E_{x}=-\pdv{V}{x},\quad E_{y}=-\pdv{V}{y},\quad E_{z}=-\pdv{V}{z}\;\Longrightarrow\;\vec{E}=-\nabla V. \]</p>
+      <p class="step"><strong>步骤 4：</strong> 反过来 \(V=-\int\vec{E}\cdot d\vec{l}\) 也成立——这就是点电荷 \(V=kQ/r\) 的来源（直接积分 \(-\int_{\infty}^{r}kQ/r'^{2}\,dr'\)）。</p>
+
+      <h3>推导 2：带电环轴线上的电势与电场</h3>
+      <p>对半径 \(R\)、线电荷密度 \(\lambda=Q/(2\pi R)\) 的圆环，取环上一元 \(dq=\lambda\,R\,d\theta\)。它在轴线上距环心 \(z\) 处产生的电势元：</p>
+      <p class="step">\(dV=\dfrac{k\,dq}{\sqrt{R^{2}+z^{2}}}\)——每个电荷元到场点距离都相同，可提出积分外：</p>
+      <p class="step">\(V(z)=\displaystyle\int_{0}^{2\pi}\frac{k\,\lambda R\,d\theta}{\sqrt{R^{2}+z^{2}}}=\frac{k\,(2\pi R\lambda)}{\sqrt{R^{2}+z^{2}}}=\frac{kQ}{\sqrt{R^{2}+z^{2}}}\)。</p>
+      <p class="step">对 \(z\) 求负梯度得轴线上电场（沿轴方向）：
+      \[ E_{z}(z)=-\pdv{V}{z}=\frac{kQ\,z}{(R^{2}+z^{2})^{3/2}}. \]</p>
+      <p class="step">检验：在 \(z=0\)，\(E_{z}=0\)（左右对称相消），但 \(V(0)=kQ/R\neq0\)——这是用势而非场作主变量的优势之一。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 两点电荷在某点的电势</h4>
+        <p class="example-statement">电荷 \(q_{1}=+5.0\,\mathrm{nC}\) 位于原点，\(q_{2}=-3.0\,\mathrm{nC}\) 位于 \(x=0.10\,\mathrm{m}\)。求 \(P=(0.10,\,0.10)\,\mathrm{m}\) 处的电势 \(V_{P}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 电势是标量代数和 \(V_{P}=k(q_{1}/r_{1}+q_{2}/r_{2})\)。</p>
+          <p class="step">计算距离：\(r_{1}=\sqrt{0.10^{2}+0.10^{2}}=0.1414\,\mathrm{m}\)；\(P\) 在 \(q_{2}\) 正上方，\(r_{2}=0.10\,\mathrm{m}\)。</p>
+          <p class="step">代入：
+          \[ V_{P}=(8.99\times10^{9})\!\left[\frac{+5.0\times10^{-9}}{0.1414}+\frac{-3.0\times10^{-9}}{0.10}\right]\,\mathrm{V}. \]</p>
+          <p class="step">括号内：\(+3.536\times10^{-8}-3.00\times10^{-8}=+0.536\times10^{-8}\,\mathrm{C/m}\)。</p>
+          <p class="step">\(V_{P}=8.99\times10^{9}\times 0.536\times10^{-8}=48.2\,\mathrm{V}\)。</p>
+          <p>\(V_{P}=\)<span class="ans">\(+48\,\mathrm{V}\)</span>。注意无需像电场那样处理方向——这是势的标量优势。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 带电环轴线上的电势</h4>
+        <p class="example-statement">均匀带电圆环半径 \(R=0.10\,\mathrm{m}\)，总电量 \(Q=+5.0\,\mathrm{nC}\)。求：(a) 环心处 \(V(0)\)；(b) 轴上 \(z=0.10\,\mathrm{m}\) 处 \(V\)；并比较 (a) 与 (b) 的大小。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 公式 \(V(z)=kQ/\sqrt{R^{2}+z^{2}}\)。</p>
+          <p class="step">(a) 环心：\(V(0)=kQ/R=(8.99\times10^{9})(5.0\times10^{-9})/0.10=449.5\,\mathrm{V}\)。</p>
+          <p class="step">(b) \(z=R\)：\(V(R)=kQ/\sqrt{2}R=449.5/\sqrt{2}=317.8\,\mathrm{V}\)。</p>
+          <p class="step">比较：\(V(R)/V(0)=1/\sqrt{2}\approx 0.707\)。距离变远，电势下降但仍非零；而对称性使 \(E_{z}(0)=0\)。</p>
+          <p>\(V(0)\approx\)<span class="ans">\(450\,\mathrm{V}\)</span>，\(V(R)\approx\)<span class="ans">\(318\,\mathrm{V}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 由 \(V(x,y)\) 反求电场</h4>
+        <p class="example-statement">设某区域电势 \(V(x,y)=500-3000x+2000y\;\;(\mathrm{V})\)，\(x,y\) 以米计。求点 \(P=(0.020,\,0.010)\,\mathrm{m}\) 处的电场矢量 \(\vec{E}\) 及其大小。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 用 \(\vec{E}=-\nabla V\)。</p>
+          <p class="step">\(E_{x}=-\pdv{V}{x}=-(-3000)=+3000\,\mathrm{V/m}\)；\(E_{y}=-\pdv{V}{y}=-(+2000)=-2000\,\mathrm{V/m}\)。</p>
+          <p class="step">注意偏导与 \((x,y)\) 无关（线性势给出均匀场）。</p>
+          <p class="step">大小 \(|\vec{E}|=\sqrt{3000^{2}+2000^{2}}=\sqrt{1.3\times10^{7}}=3.61\times10^{3}\,\mathrm{V/m}\)。</p>
+          <p class="step">方向：在 \(xy\) 平面内，与 \(+x\) 夹角 \(\theta=\tan^{-1}(-2000/3000)=-33.7^{\circ}\)（偏向 \(+x\) 之下）。</p>
+          <p>\(\vec{E}=\)<span class="ans">\((+3.0\,\hat{x}-2.0\,\hat{y})\times10^{3}\,\mathrm{V/m}\)</span>，\(|\vec{E}|\approx\)<span class="ans">\(3.6\times10^{3}\,\mathrm{V/m}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 平行板间的电势差与电子加速</h4>
+        <p class="example-statement">两块平行板相距 \(d=1.0\,\mathrm{cm}\)，接 \(500\,\mathrm{V}\) 电池。一电子（\(m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)，\(e=1.602\times10^{-19}\,\mathrm{C}\)）从负极板由静止释放。求：(a) 板间电场大小；(b) 电子到达正极板时的速率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) 板间为均匀场，\(\Delta V=Ed\)：</p>
+          <p class="step">\(E=\Delta V/d=500/0.010=5.0\times10^{4}\,\mathrm{V/m}\)（方向由正极指向负极）。</p>
+          <p class="step">(b) 电场力对电子做正功 \(W=q\Delta V=e\cdot 500=8.01\times10^{-17}\,\mathrm{J}\)，全部转化为动能：</p>
+          <p class="step">\(\tfrac{1}{2}m_{e}v^{2}=e\Delta V\)，所以 \(v=\sqrt{2e\Delta V/m_{e}}\)。</p>
+          <p class="step">\(v=\sqrt{\dfrac{2(1.602\times10^{-19})(500)}{9.11\times10^{-31}}}=\sqrt{1.758\times10^{14}}=1.33\times10^{7}\,\mathrm{m/s}\)。</p>
+          <p>\(E=\)<span class="ans">\(5.0\times10^{4}\,\mathrm{V/m}\)</span>，\(v\approx\)<span class="ans">\(1.33\times10^{7}\,\mathrm{m/s}\)</span>（约光速 4.4%，相对论修正可忽略）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 把第三个电荷从无穷远移入所需的功</h4>
+        <p class="example-statement">已有两个电荷：\(q_{1}=+2.0\,\mathrm{\mu C}\) 在原点，\(q_{2}=+3.0\,\mathrm{\mu C}\) 在 \((0.40,\,0)\,\mathrm{m}\)。今将 \(q_{3}=-1.0\,\mathrm{\mu C}\) 从无穷远缓慢移到 \(P=(0.20,\,0.20)\,\mathrm{m}\)。求外力所做的功 \(W_{\text{ext}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 移入 \(q_{3}\) 时 \(q_{1},q_{2}\) 已就位，外力做功 \(W_{\text{ext}}=q_{3}\,V_{P}(q_{1},q_{2})\)。</p>
+          <p class="step">距离：\(r_{1}=\sqrt{0.20^{2}+0.20^{2}}=\sqrt{0.080}=0.2828\,\mathrm{m}\)；\(r_{2}=\sqrt{(0.40-0.20)^{2}+0.20^{2}}=\sqrt{0.080}=0.2828\,\mathrm{m}\)（恰好相等）。</p>
+          <p class="step">\(V_{P}=k\!\left(\dfrac{q_{1}}{r_{1}}+\dfrac{q_{2}}{r_{2}}\right)=(8.99\times10^{9})\dfrac{(2.0+3.0)\times10^{-6}}{0.2828}\)。</p>
+          <p class="step">\(V_{P}=(8.99\times10^{9})(1.768\times10^{-5})=1.59\times10^{5}\,\mathrm{V}\)。</p>
+          <p class="step">\(W_{\text{ext}}=q_{3}V_{P}=(-1.0\times10^{-6})(1.59\times10^{5})=-0.159\,\mathrm{J}\)。</p>
+          <p>\(W_{\text{ext}}=\)<span class="ans">\(-0.16\,\mathrm{J}\)</span>。负号表示电场本身做正功（\(q_{3}\) 与 \(q_{1},q_{2}\) 异号相吸，被自动吸入），外力需反向施力以保持「缓慢」。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>「\(V=0\) 就是没电场。」</b> 错。电偶极子中垂面上 \(V=0\)（正负相消），但 \(\vec{E}\neq0\)。反过来带电环中心 \(V=kQ/R\neq0\) 但 \(\vec{E}=0\)。\(V\) 与 \(\vec{E}\) 是<b>不同</b>的物理量（一个是势、一个是势的导数）。</li>
+        <li><b>电势的绝对值依赖参考点，电势差不依赖。</b> 通常约定 \(V(\infty)=0\)，但在工程或无限带电板问题里常改取 \(V(0)=0\)。无论怎么选，\(\Delta V\) 与电场做功 \(W=q\Delta V\) 始终相同。</li>
+        <li><b>把电势当矢量相加。</b> \(V\) 是<b>标量</b>，多电荷叠加用<b>代数和</b>（带正负号），无须分解方向。许多学生本能地像 \(\vec{E}\) 那样分解——浪费了势的便利。</li>
+        <li><b>电场指向电势<b>升高</b>的方向？</b> 正相反。由 \(\vec{E}=-\nabla V\)，电场指向 \(V\) <b>下降</b>最快处。正电荷受电场力沿 \(\vec{E}\)，故沿 \(V\) 降低方向运动；负电荷则相反。</li>
+        <li><b>混淆「等势面 ⊥ 电场线」与「电场线 ⊥ 等势面」。</b> 二者等价但意义要清楚：沿等势面移动 \(dV=0\)，故 \(\vec{E}\cdot d\vec{l}=0\)，即相互垂直。这同时说明电场线一定与等势面处处正交。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 四个相同电荷在正方形中心：四个 \(+2.0\,\mathrm{nC}\) 的点电荷分别放在边长 \(a=0.10\,\mathrm{m}\) 的正方形四个顶点。求中心的电势 \(V_{c}\)。</summary>
+        <div class="hint">中心到每个顶点的距离 \(r=a/\sqrt{2}\)，用 \(V=\sum kq/r\)。</div>
+        <div class="solution">
+          \(r=0.10/\sqrt{2}=0.0707\,\mathrm{m}\)。
+          \(V_{c}=4\cdot\dfrac{kq}{r}=4\cdot\dfrac{(8.99\times10^{9})(2.0\times10^{-9})}{0.0707}=4\times 254.3=1.017\times10^{3}\,\mathrm{V}\)。
+          <span class="ans">\(V_{c}\approx 1.02\,\mathrm{kV}\)</span>。
+          注意：中心处 \(\vec{E}=0\)（对称相消），但 \(V\neq0\)。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 给定 \(V(x,y)=200\,(x^{2}-y^{2})\;\mathrm{V}\)（\(x,y\) 以米计），求 \(P=(0.050,\,-0.050)\,\mathrm{m}\) 处的 \(\vec{E}\) 及其大小。</summary>
+        <div class="hint">\(E_{x}=-\pdv{V}{x}\)，\(E_{y}=-\pdv{V}{y}\)。</div>
+        <div class="solution">
+          \(\pdv{V}{x}=400x=20.0\,\mathrm{V/m}\)；\(\pdv{V}{y}=-400y=+20.0\,\mathrm{V/m}\)。
+          故 \(E_{x}=-20.0\)，\(E_{y}=-20.0\,\mathrm{V/m}\)。
+          \(\vec{E}=(-20\hat{x}-20\hat{y})\,\mathrm{V/m}\)；\(|\vec{E}|=\sqrt{20^{2}+20^{2}}=28.3\,\mathrm{V/m}\)，方向指向第三象限。
+          <span class="ans">\(|\vec{E}|\approx 28.3\,\mathrm{V/m}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 组装三角形：依次把 \(q_{1}=+1.0\,\mathrm{\mu C}\) 放到 \((0,0)\)、\(q_{2}=+2.0\,\mathrm{\mu C}\) 放到 \((0.30,\,0)\,\mathrm{m}\)、\(q_{3}=+3.0\,\mathrm{\mu C}\) 放到 \((0.30,\,0.40)\,\mathrm{m}\)。求总功（体系电势能）。</summary>
+        <div class="hint">\(U=\sum_{i<j}kq_{i}q_{j}/r_{ij}\)；逐对相加。</div>
+        <div class="solution">
+          \(r_{12}=0.30\)，\(r_{13}=0.50\)（3-4-5 直角边），\(r_{23}=0.40\,\mathrm{m}\)。
+          \(U_{12}=\dfrac{(8.99\times10^{9})(1\times10^{-6})(2\times10^{-6})}{0.30}=0.0599\,\mathrm{J}\)。
+          \(U_{13}=\dfrac{(8.99\times10^{9})(1\times10^{-6})(3\times10^{-6})}{0.50}=0.0539\,\mathrm{J}\)。
+          \(U_{23}=\dfrac{(8.99\times10^{9})(2\times10^{-6})(3\times10^{-6})}{0.40}=0.1349\,\mathrm{J}\)。
+          \(U_{\text{tot}}=0.0599+0.0539+0.1349=\)<span class="ans">\(0.249\,\mathrm{J}\)</span>。
+          （同号电荷组态 \(U>0\)，外力做正功。）
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 带电圆环 \(R=0.10\,\mathrm{m}\)，\(Q=+10\,\mathrm{nC}\)。(a) 求环心处 \(V\)；(b) 求环心处 \(E_{z}\)；(c) 把 \(q=+1.0\,\mathrm{nC}\) 从环心移到无穷远，电场力做多少功？</summary>
+        <div class="hint">\(V(0)=kQ/R\)；\(E_{z}(0)=0\)；\(W=q\,[V(0)-V(\infty)]=qV(0)\)。</div>
+        <div class="solution">
+          (a) \(V(0)=kQ/R=(8.99\times10^{9})(10\times10^{-9})/0.10=\)<span class="ans">\(899\,\mathrm{V}\)</span>。
+          (b) 由对称 \(E_{z}(0)=\)<span class="ans">\(0\)</span>。
+          (c) \(W=qV(0)=(1.0\times10^{-9})(899)=\)<span class="ans">\(+9.0\times10^{-7}\,\mathrm{J}\)</span>（正号：电场对正电荷做正功，把它推离正电环）。
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">两个可调电荷 \(q_{1},q_{2}\)（默认为 \(\pm 5\,\mathrm{nC}\) 电偶极子）位于 \((\pm2\,\mathrm{cm},0)\)。背景画出<b>等势线</b>（红色为 \(V>0\)、蓝色为 \(V<0\)、虚线为 \(V=0\)），叠加灰色<b>电场箭头</b>。点击或拖动橙色<b>试探电荷</b> \(q\)，实时显示该处的 \(V\) 与电势能 \(U=qV\)。调整滑块改变 \(q_{1},q_{2},q\) 的符号与大小，观察等势线如何变形（注意等势线总与场线垂直）。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+          var kCoul = 8.99e9;                       // N m^2 / C^2
+
+          // ---- World (meters) <-> Screen (pixels) ----
+          var worldW = 0.12, worldH = 0.076;        // 12 cm x 7.6 cm
+          var scale = W / worldW;                    // 5000 px/m
+          var ox = W / 2, oy = H / 2;
+          function w2sX(wx) { return ox + wx * scale; }
+          function w2sY(wy) { return oy - wy * scale; }
+          function s2wX(sx) { return (sx - ox) / scale; }
+          function s2wY(sy) { return -(sy - oy) / scale; }
+
+          // ---- Parameters (bound to sliders) ----
+          var params = { q1: 5, q2: -5, qt: 1 };    // values in nC
+
+          // ---- Persistent test charge (NOT in sim state; survives reset) ----
+          var tc = { x: 0, y: 0.025, dragging: false };
+          var tcHome = { x: 0, y: 0.025 };
+
+          function sources() {
+            return [
+              { x: -0.02, y: 0, q: params.q1 * 1e-9 },
+              { x:  0.02, y: 0, q: params.q2 * 1e-9 },
+            ];
+          }
+
+          function potentialAt(x, y) {
+            var V = 0, cs = sources();
+            for (var i = 0; i < cs.length; i++) {
+              var dx = x - cs[i].x, dy = y - cs[i].y;
+              var r = Math.sqrt(dx * dx + dy * dy);
+              if (r < 0.0008) r = 0.0008;           // 0.8 mm softening
+              V += kCoul * cs[i].q / r;
+            }
+            return V;
+          }
+
+          function fieldAt(x, y) {
+            var Ex = 0, Ey = 0, cs = sources();
+            for (var i = 0; i < cs.length; i++) {
+              var dx = x - cs[i].x, dy = y - cs[i].y;
+              var r2 = dx * dx + dy * dy, r = Math.sqrt(r2);
+              if (r < 0.0008) { r = 0.0008; r2 = r * r; }
+              var fac = kCoul * cs[i].q / (r2 * r);
+              Ex += fac * dx;
+              Ey += fac * dy;
+            }
+            return { Ex: Ex, Ey: Ey };
+          }
+
+          // ---- Marching-squares equipotential contours ----
+          function drawContours(ctx) {
+            var levels = [-5000, -1500, -500, -150, -50, -15,
+                           15, 50, 150, 500, 1500, 5000];  // volts; 0 drawn separately
+            var nx = 96, ny = 60;
+            var xMin = -worldW / 2, xMax = worldW / 2;
+            var yMin = -worldH / 2, yMax = worldH / 2;
+            var dx = (xMax - xMin) / nx, dy = (yMax - yMin) / ny;
+            var V = [];
+            for (var i = 0; i <= nx; i++) {
+              V[i] = [];
+              for (var j = 0; j <= ny; j++) {
+                V[i][j] = potentialAt(xMin + i * dx, yMin + j * dy);
+              }
+            }
+            function segLevel(lvl, style, dash) {
+              ctx.save();
+              ctx.strokeStyle = style;
+              ctx.lineWidth = (lvl === 0) ? 1.4 : 1.1;
+              if (dash) ctx.setLineDash(dash);
+              ctx.beginPath();
+              for (var i = 0; i < nx; i++) {
+                for (var j = 0; j < ny; j++) {
+                  var a = V[i][j], b = V[i + 1][j], c = V[i + 1][j + 1], d = V[i][j + 1];
+                  var above = (a > lvl ? 1 : 0) | (b > lvl ? 2 : 0) | (c > lvl ? 4 : 0) | (d > lvl ? 8 : 0);
+                  if (above === 0 || above === 15) continue;
+                  var x0 = xMin + i * dx, y0 = yMin + j * dy;
+                  function edge(p, q, ex, ey, fx, fy) {
+                    var t = (lvl - p) / (q - p);
+                    return { x: x0 + (ex + t * (fx - ex)) * dx, y: y0 + (ey + t * (fy - ey)) * dy };
+                  }
+                  // edges: bottom a->b, right b->c, top d->c, left a->d
+                  var pts = [];
+                  if ((a > lvl) !== (b > lvl)) pts.push(edge(a, b, 0, 0, 1, 0));
+                  if ((b > lvl) !== (c > lvl)) pts.push(edge(b, c, 1, 0, 1, 1));
+                  if ((c > lvl) !== (d > lvl)) pts.push(edge(d, c, 0, 1, 1, 1));
+                  if ((d > lvl) !== (a > lvl)) pts.push(edge(a, d, 0, 0, 0, 1));
+                  if (pts.length >= 2) {
+                    ctx.moveTo(w2sX(pts[0].x), w2sY(pts[0].y));
+                    ctx.lineTo(w2sX(pts[1].x), w2sY(pts[1].y));
+                    if (pts.length === 4) {
+                      ctx.moveTo(w2sX(pts[2].x), w2sY(pts[2].y));
+                      ctx.lineTo(w2sX(pts[3].x), w2sY(pts[3].y));
+                    }
+                  }
+                }
+              }
+              ctx.stroke();
+              ctx.restore();
+            }
+            // positive levels in red, negative in blue, zero dashed grey
+            for (var L = 0; L < levels.length; L++) {
+              var v = levels[L];
+              segLevel(v, v > 0 ? 'rgba(220,38,38,0.55)' : 'rgba(37,99,235,0.55)', null);
+            }
+            segLevel(0, 'rgba(100,116,139,0.75)', [5, 4]);
+          }
+
+          // ---- Field arrows on a regular grid ----
+          function drawFieldArrows(ctx) {
+            var step = 0.012;                        // 1.2 cm grid
+            ctx.save();
+            ctx.globalAlpha = 0.32;
+            for (var x = -worldW / 2 + step / 2; x < worldW / 2; x += step) {
+              for (var y = -worldH / 2 + step / 2; y < worldH / 2; y += step) {
+                var E = fieldAt(x, y);
+                var mag = Math.hypot(E.Ex, E.Ey);
+                if (mag < 5) continue;
+                var ang = Math.atan2(E.Ey, E.Ex);    // math convention (y up)
+                var pxLen = 7 + 5 * Math.min(2.2, Math.log10(mag) / 2.2);
+                var dxp = pxLen * Math.cos(ang);
+                var dyp = -pxLen * Math.sin(ang);   // canvas y flipped
+                var sx = w2sX(x), sy = w2sY(y);
+                PS.drawArrow(ctx, sx, sy, sx + dxp, sy + dyp, PS.colors.text);
+              }
+            }
+            ctx.restore();
+          }
+
+          // ---- Mouse / touch dragging of the test charge ----
+          function getPtr(e) {
+            var rect = canvas.getBoundingClientRect();
+            var cx = (e.clientX - rect.left) * (W / rect.width);
+            var cy = (e.clientY - rect.top) * (H / rect.height);
+            return { sx: cx, sy: cy, wx: s2wX(cx), wy: s2wY(cy) };
+          }
+          canvas.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            var p = getPtr(e);
+            var txp = w2sX(tc.x), typ = w2sY(tc.y);
+            if (Math.hypot(p.sx - txp, p.sy - typ) < 16) {
+              tc.dragging = true;
+            } else {
+              tc.x = p.wx; tc.y = p.wy;
+            }
+            canvas.setPointerCapture(e.pointerId);
+          });
+          canvas.addEventListener('pointermove', function (e) {
+            if (!tc.dragging) return;
+            var p = getPtr(e);
+            tc.x = p.wx; tc.y = p.wy;
+          });
+          canvas.addEventListener('pointerup', function (e) { tc.dragging = false; });
+          canvas.addEventListener('pointercancel', function () { tc.dragging = false; });
+
+          // ---- The sim itself ----
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return {}; },
+            step: function (dt, t, s) {
+              // clamp test charge inside the viewport (with small margin)
+              var m = 0.003;
+              if (tc.x < -worldW / 2 + m) tc.x = -worldW / 2 + m;
+              if (tc.x >  worldW / 2 - m) tc.x =  worldW / 2 - m;
+              if (tc.y < -worldH / 2 + m) tc.y = -worldH / 2 + m;
+              if (tc.y >  worldH / 2 - m) tc.y =  worldH / 2 - m;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // faint axes through the centre
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(W, oy); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, H); ctx.stroke();
+              ctx.restore();
+
+              // 1 cm tick marks on axes
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.globalAlpha = 0.55; ctx.lineWidth = 1;
+              for (var cm = -5; cm <= 5; cm++) {
+                if (cm === 0) continue;
+                var xa = w2sX(cm * 0.01);
+                ctx.beginPath(); ctx.moveTo(xa, oy - 3); ctx.lineTo(xa, oy + 3); ctx.stroke();
+                var ya = w2sY(cm * 0.01);
+                ctx.beginPath(); ctx.moveTo(ox - 3, ya); ctx.lineTo(ox + 3, ya); ctx.stroke();
+              }
+              ctx.restore();
+
+              // equipotential contours + field arrows
+              drawContours(ctx);
+              drawFieldArrows(ctx);
+
+              // source charges
+              var cs = sources();
+              for (var i = 0; i < cs.length; i++) {
+                var px = w2sX(cs[i].x), py = w2sY(cs[i].y);
+                var col = cs[i].q >= 0 ? '#dc2626' : '#2563eb';
+                PS.drawCircle(ctx, px, py, 10, { fill: col, stroke: C.text, lineWidth: 1.5 });
+                PS.drawText(ctx, (cs[i].q >= 0 ? '+' : '') + (cs[i].q * 1e9).toFixed(1) + ' nC',
+                  px, py - 15, { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+              }
+
+              // test charge + live readout
+              var tpx = w2sX(tc.x), tpy = w2sY(tc.y);
+              var V = potentialAt(tc.x, tc.y);
+              var U = (params.qt * 1e-9) * V;
+              var tcol = params.qt >= 0 ? '#ea580c' : '#0891b2';
+              PS.drawCircle(ctx, tpx, tpy, 8, { fill: tcol, stroke: C.text, lineWidth: 1.5 });
+              PS.drawText(ctx, 'q=' + params.qt.toFixed(1) + ' nC', tpx, tpy - 13,
+                { font: 'bold 10px system-ui', color: C.text, align: 'center' });
+
+              // titles / legend / live readout
+              PS.drawText(ctx,
+                'Equipotentials 等势线 (red + / blue − / dashed = 0 V) · arrows = E field',
+                W / 2, 14, { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+              var msg = 'V(test) = ' + V.toExponential(2) + ' V   ·   U = qV = ' + U.toExponential(2) + ' J';
+              PS.drawText(ctx, msg, W / 2, H - 8,
+                { font: 'bold 12px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'q1', label: '源电荷 q₁ (nC)', min: -10, max: 10, step: 0.5, value: 5 },
+            { type: 'slider', key: 'q2', label: '源电荷 q₂ (nC)', min: -10, max: 10, step: 0.5, value: -5 },
+            { type: 'slider', key: 'qt', label: '试探电荷 q (nC)', min: -5, max: 5, step: 0.5, value: 1 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('q1', function (v) { params.q1 = v; });
+          ctl.on('q2', function (v) { params.q2 = v; });
+          ctl.on('qt', function (v) { params.qt = v; });
+          ctl.on('reset', function () {
+            // reset only the test charge position; sliders (and params) stay as-is
+            tc.x = tcHome.x; tc.y = tcHome.y; tc.dragging = false;
+          });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><b>电势能</b>（两点电荷）：\(U=kq_{1}q_{2}/r\)，约定 \(U(\infty)=0\)。</li>
+        <li><b>电势</b> \(V=U/q\) 为标量场；单位伏特 \(\mathrm{V}=\mathrm{J/C}\)；与电场的线积分关系 \(V_{B}-V_{A}=-\int_{A}^{B}\vec{E}\cdot d\vec{l}\)。</li>
+        <li>点电荷电势 \(V=kQ/r\)；多电荷用<b>代数和</b>叠加 \(V=\sum kQ_{i}/r_{i}\)，连续分布用 \(V=\int k\,dq/r\)。</li>
+        <li>反求电场：\(\vec{E}=-\nabla V\)（电场指向电势下降最快方向）。</li>
+        <li><b>等势面</b>处处与电场线垂直；沿等势面移动电荷电场力不做功。</li>
+        <li>带电环轴线上 \(V(z)=kQ/\sqrt{R^{2}+z^{2}}\)；平行板间 \(\Delta V=Ed\)。</li>
+        <li>组装电荷的功 \(U_{\text{tot}}=\sum_{i<j}kq_{i}q_{j}/r_{ij}\)；移入单个电荷 \(W_{i}=q_{i}V_{i}\)。</li>
+        <li>静电场满足泊松方程 \(\nabla^{2}V=-\rho/\varepsilon_{0}\)；无电荷区域化为拉普拉斯方程 \(\nabla^{2}V=0\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,V=\frac{U}{q},\quad V(B)-V(A)=-\int_{A}^{B}\vec{E}\cdot d\vec{l},\quad V=\frac{kQ}{r},\quad \vec{E}=-\nabla V,\quad \Delta V=Ed\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

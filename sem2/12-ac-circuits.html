@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 交流电路 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第12章 · 电磁场与电磁波 Fields &amp; Waves</p>
+      <h1>交流电路 <span class="en-title">AC Circuits</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用<strong>相量</strong> (phasor) 与复阻抗 (complex impedance) 表示正弦交流 (sinusoidal AC) 信号，写出 \(V(t)=V_{0}\cos(\omega t)\) 与对应的复数形式 \(\tilde{V}=V_{0}e^{i\omega t}\)。</li>
+        <li>对 R、L、C 三种元件分别推导电压—电流相位关系与<strong>电抗</strong> (reactance) \(X_{L}=\omega L\)、\(X_{C}=1/(\omega C)\)，并判断哪种元件"超前"、哪种"滞后"。</li>
+        <li>推导串联 RLC 电路的<strong>阻抗</strong> (impedance) \(Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}}\) 与相位 \(\varphi=\arctan\!\bigl[(X_{L}-X_{C})/R\bigr]\)。</li>
+        <li>阐明<strong>串联谐振</strong> (series resonance) 条件 \(X_{L}=X_{C}\)，导出谐振角频率 \(\omega_{0}=1/\sqrt{LC}\)，并解释为何此时 \(Z=R\)（最小）且电流最大。</li>
+        <li>用<strong>方均根值</strong> (RMS values) 与功率因数 (power factor) 计算平均功率 \(P_{\text{avg}}=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi\)。</li>
+        <li>定性分析 RC 低通 / 高通滤波器 (low-/high-pass filter)，并用<strong>品质因数</strong> \(Q=\omega_{0}L/R\) 量化谐振峰的锐度。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 交流源与正弦信号 AC Source &amp; Sinusoidal Signal</h3>
+      <p>交流电源 (AC source) 输出随时间按余弦 (或正弦) 变化的电动势：</p>
+      <div class="formula">\[ V(t)=V_{0}\cos(\omega t),\qquad \omega=2\pi f=\frac{2\pi}{T} \]</div>
+      <p>其中 \(V_{0}\) 为<strong>峰值</strong> (peak / amplitude)，\(\omega\) 为<strong>角频率</strong> (angular frequency, rad/s)，\(f\) 为频率 (Hz)，\(T\) 为周期。市电 (US) 为 \(V_{0}=170\,\mathrm{V}\)、\(f=60\,\mathrm{Hz}\)；市电 (中/欧) 为 \(V_{0}=325\,\mathrm{V}\)、\(f=50\,\mathrm{Hz}\)。本章始终假设<strong>稳态</strong> (steady state)：电路经过暂态后，所有电压、电流都以同一 \(\omega\) 作正弦振荡（但可有不同相位与幅值）。</p>
+      <div class="key-terms">AC source (交流电源), peak value \(V_{0}\) (峰值), angular frequency \(\omega\) (角频率), steady state (稳态)</div>
+
+      <h3>2. 方均根值 RMS Values</h3>
+      <p>正弦量的"等效直流值"——能在相同电阻上产生相同平均功率的直流值——称为<strong>方均根值</strong> (root-mean-square, RMS)。利用 \(\langle\cos^{2}\rangle=1/2\)：</p>
+      <div class="formula">\[ \boxed{\,V_{\mathrm{rms}}=\sqrt{\langle V^{2}\rangle}=\frac{V_{0}}{\sqrt{2}},\qquad I_{\mathrm{rms}}=\frac{I_{0}}{\sqrt{2}}\,} \]</div>
+      <p>故"市电 \(120\,\mathrm{V}\)"指的是 \(V_{\mathrm{rms}}=120\,\mathrm{V}\)，对应 \(V_{0}=120\sqrt{2}\approx 170\,\mathrm{V}\)。同理"市电 \(230\,\mathrm{V}\)"对应 \(V_{0}\approx 325\,\mathrm{V}\)。电阻上的平均功率可直接写成 \(P_{\text{avg}}=I_{\mathrm{rms}}^{2}R=V_{\mathrm{rms}}^{2}/R\)。</p>
+      <div class="key-terms">RMS value \(V_{\mathrm{rms}}\) (方均根值), \(\langle\cos^{2}\rangle=1/2\) (余弦平方平均)</div>
+
+      <h3>3. 相量表示 Phasor Representation</h3>
+      <p>把正弦量 \(V_{0}\cos(\omega t)\) 视为复数 \(\tilde{V}=V_{0}e^{i\omega t}\) 在实轴上的投影 (real part)：<strong>相量</strong> (phasor) 是复平面上以角速度 \(\omega\) 逆时针旋转、长度为 \(V_{0}\) 的矢量。同频正弦量的叠加 (加法) 与微积分运算在相量语言下退化为<strong>复数代数</strong>，省去所有三角恒等式。</p>
+      <div class="formula">\[ V(t)=\mathrm{Re}\!\bigl[\tilde{V}\,e^{i\omega t}\bigr],\qquad \tilde{V}=V_{0}e^{i\phi_{V}}\;\;\text{(复振幅, 含相位)} \]</div>
+      <p>由于所有相量以同一 \(\omega\) 旋转，通常只画 \(t=0\) 时刻的<strong>静止相量图</strong> (phasor diagram)，比较各量的相位差即可。</p>
+      <div class="key-terms">phasor (相量), complex amplitude \(\tilde{V}\) (复振幅), phasor diagram (相量图)</div>
+
+      <h3>4. 三种元件的电压—电流关系 R, L, C Behavior</h3>
+      <p>设电流为参考相位 \(I(t)=I_{0}\cos(\omega t)\)，分别求各元件两端的电压：</p>
+      <ul>
+        <li><strong>电阻 R</strong> (resistor)：\(V_{R}=IR=I_{0}R\cos(\omega t)\)。<strong>电压与电流同相</strong> (in phase)。复阻抗 \(\tilde{Z}_{R}=R\)。</li>
+        <li><strong>电感 L</strong> (inductor)：\(V_{L}=L\,\dv{I}{t}=-\omega L I_{0}\sin(\omega t)=\omega L I_{0}\cos(\omega t+\tfrac{\pi}{2})\)。<strong>电压超前电流 90°</strong>（电感"反抗电流变化"）。定义<strong>感抗</strong> (inductive reactance)：</li>
+      </ul>
+      <div class="formula">\[ X_{L}=\omega L,\qquad \tilde{Z}_{L}=i\omega L=iX_{L}\quad(\text{电压超前 }90^{\circ}) \]</div>
+      <ul>
+        <li><strong>电容 C</strong> (capacitor)：由 \(I=C\,\dv{V}{t}\) 反解 \(V_{C}=\tfrac{1}{C}\int I\,dt=\tfrac{I_{0}}{\omega C}\sin(\omega t)=\tfrac{I_{0}}{\omega C}\cos(\omega t-\tfrac{\pi}{2})\)。<strong>电压滞后电流 90°</strong>（等价地：电流超前电压 90°）。定义<strong>容抗</strong> (capacitive reactance)：</li>
+      </ul>
+      <div class="formula">\[ X_{C}=\frac{1}{\omega C},\qquad \tilde{Z}_{C}=\frac{1}{i\omega C}=-iX_{C}\quad(\text{电压滞后 }90^{\circ}) \]</div>
+      <p>关键趋势：\(X_{L}\propto\omega\)（高频时电感"扼流"，低频相当于短路），\(X_{C}\propto 1/\omega\)（高频时电容相当于短路，低频"阻断"直流）。在直流极限 \(\omega\to0\)：电感 → 短路、电容 → 断路，与第 11 章暂态结论一致。</p>
+      <div class="key-terms">resistor (电阻), inductor (电感), capacitor (电容), inductive reactance \(X_L\) (感抗), capacitive reactance \(X_C\) (容抗), complex impedance \(\tilde{Z}\) (复阻抗)</div>
+
+      <h3>5. 串联 RLC 阻抗 Series RLC Impedance</h3>
+      <p>R、L、C 串联接到源 \(\tilde{V}\)，三者流过同一电流 \(\tilde{I}\)。复阻抗直接相加：</p>
+      <div class="formula">\[ \tilde{Z}=R+i\omega L+\frac{1}{i\omega C}=R+i\!\left(\omega L-\frac{1}{\omega C}\right)=R+i(X_{L}-X_{C}) \]</div>
+      <p>取模得<strong>阻抗</strong> (impedance) 的幅值与相位（\(\varphi\) 为电压相对电流的相位差）：</p>
+      <div class="formula">\[ \boxed{\,Z=|\tilde{Z}|=\sqrt{R^{2}+(X_{L}-X_{C})^{2}},\qquad \tan\varphi=\frac{X_{L}-X_{C}}{R}\,} \]</div>
+      <p>电流幅值 \(I_{0}=V_{0}/Z\)。几何上，相量图中 \(\vec{V}_{R}\) 沿电流方向、\(\vec{V}_{L}\) 垂直超前、\(\vec{V}_{C}\) 垂直滞后；由于 \(V_{L}\) 与 \(V_{C}\) 反向，二者代数相减，净无功电压 \(V_{L}-V_{C}\) 与 \(V_{R}\) 正交，故 \(V_{0}^{2}=V_{R}^{2}+(V_{L}-V_{C})^{2}\)，与上式一致。</p>
+      <p>符号判据：\(X_{L}>X_{C}\)（高频或大 L）→ \(\varphi>0\)，电路呈<strong>感性</strong> (inductive)，电流滞后电压；\(X_{L}<X_{C}\)（低频或大 C）→ \(\varphi<0\)，电路呈<strong>容性</strong> (capacitive)，电流超前电压。</p>
+      <div class="key-terms">impedance \(Z\) (阻抗), phase angle \(\varphi\) (相位差), inductive/capacitive load (感性/容性负载)</div>
+
+      <h3>6. 串联谐振 Series Resonance</h3>
+      <p>调节 \(\omega\) 使 \(X_{L}=X_{C}\)，即 \(\omega L=1/(\omega C)\)，得到<strong>谐振角频率</strong> (resonant angular frequency)：</p>
+      <div class="formula">\[ \boxed{\,\omega_{0}=\frac{1}{\sqrt{LC}},\qquad f_{0}=\frac{1}{2\pi\sqrt{LC}}\,} \]</div>
+      <p>谐振时复阻抗虚部抵消，\(\tilde{Z}=R\) 为纯电阻——这是阻抗的<strong>最小值</strong>，因此电流 \(I_{0}=V_{0}/R\) 达<strong>最大值</strong>，相位 \(\varphi=0\)（电压电流同相）。注意：\(X_{L}\) 与 \(X_{C}\) 各自并不为零，它们数值相等、相位相反，在电感和电容两端可各自产生远高于源电压 \(V_{0}\) 的电压（<strong>电压谐振</strong>，voltage magnification）。</p>
+      <p>谐振曲线 \(I(\omega)\) 在 \(\omega_{0}\) 处出现尖锐峰，半功率带宽 (bandwidth) \(\Delta\omega\) 由电阻决定（详见第 8 节）。这是无线电调谐 (radio tuning)、感应加热、MRI 射频线圈等技术的物理基础——通过选频实现"只响应特定频率"。</p>
+      <div class="key-terms">resonance (谐振), resonant frequency \(\omega_{0}=1/\sqrt{LC}\) (谐振频率), bandwidth \(\Delta\omega\) (带宽)</div>
+
+      <h3>7. 平均功率与功率因数 Average Power &amp; Power Factor</h3>
+      <p>瞬时功率 (instantaneous power) \(p(t)=v(t)\,i(t)\)。代入 \(v=V_{0}\cos\omega t\)、\(i=I_{0}\cos(\omega t-\varphi)\)，用积化和差 \(\cos A\cos B=\tfrac{1}{2}[\cos(A-B)+\cos(A+B)]\)：</p>
+      <div class="formula">\[ p(t)=\tfrac{V_{0}I_{0}}{2}\bigl[\cos\varphi+\cos(2\omega t-\varphi)\bigr] \]</div>
+      <p>第一项为常数；第二项以 \(2\omega\) 振荡，整周期平均为零。故：</p>
+      <div class="formula">\[ \boxed{\,P_{\text{avg}}=\tfrac{V_{0}I_{0}}{2}\cos\varphi=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi\,} \]</div>
+      <p>\(\cos\varphi\) 称<strong>功率因数</strong> (power factor)。物理意义：只有与电压<strong>同相</strong>的电流分量 \(I_{0}\cos\varphi\)（"有功"分量）才能输送净能量；正交分量 \(I_{0}\sin\varphi\)（"无功"分量, reactive）只在 L、C 中来回振荡，平均功率为零。纯电阻 \(\cos\varphi=1\)；纯 L 或 C \(\cos\varphi=0\)（不耗能，只交换）。也可写作 \(P_{\text{avg}}=I_{\mathrm{rms}}^{2}R\)（仅电阻耗能），与相量推导自洽。</p>
+      <p>工程意义：工业负载（电动机、变压器，多为感性）若功率因数过低，输电线路上电流远大于有功所需，造成 \(I^{2}R\) 线损。供电公司通常要求 \(\cos\varphi>0.9\)，否则对企业罚款；常用并联电容 (power-factor correction) 把相位"拉回"同相。</p>
+      <div class="key-terms">instantaneous power \(p(t)\) (瞬时功率), power factor \(\cos\varphi\) (功率因数), active/reactive power (有功/无功功率)</div>
+
+      <h3>8. 品质因数与谐振锐度 Q-Factor &amp; Peak Sharpness</h3>
+      <p>串联 RLC 的<strong>品质因数</strong> (quality factor) 定义为谐振时储能与每周期耗能之比的 \(2\pi\) 倍，等价地：</p>
+      <div class="formula">\[ Q=\frac{\omega_{0}L}{R}=\frac{1}{\omega_{0}RC}=\frac{1}{R}\sqrt{\frac{L}{C}} \]</div>
+      <p>\(Q\) 越大，谐振峰越尖锐、选频性越好。半功率点（电流幅值降至 \(I_{\max}/\sqrt{2}\)，功率降至一半）满足 \((X_{L}-X_{C})^{2}=R^{2}\)。对高 \(Q\) 系统，两个半功率角频率 \(\omega_{1,2}\approx\omega_{0}\mp R/(2L)\)，带宽：</p>
+      <div class="formula">\[ \Delta\omega=\omega_{2}-\omega_{1}\approx\frac{R}{L}=\frac{\omega_{0}}{Q},\qquad Q=\frac{\omega_{0}}{\Delta\omega} \]</div>
+      <p>即 \(Q\) 等于"中心频率除以带宽"。调幅收音机所需带宽 \(\sim 10\,\mathrm{kHz}\)、中心频率 \(\sim 1\,\mathrm{MHz}\)，对应 \(Q\sim 100\)；激光腔 \(Q\sim 10^{7}\)；石英晶振 \(Q\sim 10^{4}\!-\!10^{6}\)。</p>
+      <div class="key-terms">quality factor \(Q\) (品质因数), half-power points (半功率点), bandwidth \(\Delta\omega=\omega_{0}/Q\) (带宽)</div>
+
+      <h3>9. RC 滤波器（定性）RC Filters, Qualitative</h3>
+        <p>把输入电压 \(V_{\text{in}}\) 加到 RC 串联组合，从其中一个元件取输出 \(V_{\text{out}}\)，即得最简单的<strong>滤波器</strong> (filter)：</p>
+      <ul>
+        <li><strong>低通</strong> (low-pass)：\(V_{\text{out}}\) 取自电容 \(C\)。低频下 \(X_{C}=1/(\omega C)\) 很大，几乎全部 \(V_{\text{in}}\) 落在 C 上，\(V_{\text{out}}\approx V_{\text{in}}\)；高频下 \(X_{C}\to 0\)，\(V_{\text{out}}\to 0\)。截止角频率 \(\omega_{c}=1/(RC)\)（此时 \(V_{\text{out}}/V_{\text{in}}=1/\sqrt{2}\)）。</li>
+        <li><strong>高通</strong> (high-pass)：\(V_{\text{out}}\) 取自电阻 \(R\)。低频下电流被大 \(X_{C}\) 限制，\(V_{R}\to 0\)；高频下 \(X_{C}\to 0\)，\(V_{\text{out}}\approx V_{\text{in}}\)。同样 \(\omega_{c}=1/(RC)\)。</li>
+      </ul>
+      <p>类似地，交换 R 与 L 也可构造 RL 低通/高通滤波器。一阶 RC 滤波器的幅频曲线在截止频率之外以 \(-20\,\mathrm{dB/decade}\) 衰减；多阶级联可构成更陡峭的高阶滤波器（如 Butterworth、Chebyshev），是模拟信号处理与音响分频的基础。</p>
+      <div class="key-terms">low-pass filter (低通滤波器), high-pass filter (高通滤波器), cutoff \(\omega_c=1/(RC)\) (截止角频率)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 12.1：复阻抗与串联 RLC 阻抗公式</h3>
+      <p class="step"><strong>步骤 1：</strong> 设电流为参考相量 \(\tilde{I}=I_{0}\)（实数，相位零）。三种元件的复阻抗分别为 \(\tilde{Z}_{R}=R\)、\(\tilde{Z}_{L}=i\omega L\)、\(\tilde{Z}_{C}=1/(i\omega C)=-i/(\omega C)\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 串联组合的复阻抗直接相加（KVL：\(\tilde{V}=\tilde{V}_{R}+\tilde{V}_{L}+\tilde{V}_{C}=\tilde{I}(\tilde{Z}_{R}+\tilde{Z}_{L}+\tilde{Z}_{C})\)）：</p>
+      <div class="formula">\[ \tilde{Z}=\frac{\tilde{V}}{\tilde{I}}=R+i\omega L+\frac{1}{i\omega C}=R+i\!\left(\omega L-\frac{1}{\omega C}\right)=R+i(X_{L}-X_{C}) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 取模得阻抗幅值：</p>
+      <div class="formula">\[ Z=|\tilde{Z}|=\sqrt{R^{2}+(X_{L}-X_{C})^{2}} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 复角给出电压相对电流的相位差：</p>
+      <div class="formula">\[ \varphi=\arg\tilde{Z}=\arctan\!\left(\frac{X_{L}-X_{C}}{R}\right) \]</div>
+      <p>电流幅值 \(I_{0}=V_{0}/Z\)，电流的相位（相对电压）为 \(-\varphi\)。当 \(\varphi>0\)（\(X_{L}>X_{C}\)）电流滞后，呈感性。复数代数把所有三角恒等式封装为一次复数除法——这正是相量法的威力。</p>
+
+      <h3>推导 12.2：谐振频率与谐振性质</h3>
+      <p class="step"><strong>步骤 1：</strong> 谐振定义：电流与源电压同相，即 \(\varphi=0\)，要求复阻抗虚部为零：</p>
+      <div class="formula">\[ X_{L}-X_{C}=0\;\Longrightarrow\;\omega L=\frac{1}{\omega C} \]</div>
+      <p class="step"><strong>步骤 2：</strong> 解出 \(\omega^{2}=1/(LC)\)，故：</p>
+      <div class="formula">\[ \omega_{0}=\frac{1}{\sqrt{LC}} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 此时 \(Z=R\)（最小，因 \(Z\ge R\) 对所有 \(\omega\) 成立），故 \(I_{0,\max}=V_{0}/R\)。</p>
+      <p class="step"><strong>步骤 4：</strong> 各元件电压：\(V_{R}=V_{0}\)、\(V_{L}=I_{0}X_{L}=V_{0}\,X_{L}/R=Q\,V_{0}\)、\(V_{C}=I_{0}X_{C}=Q\,V_{0}\)（其中 \(Q=\omega_{0}L/R=X_{L}/R\)）。电感和电容各自两端的电压是源电压的 \(Q\) 倍，但相位相反，故总电压仍为 \(V_{0}\)。这就是<strong>电压谐振放大</strong>，是高 \(Q\) 调谐电路的关键特征。</p>
+
+      <h3>推导 12.3：平均功率与功率因数</h3>
+      <p class="step"><strong>步骤 1：</strong> 瞬时功率 \(p(t)=v(t)\,i(t)=V_{0}\cos\omega t\cdot I_{0}\cos(\omega t-\varphi)\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 用积化和差 \(\cos A\cos B=\tfrac{1}{2}[\cos(A-B)+\cos(A+B)]\)：</p>
+      <div class="formula">\[ p(t)=\frac{V_{0}I_{0}}{2}\bigl[\cos\varphi+\cos(2\omega t-\varphi)\bigr] \]</div>
+      <p class="step"><strong>步骤 3：</strong> 整周期平均：第一项 \(\cos\varphi\) 是常数；第二项 \(\langle\cos(2\omega t-\varphi)\rangle=0\)。故：</p>
+      <div class="formula">\[ P_{\text{avg}}=\frac{V_{0}I_{0}}{2}\cos\varphi=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi \]</div>
+      <p class="step"><strong>步骤 4：</strong> 等价形式：用 \(V_{0}=I_{0}Z\) 与 \(\cos\varphi=R/Z\)（由阻抗三角形）：</p>
+      <div class="formula">\[ P_{\text{avg}}=\frac{I_{0}^{2}Z}{2}\cdot\frac{R}{Z}=\frac{I_{0}^{2}R}{2}=I_{\mathrm{rms}}^{2}R \]</div>
+      <p>可见平均功率只消耗在电阻上，L、C 仅作能量交换（无功），印证了"功率因数"的物理意义。</p>
+
+      <h3>推导 12.4：半功率带宽 \(\Delta\omega\) 与 \(Q\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 半功率点定义：\(I^{2}=I_{\max}^{2}/2\)，即 \(Z^{2}=2R^{2}\)，故 \((X_{L}-X_{C})^{2}=R^{2}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 解 \(X_{L}-X_{C}=\pm R\)。设 \(\omega=\omega_{0}+\delta\)（小失谐），展开：</p>
+      <div class="formula">\[ X_{L}-X_{C}=(\omega_{0}+\delta)L-\frac{1}{(\omega_{0}+\delta)C}\approx 2L\delta\quad(\text{用 }\omega_{0}^{2}=1/(LC)) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 故 \(2L\delta=\pm R\)，两个半功率点 \(\omega_{1,2}=\omega_{0}\mp R/(2L)\)，带宽：</p>
+      <div class="formula">\[ \Delta\omega=\omega_{2}-\omega_{1}=\frac{R}{L} \]</div>
+      <p class="step"><strong>步骤 4：</strong> 代入 \(Q=\omega_{0}L/R\) 得 \(\Delta\omega=\omega_{0}/Q\)，即 \(Q=\omega_{0}/\Delta\omega\)。\(R\) 越小、\(L\) 越大，带宽越窄，峰越尖锐——这正是仿真中要观察的核心现象。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 电感与电容的电抗</h4>
+        <p class="example-statement">市电频率 \(f=60\,\mathrm{Hz}\)（美国标准）。求：(a) \(L=20\,\mathrm{mH}\) 电感的感抗 \(X_{L}\)；(b) \(C=5.0\,\mathrm{\mu F}\) 电容的容抗 \(X_{C}\)；(c) 在 \(f=600\,\mathrm{Hz}\)（十倍频）时两者分别变为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 角频率 \(\omega=2\pi f=2\pi(60)=377\,\mathrm{rad/s}\)。</p>
+          <p class="step"><strong>(a)</strong> 感抗 \(X_{L}=\omega L\)：</p>
+          <div class="formula">\[ X_{L}=377\times 0.020=7.54\,\mathrm{\Omega} \]</div>
+          <p class="step"><strong>(b)</strong> 容抗 \(X_{C}=1/(\omega C)\)：</p>
+          <div class="formula">\[ X_{C}=\frac{1}{377\times 5.0\times10^{-6}}=\frac{1}{1.885\times10^{-3}}=530.5\,\mathrm{\Omega} \]</div>
+          <p class="step"><strong>(c)</strong> 在 \(f'=600\,\mathrm{Hz}\)（\(\omega'=3770\,\mathrm{rad/s}\)，10 倍）：</p>
+          <div class="formula">\[ X_{L}'=\omega' L=3770\times0.020=75.4\,\mathrm{\Omega}\quad(\text{增大 10 倍}) \]</div>
+          <div class="formula">\[ X_{C}'=\frac{1}{\omega' C}=\frac{1}{3770\times5.0\times10^{-6}}=53.05\,\mathrm{\Omega}\quad(\text{减小 10 倍}) \]</div>
+          <p class="step">这印证了电抗的频率依赖性：\(X_{L}\propto\omega\)（频率越高感抗越大），\(X_{C}\propto 1/\omega\)（频率越高容抗越小）。在 \(60\,\mathrm{Hz}\) 下 \(X_{C}\gg X_{L}\)，电路通常呈容性；而在足够高频率（本例约 \(f=503\,\mathrm{Hz}\)，谐振点 \(1/(2\pi\sqrt{LC})\)）两者相等。</p>
+          <p><span class="ans">\(X_{L}=7.54\,\mathrm{\Omega},\;X_{C}=530.5\,\mathrm{\Omega}\)；在 \(600\,\mathrm{Hz}\)：\(X_{L}'=75.4\,\mathrm{\Omega},\;X_{C}'=53.05\,\mathrm{\Omega}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 串联 RLC 的阻抗、电流与相位</h4>
+        <p class="example-statement">串联电路含 \(R=100\,\mathrm{\Omega}\)、\(L=20\,\mathrm{mH}\)、\(C=5.0\,\mathrm{\mu F}\)，接到峰值 \(V_{0}=120\,\mathrm{V}\)、频率 \(f=200\,\mathrm{Hz}\) 的交流源。求：(a) \(X_{L},X_{C}\)；(b) 阻抗 \(Z\)；(c) 电流幅值 \(I_{0}\)；(d) 相位 \(\varphi\) 与电路性质；(e) 谐振频率 \(f_{0}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> \(\omega=2\pi(200)=1257\,\mathrm{rad/s}\)。</p>
+          <div class="formula">\[ X_{L}=\omega L=1257\times0.020=25.13\,\mathrm{\Omega} \]</div>
+          <div class="formula">\[ X_{C}=\frac{1}{\omega C}=\frac{1}{1257\times5.0\times10^{-6}}=\frac{1}{6.283\times10^{-3}}=159.15\,\mathrm{\Omega} \]</div>
+          <p class="step"><strong>(b)</strong> 阻抗：</p>
+          <div class="formula">\[ Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}}=\sqrt{100^{2}+(25.13-159.15)^{2}} \]</div>
+          <div class="formula">\[ =\sqrt{10000+17957}=\sqrt{27957}=167.2\,\mathrm{\Omega} \]</div>
+          <p class="step"><strong>(c)</strong> 电流幅值 \(I_{0}=V_{0}/Z\)：</p>
+          <div class="formula">\[ I_{0}=\frac{120}{167.2}=0.718\,\mathrm{A} \]</div>
+          <p class="step"><strong>(d)</strong> 相位：</p>
+          <div class="formula">\[ \varphi=\arctan\!\left(\frac{X_{L}-X_{C}}{R}\right)=\arctan\!\left(\frac{-134.0}{100}\right)=-53.3^{\circ} \]</div>
+          <p class="step">\(\varphi<0\)，电流<strong>超前</strong>电压 53.3°，电路呈<strong>容性</strong>（与 \(X_{C}>X_{L}\) 一致）。功率因数 \(\cos\varphi=\cos(-53.3^{\circ})=0.598\)。</p>
+          <p class="step"><strong>(e)</strong> 谐振频率：</p>
+          <div class="formula">\[ f_{0}=\frac{1}{2\pi\sqrt{LC}}=\frac{1}{2\pi\sqrt{(0.020)(5.0\times10^{-6})}}=\frac{1}{2\pi\sqrt{1.0\times10^{-7}}} \]</div>
+          <div class="formula">\[ =\frac{1}{2\pi\times 3.162\times10^{-4}}=503.3\,\mathrm{Hz} \]</div>
+          <p>实际工作频率 \(200\,\mathrm{Hz}<f_{0}\)，处在谐振峰的低频（容性）侧。</p>
+          <p><span class="ans">\(X_{L}=25.13\,\Omega,\;X_{C}=159.15\,\Omega,\;Z=167.2\,\Omega,\;I_{0}=0.718\,\mathrm{A},\;\varphi=-53.3^{\circ}\)（容性），\(f_{0}=503\,\mathrm{Hz}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 AM 收音机的调谐电路</h4>
+        <p class="example-statement">一台 AM 收音机的调谐电路由一个 \(L=240\,\mathrm{\mu H}\) 的电感与一个可变电容器组成。要把电路调谐到中波电台 \(f_{0}=1.0\,\mathrm{MHz}=1.0\times10^{6}\,\mathrm{Hz}\)（AM 广播波段 540–1600 kHz 内），需要多大的电容 \(C\)？若线圈的内阻 \(R=2.0\,\mathrm{\Omega}\)，求电路的 \(Q\) 值与带宽 \(\Delta f\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 谐振时 \(X_{L}=X_{C}\)，即 \(\omega_{0}^{2}=1/(LC)\)。先算角频率：</p>
+          <div class="formula">\[ \omega_{0}=2\pi f_{0}=2\pi\times10^{6}=6.283\times10^{6}\,\mathrm{rad/s} \]</div>
+          <p class="step">解出 \(C\)：</p>
+          <div class="formula">\[ C=\frac{1}{\omega_{0}^{2}L}=\frac{1}{(6.283\times10^{6})^{2}\times(240\times10^{-6})} \]</div>
+          <div class="formula">\[ =\frac{1}{(3.948\times10^{13})(2.40\times10^{-4})}=\frac{1}{9.475\times10^{9}}=1.055\times10^{-10}\,\mathrm{F} \]</div>
+          <div class="formula">\[ \Rightarrow\; C\approx 105.5\,\mathrm{pF} \]</div>
+          <p>（这是 AM 收音机可变电容的典型量级，通常 10–365 pF 覆盖整个中波波段。）</p>
+          <p class="step">验证：用 \(C=105.5\,\mathrm{pF}\) 反算 \(\omega_{0}=1/\sqrt{LC}=1/\sqrt{(240\times10^{-6})(105.5\times10^{-12})}=1/\sqrt{2.532\times10^{-14}}=6.286\times10^{6}\,\mathrm{rad/s}\)，对应 \(f_{0}=1.0005\,\mathrm{MHz}\;\checkmark\)。</p>
+          <p class="step"><strong>Q 值：</strong></p>
+          <div class="formula">\[ Q=\frac{\omega_{0}L}{R}=\frac{(6.283\times10^{6})(240\times10^{-6})}{2.0}=\frac{1508}{2.0}=754 \]</div>
+          <p class="step"><strong>带宽：</strong></p>
+          <div class="formula">\[ \Delta f=\frac{f_{0}}{Q}=\frac{1.0\times10^{6}}{754}=1326\,\mathrm{Hz}\approx 1.3\,\mathrm{kHz} \]</div>
+          <p class="step">这个带宽恰好覆盖 AM 信号所需的音频带宽（约 \(10\,\mathrm{kHz}\) 通道间隔的一半多），既保证选择性又能完整接收信号。注意 \(Q=754\) 很大——谐振时电容和电感两端各自的电压是天线感应电压的 754 倍！</p>
+          <p><span class="ans">\(C\approx 105.5\,\mathrm{pF},\;Q=754,\;\Delta f\approx 1.3\,\mathrm{kHz}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 RMS 值与平均功率</h4>
+        <p class="example-statement">美国市电 \(V_{\mathrm{rms}}=120\,\mathrm{V}\)、\(f=60\,\mathrm{Hz}\)，供电给一个由 \(R=20\,\mathrm{\Omega}\) 与 \(L=50\,\mathrm{mH}\) 串联组成的感性负载（模拟电动机）。求：(a) 源电压峰值 \(V_{0}\)；(b) 感抗、阻抗、电流幅值与 RMS 电流；(c) 相位 \(\varphi\) 与功率因数；(d) 平均功率 \(P_{\text{avg}}\)；(e) 若要把功率因数校正到 1.0，应并联多大的电容？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 峰值：</p>
+          <div class="formula">\[ V_{0}=\sqrt{2}\,V_{\mathrm{rms}}=\sqrt{2}\times 120=169.7\,\mathrm{V} \]</div>
+          <p class="step"><strong>(b)</strong> \(\omega=2\pi(60)=377\,\mathrm{rad/s}\)。感抗 \(X_{L}=\omega L=377\times0.050=18.85\,\mathrm{\Omega}\)。</p>
+          <div class="formula">\[ Z=\sqrt{R^{2}+X_{L}^{2}}=\sqrt{20^{2}+18.85^{2}}=\sqrt{400+355.3}=27.48\,\mathrm{\Omega} \]</div>
+          <div class="formula">\[ I_{0}=\frac{V_{0}}{Z}=\frac{169.7}{27.48}=6.176\,\mathrm{A},\qquad I_{\mathrm{rms}}=\frac{I_{0}}{\sqrt{2}}=4.366\,\mathrm{A} \]</div>
+          <p class="step">（也可直接 \(I_{\mathrm{rms}}=V_{\mathrm{rms}}/Z=120/27.48=4.366\,\mathrm{A}\)。）</p>
+          <p class="step"><strong>(c)</strong> 相位与功率因数：</p>
+          <div class="formula">\[ \varphi=\arctan\!\left(\frac{X_{L}}{R}\right)=\arctan(0.9425)=43.3^{\circ} \]</div>
+          <div class="formula">\[ \text{功率因数}=\cos\varphi=\frac{R}{Z}=\frac{20}{27.48}=0.728\;\;(\text{滞后, 感性}) \]</div>
+          <p class="step"><strong>(d)</strong> 平均功率（两种方式互相校核）：</p>
+          <div class="formula">\[ P_{\text{avg}}=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi=120\times 4.366\times 0.728=381\,\mathrm{W} \]</div>
+          <div class="formula">\[ \text{校核：}\;P_{\text{avg}}=I_{\mathrm{rms}}^{2}R=(4.366)^{2}\times 20=381\,\mathrm{W}\;\checkmark \]</div>
+          <p class="step"><strong>(e)</strong> 功率因数校正：要把 \(\cos\varphi\) 提到 1，需并联电容补偿无功电流 \(I_{\mathrm{rms}}\sin\varphi=4.366\times\sin 43.3^{\circ}=2.992\,\mathrm{A}\)。电容从电源吸取的电流 \(I_{C}=V_{\mathrm{rms}}/X_{C}=\omega C\,V_{\mathrm{rms}}\)，令其等于无功电流：</p>
+          <div class="formula">\[ C=\frac{I_{C}}{\omega V_{\mathrm{rms}}}=\frac{2.992}{377\times 120}=\frac{2.992}{4.524\times10^{4}}=6.61\times10^{-5}\,\mathrm{F} \]</div>
+          <div class="formula">\[ \Rightarrow\; C\approx 66.1\,\mathrm{\mu F} \]</div>
+          <p>这是工业功率因数校正的标准做法（在电动机旁并联电容箱），可显著减少线路 \(I^{2}R\) 损耗。</p>
+          <p><span class="ans">\(V_{0}=169.7\,\mathrm{V},\;X_{L}=18.85\,\Omega,\;Z=27.48\,\Omega,\;I_{\mathrm{rms}}=4.37\,\mathrm{A},\;\cos\varphi=0.728,\;P_{\text{avg}}=381\,\mathrm{W},\;C_{\text{校正}}\approx 66.1\,\mathrm{\mu F}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 给定频率下的相位角</h4>
+        <p class="example-statement">串联 RLC：\(R=50\,\mathrm{\Omega}\)、\(L=10\,\mathrm{mH}\)、\(C=2.0\,\mathrm{\mu F}\)，源 \(V_{0}=50\,\mathrm{V}\)。(a) 求 \(\omega_{0}\)；(b) 在 \(\omega=1.0\times10^{4}\,\mathrm{rad/s}\) 时，求 \(X_{L},X_{C},Z,I_{0},\varphi\)；(c) 此时电压是超前还是滞后电流？平均功率是多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 谐振角频率：</p>
+          <div class="formula">\[ \omega_{0}=\frac{1}{\sqrt{LC}}=\frac{1}{\sqrt{(10\times10^{-3})(2.0\times10^{-6})}}=\frac{1}{\sqrt{2.0\times10^{-8}}}=7071\,\mathrm{rad/s} \]</div>
+          <p class="step"><strong>(b)</strong> 在 \(\omega=10^{4}\,\mathrm{rad/s}\)（高于 \(\omega_{0}\)）：</p>
+          <div class="formula">\[ X_{L}=\omega L=10^{4}\times0.010=100\,\mathrm{\Omega} \]</div>
+          <div class="formula">\[ X_{C}=\frac{1}{\omega C}=\frac{1}{10^{4}\times2.0\times10^{-6}}=\frac{1}{0.020}=50\,\mathrm{\Omega} \]</div>
+          <div class="formula">\[ X_{L}-X_{C}=50\,\mathrm{\Omega}\;(\text{感性，因 }X_{L}>X_{C}) \]</div>
+          <div class="formula">\[ Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}}=\sqrt{50^{2}+50^{2}}=\sqrt{5000}=70.71\,\mathrm{\Omega} \]</div>
+          <div class="formula">\[ I_{0}=\frac{V_{0}}{Z}=\frac{50}{70.71}=0.707\,\mathrm{A} \]</div>
+          <div class="formula">\[ \varphi=\arctan\!\left(\frac{X_{L}-X_{C}}{R}\right)=\arctan(1)=45^{\circ} \]</div>
+          <p class="step"><strong>(c)</strong> \(\varphi=+45^{\circ}>0\)，<strong>电压超前电流</strong> 45°（电流滞后电压），电路呈感性——与"工作频率高于谐振频率"的判据一致。</p>
+          <p class="step">平均功率：</p>
+          <div class="formula">\[ P_{\text{avg}}=\tfrac{V_{0}I_{0}}{2}\cos\varphi=\tfrac{1}{2}(50)(0.707)\cos 45^{\circ}=12.5\,\mathrm{W} \]</div>
+          <p class="step">校核 \(P_{\text{avg}}=\tfrac{1}{2}I_{0}^{2}R=\tfrac{1}{2}(0.707)^{2}(50)=12.5\,\mathrm{W}\;\checkmark\)。</p>
+          <p class="step">观察：尽管工作频率只比谐振频率高约 41%（\(10^{4}\) vs \(7071\)），电流幅值却已从谐振时的 \(V_{0}/R=1.0\,\mathrm{A}\) 降到 \(0.707\,\mathrm{A}\)，功率从 \(25\,\mathrm{W}\) 降到 \(12.5\,\mathrm{W}\)（恰好半功率点附近）——这正是谐振曲线"失谐即急剧下降"的体现。</p>
+          <p><span class="ans">\(\omega_{0}=7071\,\mathrm{rad/s};\;\omega=10^{4}\) 时 \(X_{L}=100\,\Omega,\;X_{C}=50\,\Omega,\;Z=70.71\,\Omega,\;I_{0}=0.707\,\mathrm{A},\;\varphi=+45^{\circ}\)（电压超前），\(P_{\text{avg}}=12.5\,\mathrm{W}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>混淆峰值 (peak) 与 RMS 值。</strong> "\(120\,\mathrm{V}\) 市电"是 \(V_{\mathrm{rms}}\)，对应峰值 \(V_{0}=\sqrt{2}\times 120=170\,\mathrm{V}\)；电容器与二极管的耐压必须按<strong>峰值</strong>选（否则会被击穿）。同样，电流额定、保险丝熔断都要看清是 \(I_{\mathrm{rms}}\) 还是 \(I_{0}\)。关系永远只有 \(V_{0}=\sqrt{2}\,V_{\mathrm{rms}}\)。</li>
+        <li><strong>记反 \(X_{L}\) 与 \(X_{C}\) 的频率依赖。</strong> \(X_{L}=\omega L\propto\omega\)（频率越高，电感越"堵"，相当于高频扼流圈）；\(X_{C}=1/(\omega C)\propto 1/\omega\)（频率越高，电容越"通"，相当于高频旁路）。在 \(\omega\to 0\)（直流）极限：电感→短路、电容→断路——这正好对应第 11 章暂态的稳态结论。 mnemonic: "电感低通，电容高通"。</li>
+        <li><strong>误以为谐振时电抗为零。</strong> 谐振条件是 \(X_{L}=X_{C}\)（两者<strong>相等</strong>），不是 \(X_{L}=X_{C}=0\)！事实上 \(X_{L}=X_{C}=\sqrt{L/C}\)，可远大于 \(R\)。它们在复阻抗中相互抵消（虚部为零），\(\tilde{Z}=R\)；但电感与电容各自两端的电压 \(V_{L}=V_{C}=Q\,V_{0}\) 可以远超源电压。把"电抗为零"写成谐振条件是常见错误。</li>
+        <li><strong>忽略功率因数 \(\cos\varphi\)。</strong> 平均功率不是 \(V_{\mathrm{rms}}\,I_{\mathrm{rms}}\)，而是 \(V_{\mathrm{rms}}\,I_{\mathrm{rms}}\cos\varphi\)。纯电感或纯电容 \(\cos\varphi=0\)，<strong>完全不耗能</strong>（瞬时功率正负交替，平均为零）；只有电阻上才有净耗散 \(I_{\mathrm{rms}}^{2}R\)。同样大小的视在功率 (apparent power, \(V_{\mathrm{rms}}I_{\mathrm{rms}}\)，VA)，\(\cos\varphi\) 越低实际做功越少——这就是供电公司对低功率因数用户加罚的物理理由。</li>
+        <li><strong>把"电压超前"与"电流超前"搞反。</strong> 约定：\(\varphi\) 是<strong>电压相对电流</strong>的相位。电感 \(V_{L}\) 超前 \(I\) 90°（因 \(V_{L}=L\,\dv{I}{t}\) 涉及导数）；电容 \(V_{C}\) 滞后 \(I\) 90°（即 \(I\) 超前 \(V_{C}\) 90°，因 \(I=C\,\dv{V}{t}\)）。记忆口诀 "<strong>ELI</strong>"（电感 E leads L 的电流 I）、"<strong>ICE</strong>"（电流 I leads 电容 C 的电压 E）。</li>
+        <li><strong>把"阻抗最小"与"电抗最大"混淆。</strong> 谐振时电抗虚部为零使 \(Z\) 取<strong>最小</strong>值 \(R\)，电流最大；但 \(X_{L}\)、\(X_{C}\) 各自的值此时<strong>很大</strong>（\(=\sqrt{L/C}\)，对高 \(Q\) 电路远大于 \(R\)）。电流大是因为两电抗相互抵消，不是因为他们小。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 电抗比较：\(L=10\,\mathrm{mH}\)、\(C=2.0\,\mathrm{\mu F}\) 串联，工作在 \(\omega=1.0\times10^{4}\,\mathrm{rad/s}\)。求 \(X_{L},X_{C}\)，并判断电路呈感性还是容性。</summary>
+        <div class="hint">\(X_{L}=\omega L\)，\(X_{C}=1/(\omega C)\)。比较两者大小。</div>
+        <div class="solution">\(X_{L}=10^{4}\times0.010=100\,\mathrm{\Omega}\)。<br>\(X_{C}=1/(10^{4}\times2.0\times10^{-6})=1/0.020=50\,\mathrm{\Omega}\)。<br>因 \(X_{L}>X_{C}\)（\(X_{L}-X_{C}=+50\,\mathrm{\Omega}\)），电路呈<strong>感性</strong>，电压超前电流。<br><span class="ans">\(X_{L}=100\,\Omega,\;X_{C}=50\,\Omega\)，感性</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 远离谐振的 RLC：\(R=200\,\mathrm{\Omega}\)、\(L=5.0\,\mathrm{mH}\)、\(C=0.10\,\mathrm{\mu F}\)、\(V_{0}=50\,\mathrm{V}\)、\(\omega=5000\,\mathrm{rad/s}\)。求 \(X_{L},X_{C},Z,I_{0},\varphi\)。</summary>
+        <div class="hint">分别算 \(X_{L},X_{C}\)，再代入 \(Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}}\)。注意 \(\omega\) 远低于谐振时 \(X_{C}\) 主导。</div>
+        <div class="solution">\(X_{L}=5000\times0.005=25\,\mathrm{\Omega}\)。<br>\(X_{C}=1/(5000\times 0.10\times10^{-6})=1/(5.0\times10^{-4})=2000\,\mathrm{\Omega}\)。<br>\(X_{L}-X_{C}=25-2000=-1975\,\mathrm{\Omega}\)。<br>\(Z=\sqrt{200^{2}+1975^{2}}=\sqrt{4.0\times10^{4}+3.90\times10^{6}}=\sqrt{3.94\times10^{6}}=1985\,\mathrm{\Omega}\)。<br>\(I_{0}=V_{0}/Z=50/1985=0.0252\,\mathrm{A}=25.2\,\mathrm{mA}\)。<br>\(\varphi=\arctan(-1975/200)=\arctan(-9.875)=-84.2^{\circ}\)（高度容性）。<br><span class="ans">\(X_{L}=25\,\Omega,\;X_{C}=2000\,\Omega,\;Z=1985\,\Omega,\;I_{0}=25.2\,\mathrm{mA},\;\varphi=-84.2^{\circ}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 调谐电容：要使 \(L=100\,\mathrm{\mu H}\) 的电感谐振在 \(f_{0}=1.0\,\mathrm{MHz}\)，应串联多大的电容 \(C\)？</summary>
+        <div class="hint">由 \(\omega_{0}^{2}=1/(LC)\) 解 \(C\)，注意 \(\omega_{0}=2\pi f_{0}\)。</div>
+        <div class="solution">\(\omega_{0}=2\pi\times10^{6}=6.283\times10^{6}\,\mathrm{rad/s}\)。<br>\(C=1/(\omega_{0}^{2}L)=1/[(6.283\times10^{6})^{2}\times(100\times10^{-6})]\)。<br>\(=1/[(3.948\times10^{13})(1.0\times10^{-4})]=1/(3.948\times10^{9})\)。<br>\(=2.53\times10^{-10}\,\mathrm{F}=253\,\mathrm{pF}\)。<br><span class="ans">\(C\approx 253\,\mathrm{pF}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 欧盟市电下的功率：\(V_{\mathrm{rms}}=230\,\mathrm{V}\)、\(f=50\,\mathrm{Hz}\)，负载为 \(R=100\,\mathrm{\Omega}\) 与 \(L=0.40\,\mathrm{H}\) 串联。求 \(I_{\mathrm{rms}}\)、功率因数、平均功率。</summary>
+        <div class="hint">先算 \(\omega, X_{L}, Z\)；\(I_{\mathrm{rms}}=V_{\mathrm{rms}}/Z\)，\(\cos\varphi=R/Z\)。</div>
+        <div class="solution">\(\omega=2\pi(50)=314\,\mathrm{rad/s}\)。<br>\(X_{L}=\omega L=314\times0.40=125.7\,\mathrm{\Omega}\)。<br>\(Z=\sqrt{100^{2}+125.7^{2}}=\sqrt{10000+15800}=\sqrt{25800}=160.6\,\mathrm{\Omega}\)。<br>\(I_{\mathrm{rms}}=V_{\mathrm{rms}}/Z=230/160.6=1.432\,\mathrm{A}\)。<br>\(\cos\varphi=R/Z=100/160.6=0.623\)（滞后）。<br>\(P_{\text{avg}}=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi=230\times1.432\times0.623=205\,\mathrm{W}\)。<br>校核：\(I_{\mathrm{rms}}^{2}R=(1.432)^{2}\times100=205\,\mathrm{W}\;\checkmark\)。<br><span class="ans">\(I_{\mathrm{rms}}=1.43\,\mathrm{A},\;\cos\varphi=0.623,\;P_{\text{avg}}=205\,\mathrm{W}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 品质因数与带宽：\(R=10\,\mathrm{\Omega}\)、\(L=1.0\,\mathrm{mH}\)、\(C=1.0\,\mathrm{\mu F}\)。求 \(\omega_{0}, Q, \Delta\omega\)。若把 \(R\) 减半，带宽如何变化？</summary>
+        <div class="hint">\(Q=\omega_{0}L/R\)，\(\Delta\omega=R/L\)。</div>
+        <div class="solution">\(\omega_{0}=1/\sqrt{LC}=1/\sqrt{(1.0\times10^{-3})(1.0\times10^{-6})}=1/\sqrt{1.0\times10^{-9}}=3.16\times10^{4}\,\mathrm{rad/s}\)。<br>\(Q=\omega_{0}L/R=(3.16\times10^{4})(1.0\times10^{-3})/10=3.16\)。<br>\(\Delta\omega=R/L=10/0.001=1.0\times10^{4}\,\mathrm{rad/s}\)。<br>校核：\(\omega_{0}/Q=3.16\times10^{4}/3.16=1.0\times10^{4}\;\checkmark\)。<br>把 \(R\) 减半（\(R'=5\,\Omega\)），\(Q\) 翻倍（\(Q'=6.32\)），带宽 \(\Delta\omega'=R'/L=5\times10^{3}\,\mathrm{rad/s}\)（也减半）。即电阻越小，谐振峰越尖锐、选择性越好。<br><span class="ans">\(\omega_{0}=3.16\times10^{4}\,\mathrm{rad/s},\;Q=3.16,\;\Delta\omega=10^{4}\,\mathrm{rad/s}\)；\(R\) 减半时 \(\Delta\omega\) 减半、\(Q\) 翻倍</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">串联 RLC 谐振 (series RLC resonance)。本仿真绘制<strong>频率响应</strong>而非时域波形：上图 \(|I(\omega)|=V_{0}/\sqrt{R^{2}+(\omega L-1/\omega C)^{2}}\) 显示谐振峰，中图相位 \(\varphi(\omega)\) 从 \(-90^{\circ}\)（容性）经过 0（谐振）到 \(+90^{\circ}\)（感性），下图给出归一化波形 \(V(t)/V_{0}\) 与 \(I(t)/I_{0}\) 直观显示当前相位差。红色虚线标记当前驱动频率 \(\omega\)，绿色虚线标记谐振频率 \(\omega_{0}=1/\sqrt{LC}\)。<strong>尝试</strong>：把 \(R\) 调小（如 5 Ω）——观察谐振峰变尖锐、带宽变窄、Q 值变大；调节 \(L\) 或 \(C\) ——观察 \(\omega_{0}\) 整体平移；把 \(\omega\) 滑过 \(\omega_{0}\) ——观察相位过零、电流达峰。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="720" height="460"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+
+          // Parameters (real SI units; V0 fixed).
+          var defaults = {
+            V0: 10,         // V (peak source EMF)
+            R: 30,          // ohms
+            L_mH: 10,       // displayed in mH
+            C_uF: 2,        // displayed in uF
+            omega: 7071,    // rad/s (default = omega0 of default L,C)
+          };
+          var params = {
+            V0: defaults.V0,
+            R: defaults.R,
+            L: defaults.L_mH * 1e-3,
+            C: defaults.C_uF * 1e-6,
+            omega: defaults.omega,
+          };
+
+          // Panel geometry
+          var GL = 52, GR = 540;
+          var P1T = 30,  P1B = 195;        // |I(omega)|
+          var P2T = 210, P2B = 300;        // phi(omega)
+          var P3T = 315, P3B = 435;        // V(t), I(t) waveforms
+          var INFOX = 555;
+
+          function phys() {
+            var R = params.R, L = params.L, C = params.C, V0 = params.V0, w = params.omega;
+            var w0 = 1 / Math.sqrt(L * C);
+            var XL = w * L;
+            var XC = 1 / Math.max(w * C, 1e-15);
+            var dX = XL - XC;
+            var Z = Math.sqrt(R * R + dX * dX);
+            var I0 = V0 / Z;
+            var phi = Math.atan2(dX, R);
+            var Vrms = V0 / Math.SQRT2;
+            var Irms = I0 / Math.SQRT2;
+            var Pavg = Vrms * Irms * Math.cos(phi);
+            var Q = w0 * L / R;
+            var BW = R / L;
+            return { w0: w0, XL: XL, XC: XC, dX: dX, Z: Z, I0: I0, phi: phi,
+                     Vrms: Vrms, Irms: Irms, Pavg: Pavg, Q: Q, BW: BW };
+          }
+
+          function omegaMax(p) {
+            // ensure both omega0 and operating omega are visible
+            return Math.max(2.5 * p.w0, 1.15 * params.omega, p.w0 * 1.1);
+          }
+
+          function Icurve(w) {
+            var xl = w * params.L;
+            var xc = 1 / Math.max(w * params.C, 1e-15);
+            var Z = Math.sqrt(params.R * params.R + (xl - xc) * (xl - xc));
+            return params.V0 / Math.max(Z, 1e-9);
+          }
+          function phiCurve(w) {
+            var xl = w * params.L;
+            var xc = 1 / Math.max(w * params.C, 1e-15);
+            return Math.atan2(xl - xc, params.R);
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* purely parametric; no time-evolution state */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var p = phys();
+              var wMax = omegaMax(p);
+              var Imax = params.V0 / params.R;        // peak of resonance curve
+              var IyMax = Imax * 1.15;
+              var x0 = GL + (p.w0 / wMax) * (GR - GL);          // omega0 vertical
+              var opX = GL + (params.omega / wMax) * (GR - GL); // operating omega vertical
+
+              function panelFrame(top, bot) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.axis;
+                ctx.lineWidth = 1.2;
+                ctx.strokeRect(GL, top, GR - GL, bot - top);
+                ctx.restore();
+              }
+              function gridOmega(top, bot) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.grid;
+                ctx.globalAlpha = 0.5;
+                ctx.lineWidth = 1;
+                for (var k = 0.5; k <= 2.5 + 1e-9; k += 0.5) {
+                  var gx = GL + (k * p.w0 / wMax) * (GR - GL);
+                  if (gx > GR + 0.5) continue;
+                  ctx.beginPath(); ctx.moveTo(gx, top); ctx.lineTo(gx, bot); ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+                ctx.restore();
+              }
+              function markOmega0(top, bot) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.setLineDash([4, 4]);
+                ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(x0, top); ctx.lineTo(x0, bot); ctx.stroke();
+                ctx.restore();
+              }
+
+              // ===== Panel 1: |I(omega)| =====
+              panelFrame(P1T, P1B);
+              gridOmega(P1T, P1B);
+              markOmega0(P1T, P1B);
+              // curve
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              var NP = 240;
+              for (var i = 0; i <= NP; i++) {
+                var w = Math.max(1, (i / NP) * wMax);
+                var px = GL + (w / wMax) * (GR - GL);
+                var py = P1B - (Icurve(w) / IyMax) * (P1B - P1T);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+              // operating point
+              var opIY = P1B - (p.I0 / IyMax) * (P1B - P1T);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(opX, P1T); ctx.lineTo(opX, P1B); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, opX, opIY, 5, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.4 });
+
+              PS.drawText(ctx, '|I(ω)| —— 电流幅值 Current amplitude (A)', GL + 6, P1T - 8,
+                          { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'I_max = V₀/R = ' + Imax.toFixed(3) + ' A', GR - 4, P1T + 13,
+                          { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, 'ω₀', x0 + 3, P1B - 4,
+                          { font: '11px system-ui', color: PS.colors.accent2 });
+
+              // ===== Panel 2: phi(omega) =====
+              panelFrame(P2T, P2B);
+              gridOmega(P2T, P2B);
+              markOmega0(P2T, P2B);
+              // phi=0 midline
+              var P2MID = (P2T + P2B) / 2;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.7;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(GL, P2MID); ctx.lineTo(GR, P2MID); ctx.stroke();
+              ctx.restore();
+              // curve
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              for (var i = 0; i <= NP; i++) {
+                var w = Math.max(1, (i / NP) * wMax);
+                var ph = phiCurve(w);
+                var px = GL + (w / wMax) * (GR - GL);
+                var py = P2MID - (ph / (Math.PI / 2)) * ((P2B - P2T) / 2 - 4);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+              // operating point
+              var opPhiY = P2MID - (p.phi / (Math.PI / 2)) * ((P2B - P2T) / 2 - 4);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(opX, P2T); ctx.lineTo(opX, P2B); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, opX, opPhiY, 5, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.4 });
+
+              PS.drawText(ctx, 'φ(ω) —— 相位 Phase (V 相对 I)', GL + 6, P2T - 8,
+                          { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '+90°', GL - 4, P2T + 4,  { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '0',    GL - 4, P2MID + 3,{ font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '−90°', GL - 4, P2B + 3,  { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // ===== Panel 3: V(t), I(t) waveforms (visual freq decoupled from circuit w) =====
+              panelFrame(P3T, P3B);
+              var P3MID = (P3T + P3B) / 2;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.6;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(GL, P3MID); ctx.lineTo(GR, P3MID); ctx.stroke();
+              ctx.restore();
+
+              var wVis = 2 * Math.PI;     // 1 cycle/sec, comfortable to watch
+              var tWinVis = 2.5;          // 2.5 cycles shown
+              var tNow = env.t;
+              var t0v = tNow - tWinVis;
+              var NP3 = 220;
+              // V(t)/V0 in primary
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              for (var i = 0; i <= NP3; i++) {
+                var tt = t0v + (i / NP3) * tWinVis;
+                var vv = Math.cos(wVis * tt);                  // V(t)/V0
+                var px = GL + (i / NP3) * (GR - GL);
+                var py = P3MID - vv * ((P3B - P3T) / 2 - 6);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+              // I(t)/I0 with current phase lag phi (V relative to I)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              for (var i = 0; i <= NP3; i++) {
+                var tt = t0v + (i / NP3) * tWinVis;
+                var ii = Math.cos(wVis * tt - p.phi);          // I(t)/I0
+                var px = GL + (i / NP3) * (GR - GL);
+                var py = P3MID - ii * ((P3B - P3T) / 2 - 6);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              PS.drawText(ctx, '波形 V(t) (蓝) 与 I(t) (红) —— 归一化；相位差 = φ', GL + 6, P3T - 8,
+                          { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '+1', GL - 4, P3T + 4,  { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '−1', GL - 4, P3B + 3,  { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, 't (展示用)', GR - 2, P3B + 14, { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+
+              // ===== Info sidebar =====
+              PS.drawText(ctx, '工作点 Operating point', INFOX, 30, { font: '13px system-ui', color: PS.colors.text });
+              var regime, regimeColor;
+              if (p.dX > 0.5) { regime = '感性 inductive (V 超前)'; regimeColor = PS.colors.accent; }
+              else if (p.dX < -0.5) { regime = '容性 capacitive (V 滞后)'; regimeColor = PS.colors.primary; }
+              else { regime = '★ 谐振 resonance ★'; regimeColor = PS.colors.accent2; }
+              PS.drawText(ctx, regime, INFOX, 48, { font: '12px system-ui', color: regimeColor });
+
+              var lines = [
+                ['ω₀ = ',         p.w0.toFixed(1) + ' rad/s'],
+                ['f₀ = ',         (p.w0 / (2 * Math.PI)).toFixed(2) + ' Hz'],
+                ['ω = ',          params.omega.toFixed(0) + ' rad/s'],
+                ['ω/ω₀ = ',       (params.omega / p.w0).toFixed(3)],
+                ['R = ',          params.R.toFixed(1) + ' Ω'],
+                ['L = ',          (params.L * 1000).toFixed(2) + ' mH'],
+                ['C = ',          (params.C * 1e6).toFixed(2) + ' μF'],
+                ['X_L = ',        p.XL.toFixed(2) + ' Ω'],
+                ['X_C = ',        p.XC.toFixed(2) + ' Ω'],
+                ['Z = ',          p.Z.toFixed(2) + ' Ω'],
+                ['I₀ = ',         p.I0.toFixed(4) + ' A'],
+                ['φ = ',          (p.phi * 180 / Math.PI).toFixed(1) + '°'],
+                ['cos φ = ',      Math.cos(p.phi).toFixed(3)],
+                ['P_avg = ',      p.Pavg.toFixed(3) + ' W'],
+                ['Q = ',          p.Q.toFixed(2)],
+                ['Δω = R/L = ',   p.BW.toFixed(0) + ' rad/s'],
+              ];
+              for (var li = 0; li < lines.length; li++) {
+                PS.drawText(ctx, lines[li][0] + lines[li][1], INFOX, 70 + li * 16,
+                            { font: '11.5px system-ui', color: PS.colors.text });
+              }
+
+              // Footer hint
+              PS.drawText(ctx, '减小 R → 谐振峰变尖锐 (Q↑, Δω↓)；调节 L、C → 平移 ω₀；扫过 ω₀ → 电流达峰、相位过零',
+                           GL, H - 6, { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'R',     label: '电阻 R (Ω)',        min: 5,    max: 300,  step: 5,   value: defaults.R },
+            { type: 'slider', key: 'L_mH',  label: '电感 L (mH)',       min: 1,    max: 50,   step: 0.5, value: defaults.L_mH },
+            { type: 'slider', key: 'C_uF',  label: '电容 C (μF)',       min: 0.5,  max: 20,   step: 0.1, value: defaults.C_uF },
+            { type: 'slider', key: 'omega', label: '驱动频率 ω (rad/s)', min: 100,  max: 30000, step: 100, value: defaults.omega },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('R',     function (v) { params.R = v; });
+          ctl.on('L_mH',  function (v) { params.L = v * 1e-3; });
+          ctl.on('C_uF',  function (v) { params.C = v * 1e-6; });
+          ctl.on('omega', function (v) { params.omega = v; });
+          ctl.on('reset', function () {
+            var setSlider = function (key, val) {
+              var inputs = document.getElementById('controls-12').querySelectorAll('input[type=range]');
+              var keys = ['R', 'L_mH', 'C_uF', 'omega'];
+              var idx = keys.indexOf(key);
+              if (idx >= 0 && inputs[idx]) {
+                inputs[idx].value = val;
+                inputs[idx].dispatchEvent(new Event('input', { bubbles: true }));
+              }
+            };
+            setSlider('R', defaults.R);
+            setSlider('L_mH', defaults.L_mH);
+            setSlider('C_uF', defaults.C_uF);
+            setSlider('omega', defaults.omega);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>交流源 &amp; RMS</strong>：\(V(t)=V_{0}\cos(\omega t)\)，\(V_{\mathrm{rms}}=V_{0}/\sqrt{2}\)。市电标称值都是 RMS（120 V 或 230 V）。</li>
+        <li><strong>相量 / 复阻抗</strong>：用复数 \(\tilde{V}=\tilde{Z}\,\tilde{I}\) 取代三角恒等式。元件复阻抗：\(\tilde{Z}_{R}=R\)、\(\tilde{Z}_{L}=i\omega L\)、\(\tilde{Z}_{C}=1/(i\omega C)\)。</li>
+        <li><strong>电抗</strong>：\(X_{L}=\omega L\)（随 \(\omega\) 增）、\(X_{C}=1/(\omega C)\)（随 \(\omega\) 减）。ELI / ICE：电感电压超前电流 90°，电容电流超前电压 90°。</li>
+        <li><strong>串联 RLC</strong>：\(Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}}\)，\(\tan\varphi=(X_{L}-X_{C})/R\)，\(I_{0}=V_{0}/Z\)。</li>
+        <li><strong>谐振</strong>：\(X_{L}=X_{C}\Rightarrow\omega_{0}=1/\sqrt{LC}\)。此时 \(Z=R\)（最小）、\(I_{0}=V_{0}/R\)（最大）、\(\varphi=0\)。注意 \(X_{L}=X_{C}=\sqrt{L/C}\neq 0\)，电感电容各自电压可达 \(Q V_{0}\)。</li>
+        <li><strong>平均功率</strong>：\(P_{\text{avg}}=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi=I_{\mathrm{rms}}^{2}R\)。\(\cos\varphi\) = 功率因数；L、C 不耗能，仅作无功交换。</li>
+        <li><strong>Q 因子 &amp; 带宽</strong>：\(Q=\omega_{0}L/R=\omega_{0}/\Delta\omega\)，\(\Delta\omega=R/L\)。\(R\) 越小，谐振峰越尖锐，选频性越好。</li>
+        <li><strong>滤波器（定性）</strong>：RC 低通从 C 取输出（\(V_{\text{out}}\to 0\) 当 \(\omega\to\infty\)），RC 高通从 R 取输出（\(V_{\text{out}}\to 0\) 当 \(\omega\to 0\)），截止 \(\omega_{c}=1/(RC)\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\,V_{\mathrm{rms}}=\frac{V_{0}}{\sqrt{2}},\;\; X_{L}=\omega L,\;\; X_{C}=\frac{1}{\omega C},\;\; Z=\sqrt{R^{2}+(X_{L}-X_{C})^{2}},\;\; \tan\varphi=\frac{X_{L}-X_{C}}{R}\,} \]</div>
+      <div class="formula">\[ \boxed{\,\omega_{0}=\frac{1}{\sqrt{LC}},\;\; P_{\text{avg}}=V_{\mathrm{rms}}I_{\mathrm{rms}}\cos\varphi,\;\; Q=\frac{\omega_{0}L}{R}=\frac{\omega_{0}}{\Delta\omega}\,} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

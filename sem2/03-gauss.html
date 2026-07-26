@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 高斯定理 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第3章 · 静电学 Electrostatics</p>
+      <h1>高斯定理 <span class="en-title">Gauss's Law</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>计算电场穿过一曲面的电通量 (electric flux) \(\Phi_E=\int\vec E\cdot d\vec A\)，并正确判断其正负。</li>
+        <li>陈述高斯定理 (Gauss's law) \(\oint\vec E\cdot d\vec A=Q_{\text{enc}}/\varepsilon_0\)，并解释为何它<strong>始终成立</strong>但仅在具有足够对称性时计算上才有用。</li>
+        <li>根据对称性——球对称、柱对称、面对称——选择恰当的高斯面 (Gaussian surface)：同心球面、同轴圆柱面、药盒 (pillbox)。</li>
+        <li>推导并应用：均匀带电实心球内部 \(E\propto r\)、外部 \(E\propto 1/r^2\)；均匀带电球壳内部 \(E=0\)。</li>
+        <li>应用高斯定理求无限长带电线 (\(E=\lambda/2\pi\varepsilon_0 r\))、无限大带电平面 (\(E=\sigma/2\varepsilon_0\)) 与导体表面紧外侧 (\(E=\sigma/\varepsilon_0\)) 的电场。</li>
+        <li>分析同轴电缆 (coaxial cable) 等组合对称系统，理解静电平衡 (electrostatic equilibrium) 下导体内部 \(E=0\) 的条件。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电场通量 Electric Flux</h3>
+      <p>把电场想象成一种"流"，电场线穿过某曲面的"流量"即为电通量 (electric flux)。对一小面元 \(d\vec A=\hat n\,dA\)（\(\hat n\) 为面元外法向单位矢量），通量为：</p>
+      <div class="formula">\[ d\Phi_E=\vec E\cdot d\vec A=E\,dA\,\cos\theta \]</div>
+      <p>其中 \(\theta\) 是 \(\vec E\) 与法向 \(\hat n\) 的夹角。对整个曲面积分得总通量：</p>
+      <div class="formula">\[ \Phi_E=\int_S \vec E\cdot d\vec A \]</div>
+      <p>若曲面闭合 (closed surface)，则写成 \(\Phi_E=\oint \vec E\cdot d\vec A\)，并约定 \(d\vec A\) 的法向指向闭合面<strong>外</strong>。<strong>通量符号</strong>：电场线穿出闭合面 (outward) → 正通量；穿入 (inward) → 负通量。注意通量为零不一定意味着场为零，只意味着"穿出 = 穿入"。</p>
+
+      <h3>2. 高斯定理 Gauss's Law</h3>
+      <p>对任意闭合曲面（称为高斯面 Gaussian surface），穿过它的总电通量正比于面内净电荷 \(Q_{\text{enc}}\)：</p>
+      <div class="formula">\[ \boxed{\;\oint_S \vec E\cdot d\vec A=\frac{Q_{\text{enc}}}{\varepsilon_0}\;} \]</div>
+      <p>这里 \(\varepsilon_0=8.854\times 10^{-12}\,\mathrm{C^2/(N\cdot m^2)}\) 是真空电容率 (vacuum permittivity)。<strong>高斯定理是库仑定律的推广（等价于库仑平方反比律），是麦克斯韦四方程之一，对任何闭合面、任何电荷分布都成立。</strong></p>
+
+      <h3>3. 选高斯面的对称性原则 Choosing Gaussian Surfaces by Symmetry</h3>
+      <p>高斯定理<strong>恒成立</strong>，但作为计算工具<strong>仅在对称分布下有用</strong>。原因是左边的积分包含未知的 \(\vec E\)，要把它从积分号中"提取"出来，必须让 \(\vec E\) 在高斯面上的分布足够简单。三种经典对称性及对应的高斯面：</p>
+      <ul>
+        <li><strong>球对称 (spherical symmetry)</strong>：以中心为球心做<strong>同心球面</strong>。此时 \(E\) 在球面上处处等大、方向沿径向，\(\oint \vec E\cdot d\vec A=E(4\pi r^2)\)。</li>
+        <li><strong>柱对称 (cylindrical symmetry)</strong>：以带电线/轴为轴做<strong>同轴圆柱面</strong>（含两个端面）。侧面贡献 \(E(2\pi r L)\)，端面因 \(\vec E\perp\hat n\) 而通量为零。</li>
+        <li><strong>面对称 (planar symmetry)</strong>：做<strong>圆柱形"药盒" (pillbox)</strong>，两端面平行带电面、面积 \(A\)。侧面通量为零，两端面共贡献 \(2EA\)。</li>
+      </ul>
+
+      <h3>4. 应用一：点电荷 Point Charge</h3>
+      <p>以点电荷 \(q\) 为中心做半径 \(r\) 的球面。由球对称，\(E\) 在球面上等大且沿径向：</p>
+      <div class="formula">\[ E(4\pi r^2)=\frac{q}{\varepsilon_0}\;\;\Longrightarrow\;\; E=\frac{1}{4\pi\varepsilon_0}\frac{q}{r^2}=k_e\frac{q}{r^2} \]</div>
+      <p>这正是库仑定律 (Coulomb's law)，其中 \(k_e=1/(4\pi\varepsilon_0)\approx 8.99\times 10^{9}\,\mathrm{N\,m^2/C^2}\)。可见高斯定理 + 对称性"重新发现"了库仑定律。</p>
+
+      <h3>5. 应用二：均匀带电实心球 Uniformly Charged Solid Sphere</h3>
+      <p>半径为 \(R\)、总电荷 \(Q\) 均匀分布在体内的实心球，体电荷密度 \(\rho=Q/(\tfrac{4}{3}\pi R^3)\)。</p>
+      <ul>
+        <li><strong>外部 \(r\ge R\)</strong>：高斯面包围全部电荷 \(Q_{\text{enc}}=Q\)，结果如同全部电荷集中于球心：\[ E_{\text{out}}=\frac{1}{4\pi\varepsilon_0}\frac{Q}{r^2}\;\propto\;\frac{1}{r^2} \]</li>
+        <li><strong>内部 \(r\le R\)</strong>：高斯面只包围 \(Q_{\text{enc}}=Q(r/R)^3\)，故 \[ E_{\text{in}}=\frac{1}{4\pi\varepsilon_0}\frac{Q\,r^3/R^3}{r^2}=\frac{1}{4\pi\varepsilon_0}\frac{Q\,r}{R^3}=\frac{\rho\,r}{3\varepsilon_0}\;\propto\;r \]</li>
+      </ul>
+      <p>两式在 \(r=R\) 处衔接：\(E(R)=k_e Q/R^2\)，这正是表面处的电场。</p>
+
+      <h3>6. 应用三：均匀带电球壳 Charged Spherical Shell</h3>
+      <p>所有电荷分布在半径 \(R\) 的薄球壳上（如导体球）。由球壳定理（高斯定理直接给出）：</p>
+      <ul>
+        <li><strong>内部 \(r&lt;R\)</strong>：\(Q_{\text{enc}}=0\)，故 \(E_{\text{in}}=0\)。</li>
+        <li><strong>外部 \(r\ge R\)</strong>：与实心球外部相同，\(E=k_e Q/r^2\)。</li>
+      </ul>
+
+      <h3>7. 应用四：无限长均匀带电线 Infinite Line of Charge</h3>
+      <p>线电荷密度 (linear charge density) \(\lambda\)（单位 \(\mathrm{C/m}\)）。取长 \(L\)、半径 \(r\) 的同轴圆柱面。由柱对称，电场垂直于线、沿径向：</p>
+      <div class="formula">\[ E(2\pi r L)=\frac{\lambda L}{\varepsilon_0}\;\;\Longrightarrow\;\; E=\frac{\lambda}{2\pi\varepsilon_0 r}=\frac{2k_e\lambda}{r}\;\propto\;\frac{1}{r} \]</div>
+
+      <h3>8. 应用五：无限大均匀带电平面 Infinite Plane of Charge</h3>
+      <p>面电荷密度 \(\sigma\)（单位 \(\mathrm{C/m^2}\)）。取横截面积为 \(A\) 的"药盒"高斯面，两端面在带电面两侧。由面对称，电场垂直于带电面、两侧等大反向：</p>
+      <div class="formula">\[ 2EA=\frac{\sigma A}{\varepsilon_0}\;\;\Longrightarrow\;\; E=\frac{\sigma}{2\varepsilon_0} \]</div>
+      <p>注意：电场<strong>与距离无关</strong>——只要平面真的"无限大"，无论多远 \(E\) 都一样大。这是均匀电场 (uniform field) 的理想模型。</p>
+
+      <h3>9. 应用六：导体表面紧外侧 Just Outside a Conductor</h3>
+      <p>静电平衡 (electrostatic equilibrium) 下导体内部 \(E=0\)，所有净电荷分布在表面。取一个一端在导体内、一端在外的"药盒"，端面积 \(A\) 紧贴表面。导体内那一端 \(E=0\)（无通量）；侧面在导体内部分 \(E=0\)，在外部分因 \(\vec E\parallel\hat n\)（垂直表面）而无侧面通量。所以：</p>
+      <div class="formula">\[ E\,A=\frac{\sigma A}{\varepsilon_0}\;\;\Longrightarrow\;\; E_{\text{cond, out}}=\frac{\sigma}{\varepsilon_0} \]</div>
+      <p>注意这<strong>是</strong>无限大平面结果 \(E=\sigma/2\varepsilon_0\) 的两倍。差异并非矛盾：导体表面的电场是"全部表面电荷共同贡献"的合场，刚好等于局部平板贡献 \(\sigma/2\varepsilon_0\) 加上"其余所有电荷在表面附近贡献的 \(\sigma/2\varepsilon_0\)"。</p>
+
+      <div class="key-terms">electric flux (电通量), Gaussian surface (高斯面), Gauss's law (高斯定理), vacuum permittivity \(\varepsilon_0\) (真空电容率), enclosed charge \(Q_{\text{enc}}\) (包围电荷), spherical/cylindrical/planar symmetry (球/柱/面对称), pillbox (药盒高斯面), Coulomb's law (库仑定律), volume charge density \(\rho\) (体电荷密度), surface charge density \(\sigma\) (面电荷密度), linear charge density \(\lambda\) (线电荷密度), electrostatic equilibrium (静电平衡), shell theorem (球壳定理)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从高斯定理导出库仑定律</h3>
+      <p>设点电荷 \(q\) 位于原点。由球对称，电场必为径向且大小只依赖于 \(r\)：\(\vec E=E(r)\,\hat r\)。取半径 \(r\) 的同心球面作为高斯面。在球面上 \(\vec E\parallel d\vec A\)，故 \(\vec E\cdot d\vec A=E(r)\,dA\)，且 \(E(r)\) 是常数：</p>
+      <div class="formula">\[ \oint \vec E\cdot d\vec A=E(r)\oint dA=E(r)\,(4\pi r^2) \]</div>
+      <p>由高斯定理：</p>
+      <div class="formula">\[ E(r)\,(4\pi r^2)=\frac{q}{\varepsilon_0}\;\;\Longrightarrow\;\; E(r)=\frac{1}{4\pi\varepsilon_0}\frac{q}{r^2} \]</div>
+      <p>方向沿径向（\(q&gt;0\) 向外，\(q&lt;0\) 向内）。写成矢量形式即库仑定律的场表述 \(\vec E=k_e q\hat r/r^2\)。反之，由库仑平方反比律也可证得高斯定理——二者在静电学范围内等价。</p>
+
+      <h3>推导 B：实心球内部电场的线性分布 \(E\propto r\)</h3>
+      <p>半径 \(R\)、总电荷 \(Q\)、均匀体密度 \(\rho=Q/(\tfrac{4}{3}\pi R^3)\) 的实心球。在球内取半径 \(r&lt;R\) 的同心球面作高斯面。包围的电荷为：</p>
+      <div class="formula">\[ Q_{\text{enc}}(r)=\rho\cdot\tfrac{4}{3}\pi r^3=Q\,\frac{r^3}{R^3} \]</div>
+      <p>由对称性 \(\oint \vec E\cdot d\vec A=E(r)\cdot 4\pi r^2\)，代入高斯定理：</p>
+      <div class="formula">\[ E(r)\cdot 4\pi r^2=\frac{Q\,r^3/R^3}{\varepsilon_0}\;\;\Longrightarrow\;\; E(r)=\frac{Q\,r}{4\pi\varepsilon_0 R^3}=\frac{\rho\,r}{3\varepsilon_0} \]</div>
+      <p>所以 <strong>\(E\propto r\) 线性增长</strong>。物理上：随着 \(r\) 增大，包围电荷按 \(r^3\) 增长，但高斯面面积只按 \(r^2\) 增长，故场强按 \(r^3/r^2=r\) 增长。在球心 \(r=0\) 处 \(E=0\)（由对称性也必须如此）；在表面 \(r=R\) 处与外部公式衔接：\(E(R)=k_e Q/R^2\)。</p>
+
+      <h3>推导 C：导体表面 \(E=\sigma/\varepsilon_0\) 与"两倍问题"</h3>
+      <p>表面电荷密度为 \(\sigma\) 的导体，紧外侧电场 \(E=\sigma/\varepsilon_0\)，而孤立带电平面两侧各 \(E=\sigma/2\varepsilon_0\)。看似矛盾。解析：取一"药盒"紧贴导体表面、端面积 \(A\)。导体内端面处 \(\vec E=0\)（静电平衡），所以只有外端面贡献通量 \(EA\)。药盒内包围电荷 \(\sigma A\)，故 \(EA=\sigma A/\varepsilon_0\)，得 \(E=\sigma/\varepsilon_0\)。对孤立大平面，<strong>两端面外</strong>都有电场，故 \(2EA=\sigma A/\varepsilon_0\)，\(E=\sigma/2\varepsilon_0\)。两种情形下"另一面"是否存在决定了系数。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 均匀带电实心球内外的电场</h4>
+        <p class="example-statement">半径 \(R=10.0\,\mathrm{cm}\) 的实心塑料球，总电荷 \(Q=+20.0\,\mathrm{nC}\) 均匀分布在体内。求：(a) \(r=5.0\,\mathrm{cm}\)（球内）；(b) \(r=20.0\,\mathrm{cm}\)（球外）；(c) 表面 \(r=R\) 处的电场大小。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>体电荷密度 \(\rho=\dfrac{Q}{\frac{4}{3}\pi R^3}=\dfrac{20.0\times 10^{-9}}{\frac{4}{3}\pi(0.100)^3}=\dfrac{20.0\times 10^{-9}}{4.189\times 10^{-3}}=4.77\times 10^{-6}\,\mathrm{C/m^3}\)。</p>
+          <p class="step">(a) 球内：\(E=\dfrac{\rho\,r}{3\varepsilon_0}=\dfrac{(4.77\times 10^{-6})(0.050)}{3(8.854\times 10^{-12})}=\dfrac{2.39\times 10^{-7}}{2.656\times 10^{-11}}=8.98\times 10^{3}\,\mathrm{V/m}\)。</p>
+          <p class="step">校核用另一形式 \(E=k_e Qr/R^3=\dfrac{(8.99\times 10^9)(20.0\times 10^{-9})(0.050)}{(0.100)^3}=\dfrac{(179.8)(0.050)}{1.00\times 10^{-3}}=8.99\times 10^{3}\,\mathrm{V/m}\) ✓。</p>
+          <p class="step">(b) 球外：\(E=k_e\dfrac{Q}{r^2}=\dfrac{(8.99\times 10^9)(20.0\times 10^{-9})}{(0.200)^2}=\dfrac{179.8}{0.0400}=4.50\times 10^{3}\,\mathrm{V/m}\)。</p>
+          <p class="step">(c) 表面 \(r=R\)：\(E=k_e\dfrac{Q}{R^2}=\dfrac{179.8}{(0.100)^2}=\dfrac{179.8}{0.0100}=1.80\times 10^{4}\,\mathrm{V/m}\)。</p>
+          <p><span class="ans">(a) \(E\approx 8.98\,\mathrm{kV/m}\)（向外）；(b) \(E\approx 4.50\,\mathrm{kV/m}\)（向外）；(c) \(E\approx 18.0\,\mathrm{kV/m}\)（向外）</span>。注意球内电场<strong>线性</strong>增长、球外<strong>平方反比</strong>衰减，在表面处连续衔接。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 无限长带电直线的电场</h4>
+        <p class="example-statement">一根可视为无限长的直导线，线电荷密度 \(\lambda=+5.00\,\mathrm{\mu C/m}\)。求距导线 \(r=2.00\,\mathrm{cm}\) 处的电场。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>柱对称，取半径 \(r\)、长 \(L\) 的同轴圆柱高斯面。侧面贡献 \(E(2\pi r L)\)，两个端面因电场平行于端面（垂直于轴）而通量为零。包围电荷 \(Q_{\text{enc}}=\lambda L\)。高斯定理：</p>
+          <div class="formula">\[ E(2\pi r L)=\frac{\lambda L}{\varepsilon_0}\;\;\Longrightarrow\;\; E=\frac{\lambda}{2\pi\varepsilon_0 r}=\frac{2k_e\lambda}{r} \]</div>
+          <p class="step">代入数值：</p>
+          <p class="step">\(E=\dfrac{2(8.99\times 10^9)(5.00\times 10^{-6})}{0.0200}=\dfrac{8.99\times 10^4}{0.0200}=4.50\times 10^{6}\,\mathrm{V/m}\)。</p>
+          <p><span class="ans">\(E\approx 4.50\times 10^{6}\,\mathrm{V/m}=4.50\,\mathrm{MV/m}\)，方向沿径向向外（\(\lambda&gt;0\)）</span>。比点电荷衰减慢（\(1/r\) 而非 \(1/r^2\)），因为"线"只在一个方向上"散开"。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 无限大带电平面与平行板电容器</h4>
+        <p class="example-statement">一无限大均匀带电塑料薄片，面电荷密度 \(\sigma=+8.00\,\mathrm{nC/m^2}\)。求薄片两侧的电场。若将两块这样的薄片平行放置、相距很近，分别带 \(+\sigma\) 与 \(-\sigma\)（平行板电容器模型），求两板之间和两板外侧的合电场。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 单一无限大平面：取端面积 \(A\) 的药盒，两端面分别在平面两侧。由面对称，两侧电场等大、方向相反（均远离正电荷面）：</p>
+          <div class="formula">\[ 2EA=\frac{\sigma A}{\varepsilon_0}\;\;\Longrightarrow\;\; E=\frac{\sigma}{2\varepsilon_0}=\frac{8.00\times 10^{-9}}{2(8.854\times 10^{-12})}=\frac{8.00\times 10^{-9}}{1.771\times 10^{-11}}=452\,\mathrm{V/m} \]</div>
+          <p class="step">(b) 两块板（\(+\sigma\) 与 \(-\sigma\)）：每块板单独在两侧各产生 \(\sigma/2\varepsilon_0=452\,\mathrm{V/m}\)。</p>
+          <p class="step"><strong>两板之间</strong>：两场同向（都从 \(+\) 板指向 \(-\) 板），叠加：\(E_{\text{between}}=\sigma/2\varepsilon_0+\sigma/2\varepsilon_0=\sigma/\varepsilon_0=904\,\mathrm{V/m}\)。</p>
+          <p class="step"><strong>两板外侧</strong>：两场反向等大，叠加为零：\(E_{\text{outside}}=0\)。</p>
+          <p><span class="ans">单板两侧 \(E\approx 452\,\mathrm{V/m}\)；双板之间 \(E\approx 904\,\mathrm{V/m}\)（由 \(+\) 板指向 \(-\) 板）；双板外侧 \(E=0\)</span>。这就是平行板电容器 (parallel-plate capacitor) 的标准模型。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 带电导体球表面紧外侧的电场</h4>
+        <p class="example-statement">半径 \(R=5.00\,\mathrm{cm}\) 的金属导体球带净电荷 \(Q=+12.0\,\mathrm{nC}\)。求：(a) 球内部 (\(r&lt;R\)) 电场；(b) 紧贴表面外侧 (\(r\to R^+\)) 电场；(c) 表面电荷密度 \(\sigma\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>导体静电平衡时所有净电荷分布在表面（可用球壳模型），内部 \(E=0\)。</p>
+          <p class="step">(a) \(r&lt;R\)：\(E=0\)。</p>
+          <p class="step">(c) 表面电荷均匀分布在球面上：\(\sigma=\dfrac{Q}{4\pi R^2}=\dfrac{12.0\times 10^{-9}}{4\pi(0.0500)^2}=\dfrac{12.0\times 10^{-9}}{3.142\times 10^{-2}}=3.82\times 10^{-7}\,\mathrm{C/m^2}\)。</p>
+          <p class="step">(b) 导体表面紧外侧：\(E=\dfrac{\sigma}{\varepsilon_0}=\dfrac{3.82\times 10^{-7}}{8.854\times 10^{-12}}=4.31\times 10^{4}\,\mathrm{V/m}\)。</p>
+          <p class="step">校核用球壳外部公式 \(E=k_e Q/R^2=\dfrac{(8.99\times 10^9)(12.0\times 10^{-9})}{(0.0500)^2}=\dfrac{107.9}{2.50\times 10^{-3}}=4.32\times 10^{4}\,\mathrm{V/m}\) ✓。</p>
+          <p><span class="ans">(a) \(E=0\)；(b) \(E\approx 4.31\times 10^{4}\,\mathrm{V/m}=43.1\,\mathrm{kV/m}\)（沿径向向外）；(c) \(\sigma\approx 3.82\times 10^{-7}\,\mathrm{C/m^2}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 同轴电缆的电场分布</h4>
+        <p class="example-statement">长同轴电缆：内导体（实心铜线）半径 \(a=1.00\,\mathrm{mm}\)，外导体（薄金属壳）内半径 \(b=5.00\,\mathrm{mm}\)。内导体每单位长度带电 \(+\lambda\)（\(\lambda=+3.00\,\mathrm{\mu C/m}\)），外导体每单位长度带 \(-\lambda\)。求三个区域的电场：(I) \(r&lt;a\)；(II) \(a&lt;r&lt;b\)；(III) \(r&gt;b\)。并计算区域 II 中 \(r=2.00\,\mathrm{mm}\) 处的电场数值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取半径 \(r\)、长 \(L\) 的同轴圆柱高斯面。由柱对称，电场（若有）必沿径向。</p>
+          <p class="step"><strong>区域 I (\(r&lt;a\)，内导体内部)</strong>：静电平衡下导体内部 \(E=0\)。</p>
+          <p class="step"><strong>区域 II (\(a&lt;r&lt;b\)，两导体之间)</strong>：高斯面包围 \(Q_{\text{enc}}=+\lambda L\)（外导体电荷在高斯面外）。由 \(E(2\pi r L)=\lambda L/\varepsilon_0\)：</p>
+          <div class="formula">\[ E_{\text{II}}(r)=\frac{\lambda}{2\pi\varepsilon_0 r}=\frac{2k_e\lambda}{r}\quad(\text{沿径向向外}) \]</div>
+          <p class="step">在 \(r=2.00\,\mathrm{mm}\)：\(E=\dfrac{2(8.99\times 10^9)(3.00\times 10^{-6})}{2.00\times 10^{-3}}=\dfrac{5.39\times 10^4}{2.00\times 10^{-3}}=2.70\times 10^{7}\,\mathrm{V/m}=27.0\,\mathrm{MV/m}\)。</p>
+          <p class="step"><strong>区域 III (\(r&gt;b\)，外导体之外)</strong>：高斯面包围 \(+\lambda L+(-\lambda L)=0\)，故 \(E_{\text{III}}=0\)。同轴电缆把电场完全"屏蔽"在两导体之间——这正是同轴电缆抗干扰的物理原理。</p>
+          <p><span class="ans">\(E_{\text{I}}=0\)；\(E_{\text{II}}=\lambda/(2\pi\varepsilon_0 r)\)，在 \(r=2.00\,\mathrm{mm}\) 处 \(E\approx 27.0\,\mathrm{MV/m}\)；\(E_{\text{III}}=0\)</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>高斯定理"恒成立"≠"恒有用"</strong>：对<strong>任意</strong>闭合面 \(\oint \vec E\cdot d\vec A=Q_{\text{enc}}/\varepsilon_0\) 都成立，但只有当对称性足够好（球/柱/面）能让 \(E\) 从积分号中提出时，才能用它求 \(E\)。对偶极子、有限带电棒等一般分布，高斯定理虽成立但无法直接解出 \(E\)——这时要用叠加或积分。</li>
+        <li><strong>\(Q_{\text{enc}}\) 只算"高斯面<strong>内部</strong>"的电荷</strong>：面外电荷对总通量贡献为零（穿入等于穿出），但<strong>不</strong>意味着它们不产生电场。一个常见错误是看到 \(\Phi_E=0\) 就断言 \(\vec E=0\)。</li>
+        <li><strong>通量符号</strong>：电场线<strong>穿出</strong>闭合面 → 正通量；<strong>穿入</strong> → 负通量。\(\vec E\cdot d\vec A=E\cos\theta\,dA\)，\(\theta&gt;90^\circ\) 时为负。"总通量为零"不等于"处处场为零"。</li>
+        <li><strong>导体内部 \(E=0\) 的真正原因</strong>：是静电平衡下电荷重新分布的<strong>结果</strong>，而非高斯定理的直接规定。如果电荷还在流动（非平衡），导体内 \(E\ne 0\)。"导体内部 \(E=0\)"仅在<strong>静电</strong>条件下成立。</li>
+        <li><strong>实心球 vs 球壳易混淆</strong>：均匀带电<strong>实心球</strong>内部电场 \(E\propto r\ne 0\)（除球心外）；带电<strong>球壳</strong>（或导体球）内部 \(E=0\)。两者外部都如同点电荷。背公式前先看清电荷是分布在整个体积还是只在表面。</li>
+        <li><strong>导体表面 \(E=\sigma/\varepsilon_0\) 是带电平面 \(E=\sigma/(2\varepsilon_0)\) 的两倍</strong>，并非矛盾——前者是"导体表面紧外侧"的合场强，后者是"孤立无限大平面单侧"的场强。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 点电荷位于立方体中心：边长 \(L=10.0\,\mathrm{cm}\) 的立方体中心放一点电荷 \(q=+1.00\,\mathrm{\mu C}\)。求穿过立方体表面的总通量，以及穿过每一个面的通量。</summary>
+        <div class="hint">直接用高斯定理求总通量；由对称性，6 个面平分。</div>
+        <div class="solution">
+          <p>总通量：\(\Phi_{\text{tot}}=q/\varepsilon_0=\dfrac{1.00\times 10^{-6}}{8.854\times 10^{-12}}=1.13\times 10^{5}\,\mathrm{V\cdot m}\)。</p>
+          <p>每个面（6 个面对称）：\(\Phi_{\text{face}}=\Phi_{\text{tot}}/6=1.88\times 10^{4}\,\mathrm{V\cdot m}\)。</p>
+          <p><span class="ans">\(\Phi_{\text{tot}}\approx 1.13\times 10^{5}\,\mathrm{V\cdot m}\)；每面 \(\approx 1.88\times 10^{4}\,\mathrm{V\cdot m}\)</span>。注意：每个面的通量与面到电荷的距离无关，只与电荷大小有关。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 带空腔的均匀带电球：半径 \(R\) 的实心球均匀带电（体密度 \(\rho&gt;0\)），内部挖出一个半径 \(R/2\) 的球形空腔，空腔中心距球心 \(d=R/2\)。求空腔内部（任意点）的电场。</summary>
+        <div class="hint">用"叠加原理 + 高斯定理"：把空腔视为"加上 \(-\rho\)"的实心小球。两个完整实心球的场已知为 \(E=\rho r/(3\varepsilon_0)\)。</div>
+        <div class="solution">
+          <p>把系统看作：完整大球（半径 \(R\)、密度 \(+\rho\)）加上完整小球（半径 \(R/2\)、密度 \(-\rho\)）的叠加。两球各自的场已知。</p>
+          <p>大球在空腔内点 \(P\) 处的场：\(\vec E_1=\dfrac{\rho}{3\varepsilon_0}\vec r_1\)（\(\vec r_1\) 从大球心指向 \(P\)）。</p>
+          <p>小球（密度 \(-\rho\)）在 \(P\)（小球内部）处的场：\(\vec E_2=\dfrac{-\rho}{3\varepsilon_0}\vec r_2\)（\(\vec r_2\) 从小球心指向 \(P\)）。</p>
+          <p>合场：\(\vec E=\vec E_1+\vec E_2=\dfrac{\rho}{3\varepsilon_0}(\vec r_1-\vec r_2)\)。</p>
+          <p>由矢量关系 \(\vec r_1-\vec r_2=\vec d\)（从大球心指向小球心的常矢量），故</p>
+          <div class="formula">\[ \vec E_{\text{cavity}}=\frac{\rho\,\vec d}{3\varepsilon_0}\quad(\text{均匀电场！}) \]</div>
+          <p><span class="ans">空腔内电场<strong>处处相同</strong>（均匀）：\(\vec E=\rho\vec d/(3\varepsilon_0)\)</span>，大小 \(\rho d/(3\varepsilon_0)\)，方向沿两球心连线、由大球心指向小球心。这是一个经典的"叠加 + 高斯"技巧题（引力中也有完全类似的结果）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 两块平行带电平面：两块无限大平行平面分别带均匀面电荷 \(\sigma_1=+6.0\,\mathrm{nC/m^2}\) 和 \(\sigma_2=+4.0\,\mathrm{nC/m^2}\)。求三个区域（左外、两板之间、右外）的合电场。</summary>
+        <div class="hint">每块板单独在各侧产生 \(\sigma/(2\varepsilon_0)\)，再按方向叠加。</div>
+        <div class="solution">
+          <p>单一平面 \(E=\sigma/(2\varepsilon_0)\)，两侧方向背离正电荷。</p>
+          <p>\(E_1=\sigma_1/(2\varepsilon_0)=6.0\times 10^{-9}/(1.771\times 10^{-11})=339\,\mathrm{V/m}\)。</p>
+          <p>\(E_2=\sigma_2/(2\varepsilon_0)=4.0\times 10^{-9}/(1.771\times 10^{-11})=226\,\mathrm{V/m}\)。</p>
+          <p>取右方向为正。<strong>左外</strong>（两板都在右侧）：\(E=-E_1-E_2=-565\,\mathrm{V/m}\)（指向左）。</p>
+          <p><strong>两板之间</strong>（板 1 在左、板 2 在右）：板 1 贡献 \(+E_1\)，板 2 贡献 \(-E_2\)，合 \(E=339-226=+113\,\mathrm{V/m}\)（指向右）。</p>
+          <p><strong>右外</strong>（两板都在左侧）：\(E=+E_1+E_2=+565\,\mathrm{V/m}\)（指向右）。</p>
+          <p><span class="ans">左外 \(-565\,\mathrm{V/m}\)（向左）；中间 \(+113\,\mathrm{V/m}\)（向右）；右外 \(+565\,\mathrm{V/m}\)（向右）</span>。注意当两板同号时电场在两板之间<strong>不为零</strong>，这与"电容器"（\(\sigma\) 与 \(-\sigma\)）情形不同。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 点电荷在导体球壳中心：点电荷 \(q=+5.0\,\mathrm{nC}\) 放在不带电的金属导体球壳（内半径 \(a=3.0\,\mathrm{cm}\)、外半径 \(b=5.0\,\mathrm{cm}\)）的中心。求：(a) 球壳内表面感应电荷 \(q_{\text{in}}\)；(b) 球壳外表面感应电荷 \(q_{\text{out}}\)；(c) 三区域 (\(r&lt;a\)、\(a&lt;r&lt;b\)、\(r&gt;b\)) 的电场。</summary>
+        <div class="hint">导体内 (\(a&lt;r&lt;b\)) \(E=0\)，对此区域用高斯定理可定 \(q_{\text{in}}\)；再用电荷守恒 \(q_{\text{in}}+q_{\text{out}}=0\)（球壳原本不带电）。</div>
+        <div class="solution">
+          <p>(a) 在导体内部 \(a&lt;r&lt;b\) 取高斯面。静电平衡 \(E=0\)，故 \(\Phi_E=0\)，\(Q_{\text{enc}}=0\)。高斯面内包围 \(q+q_{\text{in}}\)，所以 \(q_{\text{in}}=-q=-5.0\,\mathrm{nC}\)（内表面感应出与中心电荷等量异号的电荷）。</p>
+          <p>(b) 球壳总电荷守恒为零：\(q_{\text{in}}+q_{\text{out}}=0\)，故 \(q_{\text{out}}=+5.0\,\mathrm{nC}\)。</p>
+          <p>(c) <strong>\(r&lt;a\)</strong>：高斯面包围 \(q=+5.0\,\mathrm{nC}\)，\(E=k_e q/r^2\)。</p>
+          <p><strong>\(a&lt;r&lt;b\)</strong>（导体内）：\(E=0\)。</p>
+          <p><strong>\(r&gt;b\)</strong>：高斯面包围 \(q+q_{\text{in}}+q_{\text{out}}=+5.0-5.0+5.0=+5.0\,\mathrm{nC}\)，故 \(E=k_e(5.0\,\mathrm{nC})/r^2\)，如同全部净电荷集中在球心。</p>
+          <p><span class="ans">\(q_{\text{in}}=-5.0\,\mathrm{nC}\)；\(q_{\text{out}}=+5.0\,\mathrm{nC}\)；\(E(r&lt;a)=k_e(5\,\mathrm{nC})/r^2\)，\(E(a&lt;r&lt;b)=0\)，\(E(r&gt;b)=k_e(5\,\mathrm{nC})/r^2\)</span>。注意：外部世界"看到"的总电荷仍是 \(+5.0\,\mathrm{nC}\)，与球壳是否存在无关——但球壳的存在确保了内部 \(q\) 的电场不"泄漏"到导体内。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 带电球体的电场分布 Electric Field of a Charged Sphere</h2>
+      <p class="sim-desc">切换"实心球 (solid)"与"球壳 (shell)"，调节总电荷 \(Q\) 与高斯面半径 \(r_g\)（以球半径 \(R\) 为单位）。左侧为带电球横截面（实线为带电体，虚线为可移动的高斯球面，红色箭头表示电场方向与大小）；右侧为相应的 \(E(r)\) 曲线（已用表面场强 \(E_s=k_e|Q|/R^2\) 归一化，使曲线形状与 \(Q\) 无关）。HUD 实时显示包围电荷 \(Q_{\text{enc}}\)、通量 \(\Phi=Q_{\text{enc}}/\varepsilon_0\) 与当前场强 \(E(r_g)\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="620" height="400"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- physical constants (SI) ----
+          var eps0 = 8.854e-12;
+          var k_e  = 1 / (4 * Math.PI * eps0);
+
+          // ---- display geometry ----
+          var Rphys = 0.10;             // 10 cm physical radius (for numerical readouts)
+          var CX = 150, CY = H / 2;     // sphere center in cross-section
+          var PX = 70;                  // pixels per R in cross-section
+
+          // E(r) plot region (canvas y increases downward)
+          var PX0 = 320, PX1 = W - 24;  // plot x range
+          var PY0 = H - 56, PY1 = 44;   // plot y axis range
+          var RMAX = 3.0;               // r/R max on plot
+
+          // ---- control params (also defaults) ----
+          var DEFAULTS = { Q: 5.0, rg: 1.5, shell: false };
+          var params = { Q: DEFAULTS.Q, rg: DEFAULTS.rg, shell: DEFAULTS.shell };
+
+          function Q_SI() { return params.Q * 1e-9; }                       // C
+          function Esurf() { return k_e * Math.abs(Q_SI()) / (Rphys * Rphys); } // V/m
+
+          function Qenc(rg_units) {
+            var rg = rg_units * Rphys;
+            if (params.shell)    return rg >= Rphys ? Q_SI() : 0;
+            if (rg < Rphys)      return Q_SI() * Math.pow(rg / Rphys, 3);
+            return Q_SI();
+          }
+          function Efield(rg_units) {
+            if (rg_units <= 0) return 0;
+            var rg = rg_units * Rphys;
+            return k_e * Qenc(rg_units) / (rg * rg);
+          }
+
+          function plotX(ru) { return PX0 + (ru / RMAX) * (PX1 - PX0); }
+          function plotY(en) { return PY0 - Math.max(0, Math.min(1, en)) * (PY0 - PY1); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },                       // static sim
+            step:  function (dt, t, s) { /* no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // panel divider
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.beginPath(); ctx.moveTo(310, 18); ctx.lineTo(310, H - 18); ctx.stroke();
+              ctx.restore();
+
+              var qColor = params.Q > 0 ? PS.colors.accent
+                         : params.Q < 0 ? PS.colors.primary
+                         : '#9ca3af';
+              var dir = params.Q >= 0 ? +1 : -1;  // +1 outward, -1 inward
+
+              // =================== LEFT: cross-section ===================
+              PS.drawText(ctx, '横截面 Cross-section', 12, 22,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, params.shell ? '(球壳 shell)' : '(实心球 solid)', 12, 38,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // charged object
+              if (params.shell) {
+                // thick ring
+                ctx.save();
+                ctx.strokeStyle = qColor;
+                ctx.lineWidth = 7;
+                ctx.beginPath();
+                ctx.arc(CX, CY, PX, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+              } else {
+                PS.drawCircle(ctx, CX, CY, PX, {
+                  fill: qColor, stroke: PS.colors.axis, lineWidth: 1.5,
+                });
+                // polka-dot texture: emphasizes uniform VOLUME charge
+                ctx.save();
+                ctx.fillStyle = PS.colors.bg;
+                ctx.globalAlpha = 0.35;
+                for (var i = 0; i < 14; i++) {
+                  var ang = (i / 14) * Math.PI * 2 + 0.3;
+                  var rr  = (0.30 + 0.50 * ((i * 37) % 100) / 100) * PX;
+                  ctx.beginPath();
+                  ctx.arc(CX + rr * Math.cos(ang), CY + rr * Math.sin(ang), 1.7, 0, Math.PI * 2);
+                  ctx.fill();
+                }
+                ctx.restore();
+              }
+
+              // R indicator (radius arrow inside sphere)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(CX, CY); ctx.lineTo(CX + PX, CY); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'R', CX + PX / 2, CY - 5,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // gaussian sphere (dashed)
+              var rg_px = params.rg * PX;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.setLineDash([6, 4]);
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              ctx.arc(CX, CY, rg_px, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.restore();
+
+              // field arrows on the gaussian sphere
+              var Eval = Efield(params.rg);
+              var Es   = Esurf();
+              var ratio = Es > 0 ? Eval / Es : 0;
+              var arrowLen = 8 + 22 * ratio;
+              if (params.rg > 0.04 && Eval > 0) {
+                for (var k = 0; k < 8; k++) {
+                  var a  = k * Math.PI / 4;
+                  var x0 = CX + rg_px * Math.cos(a);
+                  var y0 = CY + rg_px * Math.sin(a);
+                  var x1 = x0 + dir * arrowLen * Math.cos(a);
+                  var y1 = y0 + dir * arrowLen * Math.sin(a);
+                  PS.drawArrow(ctx, x0, y0, x1, y1, PS.colors.trace);
+                }
+              }
+
+              // HUD: readout box
+              var qenc = Qenc(params.rg);
+              var flux = qenc / eps0;
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, H - 110, 290, 78);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, H - 110, 290, 78);
+              ctx.restore();
+              PS.drawText(ctx, '高斯面读出 Gaussian-surface readout:', 14, H - 92,
+                { font: 'bold 11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'r_g = ' + params.rg.toFixed(2) + ' R  =  ' +
+                            (params.rg * Rphys * 100).toFixed(1) + ' cm',
+                            14, H - 76, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'Q_enc = ' + (qenc * 1e9).toFixed(3) + ' nC',
+                            14, H - 60, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'Φ = Q_enc/ε₀ = ' + flux.toExponential(2) + ' V·m',
+                            14, H - 44, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'E(r_g) = ' + (Eval / 1000).toFixed(2) + ' kV/m',
+                            150, H - 60, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'E_s = ' + (Es / 1000).toFixed(1) + ' kV/m',
+                            150, H - 44, { font: '11px system-ui', color: PS.colors.text });
+
+              PS.drawText(ctx, 'Q = ' + params.Q.toFixed(1) + ' nC', 12, H - 18,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // =================== RIGHT: E(r) plot ===================
+              PS.drawText(ctx, 'E(r) 电场分布 (normalized by E_s)',
+                (PX0 + PX1) / 2, 22,
+                { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+
+              // axes
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(PX0, PY1); ctx.lineTo(PX0, PY0); ctx.lineTo(PX1, PY0);
+              ctx.stroke();
+              ctx.restore();
+
+              // y-axis ticks
+              PS.drawText(ctx, '1.0', PX0 - 6, plotY(1.0) + 4,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '0.5', PX0 - 6, plotY(0.5) + 4,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, '0',   PX0 - 6, PY0 + 4,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              // x-axis ticks
+              for (var m = 0; m <= 3; m++) {
+                PS.drawText(ctx, String(m), plotX(m), PY0 + 16,
+                  { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              }
+              PS.drawText(ctx, 'r / R', (PX0 + PX1) / 2, PY0 + 32,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '|E|/E_s', PX0 - 6, PY1 - 6,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+
+              // vertical line at r = R (surface)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.setLineDash([4, 3]);
+              ctx.beginPath();
+              ctx.moveTo(plotX(1), PY1); ctx.lineTo(plotX(1), PY0);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'R', plotX(1), PY1 - 4,
+                { font: 'bold 11px system-ui', color: PS.colors.text, align: 'center' });
+
+              // E(r) curve
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var firstPt = true;
+              for (var rr = 0.0; rr <= RMAX + 0.001; rr += 0.015) {
+                var e  = Math.abs(Efield(rr));
+                var en = Es > 0 ? e / Es : 0;
+                var xp = plotX(rr), yp = plotY(en);
+                if (firstPt) { ctx.moveTo(xp, yp); firstPt = false; }
+                else ctx.lineTo(xp, yp);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // current point marker
+              var eCur  = Math.abs(Efield(params.rg));
+              var enCur = Es > 0 ? eCur / Es : 0;
+              PS.drawCircle(ctx, plotX(params.rg), plotY(enCur), 5.5, {
+                fill: PS.colors.accent, stroke: '#000000', lineWidth: 1,
+              });
+              var labX = plotX(params.rg) + 10;
+              var labY = plotY(enCur) - 8;
+              if (labX > PX1 - 92) labX = plotX(params.rg) - 102;
+              PS.drawText(ctx, 'E = ' + (eCur / 1000).toFixed(2) + ' kV/m',
+                labX, labY, { font: 'bold 11px system-ui', color: PS.colors.accent });
+
+              // curve label
+              PS.drawText(ctx,
+                params.shell
+                  ? 'shell: E = 0 内部 inside;  E = kQ/r² 外部 outside'
+                  : 'solid: E ∝ r 内部 inside;  E = kQ/r² 外部 outside',
+                PX0 + 4, H - 12,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'toggle', key: 'shell', label: '球壳 shell (off=实心球 solid)', value: DEFAULTS.shell },
+            { type: 'slider', key: 'Q',     label: '总电荷 Q (nC)',        min: -10, max: 10, step: 0.5, value: DEFAULTS.Q },
+            { type: 'slider', key: 'rg',    label: '高斯面半径 r_g / R',   min: 0,    max: 3,  step: 0.05, value: DEFAULTS.rg },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+
+          ctl.on('shell', function (v) { params.shell = v; });
+          ctl.on('Q',     function (v) { params.Q = v; });
+          ctl.on('rg',    function (v) { params.rg = v; });
+          ctl.on('reset', function ()  {
+            // restore defaults in params
+            params.Q = DEFAULTS.Q; params.rg = DEFAULTS.rg; params.shell = DEFAULTS.shell;
+            // sync visible widgets by dispatching input events
+            var container = document.getElementById('controls-3');
+            var sliderInputs = container.querySelectorAll('input[type=range]');
+            var toggleInputs = container.querySelectorAll('input[type=checkbox]');
+            if (toggleInputs[0]) {
+              toggleInputs[0].checked = DEFAULTS.shell;
+              toggleInputs[0].dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (sliderInputs[0]) {
+              sliderInputs[0].value = DEFAULTS.Q;
+              sliderInputs[0].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliderInputs[1]) {
+              sliderInputs[1].value = DEFAULTS.rg;
+              sliderInputs[1].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>电通量 \(\Phi_E=\int \vec E\cdot d\vec A\)，闭合面约定法向向外。</li>
+        <li>高斯定理 \(\oint \vec E\cdot d\vec A=Q_{\text{enc}}/\varepsilon_0\)：恒成立，但仅当对称性足够好（球/柱/面）时计算上有用。</li>
+        <li>球对称：实心球 \(E_{\text{in}}=\rho r/(3\varepsilon_0)=k_e Qr/R^3\)，\(E_{\text{out}}=k_e Q/r^2\)；球壳 \(E_{\text{in}}=0\)，\(E_{\text{out}}=k_e Q/r^2\)。</li>
+        <li>柱对称：无限长带电线 \(E=\lambda/(2\pi\varepsilon_0 r)=2k_e\lambda/r\)。</li>
+        <li>面对称：无限大平面 \(E=\sigma/(2\varepsilon_0)\)（两侧）；导体表面紧外侧 \(E=\sigma/\varepsilon_0\)。</li>
+        <li>导体静电平衡：内部 \(E=0\)，净电荷分布在表面；同轴电缆电场集中在两导体之间。</li>
+        <li>\(Q_{\text{enc}}\) 只算高斯面<strong>内</strong>的电荷；外部电荷对总通量贡献为零，但对 \(\vec E\) 的局部分布仍有贡献。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\Phi_E=\oint\vec E\cdot d\vec A=\frac{Q_{\text{enc}}}{\varepsilon_0},\qquad \varepsilon_0=8.854\times 10^{-12}\,\tfrac{\mathrm{C^2}}{\mathrm{N\,m^2}},\qquad k_e=\frac{1}{4\pi\varepsilon_0}\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;E_{\text{solid,in}}=\frac{\rho r}{3\varepsilon_0},\quad E_{\text{solid,out}}=\frac{k_e Q}{r^2},\quad E_{\text{shell,in}}=0,\quad E_{\text{line}}=\frac{\lambda}{2\pi\varepsilon_0 r},\quad E_{\text{plane}}=\frac{\sigma}{2\varepsilon_0},\quad E_{\text{cond}}=\frac{\sigma}{\varepsilon_0}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

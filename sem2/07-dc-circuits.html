@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 直流电路 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第7章 · 直流电路 DC Circuits</p>
+      <h1>直流电路 <span class="en-title">DC Circuits</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>用<b>电流</b> (electric current) 的定义 \(I=\dQ/dt\) 与<b>电流密度</b> (current density) \(\vec{J}=ne\vec{v}_d\) 计算导线中的电流与电子的<b>漂移速度</b> (drift velocity)。</li>
+        <li>推导并应用<b>欧姆定律</b> (Ohm's law) \(V=IR\)、微观形式 \(\vec{J}=\sigma\vec{E}\) 与电阻公式 \(R=\rho L/A\)，并解释电阻率 \(\rho\) 的<b>温度依赖</b> (temperature dependence)。</li>
+        <li>化简<b>串联</b> (series) 与<b>并联</b> (parallel) 电阻网络，求等效电阻 \(R_{\text{eq}}\) 以及每个电阻上的电压、电流与功率。</li>
+        <li>对多回路电路正确写出<b>基尔霍夫节点法则</b> (Kirchhoff's junction rule, \(\sum I=0\)) 与<b>回路法则</b> (loop rule, \(\sum V=0\))，并解出未知电流。</li>
+        <li>分析含<b>内阻</b> (internal resistance) 的真实电源：端电压 \(V=\mathcal{E}-Ir\)，短路电流 \(I_{\text{sc}}=\mathcal{E}/r\)，以及<b>最大功率传输定理</b> \(R=r\)。</li>
+        <li>求解 <b>RC 电路</b>的充放电过程：\(Q(t)=Q_{\max}(1-e^{-t/\tau})\) 与 \(Q(t)=Q_0 e^{-t/\tau}\)，理解<b>时间常数</b> (time constant) \(\tau=RC\) 的物理意义。</li>
+        <li>计算<b>电功率</b> (electric power) \(P=VI=I^{2}R=V^{2}/R\) 与<b>焦耳热</b> (Joule heating)。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电流与电流密度 Current &amp; Current Density</h3>
+      <p><b>电流</b> (electric current) \(I\) 定义为单位时间内通过某一截面的电量：</p>
+      <div class="formula">\[ I \;=\; \frac{dQ}{dt}. \]</div>
+      <p>国际单位为<b>安培</b> (ampere, \(\mathrm{A}\))，\(1\,\mathrm{A}=1\,\mathrm{C/s}\)。习惯上规定电流方向为<b>正电荷流动方向</b>——这与金属导线中电子的实际流向相反：电子带 \(-e\)，逆着规定方向运动。</p>
+      <p><b>电流密度</b> (current density) \(\vec{J}\) 是矢量，大小等于单位截面积的电流 \(J=I/A\)，方向为该处正电荷流动方向。在微观上，若每单位体积内有 \(n\) 个载流子，每个带电荷 \(q\)、以平均<b>漂移速度</b> \(\vec{v}_d\) 运动，则</p>
+      <div class="formula">\[ \boxed{\,\vec{J} \;=\; n\,q\,\vec{v}_d\,},\qquad I \;=\; J\,A \;=\; n\,|q|\,v_d\,A. \]</div>
+      <p>对金属中的自由电子（\(q=-e\)，\(n\approx 8.5\times10^{28}\,\mathrm{m^{-3}}\) for Cu），漂移速度的典型量级只有 \(10^{-4}\,\mathrm{m/s}\)（见例 7.5）——电子走得很慢，但电场以接近光速建立，所以「开关一合灯就亮」。</p>
+      <p>实验上，对大多数导体，\(\vec{J}\) 与本地电场 \(\vec{E}\) 成正比，比例系数称为<b>电导率</b> (conductivity) \(\sigma\)：</p>
+      <div class="formula">\[ \boxed{\,\vec{J} \;=\; \sigma\,\vec{E}\,}\qquad(\text{微观欧姆定律 microscopic Ohm's law}). \]</div>
+      <p>\(\sigma\) 的倒数 \(\rho=1/\sigma\) 称为<b>电阻率</b> (resistivity)，只取决于材料与温度，与几何形状无关。</p>
+
+      <h3>2. 电阻、电阻率与欧姆定律 Resistance, Resistivity &amp; Ohm's Law</h3>
+      <p>对一段长 \(L\)、均匀横截面积 \(A\) 的导线，两端加电压 \(V\) 时，实验测得电流 \(I\) 与 \(V\) 成正比：</p>
+      <div class="formula">\[ \boxed{\,V \;=\; I\,R\,}\qquad(\text{欧姆定律 Ohm's law}), \]</div>
+      <p>比例系数 \(R\) 称为<b>电阻</b> (resistance)，单位<b>欧姆</b> (ohm, \(\Omega\))，\(1\,\Omega=1\,\mathrm{V/A}\)。遵守此线性关系的材料称为<b>欧姆材料</b> (ohmic)；不遵守的（如二极管、灯丝）称为非欧姆材料。把 \(\vec{J}=\sigma\vec{E}\) 沿导线积分（推导 1）可得</p>
+      <div class="formula">\[ \boxed{\,R \;=\; \rho\,\frac{L}{A}\,}. \]</div>
+      <p>\(R\) 由材料（\(\rho\)）与几何 (\(L,A\)) 共同决定；\(\rho\) 只由材料与温度决定。室温下：铜 \(\rho\approx 1.68\times10^{-8}\,\Omega\!\cdot\!\mathrm{m}\)；镍铬合金 \(\rho\approx 1.10\times10^{-6}\,\Omega\!\cdot\!\mathrm{m}\)；硅 \(\rho\approx 2.3\times10^{3}\,\Omega\!\cdot\!\mathrm{m}\)。</p>
+      <p><b>温度依赖</b>：在室温附近，金属的 \(\rho\) 随温度线性变化：</p>
+      <div class="formula">\[ \rho(T) \;=\; \rho_{0}\bigl[\,1+\alpha(T-T_{0})\,\bigr], \]</div>
+      <p>\(\alpha\) 为<b>电阻温度系数</b> (temperature coefficient of resistivity)。金属（如铜）\(\alpha\approx +4\times10^{-3}\,\mathrm{K^{-1}}\)（正，温度升高 \(\rho\) 增大）；半导体与绝缘体 \(\alpha<0\)（温度升高时载流子增多，\(\rho\) 减小）。</p>
+
+      <h3>3. 电动势与内阻 EMF &amp; Internal Resistance</h3>
+      <p><b>电动势</b> (electromotive force, emf) \(\mathcal{E}\) 是电源对单位电荷所做的功，单位为伏特 (V)。理想电池两端电压恒为 \(\mathcal{E}\)。真实电池有<b>内阻</b> (internal resistance) \(r\) 与电动势串联。当电源输出电流 \(I\) 时，<b>端电压</b> (terminal voltage) 为</p>
+      <div class="formula">\[ \boxed{\,V_{\text{ab}} \;=\; \mathcal{E} - I\,r\,}\qquad(\text{放电 discharging}). \]</div>
+      <p>外电路短路时（\(R_{\text{ext}}=0\)）得<b>短路电流</b> \(I_{\text{sc}}=\mathcal{E}/r\)，此时端电压为零。若另一电源对它充电（电流反向流入正极），则 \(V_{\text{ab}}=\mathcal{E}+Ir\)。</p>
+
+      <h3>4. 电阻的串联与并联 Resistors in Series &amp; Parallel</h3>
+      <p><b>串联</b> (series)：各电阻中电流相同 \(I\)，总电压 \(V=\sum_i V_i=\sum_i I R_i=I\sum_i R_i\)，故</p>
+      <div class="formula">\[ \boxed{\,R_{\text{eq}}^{\text{串}} \;=\; \sum_{i} R_i \;=\; R_1+R_2+\cdots\,}. \]</div>
+      <p><b>并联</b> (parallel)：各电阻两端电压相同 \(V\)，总电流 \(I=\sum_i I_i=\sum_i V/R_i=V\sum_i(1/R_i)\)，故</p>
+      <div class="formula">\[ \boxed{\,\frac{1}{R_{\text{eq}}^{\text{并}}} \;=\; \sum_{i}\frac{1}{R_i}\,}. \]</div>
+      <p>两个电阻并联的常用快捷式：\(R_{\text{eq}}=\dfrac{R_1 R_2}{R_1+R_2}\)。关键直觉：<b>串联使电阻增大</b>（\(R_{\text{eq}}\) 大于任何一个），<b>并联使电阻减小</b>（\(R_{\text{eq}}\) 小于任何一个，相当于增加导电通路）。</p>
+
+      <h3>5. 基尔霍夫法则 Kirchhoff's Rules</h3>
+      <p>对不能用简单串并联化简的多回路电路，使用两条法则（实质是电荷与能量守恒）：</p>
+      <p><b>节点法则</b> (junction rule) —— 流入某节点的电流之和等于流出之和：</p>
+      <div class="formula">\[ \boxed{\,\sum_{\text{node}} I \;=\; 0\,}\qquad(\text{电荷守恒 charge conservation}), \]</div>
+      <p>其中约定流入为正、流出为负（或反之，只要一致）。</p>
+      <p><b>回路法则</b> (loop rule) —— 沿任意闭合回路一圈，电势升降之和为零：</p>
+      <div class="formula">\[ \boxed{\,\sum_{\text{loop}} V \;=\; 0\,}\qquad(\text{能量守恒 / 静电场 } \oint\vec{E}\cdot d\vec{\ell}=0). \]</div>
+      <p><b>符号约定</b>（关键！）：沿选定绕行方向走过每个元件——</p>
+      <ul>
+        <li><b>电阻</b>：若绕行方向与电流方向<b>相同</b>，记 \(-IR\)（电势降低）；若<b>相反</b>，记 \(+IR\)。</li>
+        <li><b>电源</b>：从 \(-\) 极走到 \(+\) 极（即「跨越」电池被抬升）记 \(+\mathcal{E}\)；从 \(+\) 极走到 \(-\) 极记 \(-\mathcal{E}\)。</li>
+      </ul>
+
+      <h3>6. RC 电路 RC Circuits</h3>
+      <p>把电动势 \(\mathcal{E}\)（充电时）通过电阻 \(R\) 接到电容 \(C\) 上，电容器上的电量 \(Q(t)\) 与电压 \(V_C(t)=Q/C\) 不瞬间达到终值，而是按指数规律变化。设<b>时间常数</b> (time constant)</p>
+      <div class="formula">\[ \boxed{\,\tau \;=\; R\,C\,}, \]</div>
+      <p>则<b>充电</b>（电容器初始不带电、\(t=0\) 接通 \(\mathcal{E}\)）：</p>
+      <div class="formula">\[ Q(t) \;=\; Q_{\max}\bigl(1-e^{-t/\tau}\bigr),\quad Q_{\max}=C\mathcal{E},\qquad V_C(t)=\mathcal{E}\bigl(1-e^{-t/\tau}\bigr), \]</div>
+      <div class="formula">\[ I(t) \;=\; \frac{\mathcal{E}}{R}\,e^{-t/\tau}. \]</div>
+      <p><b>放电</b>（电容器初始电压 \(V_0\)、\(t=0\) 通过 \(R\) 短接）：</p>
+      <div class="formula">\[ Q(t) \;=\; Q_0\,e^{-t/\tau},\qquad V_C(t) \;=\; V_0\,e^{-t/\tau},\qquad I(t) \;=\; -\frac{V_0}{R}\,e^{-t/\tau}. \]</div>
+      <p>\(\tau=RC\) 的物理意义：经过一个 \(\tau\)，充电达到 \(1-e^{-1}\approx 63.2\%\)；放电剩 \(e^{-1}\approx 36.8\%\)。<b>半衰期</b> \(t_{1/2}=\tau\ln 2\approx 0.693\,\tau\)。实用上经过 \(5\tau\) 即认为充放电完成（\(>99.3\%\)）。</p>
+
+      <h3>7. 电功率与焦耳热 Electric Power &amp; Joule Heating</h3>
+      <p>一段电路两端电压 \(V\)、电流 \(I\) 时，单位时间电能转化为其他形式能的速率为</p>
+      <div class="formula">\[ \boxed{\,P \;=\; V\,I \;=\; I^{2}R \;=\; \frac{V^{2}}{R}\,}\qquad(\text{对纯电阻}). \]</div>
+      <p>对纯电阻，这些电能全部转化为热（<b>焦耳热</b>，Joule heating）。电源 \(\mathcal{E}\) 输出电流 \(I\) 时提供功率 \(P_{\text{emf}}=\mathcal{E}I\)；其中 \(I^{2}r\) 消耗在内阻上，剩下 \(P_{\text{out}}=VI=\mathcal{E}I-I^{2}r\) 输出到外电路（见例 7.4）。</p>
+
+      <div class="key-terms">
+        electric current \(I=dQ/dt\) (电流), current density \(\vec{J}\) (电流密度), drift velocity \(v_d\) (漂移速度), conductivity \(\sigma\) (电导率), resistivity \(\rho\) (电阻率), resistance \(R\) (电阻), Ohm's law (欧姆定律), EMF \(\mathcal{E}\) (电动势), internal resistance \(r\) (内阻), terminal voltage (端电压), series/parallel (串联/并联), Kirchhoff's junction rule (节点法则), Kirchhoff's loop rule (回路法则), RC circuit (RC 电路), time constant \(\tau=RC\) (时间常数), electric power \(P=VI\) (电功率), Joule heating (焦耳热).
+      </div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：从 \(\vec{J}=\sigma\vec{E}\) 推出 \(V=IR\) 与 \(R=\rho L/A\)</h3>
+      <p>考虑一段长 \(L\)、横截面 \(A\)、材料电阻率为 \(\rho=1/\sigma\) 的均匀导线，两端电压为 \(V\)，沿轴电流为 \(I\)。</p>
+      <p class="step"><strong>步骤 1（电场与电压）：</strong>导线内电场近似均匀（边界效应忽略），方向沿轴线。电场与电压关系：
+      \[ E \;=\; \frac{V}{L}. \]</p>
+      <p class="step"><strong>步骤 2（电流密度与电流）：</strong>由 \(J=I/A\)，代入微观欧姆定律 \(J=\sigma E\)：
+      \[ \frac{I}{A} \;=\; \sigma\,\frac{V}{L} \;\Longrightarrow\; V \;=\; \frac{L}{\sigma A}\,I \;=\; \frac{\rho L}{A}\,I. \]</p>
+      <p class="step"><strong>步骤 3（定义电阻）：</strong>对照欧姆定律 \(V=IR\)，得到
+      \[ \boxed{\,R \;=\; \rho\,\frac{L}{A}\,}. \]
+      几何上极合理：长导线 \(L\uparrow\to R\uparrow\)（路径长 → 难走），粗导线 \(A\uparrow\to R\downarrow\)（通道宽 → 易走）。这也解释了为何 \(\rho\) 只属于「材料」、\(R\) 还依赖「形状」。</p>
+
+      <h3>推导 2：RC 充电方程 \(Q(t)=C\mathcal{E}(1-e^{-t/\tau})\)</h3>
+      <p>电路：电动势 \(\mathcal{E}\)、电阻 \(R\)、电容 \(C\) 串联，\(t=0\) 接通开关，电容器初始不带电。设电流 \(I\)（顺时针，向电容器正极板流入）方向为正。</p>
+      <p class="step"><strong>步骤 1（回路法则）：</strong>沿电流方向绕行一周：
+      \[ +\mathcal{E} - I R - \frac{Q}{C} \;=\; 0. \]
+      其中 \(Q/C=V_C\) 为电容器两端电压，\(Q\) 为正极板电量。</p>
+      <p class="step"><strong>步骤 2（用 \(I=dQ/dt\)）：</strong>把 \(I=\dQ/dt\) 代入：
+      \[ \mathcal{E} \;=\; R\frac{dQ}{dt} + \frac{Q}{C}. \]</p>
+      <p class="step"><strong>步骤 3（分离变量）：</strong>记 \(Q_{\max}=C\mathcal{E}\)（稳态时电容器满电压对应满电量），则
+      \[ R\frac{dQ}{dt} \;=\; \mathcal{E}-\frac{Q}{C} \;=\; \frac{Q_{\max}-Q}{C}\cdot\frac{C}{1} \cdot\frac{1}{1}\quad\Rightarrow\quad \frac{dQ}{Q_{\max}-Q} \;=\; \frac{dt}{RC}. \]</p>
+      <p class="step"><strong>步骤 4（积分）：</strong>两边从 \(Q=0,t=0\) 积到 \((Q,t)\)：
+      \[ -\ln\!\left(\frac{Q_{\max}-Q}{Q_{\max}}\right) \;=\; \frac{t}{RC} \;\Longrightarrow\; \frac{Q_{\max}-Q}{Q_{\max}} \;=\; e^{-t/(RC)}. \]</p>
+      <p class="step"><strong>步骤 5（结果）：</strong>解出
+      \[ \boxed{\,Q(t) \;=\; Q_{\max}\bigl(1-e^{-t/\tau}\bigr),\qquad \tau=RC,\quad Q_{\max}=C\mathcal{E}.\,} \]
+      相应地 \(V_C(t)=\mathcal{E}(1-e^{-t/\tau})\)，电流 \(I(t)=(\mathcal{E}/R)e^{-t/\tau}\)（从初始 \(I_0=\mathcal{E}/R\) 指数衰减）。放电过程把 \(\mathcal{E}\) 换成 0、初始条件改为 \(Q(0)=Q_0\)，得 \(Q(t)=Q_0 e^{-t/\tau}\)。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 混合串并联网络 Mixed Series-Parallel Network</h4>
+        <p class="example-statement">三个电阻 \(R_1=6\,\Omega\)、\(R_2=6\,\Omega\)、\(R_3=3\,\Omega\)。其中 \(R_2\) 与 \(R_3\) 并联，该并联组合再与 \(R_1\) 串联，整体接到理想电动势 \(V=12\,\mathrm{V}\) 上。(a) 求等效电阻 \(R_{\text{eq}}\)；(b) 求通过电源的总电流及各电阻的电流；(c) 求各电阻功率与总功率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 等效电阻：</strong>先合并并联部分
+          \[ R_{23} \;=\; \frac{R_2 R_3}{R_2+R_3} \;=\; \frac{6\times 3}{6+3} \;=\; \frac{18}{9} \;=\; 2\,\Omega. \]
+          再与 \(R_1\) 串联：
+          \[ R_{\text{eq}} \;=\; R_1 + R_{23} \;=\; 6+2 \;=\; 8\,\Omega. \]
+          <span class="ans">\(R_{\text{eq}}=8\,\Omega\)</span>。</p>
+
+          <p class="step"><strong>解 (b) 各电流：</strong>总电流（亦即通过 \(R_1\) 的电流）
+          \[ I_1 \;=\; I \;=\; \frac{V}{R_{\text{eq}}} \;=\; \frac{12}{8} \;=\; 1.5\,\mathrm{A}. \]
+          并联部分两端电压
+          \[ V_{23} \;=\; I\cdot R_{23} \;=\; 1.5\times 2 \;=\; 3\,\mathrm{V}\quad(\text{或 }V_1=I R_1=9\,\mathrm{V},\ V_{23}=12-9=3\,\mathrm{V}). \]
+          由并联电压相同得
+          \[ I_2 \;=\; \frac{V_{23}}{R_2} \;=\; \frac{3}{6} \;=\; 0.5\,\mathrm{A},\qquad I_3 \;=\; \frac{V_{23}}{R_3} \;=\; \frac{3}{3} \;=\; 1.0\,\mathrm{A}. \]
+          验证节点法则：\(I_2+I_3=0.5+1.0=1.5=I_1\quad\checkmark\)。<br>
+          <span class="ans">\(I_1=1.5\,\mathrm{A},\ I_2=0.5\,\mathrm{A},\ I_3=1.0\,\mathrm{A}\)</span>。</p>
+
+          <p class="step"><strong>解 (c) 功率：</strong>用 \(P=I^{2}R\)：
+          \[ P_1 = (1.5)^{2}\!\times 6 = 13.5\,\mathrm{W},\quad P_2 = (0.5)^{2}\!\times 6 = 1.5\,\mathrm{W},\quad P_3 = (1.0)^{2}\!\times 3 = 3.0\,\mathrm{W}. \]
+          总功率 \(P_{\text{tot}}=13.5+1.5+3.0=18\,\mathrm{W}\)，与电源输出 \(P=VI=12\times 1.5=18\,\mathrm{W}\) 一致 \(\checkmark\)。<br>
+          <span class="ans">\(P_1=13.5\,\mathrm{W},\ P_2=1.5\,\mathrm{W},\ P_3=3.0\,\mathrm{W},\ P_{\text{tot}}=18\,\mathrm{W}\)</span>。</p>
+          <p>注：并联中「电流按电阻反比分配」——\(R_3\) 小一倍，电流大一倍。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 双回路基尔霍夫问题 Two-Loop Kirchhoff Problem</h4>
+        <p class="example-statement">三支路并联于两节点（上、下）：左支路 \(\mathcal{E}_1=12\,\mathrm{V}\) 串 \(R_1=2\,\Omega\)，中支路只有 \(R_3=4\,\Omega\)，右支路 \(\mathcal{E}_2=4\,\mathrm{V}\) 串 \(R_2=4\,\Omega\)。两电池正极均朝上。设各支路电流方向：\(I_1\)（左支路向上）、\(I_2\)（右支路向上）、\(I_3\)（中支路向下），均以「自然方向」假设。求 \(I_1,I_2,I_3\) 并讨论 \(\mathcal{E}_2\) 的工作状态。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（节点法则）：</strong>对上节点，流入等于流出：
+          \[ I_1 + I_2 \;=\; I_3. \tag{KCL} \]</p>
+
+          <p class="step"><strong>步骤 2（左回路法则）：</strong>沿左回路顺时针绕（自底节点上穿 \(\mathcal{E}_1\)、跨 \(R_1\) 到上节点、再下穿 \(R_3\) 回底）：
+          \[ +\mathcal{E}_1 \;-\; I_1 R_1 \;-\; I_3 R_3 \;=\; 0 \quad\Longrightarrow\quad 12 - 2 I_1 - 4 I_3 = 0. \tag{L1} \]</p>
+
+          <p class="step"><strong>步骤 3（右回路法则）：</strong>沿右回路顺时针绕（自底节点上穿 \(\mathcal{E}_2\)、跨 \(R_2\) 到上节点、再下穿 \(R_3\) 回底）：
+          \[ +\mathcal{E}_2 \;-\; I_2 R_2 \;-\; I_3 R_3 \;=\; 0 \quad\Longrightarrow\quad 4 - 4 I_2 - 4 I_3 = 0. \tag{L2} \]</p>
+
+          <p class="step"><strong>步骤 4（求解）：</strong>由 (L2) 得 \(I_2 + I_3 = 1\)，即 \(I_2 = 1 - I_3\)。代入 KCL：
+          \[ I_1 \;=\; I_3 - I_2 \;=\; I_3 - (1-I_3) \;=\; 2 I_3 - 1. \]
+          代入 (L1)：\(12 - 2(2 I_3 - 1) - 4 I_3 = 0\)，即 \(12 - 4 I_3 + 2 - 4 I_3 = 0\)，得 \(14 = 8 I_3\)，
+          \[ I_3 = \frac{14}{8} = 1.75\,\mathrm{A},\qquad I_1 = 2(1.75)-1 = 2.5\,\mathrm{A},\qquad I_2 = 1 - 1.75 = -0.75\,\mathrm{A}. \]
+          <span class="ans">\(I_1=2.5\,\mathrm{A},\ I_2=-0.75\,\mathrm{A},\ I_3=1.75\,\mathrm{A}\)</span>。</p>
+
+          <p class="step"><strong>步骤 5（\(I_2\) 负号的意义与功率校验）：</strong>\(I_2<0\) 说明右支路实际电流方向与我们假设的相反——电流自上而下穿过 \(\mathcal{E}_2\)（即从 \(+\) 极流入、\(-\) 极流出），<b>\(\mathcal{E}_2\) 被充电</b>。功率：
+          \[ P_{\mathcal{E}_1,\text{供}} = \mathcal{E}_1 I_1 = 12\times 2.5 = 30\,\mathrm{W},\quad P_{\mathcal{E}_2,\text{充}} = \mathcal{E}_2 |I_2| = 4\times 0.75 = 3\,\mathrm{W}. \]
+          三电阻耗散：\(P_{R_1}=I_1^{2}R_1=6.25\times 2=12.5\,\mathrm{W}\)，\(P_{R_2}=I_2^{2}R_2=0.5625\times 4=2.25\,\mathrm{W}\)，\(P_{R_3}=I_3^{2}R_3=3.0625\times 4=12.25\,\mathrm{W}\)，合计 \(27\,\mathrm{W}\)。校验：\(30-3=27\ \checkmark\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 RC 充电：\(Q(t)\)、\(\tau\)、半衰期 RC Charging</h4>
+        <p class="example-statement">一 RC 电路 \(R=50\,\mathrm{k\Omega}\)、\(C=100\,\mu\mathrm{F}\)，电源 \(\mathcal{E}=12\,\mathrm{V}\)，\(t=0\) 接通。求：(a) 时间常数 \(\tau\)；(b) 最大电量 \(Q_{\max}\)；(c) \(t=\tau\) 与 \(t=5\tau\) 时的 \(Q\)、\(V_C\)、\(I\)；(d) 电量达到 \(Q_{\max}/2\) 所需时间。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>
+          \[ \tau \;=\; RC \;=\; (5.0\times10^{4}\,\Omega)(1.00\times10^{-4}\,\mathrm{F}) \;=\; 5.0\,\mathrm{s}. \]
+          <span class="ans">\(\tau = 5.0\,\mathrm{s}\)</span>。</p>
+
+          <p class="step"><strong>解 (b)：</strong>
+          \[ Q_{\max} \;=\; C\mathcal{E} \;=\; (1.00\times10^{-4})(12) \;=\; 1.20\times10^{-3}\,\mathrm{C} \;=\; 1.20\,\mathrm{mC}. \]
+          <span class="ans">\(Q_{\max}=1.20\,\mathrm{mC}\)</span>。</p>
+
+          <p class="step"><strong>解 (c)：</strong>\(t=\tau=5\,\mathrm{s}\)：
+          \[ Q(\tau) = Q_{\max}(1-e^{-1}) = 1.20\times 0.632 = 0.758\,\mathrm{mC}, \]
+          \[ V_C(\tau) = \mathcal{E}(1-e^{-1}) = 12\times 0.632 = 7.59\,\mathrm{V},\qquad I(\tau) = \frac{\mathcal{E}}{R}e^{-1} = \frac{12}{5.0\times10^{4}}\times 0.368 = 8.83\times10^{-5}\,\mathrm{A} = 88.3\,\mu\mathrm{A}. \]
+          \(t=5\tau=25\,\mathrm{s}\)：\(Q=Q_{\max}(1-e^{-5})=1.20\times 0.993=1.19\,\mathrm{mC}\)，\(V_C=11.92\,\mathrm{V}\)，\(I=I_0 e^{-5}=240\times0.00674=1.62\,\mu\mathrm{A}\)。可视为「近似充满」。</p>
+
+          <p class="step"><strong>解 (d)：</strong>令 \(Q(t_{1/2})=Q_{\max}/2\)：
+          \[ \tfrac{1}{2} \;=\; 1 - e^{-t_{1/2}/\tau} \;\Longrightarrow\; e^{-t_{1/2}/\tau} = \tfrac{1}{2} \;\Longrightarrow\; t_{1/2} \;=\; \tau\ln 2 \;=\; 5.0\times 0.693 \;=\; 3.47\,\mathrm{s}. \]
+          <span class="ans">\(t_{1/2}=3.47\,\mathrm{s}\)</span>（与放电时减半所用时间相同）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 功率、端电压与最大功率传输 Power, Terminal Voltage &amp; Maximum Power Transfer</h4>
+        <p class="example-statement">一电池 \(\mathcal{E}=12\,\mathrm{V}\)、内阻 \(r=0.5\,\Omega\)，外接可变负载 \(R\)。(a) 当 \(R=3.5\,\Omega\) 时，求电流 \(I\)、端电压 \(V_{\text{ab}}\)、负载功率 \(P_R\) 与内阻耗散 \(P_r\)；(b) 求 \(R\) 为何值时 \(P_R\) 最大，并求此最大功率 \(P_{\max}\) 与此时效率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>把回路看作 \(r\) 与 \(R\) 串联，等效电阻 \(r+R=4.0\,\Omega\)：
+          \[ I \;=\; \frac{\mathcal{E}}{r+R} \;=\; \frac{12}{0.5+3.5} \;=\; 3.0\,\mathrm{A}. \]
+          端电压 \(V_{\text{ab}} = \mathcal{E} - Ir = 12 - 3.0\times 0.5 = 10.5\,\mathrm{V}\)（或 \(V_{\text{ab}}=IR=3.0\times 3.5=10.5\,\mathrm{V}\) \(\checkmark\)）。
+          \[ P_R = I^{2} R = 9.0\times 3.5 = 31.5\,\mathrm{W},\qquad P_r = I^{2} r = 9.0\times 0.5 = 4.5\,\mathrm{W}. \]
+          电池提供功率 \(P_{\mathcal{E}}=\mathcal{E}I=36\,\mathrm{W}=31.5+4.5\ \checkmark\)。<br>
+          <span class="ans">\(I=3.0\,\mathrm{A},\ V_{\text{ab}}=10.5\,\mathrm{V},\ P_R=31.5\,\mathrm{W},\ P_r=4.5\,\mathrm{W}\)</span>。</p>
+
+          <p class="step"><strong>解 (b)：</strong>把 \(P_R\) 写成 \(R\) 的函数：
+          \[ P_R(R) \;=\; I^{2}R \;=\; \frac{\mathcal{E}^{2} R}{(R+r)^{2}}. \]
+          对 \(R\) 求导并令其为零：
+          \[ \frac{dP_R}{dR} \;=\; \mathcal{E}^{2}\,\frac{(R+r)^{2} - R\cdot 2(R+r)}{(R+r)^{4}} \;=\; \mathcal{E}^{2}\,\frac{r-R}{(R+r)^{3}} \;=\; 0 \;\Longrightarrow\; R \;=\; r. \]
+          即 <b>最大功率传输定理</b>（maximum power transfer theorem）：当 \(R=r=0.5\,\Omega\) 时负载功率最大。
+          \[ I^{*} \;=\; \frac{\mathcal{E}}{2r} \;=\; \frac{12}{1.0} \;=\; 12\,\mathrm{A},\qquad P_{\max} \;=\; (I^{*})^{2} r \;=\; 144\times 0.5 \;=\; 72\,\mathrm{W}. \]
+          此时 \(P_{\mathcal{E}}=\mathcal{E}I^{*}=144\,\mathrm{W}\)，效率 \(\eta=P_{\max}/P_{\mathcal{E}}=72/144=50\%\)——内阻耗散与负载各占一半，这是「最大功率传输」必付的代价。<br>
+          <span class="ans">\(R=r=0.5\,\Omega\)，\(P_{\max}=72\,\mathrm{W}\)，效率 \(50\%\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 铜线中电子的漂移速度 Drift Velocity in Copper Wire</h4>
+        <p class="example-statement">一根横截面积 \(A=1.0\,\mathrm{mm^{2}}=1.0\times10^{-6}\,\mathrm{m^{2}}\) 的铜导线通以 \(I=1.0\,\mathrm{A}\) 的电流。铜的自由电子数密度 \(n=8.5\times10^{28}\,\mathrm{m^{-3}}\)，电子电量 \(e=1.602\times10^{-19}\,\mathrm{C}\)。求电子的漂移速度 \(v_d\)，并与信号传播速度比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(I = n e v_d A\)，
+          \[ v_d \;=\; \frac{I}{n e A} \;=\; \frac{1.0}{(8.5\times10^{28})(1.602\times10^{-19})(1.0\times10^{-6})}. \]</p>
+          <p class="step">分母：\(8.5\times 1.602\times 10^{28-19-6} = 13.6\times 10^{3} = 1.36\times10^{4}\)。所以
+          \[ v_d \;=\; \frac{1.0}{1.36\times10^{4}} \;=\; 7.35\times10^{-5}\,\mathrm{m/s}. \]</p>
+          <p>换算：\(v_d\approx 0.073\,\mathrm{mm/s}\approx 0.26\,\mathrm{m/h}\)——比蜗牛还慢得多！电子走过 \(1\,\mathrm{m}\) 需 \(1/v_d\approx 3.8\) 小时。然而合上开关瞬间灯就亮，因为建立电场（推动电子开始漂移）的电磁扰动以接近光速 \(c\) 沿导线传播。</p>
+          <p class="step"><span class="ans">\(v_d\approx 7.3\times10^{-5}\,\mathrm{m/s}\approx 0.07\,\mathrm{mm/s}\)</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>基尔霍夫回路法则的符号搞错。</b>最常见错误：把电源方向或电阻方向弄反。务必先<b>选定绕行方向</b>，再对每个元件应用统一约定：电阻与电流同向记 \(-IR\)、反向记 \(+IR\)；电源从 \(-\) 到 \(+\) 记 \(+\mathcal{E}\)。</li>
+        <li><b>误解 \(\tau=RC\) 的含义。</b>\(\tau\) 不是「充满所需的时间」。充电 \(t=\tau\) 时只到 \(63\%\)，要 \(5\tau\) 才算近似充满（\(>99\%\)）。半衰期是 \(\tau\ln 2\approx 0.693\,\tau\)，不要写成 \(\tau/2\)。</li>
+        <li><b>忽略内阻导致端电压偏低。</b>实际电池接负载时 \(V_{\text{ab}}=\mathcal{E}-Ir\)，总小于 \(\mathcal{E}\)；只有在<b>断路</b>（\(I=0\)）时才有 \(V_{\text{ab}}=\mathcal{E}\)。把电池当理想恒压源会算错电流与功率。</li>
+        <li><b>误以为并联等效电阻比某一个分电阻大。</b>恰好相反：并联 \(R_{\text{eq}}<R_{\min}\)（每增加一条并联通路都让电流多一条走法）；串联才有 \(R_{\text{eq}}>R_{\max}\)。</li>
+        <li><b>混淆漂移速度与信号速度。</b>金属中电子 \(v_d\sim10^{-4}\,\mathrm{m/s}\) 极慢；电流之所以「瞬时」建立，是因为导线全长同时建立电场（传播速度 \(\sim c\)），所有电子同时开始漂移，不是单个电子跑完全程。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一根碳电阻 \(20\,^{\circ}\mathrm{C}\) 时 \(R_0=100\,\Omega\)。碳的 \(\alpha=-5.0\times10^{-4}\,\mathrm{K^{-1}}\)。求 \(80\,^{\circ}\mathrm{C}\) 时的电阻 \(R\)。</summary>
+        <div class="hint">用 \(R(T)=R_0[1+\alpha(T-T_0)]\)。碳是半导体型材料，\(\alpha<0\)。</div>
+        <div class="solution">
+          \[ R(80) = 100\bigl[1+(-5.0\times10^{-4})(80-20)\bigr] = 100\bigl[1 - 0.030\bigr] = 100\times 0.970 = 97.0\,\Omega. \]
+          温度升高，碳电阻减小（与金属相反）。<br>
+          <span class="ans">\(R(80\,^{\circ}\mathrm{C})=97.0\,\Omega\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 三个电阻 \(R_1=6\,\Omega\)、\(R_2=3\,\Omega\)、\(R_3=2\,\Omega\) 全部<b>并联</b>。求等效电阻 \(R_{\text{eq}}\)，并验证它小于最小的分电阻。</summary>
+        <div class="hint">\(\dfrac{1}{R_{\text{eq}}}=\sum_i\dfrac{1}{R_i}\)。先求倒数和，再取倒数。</div>
+        <div class="solution">
+          \[ \frac{1}{R_{\text{eq}}} = \frac{1}{6}+\frac{1}{3}+\frac{1}{2} = \frac{1}{6}+\frac{2}{6}+\frac{3}{6} = \frac{6}{6} = 1 \;\Longrightarrow\; R_{\text{eq}} = 1\,\Omega. \]
+          最小分电阻 \(R_3=2\,\Omega\)，而 \(R_{\text{eq}}=1\,\Omega < 2\,\Omega\quad\checkmark\)。<br>
+          <span class="ans">\(R_{\text{eq}}=1\,\Omega\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. RC 放电电路：\(R=2.0\,\mathrm{k\Omega}\)、\(C=10\,\mu\mathrm{F}\)，电容初始电压 \(V_0=5.0\,\mathrm{V}\)，\(t=0\) 通过 \(R\) 短接放电。求时间常数 \(\tau\)，以及 \(t=30\,\mathrm{ms}\) 时的 \(V_C\)、\(Q\) 与 \(I\)。</summary>
+        <div class="hint">\(\tau=RC\)，\(V_C(t)=V_0 e^{-t/\tau}\)，\(Q=CV_C\)，\(I=V_C/R\)（方向与原充电方向相反）。</div>
+        <div class="solution">
+          \[ \tau \;=\; RC \;=\; (2.0\times10^{3})(1.0\times10^{-5}) \;=\; 2.0\times10^{-2}\,\mathrm{s} = 20\,\mathrm{ms}. \]
+          \(t=30\,\mathrm{ms}=1.5\tau\)：
+          \[ V_C = V_0 e^{-1.5} = 5.0\times 0.2231 = 1.12\,\mathrm{V}, \]
+          \[ Q = C V_C = (10\times10^{-6})(1.12) = 1.12\times10^{-5}\,\mathrm{C} = 11.2\,\mu\mathrm{C}, \]
+          \[ |I| = \frac{V_C}{R} = \frac{1.12}{2000} = 5.6\times10^{-4}\,\mathrm{A} = 0.56\,\mathrm{mA}. \]
+          <span class="ans">\(\tau=20\,\mathrm{ms},\ V_C=1.12\,\mathrm{V},\ Q=11.2\,\mu\mathrm{C},\ |I|=0.56\,\mathrm{mA}\)</span>。
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. \(9.0\,\mathrm{V}\) 电池内阻 \(r=1.0\,\Omega\)，接外负载 \(R=4.0\,\Omega\)。求电流 \(I\)、端电压 \(V_{\text{ab}}\)、负载功率 \(P_R\)、内阻耗散 \(P_r\) 与电池总输出功率，做功率校验。</summary>
+        <div class="hint">\(I=\mathcal{E}/(R+r)\)，\(V_{\text{ab}}=\mathcal{E}-Ir=IR\)，分别算 \(I^{2}R\)、\(I^{2}r\)、\(\mathcal{E}I\)。</div>
+        <div class="solution">
+          \[ I = \frac{\mathcal{E}}{R+r} = \frac{9.0}{4.0+1.0} = 1.8\,\mathrm{A}, \]
+          \[ V_{\text{ab}} = \mathcal{E} - Ir = 9.0 - 1.8\times 1.0 = 7.2\,\mathrm{V}\;(=IR=1.8\times 4.0\ \checkmark), \]
+          \[ P_R = I^{2}R = 3.24\times 4.0 = 12.96\,\mathrm{W},\qquad P_r = I^{2}r = 3.24\times 1.0 = 3.24\,\mathrm{W}, \]
+          \[ P_{\mathcal{E}} = \mathcal{E}I = 9.0\times 1.8 = 16.2\,\mathrm{W}. \]
+          校验：\(P_R + P_r = 12.96 + 3.24 = 16.2\,\mathrm{W} = P_{\mathcal{E}}\ \checkmark\)。<br>
+          <span class="ans">\(I=1.8\,\mathrm{A},\ V_{\text{ab}}=7.2\,\mathrm{V},\ P_R=12.96\,\mathrm{W},\ P_r=3.24\,\mathrm{W}\)</span>。
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">RC 电路充放电实时演示：用滑块设定电阻 \(R\)、电容 \(C\)、电源电压 \(V_0\)；用开关切换「充电 / 放电」。画面显示电容器电压 \(V_C(t)\) 随时间建立的指数曲线（实线），叠加理论曲线（淡虚线）作参照；红圈标出当前 \((t,V_C)\)；绿虚线标出 \(t=\tau=RC\) 处（曲线上对应 \(V_C=V_0\times 63.2\%\) 或 \(36.8\%\)），右上角给出 \(\tau\) 数值。改变任一参数会自动重置仿真，方便比较不同 \(\tau\) 下的充放电快慢。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Parameters (reset-able) ----
+          var DEFAULTS = { R_kOhm: 1.0, C_uF: 200, V0: 6.0, charging: true };
+          var params = Object.assign({}, DEFAULTS);
+
+          function tau() { return params.R_kOhm * 1e3 * params.C_uF * 1e-6; } // seconds
+          function fmtTau(s) {
+            if (s < 1) return (s * 1000).toFixed(0) + ' ms';
+            return s.toFixed(2) + ' s';
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () {
+              return {
+                t: 0,
+                Vc: params.charging ? 0 : params.V0,  // initial cap voltage
+                history: []                            // [[t, Vc], ...]
+              };
+            },
+            step: function (dt, t, s) {
+              var tauV = tau();
+              // dV/dt = (V0 - V)/tau (charging) or -V/tau (discharging)
+              var deriv = function (st, tt) {
+                var V = st[0];
+                var dV = params.charging ? (params.V0 - V) / tauV : -V / tauV;
+                return [dV];
+              };
+              // RK4 keeps accuracy even when dt ~ tau (e.g. tau = 25 ms, dt = 16.7 ms)
+              var ns = PS.integrate(deriv, [s.Vc], t, dt, 'rk4');
+              s.Vc = ns[0];
+              s.t += dt;
+              s.history.push([s.t, s.Vc]);
+              if (s.history.length > 4000) s.history.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var tauV = tau();
+              var tMax = 6 * tauV;                  // x-axis 0 .. 6 tau
+              var Vmax = params.V0 * 1.18;          // a little head-room
+
+              // ---- Layout ----
+              var padL = 58, padR = 22, padT = 36, padB = 78;
+              var plotW = W - padL - padR;
+              var plotH = H - padT - padB;
+              var x0 = padL, y0 = padT + plotH;     // bottom-left of plot
+
+              // ---- Title ----
+              PS.drawText(ctx,
+                'RC Circuit · ' + (params.charging ? '充电 Charging' : '放电 Discharging'),
+                W / 2, 16,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              // ---- Plot box ----
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.strokeRect(x0, padT, plotW, plotH);
+              ctx.restore();
+
+              // ---- Horizontal grid + y-axis ticks (0, V0/4, V0/2, 3V0/4, V0) ----
+              ctx.save();
+              ctx.font = '11px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var f = 0; f <= 1.001; f += 0.25) {
+                var Vv = f * params.V0;
+                var yy = y0 - (f * params.V0 / Vmax) * plotH;
+                ctx.fillText(Vv.toFixed(1), x0 - 6, yy);
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.45; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x0, yy); ctx.lineTo(x0 + plotW, yy); ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+              ctx.restore();
+
+              // ---- V0 reference line ----
+              var yV0 = y0 - (params.V0 / Vmax) * plotH;
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(x0, yV0); ctx.lineTo(x0 + plotW, yV0); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+              PS.drawText(ctx, 'V₀ = ' + params.V0.toFixed(1) + ' V',
+                x0 + plotW - 4, yV0 - 8,
+                { font: 'bold 11px system-ui', color: C.accent, align: 'right' });
+
+              // ---- y-axis label ----
+              PS.drawText(ctx, 'V_C (V)', x0 - 38, padT + 8,
+                { font: 'bold 11px system-ui', color: C.text });
+
+              // ---- x-axis ticks: 0, τ, 2τ, ..., 6τ ----
+              ctx.save();
+              ctx.font = '11px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var i = 0; i <= 6; i++) {
+                var tv = i * tauV;
+                var xx = x0 + (tv / tMax) * plotW;
+                ctx.fillText(i + 'τ', xx, y0 + 6);
+                if (i === 0 || i === 3 || i === 6) {
+                  var lbl = (tv < 1) ? (tv * 1000).toFixed(0) + ' ms' : tv.toFixed(2) + ' s';
+                  ctx.fillText(lbl, xx, y0 + 22);
+                }
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(xx, padT); ctx.lineTo(xx, y0); ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+              ctx.restore();
+
+              // ---- Theoretical exponential (faint dashed) ----
+              ctx.save();
+              ctx.strokeStyle = C.text; ctx.globalAlpha = 0.30; ctx.lineWidth = 1.4;
+              ctx.setLineDash([4, 3]);
+              ctx.beginPath();
+              for (var k = 0; k <= 240; k++) {
+                var tt = (k / 240) * tMax;
+                var Vth = params.charging
+                  ? params.V0 * (1 - Math.exp(-tt / tauV))
+                  : params.V0 * Math.exp(-tt / tauV);
+                var px = x0 + (tt / tMax) * plotW;
+                var py = y0 - (Vth / Vmax) * plotH;
+                if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.setLineDash([]); ctx.globalAlpha = 1;
+              ctx.restore();
+
+              // ---- τ marker ----
+              var xTau = x0 + (tauV / tMax) * plotW;
+              var VatTau = params.charging
+                ? params.V0 * (1 - Math.exp(-1))
+                : params.V0 * Math.exp(-1);
+              var yTau = y0 - (VatTau / Vmax) * plotH;
+              ctx.save();
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 1.4;
+              ctx.setLineDash([5, 3]);
+              ctx.beginPath(); ctx.moveTo(xTau, padT); ctx.lineTo(xTau, y0); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+              PS.drawText(ctx, 'τ = RC', xTau + 5, padT + 12,
+                { font: 'bold 11px system-ui', color: C.accent2 });
+              PS.drawText(ctx, fmtTau(tauV), xTau + 5, padT + 26,
+                { font: '10px system-ui', color: C.accent2 });
+              PS.drawCircle(ctx, xTau, yTau, 3.5, { fill: C.accent2 });
+
+              // ---- Realized history curve ----
+              if (s.history.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = params.charging ? C.primary : C.trace;
+                ctx.lineWidth = 2.4;
+                ctx.beginPath();
+                var started = false;
+                for (var h = 0; h < s.history.length; h++) {
+                  var pt = s.history[h];
+                  if (pt[0] > tMax) break;
+                  var px = x0 + (pt[0] / tMax) * plotW;
+                  var py = y0 - (pt[1] / Vmax) * plotH;
+                  if (!started) { ctx.moveTo(px, py); started = true; }
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // ---- Current point marker ----
+              var tCur = Math.min(s.t, tMax);
+              var xCur = x0 + (tCur / tMax) * plotW;
+              var yCur = y0 - (s.Vc / Vmax) * plotH;
+              PS.drawCircle(ctx, xCur, yCur, 5.5, { fill: C.accent, stroke: C.bg, lineWidth: 2 });
+
+              // ---- Readouts ----
+              var R_Ohm = params.R_kOhm * 1e3;
+              var C_F = params.C_uF * 1e-6;
+              var I_now = params.charging ? (params.V0 - s.Vc) / R_Ohm : s.Vc / R_Ohm;
+              var Q_now = C_F * s.Vc;
+              var ry = H - 36;
+              PS.drawText(ctx,
+                'V_C = ' + s.Vc.toFixed(3) + ' V     ' +
+                'Q = C·V_C = ' + (Q_now * 1e6).toFixed(2) + ' μC     ' +
+                'I = ' + (I_now * 1000).toFixed(3) + ' mA',
+                x0, ry, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx,
+                'τ = R·C = ' + params.R_kOhm.toFixed(1) + ' kΩ × ' +
+                params.C_uF.toFixed(0) + ' μF = ' + fmtTau(tauV) +
+                '     t₁⸍₂ = τ·ln2 = ' + fmtTau(tauV * Math.LN2),
+                x0, ry + 18, { font: '11px system-ui', color: C.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'R_kOhm', label: 'R (kΩ)', min: 0.5, max: 5.0, step: 0.1, value: DEFAULTS.R_kOhm },
+            { type: 'slider', key: 'C_uF',   label: 'C (μF)', min: 50,  max: 500, step: 10,  value: DEFAULTS.C_uF },
+            { type: 'slider', key: 'V0',     label: 'V₀ (V)', min: 1.0, max: 12,  step: 0.5, value: DEFAULTS.V0 },
+            { type: 'toggle', key: 'charging', label: '充电 Charge (关 = 放电 Discharge)', value: DEFAULTS.charging },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('R_kOhm', function (v) { params.R_kOhm = v; sim.reset(); });
+          ctl.on('C_uF',   function (v) { params.C_uF = v;   sim.reset(); });
+          ctl.on('V0',     function (v) { params.V0 = v;     sim.reset(); });
+          ctl.on('charging', function (v) { params.charging = v; sim.reset(); });
+
+          // Reset: restore defaults, sync slider DOM, then reset sim.
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            var container = document.getElementById('controls-7');
+            var sliders = container.querySelectorAll('input[type=range]');
+            var valSpans = container.querySelectorAll('.ctrl-value');
+            var toggles = container.querySelectorAll('input[type=checkbox]');
+            var keys = ['R_kOhm', 'C_uF', 'V0'];
+            var steps = [0.1, 10, 0.5];
+            keys.forEach(function (k, idx) {
+              sliders[idx].value = DEFAULTS[k];
+              ctl.set(k, DEFAULTS[k]);
+              var dec = Math.max(0, -Math.floor(Math.log10(steps[idx]) + 1e-9));
+              valSpans[idx].textContent = Number(DEFAULTS[k]).toFixed(dec);
+            });
+            toggles[0].checked = DEFAULTS.charging;
+            ctl.set('charging', DEFAULTS.charging);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><b>电流</b> \(I=\dQ/dt\)（A），方向为正电荷流动方向；<b>电流密度</b> \(\vec{J}=n q\vec{v}_d=\sigma\vec{E}\)（微观欧姆定律）。</li>
+        <li><b>电阻</b> \(R=\rho L/A\)（\(\Omega\)）；<b>电阻率</b> \(\rho(T)=\rho_0[1+\alpha(T-T_0)]\)。欧姆定律 \(V=IR\) 仅对欧姆材料成立。</li>
+        <li><b>电源</b>有内阻：\(V_{\text{ab}}=\mathcal{E}-Ir\)；短路电流 \(I_{\text{sc}}=\mathcal{E}/r\)；最大功率传输条件 \(R_{\text{load}}=r\)。</li>
+        <li><b>串联</b>：\(R_{\text{eq}}=\sum R_i\)（电流相同，电压相加）；<b>并联</b>：\(1/R_{\text{eq}}=\sum 1/R_i\)（电压相同，电流相加），且 \(R_{\text{eq}}<R_{\min}\)。</li>
+        <li><b>基尔霍夫节点法则</b> \(\sum I=0\)（电荷守恒）；<b>回路法则</b> \(\sum V=0\)（能量守恒）。务必先选绕行方向再统一记号。</li>
+        <li><b>RC 充电</b>：\(Q(t)=C\mathcal{E}(1-e^{-t/\tau})\)，\(I(t)=(\mathcal{E}/R)e^{-t/\tau}\)；<b>放电</b>：\(Q(t)=Q_0 e^{-t/\tau}\)。时间常数 \(\tau=RC\)，半衰期 \(t_{1/2}=\tau\ln 2\)，~\(5\tau\) 视为充满。</li>
+        <li><b>电功率</b> \(P=VI=I^{2}R=V^{2}/R\)（W）；纯电阻上转化为焦耳热。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

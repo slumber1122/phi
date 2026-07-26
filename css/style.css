@@ -157,6 +157,23 @@ mjx-container[display="true"] {
 .sl-ast { color: var(--accent); }
 .sl-title { display: flex; flex-direction: column; line-height: 1.25; }
 .sl-en { font-size: 0.72rem; color: var(--text-mute); font-family: var(--font-head); }
+
+/* collapsible semester groups */
+.sem-group { margin-bottom: 4px; }
+.sem-group > .sem-summary {
+  list-style: none; cursor: pointer; user-select: none;
+  font-family: var(--font-head); font-size: 0.8rem; font-weight: 700;
+  color: var(--heading); padding: 8px 10px; margin: 12px 0 4px;
+  border-radius: 6px; background: var(--bg-elev); border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 7px;
+}
+.sem-group > .sem-summary::-webkit-details-marker { display: none; }
+.sem-group > .sem-summary::before {
+  content: '▸'; color: var(--primary); font-size: 0.7rem; transition: transform 0.15s; display: inline-block;
+}
+.sem-group[open] > .sem-summary::before { transform: rotate(90deg); }
+.sidebar-link.is-ref { opacity: 0.82; }
+.sidebar-link.is-ref .sl-title::before { content: '★ '; color: var(--accent); }
 .sidebar-foot { margin-top: 26px; font-size: 0.72rem; color: var(--text-mute); text-align: center; font-family: var(--font-head); }
 
 /* --------------------------------------------------------------- chapter head */
@@ -272,6 +289,16 @@ mjx-container[display="true"] {
 .toc-card .tc-title { font-family: var(--font-head); font-weight: 600; color: var(--heading); font-size: 1.05rem; margin: 0.15em 0; }
 .toc-card .tc-en { font-size: 0.82rem; color: var(--text-mute); }
 .toc-part-heading { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin: 2em 0 0.6em; padding-bottom: 0.3em; border-bottom: 2px solid var(--rule); color: var(--heading); }
+.toc-part-heading.upcoming { color: var(--text-mute); border-bottom-style: dashed; }
+
+.roadmap { margin: 1.2em 0 0.5em; padding: 0.9em 1.1em; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; }
+.roadmap p { margin: 0.4em 0; }
+.roadmap .progress { color: var(--primary); font-family: var(--font-head); font-size: 0.88rem; font-weight: 600; }
+
+.upcoming-list { margin-top: 0.6em; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.6em; }
+.up-item { padding: 0.7em 0.95em; background: var(--bg-elev); border: 1px dashed var(--rule); border-radius: var(--radius); font-size: 0.92rem; color: var(--text-soft); }
+.up-item .up-sem { font-family: var(--font-head); font-weight: 700; color: var(--text); margin-right: 0.5em; }
+.up-item .up-en { display: block; font-size: 0.78rem; color: var(--text-mute); margin-top: 0.2em; }
 
 /* --------------------------------------------------------------- responsive */
 @media (max-width: 900px) {

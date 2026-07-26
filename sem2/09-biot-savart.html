@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 毕奥-萨伐尔与安培定律 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第9章 · 磁学与感应 Magnetism &amp; Induction</p>
+      <h1>毕奥-萨伐尔与安培定律 <span class="en-title">Biot-Savart &amp; Ampère's Law</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>写出毕奥-萨伐尔定律 (Biot-Savart law) \(\mathrm{d}\vec{B}=\dfrac{\mu_{0}}{4\pi}\dfrac{I\,\mathrm{d}\vec{l}\times\hat{r}}{r^{2}}\) 的矢量与标量形式，并据此积分求任意电流分布的磁场。</li>
+        <li>推导并运用三类经典结果：圆电流回路中心的 \(B=\mu_{0}I/(2R)\)、轴线上的 \(B(z)=\mu_{0}IR^{2}/[2(R^{2}+z^{2})^{3/2}]\)、长直导线周围的 \(B=\mu_{0}I/(2\pi r)\)。</li>
+        <li>陈述安培定律 (Ampère's law) \(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}\)，识别它"何时有用"——即系统具有足够对称性（柱、面、环形）时。</li>
+        <li>用安培定律求长直导线、理想螺线管 (solenoid, \(B=\mu_{0}nI\))、螺绕环 (toroid, \(B=\mu_{0}NI/(2\pi r)\)) 内部的磁场。</li>
+        <li>推导两根平行载流导线之间单位长度受力 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\)，并解释此式如何<strong>定义</strong>安培（从而定义库仑）。</li>
+        <li>区分抗磁 (diamagnetic)、顺磁 (paramagnetic)、铁磁 (ferromagnetic) 材料，并用相对磁导率 \(\mu_{r}=1+\chi\) 描述线性介质中 \(\vec{B}=\mu\vec{H}\) 的关系。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 毕奥-萨伐尔定律 \(\mathrm{d}\vec{B}=\dfrac{\mu_{0}}{4\pi}\dfrac{I\,\mathrm{d}\vec{l}\times\hat{r}}{r^{2}}\)</h3>
+      <p>磁场的"点源"定律——对应静电学里的库仑定律。一段电流元 (current element) \(I\,\mathrm{d}\vec{l}\)（方向沿电流）在距离矢量 \(\vec{r}\) 处产生的磁场为：</p>
+      <div class="formula">\[ \boxed{\;\mathrm{d}\vec{B}=\dfrac{\mu_{0}}{4\pi}\,\dfrac{I\,\mathrm{d}\vec{l}\times\hat{r}}{r^{2}}=\dfrac{\mu_{0}}{4\pi}\,\dfrac{I\,\mathrm{d}\vec{l}\times\vec{r}}{r^{3}}\;} \]</div>
+      <p>其中 \(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{T\cdot m/A}\) 是<strong>真空磁导率</strong> (permeability of free space)，\(\hat{r}=\vec{r}/r\) 是从源点指向观测点的单位矢量。标量大小：</p>
+      <div class="formula">\[ \mathrm{d}B=\frac{\mu_{0}}{4\pi}\,\frac{I\,\mathrm{d}l\,\sin\theta}{r^{2}} \]</div>
+      <p>\(\theta\) 为 \(\mathrm{d}\vec{l}\) 与 \(\vec{r}\) 的夹角。方向由右手定则给出：四指由 \(\mathrm{d}\vec{l}\) 转向 \(\vec{r}\)，拇指指向 \(\mathrm{d}\vec{B}\)。<strong>注意</strong>：电流元不能孤立存在（必须形成闭合回路才有物理意义），故 Biot-Savart 定律总是对整个闭合电流回路积分。</p>
+      <p>对比库仑定律：电场点源 \(q\) 产生 \(E\propto 1/r^{2}\)；磁场"点源" \(I\,\mathrm{d}\vec{l}\) 产生 \(B\propto 1/r^{2}\)（但带叉乘，方向不同于 \(\vec{r}\)）。</p>
+      <div class="key-terms">Biot-Savart law (毕奥-萨伐尔定律), current element \(I\,\mathrm{d}\vec{l}\) (电流元), permeability of free space \(\mu_{0}\) (真空磁导率)</div>
+
+      <h3>2. 圆电流回路中心的磁场</h3>
+      <p>半径 \(R\)、电流 \(I\) 的圆电流回路 (circular current loop)，在<strong>圆心</strong>处的磁场沿回路轴线方向，大小为：</p>
+      <div class="formula">\[ \boxed{\;B_{\text{center}}=\frac{\mu_{0}I}{2R}\;} \]</div>
+      <p>方向：沿轴线，由右手定则（四指沿电流绕向，拇指即 \(\vec{B}\) 方向）。推导见下节。这是构造<strong>亥姆赫兹线圈</strong> (Helmholtz coil) 与螺线管（多个回路串联）的基础。</p>
+      <div class="key-terms">circular current loop (圆电流回路), Helmholtz coil (亥姆赫兹线圈)</div>
+
+      <h3>3. 圆电流回路轴线上的磁场</h3>
+      <p>更一般地，在回路轴线上距圆心 \(z\) 处（沿轴向）：</p>
+      <div class="formula">\[ \boxed{\;B(z)=\frac{\mu_{0}IR^{2}}{2\,(R^{2}+z^{2})^{3/2}}\;} \]</div>
+      <p>当 \(z\to\infty\)，\(B(z)\to \mu_{0}IR^{2}/(2|z|^{3})=\mu_{0}/(2\pi)\cdot |\vec{m}|/|z|^{3}\)，正是<strong>磁偶极子</strong> (magnetic dipole) 远场（\(\vec{m}=IA\) 为磁矩）。当 \(z=0\)，退化为 \(B=\mu_{0}I/(2R)\) ✓。</p>
+      <div class="key-terms">magnetic dipole moment \(\vec{m}=IA\hat{n}\) (磁偶极矩)</div>
+
+      <h3>4. 长直载流导线周围的磁场 \(B=\dfrac{\mu_{0}I}{2\pi r}\)</h3>
+      <p>一根"无限长"直导线通以电流 \(I\)，在距导线 \(r\) 处的磁场大小为：</p>
+      <div class="formula">\[ \boxed{\;B=\frac{\mu_{0}I}{2\pi r}\;} \]</div>
+      <p>方向：在垂直于导线的平面内，磁力线是以导线为圆心的同心圆（右手定则：拇指沿电流，四指卷曲方向即 \(\vec{B}\) 的绕向）。<strong>关键标度</strong>：\(B\propto 1/r\)（不是 \(1/r^{2}\)）——因为导线是<strong>一维</strong>扩展源，而非点源。此结果既可由 Biot-Savart 积分得到（见下节），也可由安培定律更简洁地得到。</p>
+      <div class="key-terms">long straight wire (长直导线), azimuthal field (方位角磁场)</div>
+
+      <h3>5. 安培定律 \(\displaystyle\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}\)</h3>
+      <p>这是静磁学的"高斯定律"——一个全局积分恒等式：<strong>磁场沿任意闭合回路的线积分等于该回路所包围的（穿过其张成曲面的）总电流乘以 \(\mu_{0}\)</strong>：</p>
+      <div class="formula">\[ \boxed{\;\oint_{\mathcal{C}}\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}\,I_{\text{enc}}\;} \]</div>
+      <p>其中 \(I_{\text{enc}}=\mu_{0}^{-1}\) 倍的"穿过"电流代数和（电流方向与回路方向由右手定则联系；同向取正，反向取负）。其微分形式 \(\nabla\times\vec{B}=\mu_{0}\vec{J}\)（下一章与法拉第定律合写为麦克斯韦方程组）。</p>
+      <p><strong>安培定律始终成立，但只有当系统具有足够对称性、能选择一个"好"的安培回路 (Amperian loop) 使 \(B\) 在回路上为常量且方向已知时，才能用来"解出" \(B\)。</strong>这种可解情形主要有三种几何（见 §6、§7 与推导 9.4）：</p>
+      <ul>
+        <li><strong>柱对称</strong>（无限长导线、圆柱电流）：选同心圆回路。</li>
+        <li><strong>面对称</strong>（无限大电流片、无限长螺线管）：选矩形回路。</li>
+        <li><strong>环形对称</strong>（螺绕环）：选同心圆回路。</li>
+      </ul>
+      <div class="key-terms">Ampère's law (安培定律), Amperian loop (安培回路), enclosed current \(I_{\text{enc}}\) (包围电流)</div>
+
+      <h3>6. 应用：长直导线（重做 §4）</h3>
+      <p>选以导线为圆心、半径 \(r\) 的圆形安培回路。由对称性 \(\vec{B}\) 沿回路切向、大小恒定：</p>
+      <div class="formula">\[ \oint\vec{B}\cdot\mathrm{d}\vec{l}=B\,(2\pi r)=\mu_{0}I\;\Longrightarrow\;B=\frac{\mu_{0}I}{2\pi r}\quad\checkmark \]</div>
+
+      <h3>7. 应用：理想螺线管内部 \(B=\mu_{0}nI\)</h3>
+      <p>螺线管 (solenoid) 是密绕的螺旋线圈。理想化（"无限长"）下，内部磁场<strong>均匀</strong>且沿轴线，外部磁场为零。设单位长度匝数为 \(n\)（SI 单位 \(\mathrm{m^{-1}}\)），电流 \(I\)。选一个矩形安培回路，一条长 \(L\) 的边在内部（沿 \(\vec{B}\)），另一长边在外部（\(B=0\)），两条短边穿过管壁。则 \(I_{\text{enc}}=nLI\)（匝数 \(\times\) 单匝电流）：</p>
+      <div class="formula">\[ \boxed{\;B_{\text{inside}}=\mu_{0}nI\quad(\text{理想螺线管}),\qquad B_{\text{outside}}\approx 0\;} \]</div>
+      <p>这是实验室产生<strong>可控、均匀</strong>磁场最常用的方法（与亥姆赫兹线圈并称）。\(n\) 典型值 \(10^{3}\text{–}10^{4}\,\mathrm{m^{-1}}\)，\(I\) 几安培，可得 \(B\) 几毫特至几十毫特。在螺线管内插入铁芯（铁磁材料，\(\mu_{r}\gg 1\)）可将 \(B\) 放大成百上千倍——电磁铁 (electromagnet) 的原理。</p>
+      <div class="key-terms">solenoid (螺线管), turns per unit length \(n\) (单位长度匝数), electromagnet (电磁铁)</div>
+
+      <h3>8. 应用：螺绕环 \(B=\dfrac{\mu_{0}NI}{2\pi r}\)</h3>
+      <p>螺绕环 (toroid / toroidal coil) 是把螺线管弯成一个环。设总匝数 \(N\)、环的平均半径 \(a\)、管横截面半径远小于 \(a\)。在环内距环心 \(r\) 处选圆形安培回路：</p>
+      <div class="formula">\[ \boxed{\;B(r)=\frac{\mu_{0}NI}{2\pi r}\quad(\text{环内}),\qquad B=0\;(\text{环外})\;} \]</div>
+      <p>注意：与螺线管不同，螺绕环内部 \(B\) 随 \(r\) 变化（\(1/r\) 标度），并非严格均匀——这是因为环路"闭合"了磁通，没有磁单极。环形铁芯变压器正是利用这一构型。</p>
+      <div class="key-terms">toroid (螺绕环), toroidal coil (环形线圈)</div>
+
+      <h3>9. 平行载流导线之间的力 ＝ 安培的定义</h3>
+      <p>两根相距 \(d\)、平行无限长导线，分别通电流 \(I_{1}\)、\(I_{2}\)。导线 1 在导线 2 处产生 \(B_{1}=\mu_{0}I_{1}/(2\pi d)\)；导线 2 上长 \(L\) 一段受力 \(F=I_{2}L\,B_{1}\)。故<strong>单位长度</strong>受力：</p>
+      <div class="formula">\[ \boxed{\;\frac{F}{L}=\frac{\mu_{0}I_{1}I_{2}}{2\pi d}\;} \]</div>
+      <p><strong>方向</strong>：同向电流<strong>相吸</strong>、反向电流<strong>相斥</strong>。<strong>这恰是 SI 中安培的定义</strong>：1 A 是使两根相距 1 m 的平行导线、每米长度受力恰好 \(2\times 10^{-7}\,\mathrm{N}\) 的电流。代入 \(d=1\,\mathrm{m}, I_{1}=I_{2}=1\,\mathrm{A}\)：\(F/L=\mu_{0}/(2\pi)=2\times 10^{-7}\,\mathrm{N/m}\) ✓。这等效地"固定"了 \(\mu_{0}\) 的值，从而固定了库仑（\(1\,\mathrm{C}=1\,\mathrm{A\cdot s}\)）。</p>
+      <div class="key-terms">force between parallel wires (平行导线间的力), definition of the ampere (安培的定义)</div>
+
+      <h3>10. 磁性材料：抗磁 / 顺磁 / 铁磁</h3>
+      <p>在介质中引入两个场量：磁化强度 \(\vec{M}\)（单位体积磁矩）与<strong>磁场强度</strong> \(\vec{H}\)：</p>
+      <div class="formula">\[ \vec{B}=\mu_{0}(\vec{H}+\vec{M})=\mu\vec{H},\qquad \mu=\mu_{0}\mu_{r},\qquad \mu_{r}=1+\chi_{m} \]</div>
+      <p>\(\chi_{m}\) 是<strong>磁化率</strong> (magnetic susceptibility)，\(\mu_{r}\) 是<strong>相对磁导率</strong> (relative permeability)。按 \(\chi_{m}\) 的符号与大小分三类：</p>
+      <ul>
+        <li><strong>抗磁</strong> (diamagnetic, \(\chi_{m}<0\)，\(|\chi_{m}|\sim 10^{-5}\))：所有材料都有微弱抗磁性（轨道电子的楞次响应）。\(B\) 略小于 \(\mu_{0}H\)；被磁场<strong>弱排斥</strong>。例：铋、铜、水。超导体是"完美抗磁"（\(\chi_{m}=-1\)，迈斯纳效应）。</li>
+        <li><strong>顺磁</strong> (paramagnetic, \(\chi_{m}>0\)，\(|\chi_{m}|\sim 10^{-5}\)–\(10^{-3}\))：具有固有磁矩的原子（未配对电子）沿外场取向，\(B\) 略大于 \(\mu_{0}H\)；被磁场<strong>弱吸引</strong>。例：铝、铂、氧分子。顺磁性随温度 \(T\) 升高而减弱（居里定律 \(\chi\propto 1/T\)）。</li>
+        <li><strong>铁磁</strong> (ferromagnetic, \(\chi_{m}\gg 1\)，可达 \(10^{3}\)–\(10^{5}\))：相邻原子磁矩通过交换作用<strong>自发平行排列</strong>形成磁畴 (domain)。\(B\) 远大于 \(\mu_{0}H\)；强烈被吸引。表现为<strong>磁滞</strong> (hysteresis) 与剩磁 (remanence)。例：铁、钴、镍及部分稀土合金。温度超过<strong>居里温度</strong> \(T_{C}\) 时铁磁性消失（变为顺磁）。</li>
+      </ul>
+      <div class="key-terms">magnetization \(\vec{M}\) (磁化强度), magnetic susceptibility \(\chi_{m}\) (磁化率), relative permeability \(\mu_{r}\) (相对磁导率), diamagnetic (抗磁), paramagnetic (顺磁), ferromagnetic (铁磁), Curie temperature (居里温度), magnetic domain (磁畴), hysteresis (磁滞)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 9.1：圆电流回路中心的磁场 \(B=\mu_{0}I/(2R)\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 取回路在 \(xy\) 平面、半径 \(R\)、圆心在原点，电流逆时针绕行（从 \(+z\) 看）。考察圆心处的 \(\vec{B}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 任一电流元 \(I\,\mathrm{d}\vec{l}\) 处于 \((R\cos\phi,R\sin\phi,0)\)，方向 \(\mathrm{d}\vec{l}=R\,\mathrm{d}\phi\,(-\sin\phi,\cos\phi,0)\)。从源点到圆心 \(\vec{r}=(-R\cos\phi,-R\sin\phi,0)\)，\(r=R\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 叉乘：</p>
+      <div class="formula">\[ \mathrm{d}\vec{l}\times\vec{r}=R\,\mathrm{d}\phi\,\bigl[(-\sin\phi)(-R\sin\phi)-(\cos\phi)(-R\cos\phi)\bigr]\hat{z}=R^{2}\,\mathrm{d}\phi\,\hat{z} \]</div>
+      <p class="step">（只有 \(\hat{z}\) 分量；\(\mathrm{d}\vec{l}\perp\vec{r}\) 故 \(\sin\theta=1\)）。</p>
+      <p class="step"><strong>步骤 4：</strong> 代入 Biot-Savart：</p>
+      <div class="formula">\[ \mathrm{d}\vec{B}=\frac{\mu_{0}I}{4\pi}\,\frac{R^{2}\,\mathrm{d}\phi\,\hat{z}}{R^{3}}=\frac{\mu_{0}I}{4\pi R}\,\mathrm{d}\phi\,\hat{z} \]</div>
+      <p class="step"><strong>步骤 5：</strong> 对整个回路积分（\(\phi\) 从 \(0\) 到 \(2\pi\)）：</p>
+      <div class="formula">\[ \vec{B}=\frac{\mu_{0}I}{4\pi R}\,(2\pi)\,\hat{z}=\frac{\mu_{0}I}{2R}\,\hat{z}\quad\checkmark \]</div>
+      <p class="step">方向沿 \(+\hat{z}\)，与右手定则一致（四指逆时针绕行，拇指指向 \(+z\)）。</p>
+
+      <h3>推导 9.2：圆电流回路轴线上的磁场</h3>
+      <p class="step"><strong>步骤 1：</strong> 沿回路轴线（\(z\) 轴）取观测点 \(P=(0,0,z)\)。电流元位置 \((R\cos\phi,R\sin\phi,0)\)，\(\mathrm{d}\vec{l}=R\,\mathrm{d}\phi\,(-\sin\phi,\cos\phi,0)\)。</p>
+      <p class="step"><strong>步骤 2：</strong> \(\vec{r}=(0-R\cos\phi,\,0-R\sin\phi,\,z-0)=(-R\cos\phi,-R\sin\phi,z)\)，\(r^{2}=R^{2}+z^{2}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 计算叉乘的 \(z\) 分量（对称性保证横向分量积分为零）：</p>
+      <div class="formula">\[ (\mathrm{d}\vec{l}\times\vec{r})_{z}=\bigl[R\,\mathrm{d}\phi(-\sin\phi)\bigr]\cdot(-R\sin\phi)-\bigl[R\,\mathrm{d}\phi\cos\phi\bigr]\cdot(-R\cos\phi)=R^{2}\,\mathrm{d}\phi \]</div>
+      <p class="step"><strong>步骤 4：</strong> 代入 Biot-Savart 并积分：</p>
+      <div class="formula">\[ B_{z}=\int_{0}^{2\pi}\frac{\mu_{0}I}{4\pi}\,\frac{R^{2}\,\mathrm{d}\phi}{(R^{2}+z^{2})^{3/2}}=\frac{\mu_{0}I}{4\pi}\,\frac{R^{2}\cdot 2\pi}{(R^{2}+z^{2})^{3/2}}=\frac{\mu_{0}IR^{2}}{2(R^{2}+z^{2})^{3/2}}\quad\checkmark \]</div>
+      <p class="step"><strong>步骤 5：</strong> 极限校核：\(z=0\) 给出 \(\mu_{0}I/(2R)\) ✓；\(z\gg R\) 给出 \(\mu_{0}IR^{2}/(2|z|^{3})=\mu_{0}m/(2\pi|z|^{3})\)（\(m=IA=I\pi R^{2}\)）正是磁偶极远场。</p>
+
+      <h3>推导 9.3：长直导线周围 \(B=\mu_{0}I/(2\pi r)\)（用 Biot-Savart）</h3>
+      <p class="step"><strong>步骤 1：</strong> 取导线沿 \(z\) 轴、电流 \(I\) 朝 \(+\hat{z}\)。观测点 \(P\) 在距导线 \(r\) 处（取 \(P=(r,0,0)\)）。电流元 \(I\,\mathrm{d}\vec{l}=I\,\mathrm{d}z'\hat{z}\) 位于 \((0,0,z')\)。</p>
+      <p class="step"><strong>步骤 2：</strong> \(\vec{r}=(r,0,-z')\)，\(r^{2}_{\text{tot}}=r^{2}+z'^{2}\)。叉乘 \(\mathrm{d}\vec{l}\times\vec{r}=\mathrm{d}z'\hat{z}\times(r\hat{x}-z'\hat{z})=r\,\mathrm{d}z'\,\hat{y}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 对 \(z'\) 从 \(-\infty\) 积到 \(+\infty\)：</p>
+      <div class="formula">\[ \vec{B}=\frac{\mu_{0}I}{4\pi}\int_{-\infty}^{\infty}\frac{r\,\mathrm{d}z'\,\hat{y}}{(r^{2}+z'^{2})^{3/2}} \]</div>
+      <p class="step">用标准积分 \(\displaystyle\int_{-\infty}^{\infty}\frac{\mathrm{d}z'}{(r^{2}+z'^{2})^{3/2}}=\frac{2}{r^{2}}\)：</p>
+      <div class="formula">\[ \vec{B}=\frac{\mu_{0}I}{4\pi}\cdot r\cdot\frac{2}{r^{2}}\,\hat{y}=\frac{\mu_{0}I}{2\pi r}\,\hat{y}\quad\checkmark \]</div>
+      <p class="step">方向 \(\hat{y}\) 即"绕导线的切向"，由右手定则给出。<strong>对比安培定律</strong>：同一结果用安培定律只需两行（见例 9.2），这正是安培定律的威力——但有<strong>柱对称</strong>这个前提。</p>
+
+      <h3>推导 9.4：理想螺线管内部 \(B=\mu_{0}nI\)（用安培定律）</h3>
+      <p class="step"><strong>步骤 1：</strong> 设"无限长"螺线管，单位长度 \(n\) 匝，电流 \(I\)。由平移对称性，内部 \(\vec{B}\) 沿轴线、与位置无关；由对称性外部 \(B=0\)（理想化）。</p>
+      <p class="step"><strong>步骤 2：</strong> 选矩形安培回路 \(abcd\)：\(ab\) 在螺线管内部、长 \(L\)、平行于轴线；\(cd\) 在外部、长 \(L\)；\(bc\)、\(da\) 垂直穿过管壁（长为管半径）。</p>
+      <p class="step"><strong>步骤 3：</strong> 沿回路求 \(\vec{B}\cdot\mathrm{d}\vec{l}\)：</p>
+      <ul>
+        <li>\(ab\) 段（内部）：\(\vec{B}\parallel\mathrm{d}\vec{l}\)，贡献 \(+BL\)。</li>
+        <li>\(cd\) 段（外部）：\(B=0\)，贡献 \(0\)。</li>
+        <li>\(bc\)、\(da\) 段（穿过管壁）：在内部 \(\vec{B}\parallel\) 轴线而 \(\mathrm{d}\vec{l}\perp\) 轴线，故 \(\vec{B}\cdot\mathrm{d}\vec{l}=0\)。</li>
+      </ul>
+      <p class="step"><strong>步骤 4：</strong> 回路包围的电流：回路张成的矩形"切割"了 \(nL\) 匝线圈，每匝载流 \(I\)（同向穿出），故 \(I_{\text{enc}}=nLI\)。</p>
+      <p class="step"><strong>步骤 5：</strong> 代入安培定律：</p>
+      <div class="formula">\[ BL=\mu_{0}\,(nLI)\;\Longrightarrow\;B=\mu_{0}nI\quad\checkmark \]</div>
+
+      <h3>推导 9.5：两根平行导线间的力 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 导线 1 通 \(I_{1}\)，在距 \(d\) 处（导线 2 所在位置）产生磁场 \(B_{1}=\mu_{0}I_{1}/(2\pi d)\)，方向由右手定则给出（在导线 2 处垂直于导线 2）。</p>
+      <p class="step"><strong>步骤 2：</strong> 导线 2 上长 \(L\) 一段载流 \(I_{2}\)、处于外场 \(B_{1}\) 中，受力 \(F=I_{2}L\,B_{1}\sin 90^{\circ}=I_{2}LB_{1}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 单位长度：</p>
+      <div class="formula">\[ \frac{F}{L}=I_{2}B_{1}=\frac{\mu_{0}I_{1}I_{2}}{2\pi d}\quad\checkmark \]</div>
+      <p class="step"><strong>步骤 4（方向）：</strong> 用 \(\vec{F}=I_{2}\vec{L}\times\vec{B}_{1}\)。若两电流同向，叉乘结果指向导线 1（吸引）；反向则远离（排斥）。由此可定义安培。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 圆电流回路中心的磁场</h4>
+        <p class="example-statement">一个半径 \(R=5.0\,\mathrm{cm}\) 的圆线圈通有电流 \(I=2.0\,\mathrm{A}\)，逆时针方向（从上方看）。求圆心处的磁场大小与方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(B_{\text{center}}=\mu_{0}I/(2R)\)，代入 \(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{T\cdot m/A}\)：</p>
+          <div class="formula">\[ B=\frac{(4\pi\times 10^{-7})(2.0)}{2(0.050)}=\frac{8\pi\times 10^{-7}}{0.10}=2.51\times 10^{-5}\,\mathrm{T} \]</div>
+          <p class="step">换算：\(B=25.1\,\mathrm{\mu T}\)。约与地磁场（\(25\text{–}65\,\mathrm{\mu T}\)）同数量级——一个 5 cm、2 A 的线圈在中心只能产生与地磁相比的弱磁场，因此实验室里要用螺线管或亥姆赫兹线圈（多匝叠加）来获得更强、更均匀的场。</p>
+          <p class="step"><strong>方向</strong>：右手定则——四指沿电流绕向（逆时针），拇指指向 \(+\hat{z}\)（向上，即从纸面向外）。</p>
+          <p><span class="ans">\(B=2.51\times 10^{-5}\,\mathrm{T}=25.1\,\mathrm{\mu T}\)，方向沿轴线向上（从纸面向外）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 长直导线周围的磁场（用安培定律）</h4>
+        <p class="example-statement">一根长直导线通有 \(I=10\,\mathrm{A}\) 电流，方向垂直纸面向外。求距导线 \(r=2.0\,\mathrm{cm}\) 处的磁场大小与方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由柱对称，选以导线为圆心、半径 \(r\) 的圆形安培回路。在回路上 \(\vec{B}\) 沿切向、大小恒定。安培定律：</p>
+          <div class="formula">\[ \oint\vec{B}\cdot\mathrm{d}\vec{l}=B\cdot(2\pi r)=\mu_{0}I \]</div>
+          <p class="step">解出：</p>
+          <div class="formula">\[ B=\frac{\mu_{0}I}{2\pi r}=\frac{(4\pi\times 10^{-7})(10)}{2\pi(0.020)}=\frac{2.0\times 10^{-6}}{0.020}=1.0\times 10^{-4}\,\mathrm{T} \]</div>
+          <p class="step">即 \(B=100\,\mathrm{\mu T}\)。这已大于地磁场——家用大功率电器（电暖器、电吹风）附近就是这种数量级。</p>
+          <p class="step"><strong>方向</strong>：电流垂直纸面向外（\(\odot\)），由右手定则磁场在观测点处为<strong>逆时针绕导线</strong>。具体到 \(r=2\,\mathrm{cm}\)、位于导线右侧的观测点，\(\vec{B}\) 指向纸面<strong>上方</strong>（\(+y\)）。</p>
+          <p><span class="ans">\(B=1.0\times 10^{-4}\,\mathrm{T}=100\,\mathrm{\mu T}\)，方向：在右侧观测点指向上方</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 螺线管内部的均匀磁场</h4>
+        <p class="example-statement">一个理想长螺线管，长度 \(50\,\mathrm{cm}\)、共绕 \(N=500\) 匝（故 \(n=N/L=1000\,\mathrm{m^{-1}}\)），通以 \(I=2.0\,\mathrm{A}\) 电流。求管内磁场大小。若在中插入一根 \(\mu_{r}=5000\) 的铁芯（假设线性近似），磁场变为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（空心）：</strong> 用 \(B=\mu_{0}nI\)：</p>
+          <div class="formula">\[ n=\frac{N}{L}=\frac{500}{0.50}=1000\,\mathrm{m^{-1}} \]</div>
+          <div class="formula">\[ B=\mu_{0}nI=(4\pi\times 10^{-7})(1000)(2.0)=8\pi\times 10^{-4}=2.51\times 10^{-3}\,\mathrm{T}=2.51\,\mathrm{mT} \]</div>
+          <p class="step"><strong>校核</strong>：与例 9.1 单匝回路 \(25\,\mathrm{\mu T}\) 相比放大了约 100 倍——这是 500 匝叠加（每匝 \(\sim\) 单匝）但分布在 50 cm 长度内、单位长度 1000 匝的合理结果。</p>
+          <p class="step"><strong>解（铁芯，线性近似）：</strong> \(\vec{B}=\mu\vec{H}\)，故乘以 \(\mu_{r}\)：</p>
+          <div class="formula">\[ B_{\text{铁芯}}=\mu_{0}\mu_{r}nI=(2.51\times 10^{-3})(5000)\approx 12.6\,\mathrm{T} \]</div>
+          <p class="step"><strong>讨论</strong>：12.6 T 已是强场实验室磁体的级别。实际铁磁材料有<strong>饱和</strong>（典型 \(B_{\text{sat}}\sim 1\text{–}2\,\mathrm{T}\)）和<strong>磁滞</strong>，不能简单按 \(\mu_{r}\) 外推到如此强场——但本例说明铁芯的"放大"作用是巨大的，这正是电磁铁的核心机制。</p>
+          <p><span class="ans">空心：\(B=2.51\,\mathrm{mT}\)；线性铁芯近似：\(B\approx 12.6\,\mathrm{T}\)（实际受饱和限制，约 \(1\text{–}2\,\mathrm{T}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 两根平行导线之间的力</h4>
+        <p class="example-statement">两根长直平行导线相距 \(d=4.0\,\mathrm{cm}\)，分别通以同向电流 \(I_{1}=5.0\,\mathrm{A}\)、\(I_{2}=5.0\,\mathrm{A}\)。求单位长度受力大小与方向，以及 \(1.0\,\mathrm{m}\) 段上的合力。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\)：</p>
+          <div class="formula">\[ \frac{F}{L}=\frac{(4\pi\times 10^{-7})(5.0)(5.0)}{2\pi(0.040)}=\frac{2\times 10^{-7}\cdot 25}{0.040}=1.25\times 10^{-4}\,\mathrm{N/m} \]</div>
+          <p class="step">即每米 \(125\,\mathrm{\mu N}\)。\(L=1.0\,\mathrm{m}\) 段：\(F=1.25\times 10^{-4}\,\mathrm{N}=0.125\,\mathrm{mN}\)。</p>
+          <p class="step"><strong>方向</strong>：同向电流<strong>相吸</strong>（详见推导 9.5）。</p>
+          <p class="step"><strong>校核（安培定义）</strong>：若取 \(I_{1}=I_{2}=1\,\mathrm{A}, d=1\,\mathrm{m}\)，得 \(F/L=\mu_{0}/(2\pi)=2\times 10^{-7}\,\mathrm{N/m}\) ✓——这正是 SI 安培的定义值。本例电流加倍 5 倍（\(I^{2}\) 因子使力放大 25 倍）、距离缩短到 1/25，故力为定义值的 \(25\times 25=625\) 倍：\(2\times 10^{-7}\times 625=1.25\times 10^{-4}\,\mathrm{N/m}\) ✓。</p>
+          <p><span class="ans">\(F/L=1.25\times 10^{-4}\,\mathrm{N/m}=125\,\mathrm{\mu N/m}\)（吸引）；\(1\,\mathrm{m}\) 段合力 \(0.125\,\mathrm{mN}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 圆电流回路轴线上的磁场</h4>
+        <p class="example-statement">半径 \(R=5.0\,\mathrm{cm}\)、电流 \(I=2.0\,\mathrm{A}\) 的圆线圈（与例 9.1 同）。求轴线上距圆心 \(z=3.0\,\mathrm{cm}\) 处的磁场大小，并与圆心处的值比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由 \(B(z)=\mu_{0}IR^{2}/[2(R^{2}+z^{2})^{3/2}]\)：</p>
+          <p class="step">先算分母：</p>
+          <div class="formula">\[ R^{2}+z^{2}=(0.050)^{2}+(0.030)^{2}=0.00250+0.00090=0.00340\,\mathrm{m^{2}} \]</div>
+          <div class="formula">\[ (R^{2}+z^{2})^{3/2}=(0.00340)^{3/2}=0.00340\times\sqrt{0.00340}=0.00340\times 0.0583=1.98\times 10^{-4}\,\mathrm{m^{3}} \]</div>
+          <p class="step">分子：</p>
+          <div class="formula">\[ \mu_{0}IR^{2}=(4\pi\times 10^{-7})(2.0)(0.00250)=8\pi\times 10^{-7}\times 0.00250=6.28\times 10^{-9}\,\mathrm{T\cdot m^{3}} \]</div>
+          <p class="step">磁场：</p>
+          <div class="formula">\[ B(3\,\mathrm{cm})=\frac{6.28\times 10^{-9}}{2\times 1.98\times 10^{-4}}=\frac{6.28\times 10^{-9}}{3.96\times 10^{-4}}=1.59\times 10^{-5}\,\mathrm{T} \]</div>
+          <p class="step">即 \(B=15.9\,\mathrm{\mu T}\)。与圆心处 \(25.1\,\mathrm{\mu T}\) 相比，衰减到约 63%——轴向衰减虽然不是 \(1/r^{3}\)（\(z\) 还不够远），但已经显著。</p>
+          <p class="step"><strong>远场校核</strong>：若 \(z\gg R\)，比如 \(z=50\,\mathrm{cm}\)（10 倍半径），\(B\approx\mu_{0}IR^{2}/(2z^{3})=(4\pi\times 10^{-7})(2.0)(0.0025)/(2\cdot 0.125)=2.51\times 10^{-8}\,\mathrm{T}=25.1\,\mathrm{nT}\)，是圆心值的千分之一。这正是磁偶极远场的 \(1/r^{3}\) 标度。</p>
+          <p><span class="ans">\(B(3\,\mathrm{cm})=1.59\times 10^{-5}\,\mathrm{T}=15.9\,\mathrm{\mu T}\)（约圆心值的 63%）</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>对导线与对回路用右手定则时混淆。</strong>判定<strong>载流导线</strong>周围的磁场：拇指沿电流方向，四指卷曲即 \(\vec{B}\) 绕向。判定<strong>圆电流回路</strong>中心/轴线上 \(\vec{B}\) 的方向：四指沿电流绕向，拇指即 \(\vec{B}\)（沿轴线）。两套规则涉及"拇指"与"四指"角色互换——务必想清楚是"由源（电流）求场"的哪一类几何。</li>
+        <li><strong>把安培定律当成"任意几何都好解"的工具。</strong>安培定律 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}\) 是<strong>普遍成立</strong>的，但只有当对称性允许选择一个 \(B\) 在其上恒定且方向已知的安培回路时，才能把 \(B\) 提出积分号外求解。对任意形状导线（如一段有限长直导线、不规则回路），必须回到 Biot-Savart 积分——这种情况下硬套安培定律会得到错误答案。</li>
+        <li><strong>误以为长直导线的 \(B\) 按 \(1/r^{2}\) 衰减。</strong>点电荷的电场按 \(1/r^{2}\)，但<strong>导线是一维扩展源</strong>，每个电流元的 \(1/r^{2}\) 贡献沿无限长导线积分后留下 \(1/r\) 标度。直观理解：远处贡献因 \(1/r^{2}\) 减弱，但有效积分长度按 \(r\) 增长，二者抵消一根 \(r\)。同理，无限大电流片产生 \(B\) 与距离<strong>无关</strong>（恒定场），无限长螺线管内部 \(B\) 也是均匀——维度越高，场衰减越慢（甚至不衰减）。</li>
+        <li><strong>用 \(B=\mu_{0}nI\) 于有限长螺线管而忘记端点效应。</strong>该公式严格只对"无限长"理想螺线管成立。真实有限长螺线管端口附近磁场会<strong>下降</strong>（端口处约一半），中心处接近 \(\mu_{0}nI\)。在长度 \(\gg\) 直径时近似良好；短螺线管则需用回路轴向公式（推导 9.2）逐点叠加。</li>
+        <li><strong>把铁芯简单地按 \(\mu_{r}\) 线性放大磁场到任意强。</strong>\(\vec{B}=\mu\vec{H}\) 只在线性介质中成立，铁磁材料有<strong>饱和</strong>（\(B_{\text{sat}}\sim 1\text{–}2\,\mathrm{T}\)）、<strong>磁滞</strong>（\(B\) 取决于历史）和<strong>居里温度</strong>（\(T>T_{C}\) 时铁磁变顺磁）。商用 \(\mu_{r}\) 是工作点附近的小信号值，不能用它外推到强场。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 亥姆赫兹线圈的磁场叠加：两个相同圆线圈（\(R=10\,\mathrm{cm}\)、\(I=2.0\,\mathrm{A}\)），共轴平行放置、相距 \(R\)（标准亥姆赫兹构型）。求中心点（两线圈中点）的磁场（设两线圈电流绕向相同，使轴线磁场相加）。提示：两线圈在各自中心的 \(B\) 与轴线公式。</summary>
+        <div class="hint">每个线圈在中点（距其 \(z=R/2=5\,\mathrm{cm}\)）的磁场用轴线公式；两线圈贡献相加。</div>
+        <div class="solution">单线圈在距圆心 \(z\) 处的磁场：\(B(z)=\mu_{0}IR^{2}/[2(R^{2}+z^{2})^{3/2}]\)。<br>取 \(z=R/2=0.050\,\mathrm{m}\)（注意此线圈 \(R=0.10\,\mathrm{m}\)）：<br>\(R^{2}+z^{2}=0.0100+0.0025=0.0125\,\mathrm{m^{2}}\)；\((0.0125)^{3/2}=0.0125\times\sqrt{0.0125}=0.0125\times 0.1118=1.398\times 10^{-3}\,\mathrm{m^{3}}\)。<br>分子 \(\mu_{0}IR^{2}=(4\pi\times 10^{-7})(2.0)(0.0100)=8\pi\times 10^{-9}=2.51\times 10^{-8}\,\mathrm{T\cdot m^{3}}\)。<br>单线圈贡献：\(B_{1}=2.51\times 10^{-8}/(2\times 1.398\times 10^{-3})=8.99\times 10^{-6}\,\mathrm{T}=8.99\,\mathrm{\mu T}\)。<br>两线圈相加：\(B_{\text{总}}=2B_{1}=1.80\times 10^{-5}\,\mathrm{T}=18.0\,\mathrm{\mu T}\)。<br>这正是亥姆赫兹线圈在中心"均匀区"的标称场，并可在中央较大范围内近似均匀（这正是它被广泛用于实验的原因）。<br><span class="ans">\(B_{\text{中心}}=1.80\times 10^{-5}\,\mathrm{T}=18.0\,\mathrm{\mu T}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 三根平行导线：三根长直平行导线位于等边三角形三个顶点上，相邻距离 \(d=2.0\,\mathrm{cm}\)。导线 1、2 沿 \(+z\) 方向各通 \(I=5.0\,\mathrm{A}\)，导线 3 沿 \(-z\) 方向通 \(I=5.0\,\mathrm{A}\)。求导线 3 上 \(1.0\,\mathrm{m}\) 长一段所受合力大小与方向。</summary>
+        <div class="hint">先用 \(B=\mu_{0}I/(2\pi d)\) 算导线 1、2 在导线 3 处产生的 \(\vec{B}\)（方向用右手定则），再用 \(\vec{F}=I\vec{L}\times\vec{B}\) 求力。或直接用 \(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\) 求每对导线的力，再矢量合成。</div>
+        <div class="solution">每对导线之间的力大小（每米）\(f=\mu_{0}I^{2}/(2\pi d)=(4\pi\times 10^{-7})(5.0)^{2}/(2\pi\times 0.020)=2\times 10^{-7}\times 25/0.020=2.5\times 10^{-4}\,\mathrm{N/m}\)。<br>方向：导线 3 与导线 1 反向电流→沿连线<strong>排斥</strong>（远离导线 1）；与导线 2 反向→远离导线 2。<br>这两个力大小相等 \(f\)、各沿三角形两条边的外延方向，两力夹角 \(60^{\circ}\)（等边三角形外角）。<br>合力大小：\(F/L=2f\cos(30^{\circ})=2(2.5\times 10^{-4})(0.866)=4.33\times 10^{-4}\,\mathrm{N/m}\)。<br>方向：沿等边三角形从导线 3 顶点向对边中点的外延方向（即远离另两根导线的方向）。<br>1 m 段合力 \(F=4.33\times 10^{-4}\,\mathrm{N}=0.433\,\mathrm{mN}\)。<br><span class="ans">\(|F|/L=4.33\times 10^{-4}\,\mathrm{N/m}\)；\(1\,\mathrm{m}\) 段 \(|F|=0.433\,\mathrm{mN}\)，远离另两导线</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 同轴电缆的磁场：一根长直同轴电缆，内芯半径 \(a=1.0\,\mathrm{mm}\)（通电流 \(I=10\,\mathrm{A}\) 沿 \(+z\)），外壳半径 \(b=4.0\,\mathrm{mm}\)（回流 \(I\) 沿 \(-z\)）。设电流在内芯和外壳上均匀分布（内芯）或面分布（外壳）。求 \(r=2.0\,\mathrm{mm}\)（内芯与外壳之间）和 \(r=5.0\,\mathrm{mm}\)（外壳之外）处的磁场。</summary>
+        <div class="hint">用安培定律。注意"包围电流" \(I_{\text{enc}}\) 是穿过安培回路的净电流：\(r\) 在内外导体之间时只包围内芯电流；\(r\) 在外壳之外时包围正负抵消为零。</div>
+        <div class="solution">柱对称，选半径 \(r\) 的圆形安培回路。<br>\(r=2.0\,\mathrm{mm}\)（\(a<r<b\)）：\(I_{\text{enc}}=+I=10\,\mathrm{A}\)（仅内芯）。<br>\(B=\mu_{0}I/(2\pi r)=(4\pi\times 10^{-7})(10)/(2\pi\times 0.0020)=2.0\times 10^{-6}/0.0020=1.0\times 10^{-3}\,\mathrm{T}=1.0\,\mathrm{mT}\)。<br>\(r=5.0\,\mathrm{mm}\)（\(r>b\)）：\(I_{\text{enc}}=+I+(-I)=0\)。故 \(B=0\)。<br>这正是同轴电缆屏蔽外部磁场的原理——磁场被限制在内外导体之间的环形区域。<br><span class="ans">\(r=2.0\,\mathrm{mm}\) 处 \(B=1.0\,\mathrm{mT}\)；\(r=5.0\,\mathrm{mm}\) 处 \(B=0\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 螺绕环：一个螺绕环共 \(N=500\) 匝、平均半径 \(a=10\,\mathrm{cm}\)、管横截面半径 \(b=5\,\mathrm{mm}\)、电流 \(I=2.0\,\mathrm{A}\)。求管内（在平均半径处）的磁场，以及管内最大与最小磁场之差（取管内 \(r\) 从 \(a-b\) 到 \(a+b\)）。</summary>
+        <div class="hint">用 \(B(r)=\mu_{0}NI/(2\pi r)\)，\(r\) 为到环心的距离。最大在 \(r=a-b\)、最小在 \(r=a+b\)。</div>
+        <div class="solution">在 \(r=a=0.10\,\mathrm{m}\)：<br>\(B=\mu_{0}NI/(2\pi a)=(4\pi\times 10^{-7})(500)(2.0)/(2\pi\times 0.10)=(2\times 10^{-7})(1000)/0.10=2.0\times 10^{-3}\,\mathrm{T}=2.0\,\mathrm{mT}\)。<br>最大：\(r_{\min}=a-b=0.10-0.005=0.095\,\mathrm{m}\)，\(B_{\max}=2.0\times 10^{-3}\times(0.10/0.095)=2.105\,\mathrm{mT}\)。<br>最小：\(r_{\max}=a+b=0.105\,\mathrm{m}\)，\(B_{\min}=2.0\times 10^{-3}\times(0.10/0.105)=1.905\,\mathrm{mT}\)。<br>差值 \(\Delta B=B_{\max}-B_{\min}\approx 0.20\,\mathrm{mT}\)（约平均值的 10%，因为 \(b/a=0.05\) 较小）。这正是理想"细环"近似（\(B\) 均匀）的偏差量级。<br><span class="ans">\(B(a)=2.0\,\mathrm{mT}\)；管内 \(\Delta B\approx 0.20\,\mathrm{mT}\)（最大 ~2.10 mT，最小 ~1.90 mT）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 用安培定义算 \(\mu_{0}\) 与库仑：由"安培"的 SI 定义（两根相距 \(1\,\mathrm{m}\) 的平行导线、每米受力 \(2\times 10^{-7}\,\mathrm{N}\) 时各通 \(1\,\mathrm{A}\)）直接求 \(\mu_{0}\) 的精确值。再用 \(1\,\mathrm{C}=1\,\mathrm{A\cdot s}\) 论证：库仑定律 \(F=k_{e}q_{1}q_{2}/r^{2}\) 中的 \(k_{e}\) 也是<strong>由定义确定的</strong>（非测量值），并求 \(k_{e}\)。</summary>
+        <div class="hint">由 \(F/L=\mu_{0}I^{2}/(2\pi d)\) 代入定义值反解 \(\mu_{0}\)。然后用 \(k_{e}=1/(4\pi\varepsilon_{0})\) 与 \(c^{2}=1/(\mu_{0}\varepsilon_{0})\) 关联（\(c\) 为光速，定义为精确值 \(299792458\,\mathrm{m/s}\)）。</div>
+        <div class="solution">由定义 \(F/L=2\times 10^{-7}\,\mathrm{N/m}\)、\(I=1\,\mathrm{A}\)、\(d=1\,\mathrm{m}\)：<br>\(\mu_{0}=2\pi d(F/L)/I^{2}=2\pi\times 1\times 2\times 10^{-7}/1=4\pi\times 10^{-7}\,\mathrm{T\cdot m/A}\)。<br>所以 \(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{H/m}\) 是<strong>精确</strong>值（无误差）。<br>由 \(c^{2}=1/(\mu_{0}\varepsilon_{0})\)（麦克斯韦方程组的结果，且 \(c\) 在 SI 中被定义为精确值 \(299792458\,\mathrm{m/s}\)）：<br>\(\varepsilon_{0}=1/(\mu_{0}c^{2})=1/[(4\pi\times 10^{-7})(2.998\times 10^{8})^{2}]\approx 8.854\times 10^{-12}\,\mathrm{F/m}\)。<br>库仑常数 \(k_{e}=1/(4\pi\varepsilon_{0})=\mu_{0}c^{2}/(4\pi)=(4\pi\times 10^{-7}\cdot c^{2})/(4\pi)=10^{-7}c^{2}\approx 8.988\times 10^{9}\,\mathrm{N\cdot m^{2}/C^{2}}\)。<br>这正是静电学里的 \(k_{e}\approx 8.99\times 10^{9}\)。结论：在 SI 中，\(\mu_{0}, \varepsilon_{0}, k_{e}\) 都是由"安培定义 + 光速定义"精确导出的，不是独立测量值。<br><strong>注</strong>：2019 年 SI 修订后，安培通过基本电荷 \(e\) 定义（\(1\,\mathrm{A}=1\,\mathrm{C/s}\)，\(e\) 取精确值），\(\mu_{0}\) 不再是精确值（有微小实验不确定度）；但其数值仍近似 \(4\pi\times 10^{-7}\,\mathrm{H/m}\)。<br><span class="ans">\(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{H/m}\)（精确，2019 前）；\(k_{e}=10^{-7}c^{2}\approx 8.988\times 10^{9}\,\mathrm{N\cdot m^{2}/C^{2}}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">电流的磁场 (magnetic field of currents)。两种模式可选：(1) <strong>长直导线</strong>，电流垂直纸面（\(\odot\) 出 / \(\otimes\) 入），磁力线为同心圆；(2) <strong>圆电流回路（侧视图）</strong>，回路截面为左右两点（一 \(\odot\) 一 \(\otimes\)），磁力线穿过回路形成偶极式闭合曲线。用滑块调节电流 \(I\)（可正可负——反向即反转方向），<strong>在画布上移动鼠标可实时读取该点的磁场大小</strong> \(B\)（用解析公式或 Biot-Savart 数值积分得到真实 SI 值）。"流动虚线"动画指示磁场方向（由 \(\mathrm{sign}(I)\) 决定）。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2;
+
+          // --- Physical constants ---
+          var MU0 = 4 * Math.PI * 1e-7;     // T·m/A
+          var R_LOOP = 0.05;                // 5 cm loop radius (m)
+          var PX_PER_M = 2800;              // 1 m = 2800 px  → 1 cm = 28 px
+
+          // --- Simulation parameters ---
+          var params = {
+            loopMode: false,                // false = wire, true = loop
+            I: 10,                          // current in A (sign matters)
+            probeWX: 0.030,                 // probe world-x (m)
+            probeWZ: 0.020,                 // probe world-z (m)
+            probeActive: false,             // user has interacted
+          };
+
+          // --- World <-> pixel transforms (origin at canvas center, +z up) ---
+          function w2pxX(wx) { return CX + wx * PX_PER_M; }
+          function w2pxY(wz) { return CY - wz * PX_PER_M; }
+          function px2wx(px) { return (px - CX) / PX_PER_M; }
+          function px2wz(py) { return -(py - CY) / PX_PER_M; }
+
+          // --- Field of an infinite straight wire (perpendicular to page) ---
+          // Wire at origin, current in +z (out of page) for I > 0.
+          // In the page plane (x, y ≡ z here), B circles CCW: B = μ0 I/(2π r²) · (-z, x).
+          function Bwire(x, z, I) {
+            var r2 = x * x + z * z;
+            if (r2 < 1e-10) return { Bx: 0, Bz: 0, B: 0 };
+            var r = Math.sqrt(r2);
+            var mag = MU0 * I / (2 * Math.PI * r);
+            // unit tangent (CCW around +z): (-z, x) / r ; for I<0 reversed by sign(I) in mag
+            return { Bx: -z / r * mag, Bz: x / r * mag, B: Math.abs(mag) };
+          }
+
+          // --- Field of circular loop in x-y plane (axis = z), at point (x, 0, z) ---
+          // Numerical Biot-Savart integration over φ.
+          function Bloop(x, z, I) {
+            var Nphi = 80;
+            var dphi = 2 * Math.PI / Nphi;
+            var Bx = 0, Bz = 0;
+            var R = R_LOOP;
+            for (var k = 0; k < Nphi; k++) {
+              var phi = (k + 0.5) * dphi;
+              var cs = Math.cos(phi), sn = Math.sin(phi);
+              var dlx = -R * sn * dphi, dly = R * cs * dphi;
+              var Rx = x - R * cs, Ry = -R * sn, Rz = z;
+              var rmag2 = Rx * Rx + Ry * Ry + Rz * Rz;
+              if (rmag2 < 1e-12) continue;
+              var rmag3 = rmag2 * Math.sqrt(rmag2);
+              // dl × R_vec  (we only need x and z; y cancels by symmetry)
+              var cx = dly * Rz;                       // dly*Rz - dlz*Ry, dlz=0
+              var cz = dlx * Ry - dly * Rx;            // dlx*Ry - dly*Rx
+              var coef = MU0 * I / (4 * Math.PI) / rmag3;
+              Bx += coef * cx;
+              Bz += coef * cz;
+            }
+            var mag = Math.sqrt(Bx * Bx + Bz * Bz);
+            return { Bx: Bx, Bz: Bz, B: mag };
+          }
+
+          // --- Streamline integration for the loop (cached: geometry is sign-independent) ---
+          var loopLines = null;
+          function integrateStreamline(x0, z0, direction) {
+            var pts = [];
+            var x = x0, z = z0;
+            var step = 0.0015;     // 1.5 mm
+            var I = 1.0;           // geometry only
+            for (var i = 0; i < 600; i++) {
+              pts.push({ x: x, z: z });
+              var b = Bloop(x, z, I);
+              if (b.B < 1e-12) break;
+              var dx = direction * step * b.Bx / b.B;
+              var dz = direction * step * b.Bz / b.B;
+              x += dx; z += dz;
+              if (Math.abs(x) > 0.13 || Math.abs(z) > 0.105) { pts.push({ x: x, z: z }); break; }
+              var dR2 = (x - R_LOOP) * (x - R_LOOP) + z * z;
+              var dL2 = (x + R_LOOP) * (x + R_LOOP) + z * z;
+              if (dR2 < 6e-5 || dL2 < 6e-5) break;   // hit a wire
+              if (i > 30) {
+                var dx0 = x - x0, dz0 = z - z0;
+                if (dx0 * dx0 + dz0 * dz0 < step * step * 9) {
+                  pts.push({ x: x0, z: z0 }); break;  // closed
+                }
+              }
+            }
+            return pts;
+          }
+          function streamlineFromSeed(x0, z0) {
+            var fwd = integrateStreamline(x0, z0, +1);
+            var bwd = integrateStreamline(x0, z0, -1);
+            bwd.reverse();
+            return bwd.concat(fwd.slice(1));
+          }
+          function ensureLoopLines() {
+            if (loopLines) return loopLines;
+            loopLines = [];
+            // seeds on the axis (these give nested closed curves threading the loop)
+            var axisSeeds = [0.020, 0.040, 0.065, 0.090];
+            for (var i = 0; i < axisSeeds.length; i++) {
+              loopLines.push(streamlineFromSeed(0, axisSeeds[i]));
+            }
+            // one outer curve that goes well outside the loop
+            loopLines.push(streamlineFromSeed(0.04, 0.075));
+            return loopLines;
+          }
+
+          // --- Mouse interaction: move probe ---
+          function setProbeFromEvent(ev) {
+            var rect = canvas.getBoundingClientRect();
+            var px = (ev.clientX - rect.left) * (canvas.width / rect.width);
+            var py = (ev.clientY - rect.top) * (canvas.height / rect.height);
+            params.probeWX = px2wx(px);
+            params.probeWZ = px2wz(py);
+            params.probeActive = true;
+          }
+          canvas.addEventListener('mousemove', setProbeFromEvent);
+          canvas.addEventListener('touchmove', function (ev) {
+            if (ev.touches.length > 0) {
+              ev.preventDefault();
+              setProbeFromEvent(ev.touches[0]);
+            }
+          }, { passive: false });
+
+          // --- Formatting helpers ---
+          function fmtB(T) {
+            if (!isFinite(T)) return '—';
+            var a = Math.abs(T);
+            if (a >= 1) return T.toFixed(3) + ' T';
+            if (a >= 1e-3) return (T * 1e3).toFixed(2) + ' mT';
+            if (a >= 1e-6) return (T * 1e6).toFixed(2) + ' μT';
+            if (a > 0) return (T * 1e9).toFixed(2) + ' nT';
+            return '0 T';
+          }
+
+          // --- createSim: state only carries phase for dash animation ---
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { phase: 0 }; },
+            step: function (dt, t, s) {
+              // dash flow speed proportional to |I|, capped
+              s.phase += dt * Math.min(40, Math.abs(params.I) * 2 + 4);
+            },
+            draw: function (ctx, s /* , env */) {
+              PS.clear(ctx);
+              // faint grid every 2 cm (28*2 = 56 px), centered
+              PS.drawGrid(ctx, {
+                originX: CX, originY: CY,
+                scale: PX_PER_M / 100 * 2, step: 1,
+              });
+
+              if (params.loopMode) {
+                drawLoop(ctx, s.phase);
+              } else {
+                drawWire(ctx, s.phase);
+              }
+
+              drawProbe(ctx);
+              drawHUD(ctx);
+            },
+          });
+
+          // --- Draw mode 1: long straight wire ---
+          function drawWire(ctx, phase) {
+            var I = params.I;
+            var signI = I >= 0 ? +1 : -1;
+            var absI = Math.abs(I);
+
+            // Concentric field-line circles (1, 2, 3, 4, 5 cm)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.primary;
+            ctx.globalAlpha = 0.55;
+            ctx.lineWidth = 1.4;
+            ctx.setLineDash([6, 5]);
+            // Canvas arc(...) is drawn CW on screen (y-down convention).
+            // For I>0 B circulates CCW on screen, so dashes must flow opposite
+            // to the path direction = +offset.
+            ctx.lineDashOffset = +signI * phase * 0.6;
+            for (var k = 1; k <= 5; k++) {
+              var r_px = k * 28;  // k cm
+              ctx.beginPath();
+              ctx.arc(CX, CY, r_px, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            ctx.restore();
+
+            // Tangent direction arrows on each circle (8 per circle)
+            if (absI > 1e-6) {
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.fillStyle = PS.colors.accent;
+              ctx.lineWidth = 1.6;
+              for (var c = 1; c <= 5; c++) {
+                var rr = c * 28;
+                for (var a = 0; a < 8; a++) {
+                  var ang = a * Math.PI / 4;
+                  var px = CX + rr * Math.cos(ang);
+                  var py = CY + rr * Math.sin(ang);
+                  // Canvas angle ang is measured CW on screen (y-down).
+                  // For I>0 (current +z out of page) B circulates CCW on screen.
+                  // Rotating the canvas radial (cos ang, sin ang) by 90° CCW in
+                  // screen coords gives tangent (sin ang, -cos ang); flip for I<0.
+                  var tx = Math.sin(ang) * signI;
+                  var ty = -Math.cos(ang) * signI;
+                  var L = 9;
+                  PS.drawArrow(ctx, px - L * tx, py - L * ty,
+                               px + L * tx, py + L * ty,
+                               PS.colors.accent);
+                }
+              }
+              ctx.restore();
+            }
+
+            // Wire symbol at center (⊙ for I>0 out of page, ⊗ for I<0)
+            drawWireCrossSection(ctx, CX, CY, signI, 10, phase);
+
+            // Axis labels
+            PS.drawText(ctx, 'x', W - 14, CY - 6,
+              { font: '12px system-ui', color: PS.colors.axis, align: 'right' });
+            PS.drawText(ctx, 'z (纸面竖直 in-plane ↑)', CX + 8, 14,
+              { font: '12px system-ui', color: PS.colors.axis });
+          }
+
+          // --- Draw mode 2: circular loop (side view, x-z slice) ---
+          function drawLoop(ctx, phase) {
+            var I = params.I;
+            var signI = I >= 0 ? +1 : -1;
+            ensureLoopLines();
+
+            // Loop axis (horizontal dashed)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.globalAlpha = 0.45;
+            ctx.setLineDash([3, 5]);
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, CY); ctx.lineTo(W, CY); ctx.stroke();
+            ctx.restore();
+            PS.drawText(ctx, '回路轴线 loop axis (z)', 10, CY - 6,
+              { font: '11px system-ui', color: PS.colors.axis });
+
+            // Streamlines (dashed, animated)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.primary;
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 5]);
+            ctx.lineDashOffset = -signI * phase * 0.5;
+            var lines = loopLines;
+            for (var li = 0; li < lines.length; li++) {
+              var pts = lines[li];
+              if (pts.length < 2) continue;
+              ctx.globalAlpha = 0.55;
+              ctx.beginPath();
+              ctx.moveTo(w2pxX(pts[0].x), w2pxY(pts[0].z));
+              for (var pi = 1; pi < pts.length; pi++) {
+                ctx.lineTo(w2pxX(pts[pi].x), w2pxY(pts[pi].z));
+              }
+              ctx.stroke();
+            }
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            ctx.restore();
+
+            // Direction arrows on streamlines (sampled at seed points; orientation from B)
+            if (Math.abs(I) > 1e-6) {
+              var arrowSeeds = [
+                { x: 0.0, z: 0.020 }, { x: 0.0, z: 0.040 },
+                { x: 0.0, z: 0.065 }, { x: 0.0, z: 0.090 },
+                { x: 0.0, z: -0.020 }, { x: 0.0, z: -0.040 },
+                { x: 0.0, z: -0.065 },
+              ];
+              for (var ai = 0; ai < arrowSeeds.length; ai++) {
+                var s = arrowSeeds[ai];
+                var b = Bloop(s.x, s.z, I);
+                if (b.B < 1e-9) continue;
+                var px = w2pxX(s.x), py = w2pxY(s.z);
+                var dirX = b.Bx / b.B, dirZ = b.Bz / b.B;
+                var L = 11;
+                PS.drawArrow(ctx,
+                  px - L * dirX, py + L * dirZ,   // screen y = -world z
+                  px + L * dirX, py - L * dirZ,
+                  PS.colors.accent);
+              }
+            }
+
+            // Wire cross-sections at (±R, 0). For I>0 (current CCW seen from +z):
+            //   at x=+R, dl in +y (out of page) → ⊙ ; at x=-R, dl in -y (into page) → ⊗
+            var leftSign  = -signI;   // x=-R
+            var rightSign = +signI;   // x=+R
+            drawWireCrossSection(ctx, w2pxX(+R_LOOP), w2pxY(0), rightSign, 9, phase);
+            drawWireCrossSection(ctx, w2pxX(-R_LOOP), w2pxY(0), leftSign,  9, phase);
+
+            // R label
+            PS.drawText(ctx, '2R = ' + (2 * R_LOOP * 100).toFixed(0) + ' cm',
+              w2pxX(0) - 36, w2pxY(0) + 18,
+              { font: '11px system-ui', color: PS.colors.axis, align: 'center' });
+          }
+
+          // --- Common: draw a wire cross section (⊙ out / ⊗ in) ---
+          function drawWireCrossSection(ctx, px, py, sign, rad, phase) {
+            ctx.save();
+            // outer ring
+            PS.drawCircle(ctx, px, py, rad, {
+              fill: PS.colors.bg, stroke: PS.colors.text, lineWidth: 2,
+            });
+            if (sign > 0) {
+              // ⊙ : center dot
+              PS.drawCircle(ctx, px, py, 2.4, { fill: PS.colors.text });
+            } else if (sign < 0) {
+              // ⊗ : cross
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 1.8;
+              var r2 = rad * 0.62;
+              ctx.beginPath();
+              ctx.moveTo(px - r2, py - r2); ctx.lineTo(px + r2, py + r2);
+              ctx.moveTo(px - r2, py + r2); ctx.lineTo(px + r2, py - r2);
+              ctx.stroke();
+            } else {
+              PS.drawText(ctx, '?', px - 4, py + 4,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+            }
+            ctx.restore();
+          }
+
+          // --- Draw probe + readout ---
+          function drawProbe(ctx) {
+            var px = w2pxX(params.probeWX);
+            var py = w2pxY(params.probeWZ);
+
+            // Evaluate B at probe (real SI)
+            var b;
+            if (params.loopMode) {
+              b = Bloop(params.probeWX, params.probeWZ, params.I);
+            } else {
+              b = Bwire(params.probeWX, params.probeWZ, params.I);
+            }
+            params._lastB = b;
+
+            // probe reticle
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.fillStyle = PS.colors.accent2;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(px, py, 7, 0, 2 * Math.PI); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(px - 11, py); ctx.lineTo(px + 11, py);
+            ctx.moveTo(px, py - 11); ctx.lineTo(px, py + 11);
+            ctx.stroke();
+            ctx.restore();
+
+            // readout next to probe
+            var label = 'B = ' + fmtB(b.B);
+            PS.drawText(ctx, label, px + 12, py - 12,
+              { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+
+            // direction arrow of B at probe
+            if (b.B > 1e-12) {
+              var dirX, dirY;
+              if (params.loopMode) {
+                dirX = b.Bx / b.B; dirY = -b.Bz / b.B;   // world z → screen y flip
+              } else {
+                dirX = b.Bx / b.B; dirY = -b.Bz / b.B;   // wire: Bx, Bz in screen plane
+              }
+              var L = 30;
+              PS.drawArrow(ctx, px, py, px + L * dirX, py + L * dirY,
+                PS.colors.accent2, 'B');
+            }
+          }
+
+          // --- HUD ---
+          function drawHUD(ctx) {
+            // top-left: parameters
+            ctx.save();
+            ctx.globalAlpha = 0.95;
+            PS.drawText(ctx, '参数 Parameters', 14, 20,
+              { font: 'bold 13px system-ui', color: PS.colors.text });
+            var modeStr = params.loopMode
+              ? '环形线圈 circular loop (侧视 side view), R = 5 cm'
+              : '长直导线 long wire (⊥ 纸面 page)';
+            PS.drawText(ctx, 'mode: ' + modeStr, 14, 38,
+              { font: '12px system-ui', color: PS.colors.text });
+            var Isign = params.I > 0 ? '+' : (params.I < 0 ? '−' : '');
+            PS.drawText(ctx, 'I = ' + Isign + Math.abs(params.I).toFixed(1) + ' A',
+              14, 54, { font: '12px system-ui', color: PS.colors.text });
+            ctx.restore();
+
+            // top-right: probe B + analytic formula
+            ctx.save();
+            ctx.globalAlpha = 0.95;
+            PS.drawText(ctx, '探针 Probe (鼠标移动 mouse)', W - 14, 20,
+              { font: 'bold 13px system-ui', color: PS.colors.text, align: 'right' });
+            var rProbe = Math.hypot(params.probeWX, params.probeWZ);
+            PS.drawText(ctx,
+              '位置 r = ' + (rProbe * 100).toFixed(2) + ' cm',
+              W - 14, 38,
+              { font: '12px system-ui', color: PS.colors.text, align: 'right' });
+            PS.drawText(ctx,
+              'B = ' + fmtB(params._lastB ? params._lastB.B : 0),
+              W - 14, 54,
+              { font: 'bold 13px system-ui', color: PS.colors.accent2, align: 'right' });
+            // analytic formula hint
+            var formula = params.loopMode
+              ? 'Biot–Savart 数值积分 (80 段)'
+              : 'B = μ₀I/(2πr)';
+            PS.drawText(ctx, formula, W - 14, 70,
+              { font: '11px system-ui', color: PS.colors.axis, align: 'right' });
+            ctx.restore();
+
+            // bottom: hint + μ0
+            ctx.save();
+            PS.drawText(ctx,
+              'μ₀ = 4π×10⁻⁷ T·m/A   |   I 反向 ⇒ B 反向   |   在画布上移动鼠标读 B',
+              14, H - 12,
+              { font: '11px system-ui', color: PS.colors.axis });
+            ctx.restore();
+          }
+
+          // --- Controls ---
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'toggle', key: 'loopMode', label: '环形线圈模式 Loop mode', value: false },
+            { type: 'slider',  key: 'I',  label: '电流 I (A)', min: -20, max: 20, step: 0.5, value: 10 },
+            { type: 'button',  key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('loopMode', function (v) { params.loopMode = !!v; });
+          ctl.on('I', function (v) { params.I = v; });
+          ctl.on('reset', function () {
+            params.I = 10;
+            params.loopMode = false;
+            params.probeWX = 0.030;
+            params.probeWZ = 0.020;
+            params.probeActive = false;
+            ctl.set('I', 10);
+            ctl.set('loopMode', false);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>毕奥-萨伐尔定律</strong>（磁场的"点源"公式，对应库仑定律）：\(\mathrm{d}\vec{B}=\dfrac{\mu_{0}}{4\pi}\dfrac{I\,\mathrm{d}\vec{l}\times\hat{r}}{r^{2}}\)。方向由右手定则（\(\mathrm{d}\vec{l}\times\hat{r}\)）给出，大小 \(\mathrm{d}B=\mu_{0}I\,\mathrm{d}l\sin\theta/(4\pi r^{2})\)。用于任意电流分布的积分求解。</li>
+        <li><strong>圆电流回路</strong>：圆心 \(B=\mu_{0}I/(2R)\)；轴线上 \(B(z)=\mu_{0}IR^{2}/[2(R^{2}+z^{2})^{3/2}]\)；远场 \(\propto 1/|z|^{3}\)（磁偶极）。</li>
+        <li><strong>长直导线</strong>：\(B=\mu_{0}I/(2\pi r)\)，方向沿同心圆（右手定则）。\(B\propto 1/r\)——一维扩展源的标度。</li>
+        <li><strong>安培定律</strong>：\(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}\)。普遍成立，但只在柱、面、环形高度对称时可直接解出 \(B\)。</li>
+        <li><strong>螺线管（理想）</strong>：内部 \(B=\mu_{0}nI\)、均匀；外部 \(B\approx 0\)。<strong>螺绕环</strong>：环内 \(B=\mu_{0}NI/(2\pi r)\)。</li>
+        <li><strong>平行导线间的力</strong>：\(F/L=\mu_{0}I_{1}I_{2}/(2\pi d)\)，同向相吸、反向相斥。此式在 SI 中<strong>定义</strong>了安培（\(d=1\,\mathrm{m}, I=1\,\mathrm{A}\Rightarrow F/L=2\times 10^{-7}\,\mathrm{N/m}\)）。</li>
+        <li><strong>磁性材料</strong>：\(\vec{B}=\mu\vec{H}=\mu_{0}(1+\chi_{m})\vec{H}\)。抗磁 (\(\chi_{m}<0\)，弱排斥)、顺磁 (\(\chi_{m}>0\)，弱吸引)、铁磁 (\(\chi_{m}\gg 1\)，强吸引，有磁滞与饱和，居里温度以上失效)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\mathrm{d}\vec{B}=\frac{\mu_{0}}{4\pi}\frac{I\,\mathrm{d}\vec{l}\times\hat{r}}{r^{2}},\quad B_{\text{loop center}}=\frac{\mu_{0}I}{2R},\quad B_{\text{loop axis}}(z)=\frac{\mu_{0}IR^{2}}{2(R^{2}+z^{2})^{3/2}},\quad B_{\text{wire}}=\frac{\mu_{0}I}{2\pi r}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}},\quad B_{\text{solenoid}}=\mu_{0}nI,\quad B_{\text{toroid}}(r)=\frac{\mu_{0}NI}{2\pi r},\quad \frac{F}{L}=\frac{\mu_{0}I_{1}I_{2}}{2\pi d},\quad \vec{B}=\mu\vec{H}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

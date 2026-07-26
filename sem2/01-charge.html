@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 电荷与库仑定律 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第1章 · 静电学 Electrostatics</p>
+      <h1>电荷与库仑定律 <span class="en-title">Charge &amp; Coulomb's Law</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>描述电荷 (electric charge) 的两种符号、电荷量子化 (quantization) \(q=ne\) 与电荷守恒 (conservation of charge)，并解释为什么粒子带电量总是 \(e\) 的整数倍。</li>
+        <li>区分导体 (conductor) 与绝缘体 (insulator)，从微观自由载流子角度说明极化 (polarization) 现象。</li>
+        <li>清楚地说出感应起电 (charging by induction) 与传导起电 (charging by conduction) 的四个步骤，并判断最终电荷的正负。</li>
+        <li>运用库仑定律矢量形式 \(\vec{F}=\dfrac{1}{4\pi\varepsilon_0}\dfrac{q_1 q_2}{r^2}\hat{r}\) 计算两点电荷间的作用力，并解释符号约定。</li>
+        <li>用叠加原理 (superposition principle) 求多电荷系统中某一电荷所受的合力，包括二维矢量分解。</li>
+        <li>比较静电力与万有引力，理解为什么在原子尺度引力可忽略（比值 \(\sim 10^{39}\)）。</li>
+        <li>熟练使用库仑常数 \(k=8.988\times 10^{9}\,\mathrm{N\,m^2/C^2}\) 与真空介电常数 (permittivity of free space) \(\varepsilon_0=8.854\times 10^{-12}\,\mathrm{C^2/(N\,m^2)}\)，并知道 \(k=1/(4\pi\varepsilon_0)\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电荷及其基本属性 Electric Charge and Its Properties</h3>
+      <p>电荷 (electric charge) 是物质的基本属性，与质量一样不可约简。它有<strong>两种符号</strong>：正 (positive, \(+\)) 与负 (negative, \(-\))，约定由富兰克林 (Benjamin Franklin) 提出。同号相斥、异号相吸——这是经验的总结，也是库仑定律的符号约定来源。</p>
+      <p>电荷有三个核心属性：</p>
+      <ul>
+        <li><strong>量子化 (Quantization)</strong>：任何可测电荷都是基本电荷 (elementary charge) \(e=1.602\,176\,634\times 10^{-19}\,\mathrm{C}\) 的整数倍，即 \(q=\pm n e\)（\(n=0,1,2,\ldots\)）。夸克带 \(\pm e/3\)、\(\pm 2e/3\)，但自由夸克不存在，故宏观电荷仍满足 \(q=ne\)。</li>
+        <li><strong>守恒 (Conservation)</strong>：孤立系统的总电荷代数和不随时间改变。电子–正电子对湮灭 \(e^-+e^+\to 2\gamma\) 中，总电荷 \(0\) 不变；β 衰变 \(n\to p+e^-+\bar\nu_e\) 中 \(0\to +e+(-e)+0=0\) 也守恒。</li>
+        <li><strong>相对论不变性 (Relativistic invariance)</strong>：电荷是不变量，与观测者参考系无关（不像长度或时间会随速度变化）。这一点是电动力学 (electrodynamics) 与牛顿引力的重要差别。</li>
+      </ul>
+
+      <h3>2. 导体与绝缘体 Conductors and Insulators</h3>
+      <p>根据电荷在材料中能否自由移动，物质分为两类：</p>
+      <ul>
+        <li><strong>导体 (Conductor)</strong>：金属、电解液、等离子体。存在可自由移动的载流子 (charge carriers)——金属中是价电子（电子气）。导体内部电场为零时，多余电荷只分布在表面。</li>
+        <li><strong>绝缘体 (Insulator / Dielectric)</strong>：玻璃、橡胶、塑料、干燥空气。电子被原子束缚，难以宏观移动。但外场可使分子内正负电荷中心错位，称为<strong>极化 (polarization)</strong>，呈现束缚电荷 (bound charge)。</li>
+        <li><strong>半导体 (Semiconductor)</strong>：硅、锗，导电性介于二者之间，是电子学的物质基础（第二学期后段及第三学期讨论）。</li>
+      </ul>
+
+      <h3>3. 起电方式 Methods of Charging</h3>
+      <p><strong>摩擦起电 (Triboelectric charging)</strong>：两种不同材质接触后分离，电子亲和力强的材料获得电子带负电。例如橡胶棒与猫皮摩擦后棒带负电，玻璃棒与丝绸摩擦后棒带正电。</p>
+      <p><strong>传导起电 (Charging by conduction)</strong>：带电体直接接触导体，电荷在两者间重新分配直至电势相等。两者最终带同号电荷。</p>
+      <p><strong>感应起电 (Charging by induction)</strong>：无需接触，仅靠静电感应使导体电荷重新分布，再配合接地 (grounding) 使导体获得与感应源<strong>相反</strong>符号的净电荷。详见例 1.5。</p>
+
+      <h3>4. 库仑定律 Coulomb's Law</h3>
+      <p>1785 年，库仑 (Charles-Augustin de Coulomb) 用扭秤实验 (torsion balance) 精确测定：真空中两个静止点电荷 (point charges) 之间的作用力沿其连线，大小与电量乘积成正比、与距离平方成反比。<strong>矢量形式</strong>（电荷 \(q_2\) 受到 \(q_1\) 的力）为：</p>
+      <div class="formula">\[ \vec{F}_{12}=\frac{1}{4\pi\varepsilon_0}\,\frac{q_1 q_2}{r^2}\,\hat{r}_{12} \]</div>
+      <p>其中 \(\hat{r}_{12}\) 是从 \(q_1\) 指向 \(q_2\) 的单位矢量，\(r\) 是二者距离。乘积 \(q_1 q_2\) 自带符号：同号得正（力沿 \(+\hat{r}_{12}\)，即推开 \(q_2\)，斥力），异号得负（力沿 \(-\hat{r}_{12}\)，即拉向 \(q_1\)，引力）。这正是“同号相斥、异号相吸”的数学表达。</p>
+      <p>常数 \(k_e\equiv \dfrac{1}{4\pi\varepsilon_0}=8.987\,551\,792\,3\times 10^{9}\,\mathrm{N\,m^2/C^2}\approx 8.99\times 10^{9}\,\mathrm{N\,m^2/C^2}\)，称为<strong>库仑常数 (Coulomb constant)</strong>。真空介电常数 (permittivity of free space) \(\varepsilon_0=8.854\,187\,817\times 10^{-12}\,\mathrm{F/m}\)。</p>
+
+      <h3>5. 叠加原理 Superposition Principle</h3>
+      <p>静电力是<strong>线性</strong>的：多个源电荷对某一电荷的总力等于各源电荷单独存在时所施力的<strong>矢量和</strong>：</p>
+      <div class="formula">\[ \vec{F}_{\text{net}}=\sum_{i=1}^{N}\vec{F}_i=\frac{q_0}{4\pi\varepsilon_0}\sum_{i=1}^{N}\frac{q_i}{r_{i0}^2}\,\hat{r}_{i0} \]</div>
+      <p>叠加原理是实验事实（不是数学公理），它意味着电场方程是线性的，将在第 2 章正式引入电场 (electric field) 时充分发挥威力。注意：叠加是对<strong>矢量</strong>求和，不是对大小求和——\(|\vec{F}_{\text{net}}|\neq |\vec{F}_1|+|\vec{F}_2|\)（一般情况）。</p>
+
+      <h3>6. 与万有引力的比较 Comparison with Gravity</h3>
+      <p>库仑定律与牛顿万有引力定律 \(\vec{F}=-GMm\hat{r}/r^2\) 形式惊人地相似：同为平方反比 (inverse-square)、同为中心力 (central force)。但有本质差别：</p>
+      <ul>
+        <li>电荷有正负，故静电力可吸可斥；质量只有正，引力只能相吸。</li>
+        <li>静电力强度远超引力：对氢原子中的电子–质子对，\(|F_e/F_g|\approx 2.27\times 10^{39}\)（见例 1.4）。因此在原子、分子、凝聚态物理中，引力完全可忽略。</li>
+        <li>引力源是质量，对所有粒子 universally 吸引；电荷可被屏蔽（导体内部 \(E=0\)），引力无法屏蔽。</li>
+      </ul>
+
+      <div class="key-terms">electric charge (电荷), elementary charge \(e\) (基本电荷), quantization of charge (电荷量子化), conservation of charge (电荷守恒), conductor (导体), insulator (绝缘体), polarization (极化), induction (感应), grounding (接地), Coulomb's law (库仑定律), point charge (点电荷), Coulomb constant \(k_e\) (库仑常数), permittivity of free space \(\varepsilon_0\) (真空介电常数), superposition principle (叠加原理), inverse-square law (平方反比律)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：由常数定义联系 \(k_e\)、\(\varepsilon_0\) 与光速 \(c\)</h3>
+      <p>在 SI 单位制中，真空磁导率 \(\mu_0\) 曾被精确定义为 \(4\pi\times 10^{-7}\,\mathrm{N/A^2}\)（2019 年 SI 修订后 \(\mu_0\) 成为测量量，但数值极接近此值）。麦克斯韦方程组给出电磁波速度：</p>
+      <div class="formula">\[ c=\frac{1}{\sqrt{\mu_0\varepsilon_0}} \]</div>
+      <p>由此可解出 \(\varepsilon_0\)：</p>
+      <div class="formula">\[ \varepsilon_0=\frac{1}{\mu_0 c^2}=\frac{1}{(4\pi\times 10^{-7})(2.998\times 10^8)^2}=\frac{1}{1.1297\times 10^{10}}=8.854\times 10^{-12}\,\mathrm{F/m} \]</div>
+      <p>于是库仑常数：</p>
+      <div class="formula">\[ k_e=\frac{1}{4\pi\varepsilon_0}=\frac{\mu_0 c^2}{4\pi}=\frac{(4\pi\times 10^{-7})(2.998\times 10^8)^2}{4\pi}=10^{-7}c^2=8.988\times 10^{9}\,\mathrm{N\,m^2/C^2} \]</div>
+      <p>这个简洁关系 \(k_e=10^{-7}c^2\) 揭示了静电学与光速的深刻联系——它是电动力学相对论结构（第 14–16 章）的早期暗示。</p>
+
+      <h3>推导 B：库仑定律矢量形式与牛顿第三定律</h3>
+      <p>设 \(q_1\) 位于 \(\vec{r}_1\)，\(q_2\) 位于 \(\vec{r}_2\)。定义从 \(q_1\) 指向 \(q_2\) 的矢量 \(\vec{r}_{12}=\vec{r}_2-\vec{r}_1\)，则单位矢量 \(\hat{r}_{12}=\vec{r}_{12}/|\vec{r}_{12}|\)。\(q_2\) 受 \(q_1\) 的力为：</p>
+      <div class="formula">\[ \vec{F}_{12}=\frac{1}{4\pi\varepsilon_0}\frac{q_1 q_2}{|\vec{r}_{12}|^3}\,\vec{r}_{12} \]</div>
+      <p>（用 \(|\vec{r}_{12}|^3\) 而非 \(|\vec{r}_{12}|^2\cdot\hat{r}_{12}\) 是常见技巧：分母乘上分子里的矢量正好抵消一次长度，得 \(1/r^2\) 的标量系数。）交换 \(1\leftrightarrow 2\) 得 \(\vec{r}_{21}=-\vec{r}_{12}\)，所以 \(\vec{F}_{21}=-\vec{F}_{12}\)：<strong>库仑力满足牛顿第三定律（强形式）</strong>，即使两电荷在运动（推迟效应在相对论电动力学中讨论）。</p>
+
+      <h3>推导 C：两同号点电荷连线上的电场零点</h3>
+      <p>固定两点电荷 \(q_1\)（位于 \(x=0\)）和 \(q_2\)（位于 \(x=d\)），均同号。在二者连线上找一点 \(x\)，使第三个检验电荷受力为零（等价于电场为零）。设 \(0<x<d\)：</p>
+      <div class="formula">\[ \frac{k_e q_1}{x^2}=\frac{k_e q_2}{(d-x)^2}\;\Longrightarrow\;\frac{d-x}{x}=\sqrt{\frac{q_2}{q_1}} \]</div>
+      <p>解得：</p>
+      <div class="formula">\[ x=\frac{d\sqrt{q_1}}{\sqrt{q_1}+\sqrt{q_2}}\quad(\text{仅当 }q_1,q_2\text{ 同号，零点在二者之间}) \]</div>
+      <p>若 \(q_1,q_2\) 异号，零点位于<strong>电荷绝对值较小者</strong>的外侧（详见练习 1.3）。注意此“平衡点”对横向扰动是<strong>不稳定</strong>的（鞍点），反映 Earnshaw 定理 (Earnshaw's theorem)：纯静电场无法稳定悬浮一个电荷。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 两点电荷间的作用力</h4>
+        <p class="example-statement">真空中 \(q_1=+2.0\,\mu\mathrm{C}\) 与 \(q_2=-3.0\,\mu\mathrm{C}\) 相距 \(r=0.10\,\mathrm{m}\)。求 \(q_2\) 所受的力。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先用库仑定律算大小，再判定方向。</p>
+          <div class="formula">\[ |\vec{F}|=k_e\frac{|q_1 q_2|}{r^2}=(8.988\times 10^9)\frac{(2.0\times 10^{-6})(3.0\times 10^{-6})}{(0.10)^2} \]</div>
+          <p class="step">分子 \(|q_1 q_2|=6.0\times 10^{-12}\,\mathrm{C^2}\)，分母 \(r^2=1.0\times 10^{-2}\,\mathrm{m^2}\)。</p>
+          <p class="step">代入：\(|\vec{F}|=(8.988\times 10^9)\,\dfrac{6.0\times 10^{-12}}{1.0\times 10^{-2}}=(8.988\times 10^9)(6.0\times 10^{-10})=5.39\,\mathrm{N}\)。</p>
+          <p class="step"><strong>方向判定</strong>：两电荷异号 \(\Rightarrow\) 相吸。\(q_2\) 被拉向 \(q_1\)。</p>
+          <p><span class="ans">\(|\vec{F}|\approx 5.39\,\mathrm{N}\)，方向由 \(q_2\) 指向 \(q_1\)（引力）</span>。注意 \(1\,\mu\mathrm{C}\) 在 \(10\,\mathrm{cm}\) 处即产生数牛顿的力——电荷单位其实“很大”，实验室常见电荷多在 nC–\(\mu\)C 量级。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 二维矢量叠加 Net Force by Superposition (2D)</h4>
+        <p class="example-statement">三个点电荷位于真空中：\(q_1=+2.0\,\mu\mathrm{C}\) 在 \((0,0)\)，\(q_2=+3.0\,\mu\mathrm{C}\) 在 \((0.40,0)\,\mathrm{m}\)，检验电荷 \(q_0=+1.0\,\mu\mathrm{C}\) 在 \((0.15,0.20)\,\mathrm{m}\)。求 \(q_0\) 所受合力的大小与方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对每个源电荷分别用矢量库仑定律，再求矢量和。</p>
+          <p class="step"><strong>① 来自 \(q_1\) 的力。</strong>从 \(q_1\) 到 \(q_0\) 的位移 \(\vec{r}_{10}=(0.15,0.20)\,\mathrm{m}\)，距离 \(r_{10}=\sqrt{0.15^2+0.20^2}=\sqrt{0.0625}=0.250\,\mathrm{m}\)。单位矢量 \(\hat{r}_{10}=(0.15,0.20)/0.250=(0.60,0.80)\)。</p>
+          <div class="formula">\[ \vec{F}_{1}=k_e\frac{q_1 q_0}{r_{10}^2}\hat{r}_{10}=(8.988\times 10^9)\frac{(2.0\times 10^{-6})(1.0\times 10^{-6})}{0.0625}(0.60,0.80) \]</div>
+          <p class="step">系数 \(=(8.988\times 10^9)(2.0\times 10^{-12})/0.0625=0.2876\,\mathrm{N}\)。故 \(\vec{F}_1=0.2876\,(0.60,0.80)=(0.173,0.230)\,\mathrm{N}\)（同号，斥离 \(q_1\)，方向与 \(\hat{r}_{10}\) 一致 ✓）。</p>
+          <p class="step"><strong>② 来自 \(q_2\) 的力。</strong>从 \(q_2\) 到 \(q_0\)：\(\vec{r}_{20}=(0.15-0.40,0.20-0)=( -0.25,0.20)\,\mathrm{m}\)，\(r_{20}=\sqrt{0.0625+0.04}=\sqrt{0.1025}=0.3202\,\mathrm{m}\)，\(\hat{r}_{20}=(-0.25,0.20)/0.3202=(-0.781,0.625)\)。</p>
+          <div class="formula">\[ |\vec{F}_2|=(8.988\times 10^9)\frac{(3.0\times 10^{-6})(1.0\times 10^{-6})}{0.1025}=0.2631\,\mathrm{N} \]</div>
+          <p class="step">\(\vec{F}_2=0.2631\,(-0.781,0.625)=(-0.205,0.164)\,\mathrm{N}\)（同号，斥离 \(q_2\) ✓）。</p>
+          <p class="step"><strong>③ 矢量求和。</strong></p>
+          <div class="formula">\[ \vec{F}_{\text{net}}=\vec{F}_1+\vec{F}_2=(0.173-0.205,\;0.230+0.164)=(-0.032,\;0.394)\,\mathrm{N} \]</div>
+          <p class="step">大小 \(|\vec{F}_{\text{net}}|=\sqrt{(-0.032)^2+(0.394)^2}=\sqrt{0.0010+0.1552}=\sqrt{0.1562}=0.395\,\mathrm{N}\)。</p>
+          <p class="step">方向 \(\theta=\mathrm{atan2}(0.394,-0.032)\approx 94.8^\circ\)（从 \(+x\) 轴起，逆时针；几乎沿 \(+y\)，略微偏左）。</p>
+          <p><span class="ans">\(|\vec{F}_{\text{net}}|\approx 0.396\,\mathrm{N}\)，方向 \(94.8^\circ\)（\(+y\) 方向偏左）</span>。注意：\(|\vec{F}_{\text{net}}|=0.396\,\mathrm{N}\neq |\vec{F}_1|+|\vec{F}_2|=0.288+0.263=0.551\,\mathrm{N}\)——必须矢量相加。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 两同号电荷连线上的平衡点 Equilibrium Point</h4>
+        <p class="example-statement">两点电荷 \(q_1=+4.0\,\mu\mathrm{C}\) 固定于 \(x=0\)，\(q_2=+9.0\,\mu\mathrm{C}\) 固定于 \(x=0.30\,\mathrm{m}\)。在 \(x\) 轴上何处放置第三个检验电荷，可使它所受静电力为零？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>因 \(q_1,q_2\) 同号，零场点必在二者<strong>之间</strong>（外侧两力同向，无法抵消）。设该点坐标为 \(x\)（\(0<x<0.30\)）。</p>
+          <p class="step">检验电荷为正时：来自 \(q_1\)（\(+\)）的力指向 \(+x\)，来自 \(q_2\)（\(+\)）的力指向 \(-x\)。两力大小相等即合力为零：</p>
+          <div class="formula">\[ \frac{k_e q_1}{x^2}=\frac{k_e q_2}{(0.30-x)^2}\;\Longrightarrow\;\frac{0.30-x}{x}=\sqrt{\frac{9.0}{4.0}}=\frac{3}{2} \]</div>
+          <p class="step">解：\(2(0.30-x)=3x\Rightarrow 0.60=5x\Rightarrow x=0.12\,\mathrm{m}\)。</p>
+          <p class="step"><strong>校验</strong>：距 \(q_1\) 为 \(0.12\,\mathrm{m}\)、距 \(q_2\) 为 \(0.18\,\mathrm{m}\)。</p>
+          <div class="formula">\[ E_1=k_e\frac{4.0\times 10^{-6}}{0.12^2}=2.50\times 10^6\,\mathrm{N/C},\quad E_2=k_e\frac{9.0\times 10^{-6}}{0.18^2}=2.50\times 10^6\,\mathrm{N/C} \]</div>
+          <p class="step">两者等大反向 ✓。</p>
+          <p><span class="ans">平衡点位于 \(x=0.12\,\mathrm{m}\)（距 \(q_1\) 为 \(12\,\mathrm{cm}\)、距 \(q_2\) 为 \(18\,\mathrm{cm}\)）</span>。一般地，零点偏向电荷绝对值较小的一侧。注意：此平衡对横向位移<strong>不稳定</strong>（Earnshaw 定理），不能用来稳定悬浮。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 氢原子中静电力与引力之比 \(F_e/F_g\) for Electron–Proton</h4>
+        <p class="example-statement">氢原子中电子与质子的距离取玻尔半径 \(a_0=5.29\times 10^{-11}\,\mathrm{m}\)。计算二者之间静电力与万有引力之比 \(F_e/F_g\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>两力都是平方反比，距离相同，比值与 \(r\) 无关：</p>
+          <div class="formula">\[ \frac{F_e}{F_g}=\frac{k_e e^2/r^2}{G m_e m_p/r^2}=\frac{k_e e^2}{G m_e m_p} \]</div>
+          <p class="step">代入数值：\(k_e=8.988\times 10^9\,\mathrm{N\,m^2/C^2}\)，\(e=1.602\times 10^{-19}\,\mathrm{C}\)，\(G=6.674\times 10^{-11}\,\mathrm{N\,m^2/kg^2}\)，\(m_e=9.109\times 10^{-31}\,\mathrm{kg}\)，\(m_p=1.673\times 10^{-27}\,\mathrm{kg}\)。</p>
+          <p class="step">分子 \(k_e e^2=(8.988\times 10^9)(1.602\times 10^{-19})^2=(8.988\times 10^9)(2.566\times 10^{-38})=2.307\times 10^{-28}\,\mathrm{N\,m^2}\)。</p>
+          <p class="step">分母 \(G m_e m_p=(6.674\times 10^{-11})(9.109\times 10^{-31})(1.673\times 10^{-27})=(6.674\times 10^{-11})(1.524\times 10^{-57})=1.017\times 10^{-67}\,\mathrm{N\,m^2}\)。</p>
+          <div class="formula">\[ \frac{F_e}{F_g}=\frac{2.307\times 10^{-28}}{1.017\times 10^{-67}}=2.27\times 10^{39} \]</div>
+          <p><span class="ans">\(F_e/F_g\approx 2.27\times 10^{39}\)</span>。静电力比引力大 \(10^{39}\) 倍——这就是为什么在原子、分子、化学键、材料问题里引力可以完全忽略。仅在行星、恒星等大质量中性系统里引力才占主导（因为正负电荷相互抵消，而质量没有负值）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 感应起电的四个步骤 Charging by Induction (Step by Step)</h4>
+        <p class="example-statement">用一根带正电的玻璃棒，通过感应起电使一个孤立的中性金属球带负电。描述全过程，并说明每一步的电荷分布与净电荷。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1 — 将带电棒靠近（不接触）导体。</strong>把带正电的玻璃棒靠近中性金属球。金属中的自由电子被棒的正电荷吸引，向靠近棒的一侧聚集；远离棒的一侧因电子不足而带正电。这是<strong>静电感应 (electrostatic induction)</strong>导致的电荷重新分布——<strong>极化</strong>。此时球的整体净电荷仍为 \(0\)。</p>
+          <p class="step"><strong>步骤 2 — 将导体接地。</strong>保持棒不动，用手指或导线把金属球与大地（一个巨大的电荷库）连接。大地的电子被棒的正电荷“拉”上来，流入导体远端。此时导体获得<strong>净负电荷</strong>，近端负、远端因接地而保持电势与大地相同。</p>
+          <p class="step"><strong>步骤 3 — 先移去接地线。</strong>在棒仍靠近的情况下断开接地（抬起手指）。多余电子被“困”在导体上，无法流回大地。导体此时带有<strong>与棒相反符号</strong>的净电荷（即净负电）。</p>
+          <p class="step"><strong>步骤 4 — 再移走带电棒。</strong>撤去棒后，导体上多余电子互相排斥，迅速在球的表面<strong>均匀分布</strong>（球形对称）。金属球现在是一个稳定的带负电导体。</p>
+          <p><span class="ans">感应起电得到的电荷与感应源<strong>符号相反</strong></span>。关键时序：先撤接地、后撤棒——若顺序颠倒，被极化的电荷会流回大地，导体回到电中性。整个过程满足电荷守恒：从大地“借走”的电子数等于导体最终的多余电子数，大地相应带等量正电。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把库仑定律的“大小”与“矢量”混为一谈</strong>：写 \(\vec{F}=k_e q_1 q_2/r^2\) 是错的——右边是标量。矢量形式必须有 \(\hat{r}_{12}\)。多个力合成时，<strong>必须对分量相加</strong>，不能直接把大小相加（\(|\vec{F}_{\text{net}}|\neq \sum |\vec{F}_i|\)，见例 1.2）。</li>
+        <li><strong>忘记 \(q_1 q_2\) 自带符号</strong>：库仑定律矢量形式中不要事先加负号——\(q_1 q_2\) 的正负已自动给出斥力或引力方向。若你既写了 \(|q_1 q_2|\) 又手动判断方向，那也行；但<strong>两套约定不能混用</strong>，否则符号错。</li>
+        <li><strong>对异号电荷的平衡点位置判断错误</strong>：两个异号电荷的场零点不在二者之间（之间两场同向），而在<strong>电荷绝对值较小者</strong>的外侧延长线上。同号电荷的零点才在二者之间（见例 1.3 与练习 1.3）。</li>
+        <li><strong>误以为感应起电得到的电荷与感应源同号</strong>：恰恰相反。感应起电通过接地把远端“同号”电荷导入大地，导体剩余电荷与感应源<strong>异号</strong>。传导起电 (conduction) 才同号——两者易混。</li>
+        <li><strong>单位换算错误</strong>：\(\mu\mathrm{C}=10^{-6}\,\mathrm{C}\)、\(\mathrm{nC}=10^{-9}\,\mathrm{C}\)、\(\mathrm{pC}=10^{-12}\,\mathrm{C}\)。把 \(\mu\mathrm{C}\) 当成 \(10^{-3}\,\mathrm{C}\) 等误差百倍千倍的结果屡见不鲜。永远先用科学记数法把所有量折算为 SI 基本单位再代入公式。</li>
+        <li><strong>把“平衡点”当作“稳定平衡”</strong>：两电荷之间的电场零点对横向扰动是不稳定的（鞍点）。纯静电场无法稳定悬浮一个电荷（Earnshaw 定理），需要动电场、磁场或量子效应。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 共线三电荷：\(q_1=+2.0\,\mu\mathrm{C}\) 在 \(x=0\)，\(q_2=-1.0\,\mu\mathrm{C}\) 在 \(x=0.50\,\mathrm{m}\)，\(q_3=+3.0\,\mu\mathrm{C}\) 在 \(x=1.00\,\mathrm{m}\)。求 \(q_2\) 所受合力。</summary>
+        <div class="hint">分别计算 \(q_1\) 对 \(q_2\)、\(q_3\) 对 \(q_2\) 的力（注意正负号决定方向），再代数相加（一维矢量）。</div>
+        <div class="solution">
+          <p>\(q_1\)–\(q_2\) 异号相吸：\(|F_{12}|=k_e\dfrac{(2.0\times 10^{-6})(1.0\times 10^{-6})}{0.50^2}=\dfrac{(8.988\times 10^9)(2.0\times 10^{-12})}{0.25}=0.0719\,\mathrm{N}\)，\(q_2\) 被拉向 \(q_1\)，即 \(-x\) 方向：\(\vec{F}_{12}=-0.0719\,\hat{x}\,\mathrm{N}\)。</p>
+          <p>\(q_2\)–\(q_3\) 异号相吸：\(|F_{32}|=k_e\dfrac{(3.0\times 10^{-6})(1.0\times 10^{-6})}{0.50^2}=\dfrac{(8.988\times 10^9)(3.0\times 10^{-12})}{0.25}=0.1079\,\mathrm{N}\)，\(q_2\) 被拉向 \(q_3\)，即 \(+x\) 方向：\(\vec{F}_{32}=+0.1079\,\hat{x}\,\mathrm{N}\)。</p>
+          <p>合力 \(\vec{F}_{\text{net}}=(-0.0719+0.1079)\hat{x}=+0.0360\,\hat{x}\,\mathrm{N}\)。</p>
+          <p><span class="ans">\(\vec{F}_{\text{net}}\approx +0.036\,\hat{x}\,\mathrm{N}\)（指向 \(+x\)，即朝向 \(q_3\)）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 经典库仑扭秤：两个质量均为 \(m=0.10\,\mathrm{g}\) 的小导电球各系于长 \(L=20\,\mathrm{cm}\) 的轻线上端。给它们等量同号电荷 \(q\)，平衡时每根线偏离竖直方向 \(\theta=10^\circ\)。求 \(q\)。</summary>
+        <div class="hint">球受三个力：重力 \(mg\) 向下、绳张力 \(T\)、水平库仑斥力 \(F\)。平衡时 \(T\sin\theta=F\)、\(T\cos\theta=mg\)，相除得 \(F=mg\tan\theta\)。两球距离 \(r=2L\sin\theta\)。</div>
+        <div class="solution">
+          <p>\(F=mg\tan\theta=(1.0\times 10^{-4})(9.8)\tan 10^\circ=(9.8\times 10^{-4})(0.1763)=1.73\times 10^{-4}\,\mathrm{N}\)。</p>
+          <p>球间距 \(r=2L\sin\theta=2(0.20)\sin 10^\circ=0.40\times 0.1736=0.0695\,\mathrm{m}\)。</p>
+          <p>由 \(F=k_e q^2/r^2\)，得 \(q=r\sqrt{F/k_e}=0.0695\sqrt{\dfrac{1.73\times 10^{-4}}{8.988\times 10^9}}=0.0695\sqrt{1.92\times 10^{-14}}=0.0695\times 1.386\times 10^{-7}\)。</p>
+          <p><span class="ans">\(q\approx 9.6\times 10^{-9}\,\mathrm{C}=9.6\,\mathrm{nC}\)</span>（每球带电约 \(9.6\,\mathrm{nC}\)）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 异号电荷的场零点：\(q_1=+1.0\,\mu\mathrm{C}\) 在 \(x=0\)，\(q_2=-4.0\,\mu\mathrm{C}\) 在 \(x=0.30\,\mathrm{m}\)。在 \(x\) 轴上何处电场为零？</summary>
+        <div class="hint">异号电荷的零场点在二者<strong>外侧</strong>，且在绝对值较小的电荷（\(q_1\)）一侧。设 \(x<0\)，列等大方程。</div>
+        <div class="solution">
+          <p>设零点 \(x<0\)（\(q_1\) 外侧）。该处 \(q_1\) 的场指向 \(-x\)（远离正电荷），\(q_2\) 的场指向 \(+x\)（指向负电荷）。等大时：</p>
+          <p>\(\dfrac{k_e |q_1|}{x^2}=\dfrac{k_e |q_2|}{(0.30-x)^2}\Rightarrow \dfrac{1}{x^2}=\dfrac{4}{(0.30-x)^2}\Rightarrow \dfrac{0.30-x}{|x|}=2\)。</p>
+          <p>因 \(x<0\)，\(|x|=-x\)：\(\dfrac{0.30-x}{-x}=2\Rightarrow 0.30-x=-2x\Rightarrow x=-0.30\,\mathrm{m}\)。</p>
+          <p>校验：\(E_1=k_e(1.0\times 10^{-6})/0.30^2=9.99\times 10^4\,\mathrm{N/C}\)，\(E_2=k_e(4.0\times 10^{-6})/0.60^2=9.99\times 10^4\,\mathrm{N/C}\) ✓。</p>
+          <p><span class="ans">\(x=-0.30\,\mathrm{m}\)（在 \(q_1\) 外侧 \(30\,\mathrm{cm}\) 处）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 多少电子？一束激光从橡胶棒转移走 \(2.4\,\mathrm{nC}\) 的负电荷至绝缘小球。求小球获得的过剩电子数。</summary>
+        <div class="hint">电荷量子化 \(q=ne\)，故 \(n=|q|/e\)。</div>
+        <div class="solution">
+          <p>\(n=\dfrac{|q|}{e}=\dfrac{2.4\times 10^{-9}\,\mathrm{C}}{1.602\times 10^{-19}\,\mathrm{C}}=1.50\times 10^{10}\)。</p>
+          <p><span class="ans">约 \(1.5\times 10^{10}\) 个过剩电子</span>——宏观上是很小的电荷，但电子数目巨大。这正说明 \(e\) 是一个极小的单位。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 等边三角形顶点：三个等量正电荷 \(q=+1.0\,\mu\mathrm{C}\) 分别位于边长 \(a=0.30\,\mathrm{m}\) 的等边三角形的三个顶点。求其中任一顶点电荷所受合力的大小与方向。</summary>
+        <div class="hint">每个力大小相同 \(F=k_e q^2/a^2\)，方向沿另外两个顶点的连线方向。两个相等力夹角 \(60^\circ\)，用平行四边形法则合成。</div>
+        <div class="solution">
+          <p>设顶点 \(A\) 受来自 \(B\)、\(C\) 的力，大小同为 \(F=k_e q^2/a^2=(8.988\times 10^9)(1.0\times 10^{-6})^2/0.30^2=\dfrac{8.988\times 10^{-3}}{0.09}=0.0999\,\mathrm{N}\)。</p>
+          <p>两力均沿“背离”其他顶点的方向，二者夹角为 \(60^\circ\)（等边三角形外角分析）。合力大小：</p>
+          <p>\(F_{\text{net}}=2F\cos(30^\circ)=2(0.0999)(0.866)=0.173\,\mathrm{N}\)。</p>
+          <p>方向：沿从三角形重心指向顶点 \(A\) 的外向连线（即与对边垂直、远离中心）。</p>
+          <p><span class="ans">\(|\vec{F}_{\text{net}}|\approx 0.173\,\mathrm{N}\)，方向沿重心–顶点连线指向外</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 库仑力叠加探索器 Coulomb / Superposition Explorer</h2>
+      <p class="sim-desc">两个源电荷 \(q_1, q_2\)（带电量和 \(x\) 位置均可调）固定在 \(x\) 轴上。<strong>用鼠标在画布上点击或拖动</strong>来移动试探电荷 \(q_t\)，实时观察它受到的两个分力 \(\vec{F}_1, \vec{F}_2\)（不同颜色箭头）与合力 \(\vec{F}_{\text{net}}\)（绿色）。右上角小图显示 \(|F|\) 随距离 \(r\) 的 \(1/r^2\) 衰减曲线，红点标出当前 \(r_1\) 处的力大小。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var ctx = canvas.getContext('2d');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2 + 30;   // origin slightly below centre for headroom
+          var PX = 42;                       // pixels per metre
+          var KE = 8.988e9;                  // N m²/C²
+
+          function w2s(x, y) { return [CX + x * PX, CY - y * PX]; }
+
+          // single source of truth — controls and reset both write here
+          var defaults = {
+            q1: 2.0, x1: -2.0,
+            q2: -3.0, x2: 2.0,
+            qt: 1.0, tx: 0.0, ty: 1.5,
+            showNet: true,
+          };
+          var params = Object.assign({}, defaults);
+
+          // physics: returns force components and magnitudes on test charge
+          function forceOnTest() {
+            var q1c = params.q1 * 1e-6, q2c = params.q2 * 1e-6, qtc = params.qt * 1e-6;
+            var dx1 = params.tx - params.x1, dy1 = params.ty - 0;
+            var r1sq = dx1 * dx1 + dy1 * dy1;
+            var r1 = Math.sqrt(r1sq);
+            var f1x = 0, f1y = 0;
+            if (r1 > 1e-6) {
+              // signed F = k q1 qt / r^2 ; +ve ⇒ pushes test away from q1 (repulsive)
+              var F1 = KE * q1c * qtc / r1sq;
+              f1x = F1 * dx1 / r1; f1y = F1 * dy1 / r1;
+            }
+            var dx2 = params.tx - params.x2, dy2 = params.ty - 0;
+            var r2sq = dx2 * dx2 + dy2 * dy2;
+            var r2 = Math.sqrt(r2sq);
+            var f2x = 0, f2y = 0;
+            if (r2 > 1e-6) {
+              var F2 = KE * q2c * qtc / r2sq;
+              f2x = F2 * dx2 / r2; f2y = F2 * dy2 / r2;
+            }
+            var fnx = f1x + f2x;
+            var fny = f1y + f2y;
+            return {
+              f1x: f1x, f1y: f1y, f1mag: Math.hypot(f1x, f1y),
+              f2x: f2x, f2y: f2y, f2mag: Math.hypot(f2x, f2y),
+              fnx: fnx, fny: fny, fnmag: Math.hypot(fnx, fny),
+              r1: r1, r2: r2,
+            };
+          }
+
+          function drawCharge(x, y, q_uc, label, isTest) {
+            var p = w2s(x, y);
+            var color = q_uc > 0 ? '#dc2626' : (q_uc < 0 ? '#2563eb' : '#6b7280');
+            var r = isTest ? 7 : 13;
+            PS.drawCircle(ctx, p[0], p[1], r, { fill: color, stroke: '#000', lineWidth: 1.2 });
+            if (Math.abs(q_uc) > 1e-9) {
+              PS.drawText(ctx, q_uc > 0 ? '+' : '−', p[0], p[1], {
+                font: 'bold 14px system-ui', color: '#fff',
+                align: 'center', baseline: 'middle',
+              });
+            }
+            var lbl = label + ' = ' + q_uc.toFixed(1) + ' μC';
+            PS.drawText(ctx, lbl, p[0], p[1] + (isTest ? -18 : 24), {
+              font: '11px system-ui', color: PS.colors.text, align: 'center',
+            });
+          }
+
+          function drawHUD(F) {
+            ctx.save();
+            ctx.globalAlpha = 0.94;
+            ctx.fillStyle = PS.colors.bg;
+            ctx.fillRect(8, 8, 230, 142);
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(8, 8, 230, 142);
+            ctx.restore();
+
+            var lines = [
+              ['q_t = ' + params.qt.toFixed(1) + ' μC', PS.colors.text],
+              ['r₁ = ' + F.r1.toFixed(2) + ' m',  PS.colors.primary],
+              ['r₂ = ' + F.r2.toFixed(2) + ' m',  PS.colors.accent],
+              ['|F₁| = ' + F.f1mag.toExponential(2) + ' N', PS.colors.primary],
+              ['|F₂| = ' + F.f2mag.toExponential(2) + ' N', PS.colors.accent],
+              ['|F_net| = ' + F.fnmag.toExponential(2) + ' N', PS.colors.accent2],
+            ];
+            var dirDeg = Math.atan2(F.fny, F.fnx) * 180 / Math.PI;
+            lines.push(['θ_net = ' + dirDeg.toFixed(1) + '°', PS.colors.accent2]);
+            for (var i = 0; i < lines.length; i++) {
+              PS.drawText(ctx, lines[i][0], 16, 26 + i * 17,
+                { font: '11.5px system-ui', color: lines[i][1] });
+            }
+          }
+
+          // mini plot: |F| vs r showing the 1/r² law for q1 contribution
+          function drawMiniPlot(F) {
+            var bx = W - 168, by = 12, bw = 156, bh = 100;
+            ctx.save();
+            ctx.globalAlpha = 0.94;
+            ctx.fillStyle = PS.colors.bg;
+            ctx.fillRect(bx, by, bw, bh);
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(bx, by, bw, bh);
+            ctx.restore();
+
+            PS.drawText(ctx, '|F| ∝ 1/r²', bx + bw / 2, by + 14,
+              { font: 'bold 11px system-ui', color: PS.colors.text, align: 'center' });
+
+            var rMin = 0.30, rMax = 4.0;
+            var q1c = Math.abs(params.q1 * 1e-6), qtc = Math.abs(params.qt * 1e-6);
+            var Fmax = KE * q1c * qtc / (rMin * rMin);   // force at closest r
+            var plotX0 = bx + 28, plotY0 = by + bh - 16;
+            var plotW = bw - 36, plotH = bh - 32;
+
+            // axes
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(plotX0, by + 22); ctx.lineTo(plotX0, plotY0); ctx.lineTo(plotX0 + plotW, plotY0);
+            ctx.stroke();
+            ctx.restore();
+            PS.drawText(ctx, 'r', plotX0 + plotW, plotY0 + 12,
+              { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+            PS.drawText(ctx, '|F|', plotX0 - 4, by + 22,
+              { font: '10px system-ui', color: PS.colors.text, align: 'right', baseline: 'bottom' });
+
+            // curve F(r) = k|q1 qt|/r²
+            if (Fmax > 0) {
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              var first = true;
+              for (var rr = rMin; rr <= rMax; rr += 0.05) {
+                var FF = KE * q1c * qtc / (rr * rr);
+                var px = plotX0 + (rr - rMin) / (rMax - rMin) * plotW;
+                var py = plotY0 - (FF / Fmax) * plotH;
+                if (first) { ctx.moveTo(px, py); first = false; } else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // current operating point on q1-curve
+              if (F.r1 >= rMin && F.r1 <= rMax && F.f1mag > 0) {
+                var opx = plotX0 + (F.r1 - rMin) / (rMax - rMin) * plotW;
+                var opy = plotY0 - (F.f1mag / Fmax) * plotH;
+                PS.drawCircle(ctx, opx, opy, 3.5, { fill: PS.colors.accent, stroke: '#000', lineWidth: 1 });
+              }
+            }
+          }
+
+          // create sim — static force explorer, step is a no-op
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* physics is computed live in draw from params */ },
+            draw: function (ctx_, s, env) {
+              PS.clear(ctx_);
+              PS.drawGrid(ctx_, { originX: CX, originY: CY, scale: PX, step: 1 });
+
+              var F = forceOnTest();
+
+              // source charges on x-axis
+              drawCharge(params.x1, 0, params.q1, 'q₁', false);
+              drawCharge(params.x2, 0, params.q2, 'q₂', false);
+              // test charge
+              drawCharge(params.tx, params.ty, params.qt, 'q_t', true);
+
+              // arrows from test-charge centre; auto-scale so largest maps to ~85 px
+              var refF = Math.max(F.f1mag, F.f2mag, F.fnmag, 1e-15);
+              var aScale = 85 / refF;
+              var tp = w2s(params.tx, params.ty);
+              PS.drawArrow(ctx_, tp[0], tp[1],
+                           tp[0] + F.f1x * aScale, tp[1] - F.f1y * aScale,
+                           PS.colors.primary, 'F₁');
+              PS.drawArrow(ctx_, tp[0], tp[1],
+                           tp[0] + F.f2x * aScale, tp[1] - F.f2y * aScale,
+                           PS.colors.accent, 'F₂');
+              if (params.showNet && F.fnmag > 1e-15) {
+                PS.drawArrow(ctx_, tp[0], tp[1],
+                             tp[0] + F.fnx * aScale, tp[1] - F.fny * aScale,
+                             PS.colors.accent2, 'F_net');
+              }
+
+              // scale legend
+              PS.drawText(ctx_,
+                '箭头标度: 最大力 ' + refF.toExponential(2) + ' N → 85 px',
+                W / 2, H - 8,
+                { font: '10.5px system-ui', color: PS.colors.text, align: 'center' });
+
+              drawHUD(F);
+              drawMiniPlot(F);
+            },
+          });
+
+          // ---- controls: rebuilt on reset so sliders reflect defaults ----
+          function buildControls() {
+            var container = document.getElementById('controls-1');
+            container.innerHTML = '';
+            var specs = [
+              { type: 'slider', key: 'q1', label: 'q₁ 电量 (μC)',  min: -5, max: 5, step: 0.1, value: params.q1 },
+              { type: 'slider', key: 'x1', label: 'q₁ 位置 x₁ (m)', min: -5, max: 5, step: 0.1, value: params.x1 },
+              { type: 'slider', key: 'q2', label: 'q₂ 电量 (μC)',  min: -5, max: 5, step: 0.1, value: params.q2 },
+              { type: 'slider', key: 'x2', label: 'q₂ 位置 x₂ (m)', min: -5, max: 5, step: 0.1, value: params.x2 },
+              { type: 'slider', key: 'qt', label: '试探电荷 qₜ (μC)', min: -5, max: 5, step: 0.1, value: params.qt },
+              { type: 'toggle', key: 'showNet', label: '显示合力 F_net', value: params.showNet },
+              { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+            ];
+            var ctl = PS.makeControls(container, specs);
+            ctl.on('q1', function (v) { params.q1 = v; });
+            ctl.on('x1', function (v) { params.x1 = v; });
+            ctl.on('q2', function (v) { params.q2 = v; });
+            ctl.on('x2', function (v) { params.x2 = v; });
+            ctl.on('qt', function (v) { params.qt = v; });
+            ctl.on('showNet', function (v) { params.showNet = v; });
+            ctl.on('reset', function () {
+              Object.assign(params, defaults);
+              buildControls();
+              sim.reset();
+            });
+          }
+          buildControls();
+
+          // ---- mouse / touch drag to move the test charge ----
+          function eventToWorld(e) {
+            var rect = canvas.getBoundingClientRect();
+            var sx = canvas.width / rect.width;
+            var sy = canvas.height / rect.height;
+            var cx = (e.clientX != null ? e.clientX : e.touches[0].clientX);
+            var cy = (e.clientY != null ? e.clientY : e.touches[0].clientY);
+            var mx = (cx - rect.left) * sx;
+            var my = (cy - rect.top) * sy;
+            return { x: (mx - CX) / PX, y: -(my - CY) / PX };
+          }
+          var dragging = false;
+          canvas.addEventListener('mousedown', function (e) {
+            var p = eventToWorld(e); params.tx = p.x; params.ty = p.y; dragging = true;
+          });
+          canvas.addEventListener('mousemove', function (e) {
+            if (!dragging) return;
+            var p = eventToWorld(e); params.tx = p.x; params.ty = p.y;
+          });
+          window.addEventListener('mouseup', function () { dragging = false; });
+          canvas.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            var p = eventToWorld(e); params.tx = p.x; params.ty = p.y; dragging = true;
+          }, { passive: false });
+          canvas.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+            if (!dragging) return;
+            var p = eventToWorld(e); params.tx = p.x; params.ty = p.y;
+          }, { passive: false });
+          window.addEventListener('touchend', function () { dragging = false; });
+          canvas.style.cursor = 'crosshair';
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>电荷有正负、量子化为 \(e\) 的整数倍、守恒、相对论不变。基本电荷 \(e=1.602\times 10^{-19}\,\mathrm{C}\)。</li>
+        <li>导体有自由载流子，绝缘体没有；感应起电得到与感应源<strong>异号</strong>电荷，传导起电得到<strong>同号</strong>电荷。</li>
+        <li>库仑定律矢量形式 \(\vec{F}_{12}=\dfrac{1}{4\pi\varepsilon_0}\dfrac{q_1 q_2}{r^2}\hat{r}_{12}\)：\(q_1q_2\) 自带符号，决定斥/引。</li>
+        <li>常数 \(k_e=\dfrac{1}{4\pi\varepsilon_0}=8.988\times 10^9\,\mathrm{N\,m^2/C^2}=10^{-7}c^2\)；\(\varepsilon_0=8.854\times 10^{-12}\,\mathrm{F/m}\)。</li>
+        <li>叠加原理：多电荷合力为各分力的<strong>矢量和</strong>（分量相加），不是大小相加。</li>
+        <li>两同号电荷的场零点在二者之间（偏向小电荷一侧）；异号电荷的零点在二者外侧、小电荷一侧。</li>
+        <li>静电力远强于引力：电子–质子 \(F_e/F_g\approx 2.27\times 10^{39}\)，原子尺度引力可忽略。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;q=\pm n e\;(n\in\mathbb{Z}),\quad \vec{F}_{12}=\frac{1}{4\pi\varepsilon_0}\frac{q_1 q_2}{r^2}\hat{r}_{12},\quad k_e=\frac{1}{4\pi\varepsilon_0}=8.988\times 10^{9}\,\mathrm{\tfrac{N\,m^2}{C^2}},\quad \vec{F}_{\text{net}}=\sum_i \vec{F}_i,\quad \frac{F_e}{F_g}=\frac{k_e e^2}{G m_e m_p}\approx 2.27\times 10^{39}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

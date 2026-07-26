@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 导体 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第5章 · 静电学 Electrostatics</p>
+      <h1>导体 <span class="en-title">Conductors</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够阐述导体在静电平衡 (electrostatic equilibrium) 条件下的四大特征：内部 \( \vec E=0 \)、电荷分布于表面、表面外侧 \( E=\sigma/\varepsilon_0 \)、导体整体为等势体 (equipotential)。</li>
+        <li>能够用高斯定理 (Gauss's law) 与唯一性定理推导上述结论，特别是用高斯柱面 (Gaussian pillbox) 导出 \( E=\sigma/\varepsilon_0 \)。</li>
+        <li>能够计算带有空腔 (cavity) 的导体在腔内有/无电荷时的感应电荷 (induced charge) 分布与各区域电场。</li>
+        <li>能够分析与计算两同心导体球壳 (concentric conducting shells) 系统各表面的电荷与场强。</li>
+        <li>能够解释尖端效应 (corona / lightning rod)、接地 (grounding) 与法拉第笼 (Faraday cage) 屏蔽的物理原理及其「单向屏蔽」的微妙之处。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 静电平衡下的导体 Conductor in Electrostatic Equilibrium</h3>
+      <p>导体 (conductor) 内部存在大量自由载流子（金属中的自由电子）。当导体置于外电场中，自由电子瞬间移动（重新分布）直到内部宏观电场<strong>为零</strong>，此时系统达到<strong>静电平衡</strong> (electrostatic equilibrium)。达到平衡所需时间通常小于 \( 10^{-14}\,\mathrm{s} \)，故静电学中可视为瞬时完成。</p>
+      <p>由此可严格推出四条核心结论（推导见下一节）：</p>
+      <div class="formula">\[ \boxed{\;\vec E_{\text{内}}=0,\qquad \rho_{\text{内}}=0,\qquad \vec E_{\text{外, 表面}}=\frac{\sigma}{\varepsilon_0}\,\hat n,\qquad V_{\text{导体}}=\text{常量}\;} \]</div>
+      <p>其中 \( \sigma \) 是当地表面电荷密度 (surface charge density)，\( \hat n \) 是导体表面外法线方向。注意导体内部 \( \vec E=0 \) 指的是<strong>净电场</strong>为零——外场与感应电荷产生的场在金属内部处处抵消，并非「无电荷」或「无源」。</p>
+
+      <h3>2. 电荷只分布在表面 Charge Resides on the Surface</h3>
+      <p>在导体内部任取一高斯面 \( S \)：因 \( \vec E=0 \) 处处，电通量 \( \Phi_E=0 \)，由高斯定理 \( \oint\vec E\cdot d\vec A=Q_{\text{enc}}/\varepsilon_0 \) 知 \( Q_{\text{enc}}=0 \)。由于高斯面可任意小地包围导体内任一点，故体电荷密度 \( \rho=0 \)，所有净电荷只能聚集在表面上（厚度约几个原子层的薄层内，宏观上视为面电荷）。</p>
+
+      <h3>3. 表面附近的电场 Field Just Outside the Surface</h3>
+      <p>在导体表面取一扁平的圆柱形高斯面 (Gaussian pillbox)，柱面与表面垂直、两底面分别紧贴表面内外、面积 \( dA \)。在静电平衡下：内底面位于金属内部 \( \vec E=0 \)；侧面因 \( \vec E \) 垂直于 \( \hat n \)（无切向分量，否则表面自由电荷会沿表面运动）故通量为零；只有外底面贡献通量 \( E_{\perp}\,dA \)。代入高斯定理：</p>
+      <div class="formula">\[ E_{\perp}\,dA=\frac{\sigma\,dA}{\varepsilon_0}\quad\Longrightarrow\quad \vec E_{\text{外}}=\frac{\sigma}{\varepsilon_0}\,\hat n \]</div>
+      <p>注意：式中的 \( \vec E \) 是<strong>总电场</strong>（由表面该处及其它所有电荷共同贡献），但其数值恰等于 \( \sigma/\varepsilon_0 \)——这是几何与高斯定理的妙合（其他电荷在该处的贡献把单一带电面的 \( \sigma/(2\varepsilon_0) \) 加倍成 \( \sigma/\varepsilon_0 \)）。</p>
+
+      <h3>4. 等势体 The Conductor Is an Equipotential</h3>
+      <p>导体内部任取两点 \( a,b \)，电势差 \( V_a-V_b=-\int_a^b \vec E\cdot d\vec l=0 \)（积分在金属内进行，\( \vec E=0 \)）。故整个导体（包括内部和表面）电势处处相等，是一个等势体，其表面是等势面。这一性质使我们可以把导体作为已知电势的边界条件，大大简化边值问题求解。</p>
+
+      <h3>5. 空腔与法拉第笼 Cavity and Faraday Cage</h3>
+      <p>设导体内有一空腔，腔内<strong>无电荷</strong>。在金属内部环绕空腔取一高斯面 \( S \)：\( \vec E=0\Rightarrow Q_{\text{enc}}=0 \)，即「腔壁内表面所带电荷 + 腔内电荷 = 0」。腔内无电荷则腔壁内表面电荷为零；进一步可证（用等势性与电场线不能起止于同一导体）内表面电场也为零。因此<strong>导体外的电场完全进不了空腔</strong>——这就是<strong>法拉第笼</strong> (Faraday cage) 静电屏蔽原理。</p>
+      <p>若腔内<strong>有</strong>点电荷 \( +q \)：由上面的论证，内表面感应出 \( -q \)，又若导体原本电中性，则外表面感应出 \( +q \)。此时：</p>
+      <ul>
+        <li>腔内电场由 \( +q \) 与内表面 \( -q \) 共同产生（仅由腔内「源」决定，与外部无关）；</li>
+        <li>金属内部 \( \vec E=0 \)（感应电荷精确抵消腔内场）；</li>
+        <li>导体<strong>外部</strong>的电场由外表面 \( +q \) 分布决定。当外表面是球面且无外场时，\( +q \) 均匀分布，外部场就像 \( +q \) 集中在球心一样。</li>
+      </ul>
+      <p>这说明<strong>静电屏蔽是「单向」的</strong>：外部场不能进入空腔，但腔内电荷的变化会通过改变外表面感应电荷而影响外部场。要让屏蔽双向生效（腔内电荷变化也不影响外部），需将导体<strong>接地</strong> (grounding)，使外表面多余电荷流入大地。</p>
+
+      <h3>6. 尖端效应与电晕放电 Concentration at Sharp Points &amp; Corona Discharge</h3>
+      <p>对不规则形状的带电导体，表面电荷密度 \( \sigma \) 并<strong>非</strong>均匀：曲率半径越小（越尖锐）处 \( \sigma \) 越大。一个直观近似：把导体想象成若干半径不同的小球用细导线相连，平衡时各小球等势 \( V=kQ_i/R_i \)，故 \( Q_i\propto R_i \)，从而 \( \sigma_i=Q_i/(4\pi R_i^2)\propto 1/R_i \)。因此尖端处 \( E=\sigma/\varepsilon_0 \) 可远大于平坦处。</p>
+      <p>当 \( E \) 超过空气的击穿场强 (dielectric breakdown) \( E_{\text{break}}\approx 3\times 10^{6}\,\mathrm{V/m} \)，空气分子被电离，形成局部导电通道，发生<strong>电晕放电</strong> (corona discharge)。避雷针 (lightning rod) 正是利用尖端的高场强优先电离空气，把雷击电流安全导入大地，保护建筑物。</p>
+
+      <h3>7. 接地 Grounding</h3>
+      <p>将导体用导线与大地相连称为<strong>接地</strong>。地球可视为一个电荷容量近乎无穷的导体 reservoir。接地后导体的电势被钳制为 \( V_{\text{ground}}\equiv 0 \)。若导体原带正电，电子从大地流入中和；若原带负电，多余电子流入大地。注意：若附近存在其它带电体，接地后导体上仍可能保留<strong>净感应电荷</strong>（感应起电 charging by induction 的关键步骤）。</p>
+
+      <div class="key-terms">conductor (导体), electrostatic equilibrium (静电平衡), free charge / free electron (自由载流子/自由电子), surface charge density \( \sigma \) (面电荷密度), Gaussian pillbox (高斯柱面), equipotential body (等势体), equipotential surface (等势面), cavity (空腔), induced charge (感应电荷), Faraday cage / electrostatic shielding (法拉第笼/静电屏蔽), grounding / ground (接地/大地), corona discharge (电晕放电), dielectric breakdown (介电击穿), lightning rod (避雷针), charging by induction (感应起电)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由静电平衡导出 \( E=\sigma/\varepsilon_0 \)</h3>
+      <p class="step"><strong>前提：</strong> 导体已处于静电平衡——内部 \( \vec E=0 \)，表面 \( \vec E \) 处处垂直于表面（无切向分量）。</p>
+      <p class="step"><strong>第一步（构造高斯柱面）：</strong> 在导体表面某处取一扁平圆柱面，柱轴沿外法向 \( \hat n \)，两底面面积均为 \( dA \)，分别紧贴表面的外侧与内侧，厚度趋于零。</p>
+      <p class="step"><strong>第二步（计算通量）：</strong> 柱面共有三个面：内底面位于金属内部，\( \vec E=0 \)，通量贡献 \( 0 \)；侧面与 \( \vec E \) 垂直（\( \vec E\parallel\hat n \)，侧面法向 \( \perp\hat n \)），通量贡献 \( 0 \)；只有外底面贡献 \( +E_{\perp}\,dA \)。总通量：</p>
+      <div class="formula">\[ \Phi_E=\oint\vec E\cdot d\vec A=E_{\perp}\,dA \]</div>
+      <p class="step"><strong>第三步（应用高斯定理）：</strong> 柱面内包围的电荷就是表面上面积 \( dA \) 内的电荷 \( \sigma\,dA \)。由 \( \Phi_E=Q_{\text{enc}}/\varepsilon_0 \)：</p>
+      <div class="formula">\[ E_{\perp}\,dA=\frac{\sigma\,dA}{\varepsilon_0}\quad\Longrightarrow\quad \boxed{\,E_{\perp}=\frac{\sigma}{\varepsilon_0}\,} \]</div>
+      <p class="step"><strong>第四步（方向）：</strong> 若 \( \sigma>0 \)，\( \vec E \) 沿 \( +\hat n \) 指向外；若 \( \sigma<0 \)，\( \vec E \) 指向内。合并写成 \( \vec E=(\sigma/\varepsilon_0)\hat n \)。</p>
+
+      <h3>B. 空腔内表面感应电荷的严格推导</h3>
+      <p class="step"><strong>设定：</strong> 一段导体内部含空腔，腔内有电荷 \( q_{\text{cav}} \)（可正可负可为零）。导体总电荷为 \( Q_{\text{cond}} \)。求内表面电荷 \( q_{\text{in}} \) 与外表面电荷 \( q_{\text{out}} \)。</p>
+      <p class="step"><strong>第一步（金属内高斯面）：</strong> 在金属内部做一闭合面 \( S \)，完全包围空腔（\( S \) 严格位于金属体内）。静电平衡时 \( S \) 上处处 \( \vec E=0 \)，故 \( \oint_S\vec E\cdot d\vec A=0 \)。</p>
+      <p class="step"><strong>第二步（应用高斯定理）：</strong> 高斯定理给出 \( Q_{\text{enc}}=0 \)。但 \( Q_{\text{enc}}=q_{\text{cav}}+q_{\text{in}} \)（腔内电荷加上内表面感应电荷）。故：</p>
+      <div class="formula">\[ \boxed{\,q_{\text{in}}=-q_{\text{cav}}\,} \]</div>
+      <p class="step"><strong>第三步（外表面电荷）：</strong> 电荷守恒 \( q_{\text{in}}+q_{\text{out}}=Q_{\text{cond}} \)，所以：</p>
+      <div class="formula">\[ q_{\text{out}}=Q_{\text{cond}}-q_{\text{in}}=Q_{\text{cond}}+q_{\text{cav}} \]</div>
+      <p>例如导体电中性（\( Q_{\text{cond}}=0 \)）且腔内有 \( +q \)：则 \( q_{\text{in}}=-q,\;q_{\text{out}}=+q \)。</p>
+
+      <h3>C. \( \sigma\propto 1/R \) 的近似推导（相连导体球模型）</h3>
+      <p>设有两个半径为 \( R_1,R_2 \) 的小导体球，用细长导线相连，总电荷 \( Q \)。平衡时两球电势相等（它们是同一个导体）：</p>
+      <div class="formula">\[ V_1=V_2\;\Longrightarrow\;\frac{kQ_1}{R_1}=\frac{kQ_2}{R_2}\;\Longrightarrow\;\frac{Q_1}{R_1}=\frac{Q_2}{R_2} \]</div>
+      <p>因此 \( Q_i\propto R_i \)，面电荷密度：</p>
+      <div class="formula">\[ \sigma_i=\frac{Q_i}{4\pi R_i^2}\propto\frac{1}{R_i} \]</div>
+      <p>所以曲率半径小（尖锐）处 \( \sigma \) 大，\( E=\sigma/\varepsilon_0 \) 也大。这是尖端效应的最简单定量说明（不规则导体的严格分析需用唯一性定理与数值方法）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 带电导体球的内部与表面电场</h4>
+        <p class="example-statement">一半径 \( R=0.10\,\mathrm{m} \) 的实心导体球带总电荷 \( Q=+6.0\,\mu\mathrm{C} \)，已达静电平衡。求：(a) 球内 (\( r<R \)) 电场；(b) 紧贴表面外 (\( r=R^+ \)) 的电场大小；(c) 表面电荷密度 \( \sigma \)；(d) 球的电势 \( V \)（取 \( V(\infty)=0 \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 静电平衡下导体内部 \( \vec E=0 \)。故 \( E(r<R)=0 \)。</p>
+          <p class="step"><strong>解 (b)：</strong> 由球对称，电荷均匀分布在 \( r=R \) 表面上。用高斯定理（半径 \( r=R \) 的高斯球面）：</p>
+          <p>\[ E(R^+)\cdot 4\pi R^2=\frac{Q}{\varepsilon_0}\;\Longrightarrow\; E(R^+)=\frac{1}{4\pi\varepsilon_0}\frac{Q}{R^2}=\frac{k_e Q}{R^2} \]</p>
+          <p>\[ E(R^+)=\frac{(8.99\times 10^{9})(6.0\times 10^{-6})}{(0.10)^2}=\frac{5.394\times 10^{4}}{0.01}=5.39\times 10^{6}\,\mathrm{N/C} \]</p>
+          <p class="step"><strong>解 (c)：</strong> 表面积 \( 4\pi R^2=4\pi(0.01)=0.1257\,\mathrm{m^2} \)，所以：</p>
+          <p>\[ \sigma=\frac{Q}{4\pi R^2}=\frac{6.0\times 10^{-6}}{0.1257}=4.77\times 10^{-5}\,\mathrm{C/m^2} \]</p>
+          <p class="step"><strong>验证：</strong> 由 \( E=\sigma/\varepsilon_0 \) 反算 \( \sigma=\varepsilon_0 E=(8.854\times 10^{-12})(5.39\times 10^{6})=4.77\times 10^{-5}\,\mathrm{C/m^2} \) ✓</p>
+          <p class="step"><strong>解 (d)：</strong> 导体球面是等势面，电势等于表面电势：</p>
+          <p>\[ V=\frac{k_e Q}{R}=\frac{(8.99\times 10^{9})(6.0\times 10^{-6})}{0.10}=5.39\times 10^{5}\,\mathrm{V}\approx 5.4\times 10^{5}\,\mathrm{V} \]</p>
+          <p class="step"><strong>注意：</strong> \( E(R^+)\approx 5.4\,\mathrm{MV/m}>E_{\text{break}}\approx 3\,\mathrm{MV/m} \)，空气将被击穿，发生电晕放电——这表明在空气中孤立小球难以维持 \( 6\,\mu\mathrm{C} \) 的电荷。</p>
+          <p><span class="ans">\( E(r<R)=0 \)；\( E(R^+)\approx 5.4\times 10^{6}\,\mathrm{N/C} \)；\( \sigma\approx 4.8\times 10^{-5}\,\mathrm{C/m^2} \)；\( V\approx 5.4\times 10^{5}\,\mathrm{V} \)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 含点电荷空腔的导体球壳（感应电荷分布）</h4>
+        <p class="example-statement">一个电中性导体球壳，内半径 \( a=0.050\,\mathrm{m} \)，外半径 \( b=0.10\,\mathrm{m} \)。在球心处放一个点电荷 \( +q=+3.0\,\mathrm{nC} \)。求：(a) 内、外表面感应电荷；(b) 各区域电场（\( r<a \)、\( a<r<b \)、\( r>b \)）；(c) 在 \( r=0.030\,\mathrm{m},\;0.075\,\mathrm{m},\;0.20\,\mathrm{m} \) 处 \( E \) 的数值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 在金属体内做高斯面（\( a<r<b \)），\( \vec E=0 \) 故 \( Q_{\text{enc}}=0 \)，即 \( q+q_{\text{in}}=0 \)，所以内表面感应电荷：</p>
+          <p>\[ q_{\text{in}}=-q=-3.0\,\mathrm{nC} \]</p>
+          <p>球壳电中性 \( q_{\text{in}}+q_{\text{out}}=0 \)，所以外表面：</p>
+          <p>\[ q_{\text{out}}=+3.0\,\mathrm{nC} \]</p>
+          <p class="step"><strong>解 (b)：</strong> 由球对称，电荷在各表面均匀分布。</p>
+          <ul>
+            <li>\( r<a \)（空腔内）：内表面电荷在外部（\( r>a \)）产生的场为 0（球壳定理），故只有 \( +q \) 贡献：\( E=\dfrac{k_e q}{r^2} \)（沿径向向外）。</li>
+            <li>\( a<r<b \)（金属体内）：\( E=0 \)（静电平衡）。</li>
+            <li>\( r>b \)（外部）：点电荷 \( +q \)、内表面 \( -q \)、外表面 \( +q \) 总包络电荷为 \( +q \)，由高斯定理 \( E=\dfrac{k_e q}{r^2} \)（沿径向向外），就像 \( +q \) 集中在球心一样。</li>
+          </ul>
+          <p class="step"><strong>解 (c)：</strong></p>
+          <p>\[ r=0.030\,\mathrm{m}:\; E=\frac{(8.99\times 10^{9})(3.0\times 10^{-9})}{(0.030)^2}=\frac{26.97}{9.0\times 10^{-4}}=3.0\times 10^{4}\,\mathrm{N/C} \]</p>
+          <p>\[ r=0.075\,\mathrm{m}\;(\text{金属内}):\; E=0 \]</p>
+          <p>\[ r=0.20\,\mathrm{m}:\; E=\frac{(8.99\times 10^{9})(3.0\times 10^{-9})}{(0.20)^2}=\frac{26.97}{0.04}=6.74\times 10^{2}\,\mathrm{N/C} \]</p>
+          <p class="step"><strong>关键观察：</strong> 外部场与导体是否存在无关（只要腔内电荷不变）——这印证了「腔内电荷变化会通过外表面感应电荷影响外部」，屏蔽是单向的。若将球壳接地，外表面 \( +q \) 流入大地，外部场就变为零，屏蔽变为双向。</p>
+          <p><span class="ans">\( q_{\text{in}}=-3.0\,\mathrm{nC},\;q_{\text{out}}=+3.0\,\mathrm{nC} \)；\( E(0.030)=3.0\times 10^{4}\,\mathrm{N/C},\;E(0.075)=0,\;E(0.20)=6.7\times 10^{2}\,\mathrm{N/C} \)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 两同心导体薄球壳（多表面电荷分布）</h4>
+        <p class="example-statement">两个同心导体薄球壳：内球壳半径 \( R_1=0.10\,\mathrm{m} \)、电荷 \( Q_1=+4.0\,\mu\mathrm{C} \)；外球壳半径 \( R_2=0.20\,\mathrm{m} \)、电荷 \( Q_2=-6.0\,\mu\mathrm{C} \)。求：(a) 每个球壳的内、外表面所带电荷；(b) 各区域电场；(c) \( r=0.15\,\mathrm{m} \) 与 \( r=0.30\,\mathrm{m} \) 处的 \( E \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 内球壳内部（\( r<R_1 \)）无电荷，故内球壳<strong>内</strong>表面电荷 \( =0 \)，内球壳电荷全部在其外表面：\( +4.0\,\mu\mathrm{C} \)。</p>
+          <p>外球壳是导体，金属内 \( \vec E=0 \)。在 \( R_2^- \) 处用高斯面（位于外球壳金属内）：\( Q_{\text{enc}}=Q_1+q_{\text{外球内表面}}=0 \)，故：</p>
+          <p>\[ q_{\text{外球内表面}}=-Q_1=-4.0\,\mu\mathrm{C} \]</p>
+          <p>外球壳总电荷 \( Q_2=q_{\text{外球内表面}}+q_{\text{外球外表面}} \)，故：</p>
+          <p>\[ q_{\text{外球外表面}}=Q_2-q_{\text{外球内表面}}=-6.0-(-4.0)=-2.0\,\mu\mathrm{C} \]</p>
+          <p class="step"><strong>解 (b)：</strong> 由球对称用高斯定理：</p>
+          <ul>
+            <li>\( r<R_1 \)：\( Q_{\text{enc}}=0\Rightarrow E=0 \)。</li>
+            <li>\( R_1<r<R_2 \)：\( Q_{\text{enc}}=Q_1=+4.0\,\mu\mathrm{C} \)，\( E=\dfrac{k_e Q_1}{r^2} \)（径向向外）。</li>
+            <li>\( r>R_2 \)：\( Q_{\text{enc}}=Q_1+Q_2=+4.0-6.0=-2.0\,\mu\mathrm{C} \)，\( E=\dfrac{k_e (Q_1+Q_2)}{r^2} \)（径向向内）。</li>
+          </ul>
+          <p class="step"><strong>解 (c)：</strong></p>
+          <p>\[ r=0.15\,\mathrm{m}:\; E=\frac{(8.99\times 10^{9})(4.0\times 10^{-6})}{(0.15)^2}=\frac{3.596\times 10^{4}}{0.0225}=1.60\times 10^{6}\,\mathrm{N/C}\;(\text{向外}) \]</p>
+          <p>\[ r=0.30\,\mathrm{m}:\; E=\frac{(8.99\times 10^{9})(-2.0\times 10^{-6})}{(0.30)^2}=\frac{-1.798\times 10^{4}}{0.09}=-2.00\times 10^{5}\,\mathrm{N/C}\;(\text{向内}) \]</p>
+          <p class="step"><strong>检验：</strong> 三个表面（\( +4.0,-4.0,-2.0\,\mu\mathrm{C} \)）之和为 \( -2.0\,\mu\mathrm{C}=Q_1+Q_2 \) ✓；外球壳金属内（\( R_2^- \) 高斯面包络 \( +4-4=0 \)）\( E=0 \) ✓。</p>
+          <p><span class="ans">内球：内表面 \( 0 \)，外表面 \( +4.0\,\mu\mathrm{C} \)；外球：内表面 \( -4.0\,\mu\mathrm{C} \)，外表面 \( -2.0\,\mu\mathrm{C} \)；\( E(0.15)\approx 1.6\times 10^{6}\,\mathrm{N/C} \)（向外），\( E(0.30)\approx 2.0\times 10^{5}\,\mathrm{N/C} \)（向内）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 尖端效应与避雷针</h4>
+        <p class="example-statement">一个不规则导体由两个用细长导线相连的小球组成：球 A 半径 \( R_A=5.0\,\mathrm{cm} \)（代表建筑物的圆润部分），球 B 半径 \( R_B=1.0\,\mathrm{mm}=0.10\,\mathrm{cm} \)（代表避雷针尖端）。系统总电荷 \( Q=+1.0\,\mu\mathrm{C} \)。近似认为两球远离、互不影响（细导线忽略电荷）。求：(a) 两球电荷比与电荷密度比；(b) 球 B 表面 \( \sigma_B \) 与表面外侧 \( E_B \)；(c) 空气是否在 B 处击穿？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 平衡时两球等势 \( V_A=V_B \)（同一导体）：\( kQ_A/R_A=kQ_B/R_B \)，故 \( Q_A/Q_B=R_A/R_B=50/1=50 \)。</p>
+          <p>由 \( Q_A+Q_B=Q=1.0\,\mu\mathrm{C} \)：</p>
+          <p>\[ Q_B=\frac{Q}{51}=1.96\times 10^{-2}\,\mu\mathrm{C}=1.96\times 10^{-8}\,\mathrm{C};\quad Q_A=0.98\,\mu\mathrm{C} \]</p>
+          <p>面电荷密度：</p>
+          <p>\[ \sigma_A=\frac{Q_A}{4\pi R_A^2}=\frac{9.80\times 10^{-7}}{4\pi(5.0\times 10^{-2})^2}=\frac{9.80\times 10^{-7}}{3.142\times 10^{-2}}=3.12\times 10^{-5}\,\mathrm{C/m^2} \]</p>
+          <p>\[ \sigma_B=\frac{Q_B}{4\pi R_B^2}=\frac{1.96\times 10^{-8}}{4\pi(1.0\times 10^{-3})^2}=\frac{1.96\times 10^{-8}}{1.257\times 10^{-5}}=1.56\times 10^{-3}\,\mathrm{C/m^2} \]</p>
+          <p>密度比 \( \sigma_B/\sigma_A=50 \)，与 \( R_A/R_B \) 一致 ✓（因 \( \sigma\propto 1/R \)）。</p>
+          <p class="step"><strong>解 (b)：</strong> 球 B 表面外侧电场：</p>
+          <p>\[ E_B=\frac{\sigma_B}{\varepsilon_0}=\frac{1.56\times 10^{-3}}{8.854\times 10^{-12}}=1.76\times 10^{8}\,\mathrm{N/C} \]</p>
+          <p>球 A 表面外侧 \( E_A=\sigma_A/\varepsilon_0=3.52\times 10^{6}\,\mathrm{N/C} \)。比 \( E_B/E_A=50 \)。</p>
+          <p class="step"><strong>解 (c)：</strong> 空气击穿场强 \( E_{\text{break}}\approx 3\times 10^{6}\,\mathrm{V/m} \)。</p>
+          <p>\[ E_B=1.76\times 10^{8}\,\mathrm{V/m}\gg E_{\text{break}} \]</p>
+          <p>故球 B（尖端）附近的空气被强烈电离，发生电晕放电，形成导电通道，把云中电荷（或雷击）优先导入大地——这就是避雷针的工作原理。即便球 A 处也可能接近击穿（\( E_A=3.5\times 10^{6}\,\mathrm{V/m} \)），但远小于 B 处。</p>
+          <p><span class="ans">\( Q_A:Q_B=50:1 \)；\( \sigma_B\approx 1.6\times 10^{-3}\,\mathrm{C/m^2} \)，\( E_B\approx 1.8\times 10^{8}\,\mathrm{V/m}\gg E_{\text{break}} \)，强烈击穿，构成避雷针原理</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 接地与导体球间的电荷分配</h4>
+        <p class="example-statement">导体球 1 半径 \( R_1=0.10\,\mathrm{m} \)，原带电 \( Q_1=+5.0\,\mu\mathrm{C} \)；导体球 2 半径 \( R_2=0.050\,\mathrm{m} \)，原电中性。两者用细长导线相连（达到等势），系统孤立体。求：(a) 平衡后两球电荷 \( Q_1',Q_2' \)；(b) 共同电势 \( V \)；(c) 若随后将球 2 接地（\( V_{\text{earth}}=0 \)）再断开，球 2 最终带多少电荷？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 电荷守恒 \( Q_1'+Q_2'=Q_1+0=5.0\,\mu\mathrm{C} \)。两球通过导线连为同一导体，平衡时等势：</p>
+          <p>\[ V_1=V_2\;\Longrightarrow\;\frac{kQ_1'}{R_1}=\frac{kQ_2'}{R_2}\;\Longrightarrow\;\frac{Q_1'}{0.10}=\frac{Q_2'}{0.050} \]</p>
+          <p>即 \( Q_1'=2Q_2' \)。代入守恒式：\( 2Q_2'+Q_2'=5.0 \)，所以：</p>
+          <p>\[ Q_2'=\frac{5.0}{3}=1.67\,\mu\mathrm{C},\quad Q_1'=\frac{10.0}{3}=3.33\,\mu\mathrm{C} \]</p>
+          <p class="step"><strong>解 (b)：</strong> 共同电势：</p>
+          <p>\[ V=\frac{kQ_1'}{R_1}=\frac{(8.99\times 10^{9})(3.33\times 10^{-6})}{0.10}=2.995\times 10^{5}\,\mathrm{V}\approx 3.0\times 10^{5}\,\mathrm{V} \]</p>
+          <p>用球 2 验证：\( V=kQ_2'/R_2=(8.99\times 10^{9})(1.67\times 10^{-6})/0.050=3.00\times 10^{5}\,\mathrm{V} \) ✓</p>
+          <p class="step"><strong>解 (c)：</strong> 现在球 2 接地。接地瞬间球 2 与大地相连并取 \( V=0 \)；由于球 2 已不再与球 1 相连（题设「将球 2 接地」意为先断开原导线再接地，更一般的物理图像），其电荷流入大地直至 \( V_2=0 \)。最终球 2 不带电：</p>
+          <p>\[ Q_2''=0\quad(\text{接地且无其它近邻带电体时}) \]</p>
+          <p>（若球 2 接地时附近有外部带电体，则接地后球 2 上会留下感应电荷——见练习题 5。）</p>
+          <p><span class="ans">\( Q_1'\approx 3.33\,\mu\mathrm{C},\;Q_2'\approx 1.67\,\mu\mathrm{C} \)；\( V\approx 3.0\times 10^{5}\,\mathrm{V} \)；接地后 \( Q_2''=0 \)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「导体内部 \( \vec E=0 \)」指净电场为零，不是「没有电荷」也不是「没有源」：</strong> 它是外场与感应电荷产生的场<strong>叠加</strong>为零的结果。空腔内若有电荷，腔壁上有感应电荷，金属内的零场是这些源精确抵消所致。</li>
+        <li><strong>表面电荷<strong>不</strong>一定均匀：</strong> \( \sigma=Q/(4\pi R^2) \) 只在<strong>球形</strong>导体下成立。对不规则导体，\( \sigma \) 在尖端处变大，平坦处变小。表面外侧 \( E=\sigma/\varepsilon_0 \) 是<strong>当地</strong>关系，处处成立，但 \( \sigma \) 本身随位置变化。</li>
+        <li><strong>静电屏蔽是单向的：</strong> 法拉第笼能屏蔽<strong>外部</strong>电场使其不进入空腔（当腔内无电荷），但腔内若有电荷，会通过外表面感应电荷影响<strong>外部</strong>场。要双向屏蔽必须把导体接地，让外表面电荷流入大地。</li>
+        <li><strong>「导体等势」不等于「电势为零」：</strong> 等势体的电势是一个<strong>非零</strong>常量（除非接地）。计算电势时要先确定参考点（通常 \( V(\infty)=0 \)），再用 \( V=kQ/R \)（球形）或更一般方法。</li>
+        <li><strong>接地不一定让导体失去所有电荷：</strong> 若导体附近有其它带电体，接地后导体电势被钳为 0，但其表面可能保留由感应产生的<strong>净电荷</strong>（即感应起电）。只有当导体孤立且无近邻带电体时，接地才使其电荷全部流入大地。</li>
+        <li><strong>混淆「外表面感应电荷」与「腔内电荷变化」：</strong> 中性导体腔内有 \( +q \)，外表面感应出 \( +q \)。若改变 \( q \)，外表面感应电荷随之变化，从而外部场也变——这一点常被忽略。要锁定外部场不变，需接地。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一半径 \( R=0.20\,\mathrm{m} \) 的实心导体球带电 \( Q=+2.0\,\mu\mathrm{C} \)。求 \( \sigma \)、表面外 \( E \) 与球面电势 \( V \)。</summary>
+        <div class="hint">用 \( \sigma=Q/(4\pi R^2) \)、\( E=\sigma/\varepsilon_0=kQ/R^2 \)、\( V=kQ/R \)。</div>
+        <div class="solution">
+          <p>\[ \sigma=\frac{2.0\times 10^{-6}}{4\pi(0.20)^2}=\frac{2.0\times 10^{-6}}{0.5027}=3.98\times 10^{-6}\,\mathrm{C/m^2} \]</p>
+          <p>\[ E=\frac{\sigma}{\varepsilon_0}=\frac{3.98\times 10^{-6}}{8.854\times 10^{-12}}=4.50\times 10^{5}\,\mathrm{N/C} \]</p>
+          <p>\[ V=\frac{kQ}{R}=\frac{(8.99\times 10^{9})(2.0\times 10^{-6})}{0.20}=8.99\times 10^{4}\,\mathrm{V} \]</p>
+          <p><span class="ans">\( \sigma\approx 4.0\times 10^{-6}\,\mathrm{C/m^2} \)；\( E\approx 4.5\times 10^{5}\,\mathrm{N/C} \)；\( V\approx 9.0\times 10^{4}\,\mathrm{V} \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一中性导体球壳（\( a=0.10\,\mathrm{m},\;b=0.15\,\mathrm{m} \)），球心处放点电荷 \( +q=+5.0\,\mathrm{nC} \)。求内、外表面感应电荷；并求 \( r=0.12\,\mathrm{m} \) 与 \( r=0.20\,\mathrm{m} \) 处的 \( E \)。</summary>
+        <div class="hint">内表面 \( -q \)，外表面 \( +q \)；\( r=0.12\,\mathrm{m} \) 在金属内（\( a<0.12<b=0.15 \)）\( E=0 \)；\( r=0.20>b \) 用 \( E=kq/r^2 \)。</div>
+        <div class="solution">
+          <p>\( q_{\text{in}}=-5.0\,\mathrm{nC},\;q_{\text{out}}=+5.0\,\mathrm{nC} \)。</p>
+          <p>\[ E(0.12\,\mathrm{m})=0\;(\text{金属体内}) \]</p>
+          <p>\[ E(0.20\,\mathrm{m})=\frac{(8.99\times 10^{9})(5.0\times 10^{-9})}{(0.20)^2}=\frac{44.95}{0.04}=1.12\times 10^{3}\,\mathrm{N/C}\;(\text{向外}) \]</p>
+          <p><span class="ans">\( q_{\text{in}}=-5.0\,\mathrm{nC},\;q_{\text{out}}=+5.0\,\mathrm{nC} \)；\( E(0.12)=0,\;E(0.20)\approx 1.1\times 10^{3}\,\mathrm{N/C} \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 两同心导体薄球壳：\( R_1=0.10\,\mathrm{m},\;Q_1=+2.0\,\mu\mathrm{C} \)；\( R_2=0.30\,\mathrm{m},\;Q_2=+1.0\,\mu\mathrm{C} \)。求各表面电荷及 \( r=0.20\,\mathrm{m},\;0.50\,\mathrm{m} \) 处的 \( E \)。</summary>
+        <div class="hint">内球内表面 0，外表面 \( +Q_1 \)；外球内表面 \( -Q_1 \)，外表面 \( Q_1+Q_2 \)。</div>
+        <div class="solution">
+          <p>内球：内表面 \( 0 \)，外表面 \( +2.0\,\mu\mathrm{C} \)。</p>
+          <p>外球：内表面 \( -2.0\,\mu\mathrm{C} \)，外表面 \( Q_2-(-Q_1)=1.0-(-2.0)=+3.0\,\mu\mathrm{C} \)。</p>
+          <p>\[ E(0.20\,\mathrm{m})=\frac{kQ_1}{r^2}=\frac{(8.99\times 10^{9})(2.0\times 10^{-6})}{(0.20)^2}=\frac{1.798\times 10^{4}}{0.04}=4.50\times 10^{5}\,\mathrm{N/C}\;(\text{向外}) \]</p>
+          <p>\[ E(0.50\,\mathrm{m})=\frac{k(Q_1+Q_2)}{r^2}=\frac{(8.99\times 10^{9})(3.0\times 10^{-6})}{(0.50)^2}=\frac{2.697\times 10^{4}}{0.25}=1.08\times 10^{5}\,\mathrm{N/C}\;(\text{向外}) \]</p>
+          <p><span class="ans">外球外表面 \( +3.0\,\mu\mathrm{C} \)；\( E(0.20)\approx 4.5\times 10^{5}\,\mathrm{N/C} \)，\( E(0.50)\approx 1.1\times 10^{5}\,\mathrm{N/C} \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 一个电中性导体球壳（\( a=0.10\,\mathrm{m},\;b=0.20\,\mathrm{m} \)）腔内球心处有 \( +4.0\,\mathrm{nC} \) 点电荷。今将球壳<strong>接地</strong>。求接地后球壳内、外表面电荷及外部 \( r=0.50\,\mathrm{m} \) 处的 \( E \)。</summary>
+        <div class="hint">接地钳制 \( V=0 \)；外表面电荷流入大地；腔内 \( +q \) 与内表面 \( -q \) 在外部产生的合场为零。</div>
+        <div class="solution">
+          <p>内表面感应电荷仍由金属内高斯面决定：\( q_{\text{in}}=-4.0\,\mathrm{nC} \)。</p>
+          <p>接地后外表面电荷流入大地，\( q_{\text{out}}=0 \)。</p>
+          <p>外部 \( r>b \)：高斯面包络 \( +q+(-q)+0=0 \)，故：</p>
+          <p>\[ E(r\geq b)=0 \]</p>
+          <p>\[ E(0.50\,\mathrm{m})=0 \]</p>
+          <p>这就是「双向屏蔽」：接地后腔内电荷变化不影响外部，外部电场被完全屏蔽。</p>
+          <p><span class="ans">\( q_{\text{in}}=-4.0\,\mathrm{nC},\;q_{\text{out}}=0,\;E(0.50)=0 \)</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（感应起电）一电中性导体球旁置一点电荷 \( +Q \)（不接触）。先用导线把导体球瞬间接地，再移去点电荷。求导体球最终电荷与符号。</summary>
+        <div class="hint">接地时 \( +Q \) 吸引导体球内电子到近侧，远侧正电荷多余；远侧正电荷通过接地线流入大地。断开接地后再移走 \( +Q \)，导体球上留下净负电荷。</div>
+        <div class="solution">
+          <p>步骤：(i) \( +Q \) 靠近电中性导体球 → 近侧感应负电荷、远侧感应正电荷，总量为零；(ii) 接地 → 远侧正电荷（被金属内电子排斥）流入大地，导体球净电荷变为负；(iii) 移去接地线 → 净负电荷被锁定；(iv) 移走 \( +Q \) → 净负电荷在外表面均匀分布。最终导体球带<strong>净负电荷</strong>。</p>
+          <p>定量：若 \( +Q \) 距球心 \( d \)、球半径 \( R \)，则接地时由镜像法可证感应净电荷 \( q'=-QR/d \)。例如 \( Q=+2.0\,\mu\mathrm{C},\;d=0.30\,\mathrm{m},\;R=0.10\,\mathrm{m} \)：</p>
+          <p>\[ q'=-\frac{(2.0)(0.10)}{0.30}=-0.667\,\mu\mathrm{C} \]</p>
+          <p><span class="ans">导体球最终带负电；本例 \( q'\approx -0.67\,\mu\mathrm{C} \)</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">法拉第笼实验室：导体球壳（内半径 \( a \)、外半径 \( b \)）的中央空腔内有一个可调点电荷 \( q \)。调节 \( q \) 的大小与符号，观察：(1) 内表面感应出 \( -q \)、外表面感应出 \( +q \)；(2) 金属体内（\( a<r<b \)）电场始终为零；(3) 空腔与外部的电场分布就像 \( q \) 集中在球心。打开「移去导体」对比，可看到无导体时电场贯穿整个空间——可见正是感应电荷把金属内部的场抵消为零。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="640" height="460"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2 + 8;
+          var A = 78;    // inner cavity radius (px)
+          var B = 160;   // outer conductor radius (px)
+
+          var params = {
+            q: 3.0,                // nC, signed
+            showNoConductor: false,
+          };
+
+          // E-field at canvas point (x,y). Returns {x, y, mag, zero, r}.
+          // Uses scaled units: E ∝ q/r². With conductor: metal region (A<r<B) E=0.
+          function fieldAt(x, y) {
+            var dx = x - CX, dy = y - CY;
+            var r = Math.hypot(dx, dy);
+            if (r < 3) return null;
+            if (!params.showNoConductor && r > A && r < B) {
+              return { x: 0, y: 0, mag: 0, zero: true, r: r };
+            }
+            var absq = Math.abs(params.q);
+            if (absq < 0.05) return { x: 0, y: 0, mag: 0, zero: true, r: r };
+            var sgn = params.q >= 0 ? 1 : -1;
+            var mag = absq / (r * r);
+            var ux = (dx / r) * sgn, uy = (dy / r) * sgn; // outward for +q, inward for -q
+            return { x: ux * mag, y: uy * mag, mag: mag, zero: false, r: r };
+          }
+
+          function drawConductor(ctx) {
+            // Metal annulus (only when conductor is present)
+            if (!params.showNoConductor) {
+              ctx.save();
+              ctx.fillStyle = 'rgba(110, 130, 160, 0.32)';
+              ctx.beginPath(); ctx.arc(CX, CY, B, 0, Math.PI * 2); ctx.fill();
+              // cut out cavity with background color
+              ctx.fillStyle = PS.colors.bg;
+              ctx.beginPath(); ctx.arc(CX, CY, A, 0, Math.PI * 2); ctx.fill();
+              // outline strokes
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.arc(CX, CY, B, 0, Math.PI * 2); ctx.stroke();
+              ctx.beginPath(); ctx.arc(CX, CY, A, 0, Math.PI * 2); ctx.stroke();
+              ctx.restore();
+            } else {
+              // dashed outline to show hypothetical boundary
+              ctx.save();
+              ctx.setLineDash([6, 5]);
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1.4;
+              ctx.beginPath(); ctx.arc(CX, CY, A, 0, Math.PI * 2); ctx.stroke();
+              ctx.beginPath(); ctx.arc(CX, CY, B, 0, Math.PI * 2); ctx.stroke();
+              ctx.restore();
+            }
+          }
+
+          function drawInducedCharges(ctx) {
+            if (params.showNoConductor) return;
+            if (Math.abs(params.q) < 0.05) return;
+            var Ninner = 12, Nouter = 16;
+            ctx.save();
+            ctx.font = 'bold 14px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // inner surface: -q
+            var innerSym = params.q >= 0 ? '−' : '+';
+            ctx.fillStyle = params.q >= 0 ? PS.colors.accent : PS.colors.primary;
+            for (var i = 0; i < Ninner; i++) {
+              var a1 = (i + 0.5) * 2 * Math.PI / Ninner;
+              ctx.fillText(innerSym, CX + (A - 13) * Math.cos(a1), CY + (A - 13) * Math.sin(a1));
+            }
+            // outer surface: +q
+            var outerSym = params.q >= 0 ? '+' : '−';
+            ctx.fillStyle = params.q >= 0 ? PS.colors.primary : PS.colors.accent;
+            for (var j = 0; j < Nouter; j++) {
+              var a2 = j * 2 * Math.PI / Nouter;
+              ctx.fillText(outerSym, CX + (B + 13) * Math.cos(a2), CY + (B + 13) * Math.sin(a2));
+            }
+            ctx.restore();
+          }
+
+          function drawFieldArrows(ctx) {
+            if (Math.abs(params.q) < 0.05) return;
+            var angles = 12;
+            var radii = [28, 55, B + 22, B + 60, B + 105]; // 2 in cavity, 3 outside
+            // reference magnitude at smallest radius (strongest field)
+            var refMag = Math.abs(params.q) / (radii[0] * radii[0]);
+            var maxLen = 30;
+            for (var ai = 0; ai < angles; ai++) {
+              var ang = ai * 2 * Math.PI / angles;
+              for (var ri = 0; ri < radii.length; ri++) {
+                var r = radii[ri];
+                var x = CX + r * Math.cos(ang);
+                var y = CY + r * Math.sin(ang);
+                var E = fieldAt(x, y);
+                if (!E || E.zero) continue;
+                var len = maxLen * (E.mag / refMag);
+                len = Math.max(5, Math.min(maxLen, len));
+                var ux = E.x / E.mag, uy = E.y / E.mag;
+                PS.drawArrow(ctx, x, y, x + ux * len, y + uy * len, PS.colors.primary);
+              }
+            }
+          }
+
+          function drawMetalZeroMarkers(ctx) {
+            if (params.showNoConductor) return;
+            // small "×" markers in metal annulus indicating E = 0
+            var Nang = 8;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1.2;
+            ctx.globalAlpha = 0.55;
+            var rmid = 0.5 * (A + B);
+            var s = 3;
+            for (var i = 0; i < Nang; i++) {
+              var a = (i + 0.5) * 2 * Math.PI / Nang;
+              var x = CX + rmid * Math.cos(a);
+              var y = CY + rmid * Math.sin(a);
+              ctx.beginPath();
+              ctx.moveTo(x - s, y - s); ctx.lineTo(x + s, y + s);
+              ctx.moveTo(x - s, y + s); ctx.lineTo(x + s, y - s);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            // Big "E = 0 in metal" label
+            ctx.fillStyle = PS.colors.text;
+            ctx.font = 'italic 13px system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('E = 0  (metal body 金属体内)', CX + rmid * 0.6, CY - rmid * 0.85);
+            ctx.restore();
+          }
+
+          function drawCenterCharge(ctx) {
+            var q = params.q;
+            var color = q >= 0 ? PS.colors.primary : PS.colors.accent;
+            PS.drawCircle(ctx, CX, CY, 8, { fill: color, stroke: PS.colors.text, lineWidth: 1.5 });
+            var sign = q >= 0 ? '+' : '−';
+            ctx.save();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 12px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(sign, CX, CY);
+            ctx.restore();
+            PS.drawText(ctx, 'q = ' + q.toFixed(2) + ' nC', CX, CY + 22,
+              { font: 'bold 13px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+          }
+
+          function drawLabels(ctx) {
+            // Title
+            PS.drawText(ctx, "Faraday Cage · 法拉第笼 / 含空腔导体",
+              14, 22, { font: 'bold 15px system-ui, sans-serif', color: PS.colors.text });
+            // Induced-charge summary
+            if (!params.showNoConductor && Math.abs(params.q) >= 0.05) {
+              var q = params.q;
+              var innerQ = -q, outerQ = q;
+              PS.drawText(ctx,
+                "Inner surface 内表面 q_inner = " + innerQ.toFixed(2) + " nC   ·   " +
+                "Outer surface 外表面 q_outer = " + outerQ.toFixed(2) + " nC",
+                14, H - 16, { font: '13px system-ui, sans-serif', color: PS.colors.text });
+            }
+            // Mode indicator
+            var mode = params.showNoConductor
+              ? 'Hypothetical: no conductor 假想：无导体（场贯穿金属）'
+              : 'With conductor in equilibrium 有导体（静电平衡）';
+            PS.drawText(ctx, mode, 14, 44,
+              { font: '13px system-ui, sans-serif', color: PS.colors.text });
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; }, // static picture; redraw each frame is cheap
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              drawConductor(ctx);
+              drawMetalZeroMarkers(ctx);
+              drawFieldArrows(ctx);
+              drawInducedCharges(ctx);
+              drawCenterCharge(ctx);
+              drawLabels(ctx);
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'q', label: '点电荷 q (nC)', min: -5, max: 5, step: 0.1, value: 3.0 },
+            { type: 'toggle', key: 'showNoConductor', label: '移去导体（对比）Remove conductor', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('q', function (v) { params.q = v; });
+          ctl.on('showNoConductor', function (v) { params.showNoConductor = v; });
+          ctl.on('reset', function () {
+            params.q = 3.0;
+            params.showNoConductor = false;
+            // sync controls visually
+            ctl.set('q', 3.0);
+            ctl.set('showNoConductor', false);
+            // force control labels to refresh by dispatching input
+            var sliders = document.querySelectorAll('#controls-5 input[type=range]');
+            sliders.forEach(function (el) { el.value = 3.0; el.dispatchEvent(new Event('input')); });
+            var cbs = document.querySelectorAll('#controls-5 input[type=checkbox]');
+            cbs.forEach(function (el) { el.checked = false; el.dispatchEvent(new Event('change')); });
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>静电平衡下导体的四条基本性质：内部 \( \vec E=0 \)、电荷只分布于表面、表面外 \( \vec E=(\sigma/\varepsilon_0)\hat n \)、导体为等势体。</li>
+        <li>含空腔导体：内表面感应电荷 \( q_{\text{in}}=-q_{\text{cav}} \)，外表面 \( q_{\text{out}}=Q_{\text{cond}}+q_{\text{cav}} \)。</li>
+        <li>法拉第笼屏蔽外部场进入空腔；但腔内电荷变化会通过外表面感应电荷影响外部场——屏蔽是<strong>单向</strong>的；接地后变为双向屏蔽。</li>
+        <li>不规则导体表面 \( \sigma \) 随曲率变化，\( \sigma\propto 1/R \)（近似），尖端处 \( E \) 大，可引发电晕放电。避雷针据此设计。</li>
+        <li>接地（\( V=0 \)）：孤立导体的电荷流入大地；近邻有带电体时导体上保留感应净电荷（感应起电）。</li>
+        <li>两导体相连后达到等势：电荷按 \( Q\propto R \) 分配（球形），\( \sigma\propto 1/R \)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\vec E_{\text{内}}=0,\quad \vec E_{\text{表面外}}=\frac{\sigma}{\varepsilon_0}\hat n,\quad V_{\text{导体}}=\text{const},\quad q_{\text{in}}=-q_{\text{cav}},\quad \sigma\propto\frac{1}{R}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

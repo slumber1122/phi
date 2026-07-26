@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 电感与暂态 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第11章 · 磁学与感应 Magnetism &amp; Induction</p>
+      <h1>电感与暂态 <span class="en-title">Inductance &amp; Transients</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从法拉第定律 (Faraday's law) 出发定义<strong>自感</strong> (self-inductance) \(L\) 与<strong>互感</strong> (mutual inductance) \(M\)，写出 \(\varepsilon=-L\,\dv{I}{t}\) 与 \(\varepsilon_{2}=-M\,\dv{I_{1}}{t}\)。</li>
+        <li>推导长螺线管 (solenoid) 的自感 \(L=\mu_{0}n^{2}Al\)，并理解 \(L\) 只依赖几何与磁芯材料。</li>
+        <li>推导并应用电感储能 \(U=\tfrac{1}{2}LI^{2}\) 与<strong>磁能密度</strong> (magnetic energy density) \(u=B^{2}/(2\mu_{0})\)。</li>
+        <li>求解 RL 电路的<strong>暂态过程</strong> (transient)：电流生长 \(I(t)=I_{0}(1-e^{-t/\tau})\) 与衰减，时间常数 \(\tau=L/R\)。</li>
+        <li>分析无损耗 LC 电路的振荡，导出 \(\omega=1/\sqrt{LC}\)，并阐明其与简谐运动 (SHM) 的严格类比。</li>
+        <li>区分 RLC 电路的三种阻尼情形（欠阻尼、临界阻尼、过阻尼），为下一章交流电路 (AC circuits) 做铺垫。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 互感 Mutual Inductance \(M\)</h3>
+      <p>两个邻近的线圈：当线圈 1 中的电流 \(I_{1}\) 变化时，它产生的磁通量穿过线圈 2，从而在线圈 2 中感应出电动势。由法拉第定律，线圈 2 中的磁链 (flux linkage) \(N_{2}\Phi_{12}\) 正比于 \(I_{1}\)，比例系数即<strong>互感</strong> (mutual inductance) \(M\)：</p>
+      <div class="formula">\[ N_{2}\Phi_{12}=M\,I_{1},\qquad \varepsilon_{2}=-M\,\dv{I_{1}}{t} \]</div>
+      <p>\(M\) 只取决于两线圈的几何形状、匝数与相对位置（以及磁芯）。SI 单位为<strong>亨利</strong> (henry, \(\mathrm{H}=\mathrm{Wb/A}=\mathrm{T\,m^{2}/A}\))。互感是<strong>对称的</strong>：在线性介质（如空气）中 \(M_{12}=M_{21}\)，与哪一个线圈通电无关。</p>
+      <div class="key-terms">mutual inductance \(M\) (互感), flux linkage \(N\Phi\) (磁链), henry \(\mathrm{H}\) (亨利)</div>
+
+      <h3>2. 自感 Self-Inductance \(L\)</h3>
+      <p>单个线圈中电流变化时，线圈自身的磁通量也变化，从而在线圈两端感应出反向电动势——这就是<strong>自感现象</strong> (self-induction)。线圈中的磁链正比于自身电流：</p>
+      <div class="formula">\[ N\Phi=L\,I,\qquad \varepsilon=-L\,\dv{I}{t} \]</div>
+      <p>负号是<strong>楞次定律</strong> (Lenz's law) 的体现：自感电动势总是<strong>反对电流的变化</strong>（注意：不是反对电流本身）。电感 \(L\) 衡量线圈"阻碍电流变化"的能力——因此电感器又称<strong>扼流圈</strong> (choke)。任何载流回路都有非零自感（即便没有显式线圈）。</p>
+      <div class="key-terms">self-inductance \(L\) (自感), back-EMF (反电动势), Lenz's law (楞次定律), choke (扼流圈)</div>
+
+      <h3>3. 螺线管的自感 Solenoid Self-Inductance</h3>
+      <p>对长直螺线管 (solenoid)，长度 \(l\)、横截面积 \(A\)、匝数 \(N\)、单位长度匝数 \(n=N/l\)，内部（理想近似下）磁场均匀：</p>
+      <div class="formula">\[ B=\mu_{0}nI \]</div>
+      <p>每匝线圈的磁通量为 \(\Phi_{1}=BA=\mu_{0}nIA\)，总磁链 \(N\Phi_{1}=(nl)(\mu_{0}nIA)=\mu_{0}n^{2}lAI\)，故：</p>
+      <div class="formula">\[ \boxed{\,L=\mu_{0}n^{2}Al=\mu_{0}\frac{N^{2}}{l}A\,} \]</div>
+      <p>可见 \(L\) 只依赖几何（\(n,A,l\)）与磁芯材料（\(\mu\)），与电流无关。若螺线管内填充相对磁导率 \(\kappa_{m}\) 的磁芯（如铁芯），\(\mu_{0}\) 替换为 \(\mu=\kappa_{m}\mu_{0}\)，\(L\) 可增大数千倍——这是铁芯电感与变压器的物理基础。</p>
+      <div class="key-terms">solenoid (螺线管), turns per unit length \(n\) (单位长度匝数), permeability \(\mu\) (磁导率)</div>
+
+      <h3>4. 电感储能与磁能密度 Stored Energy &amp; Energy Density</h3>
+      <p>在电感中建立电流 \(I\) 必须克服反电动势做功。电源提供的功率 \(P=I\varepsilon_{\text{applied}}=LI\,\dv{I}{t}\)，在 \(dt\) 内做功 \(dU=LI\,dI\)。从 0 积分到 \(I\)：</p>
+      <div class="formula">\[ \boxed{\,U=\int_{0}^{I}LI'\,dI'=\tfrac{1}{2}LI^{2}\,} \]</div>
+      <p>这是储存在电感<strong>磁场</strong>中的能量，与电容器储能 \(U=\tfrac{1}{2}CV^{2}\) 完全对应。代入螺线管 \(L=\mu_{0}n^{2}Al\) 与 \(B=\mu_{0}nI\)，并除以体积 \(V=Al\)，得<strong>磁能密度</strong> (magnetic energy density)：</p>
+      <div class="formula">\[ u_{B}=\frac{U}{Al}=\frac{1}{2}\mu_{0}n^{2}I^{2}=\frac{B^{2}}{2\mu_{0}} \]</div>
+      <p>这一表达式虽然由螺线管特例导出，但适用于<strong>任意</strong>磁场分布——空间任一点的磁能密度只由该点的 \(B\) 决定。（与电场能量密度 \(u_{E}=\tfrac{1}{2}\varepsilon_{0}E^{2}\) 形成完美对称。）</p>
+      <div class="key-terms">stored magnetic energy \(U=\tfrac12 LI^2\) (电感储能), magnetic energy density \(u_B\) (磁能密度)</div>
+
+      <h3>5. RL 暂态电路 RL Circuit Transients</h3>
+      <p>电感 \(L\) 与电阻 \(R\) 串联接到电动势 \(V_{0}\) 的电源。由基尔霍夫电压定律 (Kirchhoff's voltage law)：</p>
+      <div class="formula">\[ V_{0}-IR-L\,\dv{I}{t}=0 \]</div>
+      <p>解此一阶线性 ODE（推导见下节），得电流生长曲线：</p>
+      <div class="formula">\[ \boxed{\,I(t)=I_{0}\bigl(1-e^{-t/\tau}\bigr),\qquad I_{0}=\frac{V_{0}}{R},\qquad \tau=\frac{L}{R}\,} \]</div>
+      <p>\(\tau=L/R\) 是<strong>RL 时间常数</strong>。\(t=\tau\) 时 \(I\approx 0.632\,I_{0}\)；\(t=5\tau\) 时基本达到稳态（\(0.993\,I_{0}\)）。若电源瞬间撤去（线圈经 \(R\) 短接放电），电流按指数衰减：</p>
+      <div class="formula">\[ I(t)=I_{0}\,e^{-t/\tau} \]</div>
+      <p>稳态（\(t\to\infty\)）下 \(\dv{I}{t}=0\)，电感两端无电压——理想电感在直流稳态下相当于<strong>短路</strong>（导线）。"电感效应"只在<strong>暂态</strong>（电流变化时）才出现。</p>
+      <div class="key-terms">RL time constant \(\tau=L/R\) (RL 时间常数), transient (暂态), steady state (稳态)</div>
+
+      <h3>6. LC 振荡电路 LC Oscillation</h3>
+      <p>一个充电的电容器 \(C\)（电荷 \(Q_{0}\)）与一个理想电感 \(L\)（无电阻）相接。由 KVL：\(L\,\dv{I}{t}+Q/C=0\)，且 \(I=\dv{Q}{t}\)，故：</p>
+      <div class="formula">\[ \boxed{\,L\,\frac{d^{2}Q}{dt^{2}}+\frac{Q}{C}=0\;\Longrightarrow\;\omega=\frac{1}{\sqrt{LC}},\quad T=2\pi\sqrt{LC}\,} \]</div>
+      <p>这与简谐运动方程 \(m\ddot{x}+kx=0\) 形式完全相同！对应关系：</p>
+      <div class="formula">\[ m\leftrightarrow L,\quad k\leftrightarrow \frac{1}{C},\quad x\leftrightarrow Q,\quad v\leftrightarrow I \]</div>
+      <p>能量在<strong>电容（电场能）</strong> \(U_{C}=\tfrac{Q^{2}}{2C}\) 与<strong>电感（磁场能）</strong> \(U_{L}=\tfrac{LI^{2}}{2}\) 之间来回交换，总能量 \(U=U_{C}+U_{L}=\tfrac{Q_{0}^{2}}{2C}\) 守恒。这相当于电路版的"动能—势能"循环。</p>
+      <div class="key-terms">LC circuit (LC 振荡电路), electrical-mechanical analogy (电磁—力学类比)</div>
+
+      <h3>7. RLC 阻尼振荡 RLC Damped Oscillation</h3>
+      <p>实际电路总有电阻。LC 电路串联电阻 \(R\) 后，KVL 给出：</p>
+      <div class="formula">\[ L\,\frac{d^{2}Q}{dt^{2}}+R\,\dv{Q}{t}+\frac{Q}{C}=0 \]</div>
+      <p>这正是<strong>阻尼简谐运动</strong>方程 \(\ddot{x}+2\gamma\dot{x}+\omega_{0}^{2}x=0\)，其中：</p>
+      <div class="formula">\[ \omega_{0}=\frac{1}{\sqrt{LC}},\qquad \gamma=\frac{R}{2L},\qquad R_{\text{crit}}=2\sqrt{\frac{L}{C}} \]</div>
+      <p>按 \(R\) 与 \(R_{\text{crit}}\) 的关系分三种情形：</p>
+      <ul>
+        <li><strong>欠阻尼</strong> (underdamped, \(R<R_{\text{crit}}\))：振荡逐渐衰减，\(Q(t)=Q_{0}e^{-\gamma t}\cos(\omega_{d}t+\varphi)\)，阻尼频率 \(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)。能量耗散为电阻上的焦耳热 \(P=I^{2}R\)。</li>
+        <li><strong>临界阻尼</strong> (critically damped, \(R=R_{\text{crit}}\))：最快地回到平衡而无振荡。</li>
+        <li><strong>过阻尼</strong> (overdamped, \(R>R_{\text{crit}}\))：缓慢非振荡衰减。</li>
+      </ul>
+      <p>这一节为下一章交流电路（驱动 RLC、共振、阻抗）直接铺路：把"自由"的 RLC 换成"受迫驱动"即得到交流稳态响应。</p>
+      <div class="key-terms">RLC circuit (RLC 电路), critical resistance \(R_{\text{crit}}\) (临界电阻), underdamped/critically/overdamped (欠/临界/过阻尼)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 11.1：螺线管自感公式</h3>
+      <p class="step"><strong>步骤 1：</strong> 对长直螺线管（理想近似，忽略边缘效应），内部磁场均匀：\(B=\mu_{0}nI\)，其中 \(n=N/l\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 通过每一匝线圈的磁通量 \(\Phi_{1}=BA=\mu_{0}nIA\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 总磁链（\(N\) 匝）\(N\Phi_{1}=(nl)\cdot\mu_{0}nIA=\mu_{0}n^{2}lAI\)。</p>
+      <p class="step"><strong>步骤 4：</strong> 由定义 \(L=(N\Phi_{1})/I\)：</p>
+      <div class="formula">\[ L=\mu_{0}n^{2}lA=\mu_{0}\frac{N^{2}}{l}A \]</div>
+      <p>可见 \(L\propto n^{2}\)（密集绕制可显著增大自感），且 \(L\propto V=Al\)（体积）。\(\mu_{0}\) 可替换为 \(\mu=\kappa_{m}\mu_{0}\) 以描述带磁芯的电感。</p>
+
+      <h3>推导 11.2：从 \(U=\tfrac{1}{2}LI^{2}\) 到磁能密度 \(u=B^{2}/(2\mu_{0})\)</h3>
+      <p class="step"><strong>步骤 1：</strong> 电源克服反电动势的功率 \(P=I\cdot(L\,\dv{I}{t})\)，\(dt\) 内做功 \(dU=LI\,dI\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 从 \(I=0\) 积分到 \(I\)：</p>
+      <div class="formula">\[ U=\int_{0}^{I}LI'\,dI'=\tfrac{1}{2}LI^{2} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 代入螺线管 \(L=\mu_{0}n^{2}Al\)，体积 \(V=Al\)：</p>
+      <div class="formula">\[ U=\tfrac{1}{2}(\mu_{0}n^{2}Al)I^{2}=\tfrac{1}{2}\mu_{0}n^{2}I^{2}\,V \]</div>
+      <p class="step"><strong>步骤 4：</strong> 除以体积，用 \(B=\mu_{0}nI\) 消去 \(I\)：</p>
+      <div class="formula">\[ u_{B}=\frac{U}{V}=\tfrac{1}{2}\mu_{0}n^{2}I^{2}=\frac{(\mu_{0}nI)^{2}}{2\mu_{0}}=\frac{B^{2}}{2\mu_{0}} \]</div>
+      <p>此式对任意磁场成立（不限于螺线管），与电场能量密度 \(u_{E}=\tfrac{1}{2}\varepsilon_{0}E^{2}\) 严格对称。</p>
+
+      <h3>推导 11.3：RL 电路生长方程</h3>
+      <p class="step"><strong>步骤 1：</strong> KVL：\(V_{0}-IR-L\,\dv{I}{t}=0\)，整理得 \(\dv{I}{t}+\frac{R}{L}I=\frac{V_{0}}{L}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 令 \(\tau=L/R\)，分离变量：\(\dv{I}{(V_{0}/R)-I}=\frac{dt}{\tau}\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 两边从 0 到 \(t\)、0 到 \(I\) 积分：</p>
+      <div class="formula">\[ -\ln\!\Bigl(\frac{V_{0}/R-I}{V_{0}/R}\Bigr)=\frac{t}{\tau}\;\Longrightarrow\;I(t)=\frac{V_{0}}{R}\bigl(1-e^{-t/\tau}\bigr) \]</div>
+      <p class="step"><strong>步骤 4：</strong> 稳态电流 \(I_{0}=V_{0}/R\)：稳态下电感两端电压为零（因 \(\dv{I}{t}=0\)），电感相当于短路——电源电压全部加在电阻上，与无电感时相同。</p>
+
+      <h3>推导 11.4：LC 振荡 → SHM 类比</h3>
+      <p class="step"><strong>步骤 1：</strong> KVL 沿回路：\(-L\,\dv{I}{t}-\frac{Q}{C}=0\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 代入 \(I=\dv{Q}{t}\)（电容上电荷变化率等于回路电流）：</p>
+      <div class="formula">\[ L\,\frac{d^{2}Q}{dt^{2}}+\frac{Q}{C}=0\;\Longleftrightarrow\;\ddot{Q}+\omega^{2}Q=0,\quad \omega^{2}=\frac{1}{LC} \]</div>
+      <p class="step"><strong>步骤 3：</strong> 通解 \(Q(t)=Q_{0}\cos(\omega t+\varphi)\)，\(I(t)=\dv{Q}{t}=-\omega Q_{0}\sin(\omega t+\varphi)\)。</p>
+      <p class="step"><strong>步骤 4：</strong> 总能量：</p>
+      <div class="formula">\[ U=\frac{Q^{2}}{2C}+\frac{LI^{2}}{2}=\frac{Q_{0}^{2}}{2C}\cos^{2}(\omega t+\varphi)+\frac{Q_{0}^{2}}{2C}\sin^{2}(\omega t+\varphi)=\frac{Q_{0}^{2}}{2C} \]</div>
+      <p>能量在电容（电场）与电感（磁场）间周期性交换，与机械振子中势能—动能的交换完全同构。这正是第 8 章简谐模式的电路"化身"。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 螺线管的自感</h4>
+        <p class="example-statement">一空气芯螺线管长 \(l=0.20\,\mathrm{m}\)，半径 \(r=0.80\,\mathrm{cm}\)，密绕 \(N=500\) 匝。求其自感 \(L\)。若改用相对磁导率 \(\kappa_{m}=5000\) 的铁芯（典型值），\(L\) 变为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 横截面积 \(A=\pi r^{2}=\pi(0.80\times10^{-2})^{2}=\pi(6.4\times10^{-5})=2.01\times10^{-4}\,\mathrm{m^{2}}\)。</p>
+          <p class="step">单位长度匝数 \(n=N/l=500/0.20=2500\,\mathrm{m^{-1}}\)。</p>
+          <p class="step">代入螺线管自感公式 \(L=\mu_{0}n^{2}Al\)：</p>
+          <div class="formula">\[ L=(4\pi\times10^{-7})(2500)^{2}(2.01\times10^{-4})(0.20) \]</div>
+          <p class="step">分步计算：\((2500)^{2}=6.25\times10^{6}\)；\(n^{2}A\,l=(6.25\times10^{6})(2.01\times10^{-4})(0.20)=251\)；故：</p>
+          <div class="formula">\[ L=(4\pi\times10^{-7})(251)=3.16\times10^{-4}\,\mathrm{H}=0.316\,\mathrm{mH} \]</div>
+          <p class="step"><strong>铁芯情形：</strong> \(\mu=\kappa_{m}\mu_{0}\)，自感变为：</p>
+          <div class="formula">\[ L_{\text{铁}}=\kappa_{m}L_{\text{空气}}=5000\times 0.316\,\mathrm{mH}=1.58\,\mathrm{H} \]</div>
+          <p class="step">即铁芯使自感增大约 5000 倍——这就是变压器与电磁铁使用铁芯的根本原因。</p>
+          <p><span class="ans">空气芯：\(L=0.316\,\mathrm{mH}\)；铁芯：\(L\approx 1.58\,\mathrm{H}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 RL 电路电流生长与时间常数</h4>
+        <p class="example-statement">一理想电感 \(L=50\,\mathrm{mH}\)（内阻可忽略）与电阻 \(R=10\,\mathrm{\Omega}\) 串联，接到 \(V_{0}=12\,\mathrm{V}\) 的电池。(a) 求时间常数 \(\tau\)；(b) 求稳态电流 \(I_{0}\)；(c) 电流达到稳态值 90% 所需时间；(d) 此时电感储存的能量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> \(\tau=\dfrac{L}{R}=\dfrac{50\times10^{-3}}{10}=5.0\times10^{-3}\,\mathrm{s}=5.0\,\mathrm{ms}\)。</p>
+          <p class="step"><strong>(b)</strong> 稳态时 \(\dv{I}{t}=0\)，电感相当于短路：\(I_{0}=\dfrac{V_{0}}{R}=\dfrac{12}{10}=1.2\,\mathrm{A}\)。</p>
+          <p class="step"><strong>(c)</strong> 令 \(I(t)=0.90\,I_{0}\)：\(1-e^{-t/\tau}=0.90\)，故 \(e^{-t/\tau}=0.10\)，\(t=-\tau\ln(0.10)=\tau\ln 10\)：</p>
+          <div class="formula">\[ t=\tau\ln 10=(5.0\,\mathrm{ms})(2.303)=11.5\,\mathrm{ms}\approx 2.3\,\tau \]</div>
+          <p class="step"><strong>(d)</strong> 此时电流 \(I=0.90\times 1.2=1.08\,\mathrm{A}\)，电感储能为：</p>
+          <div class="formula">\[ U=\tfrac{1}{2}LI^{2}=\tfrac{1}{2}(50\times10^{-3})(1.08)^{2}=2.92\times10^{-2}\,\mathrm{J}=29.2\,\mathrm{mJ} \]</div>
+          <p class="step">对照：完全达到稳态时 \(U_{\max}=\tfrac{1}{2}(0.050)(1.2)^{2}=36\,\mathrm{mJ}\)；故在 90% 电流处，能量已达 \(0.90^{2}=81\%\)（能量正比于 \(I^{2}\)）。</p>
+          <p><span class="ans">\(\tau=5.0\,\mathrm{ms},\;I_{0}=1.2\,\mathrm{A},\;t_{90\%}=11.5\,\mathrm{ms},\;U(t_{90\%})=29.2\,\mathrm{mJ}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 电感储能与磁能密度</h4>
+        <p class="example-statement">一长直空气芯螺线管，\(n=2000\,\mathrm{m^{-1}}\)，横截面积 \(A=4.0\,\mathrm{cm^{2}}\)，长 \(l=0.10\,\mathrm{m}\)，通有电流 \(I=2.0\,\mathrm{A}\)。(a) 求自感 \(L\)；(b) 储存的能量 \(U\)；(c) 内部磁能密度 \(u_{B}\) 与磁感应强度 \(B\)，并验证 \(U=u_{B}\cdot Al\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 代入公式 \(L=\mu_{0}n^{2}Al\)：</p>
+          <div class="formula">\[ L=(4\pi\times10^{-7})(2000)^{2}(4.0\times10^{-4})(0.10) \]</div>
+          <p class="step">\((2000)^{2}=4.0\times10^{6}\)；\(n^{2}A\,l=(4.0\times10^{6})(4.0\times10^{-4})(0.10)=160\)；</p>
+          <div class="formula">\[ L=(4\pi\times10^{-7})(160)=2.01\times10^{-4}\,\mathrm{H}=0.201\,\mathrm{mH} \]</div>
+          <p class="step"><strong>(b)</strong> 储能：</p>
+          <div class="formula">\[ U=\tfrac{1}{2}LI^{2}=\tfrac{1}{2}(2.01\times10^{-4})(2.0)^{2}=4.02\times10^{-4}\,\mathrm{J}=0.402\,\mathrm{mJ} \]</div>
+          <p class="step"><strong>(c)</strong> 内部磁场 \(B=\mu_{0}nI=(4\pi\times10^{-7})(2000)(2.0)=5.03\times10^{-3}\,\mathrm{T}=5.03\,\mathrm{mT}\)。</p>
+          <p class="step">磁能密度：</p>
+          <div class="formula">\[ u_{B}=\frac{B^{2}}{2\mu_{0}}=\frac{(5.03\times10^{-3})^{2}}{2(4\pi\times10^{-7})}=\frac{2.53\times10^{-5}}{2.51\times10^{-6}}=10.1\,\mathrm{J/m^{3}} \]</div>
+          <p class="step"><strong>校核：</strong> 体积 \(V=Al=(4.0\times10^{-4})(0.10)=4.0\times10^{-5}\,\mathrm{m^{3}}\)，故：</p>
+          <div class="formula">\[ u_{B}\cdot V=(10.1)(4.0\times10^{-5})=4.04\times10^{-4}\,\mathrm{J}\;\checkmark \]</div>
+          <p>与 (b) 结果一致，验证了 \(U=\tfrac{1}{2}LI^{2}\) 与 \(u_{B}=B^{2}/(2\mu_{0})\) 的自洽性。</p>
+          <p><span class="ans">\(L=0.201\,\mathrm{mH},\;U=0.402\,\mathrm{mJ},\;u_{B}=10.1\,\mathrm{J/m^{3}},\;B=5.03\,\mathrm{mT}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 LC 振荡频率与最大电流</h4>
+        <p class="example-statement">一 LC 电路含 \(L=10\,\mathrm{mH}\)、\(C=1.0\,\mathrm{\mu F}\)。电容器先充电到 \(V_{0}=100\,\mathrm{V}\)，\(t=0\) 时接通电感开始放电。求：(a) 角频率 \(\omega\) 与周期 \(T\)；(b) 频率 \(f\)；(c) 初始电荷 \(Q_{0}\) 与最大电流 \(I_{\max}\)；(d) 总能量 \(U\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> \(\omega=\dfrac{1}{\sqrt{LC}}=\dfrac{1}{\sqrt{(10\times10^{-3})(1.0\times10^{-6})}}=\dfrac{1}{\sqrt{1.0\times10^{-8}}}\)：</p>
+          <div class="formula">\[ \omega=\frac{1}{1.0\times10^{-4}}=1.0\times10^{4}\,\mathrm{rad/s} \]</div>
+          <p class="step">周期 \(T=\dfrac{2\pi}{\omega}=\dfrac{2\pi}{10^{4}}=6.28\times10^{-4}\,\mathrm{s}=628\,\mathrm{\mu s}\)。</p>
+          <p class="step"><strong>(b)</strong> 频率 \(f=\dfrac{1}{T}=\dfrac{\omega}{2\pi}=\dfrac{10^{4}}{2\pi}=1.59\times10^{3}\,\mathrm{Hz}=1.59\,\mathrm{kHz}\)。</p>
+          <p class="step"><strong>(c)</strong> 初始电荷 \(Q_{0}=CV_{0}=(1.0\times10^{-6})(100)=1.0\times10^{-4}\,\mathrm{C}=100\,\mathrm{\mu C}\)。</p>
+          <p class="step">最大电流发生在 \(Q=0\)（全部能量转至电感）时，\(I_{\max}=\omega Q_{0}\)：</p>
+          <div class="formula">\[ I_{\max}=(1.0\times10^{4})(1.0\times10^{-4})=1.0\,\mathrm{A} \]</div>
+          <p class="step"><strong>(d)</strong> 总能量（守恒，等于初始电容储能）：</p>
+          <div class="formula">\[ U=\frac{Q_{0}^{2}}{2C}=\frac{(1.0\times10^{-4})^{2}}{2(1.0\times10^{-6})}=5.0\times10^{-3}\,\mathrm{J}=5.0\,\mathrm{mJ} \]</div>
+          <p class="step"><strong>校核：</strong> 全部能量位于电感时 \(\tfrac{1}{2}LI_{\max}^{2}=\tfrac{1}{2}(10\times10^{-3})(1.0)^{2}=5.0\,\mathrm{mJ}\;\checkmark\)。</p>
+          <p><span class="ans">\(\omega=10^{4}\,\mathrm{rad/s},\;T=628\,\mathrm{\mu s},\;f=1.59\,\mathrm{kHz},\;Q_{0}=100\,\mathrm{\mu C},\;I_{\max}=1.0\,\mathrm{A},\;U=5.0\,\mathrm{mJ}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 RLC 阻尼——三种 regime 比较</h4>
+        <p class="example-statement">沿用例 11.4 的 \(L=10\,\mathrm{mH}\)、\(C=1.0\,\mathrm{\mu F}\)，现串联一可调电阻 \(R\)。(a) 求临界阻尼电阻 \(R_{\text{crit}}\)；(b) 分别描述 \(R=50\,\mathrm{\Omega}\) 与 \(R=500\,\mathrm{\Omega}\) 时的 regime；(c) 对 \(R=50\,\mathrm{\Omega}\) 的情形，求阻尼频率 \(\omega_{d}\) 与振幅衰减的时间常数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 临界阻尼条件 \(\gamma=\omega_{0}\)，即 \(\dfrac{R}{2L}=\dfrac{1}{\sqrt{LC}}\)：</p>
+          <div class="formula">\[ R_{\text{crit}}=2\sqrt{\frac{L}{C}}=2\sqrt{\frac{10\times10^{-3}}{1.0\times10^{-6}}}=2\sqrt{10^{4}}=2\times100=200\,\mathrm{\Omega} \]</div>
+          <p class="step"><strong>(b)</strong> 比较 \(R\) 与 \(R_{\text{crit}}=200\,\mathrm{\Omega}\)：</p>
+          <ul>
+            <li>\(R=50\,\mathrm{\Omega}<R_{\text{crit}}\)：<strong>欠阻尼</strong>。系统振荡，振幅按 \(e^{-\gamma t}\) 缓慢衰减。</li>
+            <li>\(R=500\,\mathrm{\Omega}>R_{\text{crit}}\)：<strong>过阻尼</strong>。电荷单调（非振荡）地回到零，时间尺度比临界阻尼更长。</li>
+          </ul>
+          <p class="step"><strong>(c)</strong> 对 \(R=50\,\mathrm{\Omega}\)：阻尼常数 \(\gamma=\dfrac{R}{2L}=\dfrac{50}{2\times10\times10^{-3}}=\dfrac{50}{0.020}=2500\,\mathrm{s^{-1}}\)。</p>
+          <p class="step">自然频率 \(\omega_{0}=1/\sqrt{LC}=10^{4}\,\mathrm{rad/s}\)（来自例 11.4），故阻尼频率：</p>
+          <div class="formula">\[ \omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}=\sqrt{(10^{4})^{2}-(2500)^{2}}=\sqrt{10^{8}-6.25\times10^{6}} \]</div>
+          <div class="formula">\[ \omega_{d}=\sqrt{9.375\times10^{7}}=9.68\times10^{3}\,\mathrm{rad/s} \]</div>
+          <p>（仅比 \(\omega_{0}\) 小约 3%，因 \(\gamma\ll\omega_{0}\)。）</p>
+          <p class="step">振幅衰减时间常数 \(1/\gamma=1/2500=4.0\times10^{-4}\,\mathrm{s}=400\,\mathrm{\mu s}\)——大约 \(2/3\) 个周期（\(T=2\pi/\omega_{d}\approx 649\,\mathrm{\mu s}\)），故几周期后振荡基本消失。</p>
+          <p class="step">校核 \(Q\) 因子：\(Q=\omega_{0}/(2\gamma)=10^{4}/5000=2.0\)（属"中等阻尼"，每周期损失能量分数 \(\sim 2\pi/Q\approx\pi\)）。</p>
+          <p><span class="ans">\(R_{\text{crit}}=200\,\mathrm{\Omega}\)；\(R=50\,\Omega\) 欠阻尼、\(R=500\,\Omega\) 过阻尼；\(\omega_{d}=9.68\times10^{3}\,\mathrm{rad/s}\)，振幅衰减时间常数 \(=400\,\mathrm{\mu s}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把"电感阻碍电流"误解为"阻碍电流本身"。</strong>电感阻碍的是<strong>电流的变化</strong> \(\dv{I}{t}\)，不是电流 \(I\)。直流稳态下 \(\dv{I}{t}=0\)，理想电感两端电压为零——它相当于一段导线（短路）。"反抗作用"只在电流改变时（暂态或交流）才出现。</li>
+        <li><strong>记反时间常数 \(\tau=L/R\) 与 \(\tau=R/L\)。</strong>正确的是 \(\tau=L/R\)：量纲上 \(\mathrm{H}/\mathrm{\Omega}=\mathrm{s}\)。直觉：更大的 \(L\)（"惯性"更大）→ 更慢变化；更大的 \(R\)（"摩擦"更强）→ 更快衰减到稳态。这与力学阻尼 \(m/b\) 完全对应（\(L\leftrightarrow m\)，\(R\leftrightarrow b\)）。</li>
+        <li><strong>忽略自感电动势的负号。</strong>\(\varepsilon=-L\,\dv{I}{t}\) 的负号是楞次定律的体现——电动势<strong>反对变化</strong>。\(\dv{I}{t}>0\)（电流增大）时，\(\varepsilon<0\)，电动势方向与电流相反，阻碍其增长；\(\dv{I}{dt}<0\)（电流减小）时，电动势方向与电流相同，试图维持电流。丢掉负号会导致方向判断全错。</li>
+        <li><strong>看不出 LC 振荡就是 SHM。</strong>方程 \(L\ddot{Q}+Q/C=0\) 与 \(m\ddot{x}+kx=0\) 完全同构。对应：\(m\leftrightarrow L\)、\(k\leftrightarrow 1/C\)、\(x\leftrightarrow Q\)、\(v\leftrightarrow I\)。一旦识破这个类比，所有第 8 章关于 SHM 的结论（周期、能量交换、阻尼三种 regime）都可立即"翻译"到电路。LC 是简谐运动的电路"化身"。</li>
+        <li><strong>误以为 LC 电路能量会"凭空消耗"。</strong>无电阻的理想 LC 电路，\(U_{C}+U_{L}=\tfrac{Q_{0}^{2}}{2C}\) 严格守恒——能量只是在电场与磁场之间来回"搬运"。能量减少（衰减）的<em>唯一</em>原因是电阻上的焦耳热 \(P=I^{2}R\)。把电阻 \(R\) 调到 0，振荡永不衰减。</li>
+        <li><strong>混淆临界电阻与"最快回到平衡"。</strong>临界阻尼 \(R=R_{\text{crit}}=2\sqrt{L/C}\) 是<strong>无振荡</strong>情形下最快回到平衡的；欠阻尼虽然首次过零更快，但会越过并振荡。在需要"快速且不振荡"放电的场合（如脉冲电路、保险气囊点火器），临界阻尼是设计目标。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 自感电动势：一 \(L=20\,\mathrm{mH}\) 的电感，电流在 \(50\,\mathrm{ms}\) 内由 0 线性增加到 \(3.0\,\mathrm{A}\)。求自感电动势的大小与方向。</summary>
+        <div class="hint">\(\varepsilon=-L\,\dv{I}{t}\)。线性增长下 \(\dv{I}{t}=\Delta I/\Delta t\)。</div>
+        <div class="solution">\(\dv{I}{t}=3.0/0.050=60\,\mathrm{A/s}\)。<br>\(|\varepsilon|=L|\dv{I}{t}|=(0.020)(60)=1.2\,\mathrm{V}\)。<br>方向：与电流方向相反（楞次定律，反抗电流增长）。<br><span class="ans">\(1.2\,\mathrm{V}\)，方向与电流相反</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. RL 衰减：\(L=4.0\,\mathrm{mH}\)，\(R=200\,\mathrm{\Omega}\)。电池断开后电流经 \(R\) 衰减。求时间常数 \(\tau\)，并求电流降至初值 1% 所需时间。</summary>
+        <div class="hint">\(\tau=L/R\)；衰减 \(I/I_{0}=e^{-t/\tau}\)。</div>
+        <div class="solution">\(\tau=L/R=4.0\times10^{-3}/200=2.0\times10^{-5}\,\mathrm{s}=20\,\mathrm{\mu s}\)。<br>令 \(e^{-t/\tau}=0.01\)，则 \(t=\tau\ln(100)=20\times 4.605=92\,\mathrm{\mu s}\)。<br><span class="ans">\(\tau=20\,\mathrm{\mu s},\;t_{1\%}=92\,\mathrm{\mu s}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. LC 振荡参数：\(L=2.0\,\mathrm{mH}\)，\(C=0.50\,\mathrm{\mu F}\)，\(Q_{0}=5.0\,\mathrm{\mu C}\)。求 \(\omega\)、\(T\)、\(U_{\text{total}}\)、\(I_{\max}\)。</summary>
+        <div class="hint">\(\omega=1/\sqrt{LC}\)，\(U=Q_{0}^{2}/(2C)\)，\(I_{\max}=\omega Q_{0}\)。</div>
+        <div class="solution">\(LC=(2.0\times10^{-3})(0.50\times10^{-6})=1.0\times10^{-9}\)。<br>\(\omega=1/\sqrt{1.0\times10^{-9}}=1/\,(3.16\times10^{-5})=3.16\times10^{4}\,\mathrm{rad/s}\)。<br>\(T=2\pi/\omega=1.99\times10^{-4}\,\mathrm{s}=199\,\mathrm{\mu s}\)。<br>\(U=Q_{0}^{2}/(2C)=(5.0\times10^{-6})^{2}/(2\times0.50\times10^{-6})=2.5\times10^{-5}\,\mathrm{J}=25\,\mathrm{\mu J}\)。<br>\(I_{\max}=\omega Q_{0}=(3.16\times10^{4})(5.0\times10^{-6})=0.158\,\mathrm{A}=158\,\mathrm{mA}\)。<br><span class="ans">\(\omega=3.16\times10^{4}\,\mathrm{rad/s},\;T=199\,\mathrm{\mu s},\;U=25\,\mathrm{\mu J},\;I_{\max}=158\,\mathrm{mA}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. RLC 分类：\(L=1.0\,\mathrm{mH}\)，\(C=10\,\mathrm{\mu F}\)。求临界电阻 \(R_{\text{crit}}\)。若实际 \(R=50\,\mathrm{\Omega}\)，判断 regime。</summary>
+        <div class="hint">\(R_{\text{crit}}=2\sqrt{L/C}\)；比较 \(R\) 与 \(R_{\text{crit}}\)。</div>
+        <div class="solution">\(\omega_{0}=1/\sqrt{LC}=1/\sqrt{(1.0\times10^{-3})(10\times10^{-6})}=1/\sqrt{1.0\times10^{-8}}=1.0\times10^{4}\,\mathrm{rad/s}\)。<br>\(R_{\text{crit}}=2\sqrt{L/C}=2\sqrt{(1.0\times10^{-3})/(1.0\times10^{-5})}=2\sqrt{100}=20\,\mathrm{\Omega}\)。<br>因 \(R=50\,\mathrm{\Omega}>R_{\text{crit}}=20\,\mathrm{\Omega}\)：系统为<strong>过阻尼</strong>（overdamped），电荷单调衰减回零，不振荡。<br><span class="ans">\(R_{\text{crit}}=20\,\mathrm{\Omega}\)，\(R=50\,\Omega\) 时为过阻尼</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 由储能反推 \(L\) 与电动势：一未知电感在 \(I=2.0\,\mathrm{A}\) 时储能 \(0.10\,\mathrm{J}\)。求 \(L\)。若电流在 \(10\,\mathrm{ms}\) 内线性降为零，求感应电动势的大小。</summary>
+        <div class="hint">\(U=\tfrac12 LI^{2}\) 解出 \(L\)；\(\varepsilon=L|\Delta I/\Delta t|\)。</div>
+        <div class="solution">由 \(U=\tfrac12 LI^{2}\) 得 \(L=2U/I^{2}=2(0.10)/(2.0)^{2}=0.20/4.0=0.050\,\mathrm{H}=50\,\mathrm{mH}\)。<br>电流线性下降：\(|\dv{I}{t}|=2.0/0.010=200\,\mathrm{A/s}\)。<br>\(|\varepsilon|=L|\dv{I}{t}|=(0.050)(200)=10\,\mathrm{V}\)。<br>方向：与原电流方向相同（楞次定律，反抗电流减小）。<br><span class="ans">\(L=50\,\mathrm{mH},\;|\varepsilon|=10\,\mathrm{V}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">LC/RLC 振荡电路 (RLC oscillator)。RK4 积分 \(L\ddot{Q}+R\dot{Q}+Q/C=0\)，初始条件为电容器充电到 \(Q_{0}=1\,\mathrm{C}\) 后接通电感。<strong>上半</strong>：滚动时域图显示 \(Q(t)\)（蓝）与 \(I(t)\)（红）；<strong>下半</strong>：能量条形图显示电容储能 \(U_{C}=\tfrac12 Q^{2}/C\)、电感储能 \(U_{L}=\tfrac12 LI^{2}\) 与电阻耗散 \(U_{\text{loss}}=\int I^{2}R\,dt\)。把 \(R\) 调到 0，能量在 \(U_{C}\)、\(U_{L}\) 间无损耗地来回"流动"；增大 \(R\) 观察阻尼；当 \(R=R_{\text{crit}}=2\sqrt{L/C}\) 时进入临界阻尼（不再振荡）。注：\(L,C,R\) 取值已为可视化放大，物理规律不变。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+
+          // Parameters (scaled for visibility; physics is exact).
+          var params = {
+            L: 1.0,    // henries
+            C: 1.0,    // farads
+            R: 0.4,    // ohms (underdamped by default: Rcrit = 2)
+            Q0: 1.0,   // initial charge (C)
+          };
+
+          var TRACE_MAX = 1200;
+          var T_WIN = 12.0;          // seconds visible in scrolling window
+
+          // Top panel (time plot of Q, I)
+          var GRAPH_L = 50, GRAPH_R = W - 16;
+          var TOP_T = 30, TOP_B = 210;
+          var TOP_CY = (TOP_T + TOP_B) / 2;
+
+          // Bottom panel (energy bars)
+          var BOT_T = 232, BOT_B = H - 16;
+          var BAR_BASELINE = BOT_B - 22;
+          var BAR_MAX_H = BAR_BASELINE - BOT_T - 14;
+
+          var trace = [];
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              trace = [];
+              return {
+                Q: params.Q0,        // charge on capacitor (C)
+                I: 0,                // current through inductor (A)
+                Uloss: 0,            // cumulative Joule loss in R (J)
+                t: 0,
+                Uscale: 0.5 * params.Q0 * params.Q0 / Math.max(params.C, 1e-6),
+              };
+            },
+            step: function (dt, t, s) {
+              // State vector [Q, I]; ODE: dQ/dt = I; dI/dt = -(R/L)I - (1/LC) Q
+              var deriv = function (st, tt) {
+                var Q = st[0], I = st[1];
+                var dQ = I;
+                var dI = -(params.R / params.L) * I - (1.0 / (params.L * params.C)) * Q;
+                return [dQ, dI];
+              };
+              var I_old = s.I;
+              var ns = PS.integrate(deriv, [s.Q, s.I], s.t, dt, 'rk4');
+              s.Q = ns[0];
+              s.I = ns[1];
+              // Trapezoidal update of cumulative Joule loss.
+              var Iavg = 0.5 * (I_old + s.I);
+              s.Uloss += Iavg * Iavg * params.R * dt;
+              s.t += dt;
+              trace.push({ t: s.t, Q: s.Q, I: s.I });
+              if (trace.length > TRACE_MAX) trace.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var L = params.L, C = params.C, R = params.R;
+              var omega0 = 1.0 / Math.sqrt(L * C);
+              var Rcrit = 2.0 * Math.sqrt(L / C);
+              var regimeText, regimeColor;
+              if (R < Rcrit - 0.002) {
+                regimeText = '欠阻尼 underdamped'; regimeColor = PS.colors.accent2;
+              } else if (R > Rcrit + 0.002) {
+                regimeText = '过阻尼 overdamped'; regimeColor = PS.colors.text;
+              } else {
+                regimeText = '临界阻尼 critical'; regimeColor = PS.colors.accent;
+              }
+
+              // ===== TOP PANEL: scrolling Q(t), I(t) =====
+              // frame
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(GRAPH_L, TOP_T, GRAPH_R - GRAPH_L, TOP_B - TOP_T);
+              ctx.restore();
+
+              // grid
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1;
+              var tNow = s.t;
+              var t0 = tNow - T_WIN;
+              // vertical: every 1 s
+              for (var gt = Math.ceil(t0); gt <= tNow; gt++) {
+                var px = GRAPH_L + (gt - t0) / T_WIN * (GRAPH_R - GRAPH_L);
+                ctx.beginPath();
+                ctx.moveTo(px, TOP_T);
+                ctx.lineTo(px, TOP_B);
+                ctx.stroke();
+              }
+              // horizontal: every 0.5 in Q/I units
+              var halfH = (TOP_B - TOP_T) / 2;
+              var yRange = params.Q0 * 1.25;
+              for (var gv = -1; gv <= 1.0001; gv += 0.5) {
+                var py = TOP_CY - gv / yRange * halfH;
+                ctx.beginPath();
+                ctx.moveTo(GRAPH_L, py);
+                ctx.lineTo(GRAPH_R, py);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // zero axis
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(GRAPH_L, TOP_CY);
+              ctx.lineTo(GRAPH_R, TOP_CY);
+              ctx.stroke();
+              ctx.restore();
+
+              // traces: Q(t) and I(t)
+              function plotTrace(pick, color, lineWidth) {
+                if (trace.length < 2) return;
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth || 1.8;
+                ctx.beginPath();
+                var started = false;
+                for (var i = 0; i < trace.length; i++) {
+                  var p = trace[i];
+                  if (p.t < t0) continue;
+                  var pxx = GRAPH_L + (p.t - t0) / T_WIN * (GRAPH_R - GRAPH_L);
+                  var val = pick(p);
+                  var pyy = TOP_CY - val / yRange * halfH;
+                  if (pyy < TOP_T) pyy = TOP_T;
+                  if (pyy > TOP_B) pyy = TOP_B;
+                  if (!started) { ctx.moveTo(pxx, pyy); started = true; }
+                  else ctx.lineTo(pxx, pyy);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+              plotTrace(function (p) { return p.Q; }, PS.colors.primary, 2.0);
+              plotTrace(function (p) { return p.I; }, PS.colors.accent, 2.0);
+
+              // labels
+              PS.drawText(ctx, 'Q(t), I(t) —— 滚动时域图 (12 s 窗口)', GRAPH_L + 6, 18, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, '—— Q (C)', GRAPH_R - 130, 18, {
+                font: '12px system-ui', color: PS.colors.primary,
+              });
+              PS.drawText(ctx, '—— I (A)', GRAPH_R - 60, 18, {
+                font: '12px system-ui', color: PS.colors.accent,
+              });
+              PS.drawText(ctx, '+', GRAPH_L + 4, TOP_T + 12, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, '0', GRAPH_L + 4, TOP_CY + 4, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, '−', GRAPH_L + 4, TOP_B - 4, {
+                font: '11px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 't (s) →', GRAPH_R - 4, TOP_B - 4, {
+                font: '11px system-ui', color: PS.colors.text, align: 'right',
+              });
+
+              // ===== BOTTOM PANEL: energy bars =====
+              var UC = 0.5 * s.Q * s.Q / C;
+              var UL = 0.5 * L * s.I * s.I;
+              var Uloss = Math.max(0, s.Uloss);
+              var Uscale = Math.max(s.Uscale, UC + UL + Uloss, 1e-6);
+
+              // panel title
+              PS.drawText(ctx, '能量分配 Energy budget', GRAPH_L, BOT_T - 6, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+
+              function drawBar(cx, value, color, label) {
+                var h = Math.max(0, value / Uscale * BAR_MAX_H);
+                if (h > BAR_MAX_H) h = BAR_MAX_H;
+                var bw = 72;
+                var bx = cx - bw / 2;
+                var by = BAR_BASELINE - h;
+                // bar fill
+                ctx.save();
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.85;
+                ctx.fillRect(bx, by, bw, h);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = PS.colors.text;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(bx, by, bw, h);
+                ctx.restore();
+                // baseline
+                ctx.save();
+                ctx.strokeStyle = PS.colors.axis;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(bx - 5, BAR_BASELINE);
+                ctx.lineTo(bx + bw + 5, BAR_BASELINE);
+                ctx.stroke();
+                ctx.restore();
+                // value above bar
+                PS.drawText(ctx, value.toFixed(3) + ' J', cx, Math.max(by - 6, BOT_T + 6), {
+                  font: '11px system-ui', color: PS.colors.text, align: 'center',
+                });
+                // label below baseline
+                PS.drawText(ctx, label, cx, BAR_BASELINE + 14, {
+                  font: '12px system-ui', color: PS.colors.text, align: 'center',
+                });
+              }
+
+              drawBar(105, UC, PS.colors.primary, 'U_C (电容 Cap)');
+              drawBar(230, UL, PS.colors.accent, 'U_L (电感 Ind)');
+              drawBar(355, Uloss, '#94a3b8', 'U_loss (电阻 R)');
+
+              // info column on the right
+              var infoX = 460;
+              PS.drawText(ctx, '工作点 Operating point', infoX, BOT_T - 6, {
+                font: '13px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, regimeText, infoX, BOT_T + 14, {
+                font: '12px system-ui', color: regimeColor,
+              });
+              PS.drawText(ctx, 'ω₀ = 1/√(LC) = ' + omega0.toFixed(3) + ' rad/s', infoX, BOT_T + 34, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'T = 2π/ω₀ = ' + (2 * Math.PI / omega0).toFixed(3) + ' s', infoX, BOT_T + 52, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'R_crit = 2√(L/C) = ' + Rcrit.toFixed(3) + ' Ω', infoX, BOT_T + 70, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'R / R_crit = ' + (R / Rcrit).toFixed(3), infoX, BOT_T + 88, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'U_C + U_L = ' + (UC + UL).toFixed(3) + ' J', infoX, BOT_T + 106, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+              PS.drawText(ctx, 'U_initial = ' + s.Uscale.toFixed(3) + ' J', infoX, BOT_T + 124, {
+                font: '12px system-ui', color: PS.colors.text,
+              });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'L', label: '电感 L (H)', min: 0.2, max: 3.0, step: 0.05, value: 1.0 },
+            { type: 'slider', key: 'C', label: '电容 C (F)', min: 0.2, max: 3.0, step: 0.05, value: 1.0 },
+            { type: 'slider', key: 'R', label: '电阻 R (Ω)', min: 0, max: 6.0, step: 0.05, value: 0.4 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('L', function (v) { params.L = v; });
+          ctl.on('C', function (v) { params.C = v; });
+          ctl.on('R', function (v) { params.R = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>自感 / 互感</strong>：\(\varepsilon=-L\,\dv{I}{t}\)，\(\varepsilon_{2}=-M\,\dv{I_{1}}{t}\)。负号 = 楞次定律，反对电流的<em>变化</em>（不是电流本身）。</li>
+        <li><strong>螺线管自感</strong>：\(L=\mu_{0}n^{2}Al=\mu_{0}\frac{N^{2}}{l}A\)，只依赖几何与磁芯。带磁芯时 \(\mu_{0}\to\mu=\kappa_{m}\mu_{0}\)。</li>
+        <li><strong>电感储能 &amp; 磁能密度</strong>：\(U=\tfrac{1}{2}LI^{2}\)，\(u_{B}=\frac{B^{2}}{2\mu_{0}}\)（适用于任意磁场）。</li>
+        <li><strong>RL 暂态</strong>：生长 \(I(t)=\dfrac{V_{0}}{R}(1-e^{-t/\tau})\)，衰减 \(I(t)=I_{0}e^{-t/\tau}\)，时间常数 \(\tau=L/R\)。稳态下电感 = 短路。</li>
+        <li><strong>LC 振荡</strong>：\(\omega=\dfrac{1}{\sqrt{LC}}\)，\(T=2\pi\sqrt{LC}\)。与 SHM 严格类比 (\(m\leftrightarrow L,\,k\leftrightarrow 1/C,\,x\leftrightarrow Q\))；能量 \(U=\tfrac{Q_{0}^{2}}{2C}\) 在 \(U_{C}\)、\(U_{L}\) 间守恒地交换。</li>
+        <li><strong>RLC 阻尼</strong>：\(\omega_{0}=1/\sqrt{LC}\)，\(\gamma=R/(2L)\)，临界电阻 \(R_{\text{crit}}=2\sqrt{L/C}\)。\(R<R_{\text{crit}}\) 欠阻尼（振荡衰减，\(\omega_{d}=\sqrt{\omega_{0}^{2}-\gamma^{2}}\)）；\(R=R_{\text{crit}}\) 临界（无振荡最快回零）；\(R>R_{\text{crit}}\) 过阻尼。</li>
+        <li>所有暂态与振荡行为都与第 8 章 SHM 数学结构完全同构——力学与电路是同一套数学的两个"化身"。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\varepsilon=-L\,\dv{I}{t},\;\; L=\mu_{0}n^{2}Al,\;\; U=\tfrac{1}{2}LI^{2},\;\; u_{B}=\frac{B^{2}}{2\mu_{0}},\;\; \tau=\frac{L}{R},\;\; \omega=\frac{1}{\sqrt{LC}},\;\; R_{\text{crit}}=2\sqrt{\frac{L}{C}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第13章 · 麦克斯韦方程组 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="13">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第13章 · 电磁场与电磁波 Fields &amp; Waves</p>
+      <h1>麦克斯韦方程组 <span class="en-title">Maxwell's Equations</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>写出<strong>麦克斯韦方程组</strong> (Maxwell's equations) 的<strong>积分形式</strong> (integral form) 四式，说明每式对应的物理图像（通量、环路、旋度、散度），并写出对应的<strong>微分形式</strong> (differential form)。</li>
+        <li>解释<strong>位移电流</strong> (displacement current) \(I_{d}=\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 的来源——为什么 Maxwell 必须在安培定律中加入这一项以保证<strong>电荷连续性方程</strong> (charge continuity) \(\nabla\cdot\vec{J}+\partial\rho/\partial t=0\) 普遍成立。</li>
+        <li>用安培–麦克斯韦定律计算<strong>充电圆形平行板电容器</strong>极板之间的磁场 \(\vec{B}\)，论证尽管间隙中无传导电流，\(I_{d}\) 仍与导线中的传导电流 \(I\) 严格相等。</li>
+        <li>从积分方程经斯托克斯/散度定理导出真空中的<strong>波动方程</strong> \(\nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\,\partial^{2}\vec{E}/\partial t^{2}\)，并由此预言电磁波以 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\approx 3.0\times10^{8}\,\mathrm{m/s}\) 传播——光即电磁波。</li>
+        <li>应用麦克斯韦方程组求解经典问题：点电荷的球形高斯面、长直导线周围的安培环路、时变均匀磁场中的圆形回路（法拉第）。</li>
+        <li>陈述两种介质界面处的<strong>边界条件</strong> (boundary conditions)：法向 \(\vec{B}\) 连续、\(\varepsilon_{0}\vec{E}\) 法向分量跃变等于面电荷密度 \(\sigma\)；切向 \(\vec{E}\) 连续、\(\vec{B}\) 切向分量跃变由面电流密度 \(\vec{K}\) 决定。</li>
+        <li>理解麦克斯韦方程组如何<strong>统一</strong> (unify) 电学、磁学与光学，奠定相对论与场论的物理基础。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 麦克斯韦方程组的积分形式 The Four Equations in Integral Form</h3>
+      <p>麦克斯韦方程组 (Maxwell's equations) 是经典电磁学 (electromagnetism) 的总结，描述<strong>电场</strong> \(\vec{E}\) 与<strong>磁场</strong> \(\vec{B}\) 的产生、相互作用及与电荷 (\(\rho\)，charge density)、电流 (\(\vec{J}\)，current density) 的关系。其积分形式 (integral form) 写为：</p>
+
+      <div class="formula">\[ \boxed{\;\text{(I) Gauss's law:}\quad \oint_{\partial V}\vec{E}\cdot\mathrm{d}\vec{A}=\frac{Q_{\text{enc}}}{\varepsilon_{0}}=\frac{1}{\varepsilon_{0}}\int_{V}\rho\,\mathrm{d}V\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{(II) Gauss's law for } \vec{B}\text{:}\quad \oint_{\partial V}\vec{B}\cdot\mathrm{d}\vec{A}=0\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{(III) Faraday's law:}\quad \oint_{\partial S}\vec{E}\cdot\mathrm{d}\vec{l}=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=-\frac{\mathrm{d}}{\mathrm{d}t}\int_{S}\vec{B}\cdot\mathrm{d}\vec{A}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{(IV) Ampère–Maxwell law:}\quad \oint_{\partial S}\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}+\mu_{0}\varepsilon_{0}\frac{\mathrm{d}\Phi_{E}}{\mathrm{d}t}\;} \]</div>
+
+      <p>其中 \(\Phi_{B}=\int\vec{B}\cdot\mathrm{d}\vec{A}\) 为磁通量 (magnetic flux)，\(\Phi_{E}=\int\vec{E}\cdot\mathrm{d}\vec{A}\) 为电通量 (electric flux)，\(\partial V\) 表示体积 \(V\) 的闭合边界曲面，\(\partial S\) 表示开曲面 \(S\) 的边界回路。\(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{C^{2}/(N\,m^{2})}=8.854\times10^{-12}\,\mathrm{F/m}\) 为真空电容率 (vacuum permittivity)，\(\mu_{0}=4\pi\times10^{-7}\,\mathrm{T\,m/A}\) 为真空磁导率 (vacuum permeability)。</p>
+
+      <p>对应的<strong>微分形式</strong> (differential form)（在数学物理中常更便于推导局域性质）通过对积分形式应用散度定理 (divergence theorem) 与斯托克斯定理 (Stokes' theorem) 得到：</p>
+      <div class="formula">\[ \nabla\cdot\vec{E}=\frac{\rho}{\varepsilon_{0}},\qquad \nabla\cdot\vec{B}=0,\qquad \nabla\times\vec{E}=-\frac{\partial\vec{B}}{\partial t},\qquad \nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\frac{\partial\vec{E}}{\partial t} \]</div>
+
+      <p>四式的物理含义：</p>
+      <ul>
+        <li><strong>(I) 高斯定律 (Gauss's law for \(\vec{E}\))：</strong> 电荷是电场的<strong>源</strong>；\(\vec{E}\) 的通量穿过任意闭合曲面等于内部净电荷除以 \(\varepsilon_{0}\)。电场线发自正电荷、止于负电荷。</li>
+        <li><strong>(II) 高斯磁定律 (Gauss's law for \(\vec{B}\))：</strong> 磁场<strong>无源</strong>——不存在磁单极子 (magnetic monopole)；磁感线总是闭合曲线，从无何处发出也从不终止。</li>
+        <li><strong>(III) 法拉第定律 (Faraday's law)：</strong> <strong>变化</strong>的磁通量在回路中激发<strong>感应电动势</strong> (induced EMF)；时变 \(\vec{B}\) 是 \(\vec{E}\) 的<strong>旋度源</strong>。</li>
+        <li><strong>(IV) 安培–麦克斯韦定律 (Ampère–Maxwell law)：</strong> 磁场由<strong>传导电流</strong> \(I_{\text{enc}}\) 与<strong>位移电流</strong> \(\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 共同激发；电流与时变 \(\vec{E}\) 都是 \(\vec{B}\) 的旋度源。</li>
+      </ul>
+      <div class="key-terms">Maxwell's equations (麦克斯韦方程组), integral form (积分形式), differential form (微分形式), electric flux \(\Phi_{E}\) (电通量), vacuum permittivity \(\varepsilon_{0}\) (真空电容率), vacuum permeability \(\mu_{0}\) (真空磁导率)</div>
+
+      <h3>2. 位移电流 The Displacement Current</h3>
+      <p>方程 (IV) 右边第二项 \(\mu_{0}\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 是 Maxwell 在 1861–1865 年加入的<strong>位移电流项</strong> (displacement current term)。定义位移电流：</p>
+      <div class="formula">\[ \boxed{\;I_{d}\;\equiv\;\varepsilon_{0}\,\frac{\mathrm{d}\Phi_{E}}{\mathrm{d}t}\;} \]</div>
+      <p>它<strong>并非</strong>由载流子真实运动形成的电流，而是<strong>电场时间变化</strong>的等效"电流"，但其激发 \(\vec{B}\) 的作用与传导电流完全相同。Maxwell 加入此项的根本动机有二：</p>
+      <ul>
+        <li><strong>电荷连续性方程的协调：</strong> 原（不含位移电流的）安培定律 \(\nabla\times\vec{B}=\mu_{0}\vec{J}\) 两边取散度得 \(\nabla\cdot\vec{J}\equiv 0\)，但电荷守恒要求 \(\nabla\cdot\vec{J}+\partial\rho/\partial t=0\)。两者仅在稳态 (\(\partial\rho/\partial t=0\)) 一致。Maxwell 在 \(\nabla\times\vec{B}\) 右边加入 \(\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)，再取散度并利用高斯定律 \(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\)，便得 \(\mu_{0}(\nabla\cdot\vec{J}+\partial\rho/\partial t)=0\)，与电荷连续性方程完全自洽（详见本章推导 13.1）。</li>
+        <li><strong>充电电容器的磁场：</strong> 考虑一个正在充电的平行板电容器。在导线中传导电流 \(I\) 流向极板，但极板之间的间隙中并无载流子穿越。若取一个<strong>穿过导线</strong>的安培环路 \(C\)，配合一个开曲面 \(S\)，则 \(I_{\text{enc}}=I\)；但若把曲面"鼓"起来让它在两极板之间穿过间隙（避开导线），则 \(I_{\text{enc}}=0\)。同一个环路 \(C\) 不能给出两个不同的 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}\)。Maxwell 的修补：在第二种曲面情形下，间隙中虽然无传导电流，但有<strong>随时间增长的电场</strong> \(\vec{E}\)，相应的 \(\mu_{0}\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 恰好等于 \(\mu_{0}I\)（详见例 13.1），从而使方程 (IV) 在两种曲面选择下给出<strong>同一</strong>的 \(\vec{B}\)。这是位移电流的实验可观测证据。</li>
+      </ul>
+      <p>直观上，可以把位移电流理解为"电场正在建立"的过程所伴生的磁效应：当电容器充电时，\(\vec{E}\) 在增大，这一<em>变化</em>如同虚设的电流一样在间隙中产生环绕轴线的 \(\vec{B}\)。麦克斯韦称它为 "displacement"（位移），源于他对介质中电荷微观光移的图像；今天我们把 \(\varepsilon_{0}\partial\vec{E}/\partial t\) 直接视作真空本身的一种"激发"。</p>
+      <div class="key-terms">displacement current \(I_{d}\) (位移电流), charge continuity equation (电荷连续性方程), charging capacitor (充电电容器), conduction current (传导电流)</div>
+
+      <h3>3. 统一电、磁与光 Unification of Electricity, Magnetism, and Optics</h3>
+      <p>麦克斯韦方程组的深刻意义在于把此前彼此孤立的电学 (Coulomb, Gauss)、磁学 (Ampère, Biot–Savart) 与电磁感应 (Faraday, Lenz) 统一为<strong>单一</strong>的场论框架。配合<strong>洛伦兹力</strong> (Lorentz force) \(\vec{F}=q(\vec{E}+\vec{v}\times\vec{B})\)，原则上经典电磁现象的所有问题都可由这套方程解决。</p>
+      <p>更激动人心的是 Maxwell 注意到：在真空中 (\(\rho=0,\vec{J}=0\))，方程组 (III) 与 (IV) 互相耦合——\(\partial\vec{B}/\partial t\) 激发 \(\nabla\times\vec{E}\)，而 \(\partial\vec{E}/\partial t\)（位移电流）反过来激发 \(\nabla\times\vec{B}\)。这种互相感应不需要任何电荷电流源，可自行维持并以波的形式在空间传播：这便是<strong>电磁波</strong> (electromagnetic wave)。Maxwell 据此预言 (1865)：光就是一定频率范围内的电磁波。赫兹 (Hertz) 在 1887 年用实验确认了无线电波的存在，并测定其反射、折射、干涉、偏振性质与光完全一致。</p>
+      <div class="key-terms">unification (统一), Lorentz force (洛伦兹力), electromagnetic wave (电磁波), Hertz's experiment (赫兹实验)</div>
+
+      <h3>4. 电磁波的波速 Speed of EM Waves</h3>
+      <p>由真空中的 (III) 与 (IV)，对 (III) 两边取旋度并利用矢量恒等式 \(\nabla\times(\nabla\times\vec{E})=\nabla(\nabla\cdot\vec{E})-\nabla^{2}\vec{E}\) 与 \(\nabla\cdot\vec{E}=0\)（详见推导 13.2），可得<strong>波动方程</strong>：</p>
+      <div class="formula">\[ \nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}},\qquad \nabla^{2}\vec{B}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{B}}{\partial t^{2}} \]</div>
+      <p>与标准波动方程 \(\nabla^{2}f=(1/v^{2})\partial^{2}f/\partial t^{2}\) 对照，波速：</p>
+      <div class="formula">\[ \boxed{\;c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}}\;} \]</div>
+      <p>代入 \(\mu_{0}=4\pi\times10^{-7}\,\mathrm{T\,m/A}\) 与 \(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{F/m}\)（详见例 13.4），得：</p>
+      <div class="formula">\[ c=\frac{1}{\sqrt{(4\pi\times10^{-7})(8.854\times10^{-12})}}\approx 2.998\times10^{8}\,\mathrm{m/s} \]</div>
+      <p>这与当时测得的<strong>光速</strong>（约 \(3.00\times10^{8}\,\mathrm{m/s}\)）一致到四位有效数字——这是物理学史上最优美的实验–理论巧合之一，也是 Maxwell 断言"光即电磁波"的依据。</p>
+      <div class="key-terms">wave equation (波动方程), speed of light \(c\) (光速), transverse wave (横波)</div>
+
+      <h3>5. 边界条件 Boundary Conditions at Interfaces</h3>
+      <p>由积分形式的麦克斯韦方程组，在两种介质 (1 与 2) 的分界面处可导出<strong>边界条件</strong> (boundary conditions)。设界面法向 \(\hat{n}\) 由介质 1 指向介质 2，界面带自由面电荷密度 \(\sigma\) 与自由面电流密度 \(\vec{K}\)：</p>
+      <div class="formula">\[ \hat{n}\cdot(\vec{B}_{2}-\vec{B}_{1})=0\quad\text{（}\vec{B}\text{ 法向连续）} \]</div>
+      <div class="formula">\[ \hat{n}\cdot(\vec{E}_{2}-\vec{E}_{1})=\frac{\sigma}{\varepsilon_{0}}\quad\text{（}\vec{E}\text{ 法向跃变}=\sigma/\varepsilon_{0}\text{）} \]</div>
+      <div class="formula">\[ \hat{n}\times(\vec{E}_{2}-\vec{E}_{1})=0\quad\text{（}\vec{E}\text{ 切向连续）} \]</div>
+      <div class="formula">\[ \hat{n}\times(\vec{B}_{2}-\vec{B}_{1})=\mu_{0}\vec{K}\quad\text{（}\vec{B}\text{ 切向跃变}=\mu_{0}\vec{K}\text{）} \]</div>
+      <p>这些条件在求解电磁波在介质界面的反射/折射（第 14 章）、计算导体表面的感应电荷分布等问题中至关重要。例如，导体表面（静电平衡）处 \(\vec{E}\) 切向分量为零（否则驱动表面电流），故导体表面内侧 \(\vec{E}=0\)，外侧 \(\vec{E}\) 垂直于表面且 \(E=\sigma/\varepsilon_{0}\)——这正是第 5 章导体的核心结论，由边界条件直接得出。</p>
+      <div class="key-terms">boundary condition (边界条件), surface charge density \(\sigma\) (面电荷密度), surface current density \(\vec{K}\) (面电流密度)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 13.1：为何必须加入位移电流</h3>
+      <p class="step"><strong>步骤 1（原始安培定律的隐患）：</strong> 不含位移电流项时，安培定律写为 \(\nabla\times\vec{B}=\mu_{0}\vec{J}\)。两边取散度（divergence），并利用任意矢量的旋度的散度恒为零（\(\nabla\cdot(\nabla\times\vec{B})\equiv 0\)）：</p>
+      <div class="formula">\[ 0=\nabla\cdot(\nabla\times\vec{B})=\mu_{0}\nabla\cdot\vec{J}\quad\Longrightarrow\quad \nabla\cdot\vec{J}\equiv 0 \]</div>
+      <p class="step"><strong>步骤 2（电荷守恒给出连续性方程）：</strong> 对任意闭合曲面 \(S\) 包围体积 \(V\)，流出电流 \(\oint\vec{J}\cdot\mathrm{d}\vec{A}\) 必须等于内部电荷减少率 \(-\mathrm{d}Q_{\text{enc}}/\mathrm{d}t=-\mathrm{d}/\mathrm{d}t\int_{V}\rho\,\mathrm{d}V\)。由散度定理：</p>
+      <div class="formula">\[ \nabla\cdot\vec{J}+\frac{\partial\rho}{\partial t}=0\qquad\text{(charge continuity equation)} \]</div>
+      <p class="step"><strong>步骤 3（矛盾出现）：</strong> 步骤 1 要求 \(\nabla\cdot\vec{J}\equiv 0\)，但步骤 2 表明 \(\nabla\cdot\vec{J}=-\partial\rho/\partial t\)。两者仅在稳态 (\(\partial\rho/\partial t=0\)) 一致。对<strong>充电中</strong>的电容器，极板上的 \(\rho\) 随时间显著变化，原始安培定律直接<strong>违反电荷守恒</strong>。</p>
+      <p class="step"><strong>步骤 4（Maxwell 的修补）：</strong> 在安培定律右侧添加位移电流项 \(\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)：</p>
+      <div class="formula">\[ \nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\frac{\partial\vec{E}}{\partial t} \]</div>
+      <p class="step">两边取散度，并代入高斯定律 \(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\)（即 \(\varepsilon_{0}\nabla\cdot\vec{E}=\rho\)，故 \(\varepsilon_{0}\partial(\nabla\cdot\vec{E})/\partial t=\partial\rho/\partial t\)）：</p>
+      <div class="formula">\[ 0=\mu_{0}\nabla\cdot\vec{J}+\mu_{0}\varepsilon_{0}\frac{\partial(\nabla\cdot\vec{E})}{\partial t}=\mu_{0}\left(\nabla\cdot\vec{J}+\frac{\partial\rho}{\partial t}\right)\;\;\checkmark \]</div>
+      <p class="step"><strong>结论：</strong> 加入位移电流项后，安培–麦克斯韦定律与电荷连续性方程<strong>完全自洽</strong>。这是 Maxwell 在数学美学（方程自洽性）驱动下作出的伟大发现，其物理后果（电磁波）远远超出了"修补一致性"的初衷。</p>
+
+      <h3>推导 13.2：由麦克斯韦方程组导出波动方程与 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\)</h3>
+      <p class="step"><strong>步骤 1（出发点）：</strong> 真空中 \(\rho=0,\vec{J}=0\)，麦克斯韦方程组简化为：</p>
+      <div class="formula">\[ \nabla\cdot\vec{E}=0,\quad \nabla\cdot\vec{B}=0,\quad \nabla\times\vec{E}=-\frac{\partial\vec{B}}{\partial t},\quad \nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\frac{\partial\vec{E}}{\partial t} \]</div>
+      <p class="step"><strong>步骤 2（对法拉第定律取旋度）：</strong> 对 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\) 两边取 \(\nabla\times\)：</p>
+      <div class="formula">\[ \nabla\times(\nabla\times\vec{E})=-\frac{\partial}{\partial t}(\nabla\times\vec{B}) \]</div>
+      <p class="step"><strong>步骤 3（矢量恒等式 + 真空高斯定律）：</strong> 利用 \(\nabla\times(\nabla\times\vec{E})=\nabla(\nabla\cdot\vec{E})-\nabla^{2}\vec{E}\)，且 \(\nabla\cdot\vec{E}=0\)，得 \(\nabla\times(\nabla\times\vec{E})=-\nabla^{2}\vec{E}\)。</p>
+      <p class="step"><strong>步骤 4（代入安培–麦克斯韦定律消去 \(\nabla\times\vec{B}\)）：</strong> 右侧 \(\nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)，故：</p>
+      <div class="formula">\[ -\nabla^{2}\vec{E}=-\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}}\quad\Longrightarrow\quad \nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}} \]</div>
+      <p class="step"><strong>步骤 5（识别波速）：</strong> 与 \(\nabla^{2}\vec{E}=(1/c^{2})\partial^{2}\vec{E}/\partial t^{2}\) 对照，得 \(1/c^{2}=\mu_{0}\varepsilon_{0}\)，即：</p>
+      <div class="formula">\[ c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}} \]</div>
+      <p class="step">对 \(\vec{B}\) 重复同样步骤（从安培–麦克斯韦定律出发，取旋度并用法拉第消去 \(\nabla\times\vec{E}\)）得 \(\nabla^{2}\vec{B}=\mu_{0}\varepsilon_{0}\partial^{2}\vec{B}/\partial t^{2}\)。\(\vec{E}\) 与 \(\vec{B}\) 满足同一波动方程——它们以同一速度 \(c\) 传播，紧密耦合，构成电磁波。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 13.1 充电电容器的位移电流与极板间的 \(\vec{B}\)</h4>
+        <p class="example-statement">一平行板电容器具有圆形极板，半径 \(R=5.0\,\mathrm{mm}\)，极板间为真空，正在以恒定传导电流 \(I=1.0\,\mathrm{A}\) 充电。忽略边缘效应 (fringing field)。(a) 求极板之间区域的位移电流 \(I_{d}\)；(b) 求极板边缘 (\(r=R\)) 处的磁场大小 \(B(R)\)；(c) 求 \(r=R/2\) 处的磁场 \(B(R/2)\)；(d) 验证 \(r\ge R\) 处 \(\vec{B}\) 与一根无限长直导线 (电流 \(I\)) 在该位置产生的磁场一致。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 在两极板之间，电场近似均匀 \(E=\sigma/\varepsilon_{0}=Q/(\varepsilon_{0}\pi R^{2})\)。故 \(\mathrm{d}E/\mathrm{d}t=I/(\varepsilon_{0}\pi R^{2})\)。电场穿过半径 \(R\) 的圆面的电通量 \(\Phi_{E}=E\cdot\pi R^{2}=Q/\varepsilon_{0}\)，故：</p>
+          <div class="formula">\[ I_{d}=\varepsilon_{0}\frac{\mathrm{d}\Phi_{E}}{\mathrm{d}t}=\varepsilon_{0}\cdot\frac{1}{\varepsilon_{0}}\frac{\mathrm{d}Q}{\mathrm{d}t}=\frac{\mathrm{d}Q}{\mathrm{d}t}=I=1.0\,\mathrm{A} \]</div>
+          <p class="step"><strong>结论：</strong> 位移电流恰好等于导线中的传导电流——这是电荷守恒的体现（极板上电荷的增加率等于流入的传导电流）。</p>
+          <p class="step"><strong>解 (b)：</strong> 在极板间取一个半径 \(r=R\)、与极板平行的圆形安培环路 \(C\)，并选配套曲面 \(S\) 在两极板之间（避开导线，故 \(I_{\text{enc}}=0\)）。穿过 \(S\) 的电通量变化贡献位移电流 \(I_{d}=\varepsilon_{0}\mathrm{d}\Phi_{E}/\mathrm{d}t\)。由安培–麦克斯韦定律 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{d}\)；对称性给出 \(B\) 沿环路切向且大小恒定，故 \(B(R)\cdot 2\pi R=\mu_{0}I\)：</p>
+          <div class="formula">\[ B(R)=\frac{\mu_{0}I}{2\pi R}=\frac{(4\pi\times10^{-7})(1.0)}{2\pi(5.0\times10^{-3})}=\frac{2\times10^{-7}}{5.0\times10^{-3}}\cdot\frac{4\pi}{2\pi}\;\text{的简化} \]</div>
+          <p class="step">化简：\(B(R)=\dfrac{(4\pi\times10^{-7})(1.0)}{(2\pi)(5.0\times10^{-3})}=\dfrac{4\times10^{-7}}{10^{-2}}=4.0\times10^{-5}\,\mathrm{T}\)。</p>
+          <p><span class="ans">\(B(R)=4.0\times10^{-5}\,\mathrm{T}=40\,\mu\mathrm{T}\)</span>（沿环路切向，由右手定则：若 \(I\) 向下流，\(\vec{B}\) 顺时针环绕极板轴线）。</p>
+          <p class="step"><strong>解 (c)：</strong> 对 \(r<R\) 的环路，所包围的电通量仅是 \(\vec{E}\) 穿过半径 \(r\) 的内圆部分：\(\Phi_{E}(r)=E\cdot\pi r^{2}\)。位移电流按面积比例缩小：</p>
+          <div class="formula">\[ I_{d}(r)=\varepsilon_{0}\frac{\mathrm{d}\Phi_{E}}{\mathrm{d}t}=\varepsilon_{0}\cdot\frac{\mathrm{d}E}{\mathrm{d}t}\cdot\pi r^{2}=\frac{I r^{2}}{R^{2}} \]</div>
+          <p class="step">由 \(B(r)\cdot 2\pi r=\mu_{0}I_{d}(r)=\mu_{0}I\,r^{2}/R^{2}\)，得：</p>
+          <div class="formula">\[ B(r)=\frac{\mu_{0}I\,r}{2\pi R^{2}}\quad (r\le R)\qquad\Longrightarrow\qquad B(R/2)=\frac{\mu_{0}I}{4\pi R} \]</div>
+          <p class="step">代入数值：\(B(R/2)=\dfrac{(4\pi\times10^{-7})(1.0)}{4\pi(5.0\times10^{-3})}=\dfrac{10^{-7}}{5.0\times10^{-3}}=2.0\times10^{-5}\,\mathrm{T}\)。</p>
+          <p><span class="ans">\(B(R/2)=2.0\times10^{-5}\,\mathrm{T}=20\,\mu\mathrm{T}\)</span>（恰好是 \(B(R)\) 的一半，符合 \(B\propto r\) 的线性规律）。</p>
+          <p class="step"><strong>解 (d)：</strong> 对 \(r\ge R\) 的环路，所围曲面已覆盖整个极板，电通量 \(\Phi_{E}=E\cdot\pi R^{2}=Q/\varepsilon_{0}\) 不再随 \(r\) 增加，故 \(I_{d}(r\ge R)=I\)（与 \(r\) 无关）。安培–麦克斯韦定律给出 \(B(r)\cdot 2\pi r=\mu_{0}I\)，即：</p>
+          <div class="formula">\[ B(r)=\frac{\mu_{0}I}{2\pi r}\quad (r\ge R) \]</div>
+          <p class="step">这与第 8 章无限长直导线结果完全一致。在极板外，旁人无法区分"磁场来自导线中的传导电流"还是"来自间隙中的位移电流"——两者在远处给出<strong>同一</strong>的 \(\vec{B}\)。这正是麦克斯韦项的精妙之处。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.2 高斯定律验证：点电荷的球形高斯面</h4>
+        <p class="example-statement">一点电荷 \(q=+1.0\,\mu\mathrm{C}\) 位于半径 \(r=0.10\,\mathrm{m}\) 的球心。用高斯定律求 (a) 球面上的电场大小 \(E\)；(b) 穿过球面的电通量 \(\Phi_{E}\)；(c) 验证 \(\Phi_{E}\) 与 \(q\) 的关系。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由球对称性，球面上 \(\vec{E}\) 沿径向、大小恒定。高斯定律 \(\oint\vec{E}\cdot\mathrm{d}\vec{A}=Q_{\text{enc}}/\varepsilon_{0}\) 给出：</p>
+          <div class="formula">\[ E\cdot 4\pi r^{2}=\frac{q}{\varepsilon_{0}}\quad\Longrightarrow\quad E=\frac{q}{4\pi\varepsilon_{0}r^{2}}=k_{e}\frac{q}{r^{2}} \]</div>
+          <p class="step">代入 \(k_{e}=1/(4\pi\varepsilon_{0})=8.99\times10^{9}\,\mathrm{N\,m^{2}/C^{2}}\)，\(q=1.0\times10^{-6}\,\mathrm{C}\)，\(r=0.10\,\mathrm{m}\)：</p>
+          <div class="formula">\[ E=(8.99\times10^{9})\frac{1.0\times10^{-6}}{(0.10)^{2}}=(8.99\times10^{9})\frac{10^{-6}}{10^{-2}}=8.99\times10^{5}\,\mathrm{N/C} \]</div>
+          <p><span class="ans">\(E=8.99\times10^{5}\,\mathrm{N/C}\)</span>（沿径向向外）。</p>
+          <p class="step"><strong>解 (b)：</strong> 电通量直接由高斯定律：</p>
+          <div class="formula">\[ \Phi_{E}=\oint\vec{E}\cdot\mathrm{d}\vec{A}=\frac{q}{\varepsilon_{0}}=\frac{1.0\times10^{-6}}{8.854\times10^{-12}}=1.13\times10^{5}\,\mathrm{N\,m^{2}/C} \]</div>
+          <p><span class="ans">\(\Phi_{E}=1.13\times10^{5}\,\mathrm{N\,m^{2}/C}\)</span>。</p>
+          <p class="step"><strong>解 (c)：</strong> 校核：\(E\cdot 4\pi r^{2}=(8.99\times10^{5})(4\pi)(0.10)^{2}=(8.99\times10^{5})(0.1257)=1.13\times10^{5}\,\mathrm{N\,m^{2}/C}\)，与 (b) 一致 ✓。</p>
+          <p class="step">注意：电通量<strong>只取决于</strong> \(q\)，与高斯面半径无关。若把半径加倍（\(r=0.20\,\mathrm{m}\)），\(E\) 减为 \(1/4\)，但 \(4\pi r^{2}\) 增为 4 倍，乘积不变。这就是高斯定律的"通量守恒"性质。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.3 法拉第定律：均匀时变磁场中的圆形回路</h4>
+        <p class="example-statement">半径 \(r=2.0\,\mathrm{cm}\) 的圆形导电回路平面与均匀磁场 \(\vec{B}\) 垂直，磁场以恒定速率 \(\mathrm{d}B/\mathrm{d}t=+0.40\,\mathrm{T/s}\) 增强（方向垂直纸面向里）。求 (a) 回路中的感应电动势 \(\varepsilon\)；(b) 回路上一点的感应电场大小 \(E_{\text{ind}}\)；(c) 若回路电阻 \(R_{\Omega}=0.20\,\Omega\)，求感应电流 \(I\) 与 1 分钟内的焦耳热 \(Q\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 磁通量 \(\Phi_{B}=B\cdot A=B\cdot\pi r^{2}\)（\(A\) 与 \(\theta\) 不变，仅 \(B\) 变）。面积 \(A=\pi(0.020)^{2}=\pi(4.0\times10^{-4})=1.257\times10^{-3}\,\mathrm{m^{2}}\)。法拉第定律给出：</p>
+          <div class="formula">\[ \varepsilon=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=-A\frac{\mathrm{d}B}{\mathrm{d}t}=-(1.257\times10^{-3})(0.40)=-5.03\times10^{-4}\,\mathrm{V} \]</div>
+          <p><span class="ans">\(\varepsilon=-5.0\times10^{-4}\,\mathrm{V}=-0.50\,\mathrm{mV}\)</span>（负号表示感应电流产生的磁通反抗原磁通增大，即沿逆时针方向，由楞次定律）。</p>
+          <p class="step"><strong>解 (b)：</strong> 由对称性，感应电场沿回路切向、大小恒定。法拉第定律的积分形式 \(\oint\vec{E}_{\text{ind}}\cdot\mathrm{d}\vec{l}=E_{\text{ind}}\cdot 2\pi r=\varepsilon\)（取大小）：</p>
+          <div class="formula">\[ E_{\text{ind}}=\frac{|\varepsilon|}{2\pi r}=\frac{5.03\times10^{-4}}{2\pi(0.020)}=\frac{5.03\times10^{-4}}{0.1257}=4.0\times10^{-3}\,\mathrm{V/m} \]</div>
+          <p><span class="ans">\(E_{\text{ind}}=4.0\times10^{-3}\,\mathrm{V/m}=4.0\,\mathrm{mV/m}\)</span>。</p>
+          <p class="step"><strong>解 (c)：</strong> 感应电流 \(I=|\varepsilon|/R_{\Omega}=5.03\times10^{-4}/0.20=2.5\times10^{-3}\,\mathrm{A}=2.5\,\mathrm{mA}\)。1 分钟 (\(t=60\,\mathrm{s}\)) 内焦耳热：</p>
+          <div class="formula">\[ Q=I^{2}R_{\Omega}\,t=(2.5\times10^{-3})^{2}(0.20)(60)=(6.25\times10^{-6})(0.20)(60)=7.5\times10^{-5}\,\mathrm{J}=75\,\mu\mathrm{J} \]</div>
+          <p><span class="ans">\(I=2.5\,\mathrm{mA},\;Q=75\,\mu\mathrm{J}\)</span>。能量来自驱动 \(\mathrm{d}B/\mathrm{d}t\) 的外源（如电磁铁的电源）所做的功——楞次定律保证感应电流反抗磁通变化，故维持 \(\mathrm{d}B/\mathrm{d}t\) 必须做正功。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.4 由 \(\mu_{0}\)、\(\varepsilon_{0}\) 计算光速</h4>
+        <p class="example-statement">使用 \(\mu_{0}=4\pi\times10^{-7}\,\mathrm{T\,m/A}\) 与 \(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{F/m}\)，按 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\) 计算电磁波速，并与公认值 \(2.998\times10^{8}\,\mathrm{m/s}\) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1：</strong> 计算 \(\mu_{0}\varepsilon_{0}\)：</p>
+          <div class="formula">\[ \mu_{0}\varepsilon_{0}=(4\pi\times10^{-7})(8.854\times10^{-12}) \]</div>
+          <p class="step">数值计算：\(4\pi=12.566\)；\(12.566\times 8.854=111.26\)；指数 \((-7)+(-12)=-19\)。故 \(\mu_{0}\varepsilon_{0}=1.1126\times10^{-17}\,\mathrm{s^{2}/m^{2}}\)（量纲校核：\(\mathrm{T\,m/A\cdot F/m}=\mathrm{(N/(A\,m))(m/A)\cdot(C/(V\,m))\cdot m}=\mathrm{s^{2}/m^{2}}\)，与 \(1/c^{2}\) 一致 ✓）。</p>
+          <p class="step"><strong>步骤 2：</strong> 取平方根：</p>
+          <div class="formula">\[ \sqrt{\mu_{0}\varepsilon_{0}}=\sqrt{1.1126\times10^{-17}}=\sqrt{11.126\times10^{-18}}=\sqrt{11.126}\times10^{-9}=3.335\times10^{-9}\,\mathrm{s/m} \]</div>
+          <p class="step"><strong>步骤 3：</strong> 求倒数：</p>
+          <div class="formula">\[ c=\frac{1}{3.335\times10^{-9}}=2.998\times10^{8}\,\mathrm{m/s} \]</div>
+          <p><span class="ans">\(c\approx 2.998\times10^{8}\,\mathrm{m/s}\)</span>——与公认光速<strong>四位有效数字完全吻合</strong>。这种惊人的吻合是麦克斯韦断言"光即电磁波"的依据，也是物理学史上最美的统一之一。</p>
+          <p class="step"><strong>备注：</strong> 在 SI 单位制中，\(c\) 现在被定义为精确值 \(c=299\,792\,458\,\mathrm{m/s}\)，米的定义由此导出。\(\mu_{0}\) 不再是精确值（依赖于精细结构常数的实测），但 \(\mu_{0}\varepsilon_{0}=1/c^{2}\) 仍然精确成立。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 13.5 安培定律：长直导线周围的 \(\vec{B}\)</h4>
+        <p class="example-statement">一无限长直导线沿 \(z\) 轴通有稳恒电流 \(I=10\,\mathrm{A}\)（方向 \(+z\)）。(a) 用安培定律（麦克斯韦方程 IV 的稳态简化）求距导线 \(r=2.0\,\mathrm{cm}\) 处的磁感应强度 \(\vec{B}\)；(b) 计算 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}\) 沿半径 \(r\) 的圆形安培环路的值，验证等于 \(\mu_{0}I\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由柱对称性，\(\vec{B}\) 沿以导线为轴的圆周的切向、大小恒定。稳态时位移电流项为零（\(\vec{E}\) 不随时间变化），安培–麦克斯韦定律退化为 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}\)。对半径 \(r\) 的圆环，\(B(r)\cdot 2\pi r=\mu_{0}I\)，故：</p>
+          <div class="formula">\[ B(r)=\frac{\mu_{0}I}{2\pi r} \]</div>
+          <p class="step">代入数值 \(I=10\,\mathrm{A}\)，\(r=2.0\times10^{-2}\,\mathrm{m}\)：</p>
+          <div class="formula">\[ B=\frac{(4\pi\times10^{-7})(10)}{2\pi(2.0\times10^{-2})}=\frac{4\pi\times10^{-6}}{4\pi\times10^{-2}}=1.0\times10^{-4}\,\mathrm{T} \]</div>
+          <p><span class="ans">\(B=1.0\times10^{-4}\,\mathrm{T}=0.10\,\mathrm{mT}=100\,\mu\mathrm{T}\)</span>（方向沿方位角 \(\hat{\phi}\)，由右手定则：拇指沿 \(+z\) 电流，四指卷曲方向为 \(\vec{B}\) 方向，在本例为逆时针俯视）。</p>
+          <p class="step"><strong>解 (b)：</strong> 沿圆形安培环路积分：</p>
+          <div class="formula">\[ \oint\vec{B}\cdot\mathrm{d}\vec{l}=B\cdot 2\pi r=\frac{\mu_{0}I}{2\pi r}\cdot 2\pi r=\mu_{0}I \]</div>
+          <p class="step">数值校核：\(\mu_{0}I=(4\pi\times10^{-7})(10)=4\pi\times10^{-6}\,\mathrm{T\,m}\approx 1.257\times10^{-5}\,\mathrm{T\,m}\)；另一边 \((1.0\times10^{-4})(2\pi)(0.020)=(1.0\times10^{-4})(0.1257)=1.257\times10^{-5}\,\mathrm{T\,m}\)。两边相等 ✓。</p>
+          <p class="step"><strong>结论：</strong> 环路积分值与 \(r\) 无关（只要环路包围导线）——这是安培定律的"拓扑"性质：积分只取决于环路<strong>所围</strong>的总电流 \(I_{\text{enc}}\)，不取决于环路的形状或大小。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>"位移电流是一种真实的电荷流动"——错。</strong> 位移电流 \(I_{d}=\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 反映的是<strong>电场随时间的变化率</strong>，而非载流子的定向运动。在真空电容器间隙中没有任何电子或离子穿过，但仍有位移电流。称其为"电流"是历史遗留——其本质是 \(\partial\vec{E}/\partial t\) 这一项对 \(\nabla\times\vec{B}\) 的贡献。</li>
+        <li><strong>"磁场总是起于磁极、止于另一磁极"——错。</strong> 高斯磁定律 \(\nabla\cdot\vec{B}=0\) 表明 \(\vec{B}\) <strong>无源</strong>，磁感线总是闭合曲线。条形磁铁外面的 \(\vec{B}\) 线从 N 出发到 S，但<strong>在磁铁内部</strong>它们从 S 回到 N，构成闭合环路。不存在"磁单极子" (magnetic monopole)；把磁铁切成两段不会得到孤立的 N 或 S，每段仍是完整磁偶极子。</li>
+        <li><strong>混淆积分形式与微分形式的"局域性"。</strong> 微分形式 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\) 是<strong>局域</strong>关系：空间每一点处 \(\vec{E}\) 的旋度由<strong>该点</strong>的 \(\partial\vec{B}/\partial t\) 决定。而积分形式 \(\oint\vec{E}\cdot\mathrm{d}\vec{l}=-\mathrm{d}\Phi_{B}/\mathrm{d}t\) 是<strong>整体</strong>关系：环路积分由环路所围曲面的总磁通量变化决定。两者由斯托克斯定理联系，但学生常错误地把"远处"的电流/电荷当作"本地点"的源。例如，安培–麦克斯韦定律微分形式 \(\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\) 表明 \(\vec{B}\) 在某点的旋度只取决于<strong>该点</strong>的 \(\vec{J}\) 与 \(\partial\vec{E}/\partial t\)，而非远处源。</li>
+        <li><strong>"充电电容器的间隙中无电流，所以无磁场"——错。</strong> 这正是麦克斯韦加入位移电流项要纠正的错误直觉。虽然无传导电流穿过间隙，但 \(\vec{E}\) 在增大，\(\varepsilon_{0}\partial\vec{E}/\partial t\) 的作用相当于一个电流密度，它在间隙中产生与导线中相同的 \(\vec{B}\) 环路（见例 13.1）。若不加入位移电流项，安培环路定理对不同曲面选择给出矛盾结果。</li>
+        <li><strong>忘记法拉第定律与安培–麦克斯韦定律中的负号/对称性。</strong> 法拉第定律中的负号是楞次定律的化身（感应电流反抗磁通变化）；安培–麦克斯韦定律右侧无负号意味着 \(\partial\vec{E}/\partial t\) 与 \(\vec{J}\) 一样<strong>同方向</strong>地激发 \(\vec{B}\)。两者结合给出真空电磁波中 \(\vec{E}\) 与 \(\vec{B}\)<strong>同相</strong>而非相差 \(90^{\circ}\)，且 \(\vec{E}\times\vec{B}\) 沿传播方向。</li>
+        <li><strong>把积分曲面任意选取当作无关紧要。</strong> 在安培–麦克斯韦定律中，对于给定的环路 \(C\)，配套曲面 \(S\) 可以是任意以 \(C\) 为边界的开曲面。只要把传导电流 \(I_{\text{enc}}\) 与位移电流 \(\varepsilon_{0}\mathrm{d}\Phi_{E}/\mathrm{d}t\) 都算入，结果与曲面选择无关。但学生若只算 \(I_{\text{enc}}\) 而忽略位移电流项，便会因曲面不同而得到矛盾答案——这正是 Maxwell 修补安培定律的动机。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 圆形平行板电容器的位移电流密度：半径 \(R=3.0\,\mathrm{cm}\) 的圆形平行板电容器，充电电流 \(I=0.50\,\mathrm{A}\)（恒定）。求极板间区域 (a) 电场的变化率 \(\mathrm{d}E/\mathrm{d}t\)；(b) 位移电流密度 \(J_{d}=\varepsilon_{0}\,\mathrm{d}E/\mathrm{d}t\)；(c) 距轴线 \(r=2.0\,\mathrm{cm}\) 处的磁感应强度 \(B\)。</summary>
+        <div class="hint">极板间 \(E=\sigma/\varepsilon_{0}=Q/(\varepsilon_{0}\pi R^{2})\)，故 \(\mathrm{d}E/\mathrm{d}t=I/(\varepsilon_{0}\pi R^{2})\)。对 \(r<R\)，\(B(r)\cdot 2\pi r=\mu_{0}\varepsilon_{0}(\mathrm{d}E/\mathrm{d}t)\pi r^{2}\)。</div>
+        <div class="solution">面积 \(A=\pi R^{2}=\pi(0.030)^{2}=2.83\times10^{-3}\,\mathrm{m^{2}}\)。<br>(a) \(\mathrm{d}E/\mathrm{d}t=I/(\varepsilon_{0}A)=0.50/((8.854\times10^{-12})(2.83\times10^{-3}))=0.50/(2.51\times10^{-14})=2.0\times10^{13}\,\mathrm{V/(m\cdot s)}\)。<br>(b) \(J_{d}=\varepsilon_{0}\,\mathrm{d}E/\mathrm{d}t=I/A=0.50/2.83\times10^{-3}=177\,\mathrm{A/m^{2}}\)。<br>(c) 在 \(r=0.020\,\mathrm{m}<R\) 处：\(B(r)=\mu_{0}\varepsilon_{0}(\mathrm{d}E/\mathrm{d}t)\,r/2=\mu_{0}J_{d}\,r/2\)。<br>代入：\(B=(4\pi\times10^{-7})(177)(0.020)/2=(4\pi\times10^{-7})(1.77)=2.22\times10^{-6}\,\mathrm{T}=2.22\,\mu\mathrm{T}\)。<br><span class="ans">\(\mathrm{d}E/\mathrm{d}t=2.0\times10^{13}\,\mathrm{V/(m\cdot s)},\;J_{d}=177\,\mathrm{A/m^{2}},\;B(2\,\mathrm{cm})=2.22\,\mu\mathrm{T}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 时变电场的磁场：在两块大平行板之间，电场 \(E(t)=E_{0}\sin(\omega t)\)，其中 \(E_{0}=1.0\times10^{4}\,\mathrm{V/m}\)，\(\omega=2\pi\times10^{6}\,\mathrm{rad/s}\)。板间为真空。求 (a) 在距中心轴线 \(r=5.0\,\mathrm{cm}\)（位于板内）处的磁感应强度作为时间的函数 \(B(r,t)\)；(b) \(B\) 的峰值。</summary>
+        <div class="hint">对半径 \(r\) 的圆形安培环路（在板间），\(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\)，其中 \(\Phi_{E}=E(t)\cdot\pi r^{2}\)。</div>
+        <div class="solution">由 \(B(r)\cdot 2\pi r=\mu_{0}\varepsilon_{0}\cdot\pi r^{2}\cdot\mathrm{d}E/\mathrm{d}t\)，得 \(B(r,t)=\dfrac{\mu_{0}\varepsilon_{0}r}{2}\cdot\dfrac{\mathrm{d}E}{\mathrm{d}t}\)。<br>\(\mathrm{d}E/\mathrm{d}t=E_{0}\omega\cos(\omega t)\)，故：<br>\(B(r,t)=\dfrac{\mu_{0}\varepsilon_{0}r E_{0}\omega}{2}\cos(\omega t)\)。<br>代入 \(r=0.050\)，\(E_{0}=1.0\times10^{4}\)，\(\omega=2\pi\times10^{6}\)：<br>\(B_{\max}=\dfrac{(4\pi\times10^{-7})(8.854\times10^{-12})(0.050)(1.0\times10^{4})(2\pi\times10^{6})}{2}\)<br>\(=\dfrac{(1.1127\times10^{-17})(0.050)(1.0\times10^{4})(6.283\times10^{6})}{2}\)<br>\(=\dfrac{(1.1127\times10^{-17})(3.142\times10^{9})}{2}=\dfrac{3.50\times10^{-8}}{2}=1.75\times10^{-8}\,\mathrm{T}\)。<br>所以 \(B(r,t)=1.75\times10^{-8}\cos(2\pi\times10^{6}t)\,\mathrm{T}\)，相位与 \(\vec{E}\) 相差 \(90^{\circ}\)（因为 \(B\propto\mathrm{d}E/\mathrm{d}t\)）。<br><span class="ans">\(B(t)=1.75\times10^{-8}\cos(2\pi\times10^{6}t)\,\mathrm{T}\)；\(B_{\max}=17.5\,\mathrm{nT}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 球形高斯面内有非对称电荷分布：半径 \(R\) 的球面内含三个点电荷 \(q_{1}=+2.0\,\mu\mathrm{C}\)、\(q_{2}=-0.5\,\mu\mathrm{C}\)、\(q_{3}=+1.0\,\mu\mathrm{C}\)，它们在球内任意位置（不在球心）。求 (a) 穿过球面的总电通量；(b) 球面上是否仍能直接用 \(E=Q_{\text{enc}}/(4\pi\varepsilon_{0}R^{2})\) 求电场大小？为什么？取 \(R=0.20\,\mathrm{m}\)。</summary>
+        <div class="hint">高斯定律 \(\Phi_{E}=Q_{\text{enc}}/\varepsilon_{0}\) 对<strong>任意</strong>闭合曲面与<strong>任意</strong>电荷分布都成立。但要用 \(E\cdot 4\pi R^{2}=Q/\varepsilon_{0}\) 把 \(E\) 提出来，<strong>必须</strong>有球对称性。</div>
+        <div class="solution">(a) 总电荷 \(Q_{\text{enc}}=2.0-0.5+1.0=2.5\,\mu\mathrm{C}=2.5\times10^{-6}\,\mathrm{C}\)。<br>电通量 \(\Phi_{E}=Q_{\text{enc}}/\varepsilon_{0}=2.5\times10^{-6}/8.854\times10^{-12}=2.82\times10^{5}\,\mathrm{N\,m^{2}/C}\)。<br>(b) <strong>不能</strong>。虽然通量结果正确，但电荷分布<strong>不具有球对称性</strong>（三个点电荷偏离球心），所以球面上的 \(\vec{E}\) 不是恒定大小、也不严格沿径向。把 \(E\) 提出 \(\oint\) 只在对称性（球、柱、面）下合法。非对称情形需要叠加原理或数值计算。<br>这是高斯定律的常见误用：通量公式始终正确，但求 \(\vec{E}\) 需要<strong>对称性</strong>保证 \(\vec{E}\parallel\mathrm{d}\vec{A}\) 且大小恒定。<br><span class="ans">\(\Phi_{E}=2.82\times10^{5}\,\mathrm{N\,m^{2}/C}\)；(b) 不能，因无球对称性</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 同轴电缆的安培环路（稳态）：一同轴电缆内芯半径 \(a=1.0\,\mathrm{mm}\)，通有总电流 \(I=5.0\,\mathrm{A}\)（沿 \(+z\) 方向，均匀分布在内核截面）；外壳（半径 \(b=4.0\,\mathrm{mm}\)）通有返回电流 \(I\) 沿 \(-z\) 方向。求 (a) \(r<a\)、(b) \(a<r<b\)、(c) \(r>b\) 处的 \(B(r)\)。</summary>
+        <div class="hint">由柱对称性，\(\vec{B}\) 沿方位角方向，使用圆形安培环路。注意在 \(r<a\) 区域所围电流按面积比例 \(I(r)=I\cdot r^{2}/a^{2}\)。</div>
+        <div class="solution">(a) \(r<a\)：安培环路包围内核中部分电流 \(I(r)=I\,r^{2}/a^{2}\)。由 \(B\cdot 2\pi r=\mu_{0}I(r)\)：<br>\(B(r)=\dfrac{\mu_{0}I\,r}{2\pi a^{2}}\)。<br>(b) \(a<r<b\)：环路包围整个内核电流 \(I\)，外壳在环路之外未计入。<br>\(B(r)=\dfrac{\mu_{0}I}{2\pi r}\)。<br>(c) \(r>b\)：环路包围内核电流 \(+I\) 与外壳电流 \(-I\)，净电流为零。<br>\(B(r)=0\)。<br>代入 \(I=5.0\,\mathrm{A}\) 求界面值：<br>\(B(a^{-})=\dfrac{\mu_{0}I}{2\pi a}=\dfrac{(4\pi\times10^{-7})(5.0)}{2\pi(10^{-3})}=\dfrac{2\times10^{-6}}{10^{-3}}=2.0\times10^{-3}\,\mathrm{T}=2.0\,\mathrm{mT}\)（在 \(r=a\) 内外两侧相同 ✓）。<br>\(B(b^{-})=\dfrac{\mu_{0}I}{2\pi b}=\dfrac{(4\pi\times10^{-7})(5.0)}{2\pi(4.0\times10^{-3})}=5.0\times10^{-4}\,\mathrm{T}=0.50\,\mathrm{mT}\)。<br><span class="ans">(a) \(B=\mu_{0}Ir/(2\pi a^{2})\)；(b) \(B=\mu_{0}I/(2\pi r)\)；(c) \(B=0\)。\(B(a)=2.0\,\mathrm{mT},\;B(b^{-})=0.50\,\mathrm{mT}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 边界条件应用：在两介质界面（界面为 \(xy\) 平面）上方 (\(z>0\)，真空) 有 \(\vec{E}_{1}=3\hat{x}-4\hat{z}\,\mathrm{V/m}\)。设界面带均匀面电荷密度 \(\sigma=+2.0\times10^{-11}\,\mathrm{C/m^{2}}\)，下方 (\(z<0\)) 为介质 2，且界面无面电流。求 (a) 介质 2 中的电场切向分量 \(E_{x,2}\) 与法向分量 \(E_{z,2}\)；(b) 介质 2 中的总 \(\vec{E}_{2}\)。</summary>
+        <div class="hint">电场切向分量在界面连续：\(E_{x,2}=E_{x,1}\)。电场法向分量跃变：\(\varepsilon_{0}(E_{z,2}-E_{z,1})=\sigma\)（注意法向 \(\hat{n}\) 由 1 指向 2，即 \(+\hat{z}\)，且 \(E_{z,1}\) 已含正负号）。</div>
+        <div class="solution">(a) 切向连续：\(E_{x,2}=E_{x,1}=3\,\mathrm{V/m}\)。<br>法向跃变：\(\varepsilon_{0}(E_{z,2}-E_{z,1})=\sigma\)，故<br>\(E_{z,2}=E_{z,1}+\dfrac{\sigma}{\varepsilon_{0}}=-4+\dfrac{2.0\times10^{-11}}{8.854\times10^{-12}}=-4+2.26=-1.74\,\mathrm{V/m}\)。<br>(b) 总电场 \(\vec{E}_{2}=3\hat{x}-1.74\hat{z}\,\mathrm{V/m}\)。<br>校核：法向方向上 \(E_{z}\) 从 \(-4\) 变到 \(-1.74\)，差值 \(+2.26\)，方向沿 \(+\hat{z}\)，与正 \(\sigma\) 一致（正面电荷在两侧都向外即 \(+\hat{z}\) 方向贡献 \(E\) 跃变）。<br>大小 \(|\vec{E}_{2}|=\sqrt{3^{2}+1.74^{2}}=\sqrt{9+3.03}=\sqrt{12.03}=3.47\,\mathrm{V/m}\)。<br><span class="ans">\(E_{x,2}=3\,\mathrm{V/m},\;E_{z,2}=-1.74\,\mathrm{V/m};\;\vec{E}_{2}=3\hat{x}-1.74\hat{z}\,\mathrm{V/m}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">一只正在充电的圆形平行板电容器 (parallel-plate capacitor)：左侧画面展示剖面图——导线中以红色箭头流动的是<strong>传导电流</strong> \(I\)；两极板之间，\(\vec{E}\) 场（蓝色箭头）随时间增大；尽管间隙中没有电荷穿越，<strong>位移电流</strong> \(I_{d}=\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\) 在间隙中激发与导线中等大的环绕 \(\vec{B}\) 场（金色环）。右下插图以俯视图 (top-down view) 展示在极板中央高度处 \(\vec{B}\) 沿同心圆环的分布——在 \(r<R\) 区间 \(B\propto r\) 线性增长，在 \(r\ge R\) 区间 \(B\propto 1/r\) 衰减，恰如一根通有电流 \(I\) 的长直导线在远处的磁场。调节滑块 \(I\)（充电电流）与 \(R\)（极板半径），观察 \(B(R)=\mu_{0}I/(2\pi R)\) 实时变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-13" width="720" height="460"></canvas>
+        <div class="sim-controls" id="controls-13"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-13');
+          var W = canvas.width, H = canvas.height;
+
+          // Physical constants
+          var MU0 = 4 * Math.PI * 1e-7;
+          var EPS0 = 8.854e-12;
+
+          // Visual layout (pixels)
+          var CX = 240;                 // central axis x
+          var Y_TOP_WIRE = 70;
+          var Y_TOP_PLATE = 170;
+          var Y_BOT_PLATE = 300;
+          var Y_BOT_WIRE = 390;
+
+          // Top-down inset (right side)
+          var INSET_CX = 555, INSET_CY = 240;
+          var INSET_R_PX = 95;          // pixel radius representing plate edge R
+          var INSET_ORIGIN_X = 420, INSET_ORIGIN_Y = 410;
+          var INSET_W = 280, INSET_H = 100;
+
+          // Plate pixel half-width (representing R meters)
+          function plateHalfWidthPx(R_mm) {
+            // map R (1..10 mm) to a half-width in px: scale = 18 px/mm
+            return Math.max(20, R_mm * 18);
+          }
+
+          // Convert R (mm) to meters
+          function R_m(R_mm) { return R_mm * 1e-3; }
+
+          // Parameters (driven by sliders)
+          var params = {
+            I: 1.0,        // conduction current (A)
+            R_mm: 5.0,     // plate radius (mm)
+          };
+
+          // Sawtooth charge so E grows, then resets (visual cycling)
+          var Q_CYCLE = 1.0;   // Coulombs (arbitrary, only for arrow length normalization)
+
+          // Animation phase for current dots
+          var phase = 0;
+
+          function resetState() {
+            return { t: 0, Q: 0 };
+          }
+
+          // ----------------- Physics computations -----------------
+          function computePhysics(s) {
+            var I = params.I;
+            var R = R_m(params.R_mm);
+            // Real E between plates (uniform, ignoring fringing)
+            // E = Q / (eps0 * pi * R^2);  dE/dt = I / (eps0 * pi * R^2)
+            var A = Math.PI * R * R;
+            var dEdt = I / (EPS0 * A);
+            var E_real = s.Q / (EPS0 * A);
+            // Displacement current density Jd
+            var Jd = EPS0 * dEdt;
+            // Total displacement current equals conduction current
+            var Id = Jd * A;     // = I (exact)
+            // B at plate edge r = R
+            var B_edge = MU0 * I / (2 * Math.PI * R);
+            // B(r) inside (r < R): linear B = mu0 * I * r / (2 pi R^2)
+            // B(r) outside (r >= R): mu0 I / (2 pi r)
+            return {
+              I: I, R: R, A: A, dEdt: dEdt, E_real: E_real,
+              Jd: Jd, Id: Id, B_edge: B_edge,
+            };
+          }
+
+          // ----------------- createSim -----------------
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return resetState(); },
+            step: function (dt, t, s) {
+              s.t += dt;
+              s.Q += params.I * dt;
+              if (s.Q > Q_CYCLE) s.Q = 0;   // saw-tooth reset
+              phase = (phase + dt * 0.6) % 1.0;
+            },
+            draw: function (ctx, s, env) {
+              var p = computePhysics(s);
+              PS.clear(ctx);
+
+              // Normalized E for arrow length (0..1)
+              var Enorm = s.Q / Q_CYCLE;
+              // Normalized B magnitude for inset circle thickness
+              // pick a scale: B at typical I=1A, R=5mm is 40 μT; treat as 0.5 saturation
+              var Bsat = 200e-6; // 200 μT maps to full saturation
+              var Bfrac = Math.min(1, p.B_edge / Bsat);
+
+              drawScene(ctx, s, p, Enorm, Bfrac);
+              drawInset(ctx, s, p, Bfrac);
+              drawHUD(ctx, s, p);
+            },
+          });
+
+          // ----------------- Scene drawing -----------------
+          function drawScene(ctx, s, p, Enorm, Bfrac) {
+            var hpx = plateHalfWidthPx(params.R_mm);
+            var xL = CX - hpx, xR = CX + hpx;
+
+            // ---- Battery symbol at top of circuit ----
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1.5;
+            // long thin line (+), short thick line (-)
+            ctx.beginPath(); ctx.moveTo(CX - 22, Y_TOP_WIRE - 16); ctx.lineTo(CX + 22, Y_TOP_WIRE - 16); ctx.stroke();
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(CX - 12, Y_TOP_WIRE - 8); ctx.lineTo(CX + 12, Y_TOP_WIRE - 8); ctx.stroke();
+            ctx.lineWidth = 1.5;
+            PS.drawText(ctx, '+', CX + 28, Y_TOP_WIRE - 14, { font: '12px system-ui', color: PS.colors.accent });
+            PS.drawText(ctx, '−', CX + 28, Y_TOP_WIRE - 4, { font: '14px system-ui', color: PS.colors.primary });
+            PS.drawText(ctx, '电池 Battery', CX - 70, Y_TOP_WIRE - 8, { font: '11px system-ui', color: PS.colors.text });
+            ctx.restore();
+
+            // ---- Wires (top and bottom) ----
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(CX, Y_TOP_WIRE); ctx.lineTo(CX, Y_TOP_PLATE); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(CX, Y_BOT_PLATE); ctx.lineTo(CX, Y_BOT_WIRE); ctx.stroke();
+            ctx.restore();
+
+            // ---- Conduction current arrows (animated, downward) ----
+            drawConductionArrows(ctx, CX, Y_TOP_WIRE, Y_TOP_PLATE);
+            drawConductionArrows(ctx, CX, Y_BOT_PLATE, Y_BOT_WIRE);
+
+            // ---- Plates ----
+            ctx.save();
+            ctx.fillStyle = PS.colors.text;
+            ctx.fillRect(xL, Y_TOP_PLATE - 3, 2 * hpx, 5);
+            ctx.fillRect(xL, Y_BOT_PLATE - 2, 2 * hpx, 5);
+            ctx.restore();
+
+            // ---- +/- charge symbols on plates (count grows with Enorm) ----
+            var nSym = Math.max(2, Math.round(2 + 8 * Enorm));
+            for (var i = 0; i < nSym; i++) {
+              var frac = (i + 0.5) / nSym;
+              var xs = xL + frac * (2 * hpx);
+              PS.drawText(ctx, '+', xs, Y_TOP_PLATE - 8, { font: 'bold 13px system-ui', color: PS.colors.accent, align: 'center' });
+              PS.drawText(ctx, '−', xs, Y_BOT_PLATE + 14, { font: 'bold 14px system-ui', color: PS.colors.primary, align: 'center' });
+            }
+
+            // ---- E field arrows in gap (vertical, downward, length ∝ Enorm) ----
+            var gap_top = Y_TOP_PLATE + 8;
+            var gap_bot = Y_BOT_PLATE - 8;
+            var gap_h = gap_bot - gap_top;
+            var nArrows = 5;
+            var eColor = PS.colors.primary;
+            for (var j = 0; j < nArrows; j++) {
+              var fx = (j + 0.5) / nArrows;
+              var xa = xL + 10 + fx * (2 * hpx - 20);
+              var len = 12 + Enorm * (gap_h - 18);
+              var y1 = gap_top + (gap_h - len) / 2;
+              var y2 = y1 + len;
+              PS.drawArrow(ctx, xa, y1, xa, y2, eColor);
+            }
+            PS.drawText(ctx, 'E (增大)', CX + hpx + 14, (Y_TOP_PLATE + Y_BOT_PLATE) / 2,
+              { font: 'italic 12px system-ui', color: PS.colors.primary });
+
+            // ---- Displacement current label ----
+            PS.drawText(ctx, 'I_d = ε₀ dΦ_E/dt = ' + p.Id.toFixed(2) + ' A',
+              CX - hpx - 4, (Y_TOP_PLATE + Y_BOT_PLATE) / 2 - 12,
+              { font: '12px system-ui', color: PS.colors.accent2, align: 'right' });
+
+            // ---- B-field circulation loops around axis ----
+            // Three heights: in top wire, in gap, in bottom wire
+            var heights = [
+              { y: (Y_TOP_WIRE + Y_TOP_PLATE) / 2, label: '导线 B' },
+              { y: (Y_TOP_PLATE + Y_BOT_PLATE) / 2, label: '间隙 B (位移电流)' },
+              { y: (Y_BOT_PLATE + Y_BOT_WIRE) / 2, label: '导线 B' },
+            ];
+            for (var k = 0; k < heights.length; k++) {
+              drawBCirculation(ctx, CX, heights[k].y, hpx, Bfrac, heights[k].label, k);
+            }
+
+            // ---- Axis label ----
+            PS.drawText(ctx, '传导电流 I = ' + p.I.toFixed(2) + ' A', 30, H - 12,
+              { font: '12px system-ui', color: PS.colors.accent });
+            PS.drawText(ctx, '充电中的平行板电容器 Charging Capacitor',
+              20, 24, { font: 'bold 14px system-ui', color: PS.colors.text });
+          }
+
+          function drawConductionArrows(ctx, x, y1, y2) {
+            // 3 animated downward arrows
+            var n = 3;
+            var seg = (y2 - y1) / n;
+            ctx.save();
+            for (var i = 0; i < n; i++) {
+              var yBase = y1 + i * seg;
+              // fraction within this segment, animated
+              var f = (i / n + phase) % 1;
+              var ya = yBase + f * seg;
+              var yb = ya + Math.min(18, seg * 0.6);
+              if (yb > y2) yb = y2;
+              if (ya < y1) ya = y1;
+              PS.drawArrow(ctx, x, ya, x, yb, PS.colors.accent);
+            }
+            ctx.restore();
+          }
+
+          // Draw B circulation around axis at height y, as a perspective ellipse
+          // with arrowheads showing CW direction (looking from top, current down).
+          function drawBCirculation(ctx, cx, cy, hpx, Bfrac, label, idx) {
+            var rx = Math.max(40, hpx + 6);   // ellipse horizontal radius
+            var ry = 8;                       // perspective vertical radius
+            var lw = 1.0 + 2.5 * Bfrac;
+            var alpha = 0.35 + 0.55 * Bfrac;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.fillStyle = PS.colors.accent2;
+            ctx.lineWidth = lw;
+            ctx.globalAlpha = alpha;
+            // ellipse (back half + front half) — full ellipse
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            // arrowhead at the front-bottom (3 o'clock) pointing down → CW
+            // For downward current, B circulates CW viewed from top.
+            // In side view at the right side of loop, B points INTO page (down on the screen
+            // corresponds to the front of the loop). We mark with an arrowhead pointing
+            // downward at the right extreme.
+            var ax = cx + rx, ay = cy;
+            // small downward arrow
+            ctx.beginPath();
+            ctx.moveTo(ax, ay - 5);
+            ctx.lineTo(ax, ay + 5);
+            ctx.lineTo(ax - 4, ay + 1);
+            ctx.moveTo(ax, ay + 5);
+            ctx.lineTo(ax + 4, ay + 1);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            // label (only on middle loop to avoid clutter)
+            if (idx === 1) {
+              PS.drawText(ctx, label, cx + rx + 10, cy + 4,
+                { font: '11px system-ui', color: PS.colors.accent2 });
+            }
+            ctx.restore();
+          }
+
+          // ----------------- Inset: top-down view of B(r) -----------------
+          function drawInset(ctx, s, p, Bfrac) {
+            var cx = INSET_CX, cy = INSET_CY;
+            var Rp = INSET_R_PX;
+
+            // ---- B(r) profile plot below the inset ----
+            drawBProfilePlot(ctx, p);
+
+            // ---- Plate circle (top-down) ----
+            ctx.save();
+            // background grid circle (faint)
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.5;
+            for (var g = 1; g <= 3; g++) {
+              ctx.beginPath();
+              ctx.ellipse(cx, cy, Rp * g / 2, Rp * g / 2, 0, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            // plate outline
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, Rp, Rp, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            // soft fill
+            ctx.fillStyle = PS.colors.grid;
+            ctx.globalAlpha = 0.25;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+
+            // ---- Concentric B loops with arrowheads (CW direction) ----
+            // sample at r = 0.5R, R, 1.5R
+            var rs = [0.5, 1.0, 1.5];
+            for (var i = 0; i < rs.length; i++) {
+              var r_px = rs[i] * Rp;
+              // compute B at this r (in physical units)
+              var r_m = rs[i] * p.R;
+              var B_r;
+              if (rs[i] < 1) {
+                B_r = MU0 * p.I * r_m / (2 * Math.PI * p.R * p.R);
+              } else {
+                B_r = MU0 * p.I / (2 * Math.PI * r_m);
+              }
+              // line width and alpha scaled by B_r relative to B_edge
+              var Brel = B_r / p.B_edge;
+              if (rs[i] < 1) Brel = (rs[i]); // B ∝ r inside → r/R
+              var lw_i = 1.0 + 2.2 * Brel;
+              var al = 0.35 + 0.6 * Brel;
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = lw_i;
+              ctx.globalAlpha = al;
+              ctx.beginPath();
+              ctx.ellipse(cx, cy, r_px, r_px, 0, 0, Math.PI * 2);
+              ctx.stroke();
+              // arrowhead at 3 o'clock pointing DOWN (CW from above with current into page)
+              // current in this view goes INTO the page (downward along axis); CW from above.
+              var ahx = cx + r_px;
+              var ahy = cy;
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.beginPath();
+              ctx.moveTo(ahx, ahy - 4);
+              ctx.lineTo(ahx, ahy + 4);
+              ctx.lineTo(ahx - 4, ahy + 1);
+              ctx.moveTo(ahx, ahy + 4);
+              ctx.lineTo(ahx + 4, ahy + 1);
+              ctx.closePath();
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              // label r/R
+              var lbl = (rs[i] === 1.0) ? 'r = R' : 'r = ' + rs[i] + 'R';
+              PS.drawText(ctx, lbl, ahx + 8, ahy - 4,
+                { font: '10px system-ui', color: PS.colors.text });
+            }
+
+            // axis cross at center
+            ctx.strokeStyle = PS.colors.text;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(cx - 5, cy); ctx.lineTo(cx + 5, cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx, cy - 5); ctx.lineTo(cx, cy + 5); ctx.stroke();
+            PS.drawText(ctx, '×', cx - 4, cy + 4, { font: 'bold 13px system-ui', color: PS.colors.text });
+
+            // title
+            PS.drawText(ctx, '俯视图：极板中央高度的 B(r)', cx, 30,
+              { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+            PS.drawText(ctx, 'Top-down view of B-field', cx, 46,
+              { font: '11px system-ui', color: PS.colors.text_soft || PS.colors.text, align: 'center' });
+            // axis current direction label
+            PS.drawText(ctx, 'I (向页内 into page)', cx, cy + Rp + 18,
+              { font: '10px system-ui', color: PS.colors.accent, align: 'center' });
+            ctx.restore();
+          }
+
+          // Plot B(r) vs r below the inset
+          function drawBProfilePlot(ctx, p) {
+            var x0 = INSET_ORIGIN_X, y0 = INSET_ORIGIN_Y;
+            var w = INSET_W, h = INSET_H;
+            var Rp = p.R;  // in meters
+
+            // axes
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + w, y0); ctx.stroke();  // r axis
+            ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 - h); ctx.stroke();   // B axis
+            PS.drawText(ctx, 'B(r)', x0 - 18, y0 - h + 6, { font: '10px system-ui', color: PS.colors.axis });
+            PS.drawText(ctx, 'r', x0 + w - 6, y0 + 12, { font: '10px system-ui', color: PS.colors.axis });
+            PS.drawText(ctx, 'R', x0 + (w / 2), y0 + 12, { font: '10px system-ui', color: PS.colors.axis });
+
+            // tick at r = R
+            ctx.beginPath(); ctx.moveTo(x0 + w / 2, y0); ctx.lineTo(x0 + w / 2, y0 + 3); ctx.stroke();
+
+            // plot: r from 0 to 2R  →  x from x0 to x0 + w
+            //       B from 0 to B_edge  →  y from y0 to y0 - h
+            var Rpx = w / 2;        // R maps to half width
+            var Bmax = p.B_edge;
+            function B_of_r(rR) {
+              var r_m = rR * p.R;
+              if (rR < 1) return MU0 * p.I * r_m / (2 * Math.PI * p.R * p.R);
+              return MU0 * p.I / (2 * Math.PI * r_m);
+            }
+            // path
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            var N = 80;
+            for (var i = 0; i <= N; i++) {
+              var rR = (i / N) * 2;     // 0..2R
+              var xx = x0 + (rR / 2) * w;
+              var Bv = B_of_r(rR);
+              var yy = y0 - (Bv / Bmax) * h;
+              if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+            }
+            ctx.stroke();
+
+            // mark point at r = R
+            var xR = x0 + Rpx;
+            var yR = y0 - (Bmax / Bmax) * h;
+            PS.drawCircle(ctx, xR, yR, 3.5, { fill: PS.colors.accent });
+            PS.drawText(ctx, 'B(R) = ' + (p.B_edge * 1e6).toFixed(1) + ' μT',
+              xR + 6, yR - 4, { font: '10px system-ui', color: PS.colors.accent });
+            ctx.restore();
+          }
+
+          // ----------------- HUD -----------------
+          function drawHUD(ctx, s, p) {
+            var x = W - 250, y = 60;
+            ctx.save();
+            ctx.fillStyle = PS.colors.bg;
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            // roundRect not always available; use rect
+            ctx.fillRect(x, y, 230, 100);
+            ctx.strokeRect(x, y, 230, 100);
+            ctx.fillStyle = PS.colors.text;
+            ctx.font = '11px system-ui';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('I (传导) = ' + p.I.toFixed(2) + ' A', x + 10, y + 8);
+            ctx.fillText('I_d (位移) = ' + p.Id.toFixed(2) + ' A', x + 10, y + 24);
+            ctx.fillText('dΦ_E/dt = ' + (p.dEdt * p.A).toExponential(2) + ' V·m/s', x + 10, y + 40);
+            ctx.fillText('R = ' + params.R_mm.toFixed(1) + ' mm', x + 10, y + 56);
+            ctx.fillStyle = PS.colors.accent;
+            ctx.fillText('B(R) = ' + (p.B_edge * 1e6).toFixed(2) + ' μT', x + 10, y + 76);
+            ctx.restore();
+          }
+
+          // ----------------- Controls -----------------
+          var ctl = PS.makeControls(document.getElementById('controls-13'), [
+            { type: 'slider', key: 'I', label: '充电电流 I (A)', min: 0.10, max: 5.0, step: 0.05, value: 1.0 },
+            { type: 'slider', key: 'R', label: '极板半径 R (mm)', min: 1.0, max: 10.0, step: 0.5, value: 5.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('I', function (v) { params.I = v; });
+          ctl.on('R', function (v) { params.R_mm = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>麦克斯韦方程组（积分形式）</strong>统一描述电场 \(\vec{E}\) 与磁场 \(\vec{B}\) 与源（\(\rho,\vec{J}\)）的关系：(I) 高斯定律 \(\oint\vec{E}\cdot\mathrm{d}\vec{A}=Q_{\text{enc}}/\varepsilon_{0}\)；(II) 高斯磁定律 \(\oint\vec{B}\cdot\mathrm{d}\vec{A}=0\)（无磁单极）；(III) 法拉第定律 \(\oint\vec{E}\cdot\mathrm{d}\vec{l}=-\mathrm{d}\Phi_{B}/\mathrm{d}t\)；(IV) 安培–麦克斯韦定律 \(\oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}+\mu_{0}\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\)。</li>
+        <li><strong>微分形式</strong>（局域关系）：\(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\)，\(\nabla\cdot\vec{B}=0\)，\(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)，\(\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)。</li>
+        <li><strong>位移电流</strong> \(I_{d}=\varepsilon_{0}\,\mathrm{d}\Phi_{E}/\mathrm{d}t\)：并非真实电荷流动，而是<strong>电场变化率</strong>对 \(\vec{B}\) 的激发。Maxwell 加入此项以保证安培定律与<strong>电荷连续性方程</strong> \(\nabla\cdot\vec{J}+\partial\rho/\partial t=0\) 自洽。</li>
+        <li><strong>充电电容器的磁场</strong>：尽管间隙中无传导电流，位移电流 \(I_{d}\) 等于导线中的 \(I\)，故 \(B(R)=\mu_{0}I/(2\pi R)\)（极板边缘），\(B(r)=\mu_{0}Ir/(2\pi R^{2})\)（极板内，\(r<R\)）。</li>
+        <li><strong>电磁波</strong>：真空中 (\(\rho=0,\vec{J}=0\))，方程 (III) 与 (IV) 互相耦合，给出波动方程 \(\nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\,\partial^{2}\vec{E}/\partial t^{2}\)，波速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\approx 2.998\times10^{8}\,\mathrm{m/s}\)。光即电磁波——电、磁、光三者统一。</li>
+        <li><strong>边界条件</strong>：界面处 \(\vec{B}\) 法向连续；\(\vec{E}\) 法向跃变 \(\varepsilon_{0}(E_{n,2}-E_{n,1})=\sigma\)；\(\vec{E}\) 切向连续；\(\vec{B}\) 切向跃变 \(\hat{n}\times(\vec{B}_{2}-\vec{B}_{1})=\mu_{0}\vec{K}\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\oint\vec{E}\cdot\mathrm{d}\vec{A}=\frac{Q_{\text{enc}}}{\varepsilon_{0}},\quad \oint\vec{B}\cdot\mathrm{d}\vec{A}=0,\quad \oint\vec{E}\cdot\mathrm{d}\vec{l}=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t},\quad \oint\vec{B}\cdot\mathrm{d}\vec{l}=\mu_{0}I_{\text{enc}}+\mu_{0}\varepsilon_{0}\frac{\mathrm{d}\Phi_{E}}{\mathrm{d}t},\quad c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

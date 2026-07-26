@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第14章 · 电磁波 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="14">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第14章 · 电磁场与电磁波 Fields &amp; Waves</p>
+      <h1>电磁波 <span class="en-title">Electromagnetic Waves</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从 vacuum（真空）中的麦克斯韦方程组 (Maxwell's equations) 出发，严格推导电磁波方程 \(\partial^{2}E/\partial x^{2}=(1/c^{2})\,\partial^{2}E/\partial t^{2}\)，并指出波速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\)。</li>
+        <li>验证平面波解 \(\vec{E}=E_{0}\cos(kx-\omega t)\,\hat{\jmath}\)、\(\vec{B}=B_{0}\cos(kx-\omega t)\,\hat{k}\)，证明 \(\vec{E}\perp\vec{B}\perp\hat{k}\)（传播方向）且三者<strong>同相</strong> (in phase)。</li>
+        <li>由法拉第定律导出振幅关系 \(E_{0}=cB_{0}\)，并解释 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\approx 3.0\times10^{8}\,\mathrm{m/s}\) 与光速相等——从而认定光就是电磁波。</li>
+        <li>计算坡印廷矢量 (Poynting vector) \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\)、时间平均强度 \(I=\langle S\rangle=E_{0}^{2}/(2\mu_{0}c)\) 与能量密度 (energy density)。</li>
+        <li>说明电磁辐射携带动量 (momentum)，给出辐射压 (radiation pressure) \(P=I/c\)（吸收）与 \(P=2I/c\)（反射），并做数值估算。</li>
+        <li>识别电磁波谱 (EM spectrum) 各频段（radio→microwave→IR→visible→UV→X-ray→gamma）的波长、频率与产生机制，理解加速电荷 (accelerating charges) 是辐射源。</li>
+        <li>应用马吕斯定律 (Malus's law) \(I=I_{0}\cos^{2}\theta\) 处理偏振片 (polarizers) 串接问题。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 真空中的麦克斯韦方程组 Maxwell's Equations in Vacuum</h3>
+      <p>在无电荷 (\(\rho=0\))、无电流 (\(\vec{J}=0\)) 的真空中，麦克斯韦方程组的微分形式 (differential form) 退化为最对称的形态：</p>
+      <div class="formula">\[ \nabla\cdot\vec{E}=0,\quad \nabla\cdot\vec{B}=0,\quad \nabla\times\vec{E}=-\pdv{\vec{B}}{t},\quad \nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\pdv{\vec{E}}{t} \]</div>
+      <p>前两式说明 \(\vec{E}\)、\(\vec{B}\) 都无散（无单极源）；后两式把电场与磁场的<strong>时间变化率</strong>相互耦合——这是波动的几何根源。麦克斯韦的伟大洞察在于：即使没有电荷电流，这种耦合也能让场以波的形式自行传播。</p>
+      <div class="key-terms">Maxwell's equations (麦克斯韦方程组), vacuum (真空), divergence (散度), curl (旋度), displacement current (位移电流)</div>
+
+      <h3>2. 波动方程与波速 The Wave Equation &amp; Speed \(c\)</h3>
+      <p>对法拉第定律两边取旋度 (curl)，并利用矢量恒等式 \(\nabla\times(\nabla\times\vec{E})=\nabla(\nabla\cdot\vec{E})-\nabla^{2}\vec{E}\) 与 \(\nabla\cdot\vec{E}=0\)，再代入安培–麦克斯韦定律（推导见下节），得：</p>
+      <div class="formula">\[ \nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}},\qquad \nabla^{2}\vec{B}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{B}}{\partial t^{2}} \]</div>
+      <p>这正是经典的<strong>波动方程</strong> (wave equation) \(\nabla^{2}f=(1/v^{2})\partial^{2}f/\partial t^{2}\)，对照可得波速：</p>
+      <div class="formula">\[ c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}}\approx 2.998\times10^{8}\,\mathrm{m/s} \]</div>
+      <p>对一维波而言写作 \(\partial^{2}E/\partial x^{2}=(1/c^{2})\,\partial^{2}E/\partial t^{2}\)。麦克斯韦发现这个 \(c\) 与实验测得的<strong>光速</strong>完全一致，于是断言：光本身就是一种电磁波。</p>
+      <div class="key-terms">wave equation (波动方程), speed of light \(c\) (光速), permittivity \(\varepsilon_{0}\) (真空电容率), permeability \(\mu_{0}\) (真空磁导率)</div>
+
+      <h3>3. 平面波解、横波性与振幅关系 Plane Wave Solution</h3>
+      <p>沿 \(+x\) 方向传播的线偏振平面波 (plane wave) 解为：</p>
+      <div class="formula">\[ \vec{E}(x,t)=E_{0}\cos(kx-\omega t)\,\hat{\jmath},\qquad \vec{B}(x,t)=B_{0}\cos(kx-\omega t)\,\hat{k} \]</div>
+      <p>其中 \(k=2\pi/\lambda\) 为波数 (wave number)，\(\omega=2\pi f=ck\) 为角频率。代入波方程要求 \(\omega/k=c\)。三个关键性质：</p>
+      <ul>
+        <li><strong>横波性 (transverse)：</strong> \(\vec{E}\) 沿 \(y\)、\(\vec{B}\) 沿 \(z\)、传播 \(\hat{\imath}\) 沿 \(x\)——三者两两垂直，即 \(\vec{E}\perp\vec{B}\perp\hat{k}\)。</li>
+        <li><strong>同相 (in phase)：</strong> \(\vec{E}\) 与 \(\vec{B}\) 在同一时刻同一位置同时达到最大、同时为零——并非相差 \(90^{\circ}\)。</li>
+        <li><strong>振幅关系：</strong> 由法拉第定律 \(\partial E_{y}/\partial x=-\partial B_{z}/\partial t\) 代入余弦解，比较系数得 <div class="formula">\[ E_{0}=cB_{0}\quad\Longleftrightarrow\quad B_{0}=\frac{E_{0}}{c} \]</div></li>
+      </ul>
+      <p>注意 SI 单位下 \(E_{0}\)（V/m）与 \(B_{0}\)（T）量纲不同，不能直接比较"大小"——但它们携带的能量密度恰好相等（见第 5 节）。</p>
+      <div class="key-terms">plane wave (平面波), wave number \(k\) (波数), transverse wave (横波), in phase (同相), polarization direction (偏振方向)</div>
+
+      <h3>4. 坡印廷矢量与强度 Poynting Vector &amp; Intensity</h3>
+      <p>电磁场携带能量，其<strong>能流密度</strong> (energy flux) 由坡印廷矢量给出：</p>
+      <div class="formula">\[ \vec{S}=\frac{1}{\mu_{0}}\vec{E}\times\vec{B} \]</div>
+      <p>对上述平面波，\(\vec{E}\times\vec{B}\) 沿传播方向 \(\hat{\imath}\)，故 \(\vec{S}\) 始终沿 \(+x\)。瞬时值 \(S=E_{0}B_{0}\cos^{2}(kx-\omega t)/\mu_{0}=E_{0}^{2}\cos^{2}(\cdot)/(\mu_{0}c)\)。对一个周期取时间平均 (\(\langle\cos^{2}\rangle=1/2\))，得<strong>强度</strong> (intensity，即平均能流)：</p>
+      <div class="formula">\[ I=\langle S\rangle=\frac{E_{0}B_{0}}{2\mu_{0}}=\frac{E_{0}^{2}}{2\mu_{0}c} \]</div>
+      <p>单位 \(\mathrm{W/m^{2}}\)。可见强度正比于振幅平方。</p>
+      <div class="key-terms">Poynting vector \(\vec{S}\) (坡印廷矢量), intensity \(I\) (强度), time average (时间平均), energy flux (能流密度)</div>
+
+      <h3>5. 能量密度 Energy Density</h3>
+      <p>电磁场的能量密度 (energy density) 是电场与磁场贡献之和：</p>
+      <div class="formula">\[ u=\underbrace{\frac{\varepsilon_{0}}{2}E^{2}}_{u_{E}}+\underbrace{\frac{1}{2\mu_{0}}B^{2}}_{u_{B}} \]</div>
+      <p>对平面波，\(B=E/c\)，于是 \(u_{B}=E^{2}/(2\mu_{0}c^{2})=(\varepsilon_{0}/2)E^{2}=u_{E}\)（用 \(1/c^{2}=\mu_{0}\varepsilon_{0}\)）。即<strong>电场与磁场的能量密度恰好相等</strong>，各占一半。总能量密度 \(u=\varepsilon_{0}E^{2}\)，时间平均 \(\langle u\rangle=\varepsilon_{0}E_{0}^{2}/2=I/c\)。这与"能量 = 能流 × 时间 / 速度"自洽：能流以速度 \(c\) 输运能量。</p>
+
+      <h3>6. 动量与辐射压 Momentum &amp; Radiation Pressure</h3>
+      <p>电磁波不仅携带能量 \(U\)，还携带动量 \(p=U/c\)（吸收情形）或 \(p=2U/c\)（完全反射）。由此，垂直入射到表面的辐射压 (radiation pressure)：</p>
+      <div class="formula">\[ P_{\text{abs}}=\frac{I}{c}\quad(\text{吸收}),\qquad P_{\text{refl}}=\frac{2I}{c}\quad(\text{完全反射}) \]</div>
+      <p>单位 \(\mathrm{Pa}=\mathrm{N/m^{2}}\)。辐射压数值上很小（阳光约 \(5\,\mu\mathrm{Pa}\)），但可累积——太阳帆 (solar sail)、彗尾背向太阳、光的激光冷却都依赖于此。</p>
+      <div class="key-terms">radiation pressure (辐射压), momentum density (动量密度), solar sail (太阳帆), absorption (吸收), reflection (反射)</div>
+
+      <h3>7. 电磁波谱 The Electromagnetic Spectrum</h3>
+      <p>所有电磁波在真空中都以 \(c\) 传播，差别仅在频率 \(f\)（或波长 \(\lambda=c/f\)）。按 \(\lambda\) 从长到短（\(f\) 从低到高）分为：</p>
+      <div class="formula">\[ \text{radio}\;\to\;\text{microwave}\;\to\;\text{IR}\;\to\;\text{visible}\;\to\;\text{UV}\;\to\;\text{X-ray}\;\to\;\gamma\text{-ray} \]</div>
+      <ul>
+        <li><strong>Radio 无线电波：</strong> \(\lambda\gtrsim 10\,\mathrm{cm}\)，\(f\lesssim 3\times10^{9}\,\mathrm{Hz}\)——天线中加速电子产生。</li>
+        <li><strong>Microwave 微波：</strong> \(\lambda\sim 1\,\mathrm{mm}\text{–}10\,\mathrm{cm}\)，\(f\sim 10^{10}\text{–}10^{11}\,\mathrm{Hz}\)——分子转动能级跃迁。</li>
+        <li><strong>Infrared 红外：</strong> \(\lambda\sim 700\,\mathrm{nm}\text{–}1\,\mathrm{mm}\)，\(f\sim 10^{11}\text{–}4\times10^{14}\,\mathrm{Hz}\)——分子振动、热辐射。</li>
+        <li><strong>Visible 可见光：</strong> \(\lambda\sim 400\text{–}700\,\mathrm{nm}\)，\(f\sim 4\text{–}7\times10^{14}\,\mathrm{Hz}\)——原子价电子跃迁。</li>
+        <li><strong>Ultraviolet 紫外：</strong> \(\lambda\sim 10\text{–}400\,\mathrm{nm}\)，\(f\sim 10^{15}\,\mathrm{Hz}\)——价/内层电子跃迁。</li>
+        <li><strong>X-ray X 射线：</strong> \(\lambda\sim 0.01\text{–}10\,\mathrm{nm}\)，\(f\sim 10^{16}\text{–}10^{19}\,\mathrm{Hz}\)——内层电子跃迁、轫致辐射 (bremsstrahlung)。</li>
+        <li><strong>Gamma 射线：</strong> \(\lambda\lesssim 0.01\,\mathrm{nm}\)，\(f\gtrsim 10^{19}\,\mathrm{Hz}\)——原子核衰变、宇宙射线。</li>
+      </ul>
+      <div class="key-terms">spectrum (波谱), wavelength \(\lambda\) (波长), frequency \(f\) (频率), bremsstrahlung (轫致辐射)</div>
+
+      <h3>8. 偏振与马吕斯定律 Polarization &amp; Malus's Law</h3>
+      <p>电磁波是横波，\(\vec{E}\) 的振动方向（在垂直于 \(\hat{k}\) 的平面内）称为<strong>偏振方向</strong> (polarization)。普通光（如阳光、灯泡）是非偏振 (unpolarized) 的——\(\vec{E}\) 在所有横向方向上随机分布。一个理想偏振片 (polarizer) 只透射 \(\vec{E}\) 平行于其透光轴的分量：</p>
+      <div class="formula">\[ \text{非偏振光过一片偏振片：}\;I_{1}=\frac{I_{0}}{2} \]</div>
+      <p>已偏振的光再过第二片（检偏器 analyzer），透光轴与偏振方向夹角为 \(\theta\)，透射强度为<strong>马吕斯定律</strong> (Malus's law)：</p>
+      <div class="formula">\[ I=I_{0}\cos^{2}\theta \]</div>
+      <p>当 \(\theta=90^{\circ}\) 时透射为零（正交偏振片），但若在两正交片之间插入一片 \(45^{\circ}\) 偏振片，光又会重新出现——这是经典的"三偏振片悖论"（见练习）。</p>
+      <div class="key-terms">polarization (偏振), unpolarized light (非偏振光), polarizer (起偏器), analyzer (检偏器), Malus's law (马吕斯定律)</div>
+
+      <h3>9. 波的产生：加速电荷 Generation by Accelerating Charges</h3>
+      <p>由麦克斯韦方程可知：静止电荷只产生静电场；匀速运动的电荷（在相对论意义上）只产生稳恒场；唯有<strong>加速</strong>的电荷 (\(a\neq 0\)) 才会辐射电磁波。这解释了天线 (antenna，振荡偶极子)、同步辐射 (synchrotron radiation，被磁场弯曲的相对论电子)、轫致辐射 (X 射线管中高速电子被原子核偏转) 等辐射机制。辐射场在远处近似为球面波，但在小范围内可视为平面波。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 14.1：从麦克斯韦方程到波动方程</h3>
+      <p class="step"><strong>步骤 1（出发点）：</strong> 真空麦克斯韦方程组：</p>
+      <div class="formula">\[ \nabla\cdot\vec{E}=0,\quad \nabla\cdot\vec{B}=0,\quad \nabla\times\vec{E}=-\pdv{\vec{B}}{t},\quad \nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\pdv{\vec{E}}{t} \]</div>
+      <p class="step"><strong>步骤 2（对法拉第定律取旋度）：</strong> 对 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\) 两边取 \(\nabla\times\)：</p>
+      <div class="formula">\[ \nabla\times(\nabla\times\vec{E})=-\pdv{}{t}(\nabla\times\vec{B}) \]</div>
+      <p class="step"><strong>步骤 3（用矢量恒等式简化左式）：</strong> 利用 \(\nabla\times(\nabla\times\vec{E})=\nabla(\nabla\cdot\vec{E})-\nabla^{2}\vec{E}\) 与 \(\nabla\cdot\vec{E}=0\)，左边化为 \(-\nabla^{2}\vec{E}\)。</p>
+      <p class="step"><strong>步骤 4（代入安培–麦克斯韦定律消去 \(\nabla\times\vec{B}\)）：</strong> 右边 \(\nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)，故：</p>
+      <div class="formula">\[ -\nabla^{2}\vec{E}=-\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}}\;\;\Longrightarrow\;\; \nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\frac{\partial^{2}\vec{E}}{\partial t^{2}} \]</div>
+      <p class="step"><strong>步骤 5（识别波速）：</strong> 与标准波方程 \(\nabla^{2}\vec{E}=(1/c^{2})\partial^{2}\vec{E}/\partial t^{2}\) 对照，得 \(1/c^{2}=\mu_{0}\varepsilon_{0}\)，即：</p>
+      <div class="formula">\[ \boxed{\,c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}}\,} \]</div>
+      <p>对 \(\vec{B}\) 重复相同步骤（对安培定律取旋度、用 \(\nabla\cdot\vec{B}=0\)、代入法拉第定律），得 \(\nabla^{2}\vec{B}=\mu_{0}\varepsilon_{0}\partial^{2}\vec{B}/\partial t^{2}\)——\(\vec{E}\)、\(\vec{B}\) 满足同一波方程、以同一速度 \(c\) 传播。</p>
+
+      <h3>推导 14.2：振幅关系 \(E_{0}=cB_{0}\) 与横波性</h3>
+      <p>设 \(\vec{E}=E_{0}\cos(kx-\omega t)\,\hat{\jmath}\)，\(\vec{B}=B_{0}\cos(kx-\omega t)\,\hat{k}\)，沿 \(+x\) 传播。</p>
+      <p class="step"><strong>法拉第定律 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)：</strong> 由于 \(\vec{E}\) 只有 \(y\) 分量且只依赖 \(x\)，\((\nabla\times\vec{E})_{z}=\partial E_{y}/\partial x=-kE_{0}\sin(kx-\omega t)\)；右边 \(-\partial B_{z}/\partial t=+\omega B_{0}\sin(kx-\omega t)\)。比较：</p>
+      <div class="formula">\[ -kE_{0}=\omega B_{0}\;\;\Longrightarrow\;\; \frac{E_{0}}{B_{0}}=\frac{\omega}{k}=c \]</div>
+      <p class="step"><strong>安培–麦克斯韦定律 \(\nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)：</strong> \((\nabla\times\vec{B})_{y}=-\partial B_{z}/\partial x=+kB_{0}\sin(kx-\omega t)\)；右边 \(\mu_{0}\varepsilon_{0}\partial E_{y}/\partial t=\mu_{0}\varepsilon_{0}\omega E_{0}\sin(kx-\omega t)\)。比较得 \(kB_{0}=\mu_{0}\varepsilon_{0}\omega E_{0}\)，即 \(E_{0}/B_{0}=k/(\mu_{0}\varepsilon_{0}\omega)=1/(\mu_{0}\varepsilon_{0}c)=c\)。两式自洽，并验证 \(\omega/k=c\)。</p>
+      <p class="step"><strong>横波性：</strong> 我们假设 \(\vec{E}\perp\hat{\imath}\)、\(\vec{B}\perp\hat{\imath}\)。事实上这可由 \(\nabla\cdot\vec{E}=0\)、\(\nabla\cdot\vec{B}=0\) 自动给出（沿 \(x\) 的平面波要求 \(\partial E_{x}/\partial x=0\)、\(\partial B_{x}/\partial x=0\)，即纵向分量恒为零）。故真空中不存在"纵向电磁波"。</p>
+
+      <h3>推导 14.3：强度公式 \(I=E_{0}^{2}/(2\mu_{0}c)\)</h3>
+      <p class="step"><strong>步骤 1：</strong> \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\)。对平面波 \(\vec{E}\parallel\hat{\jmath}\)、\(\vec{B}\parallel\hat{k}\)，\(\hat{\jmath}\times\hat{k}=\hat{\imath}\)，所以 \(S=E_{y}B_{z}/\mu_{0}\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 用 \(B_{z}=E_{y}/c\) 消去 \(B\)：\(S=E_{y}^{2}/(\mu_{0}c)=E_{0}^{2}\cos^{2}(kx-\omega t)/(\mu_{0}c)\)。</p>
+      <p class="step"><strong>步骤 3：</strong> 一个周期内 \(\langle\cos^{2}\rangle=1/2\)，故 \(\langle S\rangle=E_{0}^{2}/(2\mu_{0}c)\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 14.1 由 \(\mu_{0}\)、\(\varepsilon_{0}\) 计算光速</h4>
+        <p class="example-statement">取真空磁导率 \(\mu_{0}=4\pi\times10^{-7}\,\mathrm{T\,m/A}\)（精确），真空电容率 \(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{C^{2}/(N\,m^{2})}\)（即 \(\mathrm{F/m}\)）。计算 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 先算乘积：</p>
+          <div class="formula">\[ \mu_{0}\varepsilon_{0}=(4\pi\times10^{-7})(8.854\times10^{-12})=1.1127\times10^{-17}\,\mathrm{s^{2}/m^{2}} \]</div>
+          <p class="step">开方：</p>
+          <div class="formula">\[ \sqrt{\mu_{0}\varepsilon_{0}}=\sqrt{1.1127\times10^{-17}}=3.336\times10^{-9}\,\mathrm{s/m} \]</div>
+          <p class="step">取倒数：</p>
+          <div class="formula">\[ c=\frac{1}{3.336\times10^{-9}}=2.998\times10^{8}\,\mathrm{m/s} \]</div>
+          <p class="step">这与实验测定的光速 \(2.997\,924\,58\times10^{8}\,\mathrm{m/s}\)（精确值，用于定义"米"）一致到四位有效数字。麦克斯韦正是据此断言："光是一种电磁波。"</p>
+          <p><span class="ans">\(c\approx 2.998\times10^{8}\,\mathrm{m/s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.2 由 \(E_{0}\) 求 \(B_{0}\) 与强度</h4>
+        <p class="example-statement">一束线偏振电磁波在真空中传播，电场振幅 \(E_{0}=200\,\mathrm{V/m}\)。求：(a) 磁场振幅 \(B_{0}\)（用 T 与 nT 表示）；(b) 时间平均强度 \(I\)；(c) 平均能量密度 \(\langle u\rangle\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 解：</strong> 由 \(E_{0}=cB_{0}\)，</p>
+          <div class="formula">\[ B_{0}=\frac{E_{0}}{c}=\frac{200}{2.998\times10^{8}}=6.67\times10^{-7}\,\mathrm{T}=667\,\mathrm{nT} \]</div>
+          <p class="step"><strong>(b)</strong> 代入强度公式：</p>
+          <div class="formula">\[ I=\frac{E_{0}^{2}}{2\mu_{0}c}=\frac{(200)^{2}}{2(4\pi\times10^{-7})(2.998\times10^{8})}=\frac{4.00\times10^{4}}{753.3}=53.1\,\mathrm{W/m^{2}} \]</div>
+          <p class="step"><strong>(c)</strong> 平均能量密度：</p>
+          <div class="formula">\[ \langle u\rangle=\frac{I}{c}=\frac{53.1}{2.998\times10^{8}}=1.77\times10^{-7}\,\mathrm{J/m^{3}} \]</div>
+          <p class="step">校核：直接由 \(\langle u\rangle=\varepsilon_{0}E_{0}^{2}/2=(8.854\times10^{-12})(200)^{2}/2=1.77\times10^{-7}\,\mathrm{J/m^{3}}\) ✓。其中电场与磁场各贡献一半：\(\langle u_{E}\rangle=\langle u_{B}\rangle=8.85\times10^{-8}\,\mathrm{J/m^{3}}\)。</p>
+          <p><span class="ans">\(B_{0}=6.67\times10^{-7}\,\mathrm{T}=667\,\mathrm{nT};\;I=53.1\,\mathrm{W/m^{2}};\;\langle u\rangle=1.77\times10^{-7}\,\mathrm{J/m^{3}}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.3 太阳帆的辐射压力</h4>
+        <p class="example-statement">一正方形太阳帆面积 \(A=100\,\mathrm{m^{2}}\)，距太阳 1 AU 处，太阳常数 (solar constant) \(I=1360\,\mathrm{W/m^{2}}\)。帆面为理想反射膜。求辐射压与合力；并与吸收情形比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（完全反射）：</strong> 反射使光子动量由 \(+p\) 变为 \(-p\)，动量改变 \(\Delta p=2p\)。故辐射压：</p>
+          <div class="formula">\[ P_{\text{refl}}=\frac{2I}{c}=\frac{2(1360)}{2.998\times10^{8}}=9.07\times10^{-6}\,\mathrm{Pa} \]</div>
+          <p class="step">合力：</p>
+          <div class="formula">\[ F=P\cdot A=(9.07\times10^{-6})(100)=9.07\times10^{-4}\,\mathrm{N} \]</div>
+          <p class="step"><strong>比较（完全吸收）：</strong> \(P_{\text{abs}}=I/c=4.54\times10^{-6}\,\mathrm{Pa}\)，\(F=4.54\times10^{-4}\,\mathrm{N}\)——恰好为反射时的一半。</p>
+          <p class="step"><strong>量级感受：</strong> 即便 \(100\,\mathrm{m^{2}}\) 的大帆、完全反射，推力也只有约 \(1\,\mathrm{mN}\)（一粒米的重量），故太阳帆必须做得很薄很轻、靠长时间累积加速。</p>
+          <p><span class="ans">反射：\(P=9.07\,\mu\mathrm{Pa},\;F=9.07\times10^{-4}\,\mathrm{N}\)；吸收：\(F=4.54\times10^{-4}\,\mathrm{N}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.4 跨越电磁波谱的频率与波长</h4>
+        <p class="example-statement">对下列三种电磁波，分别用 \(f=c/\lambda\) 或 \(\lambda=c/f\) 换算（\(c=3.00\times10^{8}\,\mathrm{m/s}\)）：(a) 红光 \(\lambda=650\,\mathrm{nm}\)；(b) FM 广播 \(f=100\,\mathrm{MHz}\)；(c) 软 X 射线 \(\lambda=0.10\,\mathrm{nm}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 红光：</strong></p>
+          <div class="formula">\[ f=\frac{c}{\lambda}=\frac{3.00\times10^{8}}{650\times10^{-9}}=4.62\times10^{14}\,\mathrm{Hz} \]</div>
+          <p>对应光子能量 \(E=hf=(6.626\times10^{-34})(4.62\times10^{14})=3.06\times10^{-19}\,\mathrm{J}=1.91\,\mathrm{eV}\)（可见光波段）。</p>
+          <p class="step"><strong>(b) FM 广播：</strong></p>
+          <div class="formula">\[ \lambda=\frac{c}{f}=\frac{3.00\times10^{8}}{1.00\times10^{8}}=3.00\,\mathrm{m} \]</div>
+          <p>米数量级——故 FM 天线约 1.5 m（半波振子）效果最佳。</p>
+          <p class="step"><strong>(c) 软 X 射线：</strong></p>
+          <div class="formula">\[ f=\frac{3.00\times10^{8}}{0.10\times10^{-9}}=3.00\times10^{18}\,\mathrm{Hz} \]</div>
+          <p>光子能量 \(E=hf=1.99\times10^{-15}\,\mathrm{J}=12.4\,\mathrm{keV}\)——足以电离原子内层电子，故 X 射线有强生物损伤。</p>
+          <p><span class="ans">(a) \(4.62\times10^{14}\,\mathrm{Hz}\)；(b) \(3.00\,\mathrm{m}\)；(c) \(3.00\times10^{18}\,\mathrm{Hz}\)（\(12.4\,\mathrm{keV}\)）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 14.5 双偏振片——马吕斯定律</h4>
+        <p class="example-statement">强度 \(I_{0}=200\,\mathrm{W/m^{2}}\) 的非偏振光，依次垂直通过两片理想偏振片。第一片（起偏器）透光轴固定；第二片（检偏器）透光轴与第一片成 \(\theta=30^{\circ}\)。求透射强度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（过起偏器）：</strong> 非偏振光在所有横向方向上均匀分布，理想偏振片透射平行分量、反射/吸收垂直分量。对随机取向取平均 \(\langle\cos^{2}\rangle=1/2\)，故：</p>
+          <div class="formula">\[ I_{1}=\frac{I_{0}}{2}=\frac{200}{2}=100\,\mathrm{W/m^{2}} \]</div>
+          <p>此时光已沿第一片透光轴线偏振。</p>
+          <p class="step"><strong>步骤 2（过检偏器）：</strong> 由马吕斯定律，与起偏方向夹角 \(\theta=30^{\circ}\)：</p>
+          <div class="formula">\[ I_{2}=I_{1}\cos^{2}\theta=100\cos^{2}30^{\circ}=100\left(\frac{\sqrt{3}}{2}\right)^{2}=100\times\frac{3}{4}=75\,\mathrm{W/m^{2}} \]</div>
+          <p class="step">若 \(\theta=90^{\circ}\)（正交），则 \(I_{2}=0\)；若 \(\theta=0^{\circ}\)，则 \(I_{2}=I_{1}=100\,\mathrm{W/m^{2}}\)（最大透射）。</p>
+          <p><span class="ans">\(I_{2}=75\,\mathrm{W/m^{2}}\)（即透射 \(37.5\%\) 入射光）</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>\(\vec{E}\)、\(\vec{B}\)、\(\hat{k}\) 是<strong>两两垂直且同相</strong>的。</strong> 一个高频错误是误以为 \(\vec{E}\) 与 \(\vec{B}\) 相位差 \(90^{\circ}\)（像简谐振子的位移与速度）。事实上它们在同一时刻同一位置同时达到峰值、同时过零。它们仅在<strong>方向</strong>上垂直，在<strong>相位</strong>上一致。</li>
+        <li><strong>\(c\) 由 \(\varepsilon_{0}\)、\(\mu_{0}\) 决定，与波长无关。</strong> 所有电磁波——无论 radio 还是 gamma——在真空中都以<strong>同一</strong>速度 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\) 传播。频率只改变 \(\lambda\) 与 \(E_{0}\)，不改变 \(c\)。</li>
+        <li><strong>电磁辐射<strong>携带动量</strong>，尽管光子静质量为零。</strong> 关系式 \(p=U/c\) 来自相对论（\(E^{2}=(pc)^{2}+(mc^{2})^{2}\)，\(m=0\) 时 \(E=pc\)）。切勿因"无质量"就误以为光无动量、无压力。</li>
+        <li><strong>SI 下 \(E_{0}\) 与 \(B_{0}\) 数值相差悬殊，但能量贡献相等。</strong> 例如 \(E_{0}=200\,\mathrm{V/m}\) 时 \(B_{0}\approx 6.7\times10^{-7}\,\mathrm{T}\)，数值上看 \(B\) "小得多"。但 \(u_{E}=u_{B}\)，因为 \(\mu_{0}\) 与 \(\varepsilon_{0}\) 量级差异补偿了数值差。在比较"电场能量"与"磁场能量"时要用各自的能量密度公式，不要直接比 \(E\) 与 \(B\) 的数值。</li>
+        <li><strong>非偏振光过<strong>第一片</strong>偏振片必然损失一半强度，与偏振片是否"理想"无关。</strong> 这是入射光随机偏振方向的几何平均，而非吸收损耗。学生常把 \(I_{0}/2\) 误当成"非理想偏振片"造成。</li>
+        <li><strong>只有<strong>加速</strong>电荷才辐射，匀速运动不辐射。</strong> 这是麦克斯韦方程的直接结果（匀速电荷的场跟随其平移，不脱离场源传播）。同步辐射、轫致辐射、天线辐射，本质都是 \(a\neq 0\) 的电荷在"甩出"电磁波。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 由 \(B_{0}\) 反推 \(E_{0}\) 与强度：一电磁波磁场振幅 \(B_{0}=5.0\times10^{-8}\,\mathrm{T}\)。求 \(E_{0}\)、强度 \(I\) 与平均能量密度 \(\langle u\rangle\)。</summary>
+        <div class="hint">用 \(E_{0}=cB_{0}\)，\(I=E_{0}^{2}/(2\mu_{0}c)\)，\(\langle u\rangle=I/c\)。</div>
+        <div class="solution">\(E_{0}=cB_{0}=(2.998\times10^{8})(5.0\times10^{-8})=15.0\,\mathrm{V/m}\)。<br>\(I=E_{0}^{2}/(2\mu_{0}c)=(15.0)^{2}/753.3=0.299\,\mathrm{W/m^{2}}\)。<br>\(\langle u\rangle=I/c=0.299/(2.998\times10^{8})=9.97\times10^{-10}\,\mathrm{J/m^{3}}\)。<br><span class="ans">\(E_{0}=15.0\,\mathrm{V/m};\;I=0.30\,\mathrm{W/m^{2}};\;\langle u\rangle=1.0\times10^{-9}\,\mathrm{J/m^{3}}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 三偏振片悖论：非偏振光 \(I_{0}=80\,\mathrm{W/m^{2}}\) 依次过三片偏振片，透光轴分别为 \(0^{\circ}\)、\(45^{\circ}\)、\(90^{\circ}\)。求最终透射强度，并与"只有 \(0^{\circ}\)、\(90^{\circ}\) 两片"的情形比较。</summary>
+        <div class="hint">逐片应用 \(I_{0}/2\) 与 \(I=I_{0}\cos^{2}\theta\)，注意 \(\theta\) 是<strong>相邻两片</strong>透光轴之差。</div>
+        <div class="solution">第一片：\(I_{1}=I_{0}/2=40\,\mathrm{W/m^{2}}\)（沿 \(0^{\circ}\) 偏振）。<br>第二片（\(45^{\circ}\)）：\(I_{2}=I_{1}\cos^{2}45^{\circ}=40\times\tfrac{1}{2}=20\,\mathrm{W/m^{2}}\)（沿 \(45^{\circ}\) 偏振）。<br>第三片（\(90^{\circ}\)，与 \(45^{\circ}\) 夹 \(45^{\circ}\)）：\(I_{3}=I_{2}\cos^{2}45^{\circ}=20\times\tfrac{1}{2}=10\,\mathrm{W/m^{2}}\)。<br>而仅用 \(0^{\circ}\)、\(90^{\circ}\) 两片时 \(I=I_{1}\cos^{2}90^{\circ}=0\)。<br>含义：插入中间一片"重新投射"了偏振方向，使原本完全阻挡的光部分透过——这是量子测量中"投影测量"的经典类比。<br><span class="ans">三片：\(I_{3}=10\,\mathrm{W/m^{2}}\)（\(I_{0}/8\)）；两片：\(I=0\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 尘埃颗粒受到的太阳辐射压：球形尘埃半径 \(r=1.0\,\mu\mathrm{m}\)，密度 \(\rho=2.0\times10^{3}\,\mathrm{kg/m^{3}}\)，完全吸收阳光（\(I=1360\,\mathrm{W/m^{2}}\)）。求受力与加速度，并与太阳重力比较（在 1 AU 处太阳引力加速度 \(g_{\odot}=5.9\times10^{-3}\,\mathrm{m/s^{2}}\)）。</summary>
+        <div class="hint">截面 \(A=\pi r^{2}\)（几何截面）；\(F=IA/c\)；\(m=(4/3)\pi r^{3}\rho\)。</div>
+        <div class="solution">几何截面 \(A=\pi r^{2}=\pi(10^{-6})^{2}=3.14\times10^{-12}\,\mathrm{m^{2}}\)。<br>质量 \(m=\tfrac{4}{3}\pi r^{3}\rho=\tfrac{4}{3}\pi(10^{-6})^{3}(2.0\times10^{3})=8.38\times10^{-15}\,\mathrm{kg}\)。<br>辐射力 \(F=IA/c=(1360)(3.14\times10^{-12})/(2.998\times10^{8})=1.42\times10^{-17}\,\mathrm{N}\)。<br>加速度 \(a=F/m=1.42\times10^{-17}/8.38\times10^{-15}=1.70\times10^{-3}\,\mathrm{m/s^{2}}\)。<br>比值 \(a/g_{\odot}=1.70\times10^{-3}/5.9\times10^{-3}=0.29\)。辐射压约为引力的 29%——对微米级尘埃已不可忽略，这就是彗尾中尘埃被推离太阳的物理（Poynting–Robertson 效应进一步使小粒子螺旋落入太阳）。<br><span class="ans">\(F=1.42\times10^{-17}\,\mathrm{N};\;a=1.7\times10^{-3}\,\mathrm{m/s^{2}}\approx 0.29\,g_{\odot}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 太阳能的收集：地球表面阳光强度 \(I=800\,\mathrm{W/m^{2}}\)（阴天减弱）。一台 \(2.0\,\mathrm{m^{2}}\) 的太阳能板效率 \(18\%\)，问 1 小时收集多少电能（kWh）？该强度的等效电场振幅 \(E_{0}\) 多大？</summary>
+        <div class="hint">电能 \(=I\cdot A\cdot\eta\cdot t\)；由 \(I=E_{0}^{2}/(2\mu_{0}c)\) 反解 \(E_{0}=\sqrt{2\mu_{0}cI}\)。</div>
+        <div class="solution">入射功率 \(P_{\text{in}}=IA=800\times 2.0=1600\,\mathrm{W}\)；电输出 \(P_{\text{out}}=\eta P_{\text{in}}=0.18\times1600=288\,\mathrm{W}\)。<br>1 小时能量 \(E=P_{\text{out}}t=288\times3600=1.04\times10^{6}\,\mathrm{J}=0.288\,\mathrm{kWh}\)。<br>电场振幅：\(E_{0}=\sqrt{2\mu_{0}cI}=\sqrt{2(4\pi\times10^{-7})(2.998\times10^{8})(800)}=\sqrt{6.03\times10^{5}}=776\,\mathrm{V/m}\)。<br>（对照：晴天 \(I=1360\,\mathrm{W/m^{2}}\) 时 \(E_{0}\approx 1010\,\mathrm{V/m}\)——可见日常光照下电场振幅达数百 V/m 量级，并不"小"；只是该场以光频振荡，人体与仪表通常只对其时间平均响应。）<br><span class="ans">\(0.29\,\mathrm{kWh}\)；\(E_{0}\approx 776\,\mathrm{V/m}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">传播中的电磁波 (propagating EM wave)。沿 \(+x\) 方向传播的线偏振平面波：\(\vec{E}=E_{0}\cos(kx-\omega t)\,\hat{\jmath}\)（蓝色，竖直方向）与 \(\vec{B}=B_{0}\cos(kx-\omega t)\,\hat{k}\)（红色，深度方向，向左上方投影）。观察两者<strong>同相</strong>、<strong>互相垂直</strong>、<strong>整体向右平移</strong>。调节 \(E_{0}\) 与相对频率，读取由 \(E_{0}=cB_{0}\) 推出的 \(B_{0}\)、强度 \(I=E_{0}^{2}/(2\mu_{0}c)\)，以及恒定的波速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\)。<strong>注：</strong>动画速度与波长已可视化缩放，物理波速恒为 \(c\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-14" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-14"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-14');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical constants (SI) ------------------------------------
+          var MU0  = 4 * Math.PI * 1e-7;          // T·m/A  (exact)
+          var EPS0 = 8.854187817e-12;             // F/m
+          var C    = 1 / Math.sqrt(MU0 * EPS0);   // m/s  ≈ 2.998e8
+
+          // ---- Visualization scaling --------------------------------------
+          // (decoupled from real c — the readout shows the physical c)
+          var VIS_LAMBDA_BASE = 1080;             // pixel-wavelength at freq = 1
+          var VIS_SPEED       = 95;               // px / s (visual phase speed)
+
+          var params = { E0: 100, freq: 6.0 };
+
+          function visLambda() { return VIS_LAMBDA_BASE / params.freq; }
+          function visK()      { return 2 * Math.PI / visLambda(); }
+          function visOmega()  { return visK() * VIS_SPEED; }
+
+          // ---- 3D-to-2D projection ---------------------------------------
+          // Local axes (pixels): x = propagation (right), y = E (up),
+          // z = B (out of page, projected up-and-to-the-left at 30°).
+          var DEPTH_A = Math.PI / 6;              // 30°
+          var DEPTH_S = 0.70;
+          var OX = 96, OY = H / 2 + 18;
+          function project(x, y, z) {
+            return [OX + x - z * Math.cos(DEPTH_A) * DEPTH_S,
+                    OY - y - z * Math.sin(DEPTH_A) * DEPTH_S];
+          }
+
+          var AXIS_LEN = W - OX - 28;
+
+          // Field scales (pixels per unit). B drawn in nT for readable numbers.
+          var ePx = 0.62;                         // px per V/m  (100 V/m -> 62 px)
+          var bPx = 0.20;                         // px per nT   (333 nT  -> 67 px)
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var tt = s.t;
+              var E0    = params.E0;
+              var B0_T  = E0 / C;                 // tesla
+              var B0_nT = B0_T * 1e9;             // nano-tesla
+              var I     = (E0 * E0) / (2 * MU0 * C);
+              var lam   = visLambda(), kk = visK(), omega = visOmega();
+
+              // ---- Axis triad (upper-left corner) ---------------------------
+              var tcx = 56, tcy = 56, tlen = 30;
+              function triadEnd(ax, ay, az) {
+                return [tcx + ax - az * Math.cos(DEPTH_A) * DEPTH_S,
+                        tcy - ay - az * Math.sin(DEPTH_A) * DEPTH_S];
+              }
+              var ex = triadEnd(tlen, 0, 0);
+              PS.drawArrow(ctx, tcx, tcy, ex[0], ex[1], PS.colors.axis);
+              PS.drawText(ctx, 'x  (k̂)', ex[0] + 4, ex[1] + 4,
+                { font: '12px system-ui', color: PS.colors.axis });
+              var ey = triadEnd(0, tlen, 0);
+              PS.drawArrow(ctx, tcx, tcy, ey[0], ey[1], PS.colors.primary);
+              PS.drawText(ctx, 'y  (E)', ey[0] + 6, ey[1],
+                { font: '12px system-ui', color: PS.colors.primary });
+              var ez = triadEnd(0, 0, tlen);
+              PS.drawArrow(ctx, tcx, tcy, ez[0], ez[1], PS.colors.accent);
+              PS.drawText(ctx, 'z  (B)', ez[0] - 30, ez[1] - 2,
+                { font: '12px system-ui', color: PS.colors.accent });
+
+              // ---- Propagation axis (x) -------------------------------------
+              var a0 = project(0, 0, 0), a1 = project(AXIS_LEN, 0, 0);
+              PS.drawArrow(ctx, a0[0], a0[1], a1[0], a1[1], PS.colors.axis);
+
+              // ---- E-field envelope (polyline through tips) -----------------
+              var NSAMP = 90, i;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.2;
+              ctx.globalAlpha = 0.95;
+              ctx.beginPath();
+              for (i = 0; i <= NSAMP; i++) {
+                var xe = (i / NSAMP) * AXIS_LEN;
+                var Ey = E0 * Math.cos(kk * xe - omega * tt);
+                var pe = project(xe, Ey * ePx, 0);
+                if (i === 0) ctx.moveTo(pe[0], pe[1]); else ctx.lineTo(pe[0], pe[1]);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // E-field arrows at sparse sample points
+              var NARR = 16, j;
+              for (j = 0; j <= NARR; j++) {
+                var xa = (j / NARR) * AXIS_LEN;
+                var Eya = E0 * Math.cos(kk * xa - omega * tt);
+                if (Math.abs(Eya) < E0 * 0.04) continue;
+                var pae = project(xa, 0, 0);
+                var pbe = project(xa, Eya * ePx, 0);
+                PS.drawArrow(ctx, pae[0], pae[1], pbe[0], pbe[1], PS.colors.primary);
+              }
+
+              // ---- B-field envelope -----------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.2;
+              ctx.globalAlpha = 0.95;
+              ctx.beginPath();
+              for (i = 0; i <= NSAMP; i++) {
+                var xb = (i / NSAMP) * AXIS_LEN;
+                var Bz = B0_nT * Math.cos(kk * xb - omega * tt);
+                var pb = project(xb, 0, Bz * bPx);
+                if (i === 0) ctx.moveTo(pb[0], pb[1]); else ctx.lineTo(pb[0], pb[1]);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // B-field arrows
+              for (j = 0; j <= NARR; j++) {
+                var xa2 = (j / NARR) * AXIS_LEN;
+                var Bza = B0_nT * Math.cos(kk * xa2 - omega * tt);
+                if (Math.abs(Bza) < B0_nT * 0.04) continue;
+                var pab = project(xa2, 0, 0);
+                var pbb = project(xa2, 0, Bza * bPx);
+                PS.drawArrow(ctx, pab[0], pab[1], pbb[0], pbb[1], PS.colors.accent);
+              }
+
+              // ---- Field labels near the left end ---------------------------
+              var labE = project(0, E0 * ePx, 0);
+              PS.drawText(ctx, 'E⃗', labE[0] - 26, labE[1] + 4,
+                { font: 'bold 16px system-ui', color: PS.colors.primary });
+              var labB = project(0, 0, B0_nT * bPx);
+              PS.drawText(ctx, 'B⃗', labB[0] - 30, labB[1] - 4,
+                { font: 'bold 16px system-ui', color: PS.colors.accent });
+
+              // ---- propagation label ----------------------------------------
+              PS.drawText(ctx, 'k̂  传播方向 (+x)  propagation', a1[0] - 200, a1[1] + 20,
+                { font: '12px system-ui', color: PS.colors.axis });
+
+              // ---- Readout panel (bottom-left) ------------------------------
+              var rx = 14, ry = H - 108;
+              PS.drawText(ctx, '物理量 Physical quantities (SI):', rx, ry,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'E₀ = ' + E0.toFixed(0) + ' V/m', rx, ry + 18,
+                { font: '12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx,
+                'B₀ = E₀/c = ' + B0_T.toExponential(2) + ' T  (' + B0_nT.toFixed(0) + ' nT)',
+                rx, ry + 36, { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx,
+                'c = 1/√(μ₀ε₀) = ' + C.toExponential(3) + ' m/s',
+                rx, ry + 54, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'I = E₀²/(2μ₀c) = ' + I.toFixed(2) + ' W/m²',
+                rx, ry + 72, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'λ_vis ∝ 1/f  (此处仅可视化；真空中 c 与 f 无关)',
+                rx, ry + 90, { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- Note (top-right) -----------------------------------------
+              PS.drawText(ctx,
+                '动画为可视化缩放；物理波速恒为 c',
+                W - 12, 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-14'), [
+            { type: 'slider', key: 'E0',   label: '电场振幅 E₀ (V/m)',       min: 20,  max: 200, step: 5,   value: 100 },
+            { type: 'slider', key: 'freq', label: '相对频率 f (×10¹⁴ Hz)',  min: 2,   max: 10,  step: 0.5, value: 6.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('E0',   function (v) { params.E0   = v; });
+          ctl.on('freq', function (v) { params.freq = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>真空麦克斯韦方程组 \(\nabla\cdot\vec{E}=0\)、\(\nabla\cdot\vec{B}=0\)、\(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)、\(\nabla\times\vec{B}=\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\) 自洽地预言电磁波。</li>
+        <li>对法拉第定律取旋度即得波方程 \(\nabla^{2}\vec{E}=\mu_{0}\varepsilon_{0}\partial^{2}\vec{E}/\partial t^{2}\)，波速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\approx 3.0\times10^{8}\,\mathrm{m/s}\)——与光速相等，故光为电磁波。</li>
+        <li>平面波解：\(\vec{E}=E_{0}\cos(kx-\omega t)\,\hat{\jmath}\)、\(\vec{B}=B_{0}\cos(kx-\omega t)\,\hat{k}\)；\(\vec{E}\perp\vec{B}\perp\hat{k}\)；\(\vec{E}\)、\(\vec{B}\) 同相；振幅关系 \(E_{0}=cB_{0}\)；色散关系 \(\omega=ck\)。</li>
+        <li>坡印廷矢量 \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\) 沿传播方向；强度 \(I=\langle S\rangle=E_{0}^{2}/(2\mu_{0}c)\)；能量密度 \(u=\tfrac{\varepsilon_{0}}{2}E^{2}+\tfrac{1}{2\mu_{0}}B^{2}\)，平面波中 \(u_{E}=u_{B}\)。</li>
+        <li>辐射携带动量 \(p=U/c\)；辐射压 \(P=I/c\)（吸收）、\(P=2I/c\)（反射）。</li>
+        <li>电磁波谱按 \(\lambda\) 从长到短：radio→microwave→IR→visible(400–700 nm)→UV→X-ray→gamma，真空中波速恒为 \(c\)。</li>
+        <li>偏振：非偏振光过偏振片后 \(I\to I/2\)；已偏振光过检偏器服从马吕斯定律 \(I=I_{0}\cos^{2}\theta\)。</li>
+        <li>波由<strong>加速</strong>电荷产生（天线、同步辐射、轫致辐射）；匀速电荷不辐射。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;c=\frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}},\quad E_{0}=cB_{0},\quad \vec{S}=\frac{1}{\mu_{0}}\vec{E}\times\vec{B},\quad I=\frac{E_{0}^{2}}{2\mu_{0}c},\quad P_{\text{abs}}=\frac{I}{c},\quad I=I_{0}\cos^{2}\theta\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 电磁感应 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第10章 · 磁学与感应 Magnetism &amp; Induction</p>
+      <h1>电磁感应 <span class="en-title">Electromagnetic Induction</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>计算任意曲面上的<strong>磁通量</strong> (magnetic flux) \(\Phi_{B}=\int\vec{B}\cdot\mathrm{d}\vec{A}\)，并说明 \(\Phi_{B}\) 依赖于磁场大小、面积与<strong>取向</strong>三者。</li>
+        <li>运用<strong>法拉第电磁感应定律</strong> \(\varepsilon=-\,\mathrm{d}\Phi_{B}/\mathrm{d}t\) 与 \(N\) 匝线圈形式 \(\varepsilon=-N\,\mathrm{d}\Phi_{B}/\mathrm{d}t\) 计算感应电动势，深刻理解只有<strong>变化</strong>才产生感应。</li>
+        <li>用<strong>楞次定律</strong>判定感应电流方向，并论证它实质上是<strong>能量守恒</strong>的体现（外力必须克服感应电流引起的安培力做功）。</li>
+        <li>推导并运用<strong>动生电动势</strong> \(\varepsilon=BLv\)（导体棒在磁场中运动），完整计算滑动棒-导轨-电阻系统中的电流、安培力、外力功率与焦耳热。</li>
+        <li>区分"动生"（洛伦兹力）与"感生"（时变 \(\vec{B}\) 产生非保守感应电场，\(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)）两类机制。</li>
+        <li>分析<strong>交流发电机</strong> \(\varepsilon(t)=NBA\omega\sin\omega t\) 与<strong>理想变压器</strong> \(V_{2}/V_{1}=N_{2}/N_{1}\) 的工作原理并完成定量计算。</li>
+        <li>说明<strong>涡流</strong>的起因、利弊（感应加热、变压器损耗）与抑制方法（叠片铁芯）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 磁通量 \(\Phi_{B}\)</h3>
+      <p>给定曲面 \(S\) 与磁场 \(\vec{B}\)，<strong>磁通量</strong> (magnetic flux) 定义为：</p>
+      <div class="formula">\[ \Phi_{B}\;=\;\int_{S}\vec{B}\cdot\mathrm{d}\vec{A}\;=\;\int_{S}B\cos\theta\,\mathrm{d}A \]</div>
+      <p>其中 \(\mathrm{d}\vec{A}=\hat{n}\,\mathrm{d}A\) 是面元矢量（\(\hat{n}\) 为曲面定向法向），\(\theta\) 为 \(\vec{B}\) 与 \(\hat{n}\) 的夹角。对于<strong>闭合</strong>曲面（如球面），取外法向，高斯磁定律给出：</p>
+      <div class="formula">\[ \oint_{\partial V}\vec{B}\cdot\mathrm{d}\vec{A}=0\qquad(\nabla\cdot\vec{B}=0) \]</div>
+      <p>这反映了磁单极子不存在的事实（参见第 8 章）。SI 单位为<strong>韦伯</strong> (weber)：</p>
+      <div class="formula">\[ 1\,\mathrm{Wb}=1\,\mathrm{T\cdot m^{2}}=1\,\mathrm{V\cdot s} \]</div>
+      <p>直观地说，\(\Phi_{B}\) 量度"穿过曲面的磁场线条数"。对于<strong>均匀</strong>磁场中面积为 \(A\) 的<strong>平面</strong>线圈，公式简化为：</p>
+      <div class="formula">\[ \Phi_{B}=BA\cos\theta \]</div>
+      <p>\(\theta\) 是 \(\vec{B}\) 与线圈法向 \(\hat{n}\) 的夹角。当 \(\vec{B}\parallel\hat{n}\)（磁场垂直于线圈平面）时 \(\Phi_{B}=BA\) 最大；当 \(\vec{B}\perp\hat{n}\)（磁场平行于线圈平面）时 \(\Phi_{B}=0\)。</p>
+      <div class="key-terms">magnetic flux \(\Phi_{B}\) (磁通量), weber \(\mathrm{Wb}\) (韦伯), surface normal \(\hat{n}\) (法向)</div>
+
+      <h3>2. 法拉第电磁感应定律 Faraday's Law of Induction</h3>
+      <p>1831 年，法拉第 (Michael Faraday) 发现：<strong>当穿过闭合回路的磁通量随时间变化时，回路中就出现感应电动势</strong> (induced EMF)。其大小正比于磁通量的时间变化率，方向由下节楞次定律给出：</p>
+      <div class="formula">\[ \boxed{\;\varepsilon=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}\;} \]</div>
+      <p>若回路是 \(N\) 匝的密绕线圈 (coil)，且每匝穿过的磁通量近似相同，则各匝的感应电动势串联相加：</p>
+      <div class="formula">\[ \varepsilon=-N\,\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t} \]</div>
+      <p>式中<strong>负号</strong>并非装饰——它编码了楞次定律（见下）。SI 单位：\(1\,\mathrm{V}=1\,\mathrm{Wb/s}\)。</p>
+      <p>关键直觉：<strong>只有"变化"才产生感应电动势</strong>。一个巨大但恒定的磁通（例如 \(\Phi_{B}=10^{6}\,\mathrm{Wb}\)）不产生任何感应；而哪怕 \(10^{-3}\,\mathrm{Wb}\) 的磁通以极快的速率变化，也能产生显著的 \(\varepsilon\)。这与第 4 章（电势）、第 8 章（磁场）等"静态"概念截然不同——法拉第定律本质上是非平衡、含时的现象。</p>
+      <p>磁通量的变化可来自三种途径（任一即可）：</p>
+      <ul>
+        <li><strong>\(\vec{B}\)</strong> 的大小随时间变化（电磁铁电流变化、邻近线圈电流变化）；</li>
+        <li><strong>面积 \(A\)</strong> 变化（导线在导轨上滑动、线圈形变）；</li>
+        <li><strong>取向 \(\theta\)</strong> 变化（线圈在磁场中旋转——发电机原理）。</li>
+      </ul>
+      <div class="key-terms">Faraday's law of induction (法拉第电磁感应定律), induced EMF \(\varepsilon\) (感应电动势), N-turn coil (N 匝线圈)</div>
+
+      <h3>3. 楞次定律 Lenz's Law</h3>
+      <p><strong>楞次定律</strong>（Heinrich Lenz, 1834）给出感应电流的方向：</p>
+      <blockquote>感应电流的方向，总是使它所激发的磁场<strong>反抗</strong> (oppose) 引起感应的那一磁通量的<strong>变化</strong>。</blockquote>
+      <p>注意"反抗"的是<strong>变化</strong>，而不是磁通量本身。所以：</p>
+      <ul>
+        <li>当 \(\Phi_{B}\) <strong>增大</strong>时，感应电流产生的磁通与原磁通<strong>反向</strong>；</li>
+        <li>当 \(\Phi_{B}\) <strong>减小</strong>时，感应电流产生的磁通与原磁通<strong>同向</strong>。</li>
+      </ul>
+      <p>这正是法拉第定律中负号的物理内容。楞次定律的根基是<strong>能量守恒</strong>：感应电流所受的磁力总是反抗引起它运动的外力，因此外力必须做正功，能量才能以焦耳热的形式耗散在回路电阻上。若反过来（感应电流"帮助"变化），便会自我加速、能量凭空产生——直接违反能量守恒。本章推导 10.2 将定量论证这一点。</p>
+      <div class="key-terms">Lenz's law (楞次定律), energy conservation (能量守恒)</div>
+
+      <h3>4. 动生电动势 Motional EMF \(\varepsilon=BLv\)</h3>
+      <p>考虑一根长 \(L\) 的导体棒，在均匀磁场 \(\vec{B}\)（垂直纸面向里）中以速度 \(\vec{v}\) 向右运动，且 \(\vec{v}\perp\vec{B}\perp\vec{L}\)。棒内自由电荷随棒一起运动，受洛伦兹力 \(q\,\vec{v}\times\vec{B}\) 推动而沿棒积累，两端形成电势差。<strong>动生电动势</strong> (motional EMF) 定义为：</p>
+      <div class="formula">\[ \boxed{\;\varepsilon=\int_{\text{rod}}(\vec{v}\times\vec{B})\cdot\mathrm{d}\vec{l}=BLv\;} \]</div>
+      <p>若棒搁在两根平行导轨 (rails) 上，导轨另一端接电阻 \(R\)，则形成闭合回路，感应电流为：</p>
+      <div class="formula">\[ I=\frac{\varepsilon}{R}=\frac{BLv}{R} \]</div>
+      <p>由楞次定律，电流方向使其所受安培力 \(F_{\text{mag}}=ILB\) 指向<strong>运动反方向</strong>——必须施加外力才能维持匀速。推导见 10.1。</p>
+      <div class="key-terms">motional EMF (动生电动势), sliding rod (滑动棒), rails (导轨)</div>
+
+      <h3>5. 时变磁场与感应电场</h3>
+      <p>动生电动势的微观起源是<strong>磁</strong>部分洛伦兹力；但当磁场本身随时间变化时，回路即使静止也会产生感应电动势。这意味着存在一种<strong>非库仑</strong>、<strong>非保守</strong>的<strong>感应电场</strong> \(\vec{E}_{\text{ind}}\)，沿回路驱动电荷。麦克斯韦将其写成（<strong>麦克斯韦-法拉第方程</strong>，Maxwell–Faraday equation）：</p>
+      <div class="formula">\[ \boxed{\;\oint_{\partial S}\vec{E}\cdot\mathrm{d}\vec{l}=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}\;}\qquad\Longleftrightarrow\qquad\nabla\times\vec{E}=-\frac{\partial\vec{B}}{\partial t} \]</div>
+      <p>这与第 2 章静电场 \(\oint\vec{E}\cdot\mathrm{d}\vec{l}=0\)（保守场）形成鲜明对比——变化的磁场是电场的<strong>旋度源</strong>。感应电场不能由电势 \(V\) 全局描述（\(\vec{E}_{\text{ind}}\neq-\nabla V\)），这是它与静电场的本质差异。此项也是麦克斯韦方程组的关键一员，是第 14 章（电磁波）的物理基础。</p>
+      <div class="key-terms">induced electric field \(\vec{E}_{\text{ind}}\) (感应电场), non-conservative field (非保守场), Maxwell–Faraday equation (麦克斯韦-法拉第方程)</div>
+
+      <h3>6. 涡流 Eddy Currents</h3>
+      <p>当<strong>块状</strong>导体（而非细导线回路）处于变化磁场中或在磁场中运动时，导体内会感应出闭合的<strong>涡状感应电流</strong>，称为<strong>涡流</strong> (eddy currents)。涡流通过欧姆耗散 \(I^{2}R\) 把机械能或电磁能转化为焦耳热，因此既有用途也有不利一面：</p>
+      <ul>
+        <li><strong>利用</strong>：电磁炉 (induction stove)、感应加热 (induction heating)、涡流制动 (eddy-current brake，高速列车的一种无机械接触刹车)、金属探测器。</li>
+        <li><strong>不利</strong>：变压器铁芯发热、电机铁损、机械摆动阻尼（除非用于制动）。</li>
+      </ul>
+      <p><strong>抑制涡流</strong>的常用方法：把铁芯沿平行于磁通方向切成彼此绝缘的薄片（<strong>叠片铁芯</strong> silicon-steel laminations），切断大尺度电流回路；或选用电阻率高的铁氧体 (ferrite) 材料。</p>
+      <div class="key-terms">eddy current (涡流), Joule heating (焦耳热), laminated core (叠片铁芯), ferrite (铁氧体)</div>
+
+      <h3>7. 交流发电机 AC Generator (Alternator)</h3>
+      <p>让 \(N\) 匝矩形线圈（面积 \(A\)）在均匀磁场 \(B\) 中以角速度 \(\omega\) 绕垂直于 \(\vec{B}\) 的轴匀速转动。设 \(t=0\) 时线圈法向 \(\hat{n}\parallel\vec{B}\)，则任意时刻 \(\theta=\omega t\)，单匝磁通量为：</p>
+      <div class="formula">\[ \Phi_{B}(t)=BA\cos\omega t \]</div>
+      <p>代入法拉第定律：</p>
+      <div class="formula">\[ \boxed{\;\varepsilon(t)=-N\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=NBA\omega\,\sin\omega t\;},\qquad \varepsilon_{\max}=NBA\omega \]</div>
+      <p>这是<strong>正弦交流电动势</strong> (sinusoidal AC)。这就是<strong>交流发电机</strong> (AC generator / alternator) 的原理——机械能（汽轮机、水轮机、风机）转化为电能。市电 \(f=50\) 或 \(60\,\mathrm{Hz}\) 即由发电机的转速决定：\(f=\omega/(2\pi)=\)（转速）/60。</p>
+      <div class="key-terms">AC generator (交流发电机), alternator (同步发电机), peak EMF \(\varepsilon_{\max}\) (峰值电动势), sinusoidal AC (正弦交流)</div>
+
+      <h3>8. 理想变压器 Ideal Transformer</h3>
+      <p><strong>变压器</strong> (transformer) 由绕在同一闭合铁芯上的两组线圈构成：初级 (primary) \(N_{1}\) 匝，次级 (secondary) \(N_{2}\) 匝。初级接交变电压 \(V_{1}\)，在铁芯中产生交变磁通 \(\Phi_{B}(t)\)；铁芯的高磁导率使该磁通几乎全部穿过次级（漏磁可忽略）。对每匝线圈，感应电动势均为 \(-\mathrm{d}\Phi_{B}/\mathrm{d}t\)，故：</p>
+      <div class="formula">\[ V_{1}=-N_{1}\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t},\qquad V_{2}=-N_{2}\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}\;\Longrightarrow\;\boxed{\;\frac{V_{2}}{V_{1}}=\frac{N_{2}}{N_{1}}\;} \]</div>
+      <p>对<strong>理想</strong>变压器（无铜损、无铁损、无漏磁、自感无穷大），功率完全传递：</p>
+      <div class="formula">\[ P_{1}=P_{2}\;\Longrightarrow\;V_{1}I_{1}=V_{2}I_{2}\;\Longrightarrow\;\boxed{\;\frac{I_{2}}{I_{1}}=\frac{N_{1}}{N_{2}}\;} \]</div>
+      <p>\(N_{2}>N_{1}\) 为<strong>升压</strong> (step-up) 变压器；\(N_{2}<N_{1}\) 为<strong>降压</strong> (step-down)。变压器只能在<strong>交变</strong>电流下工作——恒定电流产生的磁通量恒定，\(\mathrm{d}\Phi_{B}/\mathrm{d}t=0\)，没有感应（这正是法拉第原始实验中"合闸或断闸瞬间"才观察到感应电流的原因）。变压器与下一章将要介绍的自感 (self-inductance) 紧密相关。</p>
+      <div class="key-terms">transformer (变压器), primary / secondary coil (初级/次级线圈), turns ratio (匝数比), step-up / step-down (升压/降压)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 10.1：动生电动势 \(\varepsilon=BLv\)（由洛伦兹力）</h3>
+      <p class="step"><strong>步骤 1（设定）：</strong> 设长 \(L\) 的直导体棒沿 \(+\hat{y}\) 方向放置；磁感应强度 \(\vec{B}=-B\,\hat{z}\)（垂直纸面向里）；棒以速度 \(\vec{v}=v\,\hat{x}\) 向右运动。</p>
+      <p class="step"><strong>步骤 2（洛伦兹力）：</strong> 棒内自由电荷（电量 \(q\)，对电子 \(q=-e\)）被棒带着一起运动，相对磁场的速度为 \(\vec{v}\)，所受磁力为 \(q\,\vec{v}\times\vec{B}\)。先计算叉积：</p>
+      <div class="formula">\[ \vec{v}\times\vec{B}=(v\,\hat{x})\times(-B\,\hat{z})=-vB\,(\hat{x}\times\hat{z}) \]</div>
+      <p>利用 \(\hat{x}\times\hat{z}=-\hat{y}\)（右手定则：\(\hat{z}\times\hat{x}=\hat{y}\)，故反向）：</p>
+      <div class="formula">\[ \vec{v}\times\vec{B}=-vB(-\hat{y})=vB\,\hat{y} \]</div>
+      <p>正电荷被推向 \(+\hat{y}\) 方向（即棒的"上端"），负电荷被推向 \(-\hat{y}\)（"下端"）。这就在棒两端形成电势差，上端电势高。</p>
+      <p class="step"><strong>步骤 3（电动势定义）：</strong> 电源电动势是非静电力对单位电荷所做的功。这里非静电力是磁力 \(q\,\vec{v}\times\vec{B}\)，所以：</p>
+      <div class="formula">\[ \varepsilon=\int_{\text{rod}}(\vec{v}\times\vec{B})\cdot\mathrm{d}\vec{l}=\int_{0}^{L}(vB\,\hat{y})\cdot(\hat{y}\,\mathrm{d}y)=vB\int_{0}^{L}\mathrm{d}y=vBL \]</div>
+      <p class="step"><strong>步骤 4（量纲校核）：</strong> \([B][L][v]=\mathrm{T\cdot m\cdot (m/s)}=\mathrm{(N/(A\cdot m))\cdot m^{2}/s}=\mathrm{N\cdot m/(A\cdot s)}=\mathrm{J/C}=\mathrm{V}\) ✓。</p>
+      <p class="step"><strong>结论：</strong> \(\varepsilon=BLv\)。棒上端（沿 \(\vec{v}\times\vec{B}\) 方向的远端）电势高。若棒搁在导轨上形成回路，回路内电流方向由楞次定律给出——棒所受安培力 \(ILB\) 必沿 \(-\hat{x}\)，反抗运动。</p>
+
+      <h3>推导 10.2：能量守恒——楞次定律的必然性</h3>
+      <p class="step"><strong>步骤 1：</strong> 考虑 10.1 中的"棒-导轨-电阻"系统，棒以匀速 \(v\) 运动。感应电流 \(I=BLv/R\)，载流棒在磁场中所受安培力大小 \(F_{\text{mag}}=ILB\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 由楞次定律，棒中电流方向使其所受安培力沿 \(-\hat{x}\)（反抗运动），故为维持匀速所需外力：</p>
+      <div class="formula">\[ F_{\text{ext}}=+ILB\quad(\text{沿}+\hat{x}) \]</div>
+      <p class="step"><strong>步骤 3：</strong> 外力功率（机械功率输入）：</p>
+      <div class="formula">\[ P_{\text{ext}}=F_{\text{ext}}\,v=(ILB)v=I(LvB)=I\,\varepsilon \]</div>
+      <p class="step"><strong>步骤 4：</strong> 代入欧姆定律 \(\varepsilon=IR\)：</p>
+      <div class="formula">\[ P_{\text{ext}}=I\,(IR)=I^{2}R \]</div>
+      <p>这正是回路中电阻消耗的焦耳热功率。<strong>外力所做的功完全转化为焦耳热</strong>——能量守恒自洽。反之，假设感应电流方向反了（"帮助"运动），安培力就推动棒加速；棒加速又增大 \(\varepsilon\)、增大 \(I\)、又增大推动力……系统能量随时间无界增长，明显违反能量守恒。所以楞次定律（即法拉第定律中的负号）是能量守恒的逻辑必然，并非独立的经验规则。</p>
+
+      <h3>推导 10.3：发电机电动势 \(\varepsilon(t)=NBA\omega\sin\omega t\)</h3>
+      <p class="step"><strong>步骤 1：</strong> \(N\) 匝线圈面积 \(A\)，绕水平轴以角速度 \(\omega\) 在水平均匀磁场 \(\vec{B}\) 中转动。设 \(t=0\) 时线圈法向 \(\hat{n}\parallel\vec{B}\)，则任意时刻 \(\hat{n}\) 与 \(\vec{B}\) 夹角 \(\theta=\omega t\)。</p>
+      <p class="step"><strong>步骤 2：</strong> 单匝穿过的磁通量：</p>
+      <div class="formula">\[ \Phi_{B}(t)=BA\cos\theta=BA\cos\omega t \]</div>
+      <p class="step"><strong>步骤 3：</strong> 由法拉第定律（注意 \(N\) 匝，每匝磁通相同）：</p>
+      <div class="formula">\[ \varepsilon(t)=-N\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=-NBA\,\frac{\mathrm{d}}{\mathrm{d}t}\cos\omega t=NBA\omega\,\sin\omega t \]</div>
+      <p class="step"><strong>步骤 4：</strong> 峰值 \(\varepsilon_{\max}=NBA\omega\)（当 \(\sin\omega t=\pm 1\)，即线圈平面平行于 \(\vec{B}\) 时）。频率 \(f=\omega/(2\pi)\)，周期 \(T=2\pi/\omega\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 滑动棒与导轨：电动势、电流、外力与功率</h4>
+        <p class="example-statement">一根长 \(L=0.20\,\mathrm{m}\) 的导体棒搁在两根水平平行导轨上，导轨另一端由电阻 \(R=0.10\,\Omega\) 闭合。整个装置处于均匀磁场 \(B=0.50\,\mathrm{T}\)（垂直纸面向里）中。棒以恒定速度 \(v=2.0\,\mathrm{m/s}\) 向右滑动。求：(a) 感应电动势 \(\varepsilon\)；(b) 感应电流 \(I\)；(c) 维持棒匀速所需外力 \(F_{\text{ext}}\)；(d) 外力功率 \(P_{\text{ext}}\) 与电阻上的焦耳热功率 \(P_{R}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由动生电动势公式：</p>
+          <div class="formula">\[ \varepsilon=BLv=(0.50)(0.20)(2.0)=0.20\,\mathrm{V} \]</div>
+          <p class="step"><strong>(b)</strong> 由欧姆定律：</p>
+          <div class="formula">\[ I=\frac{\varepsilon}{R}=\frac{0.20}{0.10}=2.0\,\mathrm{A} \]</div>
+          <p class="step">方向由楞次定律给出：棒向右运动使回路磁通（向纸面内）增加，感应电流应产生<strong>向纸面外</strong>的磁通——由右手定则，电流在棒内沿 \(+\hat{y}\)（即向上），回路中逆时针流动（俯视）。</p>
+          <p class="step"><strong>(c)</strong> 载流棒所受安培力大小 \(F_{\text{mag}}=ILB\)，由右手定则方向沿 \(-\hat{x}\)（向左，反抗运动）。要维持匀速，外力须与之等大反向：</p>
+          <div class="formula">\[ F_{\text{ext}}=ILB=(2.0)(0.20)(0.50)=0.20\,\mathrm{N}\quad(\text{向右}) \]</div>
+          <p class="step"><strong>(d)</strong> 外力功率：</p>
+          <div class="formula">\[ P_{\text{ext}}=F_{\text{ext}}\,v=(0.20)(2.0)=0.40\,\mathrm{W} \]</div>
+          <p class="step">电阻上的焦耳热功率：</p>
+          <div class="formula">\[ P_{R}=I^{2}R=(2.0)^{2}(0.10)=0.40\,\mathrm{W} \]</div>
+          <p class="step">两者相等——能量守恒自洽：外力做的机械功完全转化为电路的焦耳热。这是楞次定律在能量收支上的具体体现。</p>
+          <p><span class="ans">\(\varepsilon=0.20\,\mathrm{V},\;I=2.0\,\mathrm{A},\;F_{\text{ext}}=0.20\,\mathrm{N},\;P_{\text{ext}}=P_{R}=0.40\,\mathrm{W}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 矩形线圈进入并离开磁场区域</h4>
+        <p class="example-statement">一个正方形线圈边长 \(a=0.10\,\mathrm{m}\)、电阻 \(R=0.020\,\Omega\)，以恒定速度 \(v=0.40\,\mathrm{m/s}\) 沿水平方向进入一个宽度 \(w=0.30\,\mathrm{m}\) 的均匀磁场区域（\(B=1.5\,\mathrm{T}\)，垂直纸面向里）。设 \(t=0\) 时线圈右边缘恰到达磁场左边界。求各阶段感应电动势 \(\varepsilon(t)\) 与感应电流方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 把线圈运动分为四个阶段。先算特征时间：穿越自身宽度用时 \(\tau_{a}=a/v=0.10/0.40=0.25\,\mathrm{s}\)；穿越磁场区域用时 \(\tau_{w}=w/v=0.30/0.40=0.75\,\mathrm{s}\)。</p>
+          <p class="step"><strong>阶段 1（\(0<t<0.25\,\mathrm{s}\)，正在进入）：</strong> 线圈右边缘在磁场内、左边缘仍在场外，"在场内"的宽度从 \(0\) 增加到 \(a\)，磁通 \(\Phi_{B}=B\,(vt)\,a\) 随时间线性增加。感应电动势大小：</p>
+          <div class="formula">\[ \varepsilon_{1}=\left|-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}\right|=Bav=(1.5)(0.10)(0.40)=0.060\,\mathrm{V} \]</div>
+          <p class="step">由楞次定律，磁通（向纸面内）增加，感应电流应产生向纸面外的磁通——电流<strong>逆时针</strong>流动（俯视）。感应电流大小 \(I_{1}=\varepsilon_{1}/R=0.060/0.020=3.0\,\mathrm{A}\)。</p>
+          <p class="step"><strong>阶段 2（\(0.25<t<0.75\,\mathrm{s}\)，完全在场内）：</strong> 整个线圈都在磁场中，\(\Phi_{B}=Ba\cdot a=Ba^{2}\) 保持不变（注意：磁场宽度 \(w=0.30>a=0.10\)，线圈有一段时间完全在场内）。</p>
+          <div class="formula">\[ \varepsilon_{2}=0,\qquad I_{2}=0 \]</div>
+          <p class="step"><strong>阶段 3（\(0.75<t<1.0\,\mathrm{s}\)，正在离开）：</strong> 左边缘仍在场内、右边缘已出场外，在场内的宽度从 \(a\) 减小到 \(0\)，磁通线性减小。\(\mathrm{d}\Phi_{B}/\mathrm{d}t<0\)，故：</p>
+          <div class="formula">\[ \varepsilon_{3}=+0.060\,\mathrm{V}\;(\text{与 }\varepsilon_{1}\text{ 反向}) \]</div>
+          <p class="step">由楞次定律，磁通（向纸面内）减小，感应电流应产生向纸面内的磁通——电流<strong>顺时针</strong>流动。\(I_{3}=3.0\,\mathrm{A}\)。</p>
+          <p class="step"><strong>阶段 4（\(t>1.0\,\mathrm{s}\)，已离开）：</strong> \(\Phi_{B}=0\) 且不变，\(\varepsilon_{4}=0\)。</p>
+          <p class="step">汇总为分段函数（取"逆时针为正"约定）：</p>
+          <div class="formula">\[ \varepsilon(t)=\begin{cases}-0.060\,\mathrm{V} & 0<t<0.25\,\mathrm{s}\\ 0 & 0.25<t<0.75\,\mathrm{s}\\ +0.060\,\mathrm{V} & 0.75<t<1.0\,\mathrm{s}\\ 0 & t>1.0\,\mathrm{s}\end{cases} \]</div>
+          <p class="step"><strong>讨论：</strong> 这是一个典型的"梯形"磁通波形对应"矩形脉冲"电动势波形的例子。注意"完全在场内"阶段 \(\varepsilon=0\)——尽管磁通很大，但不变化。本章仿真互动地演示这一过程。</p>
+          <p><span class="ans">峰值 \(\varepsilon=Bav=0.060\,\mathrm{V}\)，峰值电流 \(3.0\,\mathrm{A}\)；进入时 CCW，离开时 CW</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 螺线管电流变化在副线圈中感应的电动势</h4>
+        <p class="example-statement">一个长螺线管 (solenoid)，单位长度匝数 \(n=2000\,\mathrm{turns/m}\)，截面积 \(A=4.0\,\mathrm{cm^{2}}=4.0\times10^{-4}\,\mathrm{m^{2}}\)。其电流正以 \(\mathrm{d}I/\mathrm{d}t=-10\,\mathrm{A/s}\) 的速率减小。一个 \(N=100\) 匝的副线圈紧绕在螺线管外。求副线圈中的感应电动势大小与方向。取 \(\mu_{0}=4\pi\times10^{-7}\,\mathrm{T\cdot m/A}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 长螺线管内部磁场均匀、沿轴线方向，大小为 \(B=\mu_{0}nI\)（外部近似为零）。故磁场变化率：</p>
+          <div class="formula">\[ \frac{\mathrm{d}B}{\mathrm{d}t}=\mu_{0}n\,\frac{\mathrm{d}I}{\mathrm{d}t}=(4\pi\times10^{-7})(2000)(-10)=-2.51\times10^{-2}\,\mathrm{T/s} \]</div>
+          <p class="step">副线圈每匝穿过的磁通量等于螺线管内部磁通（外部 \(B\approx 0\)）：</p>
+          <div class="formula">\[ \frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=\frac{\mathrm{d}B}{\mathrm{d}t}\cdot A=(-2.51\times10^{-2})(4.0\times10^{-4})=-1.01\times10^{-5}\,\mathrm{Wb/s} \]</div>
+          <p class="step">由法拉第定律（\(N=100\) 匝）：</p>
+          <div class="formula">\[ \varepsilon=-N\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t}=-(100)(-1.01\times10^{-5})=+1.01\times10^{-3}\,\mathrm{V}\approx+1.0\,\mathrm{mV} \]</div>
+          <p class="step"><strong>方向（楞次）：</strong> 螺线管电流减小 \(\Rightarrow\) 内部 \(\vec{B}\) 沿轴向减小。副线圈的感应电流应当产生<strong>同方向</strong>的磁通以"补偿"这一减小——即副线圈中感应电流的流向与螺线管电流<strong>相同</strong>（假设两者绕向一致）。这正与 \(\varepsilon>0\) 的符号约定吻合。</p>
+          <p class="step"><strong>讨论：</strong> 这一装置实际上是"空芯变压器"的雏形——螺线管为初级，副线圈为次级。下一章将由此引入互感 \(M\) 的概念。</p>
+          <p><span class="ans">\(|\varepsilon|\approx 1.0\,\mathrm{mV}\)，方向与螺线管电流同向（反抗其减小）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 理想变压器：匝数比、电压与电流</h4>
+        <p class="example-statement">一个理想降压变压器，初级 \(N_{1}=1000\) 匝，次级 \(N_{2}=25\) 匝。初级接到 \(V_{1}=240\,\mathrm{V}\)（有效值, RMS）的市电。次级向一个额定 \(6.0\,\mathrm{V},\,0.50\,\mathrm{A}\) 的小灯泡（视为纯电阻负载）供电。求：(a) 次级电压 \(V_{2}\)；(b) 灯泡电阻 \(R\)；(c) 初级电流 \(I_{1}\)；(d) 验证功率守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由理想变压器的电压比：</p>
+          <div class="formula">\[ \frac{V_{2}}{V_{1}}=\frac{N_{2}}{N_{1}}\;\Longrightarrow\;V_{2}=V_{1}\cdot\frac{N_{2}}{N_{1}}=240\cdot\frac{25}{1000}=6.0\,\mathrm{V} \]</div>
+          <p class="step">恰为灯泡的额定电压 ✓。这是一个 \(1:40\) 的降压变压器（\(N_{1}/N_{2}=40\)）。</p>
+          <p class="step"><strong>(b)</strong> 灯泡电阻（在额定工作条件下）：</p>
+          <div class="formula">\[ R=\frac{V_{2}}{I_{2}}=\frac{6.0}{0.50}=12\,\Omega \]</div>
+          <p class="step"><strong>(c)</strong> 由理想变压器的电流比（或功率守恒 \(V_{1}I_{1}=V_{2}I_{2}\)）：</p>
+          <div class="formula">\[ \frac{I_{2}}{I_{1}}=\frac{N_{1}}{N_{2}}\;\Longrightarrow\;I_{1}=I_{2}\cdot\frac{N_{2}}{N_{1}}=0.50\cdot\frac{25}{1000}=1.25\times10^{-2}\,\mathrm{A}=12.5\,\mathrm{mA} \]</div>
+          <p class="step"><strong>(d) 功率校核：</strong></p>
+          <div class="formula">\[ P_{1}=V_{1}I_{1}=(240)(0.0125)=3.0\,\mathrm{W} \]</div>
+          <div class="formula">\[ P_{2}=V_{2}I_{2}=(6.0)(0.50)=3.0\,\mathrm{W}\;\;\checkmark \]</div>
+          <p class="step"><strong>讨论：</strong> 降压变压器在降低电压的同时按相同比例<strong>增大</strong>了电流（\(I_{2}>I_{1}\)）。这正是为什么输电线用高压输电（\(P=IV\)，提高 \(V\) 即降低 \(I\)，从而减小 \(I^{2}R\) 线损）——并在用户端用降压变压器把电压降到安全水平。</p>
+          <p><span class="ans">\(V_{2}=6.0\,\mathrm{V},\;R=12\,\Omega,\;I_{1}=12.5\,\mathrm{mA},\;P_{1}=P_{2}=3.0\,\mathrm{W}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 旋转线圈发电机的峰值电动势</h4>
+        <p class="example-statement">一台简单交流发电机由 \(N=100\) 匝、边长 \(5.0\,\mathrm{cm}\times 8.0\,\mathrm{cm}\) 的矩形线圈组成，在 \(B=0.40\,\mathrm{T}\) 的均匀磁场中以频率 \(f=60\,\mathrm{Hz}\) 绕垂直于 \(\vec{B}\) 的轴匀速转动。求：(a) 线圈面积；(b) 角速度；(c) 峰值感应电动势 \(\varepsilon_{\max}\)；(d) 写出 \(\varepsilon(t)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 线圈面积：</p>
+          <div class="formula">\[ A=(5.0\times10^{-2})(8.0\times10^{-2})=4.0\times10^{-3}\,\mathrm{m^{2}} \]</div>
+          <p class="step"><strong>(b)</strong> 角速度：</p>
+          <div class="formula">\[ \omega=2\pi f=2\pi(60)=120\pi\,\mathrm{rad/s}\approx 377\,\mathrm{rad/s} \]</div>
+          <p class="step"><strong>(c)</strong> 由推导 10.3，峰值电动势：</p>
+          <div class="formula">\[ \varepsilon_{\max}=NBA\omega=(100)(0.40)(4.0\times10^{-3})(377)=60.3\,\mathrm{V} \]</div>
+          <p class="step"><strong>(d)</strong> 取 \(t=0\) 时线圈法向与 \(\vec{B}\) 平行：</p>
+          <div class="formula">\[ \varepsilon(t)=\varepsilon_{\max}\sin\omega t=(60.3\,\mathrm{V})\sin(377\,t) \]</div>
+          <p class="step"><strong>讨论：</strong> 实际电网发电机 \(\varepsilon_{\max}=\sqrt{2}\times 120\,\mathrm{V}\approx 170\,\mathrm{V}\)（美国家用 \(120\,\mathrm{V_{RMS}}\)）或 \(\sqrt{2}\times 220\,\mathrm{V}\approx 311\,\mathrm{V}\)（中国/欧洲）。要达到这种规模，工程上用更大的 \(N\)、\(A\)、\(B\) 与多极结构。注意峰值与有效值的关系：\(V_{\text{RMS}}=V_{\max}/\sqrt{2}\)。</p>
+          <p><span class="ans">\(A=4.0\times10^{-3}\,\mathrm{m^{2}},\;\omega\approx 377\,\mathrm{rad/s},\;\varepsilon_{\max}\approx 60.3\,\mathrm{V}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>"磁通量大就一定有感应电动势"——错。</strong>法拉第定律中只有<strong>变化率</strong> \(\mathrm{d}\Phi_{B}/\mathrm{d}t\) 才决定 \(\varepsilon\)。一个巨大但恒定的磁通（如稳态电磁铁中的线圈）不产生任何感应；而线圈刚合闸或拉闸的瞬间，磁通虽小但变化剧烈，会产生显著感应（这也是合闸瞬间容易看到火花的原因）。</li>
+        <li><strong>"楞次定律说感应电流反抗磁通本身"——错。</strong>感应电流反抗的是<strong>磁通的变化</strong>，而非磁通本身。磁通增大时感应电流产生反向磁通；磁通减小时感应电流产生同向磁通（即"帮着"维持原磁通）。这一点在例 10.2 的"离开"阶段尤为明显：感应电流方向反转，并非始终反抗原磁通。</li>
+        <li><strong>忘了磁通可以经由 \(B\)、\(A\)、\(\theta\) 三种途径变化。</strong>学生常默认只有"磁场变化"才会感应。实际上：（1）\(B\) 变（变压器、电磁铁合闸）；（2）\(A\) 变（滑动棒、形变线圈）；（3）\(\theta\) 变（发电机、地球磁场探测线圈转动）都会改变 \(\Phi_{B}\) 从而产生 \(\varepsilon\)。三种机制的法拉第定律形式完全相同。</li>
+        <li><strong>对动生电动势，认为只要棒动就有 \(\varepsilon\)。</strong>实际上 \(\varepsilon=\int(\vec{v}\times\vec{B})\cdot\mathrm{d}\vec{l}\)。若棒的运动方向 \(\vec{v}\parallel\vec{B}\)，则 \(\vec{v}\times\vec{B}=0\)，无电动势；若棒本身 \(\parallel\vec{v}\times\vec{B}\)（即沿 \(\mathrm{d}\vec{l}\) 与 \(\vec{v}\times\vec{B}\) 垂直），点积为零，也无电动势。要产生 \(\varepsilon=BLv\)，必须 \(\vec{v}\perp\vec{B}\perp\vec{L}\) 三者两两垂直。</li>
+        <li><strong>把感应电场当作普通静电场处理。</strong>时变 \(\vec{B}\) 激发的感应电场满足 \(\oint\vec{E}\cdot\mathrm{d}\vec{l}\neq 0\)，是非保守场，<strong>不能</strong>全局地用电势 \(V\) 描述（\(\vec{E}_{\text{ind}}\neq-\nabla V\)）。这与第 2 章静电场（\(\vec{E}=-\nabla V\)，环路积分为零）有本质不同。把感应电场硬套电势概念会导致自相矛盾。</li>
+        <li><strong>忽略法拉第定律中的负号。</strong>负号是楞次定律的数学化身，反映能量守恒。计算 \(\varepsilon\) 的大小时可以暂时忽略符号，但<strong>判断电流方向时必须用楞次定律</strong>，等价于保留负号。许多教科书在数值计算中只报 \(|\varepsilon|\)，学生容易误以为"符号无所谓"。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 圆形线圈在均匀增加的磁场中：半径 \(r=2.0\,\mathrm{cm}\) 的圆形线圈平面与均匀磁场垂直，磁场以 \(\mathrm{d}B/\mathrm{d}t=0.020\,\mathrm{T/s}\) 的速率增强。线圈电阻 \(R=0.50\,\Omega\)。求感应电动势 \(\varepsilon\)、感应电流 \(I\) 与焦耳热功率 \(P\)。</summary>
+        <div class="hint">磁通 \(\Phi_{B}=BA\)（\(A=\pi r^{2}\)），\(A\) 不变，故 \(\varepsilon=-A\,\mathrm{d}B/\mathrm{d}t\)。</div>
+        <div class="solution">面积 \(A=\pi(0.020)^{2}=1.257\times10^{-3}\,\mathrm{m^{2}}\)。<br>感应电动势大小：\(\varepsilon=A\,\mathrm{d}B/\mathrm{d}t=(1.257\times10^{-3})(0.020)=2.51\times10^{-5}\,\mathrm{V}=25\,\mu\mathrm{V}\)。<br>感应电流：\(I=\varepsilon/R=2.51\times10^{-5}/0.50=5.03\times10^{-5}\,\mathrm{A}=50\,\mu\mathrm{A}\)。<br>焦耳热功率：\(P=I^{2}R=(5.03\times10^{-5})^{2}(0.50)=1.26\times10^{-9}\,\mathrm{W}=1.26\,\mathrm{nW}\)。<br>方向由楞次定律：磁通（沿原方向）增加，感应电流产生反向磁通——在线圈平面内沿<strong>与原磁场成右手反向</strong>循环。<br><span class="ans">\(\varepsilon=25\,\mu\mathrm{V},\;I=50\,\mu\mathrm{A},\;P=1.26\,\mathrm{nW}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 线圈转动产生的平均感应电动势：\(N=50\) 匝、半径 \(r=5.0\,\mathrm{cm}\) 的圆形线圈在 \(B=0.30\,\mathrm{T}\) 的均匀磁场中，从"法向平行于 \(\vec{B}\)"转到"法向垂直于 \(\vec{B}\)"，用时 \(\Delta t=0.10\,\mathrm{s}\)。求这段时间内的平均感应电动势 \(|\varepsilon_{\text{avg}}|\)。</summary>
+        <div class="hint">\(\varepsilon_{\text{avg}}=-N\Delta\Phi_{B}/\Delta t\)。初始 \(\Phi=BA\)，末态 \(\Phi=0\)。</div>
+        <div class="solution">面积 \(A=\pi(0.050)^{2}=7.854\times10^{-3}\,\mathrm{m^{2}}\)。<br>初始磁通（每匝）\(\Phi_{i}=BA\cos 0^{\circ}=(0.30)(7.854\times10^{-3})=2.36\times10^{-3}\,\mathrm{Wb}\)。<br>末态 \(\Phi_{f}=BA\cos 90^{\circ}=0\)。<br>磁通总变化（\(N\) 匝）：\(\Delta(N\Phi)=N(\Phi_{f}-\Phi_{i})=50(0-2.36\times10^{-3})=-0.118\,\mathrm{Wb}\)。<br>平均感应电动势：\(|\varepsilon_{\text{avg}}|=|-\Delta(N\Phi)/\Delta t|=0.118/0.10=1.18\,\mathrm{V}\)。<br>方向由楞次定律：磁通从最大降到 0 是"减小"，感应电流产生沿原磁场方向的磁通以"反抗减小"，即在线圈内沿原方向循环。<br><span class="ans">\(|\varepsilon_{\text{avg}}|\approx 1.18\,\mathrm{V}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 旋转棒的动生电动势（速度沿棒不均匀）：一根长 \(L=0.50\,\mathrm{m}\) 的金属棒绕其一端以角速度 \(\omega=10\,\mathrm{rad/s}\) 在垂直于均匀磁场 \(B=0.20\,\mathrm{T}\) 的平面内旋转。求棒两端的感应电动势。</summary>
+        <div class="hint">棒上距转轴 \(r\) 处的线速度 \(v(r)=\omega r\)，对元段 \(\mathrm{d}r\) 有 \(\mathrm{d}\varepsilon=Bv(r)\,\mathrm{d}r\)，再沿棒积分。</div>
+        <div class="solution">元段电动势 \(\mathrm{d}\varepsilon=B\,v(r)\,\mathrm{d}r=B\omega r\,\mathrm{d}r\)。<br>整根棒的电动势：\(\varepsilon=\int_{0}^{L}B\omega r\,\mathrm{d}r=B\omega\Big[\tfrac{1}{2}r^{2}\Big]_{0}^{L}=\tfrac{1}{2}B\omega L^{2}\)。<br>代入数值：\(\varepsilon=\tfrac{1}{2}(0.20)(10)(0.50)^{2}=0.25\,\mathrm{V}\)。<br>远端（线速度大）电势高。这种"旋转棒"实际上是法拉第盘 (Faraday disk) / 单极发电机的最简形式。<br><span class="ans">\(\varepsilon=\tfrac{1}{2}B\omega L^{2}=0.25\,\mathrm{V}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 升压变压器：初级 \(N_{1}=50\) 匝，次级 \(N_{2}=5000\) 匝，初级接 \(V_{1}=12\,\mathrm{V}\)（RMS，汽车电瓶）的交流（先经逆变器）。次级开路时 \(V_{2}=\,?\) 若次级接 \(R_{L}=1.0\,\mathrm{k\Omega}\) 负载，求 \(I_{1}\)、\(I_{2}\) 与输出功率 \(P_{2}\)。</summary>
+        <div class="hint">先由 \(V_{2}/V_{1}=N_{2}/N_{1}\) 求 \(V_{2}\)；再由欧姆定律求 \(I_{2}=V_{2}/R_{L}\)；最后由功率守恒求 \(I_{1}\)。</div>
+        <div class="solution">匝数比 \(N_{2}/N_{1}=5000/50=100\)（升压 100 倍）。<br>\(V_{2}=V_{1}\cdot(N_{2}/N_{1})=12\times100=1200\,\mathrm{V}\)。<br>接负载后：\(I_{2}=V_{2}/R_{L}=1200/1000=1.20\,\mathrm{A}\)。<br>输出功率：\(P_{2}=V_{2}I_{2}=(1200)(1.20)=1440\,\mathrm{W}\)。<br>由功率守恒（理想变压器）\(P_{1}=P_{2}=1440\,\mathrm{W}\)，故 \(I_{1}=P_{1}/V_{1}=1440/12=120\,\mathrm{A}\)。<br>核验：\(I_{2}/I_{1}=1.20/120=0.01=N_{1}/N_{2}=50/5000\) ✓。<br>这是汽车点火线圈的基本原理：把 \(12\,\mathrm{V}\) 电瓶电压升到千伏以上，在火花塞间隙产生电弧。<br><span class="ans">\(V_{2}=1200\,\mathrm{V},\;I_{2}=1.20\,\mathrm{A},\;I_{1}=120\,\mathrm{A},\;P_{2}=1440\,\mathrm{W}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 把线圈从磁场中拉出（综合能量题）：边长 \(a=0.20\,\mathrm{m}\) 的正方形线圈（\(R=0.10\,\Omega\)）全部浸没在 \(B=0.50\,\mathrm{T}\) 的均匀磁场中。线圈以恒定速度 \(v=0.30\,\mathrm{m/s}\) 被拉出（沿垂直于自身一条边的方向）。"拉出"过程中只有平行于运动方向的一条边在磁场中受力。求感应电动势、电流、所需外力与机械功率，并验证等于焦耳热功率。</summary>
+        <div class="hint">在"正在被拉出"阶段，磁场中那条边的长度就是 \(a\)，故 \(\varepsilon=Bav\)。外力必须与该边所受安培力等大反向。</div>
+        <div class="solution">电动势：\(\varepsilon=Bav=(0.50)(0.20)(0.30)=0.030\,\mathrm{V}\)。<br>电流：\(I=\varepsilon/R=0.030/0.10=0.30\,\mathrm{A}\)。<br>安培力（沿运动反方向）：\(F_{\text{mag}}=ILB=(0.30)(0.20)(0.50)=0.030\,\mathrm{N}\)。<br>所需外力：\(F_{\text{ext}}=0.030\,\mathrm{N}\)（沿运动方向）。<br>机械功率：\(P_{\text{ext}}=F_{\text{ext}}\cdot v=(0.030)(0.30)=9.0\times10^{-3}\,\mathrm{W}=9.0\,\mathrm{mW}\)。<br>焦耳热功率：\(P_{R}=I^{2}R=(0.30)^{2}(0.10)=9.0\times10^{-3}\,\mathrm{W}=9.0\,\mathrm{mW}\) ✓。<br>两者相等——能量守恒。一旦线圈完全离开磁场（最后一条边也出场），\(\varepsilon\) 突然降为 0，外力所需也为 0。<br><span class="ans">\(\varepsilon=30\,\mathrm{mV},\;I=0.30\,\mathrm{A},\;F_{\text{ext}}=0.030\,\mathrm{N},\;P_{\text{ext}}=P_{R}=9.0\,\mathrm{mW}\)</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">矩形线圈 (rectangular loop) 以可调速度从左向右穿过一段均匀磁场区域（\(B\) 垂直纸面向里，用 \(\otimes\) 标记）。实时显示：<strong>磁通量 \(\Phi_{B}(t)\)</strong>、<strong>磁通变化率 \(\mathrm{d}\Phi_{B}/\mathrm{d}t\)</strong>、<strong>感应电动势 \(\varepsilon(t)=-\mathrm{d}\Phi_{B}/\mathrm{d}t\)</strong>，以及线圈上的感应电流方向（红箭头，由楞次定律给出）。注意四个阶段：(1) 进入——\(\Phi_{B}\) 线性增加，\(\varepsilon\) 为负的常数，电流逆时针 (CCW)；(2) 完全在场内——\(\Phi_{B}\) 恒定，\(\varepsilon=0\)，无电流；(3) 离开——\(\Phi_{B}\) 线性减小，\(\varepsilon\) 为正的常数，电流顺时针 (CW)；(4) 在场外——\(\Phi_{B}=0\)，\(\varepsilon=0\)。调节 \(B\)、\(v\)、线圈宽度 \(w\) 观察波形如何变化（峰值 \(\varepsilon=Bhv\)，其中 \(h\) 是线圈高度）。线圈电阻固定为 \(R=0.50\,\Omega\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="720" height="460"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+
+          // ---------------- Layout ----------------
+          var VIZ_BOTTOM = 250;
+          var PHI_Y0 = 268, PHI_Y1 = 348;     // Φ plot range
+          var EMF_Y0 = 365, EMF_Y1 = 445;     // ε plot range
+          var PLOT_PAD_TOP = 20, PLOT_PAD_BOT = 6;
+
+          // World -> pixels for the visualization
+          var WORLD_W_M = 6.0;
+          var VIZ_X_MARGIN = 32;
+          var PX_PER_M = (W - 2 * VIZ_X_MARGIN) / WORLD_W_M;
+
+          // Field region in world coords (meters)
+          var FIELD_X0 = 1.7, FIELD_X1 = 4.3;   // 2.6 m wide
+
+          // ---------------- Parameters ----------------
+          var params = {
+            B: 0.8,        // T (into page)
+            v: 0.6,        // m/s
+            w_loop: 1.0,   // m  (loop width, along motion direction)
+          };
+          var H_LOOP_M = 1.2;        // m (fixed loop height)
+          var R_LOOP = 0.50;         // Ω (fixed loop resistance)
+
+          var X_START = -0.6, X_RESET = 5.6;
+          var tWindow = 8.0;         // seconds visible on plots
+          var HIST_N = 600;
+          var histT = [], histPhi = [], histEps = [];
+
+          function xPx(xm) { return VIZ_X_MARGIN + xm * PX_PER_M; }
+          function vizYMid() { return VIZ_BOTTOM / 2 + 6; }
+          function loopHpx() { return H_LOOP_M * PX_PER_M; }
+
+          // ---------------- Physics ----------------
+          function physics(s) {
+            var xL = s.x;
+            var xR = s.x + params.w_loop;
+            var ov0 = Math.max(xL, FIELD_X0);
+            var ov1 = Math.min(xR, FIELD_X1);
+            var ovW = Math.max(0, ov1 - ov0);
+            var A = ovW * H_LOOP_M;
+            var phi = params.B * A;                // Wb
+            // d(overlapW)/dt — only nonzero when partly in & partly out
+            var dOvW_dt = 0;
+            var phase = 'outside';
+            if (params.v > 1e-9) {
+              if (xL < FIELD_X0 && xR > FIELD_X0 && xR < FIELD_X1) {
+                dOvW_dt = params.v;  phase = 'entering';
+              } else if (xL > FIELD_X0 && xL < FIELD_X1 && xR > FIELD_X1) {
+                dOvW_dt = -params.v; phase = 'leaving';
+              } else if (xL >= FIELD_X0 && xR <= FIELD_X1) {
+                phase = 'inside';
+              } else if (xR <= FIELD_X0 || xL >= FIELD_X1) {
+                phase = 'outside';
+              }
+            }
+            var dPhi = params.B * H_LOOP_M * dOvW_dt;     // Wb/s
+            var eps = -dPhi;                              // V
+            var I = eps / R_LOOP;                         // A
+            return {
+              xL: xL, xR: xR, ovW: ovW, A: A, phi: phi,
+              dOvW_dt: dOvW_dt, dPhi: dPhi, eps: eps, I: I, phase: phase,
+            };
+          }
+
+          function pushHist(t, phi, eps) {
+            histT.push(t); histPhi.push(phi); histEps.push(eps);
+            if (histT.length > HIST_N) {
+              histT.shift(); histPhi.shift(); histEps.shift();
+            }
+          }
+
+          // ---------------- Sim ----------------
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () {
+              histT = []; histPhi = []; histEps = [];
+              return { x: X_START, t: 0 };
+            },
+            step: function (dt, t, s) {
+              s.x += params.v * dt;
+              s.t += dt;
+              if (s.x > X_RESET) {
+                s.x = X_START;
+                // Keep plots scrolling — don't clear history on wrap.
+              }
+              var p = physics(s);
+              pushHist(s.t, p.phi, p.eps);
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var p = physics(s);
+
+              drawScene(ctx, s, p);
+              drawPhiPlot(ctx, s, p);
+              drawEmfPlot(ctx, s, p);
+              drawHud(ctx, s, p);
+            },
+          });
+
+          // ---------------- Scene drawing ----------------
+          function drawScene(ctx, s, p) {
+            var yMid = vizYMid();
+            var fieldHpx = H_LOOP_M * PX_PER_M + 70;
+            var fyT = yMid - fieldHpx / 2;
+            var fx0 = xPx(FIELD_X0), fx1 = xPx(FIELD_X1);
+
+            // Field-region shaded rectangle
+            ctx.save();
+            ctx.fillStyle = PS.colors.grid;
+            ctx.globalAlpha = 0.22;
+            ctx.fillRect(fx0, fyT, fx1 - fx0, fieldHpx);
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.4;
+            ctx.setLineDash([5, 4]);
+            ctx.strokeRect(fx0, fyT, fx1 - fx0, fieldHpx);
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            // X marks for B into page
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.2;
+            var mr = 6;
+            for (var xm = fx0 + 18; xm < fx1 - 10; xm += 28) {
+              for (var ym = fyT + 18; ym < fyT + fieldHpx - 12; ym += 28) {
+                ctx.beginPath();
+                ctx.moveTo(xm - mr, ym - mr); ctx.lineTo(xm + mr, ym + mr);
+                ctx.moveTo(xm + mr, ym - mr); ctx.lineTo(xm - mr, ym + mr);
+                ctx.stroke();
+              }
+            }
+            ctx.restore();
+
+            // Field label
+            PS.drawText(ctx, 'B ⊗ (into page, ' + params.B.toFixed(2) + ' T)',
+              fx0 + 8, fyT - 8,
+              { font: 'bold 12px system-ui', color: PS.colors.axis });
+
+            // Loop
+            var lp = loopPix(s);
+            ctx.save();
+            ctx.strokeStyle = PS.colors.primary;
+            ctx.lineWidth = 3;
+            ctx.strokeRect(lp.xL, lp.yT, lp.xR - lp.xL, lp.yB - lp.yT);
+            // Resistor indicator on the top edge (small box)
+            var resX = (lp.xL + lp.xR) / 2 - 10;
+            ctx.fillStyle = PS.colors.bg;
+            ctx.fillRect(resX, lp.yT - 5, 20, 10);
+            ctx.strokeStyle = PS.colors.primary;
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(resX, lp.yT - 5, 20, 10);
+            ctx.restore();
+            PS.drawText(ctx, 'R = ' + R_LOOP.toFixed(2) + ' Ω',
+              (lp.xL + lp.xR) / 2, lp.yT - 12,
+              { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+
+            // Current direction arrows on the 4 edges (Lenz)
+            if (Math.abs(p.I) > 1e-6) {
+              var entering = (p.dOvW_dt > 0);   // entering → induced CCW (B out of page)
+              var ccw = entering;               // for B into page
+              var color = PS.colors.accent;
+              var arrLen = 16;
+              var xMid = (lp.xL + lp.xR) / 2;
+              var yMidLp = lp.yMid;
+              // Top edge: CCW → LEFT ; CW → RIGHT
+              PS.drawArrow(ctx, xMid, lp.yT, xMid + (ccw ? -1 : +1) * arrLen, lp.yT, color);
+              // Bottom edge: CCW → RIGHT ; CW → LEFT
+              PS.drawArrow(ctx, xMid, lp.yB, xMid + (ccw ? +1 : -1) * arrLen, lp.yB, color);
+              // Left edge: CCW → DOWN (canvas +y) ; CW → UP
+              PS.drawArrow(ctx, lp.xL, yMidLp, lp.xL, yMidLp + (ccw ? +1 : -1) * arrLen, color);
+              // Right edge: CCW → UP ; CW → DOWN
+              PS.drawArrow(ctx, lp.xR, yMidLp, lp.xR, yMidLp + (ccw ? -1 : +1) * arrLen, color);
+
+              var dirTxt = ccw ? '逆时针 CCW (产生 ⊙)' : '顺时针 CW (产生 ⊗)';
+              PS.drawText(ctx, dirTxt, xMid, lp.yB + 18,
+                { font: 'bold 12px system-ui', color: PS.colors.accent, align: 'center' });
+              PS.drawText(ctx, 'I = ' + p.I.toFixed(2) + ' A',
+                xMid, lp.yB + 34,
+                { font: '12px system-ui', color: PS.colors.accent, align: 'center' });
+            } else {
+              PS.drawText(ctx, 'I = 0  (Φ 不变)', (lp.xL + lp.xR) / 2, lp.yB + 18,
+                { font: '12px system-ui', color: PS.colors.text, align: 'center' });
+            }
+
+            // Velocity arrow under the loop
+            var vArrY = lp.yB + 56;
+            var vLen = Math.max(20, params.v * 40);
+            PS.drawArrow(ctx, lp.xL, vArrY, lp.xL + vLen, vArrY, PS.colors.accent2,
+              'v = ' + params.v.toFixed(2) + ' m/s');
+
+            // Phase label (top-left of viz)
+            var phaseLabel = ({
+              outside: '场外 outside: ε = 0',
+              entering: '进入 entering: ε = −Bhv',
+              inside: '场内 inside: ε = 0 (Φ 恒定)',
+              leaving: '离开 leaving: ε = +Bhv',
+            })[p.phase];
+            PS.drawText(ctx, '状态: ' + phaseLabel, 12, 16,
+              { font: 'bold 12px system-ui', color: PS.colors.primary });
+          }
+
+          function loopPix(s) {
+            var xL = xPx(s.x);
+            var xR = xPx(s.x + params.w_loop);
+            var yMid = vizYMid();
+            var hpx = loopHpx();
+            return {
+              xL: xL, xR: xR, yT: yMid - hpx / 2, yB: yMid + hpx / 2,
+              yMid: yMid, hpx: hpx,
+            };
+          }
+
+          // ---------------- Φ plot ----------------
+          function drawPhiPlot(ctx, s, p) {
+            var x0 = VIZ_X_MARGIN, x1 = W - VIZ_X_MARGIN;
+            ctx.save();
+            ctx.fillStyle = PS.colors.bg;
+            ctx.fillRect(x0, PHI_Y0, x1 - x0, PHI_Y1 - PHI_Y0);
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x0, PHI_Y0, x1 - x0, PHI_Y1 - PHI_Y0);
+            PS.drawText(ctx, 'Φ_B(t)  磁通量 (Wb)', x0 + 8, PHI_Y0 + 14,
+              { font: 'bold 12px system-ui', color: PS.colors.text });
+
+            var phiMax = params.B * params.w_loop * H_LOOP_M * 1.10;
+            if (phiMax < 1e-9) phiMax = 1e-9;
+            var plotH = (PHI_Y1 - PHI_Y0) - PLOT_PAD_TOP - PLOT_PAD_BOT;
+            var baseY = PHI_Y1 - PLOT_PAD_BOT;
+
+            if (histT.length > 1) {
+              var tNow = s.t;
+              var tMin = Math.max(0, tNow - tWindow);
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.9;
+              ctx.beginPath();
+              var started = false;
+              for (var i = 0; i < histT.length; i++) {
+                var ti = histT[i];
+                if (ti < tMin) continue;
+                var px = x0 + ((ti - tMin) / tWindow) * (x1 - x0);
+                var py = baseY - (histPhi[i] / phiMax) * plotH;
+                if (!started) { ctx.moveTo(px, py); started = true; }
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              // Current point dot
+              var lastI = histT.length - 1;
+              var pxN = x0 + ((histT[lastI] - tMin) / tWindow) * (x1 - x0);
+              var pyN = baseY - (histPhi[lastI] / phiMax) * plotH;
+              PS.drawCircle(ctx, pxN, pyN, 3.5, { fill: PS.colors.accent2 });
+            }
+
+            PS.drawText(ctx,
+              'Φ = ' + p.phi.toFixed(3) + ' Wb   (dΦ/dt = ' + p.dPhi.toFixed(3) + ' Wb/s)',
+              x1 - 8, PHI_Y0 + 14,
+              { font: '12px system-ui', color: PS.colors.accent2, align: 'right' });
+            ctx.restore();
+          }
+
+          // ---------------- ε plot ----------------
+          function drawEmfPlot(ctx, s, p) {
+            var x0 = VIZ_X_MARGIN, x1 = W - VIZ_X_MARGIN;
+            ctx.save();
+            ctx.fillStyle = PS.colors.bg;
+            ctx.fillRect(x0, EMF_Y0, x1 - x0, EMF_Y1 - EMF_Y0);
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x0, EMF_Y0, x1 - x0, EMF_Y1 - EMF_Y0);
+            PS.drawText(ctx, 'ε(t) = −dΦ_B/dt  感应电动势 (V)', x0 + 8, EMF_Y0 + 14,
+              { font: 'bold 12px system-ui', color: PS.colors.text });
+
+            var plotH = (EMF_Y1 - EMF_Y0) - PLOT_PAD_TOP - PLOT_PAD_BOT;
+            var yMidAxis = EMF_Y0 + PLOT_PAD_TOP + plotH / 2;
+            var epsMax = params.B * H_LOOP_M * Math.max(0.05, params.v) * 1.25;
+            if (epsMax < 1e-9) epsMax = 1e-9;
+
+            // Zero line
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(x0, yMidAxis); ctx.lineTo(x1, yMidAxis); ctx.stroke();
+            ctx.setLineDash([]);
+            PS.drawText(ctx, '0', x0 + 4, yMidAxis - 3,
+              { font: '10px system-ui', color: PS.colors.axis });
+
+            if (histT.length > 1) {
+              var tNow = s.t;
+              var tMin = Math.max(0, tNow - tWindow);
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 1.9;
+              ctx.beginPath();
+              var started = false;
+              for (var i = 0; i < histT.length; i++) {
+                var ti = histT[i];
+                if (ti < tMin) continue;
+                var px = x0 + ((ti - tMin) / tWindow) * (x1 - x0);
+                var py = yMidAxis - (histEps[i] / epsMax) * (plotH / 2);
+                if (!started) { ctx.moveTo(px, py); started = true; }
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              var lastI = histT.length - 1;
+              var pxN = x0 + ((histT[lastI] - tMin) / tWindow) * (x1 - x0);
+              var pyN = yMidAxis - (histEps[lastI] / epsMax) * (plotH / 2);
+              PS.drawCircle(ctx, pxN, pyN, 3.5, { fill: PS.colors.accent });
+            }
+
+            PS.drawText(ctx,
+              'ε = ' + p.eps.toFixed(3) + ' V,   I = ε/R = ' + p.I.toFixed(3) + ' A',
+              x1 - 8, EMF_Y0 + 14,
+              { font: '12px system-ui', color: PS.colors.accent, align: 'right' });
+            ctx.restore();
+          }
+
+          // ---------------- HUD ----------------
+          function drawHud(ctx, s, p) {
+            // Phase banner (bottom of canvas)
+            var banner = ({
+              outside: '场外 outside — 磁通恒为 0；无感应',
+              entering: '进入 entering — 磁通增加；感应电流 CCW，产生 ⊙ 反抗 ⊗ 增多',
+              inside: '场内 inside — 磁通最大但恒定；无感应（关键：变化才是关键！）',
+              leaving: '离开 leaving — 磁通减小；感应电流 CW，产生 ⊗ 反抗 ⊗ 减小',
+            })[p.phase];
+            PS.drawText(ctx, banner, W / 2, H - 6,
+              { font: '12px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          // ---------------- Controls ----------------
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'B', label: '磁场 B (T)', min: 0.10, max: 2.00, step: 0.05, value: 0.80 },
+            { type: 'slider', key: 'v', label: '速度 v (m/s)', min: 0.10, max: 2.00, step: 0.05, value: 0.60 },
+            { type: 'slider', key: 'w_loop', label: '线圈宽度 w (m)', min: 0.40, max: 2.00, step: 0.10, value: 1.00 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('B', function (v) { params.B = v; });
+          ctl.on('v', function (v) { params.v = v; });
+          ctl.on('w_loop', function (v) { params.w_loop = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>磁通量</strong>：\(\Phi_{B}=\int_{S}\vec{B}\cdot\mathrm{d}\vec{A}\)，单位 \(\mathrm{Wb}=\mathrm{T\cdot m^{2}}\)。对闭合曲面 \(\oint\vec{B}\cdot\mathrm{d}\vec{A}=0\)（无磁单极）。对均匀场中平面线圈 \(\Phi_{B}=BA\cos\theta\)。</li>
+        <li><strong>法拉第定律</strong>：\(\varepsilon=-\,\mathrm{d}\Phi_{B}/\mathrm{d}t\)；\(N\) 匝线圈 \(\varepsilon=-N\,\mathrm{d}\Phi_{B}/\mathrm{d}t\)。只有<strong>变化</strong>才感应；变化可来自 \(B\)、\(A\) 或 \(\theta\)。</li>
+        <li><strong>楞次定律</strong>：感应电流<strong>反抗磁通的变化</strong>（不是磁通本身）——能量守恒的逻辑必然，体现为法拉第定律中的负号。</li>
+        <li><strong>动生电动势</strong>：\(\varepsilon=\int(\vec{v}\times\vec{B})\cdot\mathrm{d}\vec{l}\)，对垂直棒 \(\varepsilon=BLv\)。微观起源是磁部分洛伦兹力。</li>
+        <li><strong>感生电场</strong>（时变 \(B\)）：\(\oint\vec{E}\cdot\mathrm{d}\vec{l}=-\mathrm{d}\Phi_{B}/\mathrm{d}t\)，即 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)。该 \(\vec{E}_{\text{ind}}\) 是非保守场，不能由电势全局描述。</li>
+        <li><strong>能量守恒</strong>（动生情形）：\(P_{\text{ext}}=F_{\text{ext}}v=I\varepsilon=I^{2}R=P_{\text{焦耳热}}\)。</li>
+        <li><strong>交流发电机</strong>：\(\varepsilon(t)=NBA\omega\sin\omega t\)，峰值 \(\varepsilon_{\max}=NBA\omega\)。</li>
+        <li><strong>理想变压器</strong>：\(V_{2}/V_{1}=N_{2}/N_{1}\)，\(I_{2}/I_{1}=N_{1}/N_{2}\)，\(P_{1}=P_{2}\)。</li>
+        <li><strong>涡流</strong>：块状导体中的感应电流；用叠片铁芯或高阻铁氧体抑制。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\Phi_{B}=\int\vec{B}\cdot\mathrm{d}\vec{A},\quad \varepsilon=-N\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t},\quad \varepsilon_{\text{motional}}=BLv,\quad \oint\vec{E}\cdot\mathrm{d}\vec{l}=-\frac{\mathrm{d}\Phi_{B}}{\mathrm{d}t},\quad \varepsilon_{\max}=NBA\omega,\quad \frac{V_{2}}{V_{1}}=\frac{N_{2}}{N_{1}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

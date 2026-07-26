@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 电场 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第二学期 · 第2章 · 静电学 Electrostatics</p>
+      <h1>电场 <span class="en-title">Electric Field</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>用电场强度 (electric field) \(\vec{E}=\vec{F}/q\) 的定义式，解释为什么电场是空间性质而与试探电荷 (test charge) 无关，并说明单位 \(\mathrm{N/C}=\mathrm{V/m}\)。</li>
+        <li>计算点电荷 (point charge) 的电场 \(E=kQ/r^2\)，并按 \(Q\) 的符号判定方向。</li>
+        <li>运用叠加原理 (superposition principle) 对多个点电荷及连续电荷分布 (continuous charge distribution) 作矢量叠加。</li>
+        <li>通过积分求出带电圆环 (charged ring) 轴线上的电场 \(E(z)=kQz/(R^2+z^2)^{3/2}\)，并推广到线电荷与带电圆盘 (disk)。</li>
+        <li>按规则绘制与判读电场线 (electric field lines)，并由疏密与切向读出场强大小与方向。</li>
+        <li>分析电偶极子 (electric dipole)：电偶极矩 \(\vec{p}=q\vec{d}\)，轴上与赤道面上的远场，力矩 \(\vec{\tau}=\vec{p}\times\vec{E}\) 与势能 \(U=-\vec{p}\cdot\vec{E}\)。</li>
+        <li>在多源问题中（含“场强为零点”）正确列出矢量方程并求解。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 电场与电场强度 Electric Field and Its Strength</h3>
+      <p>库仑定律 (Coulomb's law) 告诉我们两个点电荷之间有超距作用力，但现代观点是：任何电荷都在其周围空间产生一个<strong>场</strong>，而另一个电荷「感受」到的力正是这个场所施加的。<strong>电场强度</strong> (electric field) \(\vec{E}\) 定义为：在该点放置一个静止的、足够小的<strong>试探电荷</strong> (test charge) \(q_0\)，单位电荷所受的力：</p>
+      <div class="formula">\[ \vec{E}(\vec{r})\;\equiv\;\lim_{q_0\to 0}\frac{\vec{F}_{\text{on }q_0}}{q_0} \]</div>
+      <p>取极限 \(q_0\to 0\) 是为了不让试探电荷扰动源电荷分布。\(\vec{E}\) 是<strong>矢量场</strong> (vector field)：空间每一点都有一个矢量。它<strong>独立于试探电荷存在</strong>——即使该点没有电荷，场依然在那里。其 SI 单位为 \(\mathrm{N/C}\)，等价于 \(\mathrm{V/m}\)（第 3 章会看到）。</p>
+
+      <h3>2. 点电荷的电场 Field of a Point Charge</h3>
+      <p>由库仑定律 \(\vec{F}=kqQ\hat{r}/r^2\)，取 \(q_0=1\) 即得一个点电荷 \(Q\) 在距离 \(r\) 处产生的电场：</p>
+      <div class="formula">\[ \vec{E}=\frac{1}{4\pi\varepsilon_0}\,\frac{Q}{r^2}\,\hat{r}=k\,\frac{Q}{r^2}\,\hat{r},\qquad k=\frac{1}{4\pi\varepsilon_0}\approx 8.99\times 10^{9}\,\mathrm{N\,m^2/C^2} \]</div>
+      <p>其中 \(\varepsilon_0=8.854\times 10^{-12}\,\mathrm{C^2/(N\,m^2)}\) 为真空电容率 (permittivity of free space)，\(\hat{r}\) 是由源电荷 \(Q\) 指向场点的单位矢量。当 \(Q>0\) 时 \(\vec{E}\) 沿 \(\hat{r}\) <strong>向外</strong>；当 \(Q<0\) 时沿 \(-\hat{r}\) <strong>向内</strong>。注意 \(|\vec{E}|\) 只取决于 \(|Q|\)，符号仅决定方向。</p>
+
+      <h3>3. 叠加原理 Superposition Principle</h3>
+      <p>实验事实：库仑力是线性相加的。多个源电荷共同产生的电场等于每个源电荷<strong>单独</strong>存在时所产生的电场的<strong>矢量和</strong>：</p>
+      <div class="formula">\[ \vec{E}(\vec{r})=\sum_{i=1}^{N}\,k\,\frac{Q_i}{r_i^{2}}\,\hat{r}_i \]</div>
+      <p>对<strong>连续电荷分布</strong>，把分布切成无穷小电荷元 \(\mathrm{d}q\)，求和化为积分：</p>
+      <div class="formula">\[ \vec{E}(\vec{r})=\int \mathrm{d}\vec{E}=\int k\,\frac{\mathrm{d}q}{r^2}\,\hat{r} \]</div>
+      <p>常见密度：线电荷密度 (linear charge density) \(\lambda=\mathrm{d}q/\mathrm{d}\ell\)、面电荷密度 (surface charge density) \(\sigma=\mathrm{d}q/\mathrm{d}A\)、体电荷密度 \(\rho=\mathrm{d}q/\mathrm{d}V\)。</p>
+
+      <h3>4. 连续电荷分布：线、环、盘 Continuous Distributions</h3>
+      <p><strong>(a) 无限长均匀带电直线</strong> (infinite line of charge)：到直线垂直距离 \(r\) 处，方向垂直于直线：</p>
+      <div class="formula">\[ E=\frac{\lambda}{2\pi\varepsilon_0\,r}=\frac{2k\lambda}{r}\qquad(\propto 1/r) \]</div>
+      <p><strong>(b) 半径 \(R\)、总电荷 \(Q\) 的带电圆环</strong>，其<strong>轴线</strong>上离环心 \(z\) 处（见推导 A）：</p>
+      <div class="formula">\[ E_{\text{ring}}(z)=\frac{1}{4\pi\varepsilon_0}\,\frac{Q\,z}{(R^2+z^2)^{3/2}} \]</div>
+      <p>环心 \(z=0\) 处 \(E=0\)（对称抵消）；远处 \(z\gg R\) 时 \(E\to kQ/z^2\)（趋近点电荷）。</p>
+      <p><strong>(c) 半径 \(R\)、面电荷密度 \(\sigma\) 的带电圆盘</strong>，轴线上离盘心 \(z\) 处（把圆盘看作无穷多同心环叠加）：</p>
+      <div class="formula">\[ E_{\text{disk}}(z)=\frac{\sigma}{2\varepsilon_0}\!\left(1-\frac{z}{\sqrt{z^2+R^2}}\right) \]</div>
+      <p>令 \(R\to\infty\) 得<strong>无限大带电平面</strong>的匀强电场：\(E=\sigma/(2\varepsilon_0)\)（与 \(z\) 无关）。</p>
+
+      <h3>5. 电场线 Electric Field Lines</h3>
+      <p>电场线是把<strong>矢量场</strong>直观图像化的一种曲线。绘制与判读遵循以下规则：</p>
+      <ul>
+        <li><strong>方向</strong>：曲线上每一点的切线方向即该点 \(\vec{E}\) 的方向。</li>
+        <li><strong>起止</strong>：从正电荷出发，到负电荷终止（或延伸到无穷远）。</li>
+        <li><strong>疏密</strong>：单位横截面积穿过的场线数 \(\propto |\vec{E}|\)——场线越密，场强越大。</li>
+        <li><strong>不相交</strong>：任意两条场线绝不会相交（否则交点会有两个方向，违背 \(\vec{E}\) 的单值性）。</li>
+        <li><strong>静态分布</strong>：静电场中场线无闭合回路（这一点将在第 4 章由 \(\vec{E}=-\nabla V\) 严格说明）。</li>
+      </ul>
+
+      <h3>6. 电偶极子 The Electric Dipole</h3>
+      <p>两个等量异号 \(\pm q\)、相距 \(d\)（由 \(-q\) 指向 \(+q\) 的位移为 \(\vec{d}\)）构成的体系称为<strong>电偶极子</strong> (electric dipole)。其<strong>电偶极矩</strong> (dipole moment) 为：</p>
+      <div class="formula">\[ \vec{p}=q\,\vec{d}\qquad(\text{由 }-q\text{ 指向 }+q) \]</div>
+      <p>偶极子的总电荷为零，但它产生的场并不为零——只是因正负电荷近乎相消而在远处衰减更快。在偶极子<strong>轴线</strong>上离中心 \(r\gg d\) 处（沿 \(\vec{p}\) 方向）：</p>
+      <div class="formula">\[ \vec{E}_{\text{axis}}\approx \frac{1}{4\pi\varepsilon_0}\,\frac{2p}{r^3}\,\hat{p} \]</div>
+      <p>在<strong>垂直平分面</strong>（赤道面）上离中心 \(r\gg d\) 处，场方向<strong>与 \(\vec{p}\) 反向</strong>，大小为轴线之半：</p>
+      <div class="formula">\[ \vec{E}_{\text{eq}}\approx -\,\frac{1}{4\pi\varepsilon_0}\,\frac{p}{r^3}\,\hat{p}\quad\Longrightarrow\quad |\vec{E}_{\text{eq}}|=\frac{1}{4\pi\varepsilon_0}\,\frac{p}{r^3} \]</div>
+      <p>无论哪个方向，偶极子远场都按 \(1/r^3\) 衰减（比点电荷的 \(1/r^2\) 更快），这正是正负源近乎相消的体现。</p>
+      <p>把偶极子放入<strong>均匀外场</strong> \(\vec{E}\) 中：两电荷受力等大反向，合力为零但合力矩不为零。力矩 (torque) 与势能 (potential energy) 为：</p>
+      <div class="formula">\[ \vec{\tau}=\vec{p}\times\vec{E},\qquad |\tau|=pE\sin\theta;\qquad U=-\vec{p}\cdot\vec{E}=-pE\cos\theta \]</div>
+      <p>力矩倾向于把 \(\vec{p}\) 拉向与 \(\vec{E}\) 同向（\(\theta=0\)，\(U=-pE\) 最小，稳定平衡）；\(\theta=\pi\) 时 \(U=+pE\) 最大（不稳定平衡）。把偶极子从 \(\theta=0\) 翻到 \(\theta=\pi\) 需外界做功 \(\Delta U=2pE\)。</p>
+
+      <div class="key-terms">electric field (电场), test charge (试探电荷), Coulomb's law (库仑定律), Coulomb constant \(k\) (库仑常数), permittivity of free space \(\varepsilon_0\) (真空电容率), superposition principle (叠加原理), continuous charge distribution (连续电荷分布), linear/surface/volume charge density \(\lambda,\sigma,\rho\) (线/面/体电荷密度), electric field line (电场线), electric dipole (电偶极子), dipole moment \(\vec{p}\) (电偶极矩), torque (力矩), potential energy of a dipole (电偶极子势能)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：带电圆环轴线上的电场（积分）Field on the Axis of a Charged Ring</h3>
+      <p>设半径为 \(R\)、总电荷 \(Q\) 均匀分布在环上，求轴线上离环心距离 \(z\) 处 \(P\) 点的电场。取一弧元 \(\mathrm{d}\ell\)，其电荷 \(\mathrm{d}q=(Q/2\pi R)\,\mathrm{d}\ell\)。它到 \(P\) 的距离 \(r=\sqrt{R^2+z^2}\) 对所有弧元<strong>相同</strong>。该电荷元在 \(P\) 产生的场大小为：</p>
+      <div class="formula">\[ \mathrm{d}E=\frac{1}{4\pi\varepsilon_0}\,\frac{\mathrm{d}q}{R^2+z^2} \]</div>
+      <p>把 \(\mathrm{d}\vec{E}\) 分解为<strong>轴向分量</strong> \(\mathrm{d}E_z\) 与<strong>垂直轴线分量</strong>。由旋转对称性，整个环上成对的对称电荷元在垂直方向相消，只有轴向分量存活。设 \(r\) 与轴夹角为 \(\theta\)，则 \(\cos\theta=z/r=z/\sqrt{R^2+z^2}\)，故：</p>
+      <div class="formula">\[ \mathrm{d}E_z=\mathrm{d}E\,\cos\theta=\frac{1}{4\pi\varepsilon_0}\,\frac{\mathrm{d}q}{R^2+z^2}\,\frac{z}{\sqrt{R^2+z^2}}=\frac{1}{4\pi\varepsilon_0}\,\frac{z\,\mathrm{d}q}{(R^2+z^2)^{3/2}} \]</div>
+      <p>\(z\) 与 \((R^2+z^2)\) 对所有 \(\mathrm{d}q\) 都是常数，提到积分号外：</p>
+      <div class="formula">\[ E_z=\frac{1}{4\pi\varepsilon_0}\,\frac{z}{(R^2+z^2)^{3/2}}\int\mathrm{d}q=\frac{1}{4\pi\varepsilon_0}\,\frac{Q\,z}{(R^2+z^2)^{3/2}} \]</div>
+      <p>方向沿轴线（\(Q>0,z>0\) 时指向远离环心）。</p>
+      <p><strong>极限检验</strong>：(i) \(z=0\)（环心）→ \(E=0\) ✓；(ii) \(z\gg R\) → \((R^2+z^2)^{3/2}\approx z^3\)，故 \(E\approx kQ/z^2\)，即远看似点电荷 ✓。</p>
+      <p><strong>极大值</strong>：令 \(\dv{E_z}{z}=0\) 得 \(z=R/\sqrt{2}\)（见练习 2）——轴线上的场并非单调，在环心为零、在 \(R/\sqrt{2}\) 处达到极大、然后按 \(1/z^2\) 衰减。</p>
+
+      <h3>推导 B：偶极子在轴线与赤道面上的远场 Dipole Far-Field on Axis and Equator</h3>
+      <p>设 \(-q\) 位于 \(x=-d/2\)、\(+q\) 位于 \(x=+d/2\)。\(\vec{p}=qd\,\hat{x}\)。<strong>轴线上</strong>一点 \(P\) 在 \(+q\) 一侧，到偶极子中心距离 \(x\gg d\)：</p>
+      <div class="formula">\[ E_x=kq\!\left[\frac{1}{(x-d/2)^2}-\frac{1}{(x+d/2)^2}\right] \]</div>
+      <p>分子差为 \((x+d/2)^2-(x-d/2)^2=2xd\)；取 \(x\gg d\) 时分母 \(\approx x^4\)：</p>
+      <div class="formula">\[ E_x\approx \frac{kq\cdot 2xd}{x^4}=\frac{2kp}{x^3}\quad(\text{沿 }+\hat{x}\text{，即 }\hat{p}) \]</div>
+      <p><strong>赤道面</strong>上一点 \(P\) 到 \(\pm q\) 的距离都是 \(\sqrt{r^2+(d/2)^2}\approx r\)。两个电荷的场大小都为 \(kq/r^2\)，方向各沿连线；其 \(x\) 分量相加、\(y\) 分量相消：</p>
+      <div class="formula">\[ E_x=-2\cdot\frac{kq}{r^2}\cdot\frac{d/2}{r}\cdot\frac{1}{1}=-\frac{k\,p}{r^3} \]</div>
+      <p>即沿 \(-\hat{p}\) 方向，大小为轴线之半。两种情形都按 \(1/r^3\) 标度。</p>
+
+      <h3>推导 C：偶极子的力矩与势能 Torque and Energy of a Dipole</h3>
+      <p>均匀外场 \(\vec{E}\) 中，\(+q\) 受力 \(+q\vec{E}\)、\(-q\) 受力 \(-q\vec{E}\)，合力为零。取 \(-q\) 为参考点，\(+q\) 的位矢为 \(\vec{d}\)，则力矩：</p>
+      <div class="formula">\[ \vec{\tau}=\vec{d}\times(q\vec{E})=q\vec{d}\times\vec{E}=\vec{p}\times\vec{E} \]</div>
+      <p>把偶极子从 \(\theta=0\)（与场同向）缓转至 \(\theta\) 外界所需做功 \(W=\int_0^{\theta}\tau\,\mathrm{d}\theta'=pE(1-\cos\theta)\)，取 \(U(0)=0\) 不便（势能到处非负）。改为取 \(U(\pi/2)=0\)，则 \(U=-pE\cos\theta=-\vec{p}\cdot\vec{E}\)。这正是矢积与点积给出力矩和能量的标准形式。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 点电荷的电场与对试探电荷的力</h4>
+        <p class="example-statement">一个点电荷 \(Q=+2.0\,\mu\mathrm{C}\) 位于原点。求其沿 \(x\) 轴、距原点 \(r=0.30\,\mathrm{m}\) 处 \(P\) 点的电场。若在 \(P\) 处放置 \(q=+1.0\,\mathrm{nC}\) 的点电荷，求其所受的力。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>点电荷场的大小为 \(E=kQ/r^2\)：</p>
+          <div class="formula">\[ E=\frac{(8.99\times 10^{9})(2.0\times 10^{-6})}{(0.30)^2}=\frac{1.798\times 10^{4}}{0.090}=2.0\times 10^{5}\,\mathrm{N/C} \]</div>
+          <p class="step">因 \(Q>0\)，方向沿 \(+\hat{r}\)（即 \(+x\) 方向，由原点指向 \(P\)）。</p>
+          <p class="step">置于 \(P\) 的电荷受力 \(\vec{F}=q\vec{E}\)：</p>
+          <div class="formula">\[ F=(1.0\times 10^{-9})(2.0\times 10^{5})=2.0\times 10^{-4}\,\mathrm{N} \]</div>
+          <p><span class="ans">\(E\approx 2.0\times 10^{5}\,\mathrm{N/C}\)（沿 \(+x\)）；\(F\approx 2.0\times 10^{-4}\,\mathrm{N}\)（同向）。</span> 若试探电荷为 \(-1\,\mathrm{nC}\) 则受力反向——但 \(\vec{E}\) 本身<strong>不变</strong>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 带电圆环轴线上的电场（积分）</h4>
+        <p class="example-statement">半径 \(R=0.10\,\mathrm{m}\)、总电荷 \(Q=+5.0\,\mathrm{nC}\) 均匀分布在绝缘细环上。求轴线上 \(z=0.10\,\mathrm{m}\) 处的电场大小与方向。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由推导 A，轴线上 \(E(z)=kQz/(R^2+z^2)^{3/2}\)。</p>
+          <p class="step">先算 \(kQz\)：\((8.99\times 10^{9})(5.0\times 10^{-9})(0.10)=(44.95)(0.10)=4.495\)。</p>
+          <p class="step">分母：\(R^2+z^2=0.010+0.010=0.020\)，\((R^2+z^2)^{3/2}=0.020\times\sqrt{0.020}=0.020\times 0.1414=2.828\times 10^{-3}\)。</p>
+          <div class="formula">\[ E=\frac{4.495}{2.828\times 10^{-3}}=1.59\times 10^{3}\,\mathrm{N/C} \]</div>
+          <p class="step">方向沿轴线 \(+z\)（\(Q>0,z>0\)，场指向远离环心一侧）。</p>
+          <p class="step"><strong>对照远场近似</strong>：若误把全部电荷当成集中在环心，\(E_{\text{点}}=kQ/z^2=44.95/0.010=4.50\times 10^{3}\,\mathrm{N/C}\)，几乎是真实值的 3 倍——可见环几何显著削弱了轴线上的场。</p>
+          <p><span class="ans">\(E\approx 1.59\times 10^{3}\,\mathrm{N/C}\)（沿 \(+z\) 方向）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 电偶极子轴线上的电场（精确与远场近似）</h4>
+        <p class="example-statement">一电偶极子 \(q=\pm 1.0\,\mu\mathrm{C}\)、间距 \(d=0.020\,\mathrm{m}\)，\(+q\) 位于 \(+d/2\)、\(-q\) 位于 \(-d/2\)。求其<strong>轴线上</strong> \(x=0.20\,\mathrm{m}\)（\(+q\) 一侧）处的电场：先用精确式计算，再用远场近似 \(2kp/x^3\) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>电偶极矩 \(p=qd=(1.0\times 10^{-6})(0.020)=2.0\times 10^{-8}\,\mathrm{C\cdot m}\)。</p>
+          <p class="step"><strong>精确</strong>：到 \(+q\) 距离 \(x-d/2=0.19\,\mathrm{m}\)、到 \(-q\) 距离 \(x+d/2=0.21\,\mathrm{m}\)。\(kq=(8.99\times 10^{9})(1.0\times 10^{-6})=8.99\times 10^{3}\)。</p>
+          <div class="formula">\[ E=kq\!\left[\frac{1}{(0.19)^2}-\frac{1}{(0.21)^2}\right]=8.99\times 10^{3}\!\left[\frac{1}{0.0361}-\frac{1}{0.0441}\right] \]</div>
+          <p class="step">\(=8.99\times 10^{3}\times(27.70-22.68)=8.99\times 10^{3}\times 5.024=4.52\times 10^{4}\,\mathrm{N/C}\)。</p>
+          <p class="step">方向沿 \(+x\)（沿 \(\vec{p}\)，即远离 \(-q\)、越 \(-q\) 而 \(+q\)）。</p>
+          <p class="step"><strong>远场近似</strong>（\(x\gg d\)）：\(E\approx 2kp/x^3\)：</p>
+          <div class="formula">\[ E\approx \frac{2(8.99\times 10^{9})(2.0\times 10^{-8})}{(0.20)^3}=\frac{359.6}{8.0\times 10^{-3}}=4.50\times 10^{4}\,\mathrm{N/C} \]</div>
+          <p class="step">相对误差 \((4.52-4.50)/4.52\approx 0.4\%\)——\(x/d=10\) 时远场近似已经极好。</p>
+          <p><span class="ans">\(E\approx 4.52\times 10^{4}\,\mathrm{N/C}\)（沿 \(+\vec{p}\)）；远场近似 \(4.50\times 10^{4}\,\mathrm{N/C}\)（误差 0.4%）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 均匀电场中电偶极子的力矩与势能</h4>
+        <p class="example-statement">电偶极矩大小 \(p=2.0\times 10^{-8}\,\mathrm{C\cdot m}\)（同例 2.3）置于匀强电场 \(E=1.0\times 10^{5}\,\mathrm{N/C}\) 中，初时刻 \(\vec{p}\) 与 \(\vec{E}\) 夹角 \(\theta=30^\circ\)。求此时偶极子所受力矩大小与势能；并求把偶极子从 \(\theta=0\) 翻转到 \(\theta=180^\circ\) 所需外界做的功。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>力矩 \(\tau=pE\sin\theta\)：</p>
+          <div class="formula">\[ \tau=(2.0\times 10^{-8})(1.0\times 10^{5})\sin 30^\circ=2.0\times 10^{-3}\times 0.5=1.0\times 10^{-3}\,\mathrm{N\cdot m} \]</div>
+          <p class="step">方向由 \(\vec{p}\times\vec{E}\) 给出，使 \(\vec{p}\) 朝 \(\vec{E}\) 转动（减小 \(\theta\)）。</p>
+          <p class="step">势能 \(U=-pE\cos\theta\)：</p>
+          <div class="formula">\[ U=-(2.0\times 10^{-8})(1.0\times 10^{5})\cos 30^\circ=-2.0\times 10^{-3}\times 0.866=-1.73\times 10^{-3}\,\mathrm{J} \]</div>
+          <p class="step">翻转做功等于势能差：\(W=U(180^\circ)-U(0)=+pE-(-pE)=2pE\)：</p>
+          <div class="formula">\[ W=2pE=2(2.0\times 10^{-8})(1.0\times 10^{5})=4.0\times 10^{-3}\,\mathrm{J} \]</div>
+          <p><span class="ans">\(\tau\approx 1.0\times 10^{-3}\,\mathrm{N\cdot m}\)；\(U\approx -1.73\times 10^{-3}\,\mathrm{J}\)；翻转需做功 \(W\approx 4.0\times 10^{-3}\,\mathrm{J}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 两个同号电荷之间的“场强为零点”</h4>
+        <p class="example-statement">两点电荷 \(q_1=+4.0\,\mu\mathrm{C}\) 位于 \(x=0\)、\(q_2=+1.0\,\mu\mathrm{C}\) 位于 \(x=0.30\,\mathrm{m}\)。求 \(x\) 轴上电场为零点的位置（设该点在两电荷之间）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>在两电荷之间（\(0<x<0.30\)）任一点，\(q_1\) 产生的场指向 \(+x\)（远离 \(q_1\)），\(q_2\) 产生的场指向 \(-x\)（远离 \(q_2\)），方向相反，可相消。令大小相等：</p>
+          <div class="formula">\[ \frac{kq_1}{x^2}=\frac{kq_2}{(0.30-x)^2}\;\Longrightarrow\;\frac{0.30-x}{x}=\sqrt{\frac{q_2}{q_1}}=\sqrt{\frac{1}{4}}=\frac{1}{2} \]</div>
+          <p class="step">\(2(0.30-x)=x\)，即 \(0.60=3x\)，\(x=0.20\,\mathrm{m}\)。</p>
+          <p class="step"><strong>验证</strong>：\(E_1=k(4.0\,\mu\mathrm{C})/(0.20)^2=k\cdot 1.0\times 10^{-4}\)；\(E_2=k(1.0\,\mu\mathrm{C})/(0.10)^2=k\cdot 1.0\times 10^{-4}\)。两者相等 ✓。</p>
+          <p class="step"><strong>对比</strong>：若两电荷异号（如 \(+4\,\mu\mathrm{C}\) 与 \(-1\,\mu\mathrm{C}\)，即偶极型），两电荷<strong>之间</strong>场指向同一方向（由 \(+\) 指向 \(-\)），<strong>永不抵消</strong>；这种组态下轴线上没有为零的有限远点。零点只在两<strong>同号</strong>电荷之间存在，且总是离电量较小者更近。</p>
+          <p><span class="ans">零点位于 \(x=0.20\,\mathrm{m}\)（离较小的 \(q_2\) 更近）</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>\(\vec{E}\) 不是「力」</strong>：电场是<strong>单位电荷的力</strong>，是源电荷分布的属性，<em>即使该点没有放置任何电荷也依然存在</em>。把 \(\vec{E}\) 与 \(\vec{F}\) 混为一谈、或认为「拿走试探电荷后场就消失」，都是典型错误。</li>
+        <li><strong>电场是矢量，叠加要按矢量加法</strong>：必须把每个源电荷的 \(\vec{E}_i\) 分解到坐标分量再相加，绝不能简单地把大小 \(E_i\) 相加。两个等大反向场可相消为零（见例 2.5），而标量和永远不会为零。</li>
+        <li><strong>用 \(E=kQ/r^2\) 时混淆 \(|Q|\) 与带符号的 \(Q\)</strong>：大小 \(|\vec{E}|=k|Q|/r^2\) 总用绝对值；符号 \(Q\) 的正负<strong>只</strong>通过方向（沿 \(\hat{r}\) 或 \(-\hat{r}\)）体现。把负号同时塞进大小和方向会得到反向的结果。</li>
+        <li><strong>偶极子场按 \(1/r^3\) 而非 \(1/r^2\) 衰减</strong>：因等量异号两电荷的场在远处近乎相消。把偶极子的远场当成单个点电荷处理，会导致数量级与空间依赖都错。</li>
+        <li><strong>「环心电场为零」不等于「环上各处场都为零」</strong>：在带电环<strong>轴线上</strong>环心 \(z=0\) 处场为零是对称相消的结果；但环本身所在位置（环线上）场是无穷的（理想细环线电荷密度无限大时奇点）。同样，环平面外的非轴点场一般并不为零。</li>
+        <li><strong>电场线不是电荷的运动轨迹</strong>：场线给出 \(\vec{E}\) 的方向（瞬时受力方向，对正电荷而言），而电荷的速度方向一般不同。静止释放的正电荷<strong>才</strong>沿场线启动；有初速度时轨迹会偏离场线。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1.（叠加原理）\(q_1=+2.0\,\mu\mathrm{C}\) 位于原点，\(q_2=-2.0\,\mu\mathrm{C}\) 位于 \((0.30\,\mathrm{m},\,0)\)。求点 \(P=(0,\,0.40\,\mathrm{m})\) 处的电场矢量与大小。</summary>
+        <div class="hint">对每个源电荷用 \(E=k|Q|/r^2\) 算大小，按符号定方向（正电荷向外，负电荷向内），再矢量叠加。</div>
+        <div class="solution">
+          <p>\(\vec{E}_1\)（来自 \(q_1\)）：\(r_1=0.40\)，\(|E_1|=k(2.0\,\mu\mathrm{C})/0.16=(8.99\times 10^{9})(2.0\times 10^{-6})/0.16=1.124\times 10^{5}\)，方向 \(+\hat{y}\)。故 \(\vec{E}_1=(0,\,1.124\times 10^{5})\)。</p>
+          <p>\(\vec{E}_2\)（来自 \(q_2\)，负电荷指向自身）：\(\vec{r}_{P\to q_2}=(0.30-0,\,0-0.40)=(0.30,-0.40)\)，\(r_2=0.50\)。单位矢量 \((0.6,-0.8)\)。大小 \(|E_2|=k(2.0\,\mu\mathrm{C})/0.25=7.19\times 10^{4}\)。故 \(\vec{E}_2=7.19\times 10^{4}(0.6,-0.8)=(4.32\times 10^{4},\,-5.75\times 10^{4})\)。</p>
+          <p>叠加：\(\vec{E}=(4.32\times 10^{4},\,5.49\times 10^{4})\)。</p>
+          <p>大小 \(|\vec{E}|=\sqrt{(4.32)^2+(5.49)^2}\times 10^{4}=\sqrt{18.7+30.1}\times 10^{4}=6.98\times 10^{4}\,\mathrm{N/C}\)。</p>
+          <p><span class="ans">\(\vec{E}\approx(4.32\,\hat{x}+5.49\,\hat{y})\times 10^{4}\,\mathrm{N/C}\)，\(|\vec{E}|\approx 6.98\times 10^{4}\,\mathrm{N/C}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2.（圆环场极值）证明带电圆环轴线上的电场 \(E(z)=kQz/(R^2+z^2)^{3/2}\) 在 \(z=R/\sqrt{2}\) 处取极大值。对 \(Q=5.0\,\mathrm{nC}\)、\(R=0.10\,\mathrm{m}\) 算出此极大值。</summary>
+        <div class="hint">令 \(\dv{E}{z}=0\)；用商的求导法则或先取对数再求导更方便。</div>
+        <div class="solution">
+          <p>\(\displaystyle \dv{E}{z}=kQ\,\dv{}{z}\!\left[z(R^2+z^2)^{-3/2}\right]=kQ\!\left[(R^2+z^2)^{-3/2}-3z^2(R^2+z^2)^{-5/2}\right]\)。</p>
+          <p>令其为零：\((R^2+z^2)-3z^2=0\)，即 \(R^2-2z^2=0\)，\(z=R/\sqrt{2}\) ✓。</p>
+          <p>代入 \(z=R/\sqrt{2}=0.0707\,\mathrm{m}\)：\(R^2+z^2=0.010+0.0050=0.0150\)，\((0.0150)^{3/2}=0.0150\times\sqrt{0.0150}=1.837\times 10^{-3}\)。</p>
+          <p>\(E_{\max}=(8.99\times 10^{9})(5.0\times 10^{-9})(0.0707)/1.837\times 10^{-3}=3.18/1.837\times 10^{-3}=1.73\times 10^{3}\,\mathrm{N/C}\)。</p>
+          <p><span class="ans">\(z^*=R/\sqrt{2}\)；\(E_{\max}\approx 1.73\times 10^{3}\,\mathrm{N/C}\)</span>（比赛 2.2 中 \(z=0.10\) 处的 \(1.59\times 10^{3}\) 略大，确实为极大）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3.（带电圆盘）面电荷密度 \(\sigma=2.0\times 10^{-6}\,\mathrm{C/m^2}\)、半径 \(R=0.050\,\mathrm{m}\) 的均匀带电圆盘，求轴线上 \(z=0.050\,\mathrm{m}\) 处的电场，并和「无限大平面」极限 \(E=\sigma/(2\varepsilon_0)\) 比较。</summary>
+        <div class="hint">用 \(E=\dfrac{\sigma}{2\varepsilon_0}\!\left(1-\dfrac{z}{\sqrt{z^2+R^2}}\right)\)；取 \(\varepsilon_0=8.854\times 10^{-12}\)。</div>
+        <div class="solution">
+          <p>\(\sigma/(2\varepsilon_0)=2.0\times 10^{-6}/(2\times 8.854\times 10^{-12})=1.13\times 10^{5}\,\mathrm{N/C}\)（即无限平面极限）。</p>
+          <p>\(z/\sqrt{z^2+R^2}=0.050/\sqrt{0.0025+0.0025}=0.050/\sqrt{0.0050}=0.050/0.0707=0.707\)。</p>
+          <p>\(E=1.13\times 10^{5}\times(1-0.707)=1.13\times 10^{5}\times 0.293=3.31\times 10^{4}\,\mathrm{N/C}\)。</p>
+          <p>即实际场是无限平面极限的 \(29.3\%\)——在 \(z=R\) 处圆盘「远未」表现为无限大平面。</p>
+          <p><span class="ans">\(E\approx 3.31\times 10^{4}\,\mathrm{N/C}\)（约为无限平面极限的 29%）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4.（力矩与势能）一水分子的等效电偶极矩 \(p=6.2\times 10^{-30}\,\mathrm{C\cdot m}\)，置于雷雨天地面附近匀强电场 \(E=1.0\times 10^{4}\,\mathrm{N/C}\) 中。求 \(\vec{p}\perp\vec{E}\) 时的力矩，以及偶极子从垂直位置翻到与场同向时释放的能量。</summary>
+        <div class="hint">\(\tau=pE\sin\theta\) 在 \(\theta=90^\circ\) 最大；释放的能量 \(=U(90^\circ)-U(0)=0-(-pE)=pE\)。</div>
+        <div class="solution">
+          <p>\(\tau=pE\sin 90^\circ=(6.2\times 10^{-30})(1.0\times 10^{4})=6.2\times 10^{-26}\,\mathrm{N\cdot m}\)。</p>
+          <p>\(\Delta U=U(90^\circ)-U(0)=0-(-pE)=pE=6.2\times 10^{-26}\,\mathrm{J}\)。</p>
+          <p>换算为 eV：\(6.2\times 10^{-26}\,\mathrm{J}/(1.602\times 10^{-19}\,\mathrm{J/eV})=3.9\times 10^{-7}\,\mathrm{eV}\)——比热运动 \(k_BT\approx 0.025\,\mathrm{eV}\)（室温）小 5 个量级，故室温下空气中的水分子基本不被这等强度的电场显著取向。</p>
+          <p><span class="ans">\(\tau\approx 6.2\times 10^{-26}\,\mathrm{N\cdot m}\)；释放能量 \(\approx 6.2\times 10^{-26}\,\mathrm{J}\approx 3.9\times 10^{-7}\,\mathrm{eV}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（场强为零点）两点电荷 \(q_1=+6.0\,\mu\mathrm{C}\) 位于 \(x=0\)、\(q_2=+3.0\,\mu\mathrm{C}\) 位于 \(x=0.60\,\mathrm{m}\)。求轴线上电场为零点的位置；并定性说明在两电荷<strong>外侧</strong>（\(x<0\) 或 \(x>0.60\)）是否存在零点。</summary>
+        <div class="hint">零点必在两电荷之间（同号电荷在外侧产生的场方向相同，不会相消）。用 \(\sqrt{q_1}(L-x)=\sqrt{q_2}\,x\) 求解。</div>
+        <div class="solution">
+          <p>设零点 \(x\) 在两电荷之间（\(0<x<0.60\)）：\(kq_1/x^2=kq_2/(0.60-x)^2\)，取正平方根：\(\sqrt{q_1}(0.60-x)=\sqrt{q_2}\,x\)。</p>
+          <p>\(\sqrt{6}\,(0.60-x)=\sqrt{3}\,x\)，\(2.449(0.60-x)=1.732\,x\)，\(1.469=4.181\,x\)，\(x=0.351\,\mathrm{m}\)。</p>
+          <p>验证：\(E_1=k(6.0)/0.351^2=k\cdot 48.7\)，\(E_2=k(3.0)/(0.249)^2=k\cdot 48.4\)（数值误差，精确解满足相等）。</p>
+          <p><strong>外侧讨论</strong>：\(x<0\) 区，两电荷的场都指向 \(-x\)（同向），不可能抵消；\(x>0.60\) 区，两电荷的场都指向 \(+x\)（同向），也不可能抵消。故<strong>同号</strong>电荷的零点唯一且必在两者之间。</p>
+          <p><span class="ans">\(x\approx 0.35\,\mathrm{m}\)（在两电荷之间，距较小的 \(q_2\) 约 \(0.25\,\mathrm{m}\)）；外侧无零点</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 电场可视化器 Electric Field Visualizer</h2>
+      <p class="sim-desc">两个可调点电荷构成可变组态：默认为 \(+Q/-Q\) 的电偶极子。拖动滑块改变两电荷的符号与大小（\(-3\) 到 \(+3\) 倍单位电荷）和间距，切换<strong>电场线</strong> (field lines) / <strong>矢量网格</strong> (vector grid) 两种可视化。场线由电荷出发沿 \(\vec{E}\) 数值积分得到，矢量网格在每个格点画出按 \(\tanh\) 归一化的场矢量；红色为正电荷、蓝色为负电荷。点「重置」恢复偶极子默认值。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="600" height="420"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2;
+
+          // Scaled Coulomb constant for on-screen visualization.
+          var KSCALE = 4500;
+
+          var DEFAULTS = { q1: 1.0, q2: -1.0, d: 150, mode: 'lines' };
+          var params = { q1: DEFAULTS.q1, q2: DEFAULTS.q2, d: DEFAULTS.d, mode: DEFAULTS.mode };
+
+          function charges() {
+            return [
+              { q: params.q1, x: CX - params.d / 2, y: CY },
+              { q: params.q2, x: CX + params.d / 2, y: CY },
+            ];
+          }
+
+          // Electric field at pixel (px,py). Returns {x, y, mag}.
+          function E(px, py, Q) {
+            var ex = 0, ey = 0;
+            for (var i = 0; i < Q.length; i++) {
+              var dx = px - Q[i].x, dy = py - Q[i].y;
+              var r2 = dx * dx + dy * dy;
+              if (r2 < 9) continue; // skip points on top of a charge
+              var r = Math.sqrt(r2);
+              var e = KSCALE * Q[i].q / r2; // signed magnitude
+              ex += e * dx / r;
+              ey += e * dy / r;
+            }
+            return { x: ex, y: ey, mag: Math.hypot(ex, ey) };
+          }
+
+          // Trace a field line by Euler-integrating along (+/-) E from seed.
+          function fieldLine(Q, sx, sy, sign) {
+            var pts = [{ x: sx, y: sy }];
+            var x = sx, y = sy;
+            var ds = 4;
+            for (var n = 0; n < 1500; n++) {
+              var f = E(x, y, Q);
+              if (f.mag < 1e-6) break;
+              var ux = f.x / f.mag, uy = f.y / f.mag;
+              x += sign * ds * ux;
+              y += sign * ds * uy;
+              pts.push({ x: x, y: y });
+              if (x < -30 || x > W + 30 || y < -30 || y > H + 30) break;
+              var hit = false;
+              for (var i = 0; i < Q.length; i++) {
+                if (Math.hypot(x - Q[i].x, y - Q[i].y) < 11) { hit = true; break; }
+              }
+              if (hit) break;
+            }
+            return pts;
+          }
+
+          function drawPolyline(ctx, pts) {
+            if (pts.length < 2) return;
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x, pts[0].y);
+            for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+            ctx.stroke();
+            // direction arrow at ~55% along the curve
+            var mid = Math.floor(pts.length * 0.55);
+            if (mid > 0 && mid < pts.length - 1) {
+              var a = pts[mid - 1], b = pts[mid + 1];
+              var ang = Math.atan2(b.y - a.y, b.x - a.x);
+              var mx = pts[mid].x, my = pts[mid].y, al = 7;
+              ctx.beginPath();
+              ctx.moveTo(mx, my);
+              ctx.lineTo(mx - al * Math.cos(ang - 0.4), my - al * Math.sin(ang - 0.4));
+              ctx.lineTo(mx - al * Math.cos(ang + 0.4), my - al * Math.sin(ang + 0.4));
+              ctx.closePath();
+              ctx.fill();
+            }
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tick: 0 }; },
+            step: function (dt, t, s) { s.tick += 1; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var Q = charges();
+
+              // faint reference grid
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.30;
+              ctx.lineWidth = 1;
+              for (var gx = 0; gx <= W; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+              for (var gy = 0; gy <= H; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+              ctx.restore();
+
+              if (params.mode === 'grid') {
+                // ---- vector grid ----
+                var step = 30;
+                for (var px = step / 2; px < W; px += step) {
+                  for (var py = step / 2; py < H; py += step) {
+                    var f = E(px, py, Q);
+                    if (f.mag < 1e-4) continue;
+                    var ux = f.x / f.mag, uy = f.y / f.mag;
+                    var L = (step * 0.46) * Math.tanh(f.mag / 60);
+                    PS.drawArrow(ctx, px, py, px + L * ux, py + L * uy, PS.colors.primary);
+                  }
+                }
+              } else {
+                // ---- field lines ----
+                ctx.save();
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = PS.colors.primary;
+                ctx.fillStyle = PS.colors.primary;
+                var LINES_PER_UNIT = 14;
+                // Forward (along +E) from every positive charge
+                for (var i = 0; i < Q.length; i++) {
+                  if (Q[i].q <= 0.05) continue;
+                  var nL = Math.max(6, Math.round(LINES_PER_UNIT * Math.abs(Q[i].q)));
+                  for (var k = 0; k < nL; k++) {
+                    var ang = 2 * Math.PI * (k + 0.5) / nL;
+                    var sx = Q[i].x + 11 * Math.cos(ang);
+                    var sy = Q[i].y + 11 * Math.sin(ang);
+                    drawPolyline(ctx, fieldLine(Q, sx, sy, +1));
+                  }
+                }
+                // If net charge is negative, seed backward (-E) from each negative charge
+                // so that "lines arriving from infinity" are drawn.
+                var netQ = 0;
+                for (var j = 0; j < Q.length; j++) netQ += Q[j].q;
+                if (netQ < -0.05) {
+                  for (var i2 = 0; i2 < Q.length; i2++) {
+                    if (Q[i2].q >= -0.05) continue;
+                    var nL2 = Math.max(6, Math.round(LINES_PER_UNIT * Math.abs(Q[i2].q)));
+                    for (var k2 = 0; k2 < nL2; k2++) {
+                      var ang2 = 2 * Math.PI * (k2 + 0.3) / nL2;
+                      var sx2 = Q[i2].x + 11 * Math.cos(ang2);
+                      var sy2 = Q[i2].y + 11 * Math.sin(ang2);
+                      drawPolyline(ctx, fieldLine(Q, sx2, sy2, -1));
+                    }
+                  }
+                }
+                ctx.restore();
+              }
+
+              // ---- draw the charges on top ----
+              for (var c = 0; c < Q.length; c++) {
+                var qq = Q[c].q;
+                var neutral = Math.abs(qq) < 0.05;
+                var col = neutral ? PS.colors.grid : (qq > 0 ? PS.colors.accent : PS.colors.primary);
+                PS.drawCircle(ctx, Q[c].x, Q[c].y, 12, { fill: col, stroke: '#000000', lineWidth: 1 });
+                PS.drawText(ctx, neutral ? '0' : (qq > 0 ? '+' : '−'), Q[c].x, Q[c].y, {
+                  font: 'bold 15px system-ui', color: '#ffffff', align: 'center', baseline: 'middle',
+                });
+                PS.drawText(ctx, 'q' + (c + 1) + ' = ' + (qq).toFixed(1), Q[c].x, Q[c].y + 26, {
+                  font: '11px system-ui', color: PS.colors.text, align: 'center',
+                });
+              }
+
+              // ---- HUD ----
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 210, 40);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 210, 40);
+              ctx.restore();
+              PS.drawText(ctx, 'mode: ' + (params.mode === 'lines' ? '电场线 field lines' : '矢量网格 vector grid'), 14, 25,
+                { font: '12px system-ui', color: PS.colors.text });
+              var netQDisp = (params.q1 + params.q2).toFixed(1);
+              PS.drawText(ctx, 'net charge Σq = ' + netQDisp, 14, 42,
+                { font: '12px system-ui', color: PS.colors.text });
+            },
+          });
+
+          function buildControls() {
+            var c = PS.makeControls(document.getElementById('controls-2'), [
+              { type: 'slider', key: 'q1', label: '电荷 1 q₁ (单位电荷)', min: -3, max: 3, step: 0.5, value: params.q1 },
+              { type: 'slider', key: 'q2', label: '电荷 2 q₂ (单位电荷)', min: -3, max: 3, step: 0.5, value: params.q2 },
+              { type: 'slider', key: 'd',  label: '间距 separation (px)', min: 40, max: 300, step: 5, value: params.d },
+              { type: 'toggle', key: 'mode', label: '矢量网格 grid (默认场线)', value: (params.mode === 'grid') },
+              { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+            ]);
+            c.on('q1', function (v) { params.q1 = v; });
+            c.on('q2', function (v) { params.q2 = v; });
+            c.on('d',  function (v) { params.d  = v; });
+            c.on('mode', function (v) { params.mode = v ? 'grid' : 'lines'; });
+            c.on('reset', function () {
+              params.q1 = DEFAULTS.q1; params.q2 = DEFAULTS.q2; params.d = DEFAULTS.d; params.mode = DEFAULTS.mode;
+              ctl = buildControls();   // rebuild controls so sliders reflect defaults
+              sim.reset();
+            });
+            return c;
+          }
+          var ctl = buildControls();
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>电场 \(\vec{E}=\vec{F}/q\)，单位 \(\mathrm{N/C}=\mathrm{V/m}\)，是源电荷分布的属性，与试探电荷无关。</li>
+        <li>点电荷：\(\vec{E}=kQ\hat{r}/r^2\)，\(k=1/(4\pi\varepsilon_0)\approx 8.99\times 10^{9}\)。</li>
+        <li>叠加原理：多个源按<strong>矢量</strong>相加；连续分布用 \(\vec{E}=\int k\,\mathrm{d}q\,\hat{r}/r^2\)。</li>
+        <li>圆环轴线：\(E=kQz/(R^2+z^2)^{3/2}\)；圆盘轴线：\(E=\sigma(1-z/\sqrt{z^2+R^2})/(2\varepsilon_0)\)；无限直线：\(E=\lambda/(2\pi\varepsilon_0 r)\)。</li>
+        <li>电场线：起于正、止于负，疏密 \(\propto|\vec{E}|\)，不相交，切向即 \(\vec{E}\) 方向。</li>
+        <li>电偶极子 \(\vec{p}=q\vec{d}\)：远场按 \(1/r^3\) 衰减；轴上 \(2kp/r^3\)、赤道面 \(kp/r^3\)。</li>
+        <li>偶极子力矩 \(\vec{\tau}=\vec{p}\times\vec{E}\)，势能 \(U=-\vec{p}\cdot\vec{E}\)，翻转功 \(2pE\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\vec{E}=\frac{\vec{F}}{q},\quad \vec{E}_{\text{pt}}=\frac{1}{4\pi\varepsilon_0}\frac{Q}{r^2}\hat{r},\quad \vec{E}_{\text{ring}}(z)=\frac{kQz}{(R^2+z^2)^{3/2}},\quad \vec{E}_{\text{disk}}=\frac{\sigma}{2\varepsilon_0}\!\left(1-\frac{z}{\sqrt{z^2+R^2}}\right),\quad \vec{p}=q\vec{d},\quad \vec{\tau}=\vec{p}\times\vec{E},\quad U=-\vec{p}\cdot\vec{E}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
