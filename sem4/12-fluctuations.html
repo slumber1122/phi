@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 涨落与输运现象 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第12章 · 统计力学 Statistical Mechanics</p>
+      <h1>涨落与输运现象 <span class="en-title">Fluctuations &amp; Transport</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>由正则配分函数严格导出<strong>能量涨落</strong>公式 \(\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V}\)，并论证相对涨落 \(\sigma_{E}/\langle E\rangle\sim 1/\sqrt{N}\)——在宏观系统中可忽略，在小系统（纳米尺度、生物大分子）中显著。</li>
+        <li>陈述<strong>巨正则系综</strong> (grand canonical ensemble) 中的<strong>粒子数涨落</strong> \(\langle(\delta N)^{2}\rangle=k_{B}T\,(\partial\langle N\rangle/\partial\mu)_{T,V}\)，对理想气体退化为 \(\langle(\delta N)^{2}\rangle=\langle N\rangle\)，并通过 \(\langle(\delta N)^{2}\rangle/\langle N\rangle=nk_{B}T\kappa_{T}\) 与等温压缩率联系。</li>
+        <li>用<strong>随机游动</strong> (random walk) 导出 \(\langle x^{2}\rangle=2Dt\)，说明为什么<strong>扩散距离正比于 \(\sqrt{t}\)</strong> 而非 \(t\)；陈述 <strong>Fick 第一定律</strong> \(\vec{J}=-D\nabla n\) 与<strong>扩散方程</strong> \(\partial n/\partial t=D\nabla^{2}n\)。</li>
+        <li>用<strong>平均自由程</strong> (mean free path) \(\ell=k_{B}T/(\sqrt{2}\,\pi d^{2}p)\) 估算气体的<strong>输运系数</strong>：黏度 \(\eta\sim\tfrac13\rho\bar v\,\ell\)、热导率 \(\kappa\sim\tfrac13\rho c_{v}\bar v\,\ell\)、扩散系数 \(D\sim\tfrac13\bar v\,\ell\)；解释为何 \(\eta,\kappa\) 几乎与压强无关。</li>
+        <li>陈述<strong>涨落-耗散定理</strong> (fluctuation–dissipation theorem) 的核心——同一微观运动既驱动平衡涨落又驱动耗散；应用 <strong>Einstein 关系</strong> \(D=\mu_{\text{mob}}\,k_{B}T\) 与 <strong>Stokes–Einstein 关系</strong> \(D=k_{B}T/(6\pi\eta a)\) 处理布朗运动问题。</li>
+        <li>陈述 <strong>Onsager 倒易关系</strong> \(L_{ij}=L_{ji}\) 的物理意义（微观可逆性导致的对称性），并举例（热电交叉系数）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 涨落——热力学量的微观起伏 Fluctuations: Thermodynamic Variables Are Averages</h3>
+      <p>热力学量（\(T,P,V,U,N\)) 是对系统微观态的<strong>统计平均</strong>。瞬时值会在平均值附近起伏——这就是<strong>涨落</strong> (fluctuation)。在第 8 章我们看到：小系统（\(N\sim 10\)）的能量分割显著偏离最概然值；本章建立描述涨落的<strong>定量理论</strong>。核心结论是：</p>
+      <div class="formula">\[ \frac{\sigma_{X}}{\langle X\rangle}\;\sim\;\frac{1}{\sqrt{N}}\qquad(\text{广延量 }X\text{ 的相对涨落}) \]</div>
+      <p>对 \(N\sim 10^{23}\) 的宏观样本，相对涨落 \(\sim 10^{-12}\)，完全不可观测；但对纳米尺度（\(N\sim 10^{2}\text{--}10^{4}\))、生物大分子、单细胞，涨落可达百分之几，必须认真对待。这正是 <strong>布朗运动</strong> (Brownian motion, 1827 年 Brown 显微镜下观察、1905 年 Einstein 理论、1908 年 Perrin 实验证实) 的尺度。</p>
+      <div class="key-terms">fluctuation (涨落), relative fluctuation (相对涨落), extensive variable (广延量), thermodynamic limit (热力学极限)</div>
+
+      <h3>2. 正则系综中的能量涨落 Energy Fluctuations in the Canonical Ensemble</h3>
+      <p>正则系综 (canonical ensemble, 第 9 章) 描述与热库接触、温度 \(T\) 固定的系统：能量可交换，故 \(E\) 涨落。Boltzmann 分布 \(P(E)\propto\Omega(E)\,e^{-\beta E}\)，其中 \(\beta=1/(k_{B}T)\)。能量涨落由热容 \(C_{V}\) 决定：</p>
+      <div class="formula">\[ \boxed{\;\langle(\delta E)^{2}\rangle\;=\;\langle E^{2}\rangle-\langle E\rangle^{2}\;=\;k_{B}T^{2}\,C_{V}\;} \]</div>
+      <p>对 \(f\) 自由度的理想气体：\(C_{V}=\tfrac{f}{2}Nk_{B}\)、\(\langle E\rangle=\tfrac{f}{2}Nk_{B}T\)，故</p>
+      <div class="formula">\[ \frac{\sigma_{E}}{\langle E\rangle}\;=\;\frac{\sqrt{k_{B}T^{2}\cdot\tfrac{f}{2}Nk_{B}}}{\tfrac{f}{2}Nk_{B}T}\;=\;\sqrt{\frac{2}{fN}}\;\sim\;\frac{1}{\sqrt{N}}. \]</div>
+      <p>对单原子气体（\(f=3\)）\(\sigma_{E}/\langle E\rangle=\sqrt{2/(3N)}\)。1 mol 时 \(\sim 10^{-12}\)；\(N=30\) 个分子时 \(\sim 15\%\)——这正是第 8 章小系统涨落显著的统计根源。</p>
+      <div class="key-terms">canonical ensemble (正则系综), Boltzmann distribution (玻尔兹曼分布), heat capacity at constant volume (定容热容), relative energy fluctuation (相对能量涨落)</div>
+
+      <h3>3. 粒子数涨落与压缩率 Number Fluctuations &amp; Compressibility</h3>
+      <p>在<strong>巨正则系综</strong> (grand canonical ensemble) 中，系统与粒子源接触，化学势 \(\mu\) 固定，粒子数 \(N\) 可涨落。类比能量涨落：</p>
+      <div class="formula">\[ \boxed{\;\langle(\delta N)^{2}\rangle\;=\;k_{B}T\left(\frac{\partial\langle N\rangle}{\partial\mu}\right)_{\!T,V}\;} \]</div>
+      <p>对理想气体，\(\langle N\rangle=e^{\beta\mu}V/\lambda_{T}^{3}\)（\(\lambda_{T}=h/\sqrt{2\pi mk_{B}T}\) 为热波长），故 \(\partial\langle N\rangle/\partial\mu=\langle N\rangle/(k_{B}T)\)，给出 \(\langle(\delta N)^{2}\rangle=\langle N\rangle\)——泊松分布特征。由此 \(\sigma_{N}/\langle N\rangle=1/\sqrt{\langle N\rangle}\)。</p>
+      <p>更一般地，可证<strong>数-压缩率关系</strong>：</p>
+      <div class="formula">\[ \boxed{\;\frac{\langle(\delta N)^{2}\rangle}{\langle N\rangle}\;=\;n\,k_{B}T\,\kappa_{T}\;} \]</div>
+      <p>其中 \(n=\langle N\rangle/V\)，\(\kappa_{T}=-(1/V)(\partial V/\partial p)_{T}\) 为等温压缩率。理想气体 \(\kappa_{T}=1/p=1/(nk_{B}T)\)，上式右边 \(=1\) ✓。<strong>测量粒子数涨落（如用光散射）即可推断 \(\kappa_{T}\)</strong>——这在临界点附近尤为有用，那里 \(\kappa_{T}\) 发散、密度涨落剧增（临界乳光）。</p>
+      <div class="key-terms">grand canonical ensemble (巨正则系综), chemical potential (化学势), Poisson distribution (泊松分布), isothermal compressibility (等温压缩率), critical opalescence (临界乳光)</div>
+
+      <h3>4. 布朗运动与随机游动 Brownian Motion &amp; the Random Walk</h3>
+      <p>1827 年英国植物学家 R. Brown 在显微镜下观察到花粉颗粒在水中做持续、不规则的运动。1905 年 Einstein 提出：这是水分子不断撞击颗粒的剩余效应——尽管平均力为零，但瞬时力有涨落，使颗粒做<strong>随机游动</strong>。Einstein 推导出（详见推导 12.B）：</p>
+      <div class="formula">\[ \boxed{\;\langle x^{2}\rangle\;=\;2Dt\qquad(\text{1D；每轴})\;} \]</div>
+      <p>\(\langle x^{2}\rangle\) 是粒子沿某轴位移的<strong>方均值</strong>，\(D\) 为<strong>扩散系数</strong> (diffusion coefficient)。这是统计力学史上最著名的公式之一：它把宏观可测的 \(D\) 与微观不可见的分子运动定量联系起来。1908 年 J. B. Perrin 用乳胶颗粒实验验证了此关系，并据以测得 Boltzmann 常数 \(k_{B}\)，给出 Avogadro 常数 \(N_{A}\approx 6\times 10^{23}\)——为分子实在性画上决定性句号（1926 年获 Nobel 化学奖）。</p>
+      <div class="key-terms">Brownian motion (布朗运动), random walk (随机游动), mean square displacement (均方位移 MSD), diffusion coefficient (扩散系数)</div>
+
+      <h3>5. Fick 定律与扩散方程 Fick's Laws &amp; the Diffusion Equation</h3>
+      <p><strong>Fick 第一定律</strong> (Fick's first law, 1855)：粒子<strong>通量</strong> (flux) \(\vec{J}\)（单位时间通过单位面积的粒子数）正比于数密度梯度，方向相反：</p>
+      <div class="formula">\[ \vec{J}\;=\;-D\,\nabla n\qquad\text{(Fick 第一定律)} \]</div>
+      <p>结合<strong>连续性方程</strong> \(\partial n/\partial t+\nabla\cdot\vec{J}=0\)（粒子数守恒），即得<strong>扩散方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;\frac{\partial n}{\partial t}\;=\;D\,\nabla^{2}n\qquad\text{(Fick 第二定律 / 扩散方程)}\;} \]</div>
+      <p>对点源初始条件 \(n(\vec r,0)=N_{0}\,\delta^{(3)}(\vec r)\)，3D 解为高斯：</p>
+      <div class="formula">\[ n(\vec r,t)\;=\;\frac{N_{0}}{(4\pi Dt)^{3/2}}\,\exp\!\left(-\frac{r^{2}}{4Dt}\right),\qquad\langle r^{2}\rangle=6Dt. \]</div>
+      <p>1D：\(\langle x^{2}\rangle=2Dt\)；2D：\(\langle r^{2}\rangle=4Dt\)。高斯宽度 \(\sigma=\sqrt{2Dt}\)（每轴）随 \(\sqrt{t}\) 增长——这是<strong>扩散</strong>区别于<strong>弹道运动</strong>（位移 \(\propto t\)）的关键标志。</p>
+      <div class="key-terms">Fick's first/second law (Fick 第一定律/第二定律), flux (通量), continuity equation (连续性方程), diffusion equation (扩散方程), ballistic motion (弹道运动)</div>
+
+      <h3>6. 输运系数——平均自由程估算 Transport Coefficients via Mean Free Path</h3>
+      <p>气体分子在碰撞间自由飞行，平均自由程 (mean free path)：</p>
+      <div class="formula">\[ \ell\;=\;\frac{1}{\sqrt{2}\,n\sigma_{\!c}}\;=\;\frac{k_{B}T}{\sqrt{2}\,\pi d^{2}p} \]</div>
+      <p>其中 \(\sigma_{\!c}=\pi d^{2}\) 为刚性球分子（直径 \(d\)）的碰撞截面；\(\sqrt{2}\) 因子来自相对运动。STP 下典型 \(\ell\sim 60\text{--}70\,\mathrm{nm}\)。</p>
+      <p>分子平均速率为 \(\bar v=\sqrt{8k_{B}T/(\pi m)}\)。简单的<strong>平均自由程输运理论</strong>给出：</p>
+      <div class="formula">\[ \boxed{\;D\sim\tfrac13\bar v\,\ell,\qquad\eta\sim\tfrac13\rho\bar v\,\ell,\qquad\kappa\sim\tfrac13\rho c_{v}\bar v\,\ell\;} \]</div>
+      <p>\(D\) 自扩散系数、\(\eta\) 黏度 (viscosity)、\(\kappa\) 热导率 (thermal conductivity)、\(\rho\) 密度、\(c_{v}\) 单位质量定容热容。这些估计与精确的 Chapman–Enskog 理论相差 \(\sim 2\times\) 内，物理图像清晰。</p>
+      <p><strong>关键洞察</strong>：\(\eta\sim\rho\bar v\,\ell\)，而 \(\rho\ell=n m\cdot\ell\propto n\cdot 1/n=\text{const}\)（密度上升、自由程下降，乘积不变）。故<strong>气体黏度几乎与压强无关</strong>（在低压强、连续介质近似成立的范围内）——这是1859 年 Maxwell 推断并实验验证的反直觉结论。同理 \(\kappa\) 也几乎与压强无关；只有 \(D\propto 1/n\propto 1/p\) 随压强变化。</p>
+      <div class="key-terms">mean free path (平均自由程), collision cross-section (碰撞截面), self-diffusion (自扩散), viscosity (黏度), thermal conductivity (热导率), Chapman–Enskog theory (Chapman–Enskog 理论)</div>
+
+      <h3>7. 涨落-耗散定理 The Fluctuation–Dissipation Theorem (FDT)</h3>
+      <p>Einstein 在 1905 年那篇文章的关键洞察是：<strong>驱动布朗运动的随机分子力，与运动时感受到的黏性阻力，是同一回事</strong>。设在恒定外力 \(F\) 下颗粒达平均漂移速度 \(\langle v\rangle=\mu_{\text{mob}}F\)，定义<strong>迁移率</strong> (mobility) \(\mu_{\text{mob}}\)。Einstein 关系：</p>
+      <div class="formula">\[ \boxed{\;D\;=\;\mu_{\text{mob}}\,k_{B}T\;=\;\frac{k_{B}T}{\gamma}\;} \]</div>
+      <p>其中 \(\gamma=1/\mu_{\text{mob}}\) 为<strong>阻力系数</strong> (drag coefficient，单位 \(\mathrm{kg/s}\))。对半径 \(a\) 的球在黏度 \(\eta\) 的流体中，Stokes 阻力 \(F=6\pi\eta a v\) 给出：</p>
+      <div class="formula">\[ \boxed{\;D\;=\;\frac{k_{B}T}{6\pi\eta a}\qquad\text{(Stokes–Einstein 关系)}\;} \]</div>
+      <p>更一般的 FDT（Nyquist 1928、Callen &amp; Welton 1951）：系统的某物理量在平衡态下的涨落谱 \(S_{X}(\omega)\) 与响应函数 \(\chi''(\omega)\) 之比为 \(k_{B}T\)（经典极限）。FDT <strong>只在近平衡</strong>成立，是线性响应理论的支柱。</p>
+      <div class="key-terms">fluctuation–dissipation theorem (涨落-耗散定理, FDT), mobility (迁移率), drag coefficient (阻力系数), Stokes–Einstein relation (Stokes–Einstein 关系), linear response (线性响应)</div>
+
+      <h3>8. Onsager 倒易关系 Onsager Reciprocal Relations</h3>
+      <p>近平衡系统中，各<strong>广义力</strong> \(X_{j}\)（温度梯度、化学势梯度、电场…）引发各<strong>广义流</strong> \(J_{i}\)（热流、粒子流、电流…）。线性近似下：</p>
+      <div class="formula">\[ J_{i}\;=\;\sum_{j}L_{ij}\,X_{j} \]</div>
+      <p>1931 年 Onsager 证明（基于微观可逆性 / 时间反演对称性）：</p>
+      <div class="formula">\[ \boxed{\;L_{ij}\;=\;L_{ji}\qquad\text{(Onsager 倒易关系)}\;} \]</div>
+      <p>即「力 \(X_{j}\) 引起的流 \(J_{i}\)」等于「力 \(X_{i}\) 引起的流 \(J_{j}\)」。例：温度梯度引发电流（Seebeck 热电效应）的系数，等于电势差引发热流（Peltier 效应）的系数。Onsager 因此获 1968 年 Nobel 化学奖。</p>
+      <div class="key-terms">Onsager reciprocal relations (Onsager 倒易关系), generalized force/flux (广义力/广义流), microscopic reversibility (微观可逆性), thermoelectric effect (热电效应)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 12.A — 由正则配分函数导出 \(\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V}\) Energy Fluctuations from \(Z\)</h3>
+      <p class="step"><strong>步骤 1（定义）：</strong>正则配分函数 \(Z=\sum_{\alpha}e^{-\beta E_{\alpha}}\)，\(\beta=1/(k_{B}T)\)。能量的各阶矩：</p>
+      <div class="formula">\[ \langle E\rangle=-\frac{\partial\ln Z}{\partial\beta},\qquad\langle E^{2}\rangle=\frac{1}{Z}\frac{\partial^{2}Z}{\partial\beta^{2}}. \]</div>
+      <p class="step"><strong>步骤 2（方差）：</strong>对 \(\langle E\rangle\) 再求一次 \(\beta\) 偏导：</p>
+      <div class="formula">\[ -\frac{\partial\langle E\rangle}{\partial\beta}\;=\;-\frac{\partial}{\partial\beta}\!\left(-\frac{1}{Z}\frac{\partial Z}{\partial\beta}\right)\;=\;\frac{1}{Z^{2}}\!\left(\frac{\partial Z}{\partial\beta}\right)^{2}-\frac{1}{Z}\frac{\partial^{2}Z}{\partial\beta^{2}}\;=\;\langle E\rangle^{2}-\langle E^{2}\rangle. \]</div>
+      <p class="step">即 \(\langle(\delta E)^{2}\rangle=\langle E^{2}\rangle-\langle E\rangle^{2}=-\partial\langle E\rangle/\partial\beta\)。</p>
+      <p class="step"><strong>步骤 3（\(\beta\to T\)）：</strong>由 \(\beta=1/(k_{B}T)\)，链式法则 \(d\beta/dT=-1/(k_{B}T^{2})\)，故 \(\partial/\partial\beta=-k_{B}T^{2}\,\partial/\partial T\)。代入：</p>
+      <div class="formula">\[ \langle(\delta E)^{2}\rangle\;=\;-\frac{\partial\langle E\rangle}{\partial\beta}\;=\;k_{B}T^{2}\,\frac{\partial\langle E\rangle}{\partial T}\;=\;k_{B}T^{2}\,C_{V}. \]</div>
+      <p class="step"><strong>步骤 4（相对涨落）：</strong>对 \(f\) 自由度理想气体，\(C_{V}=\tfrac{f}{2}Nk_{B}\)、\(\langle E\rangle=\tfrac{f}{2}Nk_{B}T\)：</p>
+      <div class="formula">\[ \frac{\sigma_{E}}{\langle E\rangle}=\frac{\sqrt{k_{B}T^{2}\cdot\tfrac{f}{2}Nk_{B}}}{\tfrac{f}{2}Nk_{B}T}=\sqrt{\frac{2}{fN}}. \]</div>
+      <p class="step"><strong>结论：</strong>相对能量涨落严格 \(\propto 1/\sqrt{N}\)。对 \(N=6\times 10^{23}\)，\(\sigma_{E}/\langle E\rangle\sim 10^{-12}\)；对 \(N\sim 30\)，\(\sigma_{E}/\langle E\rangle\sim 15\%\)。</p>
+
+      <h3>推导 12.B — 由随机游动导出 \(\langle x^{2}\rangle=2Dt\) Random Walk → MSD</h3>
+      <p class="step"><strong>步骤 1（模型）：</strong>粒子沿 \(x\) 轴做离散随机游动：每经时间 \(\tau\) 走一步，步长 \(\pm a\) 等概率（\(s_{i}=\pm a\)）。\(n\) 步后位置：</p>
+      <div class="formula">\[ x_{n}\;=\;\sum_{i=1}^{n}s_{i},\qquad P(s_{i}=+a)=P(s_{i}=-a)=\tfrac12. \]</div>
+      <p class="step"><strong>步骤 2（均值）：</strong>\(\langle s_{i}\rangle=0\Rightarrow\langle x_{n}\rangle=0\)。粒子「平均不移动」。</p>
+      <p class="step"><strong>步骤 3（方均）：</strong>展开：</p>
+      <div class="formula">\[ \langle x_{n}^{2}\rangle\;=\;\sum_{i}\sum_{j}\langle s_{i}s_{j}\rangle\;=\;\sum_{i}\langle s_{i}^{2}\rangle+\sum_{i\neq j}\underbrace{\langle s_{i}s_{j}\rangle}_{\langle s_{i}\rangle\langle s_{j}\rangle=0\text{ (独立)}} \;=\;n\,a^{2}. \]</div>
+      <p class="step"><strong>步骤 4（连续极限）：</strong>经时间 \(t\) 共走 \(n=t/\tau\) 步。定义扩散系数 \(D\equiv a^{2}/(2\tau)\)（1D），则</p>
+      <div class="formula">\[ \langle x^{2}(t)\rangle\;=\;n a^{2}\;=\;\frac{t}{\tau}\,a^{2}\;=\;2Dt. \]</div>
+      <p class="step"><strong>步骤 5（高斯极限）：</strong>当 \(n\gg 1\)，由<strong>中心极限定理</strong> \(P(x,t)\to\) 高斯，宽度 \(\sigma_{x}=\sqrt{2Dt}\)，对应扩散方程的点源解。等价的连续图像是：粒子位置服从 Langevin 方程 \(m\dot v=-\gamma v+F_{\text{rand}}(t)\)，长时间极限 \(t\gg m/\gamma\) 下进入扩散区，得 \(D=k_{B}T/\gamma\)（涨落-耗散定理，见 §7）。</p>
+      <p class="step"><strong>结论：</strong>位移的<strong>方均根</strong> (RMS) \(\sqrt{\langle x^{2}\rangle}=\sqrt{2Dt}\) 随 \(\sqrt{t}\) 增长——并非线性。100 s 的扩散距离仅是 1 s 的 10 倍，而非 100 倍。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 1 cm³ 单原子理想气体的能量涨落 Energy Fluctuations in 1 cm³ of Monatomic Gas</h4>
+        <p class="example-statement">1 cm³ 氩气（Ar，单原子）处于 \(p=1.013\times 10^{5}\,\mathrm{Pa}\)、\(T=300\,\mathrm{K}\)。(a) 求分子数 \(\langle N\rangle\)；(b) 求平均能量 \(\langle E\rangle\) 与热容 \(C_{V}\)；(c) 用 \(\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V}\) 求能量涨落的方均根 \(\sigma_{E}\) 与相对涨落 \(\sigma_{E}/\langle E\rangle\)；(d) 验证 \(\propto 1/\sqrt{N}\) 标度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 分子数：</strong>\(\langle N\rangle=\dfrac{pV}{k_{B}T}=\dfrac{(1.013\times 10^{5})(1.0\times 10^{-6})}{(1.380\,649\times 10^{-23})(300)}=\dfrac{1.013\times 10^{-1}}{4.142\times 10^{-21}}=\mathbf{2.45\times 10^{19}}\)。</p>
+          <p class="step"><strong>(b) 平均能量与热容</strong>（\(f=3\)，单原子）：\(\langle E\rangle=\tfrac32\,pV=\tfrac32(1.013\times 10^{5})(10^{-6})=\mathbf{0.152\,\mathrm{J}}\)。</p>
+          <p class="step">\(C_{V}=\tfrac32\langle N\rangle k_{B}=\tfrac32\cdot\dfrac{pV}{T}=\tfrac32\cdot\dfrac{0.1013}{300}=\mathbf{5.06\times 10^{-4}\,\mathrm{J/K}}\)。</p>
+          <p class="step"><strong>(c) 能量涨落：</strong></p>
+          <p class="step">\(\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V}=(1.380\,649\times 10^{-23})(300)^{2}(5.06\times 10^{-4})\)。</p>
+          <p class="step">\(=(1.380\,649\times 10^{-23})(9\times 10^{4})(5.06\times 10^{-4})=(1.380\,649\times 10^{-23})(45.54)=\mathbf{6.29\times 10^{-22}\,\mathrm{J^{2}}}\)。</p>
+          <p class="step">\(\sigma_{E}=\sqrt{6.29\times 10^{-22}}=\mathbf{2.51\times 10^{-11}\,\mathrm{J}}\)。</p>
+          <p class="step">相对涨落：\(\dfrac{\sigma_{E}}{\langle E\rangle}=\dfrac{2.51\times 10^{-11}}{0.152}=\mathbf{1.65\times 10^{-10}}\)（约 \(1.65\times 10^{-8}\%\)）。</p>
+          <p class="step"><strong>(d) 验证 \(1/\sqrt{N}\) 标度：</strong>理论 \(\sigma_{E}/\langle E\rangle=\sqrt{2/(fN)}=\sqrt{2/(3\cdot 2.45\times 10^{19})}=\sqrt{2.72\times 10^{-20}}=1.65\times 10^{-10}\) ✓。</p>
+          <p class="step"><strong>小系统对比：</strong>若取同样压强温度的 \((10\,\mathrm{nm})^{3}=10^{-24}\,\mathrm{m^{3}}\) 体积（约 30 个分子）：\(\sigma_{E}/\langle E\rangle=\sqrt{2/(3\cdot 30)}\approx\mathbf{0.15}\)（\(15\%\)）。这正是纳米孔、单分子酶、单细胞内能量涨落显著的尺度。</p>
+          <p><span class="ans">答案：\(\langle N\rangle=2.45\times 10^{19}\)；\(\langle E\rangle=0.152\,\mathrm{J}\)，\(C_{V}=5.06\times 10^{-4}\,\mathrm{J/K}\)；\(\sigma_{E}=2.51\times 10^{-11}\,\mathrm{J}\)；\(\sigma_{E}/\langle E\rangle=1.65\times 10^{-10}\)（理论 \(1/\sqrt{N}\) ✓）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 氧气在空气中的扩散——1 秒、1 分、1 小时走多远 Diffusion Lengths for O₂ in Air</h4>
+        <p class="example-statement">实验测得 O₂ 在空气（STP, \(T=273\,\mathrm{K}\)）中的扩散系数 \(D=1.8\times 10^{-5}\,\mathrm{m^{2}/s}\)。（注：\(D\) 随 \(T\) 升高而增大、随 \(p\) 升高而减小；本章例 12.3 给出估算。）求：(a) 单个 O₂ 分子在 1 s、1 min、1 h 内的方均根位移 \(\sqrt{\langle x^{2}\rangle}\)（每轴）；(b) 与「弹道飞行」（自由程下的直线运动）的对比。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 1D 方均根位移：</strong>\(\sqrt{\langle x^{2}\rangle}=\sqrt{2Dt}\)。</p>
+          <p class="step">\(t=1\,\mathrm{s}\)：\(\sqrt{2(1.8\times 10^{-5})(1)}=\sqrt{3.60\times 10^{-5}}=\mathbf{6.0\times 10^{-3}\,\mathrm{m}}=\mathbf{6.0\,\mathrm{mm}}\)。</p>
+          <p class="step">\(t=1\,\mathrm{min}=60\,\mathrm{s}\)：\(\sqrt{2(1.8\times 10^{-5})(60)}=\sqrt{2.16\times 10^{-3}}=\mathbf{4.65\times 10^{-2}\,\mathrm{m}}\approx\mathbf{4.6\,\mathrm{cm}}\)。</p>
+          <p class="step">\(t=1\,\mathrm{h}=3600\,\mathrm{s}\)：\(\sqrt{2(1.8\times 10^{-5})(3600)}=\sqrt{1.30\times 10^{-1}}=\mathbf{0.36\,\mathrm{m}}\)。</p>
+          <p class="step"><strong>标度核对：</strong>从 1 s 到 1 h（\(3600\times\) 时间），距离仅增 \(\sqrt{3600}=60\) 倍：\(6\,\mathrm{mm}\to 36\,\mathrm{cm}\) ✓——<strong>不是</strong> 3600 倍。</p>
+          <p class="step"><strong>3D 修正（径向）：</strong>\(\sqrt{\langle r^{2}\rangle}=\sqrt{6Dt}\)，是 1D 的 \(\sqrt 3\) 倍。1 h 内 \(\sqrt{\langle r^{2}\rangle}\approx 0.62\,\mathrm{m}\)。</p>
+          <p class="step"><strong>(b) 与弹道飞行对比：</strong>若分子不被碰撞，自由飞行 \(t=1\,\mathrm{s}\)、\(\bar v\approx 400\,\mathrm{m/s}\) 时移动 \(\sim 400\,\mathrm{m}\)；扩散只走 \(6\,\mathrm{mm}\)。差距源于分子每经 \(\ell\sim 60\,\mathrm{nm}\) 就随机偏转一次，方向被「洗掉」——净位移按 \(\sqrt{N_{\text{步}}}\) 累加而非 \(N_{\text{步}}\)。</p>
+          <p class="step"><strong>物理解读：</strong>这就是为何打开香水瓶后，香味要数秒到数分钟才传遍房间——尽管分子本身运动极快，扩散是低效的输运方式。室内实际的气味传输主要靠对流（空气流动）。</p>
+          <p><span class="ans">答案：1D RMS：\(6.0\,\mathrm{mm}\)（1 s）、\(4.6\,\mathrm{cm}\)（1 min）、\(0.36\,\mathrm{m}\)（1 h）；扩散 \(\propto\sqrt{t}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 平均自由程法估算氮气黏度 Mean-Free-Path Estimate of \(\eta\) for N₂</h4>
+        <p class="example-statement">在 STP（\(T=273\,\mathrm{K}\)、\(p=1.013\times 10^{5}\,\mathrm{Pa}\)）下，用 \(\eta\sim\tfrac13\rho\bar v\,\ell\) 估算 N₂ 气的黏度，并与实验值 \(\eta_{\text{exp}}=1.66\times 10^{-5}\,\mathrm{Pa\,s}\) 对比。N₂ 分子有效直径 \(d=3.7\times 10^{-10}\,\mathrm{m}\)，摩尔质量 \(M=28.0\,\mathrm{g/mol}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（数密度）：</strong>\(n=\dfrac{p}{k_{B}T}=\dfrac{1.013\times 10^{5}}{(1.380\,649\times 10^{-23})(273)}=\dfrac{1.013\times 10^{5}}{3.769\times 10^{-21}}=\mathbf{2.69\times 10^{25}\,\mathrm{m^{-3}}}\)（Loschmidt 常数）。</p>
+          <p class="step"><strong>步骤 2（平均自由程）：</strong>\(\ell=\dfrac{1}{\sqrt2\,n\pi d^{2}}=\dfrac{1}{1.414\,(2.69\times 10^{25})\,\pi\,(3.7\times 10^{-10})^{2}}\)。</p>
+          <p class="step">分母：\(1.414\cdot 2.69\times 10^{25}\cdot 3.141\,6\cdot 1.369\times 10^{-19}=1.414\cdot 2.69\times 10^{25}\cdot 4.30\times 10^{-19}=1.636\times 10^{7}\)。</p>
+          <p class="step">\(\ell=\dfrac{1}{1.636\times 10^{7}}=\mathbf{6.11\times 10^{-8}\,\mathrm{m}}=\mathbf{61\,\mathrm{nm}}\)。</p>
+          <p class="step"><strong>步骤 3（平均速率）：</strong>\(m=M/N_{A}=0.0280/(6.022\times 10^{23})=4.65\times 10^{-26}\,\mathrm{kg}\)。</p>
+          <p class="step">\(\bar v=\sqrt{\dfrac{8k_{B}T}{\pi m}}=\sqrt{\dfrac{8(1.380\,649\times 10^{-23})(273)}{\pi(4.65\times 10^{-26})}}=\sqrt{\dfrac{3.013\times 10^{-20}}{1.461\times 10^{-25}}}=\sqrt{2.062\times 10^{5}}=\mathbf{454\,\mathrm{m/s}}\)。</p>
+          <p class="step"><strong>步骤 4（密度）：</strong>\(\rho=nm=(2.69\times 10^{25})(4.65\times 10^{-26})=\mathbf{1.25\,\mathrm{kg/m^{3}}}\)。</p>
+          <p class="step"><strong>步骤 5（黏度估计）：</strong></p>
+          <p class="step">\(\eta\sim\tfrac13\rho\bar v\,\ell=\tfrac13(1.25)(454)(6.11\times 10^{-8})=\tfrac13\cdot 3.47\times 10^{-5}=\mathbf{1.16\times 10^{-5}\,\mathrm{Pa\,s}}\)。</p>
+          <p class="step"><strong>步骤 6（对比）：</strong>\(\dfrac{\eta_{\text{估计}}}{\eta_{\text{exp}}}=\dfrac{1.16}{1.66}=0.70\)，<strong>偏差约 30%</strong>——简单 \(\tfrac13\) 公式的典型精度。Chapman–Enskog 严格理论给出 \(\eta=\dfrac{5}{16}\dfrac{\sqrt{\pi mk_{B}T}}{\pi d^{2}}\)，对 N₂ 给出 \(1.66\times 10^{-5}\,\mathrm{Pa\,s}\) ✓。</p>
+          <p class="step"><strong>关键检验——压强无关性：</strong>若 \(p\to 2p\)，则 \(n\to 2n\)、\(\ell\to\ell/2\)，但 \(\rho\ell=\text{const}\)，所以 \(\eta\) 不变。实验上 \(p\) 在 \(\sim 1\) 到 \(10\,\mathrm{atm}\) 间 \(\eta\) 几乎不变（极高或极低压强下连续介质近似破坏，关系才失效）。</p>
+          <p><span class="ans">答案：\(\eta\approx 1.16\times 10^{-5}\,\mathrm{Pa\,s}\)（实验 \(1.66\times 10^{-5}\)，偏差 30%）；\(\ell=61\,\mathrm{nm}\)、\(\bar v=454\,\mathrm{m/s}\)。气体黏度几乎与压强无关。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 水中 1 μm 球的布朗运动——Einstein 与 Stokes–Einstein Brownian Sphere in Water</h4>
+        <p class="example-statement">半径 \(a=0.50\,\mathrm{\mu m}\) 的聚苯乙烯球在 \(T=300\,\mathrm{K}\) 的水中（水黏度 \(\eta=8.9\times 10^{-4}\,\mathrm{Pa\,s}\)）。(a) 由 Stokes–Einstein 求 \(D\)；(b) 求 \(t=1\,\mathrm{s},1\,\mathrm{min},1\,\mathrm{h}\) 内的 1D 方均根位移；(c) 假设球在 \(F=10^{-14}\,\mathrm{N}\) 的恒力下，求迁移率 \(\mu_{\text{mob}}\) 与漂移速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) Stokes–Einstein：</strong>\(D=\dfrac{k_{B}T}{6\pi\eta a}=\dfrac{(1.380\,649\times 10^{-23})(300)}{6\pi(8.9\times 10^{-4})(0.50\times 10^{-6})}\)。</p>
+          <p class="step">分子：\(4.142\times 10^{-21}\)。</p>
+          <p class="step">分母：\(6\cdot 3.141\,6\cdot 8.9\times 10^{-4}\cdot 5.0\times 10^{-7}=18.85\cdot 4.45\times 10^{-10}=8.39\times 10^{-9}\)。</p>
+          <p class="step">\(D=\dfrac{4.142\times 10^{-21}}{8.39\times 10^{-9}}=\mathbf{4.94\times 10^{-13}\,\mathrm{m^{2}/s}}\)。</p>
+          <p class="step"><strong>(b) 1D 方均根位移 \(\sqrt{2Dt}\)：</strong></p>
+          <p class="step">\(t=1\,\mathrm{s}\)：\(\sqrt{2(4.94\times 10^{-13})(1)}=\sqrt{9.88\times 10^{-13}}=\mathbf{9.94\times 10^{-7}\,\mathrm{m}}\approx\mathbf{1.0\,\mathrm{\mu m}}\)。</p>
+          <p class="step">\(t=1\,\mathrm{min}\)：\(\sqrt{2(4.94\times 10^{-13})(60)}=\sqrt{5.93\times 10^{-11}}=\mathbf{7.70\times 10^{-6}\,\mathrm{m}}\approx\mathbf{7.7\,\mathrm{\mu m}}\)。</p>
+          <p class="step">\(t=1\,\mathrm{h}\)：\(\sqrt{2(4.94\times 10^{-13})(3600)}=\sqrt{3.56\times 10^{-9}}=\mathbf{5.96\times 10^{-5}\,\mathrm{m}}\approx\mathbf{60\,\mathrm{\mu m}}\)。</p>
+          <p class="step"><strong>(c) 迁移率与漂移（Einstein 关系 \(D=\mu_{\text{mob}}k_{B}T\)）：</strong></p>
+          <p class="step">\(\mu_{\text{mob}}=\dfrac{D}{k_{B}T}=\dfrac{4.94\times 10^{-13}}{4.142\times 10^{-21}}=\mathbf{1.19\times 10^{8}\,\mathrm{s/kg}}\)。</p>
+          <p class="step">阻力系数 \(\gamma=1/\mu_{\text{mob}}=8.39\times 10^{-9}\,\mathrm{kg/s}\)（与 \(6\pi\eta a\) 一致 ✓）。</p>
+          <p class="step">漂移速度：\(v_{d}=\mu_{\text{mob}}F=(1.19\times 10^{8})(10^{-14})=\mathbf{1.19\times 10^{-6}\,\mathrm{m/s}}\)（每秒约 \(1\,\mathrm{\mu m}\)）。</p>
+          <p class="step"><strong>对照——扩散 vs 漂移：</strong>扩散 RMS \(\sim 1\,\mathrm{\mu m/s}\)；漂移也是 \(\sim 1\,\mathrm{\mu m/s}\)。两者数量级相当，意味着此力恰可与热涨落竞争——生物大分子在细胞内的典型处境。</p>
+          <p class="step"><strong>历史注记：</strong>Perrin 1908 年的实验正是用此球径的乳胶颗粒（\(a\sim 0.5\,\mathrm{\mu m}\)），在显微镜下测 \(\langle x^{2}\rangle\) 对 \(t\) 的线性关系，从斜率反推 \(D\)，再用 \(D=k_{B}T/(6\pi\eta a)\) 解出 \(k_{B}\)，进而得 \(N_{A}=R/k_{B}\)，结果 \(N_{A}\approx 6\times 10^{23}\)——分子论的胜利。</p>
+          <p><span class="ans">答案：\(D=4.94\times 10^{-13}\,\mathrm{m^{2}/s}\)；RMS 位移 \(1.0\,\mathrm{\mu m},7.7\,\mathrm{\mu m},60\,\mathrm{\mu m}\)；\(\mu_{\text{mob}}=1.19\times 10^{8}\,\mathrm{s/kg}\)、\(\gamma=8.39\times 10^{-9}\,\mathrm{kg/s}\)、\(v_{d}=1.19\,\mathrm{\mu m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 (10 nm)³ 空气体积内的粒子数涨落与瑞利散射 Number Fluctuation &amp; Sky Blue</h4>
+        <p class="example-statement">考虑空气（STP）中一个边长 \(L=10\,\mathrm{nm}\) 的立方体（约 30 个 N₂ 分子）。求：(a) \(\langle N\rangle\)；(b) \(\sigma_{N}\)、相对涨落 \(\sigma_{N}/\langle N\rangle\)；(c) 用 \(\langle(\delta N)^{2}\rangle/\langle N\rangle=nk_{B}T\kappa_{T}\)（理想气体 \(=1\)）验证；(d) 简述此涨落如何解释天空蓝色。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 平均粒子数：</strong>\(V=L^{3}=(10^{-8})^{3}=10^{-24}\,\mathrm{m^{3}}\)。</p>
+          <p class="step">\(\langle N\rangle=nV=(2.69\times 10^{25})(10^{-24})=\mathbf{26.9}\)（约 27 个分子）。</p>
+          <p class="step"><strong>(b) 涨落（理想气体泊松）：</strong>\(\sigma_{N}=\sqrt{\langle N\rangle}=\sqrt{26.9}=\mathbf{5.19}\)。</p>
+          <p class="step">相对涨落：\(\dfrac{\sigma_{N}}{\langle N\rangle}=\dfrac{5.19}{26.9}=\mathbf{0.193}\)（约 \(19\%\)！）。</p>
+          <p class="step"><strong>(c) 数-压缩率关系验证：</strong>理想气体 \(\kappa_{T}=1/p=1/(1.013\times 10^{5})=9.87\times 10^{-6}\,\mathrm{Pa^{-1}}\)。</p>
+          <p class="step">\(nk_{B}T\kappa_{T}=(2.69\times 10^{25})(1.380\,649\times 10^{-23})(273)(9.87\times 10^{-6})=\dfrac{(2.69\times 10^{25})(1.380\,649\times 10^{-23})(273)}{1.013\times 10^{5}}\cdot\dfrac{p}{1}\)。</p>
+          <p class="step">注：\(nk_{B}T=p\)，故 \(nk_{B}T\kappa_{T}=p\cdot(1/p)=1\) ✓。\(\langle(\delta N)^{2}\rangle/\langle N\rangle=1\)，与 \(\langle(\delta N)^{2}\rangle=\langle N\rangle\) 一致 ✓。</p>
+          <p class="step"><strong>(d) 瑞利散射与天空蓝：</strong>空气各处的密度（因而折射率）在 \(\sim 10\,\mathrm{nm}\) 尺度上有 \(\sim 19\%\) 的随机涨落。这些涨落区域作为随机分布的散射中心，散射强度 \(I_{\text{scat}}\propto\omega^{4}\propto 1/\lambda^{4}\)（瑞利定律）。可见光中蓝光波长短、散射强 4 倍于红光——所以我们抬头看天，看到的是被散射的蓝光（日光本身的剩余部分呈偏红黄色，落日时更明显）。<strong>天空蓝的本质就是分子数涨落</strong>。</p>
+          <p class="step"><strong>大尺度对比：</strong>对 \(1\,\mathrm{\mu m}^{3}\) 空气，\(\langle N\rangle=2.69\times 10^{7}\)、\(\sigma_{N}/\langle N\rangle=1.93\times 10^{-4}\)（\(0.02\%\)）——涨落几乎消失，介质完全均匀，几乎不散射。</p>
+          <p><span class="ans">答案：\(\langle N\rangle=26.9\)、\(\sigma_{N}=5.19\)、\(\sigma_{N}/\langle N\rangle=19.3\%\)（数-压缩率关系验证 ✓）；纳米尺度密度涨落是瑞利散射的根源，使天空呈蓝色。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「宏观系统也有显著涨落」。</strong>错。广延量的相对涨落严格 \(\sim 1/\sqrt{N}\)，对 \(N\sim 10^{23}\) 时为 \(\sim 10^{-12}\)，远远低于任何实验可测。涨落只在<strong>小系统</strong>（纳米尺度、单分子、单细胞）或<strong>临界点附近</strong>（\(\kappa_{T}\) 发散）才显著。</li>
+        <li><strong>认为扩散位移 \(\propto t\)。</strong>错。扩散是<strong>随机游动</strong>，方向不断被碰撞「洗掉」，净位移按 \(\sqrt{N_{\text{步}}}\propto\sqrt{t}\) 累加。直线飞行 100 s 的弹道距离是 1 s 的 100 倍；扩散只是 10 倍。混淆弹道运动与扩散是常见错误。</li>
+        <li><strong>「输运系数是物质常数，与梯度无关」——但忘了「无梯度就无流」。</strong>输运系数 \(D,\eta,\kappa\) 是比例常数；流 \(J\) 必须由<strong>梯度</strong>（\(\nabla n,\nabla v,\nabla T\)）驱动。梯度为零时分子仍在运动（速度 \(\bar v\) 很大），但<strong>没有净输运</strong>。</li>
+        <li><strong>把 FDT 用于远离平衡的系统。</strong>涨落-耗散定理 \(D=\mu_{\text{mob}}k_{B}T\) 是<strong>线性响应</strong>（近平衡）结果。对强外力、非平衡态、活性物质（如细菌悬浮液），FDT 形式失效或需修正（「有效温度」概念）。</li>
+        <li><strong>「布朗粒子匀速运动」。</strong>错。短时间（\(t\lesssim m/\gamma\)，水中微米球 \(\sim 10^{-7}\,\mathrm{s}\)）粒子做近弹道运动；长时间（\(t\gg m/\gamma\)）才进入扩散区，\(\langle x^{2}\rangle\propto t\)。显微镜下看到的是后者。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 1 μm³ 空气的粒子数涨落 Particle Fluctuations in 1 μm³ of Air</summary>
+        <div class="hint">理想气体泊松：\(\sigma_{N}^{2}=\langle N\rangle\)。用 \(n=p/(k_{B}T)=2.69\times 10^{25}\,\mathrm{m^{-3}}\) (STP)。</div>
+        <div class="solution">
+          \(\langle N\rangle=nV=(2.69\times 10^{25})(10^{-18})=\mathbf{2.69\times 10^{7}}\)。
+          <br>\(\sigma_{N}=\sqrt{\langle N\rangle}=\sqrt{2.69\times 10^{7}}=\mathbf{5.19\times 10^{3}}\)。
+          <br>相对涨落 \(\sigma_{N}/\langle N\rangle=1/\sqrt{\langle N\rangle}=\mathbf{1.93\times 10^{-4}}\)（\(0.02\%\)）。比 (10 nm)³ 系统小 \(10^{3}\) 倍——尺度每增 10 倍、相对涨落降 \(\sqrt{10^{3}}\)。 <span class="ans">答：\(\langle N\rangle=2.69\times 10^{7}\)、\(\sigma_{N}/\langle N\rangle=1.93\times 10^{-4}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 自扩散到达 1 cm 需多久 Diffusion Time to 1 cm</summary>
+        <div class="hint">\(\sqrt{2Dt}=L\) 解出 \(t=L^{2}/(2D)\)。水中典型小分子 \(D\sim 10^{-9}\,\mathrm{m^{2}/s}\)。</div>
+        <div class="solution">
+          水中葡萄糖分子 \(D\approx 6\times 10^{-10}\,\mathrm{m^{2}/s}\)。
+          <br>到达 1D 距离 \(L=1\,\mathrm{cm}=10^{-2}\,\mathrm{m}\)（RMS）：\(t=\dfrac{L^{2}}{2D}=\dfrac{10^{-4}}{2(6\times 10^{-10})}=\dfrac{10^{-4}}{1.2\times 10^{-9}}=\mathbf{8.3\times 10^{4}\,\mathrm{s}}\approx\mathbf{23\,\mathrm{h}}\)。
+          <br>到达 1 m：\(t=\dfrac{1}{1.2\times 10^{-9}}=8.3\times 10^{8}\,\mathrm{s}\approx 26\) 年！
+          <br>这就是为何细胞依赖<strong>主动输运</strong>（马达蛋白沿微管）输送大分子而非被动扩散——扩散对大尺度输运完全低效。 <span class="ans">答：水中扩散 1 cm 需约 23 h；扩散到 1 m 需约 26 年。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 由蛋白质扩散系数反推迁移率 Mobility from \(D\) (Einstein Relation)</summary>
+        <div class="hint">\(D=\mu_{\text{mob}}k_{B}T\)，\(\gamma=1/\mu_{\text{mob}}\)，\(T=310\,\mathrm{K}\)（人体温）。</div>
+        <div class="solution">
+          测得某蛋白在细胞质中 \(D=2.0\times 10^{-11}\,\mathrm{m^{2}/s}\)，\(T=310\,\mathrm{K}\)。
+          <br>\(\mu_{\text{mob}}=\dfrac{D}{k_{B}T}=\dfrac{2.0\times 10^{-11}}{(1.380\,649\times 10^{-23})(310)}=\dfrac{2.0\times 10^{-11}}{4.280\times 10^{-21}}=\mathbf{4.67\times 10^{9}\,\mathrm{s/kg}}\)。
+          <br>\(\gamma=1/\mu_{\text{mob}}=\mathbf{2.14\times 10^{-10}\,\mathrm{kg/s}}\)。
+          <br>在 \(F=1\,\mathrm{pN}=10^{-12}\,\mathrm{N}\) 的分子马达拉力下，漂移速度 \(v_{d}=\mu_{\text{mob}}F=(4.67\times 10^{9})(10^{-12})=\mathbf{4.67\times 10^{-3}\,\mathrm{m/s}}\)——比典型马达速度（\(\sim 10^{-6}\,\mathrm{m/s}\)）大几千倍，说明细胞内输运完全由<strong>主动</strong>机制主导，扩散相对可忽略。 <span class="ans">答：\(\mu_{\text{mob}}=4.67\times 10^{9}\,\mathrm{s/kg}\)、\(\gamma=2.14\times 10^{-10}\,\mathrm{kg/s}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 氩气热导率估算 Thermal Conductivity of Ar at STP</summary>
+        <div class="hint">单原子 \(c_{v}=\tfrac32(k_{B}/m)=\tfrac32(R/M)\)；\(\kappa\sim\tfrac13\rho c_{v}\bar v\,\ell\)，Ar \(M=39.9\,\mathrm{g/mol}\)，\(d=3.4\times 10^{-10}\,\mathrm{m}\)。</div>
+        <div class="solution">
+          \(m=6.63\times 10^{-26}\,\mathrm{kg}\)；\(\rho=nm=(2.69\times 10^{25})(6.63\times 10^{-26})=1.78\,\mathrm{kg/m^{3}}\)。
+          <br>\(c_{v}=\tfrac32\cdot\dfrac{R}{M}=\tfrac32\cdot\dfrac{8.314}{0.0399}=312\,\mathrm{J/(kg\cdot K)}\)。
+          <br>\(\bar v=\sqrt{\dfrac{8k_{B}T}{\pi m}}=\sqrt{\dfrac{8(1.380\,649\times 10^{-23})(273)}{\pi(6.63\times 10^{-26})}}=\sqrt{1.446\times 10^{5}}=380\,\mathrm{m/s}\)。
+          <br>\(\ell=\dfrac{1}{\sqrt2\,n\pi d^{2}}=\dfrac{1}{1.414(2.69\times 10^{25})\pi(3.4\times 10^{-10})^{2}}=\dfrac{1}{1.378\times 10^{8}}=7.26\times 10^{-9}\,\mathrm{m}=72.6\,\mathrm{nm}\)。
+          <br>\(\kappa\sim\tfrac13\rho c_{v}\bar v\,\ell=\tfrac13(1.78)(312)(380)(7.26\times 10^{-9})=\tfrac13\cdot 1.535\times 10^{-2}=\mathbf{5.12\times 10^{-3}\,\mathrm{W/(m\cdot K)}}\)。
+          <br>实验值 \(\kappa_{\text{exp}}=1.65\times 10^{-2}\,\mathrm{W/(m\cdot K)}\)，简单估计偏低 \(\sim 3\times\)（\(\tfrac13\) 因子的粗略），但量级正确。 <span class="ans">答：\(\kappa\approx 5.1\times 10^{-3}\,\mathrm{W/(m\cdot K)}\)（简单估计），实验值 \(1.65\times 10^{-2}\)，量级一致。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 蔗糖在水中扩散到达 10 μm 需多久 Sucrose Diffusion in Cell</summary>
+        <div class="hint">蔗糖 \(D\approx 5\times 10^{-10}\,\mathrm{m^{2}/s}\)（水中，室温）。细胞直径约 \(10\,\mathrm{\mu m}\)。</div>
+        <div class="solution">
+          \(L=10\,\mathrm{\mu m}=10^{-5}\,\mathrm{m}\)；\(t=\dfrac{L^{2}}{2D}=\dfrac{(10^{-5})^{2}}{2(5\times 10^{-10})}=\dfrac{10^{-10}}{10^{-9}}=\mathbf{0.1\,\mathrm{s}}\)。
+          <br>对照：到达 \(1\,\mathrm{mm}=10^{-3}\,\mathrm{m}\) 需 \(t=\dfrac{10^{-6}}{10^{-9}}=10^{3}\,\mathrm{s}\approx 17\,\mathrm{min}\)；到达 \(1\,\mathrm{cm}\) 需 \(10^{5}\,\mathrm{s}\approx 28\,\mathrm{h}\)。
+          <br>结论：扩散在<strong>细胞内</strong>（\(\sim 10\,\mathrm{\mu m}\)）足够快（亚秒），在<strong>多细胞</strong>尺度（mm 以上）则慢得不可用——所以大生物体需要循环系统（血液、淋巴）主动输运营养与代谢产物。 <span class="ans">答：扩散 \(10\,\mathrm{\mu m}\) 需 \(0.1\,\mathrm{s}\)；\(1\,\mathrm{cm}\) 需约 28 h。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>扩散与随机游动 Diffusion &amp; Random Walk。</strong>600 个粒子从中心释放，每帧各做一次高斯随机步：每轴步长标准差 \(\sigma=\sqrt{2D\,dt}\)。<strong>左：</strong>粒子云（红色为单个被追踪的「布朗」粒子，留下轨迹）——观察其从尖锐 \(\delta\)-函数向高斯云的演化。<strong>右：</strong>方均位移 \(\langle x^{2}\rangle\) 随时间 \(t\)，理论直线 \(\langle x^{2}\rangle=2Dt\)（绿色虚线）与实测曲线（蓝）应严格重合——这是 Einstein 1905 公式的直接验证。调节 \(D\)（滑块）：\(D\) 加倍则斜率加倍、云扩散加倍。注意无论 \(D\) 多大，\(\langle x^{2}\rangle\) 始终正比于 \(t\)（<strong>不是</strong> \(t^{2}\)），且 RMS 位移正比于 \(\sqrt{t}\)——这是扩散区别于弹道运动的指纹。按 Reset 重新释放粒子。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="760" height="440"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+
+          var NP = 600;                  // number of random-walkers
+          var D_INIT = 1500;             // px²/s
+          var params = { D: D_INIT, showTrail: true };
+
+          // plot regions
+          var cloudL = 24, cloudR = 446, cloudT = 40, cloudB = 286;
+          var cloudCx = (cloudL + cloudR) / 2, cloudCy = (cloudT + cloudB) / 2;
+          var plotL = 478, plotR = 738, plotT = 40, plotB = 286;
+          var T_WIN = 8;                 // seconds shown on MSD plot
+
+          function gauss() {
+            // Box–Muller
+            var u1 = Math.random() || 1e-12, u2 = Math.random();
+            return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+          }
+
+          function freshState() {
+            var ps = new Array(NP);
+            for (var i = 0; i < NP; i++) ps[i] = { x: 0, y: 0 };
+            return {
+              particles: ps,
+              t: 0,
+              trail: [{ x: 0, y: 0 }],
+              msdHist: [{ t: 0, msd: 0 }]   // per-axis ⟨x²⟩
+            };
+          }
+
+          function step(dt, t, s) {
+            var sigma = Math.sqrt(2 * params.D * dt);   // per-axis std
+            var p = s.particles;
+            var sumx2 = 0;
+            for (var i = 0; i < NP; i++) {
+              var dx = gauss() * sigma;
+              var dy = gauss() * sigma;
+              p[i].x += dx;
+              p[i].y += dy;
+              sumx2 += p[i].x * p[i].x;
+            }
+            s.t = t + dt;
+            // record Brownian trail (particle 0), capped length
+            s.trail.push({ x: p[0].x, y: p[0].y });
+            if (s.trail.length > 800) s.trail.shift();
+            // record MSD every frame
+            var msd = sumx2 / NP;
+            s.msdHist.push({ t: s.t, msd: msd });
+            if (s.msdHist.length > 1200) s.msdHist.shift();
+          }
+
+          function draw(ctx, s, env) {
+            PS.clear(ctx);
+
+            // ---- title ----
+            ctx.save();
+            ctx.font = 'bold 14px system-ui, sans-serif';
+            ctx.fillStyle = PS.colors.text;
+            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.fillText('扩散与随机游动  Diffusion & Random Walk   (600 particles)', 24, 10);
+            ctx.font = '12px system-ui, sans-serif';
+            ctx.fillText('D = ' + params.D.toFixed(0) + ' px²/s    t = ' + s.t.toFixed(2) +
+                         ' s    σ_x = √(2Dt) = ' + Math.sqrt(2 * params.D * s.t).toFixed(1) + ' px',
+                         24, 300);
+            var empSlope = s.t > 0.3 ? (s.msdHist[s.msdHist.length - 1].msd / s.t) : 0;
+            ctx.fillText('实测斜率 measured slope ⟨x²⟩/t = ' + empSlope.toFixed(1) +
+                         ' px²/s   (理论 2D = ' + (2 * params.D).toFixed(0) + ' px²/s)',
+                         24, 322);
+            ctx.fillStyle = PS.colors.accent2;
+            ctx.fillText('RMS 位移 √⟨x²⟩ = √(2Dt)  ∝  √t   ——  扩散「慢」于弹道运动（位移 ∝ t）',
+                         24, 344);
+            ctx.fillStyle = PS.colors.text;
+            ctx.fillText('左：粒子云（红 = 被追踪的布朗粒子 + 轨迹）。右：⟨x²⟩ vs t —— 直线斜率 = 2D。',
+                         24, 366);
+            ctx.fillText('提示：滑动 D 看斜率随之变化；按 Reset 重新开始。',
+                         24, 388);
+            ctx.restore();
+
+            // ============ CLOUD PLOT ============
+            // border
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(cloudL, cloudT, cloudR - cloudL, cloudB - cloudT);
+            // light grid marks at center
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(cloudCx, cloudT); ctx.lineTo(cloudCx, cloudB);
+            ctx.moveTo(cloudL, cloudCy); ctx.lineTo(cloudR, cloudCy);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.restore();
+
+            // predicted 1σ circle √(2Dt) per axis (use as radius reference)
+            var sigmaX = Math.sqrt(2 * params.D * Math.max(s.t, 1e-6));
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.setLineDash([5, 4]);
+            ctx.lineWidth = 1.4;
+            ctx.globalAlpha = 0.75;
+            ctx.beginPath();
+            ctx.arc(cloudCx, cloudCy, Math.min(190, sigmaX), 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+            // 2σ circle
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.setLineDash([3, 5]);
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.45;
+            ctx.beginPath();
+            ctx.arc(cloudCx, cloudCy, Math.min(190, 2 * sigmaX), 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+
+            // particle dots (clip to cloud region)
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(cloudL, cloudT, cloudR - cloudL, cloudB - cloudT);
+            ctx.clip();
+            var p = s.particles;
+            ctx.fillStyle = PS.colors.primary;
+            ctx.globalAlpha = 0.55;
+            for (var i = 1; i < NP; i++) {
+              var px = cloudCx + p[i].x, py = cloudCy + p[i].y;
+                ctx.fillRect(px - 0.7, py - 0.7, 1.6, 1.6);
+            }
+            ctx.globalAlpha = 1;
+
+            // Brownian trail
+            if (params.showTrail && s.trail.length > 1) {
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.lineWidth = 1.0;
+              ctx.globalAlpha = 0.7;
+              ctx.beginPath();
+              ctx.moveTo(cloudCx + s.trail[0].x, cloudCy + s.trail[0].y);
+              for (var k = 1; k < s.trail.length; k++) {
+                ctx.lineTo(cloudCx + s.trail[k].x, cloudCy + s.trail[k].y);
+              }
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+            }
+            // highlighted Brownian particle (index 0)
+            PS.drawCircle(ctx, cloudCx + p[0].x, cloudCy + p[0].y, 3.2,
+                          { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+            ctx.restore();
+
+            // cloud labels
+            ctx.save();
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = PS.colors.text;
+            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.fillText('粒子云 cloud  (0,0)=中心', cloudL + 6, cloudT + 4);
+            ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+            ctx.fillStyle = PS.colors.accent2;
+            ctx.fillText('1σ = √(2Dt) 圆 (虚线)  ·  2σ (点线)', cloudL + 6, cloudB - 4);
+            ctx.restore();
+
+            // ============ MSD PLOT ============
+            // y auto-scale: theoretical at t_win = 2 D T_WIN * 1.15
+            var yMax = 2 * params.D * T_WIN * 1.15;
+
+            // grid
+            ctx.save();
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.45;
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = PS.colors.text;
+            ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+            for (var i = 0; i <= 4; i++) {
+              var ys = plotT + (i / 4) * (plotB - plotT);
+              ctx.beginPath(); ctx.moveTo(plotL, ys); ctx.lineTo(plotR, ys); ctx.stroke();
+              var yVal = yMax * (1 - i / 4);
+              ctx.fillText(yVal.toExponential(1), plotL - 4, ys);
+            }
+            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+            for (var i = 0; i <= 4; i++) {
+              var xs = plotL + (i / 4) * (plotR - plotL);
+              ctx.beginPath(); ctx.moveTo(xs, plotT); ctx.lineTo(xs, plotB); ctx.stroke();
+              var tVal = (i / 4) * T_WIN;
+              ctx.fillText(tVal.toFixed(1) + 's', xs, plotB + 4);
+            }
+            ctx.restore();
+
+            // axes
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB); ctx.lineTo(plotR, plotB);
+            ctx.stroke();
+            ctx.restore();
+
+            function timeToX(tt) { return plotL + (tt / T_WIN) * (plotR - plotL); }
+            function msdToY(mm) { return plotB - (mm / yMax) * (plotB - plotT); }
+
+            // theoretical line ⟨x²⟩ = 2 D t  (green dashed)
+            ctx.save();
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.lineWidth = 1.7;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(timeToX(0), msdToY(0));
+            ctx.lineTo(timeToX(T_WIN), msdToY(2 * params.D * T_WIN));
+            ctx.stroke();
+            ctx.restore();
+
+            // measured MSD curve (solid blue), only up to T_WIN
+            ctx.save();
+            ctx.strokeStyle = PS.colors.primary;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            var started = false;
+            for (var k = 0; k < s.msdHist.length; k++) {
+              var h = s.msdHist[k];
+              if (h.t > T_WIN) break;
+              var X = timeToX(h.t), Y = msdToY(h.msd);
+              if (!started) { ctx.moveTo(X, Y); started = true; } else ctx.lineTo(X, Y);
+            }
+            ctx.stroke();
+            ctx.restore();
+
+            // MSD plot labels
+            ctx.save();
+            ctx.font = 'bold 12px system-ui, sans-serif';
+            ctx.fillStyle = PS.colors.text;
+            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.fillText('⟨x²⟩  vs  t   (per axis)', plotL + 6, plotT + 2);
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('时间 t (s)', (plotL + plotR) / 2, plotB + 22);
+            ctx.save();
+            ctx.translate(plotL - 36, (plotT + plotB) / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('⟨x²⟩ (px²)', 0, 0);
+            ctx.restore();
+            // legend
+            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.fillStyle = PS.colors.primary;
+            ctx.fillRect(plotL + 8, plotT + 22, 12, 3);
+            ctx.fillStyle = PS.colors.text;
+            ctx.fillText('实测 measured', plotL + 26, plotT + 18);
+            ctx.strokeStyle = PS.colors.accent2;
+            ctx.setLineDash([5, 3]);
+            ctx.beginPath();
+            ctx.moveTo(plotL + 8, plotT + 42); ctx.lineTo(plotL + 20, plotT + 42);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillText('理论 ⟨x²⟩=2Dt', plotL + 26, plotT + 36);
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 30,
+            state: freshState,
+            step: step,
+            draw: draw
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'D',         label: '扩散系数 D (px²/s)', min: 200, max: 5000, step: 100, value: D_INIT },
+            { type: 'toggle', key: 'showTrail', label: '显示布朗轨迹 Brownian trail', value: true },
+            { type: 'button', key: 'reset',     label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('D', function (v) { params.D = v; });
+          ctl.on('showTrail', function (v) { params.showTrail = v; });
+          ctl.on('reset', function () {
+            // reset internal state by re-running state() and zeroing history
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>相对涨落普适标度</strong> \(\sim 1/\sqrt{N}\)：宏观系统（\(N\sim 10^{23}\)）涨落可忽略，小系统（纳米、单分子）显著。</li>
+        <li><strong>能量涨落（正则系综）</strong>：\(\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V}\)；理想气体 \(\sigma_{E}/\langle E\rangle=\sqrt{2/(fN)}\)。</li>
+        <li><strong>粒子数涨落（巨正则系综）</strong>：\(\langle(\delta N)^{2}\rangle=k_{B}T(\partial\langle N\rangle/\partial\mu)_{T,V}\)；理想气体 \(\langle(\delta N)^{2}\rangle=\langle N\rangle\)（泊松）。</li>
+        <li><strong>数-压缩率关系</strong>：\(\langle(\delta N)^{2}\rangle/\langle N\rangle=nk_{B}T\kappa_{T}\)（理想气体 \(=1\)，临界点发散）。</li>
+        <li><strong>随机游动 / 扩散</strong>：\(\langle x^{2}\rangle=2Dt\)（1D）、\(\langle r^{2}\rangle=4Dt\)（2D）、\(\langle r^{2}\rangle=6Dt\)（3D）；RMS 位移 \(\propto\sqrt{t}\)，非 \(\propto t\)。</li>
+        <li><strong>Fick 定律</strong>：\(\vec{J}=-D\nabla n\)，\(\partial n/\partial t=D\nabla^{2}n\)；点源解为高斯，宽度 \(\sigma=\sqrt{2Dt}\)。</li>
+        <li><strong>平均自由程</strong>：\(\ell=k_{B}T/(\sqrt2\,\pi d^{2}p)\)，STP 下 \(\sim 60\,\mathrm{nm}\)。</li>
+        <li><strong>输运系数（平均自由程估算）</strong>：\(D\sim\tfrac13\bar v\ell\)，\(\eta\sim\tfrac13\rho\bar v\ell\)，\(\kappa\sim\tfrac13\rho c_{v}\bar v\ell\)。气体 \(\eta,\kappa\) 几乎与压强无关；\(D\propto 1/p\)。</li>
+        <li><strong>涨落-耗散定理 / Einstein 关系</strong>：\(D=\mu_{\text{mob}}k_{B}T=k_{B}T/\gamma\)；<strong>Stokes–Einstein</strong>：\(D=k_{B}T/(6\pi\eta a)\)。</li>
+        <li><strong>Onsager 倒易</strong>：\(L_{ij}=L_{ji}\)——微观可逆性导致的对称性。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\langle(\delta E)^{2}\rangle=k_{B}T^{2}C_{V},\quad \langle(\delta N)^{2}\rangle=k_{B}T\!\left(\frac{\partial\langle N\rangle}{\partial\mu}\right)_{\!T,V},\quad \frac{\langle(\delta N)^{2}\rangle}{\langle N\rangle}=nk_{B}T\kappa_{T}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\langle x^{2}\rangle=2Dt,\quad \vec{J}=-D\nabla n,\quad \frac{\partial n}{\partial t}=D\nabla^{2}n,\quad \ell=\frac{k_{B}T}{\sqrt2\,\pi d^{2}p}\;} \]</div>
+      <div class="formula">\[ \boxed{\;D\sim\tfrac13\bar v\,\ell,\quad \eta\sim\tfrac13\rho\bar v\,\ell,\quad \kappa\sim\tfrac13\rho c_{v}\bar v\,\ell,\quad D=\mu_{\text{mob}}k_{B}T=\frac{k_{B}T}{6\pi\eta a},\quad L_{ij}=L_{ji}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

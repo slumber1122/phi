@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 热力学第一定律与过程 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第5章 · 热力学 Thermodynamics</p>
+      <h1>热力学第一定律与过程 <span class="en-title">First Law &amp; Processes</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>写出<strong>热力学第一定律</strong> (first law of thermodynamics) \(\Delta U=Q-W\)，讲清<strong>符号约定</strong> (sign convention)：\(Q&gt;0\) 表示系统吸热、\(W&gt;0\) 表示气体<em>对外</em>做功（\(W=\int P\,dV\)），并指出它与化学惯例 \(\Delta U=Q+W_{\text{on}}\) 的差别。</li>
+        <li>说明<strong>内能</strong> \(U\) 是<strong>状态函数</strong> (state function)——只取决于状态而与路径无关；对理想气体 \(U=\tfrac{f}{2}nRT\)，<em>只是温度的函数</em>。</li>
+        <li>在 \(P\!-\!V\) 图 (PV diagram) 上画出过程曲线，把<strong>功解释为曲线下的面积</strong> \(W=\int_{V_i}^{V_f}P\,dV\)；判断膨胀 (\(W&gt;0\))、压缩 (\(W&lt;0\)) 与闭合循环 (\(W_{\text{net}}=\) 围成面积)。</li>
+        <li>对四种特殊过程——<strong>等容</strong> (isochoric)、<strong>等压</strong> (isobaric)、<strong>等温</strong> (isothermal)、<strong>绝热</strong> (adiabatic)——分别写出 \(W、Q、\Delta U\) 的公式，并指出各自不变的态函数。</li>
+        <li>定义<strong>摩尔热容</strong> \(C_V、C_P\)，推导并应用 <strong>Mayer 关系</strong> \(C_P=C_V+R\) 与<strong>绝热指数</strong> \(\gamma=C_P/C_V\)，对单 / 双原子理想气体给出具体数值。</li>
+        <li>用 \(PV^{\gamma}=\text{const}\)、\(TV^{\gamma-1}=\text{const}\) 求解绝热过程的末态 \(T_f、P_f\)，并验证循环中 \(\Delta U_{\text{cycle}}=0\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 内能：状态函数 Internal Energy \(U\)</h3>
+      <p><strong>内能</strong> (internal energy) \(U\) 是系统<em>所有</em>微观动能与势能之和——一个宏观<em>状态函数</em> (state function)：只要状态 \((P,V,T)\) 给定，\(U\) 就唯一确定，与达到该状态所经过的路径无关。对理想气体（分子间无相互作用势能），\(U\) 只是温度的函数：</p>
+      <div class="formula">\[ U=\frac{f}{2}\,nRT\qquad(\text{单原子 }f=3;\ \text{刚性双原子 }f=5). \]</div>
+      <p>因此无论沿什么路径，只要始末温度相同，理想气体的 \(\Delta U=nC_V\,\Delta T\) 都一样——这是后面所有过程计算的「定海神针」。</p>
+      <div class="key-terms">internal energy \(U\) (内能), state function (状态函数), path-independent (与路径无关)</div>
+
+      <h3>2. 功、热、与第一定律 Work, Heat, and the First Law</h3>
+      <p>当气体膨胀、推动活塞移动 \(dx\) 时，它对外做的<strong>微元功</strong> (infinitesimal work) 为</p>
+      <div class="formula">\[ dW = F\,dx = P A\,dx = P\,dV. \]</div>
+      <p>从初态 \((P_i,V_i)\) 到末态 \((P_f,V_f)\)，<strong>气体对外做的总功</strong>为</p>
+      <div class="formula">\[ \boxed{\;W=\int_{V_i}^{V_f} P\,dV\;}\qquad(\text{physics convention: }W&gt;0\text{ when expanding}). \]</div>
+      <p><strong>符号约定（务必牢记）</strong>：</p>
+      <ul>
+        <li>\(Q&gt;0\)：热量<strong>流入</strong>系统 (heat absorbed)；\(Q&lt;0\)：流出。</li>
+        <li>\(W&gt;0\)：气体<strong>对外</strong>做功（体积膨胀）；\(W&lt;0\)：外界对气体做功（压缩）。</li>
+        <li>\(\Delta U&gt;0\)：内能增加（一般对应升温）。</li>
+      </ul>
+      <p><strong>热力学第一定律</strong>（能量守恒）写作：</p>
+      <div class="formula">\[ \boxed{\;\Delta U = Q - W\;}\qquad\text{或等价地}\qquad Q=\Delta U+W. \]</div>
+      <p>读法：「<em>加入系统的热量</em> \(Q\)，一部分变成<em>内能增量</em> \(\Delta U\)，一部分变成气体<em>对外做的功</em> \(W\)」。注意化学教材常用相反符号 \(\Delta U=Q+W_{\text{on}}\)，其中 \(W_{\text{on}}\) 是<em>外界对系统</em>做的功；本书统一用物理惯例 \(W=\int P\,dV\)。</p>
+      <div class="key-terms">work \(W=\int P\,dV\) (功), heat \(Q\) (热量), first law \(\Delta U=Q-W\) (热力学第一定律), sign convention (符号约定)</div>
+
+      <h3>3. \(P\!-\!V\) 图与「功即面积」 PV Diagrams: Work = Area</h3>
+      <p>在以 \(V\) 为横轴、\(P\) 为纵轴的图上：</p>
+      <ul>
+        <li>任一准静态过程 (quasi-static process) 对应一条曲线；</li>
+        <li>\(W=\int P\,dV\) 数值上等于<strong>曲线与 \(V\) 轴之间的面积</strong>（介于 \(V_i\)、\(V_f\) 之间）。</li>
+        <li>膨胀 (右行) 面积为<strong>正</strong>；压缩 (左行) 面积为<strong>负</strong>。</li>
+        <li><strong>闭合循环</strong> (closed cycle) 的净功 \(W_{\text{net}}\) 等于闭合曲线围成的<strong>有向面积</strong>：顺时针为正（热机），逆时针为负（制冷机）。</li>
+        <li>由于 \(U\) 是状态函数，<strong>循环一周</strong> \(\Delta U_{\text{cycle}}=0\)，故 \(Q_{\text{net}}=W_{\text{net}}\)。</li>
+      </ul>
+      <p>「功即面积」也直接告诉我们：\(W\) <strong>依赖路径</strong>——同样的始末态沿不同曲线走，做功不同。这是 \(W\) 与 \(\Delta U\) 的根本差别。</p>
+      <div class="key-terms">quasi-static process (准静态过程), PV diagram (\(P\!-\!V\) 图), work = area under curve (功即面积), closed cycle (闭合循环)</div>
+
+      <h3>4. 四种特殊过程 Four Special Processes</h3>
+      <p>下表给出理想气体 (\(n\) mol，自由度 \(f\)，\(C_V=\tfrac f2 R\)，\(C_P=C_V+R\)，\(\gamma=C_P/C_V\)) 在四种过程中的核心结果。每行都由 \(W=\int P\,dV\) 与 \(\Delta U=nC_V\Delta T\) 配合 \(\Delta U=Q-W\) 直接得到。</p>
+
+      <p><strong>(a) 等容过程 Isochoric (\(V=\text{const}\))。</strong> \(dV=0\) 故</p>
+      <div class="formula">\[ W=0,\qquad \Delta U = Q = nC_V\,\Delta T,\qquad \frac{P}{T}=\text{const}. \]</div>
+      <p>所有加入的热量全部转化为内能（升温）。\(C_V\) 因此可定义为 \(C_V\equiv \frac{1}{n}\!\left(\frac{\partial Q}{\partial T}\right)_V\!=\!\left(\frac{\partial U}{\partial T}\right)_V\)。</p>
+
+      <p><strong>(b) 等压过程 Isobaric (\(P=\text{const}\))。</strong></p>
+      <div class="formula">\[ W=P\,\Delta V = nR\,\Delta T,\qquad \Delta U=nC_V\,\Delta T,\qquad Q=nC_P\,\Delta T,\qquad \frac{V}{T}=\text{const}. \]</div>
+      <p>其中 \(C_P=\frac{1}{n}\!\left(\frac{\partial Q}{\partial T}\right)_P\)。注意 \(Q\ne C_V\Delta T\)——恒压下加入的热量既要升温又要对外做功，故 \(C_P&gt;C_V\)。</p>
+
+      <p><strong>(c) 等温过程 Isothermal (\(T=\text{const}\), 理想气体)。</strong> \(U\) 只依赖 \(T\)，故 \(\Delta U=0\)。由 \(P=nRT/V\) 代入积分：</p>
+      <div class="formula">\[ \boxed{\;W=nRT\,\ln\!\frac{V_f}{V_i}=P_iV_i\,\ln\!\frac{V_f}{V_i}\;},\qquad \Delta U=0,\qquad Q=W,\qquad PV=\text{const}. \]</div>
+      <p>膨胀 \(V_f&gt;V_i\) 时 \(W&gt;0\)、\(Q&gt;0\)（吸热同时全转为功）；压缩则反之。</p>
+
+      <p><strong>(d) 绝热过程 Adiabatic (\(Q=0\))。</strong> 既不吸热也不放热（例如快速压缩、隔热膨胀）。第一定律给出 \(\Delta U=-W\)，结合理想气体方程可证（推导见下节）：</p>
+      <div class="formula">\[ \boxed{\;PV^{\gamma}=\text{const},\qquad TV^{\gamma-1}=\text{const},\qquad T^{\gamma}P^{\,1-\gamma}=\text{const}\;},\qquad Q=0. \]</div>
+      <p>绝热功有两种等价写法：</p>
+      <div class="formula">\[ W_{\text{ad}}=\frac{P_iV_i-P_fV_f}{\gamma-1}=nC_V\,(T_i-T_f)=-\Delta U. \]</div>
+      <p>由于 \(\gamma&gt;1\)，绝热线 \(P\propto V^{-\gamma}\) 比等温线 \(P\propto 1/V\) <em>更陡</em>——绝热膨胀时气体既对外做功又得不到热量补给，故温度同时下降，压强掉得更快。</p>
+      <div class="key-terms">isochoric (等容), isobaric (等压), isothermal (等温), adiabatic (绝热), molar heat capacity \(C_V,C_P\) (摩尔热容), adiabatic index \(\gamma\) (绝热指数)</div>
+
+      <h3>5. 摩尔热容与 Mayer 关系 Molar Heat Capacities &amp; Mayer's Relation</h3>
+      <p>对理想气体，由能均分定理 \(U=\tfrac f2 nRT\)，故</p>
+      <div class="formula">\[ C_V=\frac{1}{n}\frac{\partial U}{\partial T}\bigg|_V=\frac{f}{2}\,R,\qquad C_P=C_V+R=\frac{f+2}{2}\,R,\qquad \gamma=\frac{C_P}{C_V}=\frac{f+2}{f}. \]</div>
+      <table style="border-collapse:collapse;margin:0.6em 0;font-size:0.95em;">
+        <thead><tr style="background:var(--primary-soft);">
+          <th style="padding:4px 10px;border:1px solid var(--border);">分子</th>
+          <th style="padding:4px 10px;border:1px solid var(--border);">\(f\)</th>
+          <th style="padding:4px 10px;border:1px solid var(--border);">\(C_V\)</th>
+          <th style="padding:4px 10px;border:1px solid var(--border);">\(C_P\)</th>
+          <th style="padding:4px 10px;border:1px solid var(--border);">\(\gamma\)</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:4px 10px;border:1px solid var(--border);">单原子 (He, Ar)</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">3</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(\tfrac32 R=12.47\)</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(\tfrac52 R=20.79\)</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(5/3\approx1.67\)</td></tr>
+          <tr><td style="padding:4px 10px;border:1px solid var(--border);">刚性双原子 (\(\mathrm{N_2},\mathrm{O_2}\))</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">5</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(\tfrac52 R=20.79\)</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(\tfrac72 R=29.10\)</td>
+              <td style="padding:4px 10px;border:1px solid var(--border);">\(7/5=1.40\)</td></tr>
+        </tbody>
+      </table>
+      <p>单位均为 \(\mathrm{J/(mol\cdot K)}\)。<strong>Mayer 关系</strong> \(C_P-C_V=R=8.314\,\mathrm{J/(mol\cdot K)}\) 是普适的——对所有理想气体都成立，与分子结构无关。它可类比地理解为「恒压下额外多吸收的那一份热量 \(R\,dT\) 用于做 \(P\,dV=nR\,dT\) 的膨胀功」。</p>
+      <div class="key-terms">Mayer's relation \(C_P=C_V+R\) (Mayer 关系), molar heat capacity (摩尔热容), degrees of freedom \(f\) (自由度)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：Mayer 关系、等温功与绝热方程 Derivations</h2>
+
+      <h3>推导 A：Mayer 关系 \(C_P=C_V+R\)</h3>
+      <p>对理想气体 \(U=U(T)\) 与 \(T\) 无关路径，故对任意微小过程 \(dU=nC_V\,dT\)（这一步对所有过程都成立，不只是等容！）。在<strong>等压</strong>条件下，\(dW=P\,dV\)，由理想气体方程 \(P\,dV=nR\,dT\)（\(P\) 恒定、两端除以 \(T\) 后微分即得）。代入第一定律 \(dQ=dU+dW\)：</p>
+      <div class="formula">\[ dQ\big|_P = nC_V\,dT + nR\,dT = n\,(C_V+R)\,dT. \]</div>
+      <p>但由 \(C_P\) 定义 \(dQ\big|_P=nC_P\,dT\)，对照即得</p>
+      <div class="formula">\[ \boxed{\;C_P=C_V+R\;}\qquad\text{(Mayer 关系)}. \]</div>
+
+      <h3>推导 B：等温功 \(W=nRT\ln(V_f/V_i)\)</h3>
+      <p>等温下理想气体 \(P=nRT/V\) 为 \(V\) 的函数，代入 \(W=\int P\,dV\)：</p>
+      <div class="formula">\[ W=\int_{V_i}^{V_f}\frac{nRT}{V}\,dV = nRT\int_{V_i}^{V_f}\frac{dV}{V}=nRT\,\big[\ln V\big]_{V_i}^{V_f}=\boxed{\;nRT\ln\!\frac{V_f}{V_i}\;}. \]</div>
+      <p>由于 \(T\) 不变，\(PV=\text{const}\)，故也可写成 \(W=P_iV_i\ln(V_f/V_i)=P_fV_f\ln(V_f/V_i)\)。等温下 \(\Delta U=0\)，故第一定律给出 \(Q=W\)——「<em>加入的热全部转化为功</em>」。</p>
+
+      <h3>推导 C：绝热方程 \(PV^{\gamma}=\text{const}\) 与 \(TV^{\gamma-1}=\text{const}\)</h3>
+      <p>绝热 \(dQ=0\)，第一定律 \(dU+dW=0\)，即 \(nC_V\,dT+P\,dV=0\)。把理想气体方程 \(P=nRT/V\) 代入：</p>
+      <div class="formula">\[ nC_V\,dT + \frac{nRT}{V}\,dV = 0 \quad\Longrightarrow\quad \frac{dT}{T}+\frac{R}{C_V}\frac{dV}{V}=0. \]</div>
+      <p>利用 \(\dfrac{R}{C_V}=\dfrac{C_P-C_V}{C_V}=\gamma-1\)，积分得</p>
+      <div class="formula">\[ \ln T + (\gamma-1)\ln V = \text{const}\quad\Longrightarrow\quad \boxed{\;T\,V^{\gamma-1}=\text{const}\;}. \]</div>
+      <p>再与 \(PV=nRT\) 联立消去 \(T=PV/(nR)\)：\(T\,V^{\gamma-1}=(PV^{\gamma})/(nR)=\text{const}\)，故</p>
+      <div class="formula">\[ \boxed{\;PV^{\gamma}=\text{const}\;}\qquad\text{以及}\qquad T^{\gamma}P^{\,1-\gamma}=\text{const}. \]</div>
+      <p><strong>绝热功</strong>：由 \(\Delta U=-W\)，\(W=-nC_V\Delta T=nC_V(T_i-T_f)\)。再用 \(T=PV/(nR)\)：\(nC_V T=\dfrac{C_V}{R}\,PV=\dfrac{PV}{\gamma-1}\)（因 \(\gamma-1=R/C_V\)），所以</p>
+      <div class="formula">\[ \boxed{\;W_{\text{ad}}=\frac{P_iV_i-P_fV_f}{\gamma-1}\;}. \]</div>
+      <div class="key-terms">Mayer's relation (Mayer 关系), isothermal work (等温功), adiabatic relations (绝热关系式), adiabatic work (绝热功)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 等温膨胀的功与热 Isothermal Expansion of an Ideal Gas</h4>
+        <p class="example-statement">\(n=0.50\,\mathrm{mol}\) 的氦气（视为理想气体）在 \(T=300\,\mathrm{K}\) 下由 \(V_i=1.0\,\mathrm{L}\) <strong>等温膨胀</strong>到 \(V_f=4.0\,\mathrm{L}\)。求 \(W\)、\(Q\)、\(\Delta U\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>等温下理想气体内能不变，\(\Delta U=0\)。功由推导 B 给出：</p>
+          <p class="step">\[ W=nRT\,\ln\!\frac{V_f}{V_i}=(0.50)(8.314)(300)\,\ln\!\frac{4.0}{1.0}=(1247.1)(1.386)\approx 1.73\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step">由第一定律 \(Q=\Delta U+W=0+1.73\times10^{3}=1.73\times10^{3}\,\mathrm{J}\)。</p>
+          <p>体积增至 4 倍（即 \(\ln 4\approx1.386\)），气体对外做 \(1.73\,\mathrm{kJ}\) 的功；为了维持 \(T\) 不变，必须同时吸入等量热。\(\Delta U=0\) 并非「无能量交换」，而是「能量进出相抵、内能不变」。<span class="ans">答案：\(W\approx+1.73\,\mathrm{kJ}\)；\(Q\approx+1.73\,\mathrm{kJ}\)；\(\Delta U=0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 等压加热：\(W,\Delta U,Q\) Isobaric Heating of a Monatomic Gas</h4>
+        <p class="example-statement">\(n=2.0\,\mathrm{mol}\) 的单原子理想气体在 \(P=1.0\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}\) 下由 \(T_i=300\,\mathrm{K}\) <strong>等压加热</strong>到 \(T_f=400\,\mathrm{K}\)。求 \(W\)、\(\Delta U\)、\(Q\)，并验证第一定律。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>单原子：\(C_V=\tfrac32 R=12.47\,\mathrm{J/(mol\cdot K)}\)，\(C_P=\tfrac52 R=20.79\,\mathrm{J/(mol\cdot K)}\)。\(\Delta T=100\,\mathrm{K}\)。</p>
+          <p class="step"><strong>(1) 功。</strong>等压 \(W=P\Delta V=nR\Delta T\)（第二个等号用理想气体方程）：
+            \[ W=nR\,\Delta T=(2.0)(8.314)(100)=1.663\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step"><strong>(2) 内能变化</strong>（适用于<em>任意</em>理想气体过程）：
+            \[ \Delta U=nC_V\,\Delta T=(2.0)(12.47)(100)=2.49\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step"><strong>(3) 热量。</strong>等压下 \(Q=nC_P\,\Delta T\)：
+            \[ Q=(2.0)(20.79)(100)=4.16\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step"><strong>验证：</strong>\(Q-W=4.16-1.66=2.50\,\mathrm{kJ}=\Delta U\) ✓。</p>
+          <p><strong>体积</strong>变化可作为副产物：\(V_i=\dfrac{nRT_i}{P}=\dfrac{(2)(8.314)(300)}{1.013\times10^{5}}=4.92\times10^{-2}\,\mathrm{m^{3}}=49.2\,\mathrm{L}\)；\(V_f=66.5\,\mathrm{L}\)（即 \(\Delta V=16.6\,\mathrm{L}\)，对应 \(P\Delta V=1.013\times10^{5}\times16.6\times10^{-3}=1.68\times10^{3}\,\mathrm{J}\)，与上面一致）。注意 \(Q&gt;\Delta U\)：多出的部分 (\(\approx1.66\,\mathrm{kJ}\)) 用于膨胀做功，这正是 \(C_P&gt;C_V\) 的物理来源。<span class="ans">答案：\(W\approx+1.66\,\mathrm{kJ}\)，\(\Delta U\approx+2.49\,\mathrm{kJ}\)，\(Q\approx+4.16\,\mathrm{kJ}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 绝热压缩：求末态 \(T_f,P_f\) Adiabatic Compression</h4>
+        <p class="example-statement">\(n=1.0\,\mathrm{mol}\) 的单原子理想气体 (\(\gamma=5/3\)) 初态 \(P_i=1.0\,\mathrm{atm}\)、\(V_i=24.6\,\mathrm{L}\)（对应 \(T_i\approx300\,\mathrm{K}\)），被<strong>绝热压缩</strong>到 \(V_f=V_i/2=12.3\,\mathrm{L}\)。求末态 \(T_f\)、\(P_f\)，以及 \(W\)、\(\Delta U\)、\(Q\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先验算初温：\(T_i=\dfrac{P_iV_i}{nR}=\dfrac{(1.013\times10^{5})(24.6\times10^{-3})}{(1)(8.314)}=\dfrac{2492}{8.314}=299.7\,\mathrm{K}\approx300\,\mathrm{K}\)。</p>
+          <p class="step"><strong>(1) \(T_f\)。</strong>绝热 \(TV^{\gamma-1}=\text{const}\)，\(\gamma-1=2/3\)：
+            \[ T_f=T_i\!\left(\frac{V_i}{V_f}\right)^{\!\gamma-1}=(300)(2)^{2/3}. \]
+            \(2^{2/3}=\sqrt[3]{4}\approx1.587\)，故 \(T_f\approx300\times1.587\approx 476\,\mathrm{K}\)。</p>
+          <p class="step"><strong>(2) \(P_f\)。</strong>绝热 \(PV^{\gamma}=\text{const}\)：
+            \[ P_f=P_i\!\left(\frac{V_i}{V_f}\right)^{\!\gamma}=(1.0\,\mathrm{atm})(2)^{5/3}. \]
+            \(2^{5/3}=2\cdot2^{2/3}\approx3.175\)，故 \(P_f\approx3.17\,\mathrm{atm}\)（约 \(3.21\times10^{5}\,\mathrm{Pa}\)）。
+            验算：\(P_fV_f/(nR)=\dfrac{(3.215\times10^{5})(12.3\times10^{-3})}{8.314}=476\,\mathrm{K}=T_f\) ✓。</p>
+          <p class="step"><strong>(3) \(W\)、\(\Delta U\)、\(Q\)。</strong>绝热 \(Q=0\)。
+            \[ W_{\text{ad}}=\frac{P_iV_i-P_fV_f}{\gamma-1}=\frac{(1.013\times10^{5})(24.6\times10^{-3})-(3.215\times10^{5})(12.3\times10^{-3})}{2/3}. \]
+            分子 \(=2492-3955=-1463\,\mathrm{J}\)；除以 \(2/3\)：
+            \[ W\approx -2.20\times10^{3}\,\mathrm{J}. \]
+            由第一定律 \(\Delta U=Q-W=0-(-2.20\,\mathrm{kJ})=+2.20\,\mathrm{kJ}\)。
+            也可直接算：\(\Delta U=nC_V\Delta T=(1)(12.47)(476-300)=+2.20\times10^{3}\,\mathrm{J}\) ✓。</p>
+          <p>压缩做负功（外界<em>对</em>气体做 \(+2.20\,\mathrm{kJ}\) 的功），且无处散热 (\(Q=0\))，全部转为内能 → 温度从 \(300\,\mathrm{K}\) 升到 \(476\,\mathrm{K}\)。这就是给自行车打气时气筒发热的物理原因。<em>对比</em>：若按等温压缩，末态压强仅 \(2.0\,\mathrm{atm}\)，而绝热达到 \(3.17\,\mathrm{atm}\)——绝热线比等温线更陡，压缩时压强升得更快。<span class="ans">答案：\(T_f\approx476\,\mathrm{K}\)；\(P_f\approx3.17\,\mathrm{atm}\)；\(W\approx-2.20\,\mathrm{kJ}\)；\(\Delta U\approx+2.20\,\mathrm{kJ}\)；\(Q=0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 闭合循环：净功 = 围成面积 Closed Cycle on a PV Diagram</h4>
+        <p class="example-statement">\(n=1.0\,\mathrm{mol}\) 理想气体经历一<strong>顺时针矩形循环</strong>（热机方向），四角坐标为：\(A(1\,\mathrm{atm},10\,\mathrm{L})\to D(3\,\mathrm{atm},10\,\mathrm{L})\to C(3\,\mathrm{atm},30\,\mathrm{L})\to B(1\,\mathrm{atm},30\,\mathrm{L})\to A\)，依次为：<strong>等容加热</strong>、<strong>等压膨胀</strong>、<strong>等容冷却</strong>、<strong>等压压缩</strong>。求循环净功 \(W_{\text{net}}\)、净热 \(Q_{\text{net}}\)、\(\Delta U_{\text{cycle}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>等容段 \(W=0\)。只有两条等压段做功。换算：\(1\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}\)，\(1\,\mathrm{L}=10^{-3}\,\mathrm{m^{3}}\)。</p>
+          <p class="step">等容段 \(A\to D\)：\(W_{AD}=0\)。</p>
+          <p class="step">等压膨胀 \(D\to C\)（\(P=3\,\mathrm{atm}\)、\(\Delta V=+20\,\mathrm{L}\)）：
+            \[ W_{DC}=P\,\Delta V=(3\times1.013\times10^{5})(20\times10^{-3})=(3.039\times10^{5})(0.020)=+6.08\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step">等容段 \(C\to B\)：\(W_{CB}=0\)。</p>
+          <p class="step">等压压缩 \(B\to A\)（\(P=1\,\mathrm{atm}\)、\(\Delta V=-20\,\mathrm{L}\)）：
+            \[ W_{BA}=(1.013\times10^{5})(-20\times10^{-3})=-2.03\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step">合计：
+            \[ W_{\text{net}}=W_{DC}+W_{BA}=6078-2026=+4.05\times10^{3}\,\mathrm{J}\approx +4.05\,\mathrm{kJ}. \]</p>
+          <p class="step"><strong>几何校验：</strong>循环围成面积 \(=(P_2-P_1)(V_2-V_1)=(2\,\mathrm{atm})(20\,\mathrm{L})=40\,\mathrm{L\cdot atm}\)。换算 \(1\,\mathrm{L\cdot atm}=101.3\,\mathrm{J}\)，故面积为 \(40\times101.3=4052\,\mathrm{J}\) ✓。顺时针方向 → \(W_{\text{net}}&gt;0\)。</p>
+          <p class="step"><strong>\(\Delta U_{\text{cycle}}\) 与 \(Q_{\text{net}}\)。</strong>循环回到原状态，状态函数复原：\(\Delta U_{\text{cycle}}=0\)。由第一定律 \(Q_{\text{net}}=\Delta U_{\text{net}}+W_{\text{net}}=0+4052=+4052\,\mathrm{J}\)。</p>
+          <p>也就是说，循环一周系统<strong>从外界净吸热 \(4.05\,\mathrm{kJ}\)、对外净做功 \(4.05\,\mathrm{kJ}\)</strong>，内能不变——这是<strong>热机</strong> (heat engine) 的基本特征：吸热化功，无内能积累。注意 \(Q_{\text{net}}\) 是「<em>净</em>」值：实际过程中某些段放热（如 \(C\to B\) 等容冷却、\(B\to A\) 等压压缩），只是总吸热大于总放热。<span class="ans">答案：\(W_{\text{net}}\approx+4.05\,\mathrm{kJ}\)（= 围成面积 \(40\,\mathrm{L\cdot atm}\)）；\(Q_{\text{net}}\approx+4.05\,\mathrm{kJ}\)；\(\Delta U_{\text{cycle}}=0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 等容加热的 \(\Delta U\) 与 \(Q\) Isochoric Heating</h4>
+        <p class="example-statement">\(n=1.5\,\mathrm{mol}\) 的刚性双原子理想气体 (\(\mathrm{O_2}\)，\(C_V=\tfrac52 R\)) 在固定体积 \(V\) 的容器中由 \(T_i=300\,\mathrm{K}\) 加热到 \(T_f=500\,\mathrm{K}\)。求 \(W\)、\(\Delta U\)、\(Q\)，并求末态与初态压强比 \(P_f/P_i\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>等容过程 \(dV=0\)，故 \(W=\int P\,dV=0\)。</p>
+          <p class="step">\(\Delta U=nC_V\,\Delta T\) 对<em>任意</em>理想气体过程成立：
+            \[ \Delta U=(1.5)\!\left(\tfrac52\cdot8.314\right)\!(500-300)=(1.5)(20.79)(200)=6.24\times10^{3}\,\mathrm{J}. \]</p>
+          <p class="step">第一定律：\(Q=\Delta U+W=6.24\times10^{3}+0=6.24\,\mathrm{kJ}\)。</p>
+          <p class="step"><strong>压强比：</strong>等容下 \(\dfrac{P}{T}=\text{const}\)（Gay-Lussac 定律），故
+            \[ \frac{P_f}{P_i}=\frac{T_f}{T_i}=\frac{500}{300}\approx1.67. \]</p>
+          <p>等容过程中加入的热<em>全部</em>用于升温（无任何能量做功耗散），故热容就是 \(C_V\) 本身——这正是 \(C_V\) 的定义。对同样的 \(\Delta T\)，若改在等压下加热，所需热量会更多（\(Q=nC_P\Delta T\)），多出的部分用于膨胀做功。<span class="ans">答案：\(W=0\)；\(\Delta U\approx+6.24\,\mathrm{kJ}\)；\(Q\approx+6.24\,\mathrm{kJ}\)；\(P_f/P_i\approx1.67\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>混淆 \(W\) 的符号约定。</strong>本书用<strong>物理惯例</strong>：\(W=\int P\,dV&gt;0\) 表示气体<em>对外</em>做功（膨胀），\(\Delta U=Q-W\)。化学教材常用相反约定 \(\Delta U=Q+W_{\text{on}}\)（\(W_{\text{on}}\) 为外界对气体做功）。做题前先确认用哪一种，统一代入。<em>一致性</em>比选哪种约定更重要。</li>
+        <li><strong>把 \(W\) 当状态函数。</strong>\(W\) 是<strong>过程量</strong> (path function)：同样始末态沿不同路径做功不同（例如等温 vs 绝热膨胀到同一 \(V_f\)，等温做功更多）。「曲线下的面积」取决于<em>曲线形状</em>，不只是端点。只有 \(\Delta U\) 才是状态函数。</li>
+        <li><strong>误以为 \(\Delta U=nC_V\Delta T\) 只适用于等容过程。</strong>这是大错。对<strong>理想气体</strong>，\(U\) 只依赖 \(T\)，故无论沿什么过程（等压、等温、绝热、任意），\(\Delta U=nC_V\Delta T\) 都成立。\(C_V\) 只是一个「与 \(U(T)\) 相关联的常数」，不必非得在等容条件下使用。</li>
+        <li><strong>把「绝热」与「等温」搞混。</strong>绝热 \(Q=0\) 但通常 \(\Delta T\ne0\)（如绝热膨胀气体降温）；等温 \(\Delta T=0\) 但通常 \(Q\ne0\)（必须吸热才能维持 \(T\) 同时对外做功）。两者刻画的是不同物理约束，不能互推。</li>
+        <li><strong>忘记循环 \(\Delta U_{\text{cycle}}=0\)。</strong>系统经循环回到原状态，<em>所有</em>状态函数（包括 \(U\)）回到原值，故 \(\Delta U_{\text{cycle}}=0\) 必然成立。这意味着 \(Q_{\text{net}}=W_{\text{net}}\)：循环一周净吸热必等于净做功。若算出两者不等，必是计算错误或符号搞错。</li>
+        <li><strong>用 \(C_V\) 算等压 \(Q\)。</strong>等压加热时 \(Q=nC_P\,\Delta T\ne nC_V\,\Delta T\)——后者只给出 \(\Delta U\)，遗漏了膨胀做功部分（差额恰为 \(nR\Delta T\)）。务必按过程条件选对热容。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. \(n=2.0\,\mathrm{mol}\) 理想气体在 \(T=400\,\mathrm{K}\) 下由 \(V_i=10\,\mathrm{L}\) <strong>等温压缩</strong>到 \(V_f=4\,\mathrm{L}\)。求 \(W\)、\(Q\)、\(\Delta U\)。</summary>
+        <div class="hint">等温 \(\Delta U=0\)，\(W=nRT\ln(V_f/V_i)\)。\(\ln(0.4)\) 为负（压缩）。</div>
+        <div class="solution">等温下 \(\Delta U=0\)。
+          \[ W=nRT\ln\!\frac{V_f}{V_i}=(2.0)(8.314)(400)\ln\!\frac{4}{10}=(6651)(-0.916)\approx -6.09\times10^{3}\,\mathrm{J}. \]
+          由第一定律 \(Q=W\approx-6.09\,\mathrm{kJ}\)（放热）。
+          <span class="ans">\(W\approx-6.09\,\mathrm{kJ}\)；\(Q\approx-6.09\,\mathrm{kJ}\)；\(\Delta U=0\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. \(n=1.0\,\mathrm{mol}\) 刚性双原子理想气体（\(C_V=\tfrac52 R\)、\(C_P=\tfrac72 R\)）在 \(P=2.0\,\mathrm{atm}\) 下由 \(T_i=300\,\mathrm{K}\) <strong>等压加热</strong>到 \(T_f=450\,\mathrm{K}\)。求 \(W\)、\(\Delta U\)、\(Q\)，并验证第一定律。</summary>
+        <div class="hint">等压 \(W=nR\Delta T\)；\(\Delta U=nC_V\Delta T\)（对任意过程）；\(Q=nC_P\Delta T\)。</div>
+        <div class="solution">\(\Delta T=150\,\mathrm{K}\)。
+          \[ W=nR\Delta T=(1.0)(8.314)(150)=1.247\times10^{3}\,\mathrm{J}. \]
+          \[ \Delta U=nC_V\Delta T=(1.0)\!\left(\tfrac52\cdot8.314\right)\!(150)=(20.79)(150)=3.12\times10^{3}\,\mathrm{J}. \]
+          \[ Q=nC_P\Delta T=(1.0)\!\left(\tfrac72\cdot8.314\right)\!(150)=(29.10)(150)=4.36\times10^{3}\,\mathrm{J}. \]
+          验证：\(Q-W=4.36-1.25=3.11\,\mathrm{kJ}\approx\Delta U\) ✓。
+          <span class="ans">\(W\approx+1.25\,\mathrm{kJ}\)；\(\Delta U\approx+3.12\,\mathrm{kJ}\)；\(Q\approx+4.36\,\mathrm{kJ}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. \(n=0.50\,\mathrm{mol}\) 单原子理想气体 (\(\gamma=5/3\))，初态 \(P_i=2.0\,\mathrm{atm}\)、\(V_i=10\,\mathrm{L}\)，<strong>绝热膨胀</strong>到 \(V_f=20\,\mathrm{L}\)。求末态 \(T_f\)、\(P_f\)，以及 \(W\)、\(\Delta U\)。</summary>
+        <div class="hint">用 \(TV^{\gamma-1}=\text{const}\) 与 \(PV^{\gamma}=\text{const}\)；绝热 \(Q=0\)、\(\Delta U=-W\)。先由 \(T_i=P_iV_i/(nR)\) 算初温。</div>
+        <div class="solution">\(T_i=\dfrac{P_iV_i}{nR}=\dfrac{(2.026\times10^{5})(10\times10^{-3})}{(0.50)(8.314)}=\dfrac{2026}{4.157}=487\,\mathrm{K}\)。
+          \(\gamma-1=2/3\)。
+          \[ T_f=T_i\!\left(\frac{V_i}{V_f}\right)^{\!\gamma-1}=(487)(0.5)^{2/3}=(487)(0.630)\approx307\,\mathrm{K}. \]
+          \[ P_f=P_i\!\left(\frac{V_i}{V_f}\right)^{\!\gamma}=(2.0)(0.5)^{5/3}=(2.0)(0.315)\approx0.630\,\mathrm{atm}. \]
+          \[ W_{\text{ad}}=\frac{P_iV_i-P_fV_f}{\gamma-1}=\frac{2026-(0.630\times1.013\times10^{5})(20\times10^{-3})}{2/3}=\frac{2026-1277}{0.667}\approx+1.12\times10^{3}\,\mathrm{J}. \]
+          \(\Delta U=-W\approx-1.12\,\mathrm{kJ}\)（亦可 \(\Delta U=nC_V\Delta T=(0.5)(12.47)(307-487)\approx-1.12\,\mathrm{kJ}\) ✓）。
+          <span class="ans">\(T_f\approx307\,\mathrm{K}\)；\(P_f\approx0.63\,\mathrm{atm}\)；\(W\approx+1.12\,\mathrm{kJ}\)；\(\Delta U\approx-1.12\,\mathrm{kJ}\)；\(Q=0\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 一三角形循环由 \(A(1\,\mathrm{atm},10\,\mathrm{L})\to B(1\,\mathrm{atm},30\,\mathrm{L})\to C(3\,\mathrm{atm},30\,\mathrm{L})\to A\) 组成（\(A\to B\) 等压膨胀，\(B\to C\) 等容加热，\(C\to A\) 直线）。先判断方向（顺 / 逆时针），再求循环净功 \(W_{\text{net}}\) 与净热 \(Q_{\text{net}}\)。</summary>
+        <div class="hint">三角形面积 \(=\tfrac12\,\text{底}\times\text{高}\)（\(\mathrm{L\cdot atm}\)），\(1\,\mathrm{L\cdot atm}=101.3\,\mathrm{J}\)。先判断方向（顺时针 = 正）。</div>
+        <div class="solution">围成面积（底 \(\Delta V=20\,\mathrm{L}\)，高 \(\Delta P=2\,\mathrm{atm}\)）：
+          \[ |W_{\text{net}}|=\tfrac12(20)(2)=20\,\mathrm{L\cdot atm}=20\times101.3=2.03\times10^{3}\,\mathrm{J}. \]
+          路径 \(A\to B\to C\to A\) 按定义是<strong>逆时针</strong>（右→上→左下回起点；shoelace 计算 \(=\tfrac12[10(1-3)+30(3-1)+30(1-1)]=\tfrac12[-20+60]=+20\)，在 \(V\!-\!P\) 平面上正号对应逆时针），故
+          \(W_{\text{net}}=-2.03\,\mathrm{kJ}\)（外界对气体净做功）。
+          由 \(\Delta U_{\text{cycle}}=0\)，\(Q_{\text{net}}=W_{\text{net}}\approx-2.03\,\mathrm{kJ}\)（净放热）。
+          <em>另解（积分）：</em>等压 \(W_{AB}=(1\,\mathrm{atm})(20\,\mathrm{L})=+2026\,\mathrm{J}\)；等容 \(W_{BC}=0\)；直线 \(C\to A\) 方程为 \(P=0.1V\) (\(\mathrm{atm,L}\))，
+          \[ W_{CA}=\int_{30}^{10}0.1\,V\,dV=0.05\,(10^2-30^2)=0.05(-800)=-40\,\mathrm{L\cdot atm}=-4052\,\mathrm{J}. \]
+          合计 \(W_{\text{net}}=2026+0-4052=-2026\,\mathrm{J}\) ✓。
+          <span class="ans">\(W_{\text{net}}\approx-2.03\,\mathrm{kJ}\)；\(Q_{\text{net}}\approx-2.03\,\mathrm{kJ}\)；\(\Delta U_{\text{cycle}}=0\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）证明：对理想气体，无论沿何种过程，都有 \(\Delta U=nC_V\,\Delta T\)；并由此把任意过程的 \(\Delta U\) 写成只依赖始末态的形式。</summary>
+        <div class="hint">从 \(U=U(T)\) 出发（理想气体分子间无势能，\(U\) 与 \(V\) 无关）。\(C_V\equiv \tfrac{1}{n}(\partial U/\partial T)_V\)。</div>
+        <div class="solution">理想气体的内能 \(U\) <em>只是</em>温度的函数（\(U=\tfrac f2 nRT\)，由气体动理论给出微观证明：分子间无相互作用势能，故 \(U\) 与 \(V\) 无关）。因此全微分
+          \(dU=(\partial U/\partial T)_V\,dT=nC_V\,dT\)，两边积分得
+          \[ \Delta U=\int_{T_i}^{T_f}nC_V\,dT=nC_V\,(T_f-T_i)=nC_V\,\Delta T. \]
+          该式<strong>不依赖路径</strong>——只要始末温度给定，\(\Delta U\) 唯一确定，无论中间经历等压、等容、绝热或任意曲线。这就是「\(\Delta U\) 是状态函数」的具体含义，也是为何例 5.2、5.3、5.5 中能用同一个公式 \(\Delta U=nC_V\Delta T\) 处理等压、绝热、等容三种过程。
+          <span class="ans">证毕。\(\Delta U=nC_V\,\Delta T\) 适用于理想气体的<em>任意</em>准静态过程。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>\(P\!-\!V\) 图过程探索器 PV-Diagram Process Explorer。</strong>选择过程类型（等容 / 等压 / 等温 / 绝热），调节初态 \((P_i,V_i)\) 与末态 \((V_f\) 或 \(P_f)\) 滑块：画布实时画出过程曲线，<strong>蓝色阴影面积</strong>即功 \(W=\int P\,dV\)，并显示 \(W\)、\(Q\)、\(\Delta U\)（单位 \(\mathrm{kJ}\)，物理惯例：\(W&gt;0\) 为气体对外做功）。气体取 \(n=1\,\mathrm{mol}\) 单原子理想气体 (\(\gamma=5/3\)、\(C_V=\tfrac32 R\))。注意等温线（绿色虚线，仅作参考）总比绝热线（红色）<em>平缓</em>；尝试同样的 \((V_i,V_f)\) 切换等温↔绝热，比较 \(Q\) 与 \(\Delta U\) 的差别。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="680" height="410"></canvas>
+        <div class="sim-controls" id="proc-5"></div>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+
+          // ---- Physics constants (SI) ---------------------------------------
+          var n = 1.0;             // mol
+          var Rg = 8.314;          // J/(mol K)
+          var gamma = 5 / 3;       // monatomic
+          var Cv = 1.5 * Rg;       // J/(mol K)
+          var ATM = 1.013e5;       // Pa per atm
+          var LITRE = 1e-3;        // m^3 per L
+
+          var params = {
+            process: 'isothermal',
+            Pi: 1.0,    // atm
+            Vi: 10,     // L
+            Vf: 22,     // L  (active for isobaric / isothermal / adiabatic)
+            Pf: 2.5,    // atm (active only for isochoric)
+          };
+
+          // ---- Compute end-state, path points, W, Q, ΔU ---------------------
+          function compute() {
+            var Pi = params.Pi * ATM, Vi = params.Vi * LITRE;
+            var Ti = Pi * Vi / (n * Rg);
+            var Pf, Vf, Tf;
+            var NPTS = 80;
+            var path = [];   // {V_m3, P_Pa}
+            var W, dU, Q;
+
+            if (params.process === 'isochoric') {
+              Vf = Vi;
+              Pf = params.Pf * ATM;
+              Tf = Pf * Vf / (n * Rg);
+              for (var i = 0; i <= NPTS; i++) {
+                var f = i / NPTS;
+                path.push({ V: Vi, P: Pi + (Pf - Pi) * f });
+              }
+              W = 0;
+              dU = n * Cv * (Tf - Ti);
+              Q = dU;
+            } else if (params.process === 'isobaric') {
+              Pf = Pi;
+              Vf = params.Vf * LITRE;
+              Tf = Pf * Vf / (n * Rg);
+              for (var i = 0; i <= NPTS; i++) {
+                var f = i / NPTS;
+                path.push({ V: Vi + (Vf - Vi) * f, P: Pi });
+              }
+              W = Pi * (Vf - Vi);
+              dU = n * Cv * (Tf - Ti);
+              Q = dU + W;
+            } else if (params.process === 'isothermal') {
+              Tf = Ti;
+              Vf = params.Vf * LITRE;
+              Pf = n * Rg * Tf / Vf;
+              for (var i = 0; i <= NPTS; i++) {
+                var f = i / NPTS;
+                var V = Vi + (Vf - Vi) * f;
+                path.push({ V: V, P: n * Rg * Tf / V });
+              }
+              W = Pi * Vi * Math.log(Vf / Vi);
+              dU = 0;
+              Q = W;
+            } else { // adiabatic
+              Vf = params.Vf * LITRE;
+              Pf = Pi * Math.pow(Vi / Vf, gamma);
+              Tf = Pf * Vf / (n * Rg);
+              for (var i = 0; i <= NPTS; i++) {
+                var f = i / NPTS;
+                var V = Vi + (Vf - Vi) * f;
+                path.push({ V: V, P: Pi * Math.pow(Vi / V, gamma) });
+              }
+              W = (Pi * Vi - Pf * Vf) / (gamma - 1);
+              dU = n * Cv * (Tf - Ti);
+              Q = 0;
+            }
+            return { path: path, Pi: Pi, Vi: Vi, Pf: Pf, Vf: Vf, Ti: Ti, Tf: Tf, W: W, Q: Q, dU: dU };
+          }
+
+          // ---- Plot geometry -------------------------------------------------
+          var PL = { left: 60, right: 500, top: 50, bottom: 360 };
+          var Vmax = 30, Pmax = 3.5;
+          function xV(V_L) { return PL.left + (V_L / Vmax) * (PL.right - PL.left); }
+          function yP(P_atm) { return PL.bottom - (P_atm / Pmax) * (PL.bottom - PL.top); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tick: 0 }; },
+            step: function (dt, t, s) { s.tick += dt; }, // keep rAF alive; diagram is param-driven
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var plotW = PL.right - PL.left, plotH = PL.bottom - PL.top;
+
+              // ---- axes & grid ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.35;
+              ctx.lineWidth = 1;
+              for (var v = 5; v <= Vmax; v += 5) {
+                ctx.beginPath(); ctx.moveTo(xV(v), PL.top); ctx.lineTo(xV(v), PL.bottom); ctx.stroke();
+              }
+              for (var p = 0.5; p <= Pmax; p += 0.5) {
+                ctx.beginPath(); ctx.moveTo(PL.left, yP(p)); ctx.lineTo(PL.right, yP(p)); ctx.stroke();
+              }
+              ctx.restore();
+
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(PL.left, PL.top); ctx.lineTo(PL.left, PL.bottom); ctx.lineTo(PL.right, PL.bottom);
+              ctx.stroke();
+
+              // ---- tick labels ----
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui';
+              ctx.textAlign = 'center';
+              for (var v = 0; v <= Vmax; v += 5) ctx.fillText(String(v), xV(v), PL.bottom + 15);
+              ctx.textAlign = 'right';
+              for (var p = 0; p <= Pmax; p += 0.5) ctx.fillText(p.toFixed(1), PL.left - 5, yP(p) + 3);
+              ctx.textAlign = 'center';
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillText('V (L)', (PL.left + PL.right) / 2, PL.bottom + 32);
+              ctx.save();
+              ctx.translate(18, (PL.top + PL.bottom) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('P (atm)', 0, 0);
+              ctx.restore();
+
+              // ---- compute current process result ----
+              var r = compute();
+
+              // ---- reference isotherm through i (dashed green) ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([5, 4]);
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              var started = false;
+              for (var V = 1.0; V <= Vmax; V += 0.5) {
+                var V_si = V * LITRE;
+                var P_atm = (n * Rg * r.Ti / V_si) / ATM;
+                if (P_atm > Pmax) { if (started) ctx.stroke(); break; }
+                var X = xV(V), Y = yP(P_atm);
+                if (!started) { ctx.moveTo(X, Y); started = true; } else ctx.lineTo(X, Y);
+              }
+              if (started) ctx.stroke();
+              ctx.restore();
+
+              // ---- work-area shading (polygon under the curve, V_i..V_f) ----
+              var pts = r.path.map(function (pt) {
+                return { x: xV(pt.V / LITRE), y: yP(pt.P / ATM) };
+              });
+              ctx.save();
+              ctx.globalAlpha = 0.25;
+              ctx.fillStyle = PS.colors.primary;
+              ctx.beginPath();
+              ctx.moveTo(xV(r.Vi / LITRE), yP(0));
+              for (var i = 0; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+              ctx.lineTo(xV(r.Vf / LITRE), yP(0));
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              // ---- process curve ----
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              ctx.moveTo(pts[0].x, pts[0].y);
+              for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+              ctx.stroke();
+
+              // ---- direction arrow at midpoint ----
+              var mid = pts[Math.floor(pts.length / 2)];
+              var nxt = pts[Math.floor(pts.length / 2) + 2];
+              if (mid && nxt) PS.drawArrow(ctx, mid.x, mid.y, nxt.x, nxt.y, PS.colors.accent);
+
+              // ---- endpoints ----
+              PS.drawCircle(ctx, xV(r.Vi / LITRE), yP(r.Pi / ATM), 5.5,
+                { fill: PS.colors.primary, stroke: '#fff', lineWidth: 1.6 });
+              PS.drawCircle(ctx, xV(r.Vf / LITRE), yP(r.Pf / ATM), 5.5,
+                { fill: PS.colors.accent2, stroke: '#fff', lineWidth: 1.6 });
+              ctx.fillStyle = PS.colors.primary;
+              ctx.font = 'bold 12px system-ui';
+              ctx.textAlign = 'right';
+              ctx.fillText('i', xV(r.Vi / LITRE) - 8, yP(r.Pi / ATM) - 8);
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.textAlign = 'left';
+              ctx.fillText('f', xV(r.Vf / LITRE) + 8, yP(r.Pf / ATM) - 8);
+
+              // ---- title ----
+              var names = {
+                isochoric: '等容 ISOCHORIC  (V = const,  W = 0)',
+                isobaric: '等压 ISOBARIC  (P = const,  W = PΔV)',
+                isothermal: '等温 ISOTHERMAL  (T = const,  ΔU = 0)',
+                adiabatic: '绝热 ADIABATIC  (Q = 0,  PV^γ = const)',
+              };
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = 'bold 13px system-ui';
+              ctx.textAlign = 'left';
+              ctx.fillText(names[params.process], PL.left, PL.top - 18);
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '10px system-ui';
+              ctx.fillText('绿虚线 = 通过 i 的等温线 (参考)   green dashed = isotherm through i',
+                PL.left, PL.top - 4);
+
+              // ---- readout panel (right side) ----
+              var rx = PL.right + 24, ry = PL.top;
+              function kJ(x) { return (x / 1000).toFixed(2) + ' kJ'; }
+              PS.drawText(ctx, '实时读数 Readout', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              var lines = [
+                ['T_i = ' + r.Ti.toFixed(0) + ' K', PS.colors.text],
+                ['T_f = ' + r.Tf.toFixed(0) + ' K', PS.colors.text],
+                ['ΔT = ' + (r.Tf - r.Ti).toFixed(0) + ' K', PS.colors.text],
+                ['', null],
+                ['W = ' + kJ(r.W), (r.W >= 0 ? PS.colors.accent2 : PS.colors.accent)],
+                ['Q = ' + kJ(r.Q), (r.Q >= 0 ? PS.colors.accent2 : PS.colors.accent)],
+                ['ΔU = ' + kJ(r.dU), PS.colors.primary],
+                ['', null],
+                ['校验 check:', PS.colors.text],
+                ['Q − W = ' + kJ(r.Q - r.W), PS.colors.text],
+                ['应等于 ΔU', PS.colors.text],
+              ];
+              for (var i = 0; i < lines.length; i++) {
+                if (!lines[i][0]) continue;
+                PS.drawText(ctx, lines[i][0], rx, ry + 22 + i * 17,
+                  { font: '12px system-ui', color: lines[i][1] });
+              }
+              PS.drawText(ctx, '符号 sign:  W>0 气体对外做功', rx, ry + 22 + lines.length * 17 + 4,
+                { font: '10px system-ui', color: PS.colors.text });
+            },
+          });
+
+          // ---- Process-selector buttons (manual; makeControls would not
+          //      give us a persistent "active" visual state) ----------------
+          var procContainer = document.getElementById('proc-5');
+          procContainer.classList.add('sim-controls-inner');
+          var procs = [
+            { key: 'isochoric', label: '等容 Isochoric' },
+            { key: 'isobaric', label: '等压 Isobaric' },
+            { key: 'isothermal', label: '等温 Isothermal' },
+            { key: 'adiabatic', label: '绝热 Adiabatic' },
+          ];
+          var procBtns = {};
+          procs.forEach(function (p) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'ctrl-button proc-btn';
+            b.textContent = p.label;
+            b.addEventListener('click', function () {
+              params.process = p.key;
+              refreshProcButtons();
+            });
+            procContainer.appendChild(b);
+            procBtns[p.key] = b;
+          });
+          function refreshProcButtons() {
+            procs.forEach(function (p) {
+              var on = (p.key === params.process);
+              var b = procBtns[p.key];
+              b.style.background = on ? PS.colors.primary : '';
+              b.style.color = on ? '#fff' : '';
+              b.style.fontWeight = on ? '700' : '';
+              b.style.borderColor = PS.colors.primary;
+            });
+          }
+          refreshProcButtons();
+
+          // ---- Sliders + reset via PhysicsSim.makeControls ------------------
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'Pi',  label: 'P_i 初压 (atm)',     min: 0.5, max: 3.0, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'Vi',  label: 'V_i 初体积 (L)',     min: 4,   max: 20,  step: 1,   value: 10 },
+            { type: 'slider', key: 'Vf',  label: 'V_f 末体积 (L)',     min: 4,   max: 26,  step: 1,   value: 22 },
+            { type: 'slider', key: 'Pf',  label: 'P_f 末压 (atm, 仅等容)', min: 0.5, max: 3.2, step: 0.1, value: 2.5 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Pi', function (v) { params.Pi = v; });
+          ctl.on('Vi', function (v) { params.Vi = v; });
+          ctl.on('Vf', function (v) { params.Vf = v; });
+          ctl.on('Pf', function (v) { params.Pf = v; });
+          ctl.on('reset', function () {
+            params.process = 'isothermal';
+            params.Pi = 1.0; params.Vi = 10; params.Vf = 22; params.Pf = 2.5;
+            ctl.set('Pi', 1.0); ctl.set('Vi', 10); ctl.set('Vf', 22); ctl.set('Pf', 2.5);
+            // refresh slider value labels
+            var sliders = document.querySelectorAll('#controls-5 input[type=range]');
+            // (makeControls internal `values` already updated via .set; visible labels refresh below)
+            refreshProcButtons();
+            // hard-reset sim state and rebuild control value displays
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>第一定律 \(\Delta U=Q-W\)</strong>（物理惯例：\(W&gt;0\) = 气体对外做功；\(Q&gt;0\) = 吸热）。内能 \(U\) 是<strong>状态函数</strong>，与路径无关；\(W\)、\(Q\) 是<strong>过程量</strong>，依赖路径。</li>
+        <li><strong>功的几何意义：</strong> \(W=\int_{V_i}^{V_f}P\,dV\) = \(P\!-\!V\) 图上曲线下的面积。膨胀为正、压缩为负。<strong>闭合循环</strong> \(W_{\text{net}}=\) 围成面积（顺时针为正），且 \(\Delta U_{\text{cycle}}=0\)、\(Q_{\text{net}}=W_{\text{net}}\)。</li>
+        <li><strong>四种过程</strong>（理想气体）：
+          <ul>
+            <li>等容 \(V=\text{const}\)：\(W=0\)，\(Q=\Delta U=nC_V\Delta T\)。</li>
+            <li>等压 \(P=\text{const}\)：\(W=P\Delta V=nR\Delta T\)，\(Q=nC_P\Delta T\)，\(\Delta U=nC_V\Delta T\)。</li>
+            <li>等温 \(T=\text{const}\)：\(\Delta U=0\)，\(W=Q=nRT\ln(V_f/V_i)\)。</li>
+            <li>绝热 \(Q=0\)：\(PV^{\gamma}=\text{const}\)、\(TV^{\gamma-1}=\text{const}\)，\(W=(P_iV_i-P_fV_f)/(\gamma-1)=-\Delta U\)。</li>
+          </ul>
+        </li>
+        <li><strong>摩尔热容：</strong> \(C_V=\tfrac f2 R\)、\(C_P=C_V+R\)（<strong>Mayer 关系</strong>）、\(\gamma=C_P/C_V=(f+2)/f\)。单原子 \(\gamma=5/3\)，刚性双原子 \(\gamma=7/5\)。对理想气体 <em>任意</em> 过程恒有 \(\Delta U=nC_V\Delta T\)。</li>
+        <li><strong>关键区分：</strong>绝热 \(\ne\) 等温（前者 \(Q=0\) 通常 \(\Delta T\ne0\)；后者 \(\Delta T=0\) 通常 \(Q\ne0\)）；\(C_V\) 不是「等容专用」，而是 \(U(T)\) 的内禀参量。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\Delta U=Q-W,\quad W=\int_{V_i}^{V_f}P\,dV,\quad C_P=C_V+R,\quad \gamma=\frac{C_P}{C_V},\quad W_{\text{isoth}}=nRT\ln\!\tfrac{V_f}{V_i},\quad W_{\text{ad}}=\frac{P_iV_i-P_fV_f}{\gamma-1},\quad PV^{\gamma}=\text{const},\quad TV^{\gamma-1}=\text{const},\quad \Delta U_{\text{cycle}}=0\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

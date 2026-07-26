@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 热机·卡诺循环·第二定律 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第6章 · 热力学 Thermodynamics</p>
+      <h1>热机·卡诺循环·第二定律 <span class="en-title">Heat Engines, Carnot &amp; the Second Law</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>画出热机 (heat engine) 的能量流向图，定义其<strong>效率</strong> (efficiency) \(\eta=\dfrac{W}{Q_{H}}=1-\dfrac{|Q_{C}|}{Q_{H}}\)，并清晰区分「吸热」\(Q_{H}\)、「放热」\(Q_{C}\) 与「对外做功」\(W\) 三套符号约定。</li>
+        <li>分析<strong>制冷机</strong> (refrigerator) 与<strong>热泵</strong> (heat pump) 这两类逆向循环，写出并计算其<strong>性能系数</strong> (coefficient of performance, COP)，理解为何 COP <em>可以</em>大于 1。</li>
+        <li>准确陈述热力学<strong>第二定律</strong> (Second Law of Thermodynamics) 的两种等价表述——Kelvin–Planck 与 Clausius——并用「反证法」说明违背其一必违背其二。</li>
+        <li>辨认自然界的<strong>不可逆过程</strong> (irreversible processes)，说明「可逆」= 准静态 + 无耗散的苛刻条件。</li>
+        <li>逐步推导<strong>卡诺循环</strong> (Carnot cycle，两条等温线 + 两条绝热线) 的效率 \(\eta_{C}=1-\dfrac{T_{C}}{T_{H}}\)，并论证它是工作于两热源间<strong>一切热机的最大效率</strong>（卡诺定理）。</li>
+        <li>说明卡诺定理如何给出与工作物质无关的<strong>热力学绝对温标</strong> (absolute temperature scale)。</li>
+        <li>简述 Otto、Diesel、Rankine 等实际循环的结构，并指出它们为何效率均低于卡诺极限。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 热机与效率 Heat Engines &amp; Efficiency</h3>
+      <p><strong>热机</strong> (heat engine) 是一种使<em>工作物质</em> (working substance) 不断<em>循环</em>、从而持续把从高温热库吸收的热量部分转化为功的装置。每个完整循环后工作物质回到初态（故 \(\Delta U_{\text{cycle}}=0\)）。其能量流向可抽象为：</p>
+      <ul>
+        <li>从<strong>高温热库</strong> \(T_{H}\) 吸热 \(Q_{H}&gt;0\)；</li>
+        <li>对外做<strong>净功</strong> \(W&gt;0\)；</li>
+        <li>向<strong>低温热库</strong> \(T_{C}\) 放热 \(Q_{C}\)（取「放热为负」约定，\(Q_{C}&lt;0\)；其量值记 \(|Q_{C}|\)）。</li>
+      </ul>
+      <p>由热力学第一定律与循环条件 \(\Delta U=0\)：\(Q_{H}+Q_{C}=W\)，即 \(W=Q_{H}-|Q_{C}|\)。<strong>效率</strong>定义为「得到的功」除以「付出的热量」：</p>
+      <div class="formula">\[ \boxed{\;\eta\equiv\frac{W}{Q_{H}}=\frac{Q_{H}-|Q_{C}|}{Q_{H}}=1-\frac{|Q_{C}|}{Q_{H}}\;}\qquad(0\le\eta\le1). \]</div>
+      <p>效率总小于 1（部分热量必须排出），原因正是<strong>第二定律</strong>——任何循环热机都不可能把吸收的热量<em>全部</em>变成功。本章的核心任务，就是定量给出 \(\eta\) 所能达到的<em>上限</em>。</p>
+      <div class="key-terms">heat engine (热机), working substance (工作物质), hot/cold reservoir (高/低温热库), efficiency \(\eta\) (效率)</div>
+
+      <h3>2. 制冷机与热泵 Refrigerators &amp; Heat Pumps</h3>
+      <p>把热机的循环方向<strong>反转</strong>，就得到制冷机/热泵：靠外界<em>输入功</em> \(W&gt;0\)，把热量从低温热库「抽」到高温热库。注意「有用效果」不同：</p>
+      <ul>
+        <li><strong>制冷机</strong> (refrigerator)：目的是从冷库<em>抽取</em>热量 \(Q_{C}&gt;0\)（如厨房冰箱冷冻室）。性能系数
+          <div class="formula">\[ \mathrm{COP}_{R}=\frac{\text{有用}}{\text{代价}}=\frac{Q_{C}}{W}=\frac{Q_{C}}{Q_{H}-Q_{C}}. \]</div>
+        </li>
+        <li><strong>热泵</strong> (heat pump)：目的是向暖端<em>输送</em>热量 \(Q_{H}&gt;0\)（如冬季供暖）。性能系数
+          <div class="formula">\[ \mathrm{COP}_{HP}=\frac{Q_{H}}{W}=\frac{Q_{H}}{Q_{H}-Q_{C}}=\mathrm{COP}_{R}+1. \]</div>
+        </li>
+      </ul>
+      <p>关键直觉：COP <strong>可以远大于 1</strong>——你输入 1 J 电能，可向房间输送 3–6 J 热量。这不是违背能量守恒，因为你只是「搬运」热量而非「制造」热量。对<em>理想（卡诺）逆向循环</em>（见下节，\(Q_{H}/Q_{C}=T_{H}/T_{C}\)）：</p>
+      <div class="formula">\[ \mathrm{COP}_{R}^{\,\mathrm{Carnot}}=\frac{T_{C}}{T_{H}-T_{C}},\qquad \mathrm{COP}_{HP}^{\,\mathrm{Carnot}}=\frac{T_{H}}{T_{H}-T_{C}}. \]</div>
+      <p>当温差 \(T_{H}-T_{C}\) 很小时 COP 很大（热量「容易」搬运）；当 \(T_{C}\to0\) 时 \(\mathrm{COP}_{R}\to0\)——绝对零度附近制冷极其昂贵。</p>
+      <div class="key-terms">refrigerator (制冷机), heat pump (热泵), coefficient of performance COP (性能系数)</div>
+
+      <h3>3. 第二定律的两种表述 The Second Law: Two Statements</h3>
+      <p>第一定律（能量守恒）<em>不</em>排除 \(\eta=1\) 的热机，也不排除热量自发从冷流向热。排除这些的是<strong>第二定律</strong>，它有两条等价表述：</p>
+      <ul>
+        <li><strong>Kelvin–Planck 表述</strong>：不可能造出一种在循环中<em>只</em>从单一热源吸热并<em>全部</em>变成功的热机。换言之，<strong>不存在 \(\eta=1\) 的热机</strong>（第二类永动机 impossible）——必须有冷源 \(T_{C}\) 接收 \(|Q_{C}|&gt;0\) 的废弃热。</li>
+        <li><strong>Clausius 表述</strong>：不可能把热量从低温物体传到高温物体而<em>不产生其他效果</em>（即不存在「完美的制冷机」，\(\mathrm{COP}_{R}\) 不能无穷大）。</li>
+      </ul>
+      <p><strong>二者等价</strong>（推导见本章练习）：若某装置违背 Clausius，把它与一台正常热机联用即可违背 Kelvin–Planck，反之亦然。故两条表述是对同一条自然律的不同切面。第二定律的本质是<strong>过程方向性</strong>：自然界存在不可逆过程。</p>
+      <div class="key-terms">Second Law of Thermodynamics (热力学第二定律), Kelvin–Planck statement (Kelvin–Planck 表述), Clausius statement (Clausius 表述), perpetual motion of the 2nd kind (第二类永动机)</div>
+
+      <h3>4. 不可逆性 Irreversibility</h3>
+      <p>一个过程<strong>可逆</strong> (reversible) 当且仅当它能沿<em>完全相同</em>的中间态反向进行，且不留下任何其他变化。这要求：① 过程<em>准静态</em> (quasi-static，每时刻无限接近平衡态，无有限压差驱动)；② 无耗散（无摩擦、无电阻焦耳热、无非弹性碰撞、无粘滞）。任何偏离都使过程<strong>不可逆</strong> (irreversible)。</p>
+      <p>日常现象几乎都不可逆：</p>
+      <ul>
+        <li>气体向真空的<strong>自由膨胀</strong> (free expansion)——不会自发收回；</li>
+        <li>有限温差下的<strong>热传导</strong> (heat conduction)——热量自发从热流向冷；</li>
+        <li>两种气体的<strong>扩散混合</strong> (mixing)；</li>
+        <li>摩擦、电阻、非弹性碰撞把机械能/电能变为热（耗散）。</li>
+      </ul>
+      <p>可逆过程是<strong>理想极限</strong>，自然界不存在。下章（熵）将给出不可逆性的定量判据 \(\Delta S_{\text{universe}}&gt;0\)。</p>
+      <div class="key-terms">reversible process (可逆过程), irreversible process (不可逆过程), quasi-static (准静态), dissipation (耗散), free expansion (自由膨胀)</div>
+
+      <h3>5. 卡诺循环 The Carnot Cycle</h3>
+      <p>1824 年，法国工程师 Sadi Carnot 构想了一种由四步<strong>可逆</strong>过程构成的理想循环——<strong>卡诺循环</strong>。以理想气体为工作物质，四步为：</p>
+      <ul>
+        <li><strong>1→2 等温膨胀</strong> (isothermal expansion at \(T_{H}\))：与高温热库 \(T_{H}\) 接触，\(V_{1}\to V_{2}\)（\(V_{2}&gt;V_{1}\)），吸热 \(Q_{H}=nRT_{H}\ln(V_{2}/V_{1})\)，对外做功。</li>
+        <li><strong>2→3 绝热膨胀</strong> (adiabatic expansion)：脱离热库，\(V_{2}\to V_{3}\)，温度由 \(T_{H}\) 降至 \(T_{C}\)，\(Q=0\)，靠消耗内能做功。</li>
+        <li><strong>3→4 等温压缩</strong> (isothermal compression at \(T_{C}\))：与低温热库 \(T_{C}\) 接触，\(V_{3}\to V_{4}\)（\(V_{4}&lt;V_{3}\)），放热 \(|Q_{C}|=nRT_{C}\ln(V_{3}/V_{4})\)。</li>
+        <li><strong>4→1 绝热压缩</strong> (adiabatic compression)：\(V_{4}\to V_{1}\)，温度由 \(T_{C}\) 升回 \(T_{H}\)，\(Q=0\)。</li>
+      </ul>
+      <p>四步都是<em>可逆</em>的，所以卡诺循环是<em>理想</em>可逆热机（运行方向反转即成卡诺制冷机/热泵）。在 \(P\!-\!V\) 图上它围成一闭合曲线，曲线所围<strong>面积</strong>恰等于每循环的净功 \(W\)。</p>
+      <div class="key-terms">Carnot cycle (卡诺循环), isothermal (等温), adiabatic (绝热), working substance (工作物质)</div>
+
+      <h3>6. 卡诺效率 Carnot Efficiency</h3>
+      <p>对上述四步做能量记账（详见「推导」节），并利用两条绝热线给出的几何约束 \(V_{2}/V_{1}=V_{3}/V_{4}\)，可得每循环净功与吸热：</p>
+      <div class="formula">\[ Q_{H}=nRT_{H}\ln\!\frac{V_{2}}{V_{1}},\qquad |Q_{C}|=nRT_{C}\ln\!\frac{V_{3}}{V_{4}}=nRT_{C}\ln\!\frac{V_{2}}{V_{1}}, \]</div>
+      <div class="formula">\[ W=Q_{H}-|Q_{C}|=nR(T_{H}-T_{C})\ln\!\frac{V_{2}}{V_{1}}. \]</div>
+      <p>代入效率定义，\(nR\ln(V_{2}/V_{1})\) 完全约去——这是最深刻的结果：</p>
+      <div class="formula">\[ \boxed{\;\eta_{C}=\frac{W}{Q_{H}}=1-\frac{T_{C}}{T_{H}}\;}\qquad(\text{两热源间最大可能效率}). \]</div>
+      <p>注意三点：① \(\eta_{C}\) <strong>只依赖两个热源温度</strong>，与工作物质、压强、体积、气体的量<em>无关</em>；② \(T\) <strong>必须用开氏温度</strong>（K）；③ 要 \(\eta_{C}=1\)，需 \(T_{C}=0\,\mathrm{K}\)（不可达，第三定律）或 \(T_{H}\to\infty\)（不可行），故 \(\eta&lt;1\) 不可避免。</p>
+      <div class="key-terms">Carnot efficiency \(\eta_{C}\) (卡诺效率)</div>
+
+      <h3>7. 卡诺定理与绝对温标 Carnot's Theorem &amp; Absolute Temperature</h3>
+      <p><strong>卡诺定理</strong>：在相同两热源 \(T_{H},T_{C}\) 之间工作的一切热机，效率<em>不超过</em>可逆热机；一切可逆热机效率相等，且都等于 \(\eta_{C}=1-T_{C}/T_{H}\)，与工作物质无关。（任何<em>不可逆</em>热机 \(\eta&lt;\eta_{C}\)。）</p>
+      <p>定理的一个推论给出了<strong>温度的热力学定义</strong>：既然对可逆热机有 \(|Q_{H}|/|Q_{C}|=T_{H}/T_{C}\)，而热量 \(Q\) 是<em>可直接测量</em>的量，我们可反过来<strong>用 \(Q\) 定义温度</strong>——选一个固定点（水的三相点 \(T=273.16\,\mathrm{K}\)）即可标定整个温标。这是 Kelvin 提出的<strong>热力学绝对温标</strong> (thermodynamic temperature scale)，它与第 3 章的理想气体温标<em>数值上一致</em>，但不依赖任何特定测温物质——它是温度的「绝对」定义。</p>
+      <div class="key-terms">Carnot's theorem (卡诺定理), thermodynamic temperature scale (热力学绝对温标)</div>
+
+      <h3>8. 实际循环：Otto / Diesel / Rankine Real Cycles</h3>
+      <p>真实热机不可能做到完全可逆（燃烧、有限温差传热、摩擦均不可逆），故 \(\eta&lt;\eta_{C}\)。常见的几种内燃/动力循环：</p>
+      <ul>
+        <li><strong>Otto 循环</strong>（汽油机）：两条绝热（压缩+做功冲程）+ 两条等容（爆燃加热 + 排气放热）。效率 \(\eta_{\text{Otto}}=1-1/r^{\gamma-1}\)，\(r=V_{\max}/V_{\min}\) 为<strong>压缩比</strong>。压缩比受「爆震」限制（一般 \(r\sim 8\text{–}10\)）。</li>
+        <li><strong>Diesel 循环</strong>（柴油机）：绝热压缩 + <strong>等压</strong>加热（喷油燃烧）+ 绝热膨胀 + 等容放热。压缩比可更高（\(r\sim 15\text{–}20\)），理论效率高于 Otto。</li>
+        <li><strong>Rankine 循环</strong>（蒸汽电厂）：以水/蒸汽为工质，含<strong>相变</strong>。锅炉（等压加热汽化）→ 汽轮机（绝热膨胀做功）→ 凝汽器（等压凝结放热）→ 给水泵（绝热升压）。工质不是理想气体，需借助蒸汽表查焓值计算。</li>
+      </ul>
+      <p>尽管结构各异，它们<em>都</em>受卡诺上限约束：例如蒸汽在 \(600\,\mathrm{K}\) 蒸发、向 \(300\,\mathrm{K}\) 凝汽器放热的电厂，\(\eta_{C}=50\%\)，而实际 \(\eta\sim 35\text{–}40\%\)。差距正是工程师与物理学家共同关心的「不可逆损失」。</p>
+      <div class="key-terms">Otto cycle (奥托循环), Diesel cycle (狄塞尔循环), Rankine cycle (朗肯循环), compression ratio \(r\) (压缩比)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：卡诺效率 \(\eta_{C}=1-\dfrac{T_{C}}{T_{H}}\) 的逐步推导</h2>
+      <p>考虑以 \(n\,\mathrm{mol}\) 理想气体（绝热指数 \(\gamma=C_{P}/C_{V}\)）为工质的卡诺循环。四步状态记 \(1:(T_{H},V_{1})\)、\(2:(T_{H},V_{2})\)、\(3:(T_{C},V_{3})\)、\(4:(T_{C},V_{4})\)，其中 \(V_{1}&lt;V_{2}&lt;V_{3}\)、\(V_{1}&lt;V_{4}&lt;V_{3}\)。</p>
+
+      <p><strong>第一步 1→2（等温膨胀，\(T=T_{H}\)）。</strong>理想气体等温过程 \(\Delta U=0\)，第一定律给出 \(Q_{12}=W_{12}\)：</p>
+      <div class="formula">\[ Q_{H}=W_{12}=\int_{V_{1}}^{V_{2}}P\,\mathrm{d}V=\int_{V_{1}}^{V_{2}}\frac{nRT_{H}}{V}\,\mathrm{d}V=nRT_{H}\ln\!\frac{V_{2}}{V_{1}}\;(>0). \]</div>
+
+      <p><strong>第二步 2→3（绝热膨胀，\(Q=0\)）。</strong>绝热过程 \(PV^{\gamma}=\text{const}\)，等价地 \(TV^{\gamma-1}=\text{const}\)。第一定律 \(W_{23}=-\Delta U\)，对理想气体 \(\Delta U=nC_{V}\Delta T\)，故</p>
+      <div class="formula">\[ W_{23}=nC_{V}(T_{H}-T_{C})\;(>0)\quad(\text{气体对外做功，内能下降}). \]</div>
+
+      <p><strong>第三步 3→4（等温压缩，\(T=T_{C}\)）。</strong>同第一步 \(\Delta U=0\)：</p>
+      <div class="formula">\[ Q_{34}=W_{34}=nRT_{C}\ln\!\frac{V_{4}}{V_{3}}\;(<0)\quad(\text{放热、外界对气体做功}). \]</div>
+      <p>把放热的量值记为 \(|Q_{C}|=-Q_{34}=nRT_{C}\ln(V_{3}/V_{4})\)。</p>
+
+      <p><strong>第四步 4→1（绝热压缩，\(Q=0\)）。</strong>类似第二步：\(W_{41}=nC_{V}(T_{C}-T_{H})=-W_{23}\)。<em>两段绝热功恰好抵消</em>——这正是循环要「闭合」所要求的。</p>
+
+      <p><strong>净功。</strong>把四步相加（绝热贡献 \(W_{23}+W_{41}=0\)）：</p>
+      <div class="formula">\[ W=Q_{H}+Q_{34}=nRT_{H}\ln\!\frac{V_{2}}{V_{1}}-nRT_{C}\ln\!\frac{V_{3}}{V_{4}}. \]</div>
+
+      <p><strong>关键化简：两条绝热线给出同一压缩比。</strong>由 \(TV^{\gamma-1}=\text{const}\)：</p>
+      <div class="formula">\[ T_{H}V_{2}^{\,\gamma-1}=T_{C}V_{3}^{\,\gamma-1},\qquad T_{C}V_{4}^{\,\gamma-1}=T_{H}V_{1}^{\,\gamma-1}. \]</div>
+      <p>两式相除：\((V_{2}/V_{1})^{\gamma-1}=(V_{3}/V_{4})^{\gamma-1}\)，即</p>
+      <div class="formula">\[ \frac{V_{2}}{V_{1}}=\frac{V_{3}}{V_{4}}\equiv r\qquad(\text{循环压缩比}). \]</div>
+
+      <p>代回净功表达式，两个对数合并：</p>
+      <div class="formula">\[ W=nR(T_{H}-T_{C})\ln r,\qquad Q_{H}=nRT_{H}\ln r. \]</div>
+
+      <p><strong>效率。</strong>\(\eta=W/Q_{H}\)，公因子 \(nR\ln r\) 完全消去：</p>
+      <div class="formula">\[ \boxed{\;\eta_{C}=\frac{T_{H}-T_{C}}{T_{H}}=1-\frac{T_{C}}{T_{H}}\;}\qquad\blacksquare \]</div>
+      <p>结果与气体的种类、\(\gamma\)、\(n\)、压缩比 \(r\) <em>全部无关</em>——这正是卡诺定理的体现：在两热源间，<strong>一切可逆热机效率相等</strong>，且任何不可逆热机效率更低。温度 \(T\) 必须用热力学温度（K），否则结论失效。</p>
+      <div class="key-terms">adiabatic index \(\gamma=C_{P}/C_{V}\) (绝热指数), compression ratio \(r\) (压缩比), Carnot's theorem (卡诺定理)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 蒸汽电厂的卡诺上限 Carnot Ceiling for a Steam Plant</h4>
+        <p class="example-statement">某蒸汽电厂用过热蒸汽加热至 \(T_{H}=600\,\mathrm{K}\)（约 \(327^{\circ}\mathrm{C}\)），凝汽器向河水以 \(T_{C}=300\,\mathrm{K}\)（\(27^{\circ}\mathrm{C}\)）放热。(a) 求该电厂理论上的最大（卡诺）效率；(b) 若实际效率为 \(40\%\)，相当于卡诺极限的百分之几？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 直接代入 \(\eta_{C}=1-T_{C}/T_{H}\)（注意<em>开氏温度</em>，本题已给出）：
+            \[ \eta_{C}=1-\frac{300}{600}=1-\frac12=0.500=50.0\%. \]</p>
+          <p class="step">(b) 实际效率 \(\eta_{\text{act}}=40\%\)，比值
+            \[ \frac{\eta_{\text{act}}}{\eta_{C}}=\frac{0.40}{0.50}=0.80=80\%. \]</p>
+          <p>即该电厂已达到卡诺极限的 80%——在现代大型电厂中属优秀水平，剩余 20% 的差距来自燃烧不可逆性、汽轮机叶片损失、泵损失、凝汽器有限温差传热等。<span class="ans">答案：\(\eta_{C}=50.0\%\)；实际 \(40\%\) 相当于卡诺极限的 \(80\%\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 这台「发明」可能吗？Is the Claimed Engine Possible?</h4>
+        <p class="example-statement">某发明家宣称造出一台热机：每循环从 \(T_{H}=500\,\mathrm{K}\) 的热库吸热 \(Q_{H}=1000\,\mathrm{J}\)，对外做功 \(W=600\,\mathrm{J}\)，向 \(T_{C}=300\,\mathrm{K}\) 的环境放热。该装置是否违背热力学第二定律？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先由第一定律算实际放热：\(|Q_{C}|=Q_{H}-W=1000-600=400\,\mathrm{J}\)。宣称效率
+            \[ \eta_{\text{claim}}=\frac{W}{Q_{H}}=\frac{600}{1000}=0.60=60\%. \]</p>
+          <p class="step">计算同两热源间的卡诺上限：
+            \[ \eta_{C}=1-\frac{T_{C}}{T_{H}}=1-\frac{300}{500}=0.40=40\%. \]</p>
+          <p class="step">比较：\(\eta_{\text{claim}}=60\%&gt;\eta_{C}=40\%\)。这<strong>超过</strong>了卡诺极限，违背卡诺定理，即违背第二定律（等价地，违反 Kelvin–Planck 表述）。该装置不可能存在——属「第二类永动机」。</p>
+          <p>注：第一定律<em>并未</em>被违反（\(Q_{H}=W+|Q_{C}|\) 满足）。问题出在「效率过高」——这正是第二定律管辖的范围。<span class="ans">答案：不可能。卡诺极限仅 \(40\%\)，宣称的 \(60\%\) 违背第二定律。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 厨房冰箱的性能系数 COP of a Kitchen Refrigerator</h4>
+        <p class="example-statement">一台家用冰箱冷冻室保持 \(-13^{\circ}\mathrm{C}\)（即 \(T_{C}=260\,\mathrm{K}\)），厨房温度 \(T_{H}=300\,\mathrm{K}\)（\(27^{\circ}\mathrm{C}\)）。(a) 求理想（卡诺）制冷机的 COP；(b) 压缩机消耗 \(W=100\,\mathrm{J}\) 电能时，理想情况下可从冷冻室抽走多少热量？(c) 若实际 COP \(=3.0\)（典型值），抽走多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 理想 COP：
+            \[ \mathrm{COP}_{R}^{\,\mathrm{Carnot}}=\frac{T_{C}}{T_{H}-T_{C}}=\frac{260}{300-260}=\frac{260}{40}=6.5. \]</p>
+          <p class="step">(b) 由 \(\mathrm{COP}_{R}=Q_{C}/W\)，理想抽热量
+            \[ Q_{C}=\mathrm{COP}_{R}\cdot W=6.5\times100=650\,\mathrm{J}. \]</p>
+          <p class="step">(c) 实际 COP \(=3.0\)：
+            \[ Q_{C}^{\,\text{act}}=3.0\times100=300\,\mathrm{J}. \]</p>
+          <p>注意 COP <strong>大于 1</strong>（理想 6.5，实际 3.0）：每焦耳电能搬运 3–6.5 J 热量，比电热器「1 J 电 = 1 J 热」高效得多——这就是热泵供暖的经济基础。实际与理想的差距来自压缩机不可逆性、冷凝/蒸发器的有限温差传热、管路损失等。<span class="ans">答案：(a) \(\mathrm{COP}_{R}^{\,\mathrm{Carnot}}=6.5\)；(b) \(Q_{C}=650\,\mathrm{J}\)；(c) \(Q_{C}^{\,\text{act}}=300\,\mathrm{J}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 完整卡诺循环的能量计算 Full Carnot Cycle: \(Q_{H},\,Q_{C},\,W\)</h4>
+        <p class="example-statement">以 \(n=1.00\,\mathrm{mol}\) <em>单原子</em>理想气体（\(\gamma=5/3\)）为工质的卡诺循环，工作于 \(T_{H}=500\,\mathrm{K}\)、\(T_{C}=300\,\mathrm{K}\) 之间。等温膨胀段 \(V_{1}=1.00\,\mathrm{L}\to V_{2}=3.00\,\mathrm{L}\)。(a) 求四角体积 \(V_{3},V_{4}\)；(b) 计算 \(Q_{H}\)、\(|Q_{C}|\)、\(W\)；(c) 验证 \(\eta=W/Q_{H}=1-T_{C}/T_{H}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由绝热关系 \(T_{H}V_{2}^{\,\gamma-1}=T_{C}V_{3}^{\,\gamma-1}\)，即 \(V_{3}=V_{2}\,(T_{H}/T_{C})^{1/(\gamma-1)}\)。对单原子气体 \(1/(\gamma-1)=1/(2/3)=3/2\)，故
+            \[ \frac{V_{3}}{V_{2}}=\Big(\frac{500}{300}\Big)^{3/2}=\Big(\frac53\Big)^{3/2}=2.152, \]
+            \[ V_{3}=3.00\times2.152=6.46\,\mathrm{L},\qquad V_{4}=V_{1}\times2.152=1.00\times2.152=2.15\,\mathrm{L}. \]</p>
+          <p class="step">(b) 压缩比 \(r=V_{2}/V_{1}=3.00\)，\(\ln r=\ln3=1.0986\)。代入：
+            \[ Q_{H}=nRT_{H}\ln r=(8.314)(500)(1.0986)=4157\times1.0986=4.567\times10^{3}\,\mathrm{J}=4.57\,\mathrm{kJ}, \]
+            \[ |Q_{C}|=nRT_{C}\ln r=(8.314)(300)(1.0986)=2494\times1.0986=2.740\times10^{3}\,\mathrm{J}=2.74\,\mathrm{kJ}, \]</p>
+          <p class="step">净功
+            \[ W=Q_{H}-|Q_{C}|=4.567-2.740=1.827\,\mathrm{kJ}. \]</p>
+          <p class="step">(c) 校核：
+            \[ \eta=\frac{W}{Q_{H}}=\frac{1.827}{4.567}=0.400\;\;\checkmark\qquad 1-\frac{T_{C}}{T_{H}}=1-\frac{300}{500}=0.400\;\;\checkmark \]</p>
+          <p>注意 \(V_{3}/V_{4}=6.46/2.15=3.00=V_{2}/V_{1}\)，正是「推导」中那个关键的几何约束。两段绝热功互相抵消（\(nC_{V}(T_{H}-T_{C})=nC_{V}(200)\) 与 \(-nC_{V}(200)\)），仅两段等温对净功有贡献。<span class="ans">答案：\(V_{3}=6.46\,\mathrm{L}\)，\(V_{4}=2.15\,\mathrm{L}\)；\(Q_{H}=4.57\,\mathrm{kJ}\)，\(|Q_{C}|=2.74\,\mathrm{kJ}\)，\(W=1.83\,\mathrm{kJ}\)；\(\eta=40.0\%\)，与卡诺公式精确一致。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 提高热源温度的收益 Raising \(T_{H}\) Helps—But Diminishingly</h4>
+        <p class="example-statement">一台核电/燃煤电厂以 \(T_{C}=290\,\mathrm{K}\)（约 \(17^{\circ}\mathrm{C}\) 湖水）为冷源。(a) 若蒸汽温度 \(T_{H}=600\,\mathrm{K}\)，卡诺效率是多少？(b) 把 \(T_{H}\) 提到 \(700\,\mathrm{K}\)（超临界参数）能多获得多少效率？(c) 若继续增至 \(800\,\mathrm{K}\)，效率的<em>增量</em>是否仍递增？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \(T_{H}=600\,\mathrm{K}\)：
+            \[ \eta_{C}=1-\frac{290}{600}=1-0.4833=0.517=51.7\%. \]</p>
+          <p class="step">(b) \(T_{H}=700\,\mathrm{K}\)：
+            \[ \eta_{C}=1-\frac{290}{700}=1-0.4143=0.586=58.6\%. \]
+            增量 \(\Delta\eta=58.6\%-51.7\%=6.9\) 个百分点。</p>
+          <p class="step">(c) \(T_{H}=800\,\mathrm{K}\)：
+            \[ \eta_{C}=1-\frac{290}{800}=1-0.3625=0.638=63.8\%. \]
+            增量 \(\Delta\eta=63.8\%-58.6\%=5.2\) 个百分点——<em>增量减小</em>。</p>
+          <p>事实上 \(\eta_{C}=1-T_{C}/T_{H}\) 对 \(T_{H}\) 是<strong>下凸</strong>函数（\(\partial\eta/\partial T_{H}=T_{C}/T_{H}^{2}&gt;0\) 但 \(\partial^{2}\eta/\partial T_{H}^{2}=-2T_{C}/T_{H}^{3}&lt;0\)），即<em>边际收益递减</em>。这就是材料学家拼命提高耐高温合金（让 \(T_{H}\) 尽可能高）但仍受经济性约束的根本物理。<span class="ans">答案：(a) \(51.7\%\)；(b) \(58.6\%\)，提高 6.9 个百分点；(c) \(63.8\%\)，再提高 5.2 个百分点（边际递减）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>用摄氏温度代入卡诺公式。</strong>\(\eta_{C}=1-T_{C}/T_{H}\) 中的温度<strong>必须</strong>用热力学温度（K）。若把 \(T_{H}=327^{\circ}\mathrm{C}\)、\(T_{C}=27^{\circ}\mathrm{C}\) 直接代入会得到荒唐的 \(\eta=1-27/327=91.7\%\)；正确化为开氏后 \(\eta=1-300/600=50\%\)。任何含温度比的公式（理想气体定律、Carnot、COP）一律用 K。</li>
+        <li><strong>认为 \(\eta=1\)（完美热机）可以达到。</strong>由 \(\eta_{C}=1-T_{C}/T_{H}\)，要 \(\eta_{C}=1\) 需 \(T_{C}=0\,\mathrm{K}\)（第三定律：绝对零度不可达）或 \(T_{H}\to\infty\)（不可行）。第二定律（Kelvin–Planck）正是排除 \(\eta=1\) 的——必须有冷源接收 \(|Q_{C}|&gt;0\) 的废弃热。</li>
+        <li><strong>认为某实际热机能超过卡诺极限。</strong>卡诺定理保证：在相同两热源间，<em>没有任何</em>热机（无论结构、工质多么巧妙）能超过 \(\eta_{C}\)。若有人宣称 \(\eta&gt;\eta_{C}\)，必属测量误差或「第二类永动机」。注意：若热源<em>不</em>是恒温（如燃气轮机，燃烧产物温度持续变化），则需用「平均等效温度」或熵分析（下章）来比较，不可直接套 \(\eta_{C}\)。</li>
+        <li><strong>混淆 COP 与效率 \(\eta\)。</strong>\(\eta=W/Q_{H}\le\eta_{C}&lt;1\) 是热机指标；\(\mathrm{COP}=Q/W\) 是制冷/热泵指标，<em>可以远大于 1</em>（典型冰箱 3–6，理想情况更高）。两者不能直接比较：「COP=4 不可能，因为效率不能超过 1」是典型的概念混淆。</li>
+        <li><strong>把 \(Q_{C}\) 的符号搞错。</strong>教材中 \(Q_{C}\) 常取「放热为负」（\(Q_{C}&lt;0\)），效率 \(\eta=1+Q_{C}/Q_{H}\)；亦有教材只记量值 \(|Q_{C}|\)，效率 \(\eta=1-|Q_{C}|/Q_{H}\)。两种写法等价但符号约定不同。务必看清题中 \(Q_{C}\) 是「代数量」还是「量值」，否则差一个负号。</li>
+        <li><strong>认为卡诺效率依赖工作物质。</strong>卡诺定理的核心恰恰相反：\(\eta_{C}=1-T_{C}/T_{H}\) 与工质<em>无关</em>（与气体的量、\(\gamma\)、压缩比均无关）。本章推导虽用理想气体，但结论对所有可逆热机成立——这正是卡诺定理的深刻之处，也是绝对温标得以建立的依据。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一台卡诺热机工作于 \(T_{H}=800\,\mathrm{K}\)、\(T_{C}=300\,\mathrm{K}\) 之间，每循环吸热 \(Q_{H}=500\,\mathrm{J}\)。求效率 \(\eta\)、对外净功 \(W\) 与放热量 \(|Q_{C}|\)。</summary>
+        <div class="hint">\(\eta_{C}=1-T_{C}/T_{H}\)；\(W=\eta Q_{H}\)；\(|Q_{C}|=Q_{H}-W\)。</div>
+        <div class="solution">\(\eta=1-\dfrac{300}{800}=0.625=62.5\%\)。
+          \[ W=\eta Q_{H}=0.625\times500=312.5\,\mathrm{J},\qquad |Q_{C}|=500-312.5=187.5\,\mathrm{J}. \]
+          <span class="ans">\(\eta=62.5\%\)，\(W=312.5\,\mathrm{J}\)，\(|Q_{C}|=187.5\,\mathrm{J}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 某发明家宣称一台热机：每循环从 \(T_{H}=600\,\mathrm{K}\) 热库吸热 \(2000\,\mathrm{J}\)，向 \(T_{C}=300\,\mathrm{K}\) 环境放热 \(800\,\mathrm{J}\)，余者变成功。该装置在物理上是否可能？</summary>
+        <div class="hint">比较宣称效率与卡诺上限。</div>
+        <div class="solution">宣称效率
+          \[ \eta_{\text{claim}}=\frac{W}{Q_{H}}=\frac{Q_{H}-|Q_{C}|}{Q_{H}}=\frac{2000-800}{2000}=0.60=60\%. \]
+          卡诺上限
+          \[ \eta_{C}=1-\frac{T_{C}}{T_{H}}=1-\frac{300}{600}=0.50=50\%. \]
+          因 \(\eta_{\text{claim}}=60\%&gt;\eta_{C}=50\%\)，违背卡诺定理即第二定律。
+          <span class="ans">不可能。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一台理想（卡诺）热泵用于冬季供暖：室内 \(T_{H}=300\,\mathrm{K}\)（\(27^{\circ}\mathrm{C}\)），室外 \(T_{C}=270\,\mathrm{K}\)（\(-3^{\circ}\mathrm{C}\)）。求 \(\mathrm{COP}_{HP}^{\,\mathrm{Carnot}}\)。若消耗 \(1\,\mathrm{kW\!h}\) 电能，可向室内输送多少热量？</summary>
+        <div class="hint">\(\mathrm{COP}_{HP}^{\,\mathrm{Carnot}}=T_{H}/(T_{H}-T_{C})\)；\(1\,\mathrm{kW\!h}=3.6\times10^{6}\,\mathrm{J}\)。</div>
+        <div class="solution">\(\mathrm{COP}_{HP}^{\,\mathrm{Carnot}}=\dfrac{300}{300-270}=\dfrac{300}{30}=10\)。
+          \[ Q_{H}=\mathrm{COP}\cdot W=10\times(3.6\times10^{6})=3.6\times10^{7}\,\mathrm{J}=36\,\mathrm{MJ}. \]
+          对比直接用电热器仅得 \(3.6\,\mathrm{MJ}\)——热泵在温和气候下「搬运」热量比制造热量高效约 10 倍。
+          <span class="ans">\(\mathrm{COP}_{HP}=10\)；\(Q_{H}=36\,\mathrm{MJ}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 一台卡诺热机工作于 \(T_{H}=500\,\mathrm{K}\)、\(T_{C}=300\,\mathrm{K}\) 之间，每循环对外做功 \(W=200\,\mathrm{J}\)。求 \(Q_{H}\) 与 \(|Q_{C}|\)。</summary>
+        <div class="hint">先求 \(\eta\)，再由 \(\eta=W/Q_{H}\) 反解 \(Q_{H}\)。</div>
+        <div class="solution">\(\eta=1-\dfrac{300}{500}=0.40\)。
+          \[ Q_{H}=\frac{W}{\eta}=\frac{200}{0.40}=500\,\mathrm{J},\qquad |Q_{C}|=Q_{H}-W=500-200=300\,\mathrm{J}. \]
+          <span class="ans">\(Q_{H}=500\,\mathrm{J}\)，\(|Q_{C}|=300\,\mathrm{J}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）证明：若存在违背 Clausius 表述的装置（不耗功即可把热量 \(|Q|\) 从冷源搬到热源），把它与一台普通的、符合 Kelvin–Planck 的热机联合，即可造出违背 Kelvin–Planck 表述的装置（即 \(\eta=1\) 的热机）。</summary>
+        <div class="hint">让 Clausius 装置把热机排给冷源的热量 \(|Q_{C}|\)「免费」送回热源，相当于热源净失去的热量恰好等于 \(W\)。</div>
+        <div class="solution">设普通热机每循环吸热 \(Q_{H}\)、做功 \(W\)、放热 \(|Q_{C}|=Q_{H}-W\) 到冷源。把 Clausius 装置并联：它从冷源取走 \(|Q_{C}|\)（使冷源净收支为 0）并免费送回热源。则：
+          <ul>
+            <li>热源每循环净失去 \(Q_{H}-|Q_{C}|=W\)；</li>
+            <li>冷源净收支为 0（普通热机放 \(|Q_{C}|\)，Clausius 装置取走 \(|Q_{C}|\)）；</li>
+            <li>对外输出净功 \(W\)。</li>
+          </ul>
+          即联合装置<strong>仅从单一热源吸热 \(W\) 并全部变成功</strong>——正是 Kelvin–Planck 所禁止的。因此 Clausius 与 Kelvin–Planck 等价：违背其一必违背其二。<span class="ans">证毕。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>卡诺循环 P–V 图 Carnot Cycle on P–V Diagram。</strong>以 \(1\,\mathrm{mol}\) 单原子理想气体（\(\gamma=5/3\)）为工质。一个亮点沿四段闭合路径运动：<strong style="color:#dc2626">红</strong>＝等温膨胀（\(T_{H}\)，吸热 \(Q_{H}\)）→ <strong style="color:#7c3aed">紫</strong>＝绝热膨胀（\(T\) 由 \(T_{H}\) 降到 \(T_{C}\)）→ <strong style="color:#2563eb">蓝</strong>＝等温压缩（\(T_{C}\)，放热 \(|Q_{C}|\)）→ <strong style="color:#7c3aed">紫</strong>＝绝热压缩（回到 \(T_{H}\)）。<strong>绿色阴影面积</strong>＝每循环净功 \(W\)。调节滑块 \(T_{H},T_{C},V_{1},V_{2}\)，右侧读数面板实时显示 \(\eta_{C}=1-T_{C}/T_{H}\)、\(Q_{H},|Q_{C}|,W\) 以及当前气体温度 \(T\)——观察在绝热段 \(T\) 如何连续变化、在等温段如何保持不变。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var H = canvas.height;
+
+          // --- physical constants -----------------------------------------
+          var N_MOLES = 1.0;            // 1 mol working gas
+          var RGAS = 8.314;             // J/(mol·K)
+          var GAMMA = 5.0 / 3.0;        // monatomic
+          var G1 = 1.0 / (GAMMA - 1.0); // = 3/2
+
+          // --- slider params (TH,TC in K; V1,V2 in L) ---------------------
+          var params = { TH: 500, TC: 300, V1: 1.0, V2: 3.0 };
+
+          // --- plot geometry (canvas px) ----------------------------------
+          var PX0 = 52, PX1 = 392, PY0 = 40, PY1 = 356;
+          var READOUT_X = 408;
+
+          // --- thermodynamic corner + energy computation ------------------
+          function corners() {
+            var TH = params.TH, TC = params.TC;
+            var V1 = params.V1 * 1e-3, V2 = params.V2 * 1e-3;   // L → m³
+            var ratio = Math.pow(TH / TC, G1);                  // = V3/V2 = V4/V1
+            var V3 = V2 * ratio, V4 = V1 * ratio;
+            return {
+              V1: V1, V2: V2, V3: V3, V4: V4,
+              TH: TH, TC: TC,
+              P1: N_MOLES * RGAS * TH / V1,
+              P2: N_MOLES * RGAS * TH / V2,
+              P3: N_MOLES * RGAS * TC / V3,
+              P4: N_MOLES * RGAS * TC / V4,
+            };
+          }
+          function cycleEnergies() {
+            var c = corners();
+            var r = c.V2 / c.V1;                                 // = V3/V4
+            var QH = N_MOLES * RGAS * c.TH * Math.log(r);        // > 0
+            var QCmag = N_MOLES * RGAS * c.TC * Math.log(r);     // magnitude
+            var W = QH - QCmag;
+            var eta = 1 - c.TC / c.TH;
+            return { QH: QH, QCmag: QCmag, W: W, eta: eta, r: r, c: c };
+          }
+          // (V, T, P) along segment seg (0..3) at fraction frac (0..1)
+          function stateAt(seg, frac, c) {
+            var V, T;
+            if (seg === 0)      { V = c.V1 + frac * (c.V2 - c.V1); T = c.TH; }
+            else if (seg === 1) { V = c.V2 + frac * (c.V3 - c.V2); T = c.TH * Math.pow(c.V2 / V, GAMMA - 1); }
+            else if (seg === 2) { V = c.V3 + frac * (c.V4 - c.V3); T = c.TC; }
+            else                { V = c.V4 + frac * (c.V1 - c.V4); T = c.TC * Math.pow(c.V4 / V, GAMMA - 1); }
+            return { V: V, T: T, P: N_MOLES * RGAS * T / V };
+          }
+
+          // --- canvas mapper ----------------------------------------------
+          function makeMapper(c) {
+            var Vmin = c.V1, Vmax = c.V3;
+            var Pmin = c.P3, Pmax = c.P1;
+            // pad so loop floats inside the frame
+            var Vlo = Vmin - 0.06 * (Vmax - Vmin), Vhi = Vmax + 0.06 * (Vmax - Vmin);
+            var Plo = Pmin - 0.10 * (Pmax - Pmin), Phi = Pmax + 0.08 * (Pmax - Pmin);
+            if (Plo < 0) Plo = Pmin * 0.5;
+            return {
+              Vx: function (V) { return PX0 + (V - Vlo) / (Vhi - Vlo) * (PX1 - PX0); },
+              Py: function (P) { return PY1 - (P - Plo) / (Phi - Plo) * (PY1 - PY0); },
+              Vlo: Vlo, Vhi: Vhi, Plo: Plo, Phi: Phi,
+            };
+          }
+
+          function drawArrowhead(ctx, x, y, dx, dy, color) {
+            var a = Math.atan2(dy, dx), L = 9;
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x + L * Math.cos(a), y + L * Math.sin(a));
+            ctx.lineTo(x - 0.5 * L * Math.cos(a - 0.5), y - 0.5 * L * Math.sin(a - 0.5));
+            ctx.lineTo(x - 0.5 * L * Math.cos(a + 0.5), y - 0.5 * L * Math.sin(a + 0.5));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          var segColors  = ['accent', 'trace', 'primary', 'trace'];
+          var segColorsRaw = [PS.colors.accent, PS.colors.trace, PS.colors.primary, PS.colors.trace];
+          var segLabels = ['等温膨胀 T_H', '绝热膨胀', '等温压缩 T_C', '绝热压缩'];
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { phase: 0 }; },
+            step: function (dt, t, s) {
+              s.phase += dt * 0.35;            // ≈ 11.4 s per full loop
+              if (s.phase >= 4) s.phase -= 4;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var c = corners();
+              var E = cycleEnergies();
+              var M = makeMapper(c);
+
+              // ---- 1. shaded enclosed area = W ---------------------------------
+              ctx.save();
+              ctx.beginPath();
+              var NSAMP = 60;
+              for (var seg = 0; seg < 4; seg++) {
+                for (var i = 0; i < NSAMP; i++) {
+                  var stt = stateAt(seg, i / NSAMP, c);
+                  var x = M.Vx(stt.V), y = M.Py(stt.P);
+                  if (seg === 0 && i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+              }
+              ctx.closePath();
+              ctx.fillStyle = 'rgba(22,163,74,0.18)';
+              ctx.fill();
+              ctx.restore();
+
+              // ---- 2. axes + ticks --------------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.fillStyle = PS.colors.text;
+              ctx.lineWidth = 1.4;
+              ctx.font = '11px system-ui';
+              ctx.beginPath(); ctx.moveTo(PX0, PY0); ctx.lineTo(PX0, PY1); ctx.lineTo(PX1, PY1); ctx.stroke();
+              // V ticks (m³ → L for display)
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              var nv = 5;
+              for (var i = 0; i <= nv; i++) {
+                var V = M.Vlo + (M.Vhi - M.Vlo) * i / nv;
+                var xt = M.Vx(V);
+                ctx.beginPath(); ctx.moveTo(xt, PY1); ctx.lineTo(xt, PY1 + 4); ctx.stroke();
+                ctx.fillText((V * 1e3).toFixed(1), xt, PY1 + 6);
+              }
+              // P ticks (Pa → kPa)
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              var np = 4;
+              for (var i = 0; i <= np; i++) {
+                var P = M.Plo + (M.Phi - M.Plo) * i / np;
+                var yt = M.Py(P);
+                ctx.beginPath(); ctx.moveTo(PX0 - 4, yt); ctx.lineTo(PX0, yt); ctx.stroke();
+                ctx.fillText((P / 1e3).toFixed(0), PX0 - 6, yt);
+              }
+              // axis titles
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillText('V (L)  体积', (PX0 + PX1) / 2, PY1 + 22);
+              ctx.save();
+              ctx.translate(14, (PY0 + PY1) / 2); ctx.rotate(-Math.PI / 2);
+              ctx.fillText('P (kPa)  压强', 0, 0);
+              ctx.restore();
+              ctx.restore();
+
+              // ---- 3. the four curves + direction arrows ----------------------
+              for (var seg = 0; seg < 4; seg++) {
+                ctx.save();
+                ctx.strokeStyle = segColorsRaw[seg];
+                ctx.lineWidth = 2.4;
+                ctx.beginPath();
+                for (var i = 0; i <= 80; i++) {
+                  var stt = stateAt(seg, i / 80, c);
+                  var x = M.Vx(stt.V), y = M.Py(stt.P);
+                  if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.restore();
+                // midpoint direction arrow
+                var a = stateAt(seg, 0.46, c), b = stateAt(seg, 0.54, c);
+                drawArrowhead(ctx, M.Vx(a.V), M.Py(a.P),
+                              M.Vx(b.V) - M.Vx(a.V), M.Py(b.P) - M.Py(a.P),
+                              segColorsRaw[seg]);
+              }
+
+              // ---- 4. corner markers + labels ---------------------------------
+              var lbl = ['1', '2', '3', '4'];
+              var cstates = [
+                { V: c.V1, P: c.P1 }, { V: c.V2, P: c.P2 },
+                { V: c.V3, P: c.P3 }, { V: c.V4, P: c.P4 },
+              ];
+              for (var i = 0; i < 4; i++) {
+                var cx = M.Vx(cstates[i].V), cy = M.Py(cstates[i].P);
+                PS.drawCircle(ctx, cx, cy, 4, { fill: PS.colors.text, stroke: '#fff', lineWidth: 1.5 });
+                PS.drawText(ctx, lbl[i], cx + 8, cy - 8,
+                  { font: 'bold 13px system-ui', color: PS.colors.text });
+              }
+
+              // ---- 5. current point -------------------------------------------
+              var ph = s.phase;
+              var segNow = Math.floor(ph), frac = ph - segNow;
+              var cur = stateAt(segNow, frac, c);
+              var ncx = M.Vx(cur.V), ncy = M.Py(cur.P);
+              PS.drawCircle(ctx, ncx, ncy, 6.5,
+                { fill: PS.colors.accent2, stroke: '#fff', lineWidth: 2 });
+
+              // ---- 6. title + footnotes ---------------------------------------
+              PS.drawText(ctx, '卡诺循环 P–V 图  Carnot Cycle on a P–V Diagram',
+                PX0, 16, { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '阴影面积 = 净功 W   shaded area = net work',
+                PX0, H - 16, { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- 7. readout panel -------------------------------------------
+              var rx = READOUT_X, ry = PY0;
+              PS.drawText(ctx, '卡诺循环读数', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'Carnot Readout', rx, ry + 15,
+                { font: '11px system-ui', color: PS.colors.text });
+              var lines = [
+                ['T_H = ' + c.TH.toFixed(0) + ' K', PS.colors.accent],
+                ['T_C = ' + c.TC.toFixed(0) + ' K', PS.colors.primary],
+                ['', null],
+                ['η_C = 1 − T_C/T_H', PS.colors.text],
+                ['   = ' + E.eta.toFixed(3) + '  (' + (E.eta * 100).toFixed(1) + '%)', PS.colors.accent2],
+                ['', null],
+                ['r = V₂/V₁ = ' + E.r.toFixed(3), PS.colors.text],
+                ['V₃ = ' + (c.V3 * 1e3).toFixed(2) + ' L', PS.colors.text],
+                ['V₄ = ' + (c.V4 * 1e3).toFixed(2) + ' L', PS.colors.text],
+                ['', null],
+                ['Q_H = ' + E.QH.toFixed(0) + ' J', PS.colors.accent],
+                ['|Q_C| = ' + E.QCmag.toFixed(0) + ' J', PS.colors.primary],
+                ['W = ' + E.W.toFixed(0) + ' J', PS.colors.accent2],
+                ['', null],
+                ['阶段 stroke:', PS.colors.text],
+                ['  ' + segLabels[segNow], segColorsRaw[segNow]],
+                ['T_now = ' + cur.T.toFixed(0) + ' K', PS.colors.text],
+                ['P_now = ' + (cur.P / 1e3).toFixed(0) + ' kPa', PS.colors.text],
+                ['V_now = ' + (cur.V * 1e3).toFixed(2) + ' L', PS.colors.text],
+              ];
+              var yy;
+              for (var i = 0; i < lines.length; i++) {
+                if (!lines[i][0]) continue;
+                yy = ry + 36 + i * 15;
+                PS.drawText(ctx, lines[i][0], rx, yy,
+                  { font: '11.5px system-ui', color: lines[i][1] });
+              }
+            },
+          });
+
+          // Slider ranges are chosen so the cycle is always valid
+          // (TH ≥ 400 > 350 ≥ TC  and  V2 ≥ 2.5 > 1.8 ≥ V1).
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'TH', label: 'T_H 高温热源 (K)', min: 400, max: 900, step: 10, value: 500 },
+            { type: 'slider', key: 'TC', label: 'T_C 低温热源 (K)', min: 100, max: 350, step: 10, value: 300 },
+            { type: 'slider', key: 'V1', label: 'V₁ 体积下界 (L)', min: 0.5, max: 1.8, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'V2', label: 'V₂ 等温膨胀末 (L)', min: 2.5, max: 5.0, step: 0.1, value: 3.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('TH', function (v) { params.TH = v; });
+          ctl.on('TC', function (v) { params.TC = v; });
+          ctl.on('V1', function (v) { params.V1 = v; });
+          ctl.on('V2', function (v) { params.V2 = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>热机</strong>循环吸热 \(Q_{H}\)、做功 \(W\)、放热 \(|Q_{C}|\)，效率 \(\eta=W/Q_{H}=1-|Q_{C}|/Q_{H}&lt;1\)。<strong>制冷机/热泵</strong>逆向运行，性能系数 \(\mathrm{COP}_{R}=Q_{C}/W\)、\(\mathrm{COP}_{HP}=Q_{H}/W=\mathrm{COP}_{R}+1\)，可以大于 1。</li>
+        <li><strong>第二定律</strong>两种等价表述：Kelvin–Planck（不存在 \(\eta=1\) 的热机）与 Clausius（热量不能自发从冷到热）。二者共同指出自然界存在<strong>不可逆过程</strong>。可逆 = 准静态 + 无耗散。</li>
+        <li><strong>卡诺循环</strong>＝两条等温线（\(T_{H},T_{C}\)）+ 两条绝热线，全部可逆。在 \(P\!-\!V\) 图上闭合曲线所围面积＝净功 \(W\)。</li>
+        <li><strong>卡诺效率</strong> \(\eta_{C}=1-T_{C}/T_{H}\)，只依赖两热源温度（<em>必须</em>用开氏温度），与工作物质无关。</li>
+        <li><strong>卡诺定理</strong>：在两热源间，一切热机效率 \(\le\eta_{C}\)，一切可逆热机效率 \(=\eta_{C}\)。这是绝对热力学温标 \(T\propto Q_{\text{reversible}}\) 的基础。</li>
+        <li>对理想气体卡诺循环：\(Q_{H}=nRT_{H}\ln(V_{2}/V_{1})\)、\(|Q_{C}|=nRT_{C}\ln(V_{3}/V_{4})\)，且绝热关系给出 \(V_{2}/V_{1}=V_{3}/V_{4}\)。</li>
+        <li>实际循环（Otto: \(\eta=1-1/r^{\gamma-1}\)；Diesel；Rankine）均含不可逆步骤，故 \(\eta&lt;\eta_{C}\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\eta=\frac{W}{Q_{H}}=1-\frac{|Q_{C}|}{Q_{H}},\quad \eta_{C}=1-\frac{T_{C}}{T_{H}},\quad \mathrm{COP}_{R}=\frac{T_{C}}{T_{H}-T_{C}},\quad \mathrm{COP}_{HP}=\frac{T_{H}}{T_{H}-T_{C}},\quad Q_{H}=nRT_{H}\ln\frac{V_{2}}{V_{1}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

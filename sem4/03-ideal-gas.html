@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 理想气体与气体动理论 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第3章 · 热力学 Thermodynamics</p>
+      <h1>理想气体与气体动理论 <span class="en-title">Ideal Gas &amp; Kinetic Theory</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述并应用三条经验气体定律 (empirical gas laws)——Boyle 定律 \(PV=\text{const}\)、Charles 定律 \(V/T=\text{const}\)、Gay-Lussac 定律 \(P/T=\text{const}\)，并说明它们各自对应的等温 / 等压 / 等容过程 (isothermal / isobaric / isochoric process)。</li>
+        <li>写出<strong>理想气体状态方程</strong> (ideal gas law) \(PV=nRT=Nk_{B}T\)，熟练换算摩尔数 \(n\) 与分子数 \(N\)、气体常数 \(R\) 与 Boltzmann 常数 \(k_{B}=R/N_{A}\)。</li>
+        <li>从分子与器壁的弹性碰撞 (elastic collisions with walls) 出发，<strong>严格推导</strong> \(P=\tfrac{1}{3}(N/V)\,m\langle v^{2}\rangle\)，并通过与 \(PV=Nk_{B}T\) 比较得到 \(\langle\mathrm{KE}\rangle=\tfrac{3}{2}k_{B}T\)——给出温度的微观定义。</li>
+        <li>计算分子的<strong>方均根速率</strong> (root-mean-square speed) \(v_{\mathrm{rms}}=\sqrt{3k_{B}T/m}=\sqrt{3RT/M}\)，区分 \(v_{\mathrm{rms}}\)、平均速率 \(\bar v\)、最概然速率 \(v_{p}\)。</li>
+        <li>陈述<strong>能均分定理</strong> (equipartition theorem)「每个二次自由度贡献 \(\tfrac12 k_{B}T\)」，据此写出单 / 双原子理想气体内能 \(U=\tfrac{f}{2}nRT\)。</li>
+        <li>计算气体分子的<strong>平均自由程</strong> (mean free path) \(\lambda=1/(\sqrt{2}\,\pi d^{2}n)\) 与<strong>碰撞频率</strong> \(z=\bar v/\lambda\)，并理解为何 \(\lambda\propto 1/P\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 经验气体定律 Empirical Gas Laws</h3>
+      <p>在 17–19 世纪，物理学家用实验确立了描述<strong>稀薄气体</strong> (dilute gas) 行为的三条经验定律。它们都要求<strong>固定其余参量</strong>，对应三种常见过程：</p>
+      <ul>
+        <li><strong>Boyle 定律 (Boyle's law, 1662, 等温 isothermal)</strong>：固定温度 \(T\) 与物质的量 \(n\)，压强与体积成反比：
+          <div class="formula">\[ PV=\text{const}\qquad(T,\,n\;\text{固定}). \]</div>
+        </li>
+        <li><strong>Charles 定律 (Charles's law, 1787, 等压 isobaric)</strong>：固定压强 \(P\) 与 \(n\)，体积与温度（<em>开氏温度</em>）成正比：
+          <div class="formula">\[ \frac{V}{T}=\text{const}\qquad(P,\,n\;\text{固定}). \]</div>
+        </li>
+        <li><strong>Gay-Lussac 定律 (Gay-Lussac's law, 等容 isochoric)</strong>：固定体积 \(V\) 与 \(n\)，压强与温度成正比：
+          <div class="formula">\[ \frac{P}{T}=\text{const}\qquad(V,\,n\;\text{固定}). \]</div>
+        </li>
+      </ul>
+      <p>把三条合并：\(PV/T=\text{const}\)。再固定一个参量——<strong>气体的物质的量</strong>——「常量」就恰好正比于 \(n\)。这就给出下一节的<strong>理想气体状态方程</strong>。注意：上述定律在「足够稀薄」（高温低压）时才精确成立，对稠密气体、液体均不适用。</p>
+      <div class="key-terms">Boyle's law (Boyle 定律), Charles's law (Charles 定律), Gay-Lussac's law (Gay-Lussac 定律), isothermal (等温), isobaric (等压), isochoric (等容)</div>
+
+      <h3>2. 理想气体状态方程 The Ideal Gas Law</h3>
+      <p>把 Boyle、Charles、Gay-Lussac 三条定律与 Avogadro 假设（同温同压下同体积气体含相同分子数）合在一起，就得到一切稀薄气体都遵守的<strong>状态方程</strong> (equation of state)：</p>
+      <div class="formula">\[ \boxed{\;PV=nRT=Nk_{B}T\;} \]</div>
+      <p>各量的物理含义与 SI 单位：</p>
+      <ul>
+        <li><strong>压强</strong> \(P\)：单位 \(\mathrm{Pa}=\mathrm{N/m^{2}}\)。（\(1\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}\)）</li>
+        <li><strong>体积</strong> \(V\)：单位 \(\mathrm{m^{3}}\)。（\(1\,\mathrm{L}=10^{-3}\,\mathrm{m^{3}}\)）</li>
+        <li><strong>温度</strong> \(T\)：<em>必须</em>用热力学温度 (absolute temperature)，单位 \(\mathrm{K}\)。</li>
+        <li><strong>物质的量</strong> \(n\)：单位 \(\mathrm{mol}\)；分子数 \(N=nN_{A}\)。</li>
+        <li><strong>气体常数</strong> (gas constant) \(R=8.314\,\mathrm{J/(mol\cdot K)}\)。</li>
+        <li><strong>Boltzmann 常数</strong> (Boltzmann constant) \(k_{B}=R/N_{A}=1.381\times10^{-23}\,\mathrm{J/K}\)。</li>
+        <li><strong>Avogadro 常数</strong> \(N_{A}=6.022\times10^{23}\,\mathrm{mol^{-1}}\)。</li>
+      </ul>
+      <p>由于 \(N=nN_{A}\)，有 \(nR=Nk_{B}\)，两种写法 \(PV=nRT\) 与 \(PV=Nk_{B}T\) 完全等价。前者以「摩尔」为单位，是化学与工程常用形式；后者以「分子」为单位，是<strong>气体动理论</strong>的自然形式。<strong>标准状况</strong>（STP：\(T=273.15\,\mathrm{K},\;P=1\,\mathrm{atm}\)）下，\(1\,\mathrm{mol}\) 理想气体体积为
+        \[ V_{\mathrm{m,STP}}=\frac{RT}{P}=\frac{8.314\times273.15}{1.013\times10^{5}}=2.24\times10^{-2}\,\mathrm{m^{3}/mol}=22.4\,\mathrm{L/mol}. \]</p>
+      <div class="key-terms">ideal gas law (理想气体状态方程), equation of state (状态方程), gas constant \(R\) (气体常数), Boltzmann constant \(k_{B}\) (Boltzmann 常数), Avogadro's number \(N_{A}\) (Avogadro 常数), STP (标准状况), molar volume (摩尔体积)</div>
+
+      <h3>3. 气体动理论的基本图像 Kinetic Theory: Microscopic Picture</h3>
+      <p>宏观状态方程 \(PV=Nk_{B}T\) 描述的是<strong>测量量</strong>（压强、体积、温度）。<strong>气体动理论</strong> (kinetic theory of gases) 给出它的微观图像：气体由大量 (\(\sim10^{23}\)) 做无规则热运动的<strong>分子</strong>构成。其基本假设是：</p>
+      <ul>
+        <li>分子之间的平均距离远大于分子自身尺度——分子可视为<strong>质点</strong> (point masses)。</li>
+        <li>除碰撞瞬间外，分子之间及分子与器壁之间无相互作用力（忽略势能）。</li>
+        <li>所有碰撞都是<strong>完全弹性</strong>的 (perfectly elastic)：动能与动量守恒。</li>
+        <li>分子运动是<strong>各向同性</strong>的 (isotropic)：没有偏好方向，故 \(\langle v_{x}^{2}\rangle=\langle v_{y}^{2}\rangle=\langle v_{z}^{2}\rangle=\tfrac13\langle v^{2}\rangle\)。</li>
+        <li>分子速度遵从统计分布（Maxwell–Boltzmann，见第 4 章）；下面推导只用到 <em>时间平均</em>，与具体分布无关。</li>
+      </ul>
+      <p>这一图像把<strong>宏观压强</strong>解释为「分子撞击器壁、单位时间单位面积所传递的动量」；把<strong>宏观温度</strong>解释为「分子平均平动动能」。下节严格推导这两个结论。</p>
+      <div class="key-terms">kinetic theory (气体动理论), point mass (质点), elastic collision (弹性碰撞), isotropic (各向同性), time average (时间平均)</div>
+
+      <h3>4. 温度的微观意义：\(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\) Microscopic Meaning of Temperature</h3>
+      <p>把下节推导的 \(P=\tfrac13(N/V)m\langle v^{2}\rangle\) 与状态方程 \(PV=Nk_{B}T\) 比较，两边消去 \(N/V\)，得：</p>
+      <div class="formula">\[ \boxed{\;\langle\mathrm{KE}_{\text{trans}}\rangle=\frac12\,m\langle v^{2}\rangle=\frac32\,k_{B}T\;} \]</div>
+      <p>这是<strong>温度的微观定义</strong>：「温度正比于分子的平均<em>平动</em>动能」。注意几个深刻结论：</p>
+      <ul>
+        <li>\(\langle\mathrm{KE}\rangle\) <strong>只依赖于 \(T\)，与气体种类无关</strong>——同一温度下，氦原子与氮分子的平均平动动能相同（虽然速率差很大，见下）。</li>
+        <li>热力学温度 \(T=0\) 时 \(\langle\mathrm{KE}\rangle=0\)（经典图像），这是「绝对零度」的由来。量子效应会修正这一点（零点能）。</li>
+        <li>室温 \(T\approx300\,\mathrm{K}\) 时 \(k_{B}T\approx4.14\times10^{-21}\,\mathrm{J}\approx\dfrac{1}{40}\,\mathrm{eV}\)，故 \(\langle\mathrm{KE}\rangle\approx\tfrac{3}{40}\,\mathrm{eV}\approx0.038\,\mathrm{eV}\)。这一能量尺度远小于电子伏特，因此室温热运动通常不足以激发电子能级。</li>
+      </ul>
+      <div class="key-terms">translational kinetic energy (平动动能), microscopic temperature (温度的微观定义), absolute zero (绝对零度)</div>
+
+      <h3>5. 方均根速率 RMS Speed</h3>
+      <p>由 \(\tfrac12 m\langle v^{2}\rangle=\tfrac32 k_{B}T\) 直接解出 \(\langle v^{2}\rangle=3k_{B}T/m\)，定义<strong>方均根速率</strong> (root-mean-square speed)：</p>
+      <div class="formula">\[ \boxed{\;v_{\mathrm{rms}}=\sqrt{\langle v^{2}\rangle}=\sqrt{\frac{3k_{B}T}{m}}=\sqrt{\frac{3RT}{M}}\;} \]</div>
+      <p>其中 \(m\) 为一个分子的质量，\(M=N_{A}m\) 为<strong>摩尔质量</strong> (molar mass)。后者形式 \(v_{\mathrm{rms}}=\sqrt{3RT/M}\) 更便于计算，因为 \(M\) 可直接由化学式给出（如 \(M_{\mathrm{N_{2}}}=28.0\,\mathrm{g/mol}\)、\(M_{\mathrm{O_{2}}}=32.0\,\mathrm{g/mol}\)、\(M_{\mathrm{H_{2}}}=2.0\,\mathrm{g/mol}\)）。可见：在同一温度下，<em>轻分子动得快</em>——\(v_{\mathrm{rms}}\propto1/\sqrt{M}\)。这就是为什么地球大气难以保留 \(\mathrm{H_{2}}\)、\(\mathrm{He}\)（它们速率过高，易达到逃逸速度），而 \(\mathrm{N_{2}}\)、\(\mathrm{O_{2}}\) 得以长存。</p>
+      <p><font color="gray">（注意：除 \(v_{\mathrm{rms}}\) 外，气体动理论还定义<strong>平均速率</strong> \(\bar v=\sqrt{8RT/(\pi M)}\) 与<strong>最概然速率</strong> \(v_{p}=\sqrt{2RT/M}\)，它们需用 Maxwell–Boltzmann 分布推导，留待第 4 章。三者数值不同，恒有 \(v_{p}\lt\bar v\lt v_{\mathrm{rms}}\)，比为 \(1:\sqrt{4/\pi}:\sqrt{3/2}\)。）</font></p>
+      <div class="key-terms">root-mean-square (rms) speed \(v_{\mathrm{rms}}\) (方均根速率), molar mass \(M\) (摩尔质量), mean speed \(\bar v\) (平均速率), most-probable speed \(v_{p}\) (最概然速率)</div>
+
+      <h3>6. 能均分定理 The Equipartition Theorem</h3>
+      <p>「平动」有三个独立方向 \(x,y,z\)，每个方向贡献 \(\tfrac12 k_{B}T\) 到平均能量，合起来恰好 \(\tfrac32 k_{B}T\)。这不是巧合——它是经典统计力学的一条普遍定理：</p>
+      <p><strong>能均分定理 (Equipartition Theorem)</strong>：在热平衡下，每个出现在系统能量中的<strong>二次自由度</strong> (quadratic degree of freedom) 对平均能量贡献 \(\tfrac12 k_{B}T\)（每个分子），即 \(\langle E\rangle=\tfrac{f}{2}k_{B}T\)，\(f\) 为二次自由度数。</p>
+      <p>对 \(n\,\mathrm{mol}\) 气体，内能 (internal energy) 为：</p>
+      <div class="formula">\[ U=N\langle E\rangle=\frac{f}{2}Nk_{B}T=\frac{f}{2}nRT. \]</div>
+      <p>不同分子的 \(f\) 取决于「可激发」的自由度（高温下更多自由度「解冻」）：</p>
+      <ul>
+        <li><strong>单原子</strong> (monatomic, 如 He、Ar)：只有 3 个平动自由度，\(f=3\)，\(U=\tfrac32 nRT\)。</li>
+        <li><strong>双原子刚性</strong> (rigid diatomic, 如 \(\mathrm{N_{2}}\)、\(\mathrm{O_{2}}\) 在室温)：3 平动 + 2 转动（沿分子轴的转动因量子效应被冻结），\(f=5\)，\(U=\tfrac52 nRT\)。</li>
+        <li>高温下还解冻 1 个振动自由度（动能 + 势能 = 2 个二次项），\(f=7\)，\(U=\tfrac72 nRT\)。</li>
+      </ul>
+      <p>这就是不同气体<strong>摩尔热容</strong>不同的根源（见第 5 章）。本章例题与练习只涉及平动动能 \(f=3\) 的情形。</p>
+      <div class="key-terms">equipartition theorem (能均分定理), quadratic degree of freedom (二次自由度), internal energy \(U\) (内能), monatomic (单原子), diatomic (双原子)</div>
+
+      <h3>7. 平均自由程与碰撞频率 Mean Free Path &amp; Collision Frequency</h3>
+      <p>分子在两次相继碰撞之间走过的平均距离称为<strong>平均自由程</strong> (mean free path) \(\lambda\)。设分子<strong>有效直径</strong> (effective diameter) 为 \(d\)，数密度 \(n=N/V\)。一个分子扫过半径 \(d\) 的圆柱，单位时间扫过体积 \(\pi d^{2}\bar v_{\text{rel}}\)；考虑其他分子也在运动，相对速度平均为 \(\sqrt{2}\,\bar v\)，故碰撞频率</p>
+      <div class="formula">\[ z=\sqrt{2}\,\pi d^{2}\bar v\,n\quad\Longrightarrow\quad\lambda=\frac{\bar v}{z}=\frac{1}{\sqrt{2}\,\pi d^{2}n}=\frac{k_{B}T}{\sqrt{2}\,\pi d^{2}P}. \]</div>
+      <p>最后一个等号用了 \(n=P/(k_{B}T)\)。可见 \(\lambda\propto T/P\)：高度真空（极小 \(P\)）下 \(\lambda\) 可以远大于容器尺寸——这正是一切高真空技术的特征。对空气（\(d\approx3.7\times10^{-10}\,\mathrm{m}\)）在 STP：\(\lambda\approx6.1\times10^{-8}\,\mathrm{m}=61\,\mathrm{nm}\)，碰撞频率 \(z\approx7\times10^{9}\,\mathrm{s^{-1}}\)——每秒约 70 亿次碰撞。这一惊人的碰撞频率正是气体迅速达到热平衡的原因。</p>
+      <div class="key-terms">mean free path \(\lambda\) (平均自由程), collision frequency \(z\) (碰撞频率), number density \(n=N/V\) (数密度), molecular diameter \(d\) (分子有效直径)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从分子碰撞导出压强 Deriving \(P=\tfrac13(N/V)m\langle v^{2}\rangle\)</h2>
+      <p>考虑一个边长 \(L\)、体积 \(V=L^{3}\) 的立方容器，内有 \(N\) 个质量为 \(m\) 的分子。考察其中一个分子 \(i\)，其速度分量为 \((v_{ix},v_{iy},v_{iz})\)。它撞击<strong>右壁</strong>（垂直于 \(x\) 轴、面积 \(A=L^{2}\)）时被弹性反射，\(v_{ix}\to-v_{ix}\)，动量改变（<em>分子</em>方面）为 \(-2mv_{ix}\)，故分子给<strong>壁</strong>的冲量大小为</p>
+      <div class="formula">\[ \Delta p_{x}=2m\,v_{ix}. \]</div>
+      <p>分子在两壁之间往返，相邻两次撞击右壁的时间间隔为 \(\Delta t=2L/v_{ix}\)，故它对右壁的平均力为
+        \[ \bar F_{i}=\frac{\Delta p_{x}}{\Delta t}=\frac{2mv_{ix}}{2L/v_{ix}}=\frac{mv_{ix}^{2}}{L}. \]</p>
+      <p>把所有 \(N\) 个分子的贡献相加（分子与分子之间的碰撞不影响总动量沿 \(x\) 方向的平均传递），得到右壁所受总力</p>
+      <div class="formula">\[ F_{x}=\sum_{i=1}^{N}\bar F_{i}=\frac{m}{L}\sum_{i=1}^{N}v_{ix}^{2}=\frac{mN}{L}\,\langle v_{x}^{2}\rangle. \]</div>
+      <p>对大量分子取各向同性 \(\langle v_{x}^{2}\rangle=\langle v_{y}^{2}\rangle=\langle v_{z}^{2}\rangle=\tfrac13\langle v^{2}\rangle\)，所以</p>
+      <div class="formula">\[ F_{x}=\frac{mN}{L}\cdot\frac{\langle v^{2}\rangle}{3}. \]</div>
+      <p>压强是单位面积上的力，\(P=F_{x}/A=F_{x}/L^{2}\)，于是</p>
+      <div class="formula">\[ \boxed{\;P=\frac{mN\langle v^{2}\rangle}{3L^{3}}=\frac13\,\frac{N}{V}\,m\langle v^{2}\rangle\;}\qquad(\text{气体动理论基本公式}). \]</div>
+      <p><strong>识别温度。</strong>把上式改写为 \(PV=\tfrac13 Nm\langle v^{2}\rangle=\tfrac23 N\langle\mathrm{KE}\rangle\)，与理想气体状态方程 \(PV=Nk_{B}T\) 比较：
+        \[ \tfrac23 N\langle\mathrm{KE}\rangle=Nk_{B}T\quad\Longrightarrow\quad\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T. \]</p>
+      <p>这一比较不是「定义」\(T\)，而是把<strong>宏观温度</strong>与<strong>微观动能</strong>这一对原本无关的概念联系起来——它是气体动理论的最高成就：温度即分子无规则运动的平均平动动能。整个推导只用牛顿力学 + 大数统计，<em>不依赖</em>速度分布的具体形式。</p>
+      <div class="key-terms">elastic reflection (弹性反射), impulse (冲量), isotropy (各向同性), kinetic interpretation of temperature (温度的微观解释)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 理想气体状态方程求压强 Finding \(P\) from \(PV=nRT\)</h4>
+        <p class="example-statement">一个 \(V=2.0\,\mathrm{L}\) 的容器中装有 \(n=0.50\,\mathrm{mol}\) 的氦气 (He)，温度 \(T=27^{\circ}\mathrm{C}\)。(a) 求压强 \(P\)（以 \(\mathrm{Pa}\) 和 \(\mathrm{atm}\) 表示）；(b) 若温度不变，体积等温膨胀到 \(V'=4.0\,\mathrm{L}\)，新压强为多少？（验证 Boyle 定律。）</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 必须把温度化为开氏：\(T=27+273.15=300.15\,\mathrm{K}\approx300\,\mathrm{K}\)。体积 \(V=2.0\,\mathrm{L}=2.0\times10^{-3}\,\mathrm{m^{3}}\)。代入 \(PV=nRT\)：
+            \[ P=\frac{nRT}{V}=\frac{(0.50)(8.314)(300)}{2.0\times10^{-3}}=\frac{1247}{2.0\times10^{-3}}=6.24\times10^{5}\,\mathrm{Pa}. \]</p>
+          <p class="step">换算为大气压：\(P=6.24\times10^{5}/1.013\times10^{5}=6.16\,\mathrm{atm}\)。</p>
+          <p class="step">(b) 等温下 Boyle 定律 \(PV=\text{const}\) 给出 \(P'V'=PV\)，故
+            \[ P'=P\cdot\frac{V}{V'}=(6.24\times10^{5})\cdot\frac{2.0}{4.0}=3.12\times10^{5}\,\mathrm{Pa}\approx3.08\,\mathrm{atm}. \]</p>
+          <p>体积加倍 → 压强减半，正是 Boyle 定律 \(P\propto1/V\)。<span class="ans">答案：\(P\approx6.24\times10^{5}\,\mathrm{Pa}=6.16\,\mathrm{atm}\)；膨胀后 \(P'\approx3.12\times10^{5}\,\mathrm{Pa}=3.08\,\mathrm{atm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 氮气的方均根速率与平均动能 \(v_{\mathrm{rms}}\) of \(\mathrm{N_{2}}\) at Room \(T\)</h4>
+        <p class="example-statement">求室温 \(T=293\,\mathrm{K}\)（\(20^{\circ}\mathrm{C}\)）下空气中氮分子 \(\mathrm{N_{2}}\) 的方均根速率，并验证 \(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\)。（已知 \(M_{\mathrm{N_{2}}}=28.0\,\mathrm{g/mol}=2.80\times10^{-2}\,\mathrm{kg/mol}\)。）</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用 \(v_{\mathrm{rms}}=\sqrt{3RT/M}\)（以摩尔质量形式最方便）：
+            \[ v_{\mathrm{rms}}=\sqrt{\frac{3(8.314)(293)}{2.80\times10^{-2}}}=\sqrt{\frac{7.314\times10^{3}}{2.80\times10^{-2}}}=\sqrt{2.61\times10^{5}}\approx511\,\mathrm{m/s}. \]</p>
+          <p class="step"><strong>验证 \(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\)。</strong>先求一个氮分子的质量：
+            \[ m=\frac{M}{N_{A}}=\frac{2.80\times10^{-2}}{6.022\times10^{23}}=4.65\times10^{-26}\,\mathrm{kg}. \]</p>
+          <p class="step">由 \(v_{\mathrm{rms}}\) 直接算平均平动动能：
+            \[ \langle\mathrm{KE}\rangle=\tfrac12 m\langle v^{2}\rangle=\tfrac12(4.65\times10^{-26})(511)^{2}=\tfrac12(4.65\times10^{-26})(2.61\times10^{5})\approx6.07\times10^{-21}\,\mathrm{J}. \]</p>
+          <p class="step">由温度直接算理论值：
+            \[ \tfrac32 k_{B}T=\tfrac32(1.381\times10^{-23})(293)\approx6.07\times10^{-21}\,\mathrm{J}. \]</p>
+          <p>两者完全一致——这正印证了「温度正比于平均平动动能」。换算为电子伏特：\(\langle\mathrm{KE}\rangle=6.07\times10^{-21}/1.602\times10^{-19}\approx0.0379\,\mathrm{eV}\approx\tfrac{1}{26}\,\mathrm{eV}\)，与「室温下 \(k_{B}T\approx1/40\,\mathrm{eV}\)」相符（前者是 \(\tfrac32 k_{B}T\)，故多一个 \(3/2\) 因子）。可见即便在室温，分子速率已达约 \(500\,\mathrm{m/s}\)（超音速！），但单个分子动能仍远小于电子伏特尺度。<span class="ans">答案：\(v_{\mathrm{rms}}\approx511\,\mathrm{m/s}\)；\(\langle\mathrm{KE}\rangle\approx6.07\times10^{-21}\,\mathrm{J}\approx0.038\,\mathrm{eV}\)，与 \(\tfrac32 k_{B}T\) 完全一致。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 标准状况下 \(1\,\mathrm{cm^{3}}\) 空气中的分子数 Number of Molecules</h4>
+        <p class="example-statement">求在 STP（\(T=273.15\,\mathrm{K},\;P=1\,\mathrm{atm}=1.013\times10^{5}\,\mathrm{Pa}\)）下，\(V=1.00\,\mathrm{cm^{3}}=1.00\times10^{-6}\,\mathrm{m^{3}}\) 的空气中含有多少摩尔分子？多少个分子？（这一数值称为 <strong>Loschmidt 数</strong>。）</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(PV=nRT\) 解出物质的量：
+            \[ n=\frac{PV}{RT}=\frac{(1.013\times10^{5})(1.00\times10^{-6})}{(8.314)(273.15)}=\frac{1.013\times10^{-1}}{2.271\times10^{3}}=4.46\times10^{-5}\,\mathrm{mol}. \]</p>
+          <p class="step">分子数：
+            \[ N=nN_{A}=(4.46\times10^{-5})(6.022\times10^{23})\approx2.69\times10^{19}\,\text{个}. \]</p>
+          <p>这一点体积（约一粒盐大小）含近 \(2.7\times10^{19}\) 个分子——比可观测宇宙中的恒星数（\(\sim10^{22}\,\)颗，但每粒盐的体积只是宇宙的极小部分）还要令人震撼。它直观地说明了「\(N_{A}\) 是个天文数字」。<span class="ans">答案：\(n\approx4.46\times10^{-5}\,\mathrm{mol}\)；\(N\approx2.69\times10^{19}\) 个分子。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 由微观图像算压强 Pressure from the Molecular Picture</h4>
+        <p class="example-statement">设一体积 \(V=1.00\,\mathrm{L}=1.00\times10^{-3}\,\mathrm{m^{3}}\) 的立方容器中含 \(N=2.69\times10^{22}\) 个氮分子（约 0.045 mol），其方均根速率 \(v_{\mathrm{rms}}=493\,\mathrm{m/s}\)（对应 \(T=273\,\mathrm{K}\)）。试用气体动理论公式 \(P=\tfrac13(N/V)m\langle v^{2}\rangle\) 估算压强，并与 \(1\,\mathrm{atm}\) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>单分子质量 \(m=M/N_{A}=2.80\times10^{-2}/6.022\times10^{23}=4.65\times10^{-26}\,\mathrm{kg}\)。\(\langle v^{2}\rangle=v_{\mathrm{rms}}^{2}=(493)^{2}=2.43\times10^{5}\,\mathrm{m^{2}/s^{2}}\)。</p>
+          <p class="step">代入公式：
+            \[ P=\frac13\,\frac{N}{V}\,m\langle v^{2}\rangle=\frac13\cdot\frac{2.69\times10^{22}}{1.00\times10^{-3}}\cdot(4.65\times10^{-26})(2.43\times10^{5}). \]</p>
+          <p class="step">逐步计算：\(N/V=2.69\times10^{25}\,\mathrm{m^{-3}}\)；\((N/V)\cdot m=2.69\times10^{25}\times4.65\times10^{-26}=1.25\)；再乘 \(\langle v^{2}\rangle\)：\(1.25\times2.43\times10^{5}=3.04\times10^{5}\)；最后除以 3：
+            \[ P=\frac{3.04\times10^{5}}{3}=1.01\times10^{5}\,\mathrm{Pa}\approx1.00\,\mathrm{atm}. \]</p>
+          <p>结果与状态方程给出的 STP 压强（\(1\,\mathrm{atm}\)）精确一致——这是气体动理论最直接的定量验证：宏观压强<em>真的就是</em>分子撞击器壁的动量流。<span class="ans">答案：\(P\approx1.01\times10^{5}\,\mathrm{Pa}\approx1.00\,\mathrm{atm}\)，与理想气体状态方程完全吻合。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 空气的平均自由程与碰撞频率 Mean Free Path of Air</h4>
+        <p class="example-statement">估算 STP 下（\(T=273\,\mathrm{K},\;P=1.013\times10^{5}\,\mathrm{Pa}\)）空气中氮分子的平均自由程 \(\lambda\) 与碰撞频率 \(z\)。取氮分子有效直径 \(d=3.7\times10^{-10}\,\mathrm{m}\)，平均速率 \(\bar v\approx454\,\mathrm{m/s}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先求数密度 \(n=N/V=P/(k_{B}T)\)（注意此处 \(n\) 是<em>数密度</em>，不是摩尔数）：
+            \[ n=\frac{P}{k_{B}T}=\frac{1.013\times10^{5}}{(1.381\times10^{-23})(273)}=\frac{1.013\times10^{5}}{3.77\times10^{-21}}=2.69\times10^{25}\,\mathrm{m^{-3}}. \]</p>
+          <p class="step">代入 \(\lambda=1/(\sqrt{2}\,\pi d^{2}n)\)：
+            \[ \lambda=\frac{1}{\sqrt{2}\,\pi(3.7\times10^{-10})^{2}(2.69\times10^{25})}. \]</p>
+          <p class="step">逐步计算：\(d^{2}=1.369\times10^{-19}\,\mathrm{m^{2}}\)；分母 \(=\sqrt{2}\cdot\pi\cdot1.369\times10^{-19}\cdot2.69\times10^{25}\)。先 \(\sqrt{2}\,\pi\approx4.44\)；\(\;4.44\times1.369\times10^{-19}=6.08\times10^{-19}\)；\(\;6.08\times10^{-19}\times2.69\times10^{25}=1.63\times10^{7}\)。所以
+            \[ \lambda=\frac{1}{1.63\times10^{7}}\approx6.1\times10^{-8}\,\mathrm{m}=61\,\mathrm{nm}. \]</p>
+          <p class="step">碰撞频率 \(z=\bar v/\lambda\)：
+            \[ z=\frac{454}{6.1\times10^{-8}}\approx7.4\times10^{9}\,\mathrm{s^{-1}}. \]</p>
+          <p>即每个氮分子平均飞 \(61\,\mathrm{nm}\)（约 200 个分子直径）就撞一次，每秒撞约 70 亿次！这就是气体能够迅速达到热平衡的原因。<em>对照</em>：珠穆朗玛峰顶（\(P\approx0.31\,\mathrm{atm}\)、\(T\approx240\,\mathrm{K}\)）空气稀薄，\(\lambda\approx\dfrac{240/273}{0.31}\approx2.8\) 倍长，约 \(170\,\mathrm{nm}\)。<span class="ans">答案：\(\lambda\approx6.1\times10^{-8}\,\mathrm{m}=61\,\mathrm{nm}\)；\(z\approx7.4\times10^{9}\,\mathrm{s^{-1}}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>用摄氏温度代入气体定律。</strong>\(PV=nRT\) 与所有气体定律都要求<strong>热力学温度</strong> \(T\)（单位 \(\mathrm{K}\))。\(20^{\circ}\mathrm{C}\) 必须 \(+273.15\) 化为 \(293\,\mathrm{K}\)。若误把 \(T=20\) 代入，结果会错 14.6 倍（\(293/20\))。</li>
+        <li><strong>把理想气体当作普遍真理。</strong>理想气体是<strong>高温、低压</strong>（即密度很低、分子相互作用可忽略）下的<strong>极限</strong>。对稠密气体、液态、临界点附近、强相互作用体系都不适用；需要 van der Waals 等修正（见第 7 章）。</li>
+        <li><strong>误认为 \(\langle\mathrm{KE}\rangle\) 与气体种类有关。</strong>由 \(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\)，平均<strong>平动动能</strong>只依赖 \(T\)——同温下 He 与 \(\mathrm{Xe}\) 平动动能相等。<em>速率</em>才不同（\(v_{\mathrm{rms}}\propto1/\sqrt{M}\)），轻分子更快。混淆这两者会得出「重分子能量大」的错误结论。</li>
+        <li><strong>混淆 \(v_{\mathrm{rms}}\)、\(\bar v\)、\(v_{p}\)。</strong>三者恒有 \(v_{p}\lt\bar v\lt v_{\mathrm{rms}}\)，数值系数比为 \(\sqrt{2}:\sqrt{8/\pi}:\sqrt{3}\approx1.41:1.60:1.73\)（同 \(T\) 同 \(M\) 下）。计算时务必弄清用的是哪个——例如平均自由程用的是 \(\bar v\)（不是 \(v_{\mathrm{rms}}\)）。</li>
+        <li><strong>把 \(n\)（物质的量）与 \(n\)（数密度）搞混。</strong>同一字母 \(n\) 在不同公式中意义不同：\(PV=nRT\) 中 \(n\) 是摩尔数；\(\lambda=1/(\sqrt{2}\pi d^{2}n)\) 中 \(n=N/V\) 是数密度（\(\mathrm{m^{-3}}\)）。务必看上下文。本章为减少混淆，在含混场合用 \(n_{\mathrm{mol}}\) 或 \(N/V\) 标明。</li>
+        <li><strong>把 Boltzmann 常数 \(k_{B}\) 与气体常数 \(R\) 当成「同一个东西」。</strong>两者量纲不同：\(R\) 是「每摩尔」的能量 (\(\mathrm{J/(mol\cdot K)}\))，\(k_{B}\) 是「每分子」的能量 (\(\mathrm{J/K}\))，由 \(k_{B}=R/N_{A}\) 联系。用 \(nRT\) 形式时配 \(R\)，用 \(Nk_{B}T\) 形式时配 \(k_{B}\)，绝不可混用。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一个 \(V=2.0\,\mathrm{L}\) 的烧瓶在 \(T=300\,\mathrm{K}\) 下装有 \(P=1.0\,\mathrm{atm}\) 的氦气。求物质的量 \(n\) 与分子数 \(N\)。</summary>
+        <div class="hint">由 \(PV=nRT\) 解 \(n\)；再 \(N=nN_{A}\)。注意单位：\(V\) 化为 \(\mathrm{m^{3}}\)，\(P\) 化为 \(\mathrm{Pa}\)。</div>
+        <div class="solution">\(P=1.013\times10^{5}\,\mathrm{Pa}\)，\(V=2.0\times10^{-3}\,\mathrm{m^{3}}\)。
+          \[ n=\frac{PV}{RT}=\frac{(1.013\times10^{5})(2.0\times10^{-3})}{(8.314)(300)}=\frac{202.6}{2494}=8.13\times10^{-2}\,\mathrm{mol}. \]
+          \(N=nN_{A}=(8.13\times10^{-2})(6.022\times10^{23})=4.90\times10^{22}\) 个分子。
+          <span class="ans">\(n\approx8.1\times10^{-2}\,\mathrm{mol}\)，\(N\approx4.9\times10^{22}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 求 \(T=300\,\mathrm{K}\) 时 \(\mathrm{H_{2}}\)（\(M=2.0\,\mathrm{g/mol}\)）与 \(\mathrm{O_{2}}\)（\(M=32.0\,\mathrm{g/mol}\)）的方均根速率之比。</summary>
+        <div class="hint">\(v_{\mathrm{rms}}=\sqrt{3RT/M}\)，故 \(v_{\mathrm{rms}}\propto1/\sqrt{M}\)。</div>
+        <div class="solution">同 \(T\) 下：
+          \[ \frac{v_{\mathrm{rms}}(\mathrm{H_{2}})}{v_{\mathrm{rms}}(\mathrm{O_{2}})}=\sqrt{\frac{M_{\mathrm{O_{2}}}}{M_{\mathrm{H_{2}}}}}=\sqrt{\frac{32.0}{2.0}}=\sqrt{16}=4.0. \]
+          具体值：\(v_{\mathrm{rms}}(\mathrm{H_{2}})=\sqrt{3(8.314)(300)/0.0020}\approx1.93\times10^{3}\,\mathrm{m/s}\)；
+          \(v_{\mathrm{rms}}(\mathrm{O_{2}})=\sqrt{3(8.314)(300)/0.032}\approx4.83\times10^{2}\,\mathrm{m/s}\)。
+          <span class="ans">比 \(=4.0\)（\(\mathrm{H_{2}}\) 是 \(\mathrm{O_{2}}\) 的 4 倍快）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一钢罐体积 \(V=10.0\,\mathrm{L}\)，内装 \(T=20^{\circ}\mathrm{C}\)、\(P_{1}=1.00\,\mathrm{atm}\) 的空气。若将其等容加热到 \(100^{\circ}\mathrm{C}\)，新压强 \(P_{2}\) 为多少？（Gay-Lussac 定律。）</summary>
+        <div class="hint">等容下 \(P/T=\text{const}\)，故 \(P_{2}=P_{1}T_{2}/T_{1}\)。务必把温度化为 \(\mathrm{K}\)。</div>
+        <div class="solution">\(T_{1}=20+273.15=293.15\,\mathrm{K}\)，\(T_{2}=100+273.15=373.15\,\mathrm{K}\)。
+          \[ P_{2}=P_{1}\cdot\frac{T_{2}}{T_{1}}=(1.00)\cdot\frac{373.15}{293.15}=1.27\,\mathrm{atm}. \]
+          即压强升到约 \(1.27\,\mathrm{atm}\)，或 \(1.29\times10^{5}\,\mathrm{Pa}\)。
+          <span class="ans">\(P_{2}\approx1.27\,\mathrm{atm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 求 \(T=293\,\mathrm{K}\) 时氦原子 (He) 与氮分子 (\(\mathrm{N_{2}}\)) 的<strong>平均平动动能</strong>，验证它们相等。</summary>
+        <div class="hint">\(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\) 与分子种类无关。</div>
+        <div class="solution">\(\langle\mathrm{KE}\rangle_{\mathrm{He}}=\langle\mathrm{KE}\rangle_{\mathrm{N_{2}}}=\tfrac32 k_{B}T=\tfrac32(1.381\times10^{-23})(293)=6.07\times10^{-21}\,\mathrm{J}\approx0.038\,\mathrm{eV}\)。
+          速率相差很大（He 的 \(v_{\mathrm{rms}}\approx1350\,\mathrm{m/s}\) 远大于 \(\mathrm{N_{2}}\) 的 \(511\,\mathrm{m/s}\)），但因 He 分子质量小 7 倍，\(\tfrac12 m v^{2}\) 最终相同。
+          <span class="ans">两者均为 \(6.07\times10^{-21}\,\mathrm{J}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）一台容器中装有 \(T=300\,\mathrm{K}\) 的氧气。容器抽真空使压强从 \(1.0\,\mathrm{atm}\) 降到 \(1.0\times10^{-4}\,\mathrm{atm}\)，温度不变。求抽真空前后 \(\mathrm{O_{2}}\) 分子的平均自由程之比 \(\lambda_{2}/\lambda_{1}\)。</summary>
+        <div class="hint">等温下 \(\lambda=k_{B}T/(\sqrt{2}\pi d^{2}P)\propto1/P\)。</div>
+        <div class="solution">等温下 \(T\) 不变，分子直径 \(d\) 不变，故 \(\lambda\propto1/P\)：
+          \[ \frac{\lambda_{2}}{\lambda_{1}}=\frac{P_{1}}{P_{2}}=\frac{1.0}{1.0\times10^{-4}}=10^{4}. \]
+          即平均自由程变长 \(10^{4}\) 倍，从约 \(60\,\mathrm{nm}\) 增到 \(0.6\,\mathrm{mm}\)，已接近宏观尺度——这就是「高真空」的物理含义。
+          <span class="ans">\(\lambda_{2}/\lambda_{1}=10^{4}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>6.（挑战）由 \(P=\tfrac13(N/V)m\langle v^{2}\rangle\) 与 \(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\)，证明两种写法 \(PV=Nk_{B}T\) 与 \(PV=\tfrac23 N\langle\mathrm{KE}\rangle\) 完全等价。</summary>
+        <div class="hint">把 \(\tfrac12 m\langle v^{2}\rangle=\tfrac32 k_{B}T\) 代入 \(PV=\tfrac23 N\langle\mathrm{KE}\rangle\)。</div>
+        <div class="solution">由定义 \(\langle\mathrm{KE}\rangle=\tfrac12 m\langle v^{2}\rangle\)，\(P=\tfrac13(N/V)m\langle v^{2}\rangle=\tfrac23(N/V)\langle\mathrm{KE}\rangle\)。两边乘 \(V\)：\(PV=\tfrac23 N\langle\mathrm{KE}\rangle\)。代入 \(\langle\mathrm{KE}\rangle=\tfrac32 k_{B}T\)：
+          \(PV=\tfrac23 N\cdot\tfrac32 k_{B}T=Nk_{B}T\)。✓
+          这说明宏观状态方程与微观动理论给出的同一个方程，是<strong>同一条物理定律的两个面孔</strong>。
+          <span class="ans">证毕，二者等价。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>气体动理论盒 Kinetic Gas Box。</strong>\(N\) 个「分子」（小圆盘）在二维方盒中做完全弹性运动。调节<strong>温度</strong> \(T\) 滑块（直接重标度分子速率，使 \(\langle\mathrm{KE}\rangle\propto T\)）、<strong>分子数</strong> \(N\) 滑块；面板读出实测的<strong>压强</strong> \(P\)（由单位时间单位长度器壁所受冲量算得）以及验证项 \(P\cdot A\) 与 \(N\langle\mathrm{KE}\rangle\) 的<strong>比值</strong>——理论上 (二维) \(PA=N\langle\mathrm{KE}\rangle=Nk_{B}T\)，比值应稳定在 1.0 附近，即<strong>实时验证 \(PV\propto NT\)</strong>。粒子颜色随速率由蓝（慢）渐变到红（快），温度升高即可看到整体「泛红」。分子间碰撞可开关。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // --- Box geometry (pixels = simulation length units) -------------
+          var BOX_X0 = 40, BOX_Y0 = 30, BOX_L = 340;
+          var BOX_X1 = BOX_X0 + BOX_L, BOX_Y1 = BOX_Y0 + BOX_L;
+          var PERIMETER = 4 * BOX_L;
+          var AREA = BOX_L * BOX_L;
+          var PR = 4.0;             // particle radius
+          var W_PRESSURE = 1.5;     // pressure averaging window (s)
+          var MASS = 1.0;           // sim mass unit
+          var KB = 1.0;             // sim Boltzmann constant (so ⟨KE⟩ = T in 2D)
+
+          var params = { T: 300, N: 50, showCollisions: true };
+
+          function randPos() {
+            return {
+              x: BOX_X0 + PR + 4 + Math.random() * (BOX_L - 2 * PR - 8),
+              y: BOX_Y0 + PR + 4 + Math.random() * (BOX_L - 2 * PR - 8),
+            };
+          }
+          // 2D Maxwell-like initial speed: v = sqrt(2 k_B T / m) * sqrt(-ln U)
+          // gives E[v²] = 2 k_B T / m  →  ⟨KE⟩ = k_B T  (2D, f = 2).
+          function sampleVel(T_sim) {
+            var v = Math.sqrt(2 * KB * T_sim / MASS) * Math.sqrt(-Math.log(Math.random() + 1e-9));
+            var ang = Math.random() * 2 * Math.PI;
+            return { vx: v * Math.cos(ang), vy: v * Math.sin(ang) };
+          }
+          function makeParticle() {
+            var p = randPos();
+            var v = sampleVel(params.T);
+            return { x: p.x, y: p.y, vx: v.vx, vy: v.vy };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              var particles = [];
+              for (var i = 0; i < params.N; i++) particles.push(makeParticle());
+              return { particles: particles, impulses: [], collisions: 0 };
+            },
+            step: function (dt, t, s) {
+              var ps = s.particles;
+              var n = ps.length;
+              // 1. free motion (exact for free particles)
+              for (var i = 0; i < n; i++) {
+                ps[i].x += ps[i].vx * dt;
+                ps[i].y += ps[i].vy * dt;
+              }
+              // 2. wall collisions: reflect + accumulate |Δp| = 2 m |v_n|
+              for (var i = 0; i < n; i++) {
+                var p = ps[i];
+                if (p.x < BOX_X0 + PR) {
+                  p.x = 2 * (BOX_X0 + PR) - p.x; p.vx = -p.vx;
+                  s.impulses.push({ t: t, dp: 2 * MASS * Math.abs(p.vx) });
+                } else if (p.x > BOX_X1 - PR) {
+                  p.x = 2 * (BOX_X1 - PR) - p.x; p.vx = -p.vx;
+                  s.impulses.push({ t: t, dp: 2 * MASS * Math.abs(p.vx) });
+                }
+                if (p.y < BOX_Y0 + PR) {
+                  p.y = 2 * (BOX_Y0 + PR) - p.y; p.vy = -p.vy;
+                  s.impulses.push({ t: t, dp: 2 * MASS * Math.abs(p.vy) });
+                } else if (p.y > BOX_Y1 - PR) {
+                  p.y = 2 * (BOX_Y1 - PR) - p.y; p.vy = -p.vy;
+                  s.impulses.push({ t: t, dp: 2 * MASS * Math.abs(p.vy) });
+                }
+              }
+              // 3. particle-particle elastic collisions (equal masses)
+              if (params.showCollisions) {
+                for (var i = 0; i < n; i++) {
+                  for (var j = i + 1; j < n; j++) {
+                    var a = ps[i], b = ps[j];
+                    var dx = b.x - a.x, dy = b.y - a.y;
+                    var d2 = dx * dx + dy * dy;
+                    var md = 2 * PR;
+                    if (d2 < md * md && d2 > 1e-12) {
+                      var d = Math.sqrt(d2);
+                      var nx = dx / d, ny = dy / d;
+                      var avn = a.vx * nx + a.vy * ny;
+                      var bvn = b.vx * nx + b.vy * ny;
+                      if (avn - bvn > 0) {           // approaching
+                        // exchange normal components (equal mass, elastic)
+                        a.vx += (bvn - avn) * nx;
+                        a.vy += (bvn - avn) * ny;
+                        b.vx += (avn - bvn) * nx;
+                        b.vy += (avn - bvn) * ny;
+                        // positional correction (split overlap)
+                        var overlap = md - d;
+                        a.x -= 0.5 * overlap * nx;
+                        a.y -= 0.5 * overlap * ny;
+                        b.x += 0.5 * overlap * nx;
+                        b.y += 0.5 * overlap * ny;
+                        s.collisions++;
+                      }
+                    }
+                  }
+                }
+              }
+              // 4. prune impulse buffer
+              var cutoff = t - W_PRESSURE;
+              while (s.impulses.length && s.impulses[0].t < cutoff) s.impulses.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // box border
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2;
+              ctx.strokeRect(BOX_X0, BOX_Y0, BOX_L, BOX_L);
+              ctx.restore();
+
+              // compute statistics
+              var ps = s.particles;
+              var n = ps.length;
+              var sumKE = 0, sumV2 = 0;
+              for (var i = 0; i < n; i++) {
+                var v2 = ps[i].vx * ps[i].vx + ps[i].vy * ps[i].vy;
+                sumV2 += v2;
+                sumKE += 0.5 * MASS * v2;
+              }
+              var avgKE = n ? sumKE / n : 0;
+              var vRms = Math.sqrt(n ? sumV2 / n : 0);
+
+              // measured pressure: total impulse in window / (window * perimeter)
+              var totalImp = 0;
+              for (var k = 0; k < s.impulses.length; k++) totalImp += s.impulses[k].dp;
+              var force = totalImp / W_PRESSURE;        // total force on all 4 walls
+              var press = force / PERIMETER;            // 2D "pressure" = force / wall length
+              var PA = press * AREA;                    // P·A
+              var theory = n * avgKE;                   // expected P·A in 2D = N⟨KE⟩
+              var ratio = theory > 1e-9 ? PA / theory : 0;
+
+              // speed → color: blue (slow) → red (fast). Reference = current v_rms.
+              var vRef = 1.6 * (vRms || 1);
+              function speedColor(v2) {
+                var sp = Math.sqrt(v2);
+                var frac = Math.min(1, sp / vRef);
+                var hue = 240 - 240 * frac;            // 240=blue, 0=red
+                return 'hsl(' + hue.toFixed(0) + ',85%,55%)';
+              }
+
+              // draw particles
+              for (var i = 0; i < n; i++) {
+                var p = ps[i];
+                var v2 = p.vx * p.vx + p.vy * p.vy;
+                PS.drawCircle(ctx, p.x, p.y, PR, {
+                  fill: speedColor(v2), stroke: '#ffffff', lineWidth: 1,
+                });
+              }
+
+              // titles
+              PS.drawText(ctx, '气体动理论盒  Kinetic Gas Box', BOX_X0, BOX_Y0 - 10,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '颜色 = 速率 (蓝→红)   Color = speed (blue→red)',
+                BOX_X0, BOX_Y1 + 18,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // readout panel
+              var rx = BOX_X1 + 20, ry = BOX_Y0;
+              PS.drawText(ctx, '动力学读数 Readout', rx, ry,
+                { font: 'bold 14px system-ui', color: PS.colors.text });
+              var lines = [
+                ['T (滑块) = ' + params.T.toFixed(0), PS.colors.primary],
+                ['N = ' + n + ' 个', PS.colors.text],
+                ['⟨KE⟩ = ' + avgKE.toFixed(2), PS.colors.text],
+                ['v_rms = ' + vRms.toFixed(2), PS.colors.accent],
+                ['', null],
+                ['实测  P·A = ' + PA.toFixed(1), PS.colors.accent2],
+                ['理论 N⟨KE⟩ = ' + theory.toFixed(1), PS.colors.accent2],
+                ['比值 ratio = ' + ratio.toFixed(3),
+                  (ratio > 0.85 && ratio < 1.15) ? PS.colors.accent2 : PS.colors.accent],
+                ['(理论值 = 1.000)', PS.colors.text],
+                ['', null],
+                ['→ 验证  PV ∝ N T', PS.colors.primary],
+              ];
+              var yy;
+              for (var i = 0; i < lines.length; i++) {
+                if (!lines[i][0]) continue;
+                yy = ry + 24 + i * 18;
+                PS.drawText(ctx, lines[i][0], rx, yy,
+                  { font: '12px system-ui', color: lines[i][1] });
+              }
+              yy = ry + 24 + lines.length * 18;
+              PS.drawText(ctx, '分子碰撞累计 = ' + s.collisions, rx, yy,
+                { font: '11px system-ui', color: PS.colors.text });
+              yy += 16;
+              PS.drawText(ctx, '(2D 中 PA = N⟨KE⟩ = N k_B T)', rx, yy,
+                { font: '11px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'T', label: '温度 T (sim. units)', min: 50, max: 900, step: 10, value: 300 },
+            { type: 'slider', key: 'N', label: '分子数 N', min: 10, max: 80, step: 1, value: 50 },
+            { type: 'toggle', key: 'showCollisions', label: '分子间碰撞 / inter-molecule collisions', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+
+          // When T changes, rescale all velocities so ⟨KE⟩ → new T (preserves directions).
+          ctl.on('T', function (v) {
+            var s = sim.getState();
+            var ps = s.particles;
+            if (ps.length) {
+              var sumV2 = 0;
+              for (var i = 0; i < ps.length; i++)
+                sumV2 += ps[i].vx * ps[i].vx + ps[i].vy * ps[i].vy;
+              var curAvgV2 = sumV2 / ps.length;
+              var tgtAvgV2 = 2 * KB * v / MASS;      // ⟨v²⟩ in 2D: 2 k_B T / m
+              if (curAvgV2 > 1e-9) {
+                var scale = Math.sqrt(tgtAvgV2 / curAvgV2);
+                for (var i = 0; i < ps.length; i++) {
+                  ps[i].vx *= scale; ps[i].vy *= scale;
+                }
+              }
+            }
+            params.T = v;
+          });
+          // When N changes, add/remove particles consistent with current T.
+          ctl.on('N', function (v) {
+            params.N = v;
+            var ps = sim.getState().particles;
+            while (ps.length < v) ps.push(makeParticle());
+            while (ps.length > v) ps.pop();
+          });
+          ctl.on('showCollisions', function (v) { params.showCollisions = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>经验气体定律</strong>（稀薄气体极限）：Boyle \(PV=\text{const}\)（等温）、Charles \(V/T=\text{const}\)（等压）、Gay-Lussac \(P/T=\text{const}\)（等容）。合并得<strong>理想气体状态方程</strong> \(PV=nRT=Nk_{B}T\)。温度<strong>必须</strong>用开氏 \(T\)。</li>
+        <li>常数：\(R=8.314\,\mathrm{J/(mol\cdot K)}\)，\(N_{A}=6.022\times10^{23}\,\mathrm{mol^{-1}}\)，\(k_{B}=R/N_{A}=1.381\times10^{-23}\,\mathrm{J/K}\)。STP 下摩尔体积 \(V_{\mathrm{m}}=22.4\,\mathrm{L/mol}\)。</li>
+        <li><strong>气体动理论</strong>：分子为质点、做完全弹性碰撞、各向同性速度分布。从分子撞击器壁的冲量平均得 \(P=\tfrac13(N/V)m\langle v^{2}\rangle\)。与 \(PV=Nk_{B}T\) 比较给出温度的微观定义 \(\langle\mathrm{KE}\rangle=\tfrac12 m\langle v^{2}\rangle=\tfrac32 k_{B}T\)——平均平动动能<strong>只依赖温度</strong>，与气体种类无关。</li>
+        <li><strong>方均根速率</strong> \(v_{\mathrm{rms}}=\sqrt{3k_{B}T/m}=\sqrt{3RT/M}\)。注意 \(v_{\mathrm{rms}}\gt\bar v\gt v_{p}\)（三者数值不同）。</li>
+        <li><strong>能均分定理</strong>：每个二次自由度贡献 \(\tfrac12 k_{B}T\)。\(U=\tfrac{f}{2}nRT\)（单原子 \(f=3\)，刚性双原子 \(f=5\)）。</li>
+        <li><strong>平均自由程</strong> \(\lambda=1/(\sqrt{2}\,\pi d^{2}n)=k_{B}T/(\sqrt{2}\,\pi d^{2}P)\)，<strong>碰撞频率</strong> \(z=\bar v/\lambda\)。空气 STP 下 \(\lambda\sim60\,\mathrm{nm}\)、\(z\sim7\times10^{9}\,\mathrm{s^{-1}}\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;PV=nRT=Nk_{B}T,\quad k_{B}=\frac{R}{N_{A}},\quad P=\frac13\frac{N}{V}m\langle v^{2}\rangle,\quad \langle\mathrm{KE}\rangle=\frac32 k_{B}T,\quad v_{\mathrm{rms}}=\sqrt{\frac{3RT}{M}},\quad U=\frac{f}{2}nRT,\quad \lambda=\frac{1}{\sqrt{2}\,\pi d^{2}n}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

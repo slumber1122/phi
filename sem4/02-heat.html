@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 热量·比热·潜热 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第2章 · 热力学 Thermodynamics</p>
+      <h1>热量·比热·潜热 <span class="en-title">Heat, Specific Heat &amp; Latent Heat</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>区分三个常被混用的概念——<strong>热量</strong> (heat) \(Q\)、<strong>温度</strong> (temperature) \(T\)、<strong>内能</strong> (internal energy) \(U\)：热量是「因温差而转移的能量」，温度是状态参量，内能是系统所储存的全部微观能量。</li>
+        <li>用 <strong>比热容</strong> (specific heat capacity) \(c\) 与 <strong>摩尔热容</strong> (molar heat capacity) \(C_{\!M}\) 计算无相变时的显热 (sensible heat)：\(Q=mc\,\Delta T=nC_{\!M}\,\Delta T\)，并说明二者关系 \(C_{\!M}=cM\)。</li>
+        <li>在<strong>孤立系统</strong> (isolated system) 中应用能量守恒建立<strong>量热学方程</strong> \(\sum_i Q_i=0\)（混合法 method of mixtures），求出平衡温度 \(T_f\)。</li>
+        <li>解释<strong>潜热</strong> (latent heat) \(L\) 的物理意义：相变 (phase change) 时温度恒定而键能变化，故 \(Q=mL\)；区分熔化潜热 \(L_f\) 与汽化潜热 \(L_v\)。</li>
+        <li>绘制并解读<strong>加热曲线</strong> (heating curve)：平台段对应潜热、斜率段对应比热，且水的 \(L_v\gg L_f\)。</li>
+        <li>用三种传热机制——<strong>传导</strong> (conduction, Fourier 定律)、<strong>对流</strong> (convection)、<strong>辐射</strong> (radiation, Stefan–Boltzmann 定律)——做量级估算。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 热量 vs 温度 vs 内能 Heat vs Temperature vs Internal Energy</h3>
+      <p>这三个词在日常语言中常被混用，但在物理学中是<strong>截然不同</strong>的概念，必须首先厘清：</p>
+      <ul>
+        <li><strong>温度 \(T\) (temperature)：</strong>系统的一个<strong>状态参量</strong> (state variable)，统计意义上正比于分子平均平动能 \(\langle\tfrac12mv^{2}\rangle=\tfrac32k_{\!B}T\)。单位开尔文 \(\mathrm{K}\) 或摄氏度 \({}^{\circ}\mathrm{C}\)（温差 \(1\,\mathrm{K}=1\,{}^{\circ}\mathrm{C}\)）。它衡量「冷热程度」，<em>不</em>随物质的多少改变。</li>
+        <li><strong>内能 \(U\) (internal energy)：</strong>系统所储存的<strong>全部微观动能与势能</strong>之和（分子动能 + 分子间势能 + 分子内化学/核能……）。它是状态函数 (state function)，广延量 (extensive)：两倍同温的水有二倍的内能。</li>
+        <li><strong>热量 \(Q\) (heat)：</strong>因<strong>温差</strong>而越过系统边界<strong>传递的能量</strong>——它是一种<em>过程量</em> (process quantity)、一种「能量流动的形式」，<em>不是</em>系统所「含有」的东西。一旦能量进入系统，它就并入了内能，不再是「热量」。</li>
+      </ul>
+      <p>一句话概括：温度是「<em>强度</em>」(intensive)，内能是「<em>储存</em>」(stored)，热量是「<em>流过</em>」(in transit)。气体膨胀推动活塞做功时同样可以改变 \(U\) 而毫无热量流过（绝热过程，\(Q=0\)）——可见热量与做功是改变内能的两条独立通道（<strong>热力学第一定律</strong> \(\Delta U=Q-W\)，第 5 章）。</p>
+      <div class="formula">\[ \boxed{\;\text{热量 }Q\neq\text{温度 }T\neq\text{内能 }U;\quad Q\text{ 是因 }\Delta T\text{ 而转移的能量。}\;} \]</div>
+      <div class="key-terms">heat (热量), temperature (温度), internal energy (内能), state variable (状态参量), extensive/intensive (广延量/强度量), process quantity (过程量)</div>
+
+      <h3>2. 比热容与 \(Q=mc\,\Delta T\) Specific Heat Capacity</h3>
+      <p>使单位质量物质升温 \(1\,\mathrm{K}\) 所需的热量定义为<strong>比热容</strong> (specific heat capacity) \(c\)：</p>
+      <div class="formula">\[ c=\frac{1}{m}\,\frac{\mathrm{d}Q}{\mathrm{d}T},\qquad \boxed{\;Q=mc\,\Delta T\quad(\text{无相变时})\;} \]</div>
+      <p>SI 单位：\(c\) 为 \(\mathrm{J/(kg\cdot K)}\)。水的比热 \(c_{\!W}=4186\,\mathrm{J/(kg\cdot K)}\) 异常之大——是常见物质中最大的之一（铁 \(450\)、铝 \(900\)、铜 \(385\)、冰 \(2090\)、水蒸气 \(2010\)）。这正是沿海气候温和、人体能稳定体温的物理基础：水「储存热量」的能力极强。</p>
+      <p>对气体必须区分<strong>定容</strong> \(c_{\!V}\) 与<strong>定压</strong> \(c_{\!p}\)（\(c_{\!p}>c_{\!V}\)，第 5 章）；对固体和液体二者几乎相等，本章统一记作 \(c\)。</p>
+      <div class="key-terms">specific heat capacity \(c\) (比热容), sensible heat (显热), \(c_{\!V}\) / \(c_{\!p}\) (定容/定压比热)</div>
+
+      <h3>3. 摩尔热容 Molar Heat Capacity</h3>
+      <p>在化学与统计物理中常用<strong>摩尔热容</strong> (molar heat capacity) \(C_{\!M}\)，定义为使 <strong>1 摩尔</strong>物质升温 \(1\,\mathrm{K}\) 所需热量：</p>
+      <div class="formula">\[ C_{\!M}=\frac{1}{n}\,\frac{\mathrm{d}Q}{\mathrm{d}T}=c\,M,\qquad Q=n\,C_{\!M}\,\Delta T \]</div>
+      <p>其中 \(n\) 是物质的量 (moles)，\(M\) 是摩尔质量 (molar mass, \(\mathrm{kg/mol}\))。单位 \(\mathrm{J/(mol\cdot K)}\)。摩尔热容的妙处在于它<strong>把宏观与微观连接起来</strong>：经典统计物理的<strong>能量均分定理</strong> (equipartition theorem) 预言每摩尔每个自由度贡献 \(\tfrac12R\)，故单原子理想气体 \(C_{\!V,M}=\tfrac32R=12.5\,\mathrm{J/(mol\cdot K)}\)（\(R=8.314\,\mathrm{J/(mol\cdot K)}\)）。固体高温下的 <strong>Dulong–Petit 定律</strong>给出 \(C_{\!M}\approx 3R=24.9\,\mathrm{J/(mol\cdot K)}\)——几乎所有固体的摩尔热容都接近此值！这就解释了为什么 \(c\) 因材料而异：\(c=3R/M\)，\(M\) 越大 \(c\) 越小（铅 \(M=0.207\)，\(c\approx130\)；铝 \(M=0.027\)，\(c\approx900\)）。</p>
+      <div class="key-terms">molar heat capacity \(C_{\!M}\) (摩尔热容), molar mass \(M\) (摩尔质量), equipartition theorem (能量均分定理), Dulong–Petit law (杜隆–珀蒂定律), gas constant \(R\) (气体常数)</div>
+
+      <h3>4. 量热学：孤立系统中的能量守恒 Calorimetry</h3>
+      <p>将若干物体放入<strong>与外界绝热</strong>的量热器 (calorimeter) 内，它们只能彼此交换热量。能量守恒要求<strong>所有热交换的代数和为零</strong>（用 \(Q_i=mc(T_f-T_i)\) 计算每一部分，符号由 \(T_f-T_i\) 自然决定）：</p>
+      <div class="formula">\[ \boxed{\;\sum_i Q_i=0,\qquad Q_i=m_i c_i\,(T_f-T_i)\;\text{（含相变时加 }mL\text{）}\;} \]</div>
+      <p>这就是<strong>混合法</strong> (method of mixtures)：高温物体放出的热量（\(Q<0\)）完全被低温物体吸收（\(Q>0\)）。\(\sum Q_i=0\) 是<strong>热力学第一定律</strong>对孤立系统的直接结论（见推导 §1）。如果某物在过程中还发生了相变，则该物贡献的 \(Q\) 中要插进 \(\pm mL\) 项，温度在该段保持不变。</p>
+      <p>精密实验还要考虑量热器本身吸放热，等效为一个热容 \(C_{\text{cal}}\)（单位 \(\mathrm{J/K}\)），贡献 \(Q_{\text{cal}}=C_{\text{cal}}(T_f-T_i)\)。</p>
+      <div class="key-terms">calorimetry (量热学), calorimeter (量热器), method of mixtures (混合法), isolated system (孤立系统), calorimeter constant \(C_{\text{cal}}\) (量热器常数)</div>
+
+      <h3>5. 潜热与相变 Latent Heat &amp; Phase Changes</h3>
+      <p>在熔点 (melting point) 或沸点 (boiling point) 处继续加热，<strong>温度保持不变</strong>而能量用于打破（或重建）分子间键——这就是<strong>潜热</strong> (latent heat)。对单位质量：</p>
+      <div class="formula">\[ \boxed{\;Q=mL\quad(\text{等温相变})\;} \]</div>
+      <ul>
+        <li><strong>熔化潜热 \(L_f\) (latent heat of fusion)：</strong>固态 \(\to\) 液态。水：\(L_f=3.34\times10^{5}\,\mathrm{J/kg}=334\,\mathrm{kJ/kg}\)。</li>
+        <li><strong>汽化潜热 \(L_v\) (latent heat of vaporization)：</strong>液态 \(\to\) 气态。水（\(100\,{}^{\circ}\mathrm{C}\)）：\(L_v=2.256\times10^{6}\,\mathrm{J/kg}=2256\,\mathrm{kJ/kg}\)。</li>
+      </ul>
+      <p>注意 \(L_v\gg L_f\)：完全断开分子间束缚（汽化）所需能量远高于 merely 松散晶格（熔化）。凝固与凝结过程则<em>放出</em>等量的潜热（\(Q<0\)）。</p>
+      <div class="key-terms">latent heat \(L\) (潜热), latent heat of fusion \(L_f\) (熔化潜热), latent heat of vaporization \(L_v\) (汽化潜热), phase change (相变), melting/boiling point (熔点/沸点)</div>
+
+      <h3>6. 加热/冷却曲线 Heating / Cooling Curve</h3>
+      <p>以恒定功率对冰持续加热，记录温度随<strong>加入热量</strong> \(Q\) 的变化，得到经典的<strong>加热曲线</strong>（见仿真）。它由交替的「斜坡」与「平台」组成：</p>
+      <ul>
+        <li><strong>斜坡段（显热）</strong>：温度随 \(Q\) 线性上升，斜率 \(\mathrm{d}T/\mathrm{d}Q=1/(mc)\)。<em>冰</em>段斜率较陡（\(c_{\text{ice}}=2090\) 小），<em>水</em>段平缓（\(c_{\!W}=4186\) 大），<em>汽</em>段又变陡。</li>
+        <li><strong>平台段（潜热）</strong>：\(T\) 恒定，宽度 \(=mL\)。汽化平台的宽度约为熔化平台的 \(L_v/L_f\approx 6.8\) 倍——这是潜热巨大差异的最直观体现。</li>
+      </ul>
+      <p>冷却曲线是逆向版本：蒸汽 \(\to\) 水 \(\to\) 冰，在每个平台<em>放出</em> \(mL\)。这也是为什么「水在 \(100\,{}^{\circ}\mathrm{C}\) 沸腾时温度不再上升」以及「蒸汽烫伤比开水烫伤更严重」（蒸汽在皮肤上凝结时释放巨大的 \(L_v\)）。</p>
+      <div class="key-terms">heating curve (加热曲线), cooling curve (冷却曲线), plateau (平台段), slope (斜率段)</div>
+
+      <h3>7. 三种传热机制 Three Heat-Transfer Mechanisms</h3>
+      <p>热量传递有三种基本机制，它们常同时存在。</p>
+      <p><strong>(a) 传导 Conduction。</strong>介质本身不宏观流动，能量通过分子碰撞（在绝缘体中）或自由电子（在金属中）从高温端传向低温端。<strong>Fourier 定律</strong> (Fourier's law) 给出一维稳态热流密度：</p>
+      <div class="formula">\[ \boxed{\;\frac{\mathrm{d}Q}{\mathrm{d}t}=-kA\,\frac{\mathrm{d}T}{\mathrm{d}x}\;\approx\;kA\,\frac{\Delta T}{L}\quad(\text{平板，稳态})\;} \]</div>
+      <p>\(k\) 为<strong>热导率</strong> (thermal conductivity, \(\mathrm{W/(m\cdot K)}\)，银 \(429\)、铜 \(401\)、铝 \(240\)、玻璃 \(0.84\)、空气 \(0.024\)、泡沫塑料 \(\sim0.03\)）。良导电体通常也是良导热体（自由电子承担两者）。多层板串联时热阻相加 \(R=\sum L_i/(k_iA)\)，\(P=A\Delta T/R\)。</p>
+      <p><strong>(b) 对流 Convection。</strong>流体宏观流动携带能量。强迫对流 (forced, 如风扇) 与自然对流 (natural, 由密度差驱动)。规律复杂，常用经验公式 \(P=hA\,\Delta T\)（\(h\) 为对流传热系数，量级 \(5\!-\!25\,\mathrm{W/(m^{2}\cdot K)}\) 空气自然对流、\(100\!-\!1000\) 水强迫对流）。</p>
+      <p><strong>(c) 辐射 Radiation。</strong>任何 \(T>0\,\mathrm{K}\) 的物体都辐射电磁波，<strong>无需介质</strong>（太阳热量就是这样传到地球）。<strong>Stefan–Boltzmann 定律</strong>给出黑体辐射功率：</p>
+      <div class="formula">\[ \boxed{\;P_{\text{emit}}=\sigma\,\varepsilon\,A\,T^{4},\qquad \sigma=5.670\times10^{-8}\,\mathrm{W/(m^{2}\cdot K^{4})}\;} \]</div>
+      <p>其中 \(\varepsilon\in[0,1]\) 是<strong>发射率</strong> (emissivity)，黑体 \(\varepsilon=1\)；\(T\) 必须用热力学温度 (Kelvin)。物体同时向环境辐射并被环境辐射加热，<strong>净</strong>功率：</p>
+      <div class="formula">\[ P_{\text{net}}=\sigma\,\varepsilon\,A\,(T^{4}-T_{\text{env}}^{4}) \]</div>
+      <p>\(T^{4}\) 关系意味着高温物体辐射极强（\(T\) 翻倍，辐射变 16 倍），这是为什么一杯热咖啡很快凉下来而保温瓶要镀银以降低 \(\varepsilon\)。</p>
+      <div class="key-terms">conduction (传导), convection (对流), radiation (辐射), Fourier's law (傅里叶定律), thermal conductivity \(k\) (热导率), Stefan–Boltzmann law (斯特藩–玻尔兹曼定律), Stefan–Boltzmann constant \(\sigma\) (斯特藩–玻尔兹曼常数), emissivity \(\varepsilon\) (发射率), thermal resistance \(R\) (热阻)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1：从第一定律导出量热学方程 \(\sum Q_i=0\)</h3>
+      <p>对任意系统，<strong>热力学第一定律</strong>（能量守恒）写作：</p>
+      <div class="formula">\[ \Delta U=Q-W \]</div>
+      <p>其中 \(Q\) 是越过边界<em>传入</em>的热量，\(W\) 是系统<em>对外</em>做的功。现考虑一个由若干子物体组成的<strong>孤立容器</strong>（绝热壁、定容、不对外做功）：</p>
+      <ul>
+        <li>整体不吸放热：\(Q_{\text{total}}=0\)（绝热）；</li>
+        <li>定容不做功：\(W_{\text{total}}=0\)（无体积变化，无轴功）。</li>
+      </ul>
+      <p>代入第一定律得 \(\Delta U_{\text{total}}=0\)——孤立系统的总内能守恒。把总内能拆成各部分 \(U_i\)，则 \(\sum_i\Delta U_i=0\)。在没有相变、定容条件下，液体/固体的 \(\Delta U_i\approx Q_i=m_ic_i\Delta T_i\)（固液体内能几乎只随 \(T\) 变化），所以：</p>
+      <div class="formula">\[ \boxed{\;\sum_i m_i c_i\,(T_f-T_i)=0\quad\Longrightarrow\quad T_f=\frac{\sum_i m_i c_i\,T_i}{\sum_i m_i c_i}\;} \]</div>
+      <p>这就是<strong>混合法求平衡温度</strong>的公式——一个加权平均，权重为「热容量」\(m_ic_i\)。若过程中有相变，相应项的 \(\Delta U_i\) 改用 \(\pm mL\) 加上后续显热段。</p>
+
+      <h3>推导 2：Dulong–Petit 定律 \(C_{\!M}\approx 3R\) 的均分论证</h3>
+      <p>考虑一摩尔固体，每个原子在晶格中做三维简谐振动，可分解为 3 个独立方向，每个方向既有动能又有势能，共 <strong>6 个二次自由度</strong>。能量均分定理给出每个二次自由度贡献 \(\tfrac12RT\)（每摩尔），故每摩尔内能：</p>
+      <div class="formula">\[ U_m=6\times\tfrac12RT=3RT\qquad\Longrightarrow\qquad C_{\!V,M}=\frac{\mathrm{d}U_m}{\mathrm{d}T}=3R\approx 24.9\,\mathrm{J/(mol\cdot K)} \]</div>
+      <p>固体 \(C_{\!p}\approx C_{\!V}\)，故 \(C_{\!M}\approx 3R\)。<em>这正是为什么几乎所有固体的摩尔热容都接近 25 \(\mathrm{J/(mol\cdot K)}\)。</em>换成比热 \(c=3R/M\) 即可解释为何重金属的比热远小于轻金属（铅 \(c=130\)、铝 \(c=900\)）。低温下量子效应使 \(C_{\!M}\) 下降（Einstein/Debye 模型，第 11 章），此定律仅在「高温」成立。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 加热水所需的显热 Heating Water</h4>
+        <p class="example-statement">一个 \(1.0\,\mathrm{kW}\) 的电热水壶把 \(m=0.500\,\mathrm{kg}\) 的水从 \(20.0\,{}^{\circ}\mathrm{C}\) 加热到 \(80.0\,{}^{\circ}\mathrm{C}\)。求：(a) 水吸收的热量 \(Q\)；(b) 用摩尔热容 \(C_{\!M}\) 重新计算并验证；(c) 不计热损失时所需时间 \(t\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 直接套 \(Q=mc\,\Delta T\)，水的 \(c=4186\,\mathrm{J/(kg\cdot K)}\)，\(\Delta T=80-20=60\,\mathrm{K}\)：</p>
+          <p class="step">\[ Q=(0.500)(4186)(60)=125\,580\;\mathrm{J}\approx \boxed{1.26\times10^{5}\,\mathrm{J}=126\,\mathrm{kJ}}. \]</p>
+          <p class="step">(b) 水的摩尔质量 \(M=18.015\,\mathrm{g/mol}=0.018015\,\mathrm{kg/mol}\)，物质的量 \(n=m/M=0.500/0.018015=27.75\,\mathrm{mol}\)。摩尔热容：</p>
+          <p class="step">\[ C_{\!M}=c\,M=4186\times0.018015=75.4\,\mathrm{J/(mol\cdot K)}. \]</p>
+          <p class="step">于是 \(Q=nC_{\!M}\Delta T=(27.75)(75.4)(60)=125\,580\,\mathrm{J}\)，与 (a) 完全一致（这是同一物理的两种写法）。注意 \(C_{\!M}=75.4\,\mathrm{J/(mol\cdot K)}\)，远大于 Dulong–Petit 的 \(3R\approx25\)——因为水是液态且有氢键，储存能量的方式比简单固体多。</p>
+          <p class="step">(c) 功率 \(P=1.0\,\mathrm{kW}=1000\,\mathrm{J/s}\)，不计损失：</p>
+          <p class="step">\[ t=\frac{Q}{P}=\frac{125\,580}{1000}=125.6\,\mathrm{s}\approx 2.1\,\mathrm{min}. \]</p>
+          <p><span class="ans">答案：\(Q\approx126\,\mathrm{kJ}\)；摩尔法同结果，\(C_{\!M}=75.4\,\mathrm{J/(mol\cdot K)}\)；\(t\approx2.1\,\mathrm{min}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 量热法求平衡温度（热金属投入冷水） Calorimetry: Hot Metal in Water</h4>
+        <p class="example-statement">将一块 \(m_{\text{Al}}=0.200\,\mathrm{kg}\)、温度 \(100\,{}^{\circ}\mathrm{C}\) 的铝块投入保温杯内的 \(m_{\!W}=0.400\,\mathrm{kg}\)、温度 \(20.0\,{}^{\circ}\mathrm{C}\) 的水中。铝的比热 \(c_{\text{Al}}=900\,\mathrm{J/(kg\cdot K)}\)，水的 \(c_{\!W}=4186\,\mathrm{J/(kg\cdot K)}\)。忽略量热器热容与热损失。求：(a) 平衡温度 \(T_f\)；(b) 用 \(\sum Q=0\) 验证。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 孤立系统，由推导 §1 的 \(T_f\) 公式（或直接令「铝放热 = 水吸热」）：</p>
+          <p class="step">\[ m_{\text{Al}}c_{\text{Al}}(100-T_f)=m_{\!W}c_{\!W}(T_f-20). \]</p>
+          <p class="step">代入数值：左边 \(=0.200\times900\times(100-T_f)=180\,(100-T_f)\)；右边 \(=0.400\times4186\times(T_f-20)=1674.4\,(T_f-20)\)。展开整理：</p>
+          <p class="step">\[ 18\,000-180T_f=1674.4T_f-33\,488 \;\Longrightarrow\; 18\,000+33\,488=(1674.4+180)T_f, \]</p>
+          <p class="step">\[ T_f=\frac{51\,488}{1854.4}=27.8\,{}^{\circ}\mathrm{C}. \]</p>
+          <p class="step">(b) 验证 \(\sum Q=0\)：</p>
+          <p class="step">\[ Q_{\text{Al}}=m_{\text{Al}}c_{\text{Al}}(T_f-100)=180\times(27.8-100)=-13\,004\,\mathrm{J} \quad(\text{放热}), \]</p>
+          <p class="step">\[ Q_{\!W}=m_{\!W}c_{\!W}(T_f-20)=1674.4\times(27.8-20)=+13\,060\,\mathrm{J} \quad(\text{吸热}). \]</p>
+          <p class="step">\(\sum Q\approx +56\,\mathrm{J}\)，与零之差来自四舍五入（精确 \(T_f=27.765^{\circ}\mathrm{C}\) 时严格为零）。水的热容量是铝块的 \(1674.4/180\approx9.3\) 倍，所以平衡温度远比中点 \((100+20)/2=60^{\circ}\mathrm{C}\) 更靠近水温。</p>
+          <p><span class="ans">答案：\(T_f\approx27.8\,{}^{\circ}\mathrm{C}\)；\(\sum Q=0\) 验证通过（铝失约 \(13.0\,\mathrm{kJ}\)，水得约 \(13.0\,\mathrm{kJ}\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 冰的熔化潜热 Latent Heat of Fusion</h4>
+        <p class="example-statement">把 \(m=0.050\,\mathrm{kg}\)、\(0\,{}^{\circ}\mathrm{C}\) 的冰完全熔化为 \(0\,{}^{\circ}\mathrm{C}\) 的水，需要多少热量？与「把这 \(0\,{}^{\circ}\mathrm{C}\) 的水加热到 \(100\,{}^{\circ}\mathrm{C}\)」相比，谁更多？水的 \(L_f=3.34\times10^{5}\,\mathrm{J/kg}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>熔化是<strong>等温相变</strong>，用 \(Q=mL_f\)（温度不变，不用 \(mc\Delta T\)）：</p>
+          <p class="step">\[ Q_{\text{melt}}=mL_f=(0.050)(3.34\times10^{5})=1.67\times10^{4}\,\mathrm{J}=16.7\,\mathrm{kJ}. \]</p>
+          <p class="step">作为对比，把 \(0\,{}^{\circ}\mathrm{C}\) 的同质量水加热到 \(100\,{}^{\circ}\mathrm{C}\)：</p>
+          <p class="step">\[ Q_{\text{warm}}=mc_{\!W}\Delta T=(0.050)(4186)(100)=2.09\times10^{4}\,\mathrm{J}=20.9\,\mathrm{kJ}. \]</p>
+          <p class="step">惊人结论：仅把冰<em>熔化</em>（升温 \(0\,\mathrm{K}\)）所需热量，就相当于把同质量水从 \(0\) 加热到约 \(80\,{}^{\circ}\mathrm{C}\)（\(16.7/20.9\times100\approx80\%\))！这就是为什么「冰镇饮料能持续保持低温」——冰在熔化时大量吸热而自身温度不变。也是为什么出汗能有效散热（\(L_v\) 更大）。</p>
+          <p><span class="ans">答案：\(Q_{\text{melt}}=16.7\,\mathrm{kJ}\)；加热到沸点需 \(20.9\,\mathrm{kJ}\)——熔化冰所需能量约为把水煮沸的 \(80\%\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 冰到蒸汽的全过程（加热曲线各阶段） Ice at \(-20^{\circ}\mathrm{C}\) to Steam at \(120^{\circ}\mathrm{C}\)</h4>
+        <p class="example-statement">以恒定功率把 \(m=0.100\,\mathrm{kg}\)、\(-20\,{}^{\circ}\mathrm{C}\) 的冰变为 \(120\,{}^{\circ}\mathrm{C}\) 的水蒸气（\(1\,\mathrm{atm}\)）。所用常数：\(c_{\text{ice}}=2090\)、\(c_{\!W}=4186\)、\(c_{\text{steam}}=2010\)（均 \(\mathrm{J/(kg\cdot K)}\)），\(L_f=3.34\times10^{5}\)、\(L_v=2.256\times10^{6}\)（\(\mathrm{J/kg}\)）。求每段所需热量及总热量，并指出哪段最耗能。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>整个过程分 5 段：</p>
+          <p class="step">① 升温冰 \(-20\to0\,{}^{\circ}\mathrm{C}\)（显热）：
+            \[ Q_1=mc_{\text{ice}}\Delta T=(0.100)(2090)(20)=4.18\times10^{3}\,\mathrm{J}=4.18\,\mathrm{kJ}. \]</p>
+          <p class="step">② 熔化冰（潜热，\(0\,{}^{\circ}\mathrm{C}\)）：
+            \[ Q_2=mL_f=(0.100)(3.34\times10^{5})=3.34\times10^{4}\,\mathrm{J}=33.4\,\mathrm{kJ}. \]</p>
+          <p class="step">③ 升温水 \(0\to100\,{}^{\circ}\mathrm{C}\)（显热）：
+            \[ Q_3=mc_{\!W}\Delta T=(0.100)(4186)(100)=4.186\times10^{4}\,\mathrm{J}=41.9\,\mathrm{kJ}. \]</p>
+          <p class="step">④ 汽化水（潜热，\(100\,{}^{\circ}\mathrm{C}\)）：
+            \[ Q_4=mL_v=(0.100)(2.256\times10^{6})=2.256\times10^{5}\,\mathrm{J}=225.6\,\mathrm{kJ}. \]</p>
+          <p class="step">⑤ 升温蒸汽 \(100\to120\,{}^{\circ}\mathrm{C}\)（显热）：
+            \[ Q_5=mc_{\text{steam}}\Delta T=(0.100)(2010)(20)=4.02\times10^{3}\,\mathrm{J}=4.02\,\mathrm{kJ}. \]</p>
+          <p class="step">总热量：</p>
+          <p class="step">\[ Q_{\text{tot}}=Q_1+Q_2+Q_3+Q_4+Q_5=4.18+33.4+41.9+225.6+4.02=309.1\,\mathrm{kJ}. \]</p>
+          <p class="step"><strong>汽化段独占总热量的 \(225.6/309.1\approx73\%\)</strong>。这正是烧开水最后「把水真正烧干」要远比「把水烧开」耗能的原因，也是蒸汽烫伤格外严重的根源（蒸汽在皮肤凝结时把这 \(225.6\,\mathrm{kJ/kg}\) 全部释出）。</p>
+          <p><span class="ans">答案：各段 \(4.18\)、\(33.4\)、\(41.9\)、\(225.6\)、\(4.02\,\mathrm{kJ}\)；共 \(309.1\,\mathrm{kJ}\)；汽化段占 \(73\%\)，最耗能。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 通过玻璃窗的传导热流 Fourier Conduction Through a Window</h4>
+        <p class="example-statement">一扇单层玻璃窗，尺寸 \(0.80\,\mathrm{m}\times1.50\,\mathrm{m}\)，厚度 \(L=4.0\,\mathrm{mm}=4.0\times10^{-3}\,\mathrm{m}\)，玻璃热导率 \(k=0.84\,\mathrm{W/(m\cdot K)}\)。室内 \(20\,{}^{\circ}\mathrm{C}\)，室外 \(-5\,{}^{\circ}\mathrm{C}\)。求：(a) 通过窗户的热传导功率 \(P\)；(b) 若换成同等面积、厚度 \(10\,\mathrm{cm}\) 的砖墙（\(k=0.70\,\mathrm{W/(m\cdot K)}\)），热损失降为多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 面积 \(A=0.80\times1.50=1.20\,\mathrm{m^{2}}\)，温差 \(\Delta T=20-(-5)=25\,\mathrm{K}\)。Fourier 定律（稳态平板）：</p>
+          <p class="step">\[ P=kA\,\frac{\Delta T}{L}=(0.84)(1.20)\,\frac{25}{4.0\times10^{-3}}. \]</p>
+          <p class="step">\[ \frac{25}{4.0\times10^{-3}}=6250\,\mathrm{K/m},\quad (0.84)(1.20)(6250)=6\,300\,\mathrm{W}. \]</p>
+          <p class="step">即 <strong>\(6.3\,\mathrm{kW}\)</strong>——一扇单层玻璃窗在寒冬里损失的能量相当于几个电暖器！这就是为什么用双层玻璃（中间夹空气层，空气 \(k=0.024\)，几乎不导热）能大幅节能。</p>
+          <p class="step">(b) 改为砖墙：\(L=0.10\,\mathrm{m}\)，\(k=0.70\)：</p>
+          <p class="step">\[ P=(0.70)(1.20)\,\frac{25}{0.10}=(0.70)(1.20)(250)=210\,\mathrm{W}. \]</p>
+          <p class="step">砖墙的热损失仅为单层玻璃的 \(210/6300\approx3.3\%\)（小 30 倍）。原因有二：砖墙厚 25 倍（\(L\) 大）、热导率略低；综合 \(L/k\) 比值（热阻）提高了约 170 倍，对应的 \(P\) 降到 \(1/30\)。</p>
+          <p><span class="ans">答案：单层玻璃 \(P=6.3\,\mathrm{kW}\)；同等面积砖墙 \(P=210\,\mathrm{W}\)（降到约 \(1/30\)）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把「热量」「温度」「内能」混为一谈。</strong>温度 \(T\) 是状态量、强度量（不随物质的多少改变）；内能 \(U\) 是状态量、广延量（随质量累加）；热量 \(Q\) 是<em>过程量</em>——只在能量跨越边界流动时才有意义。一杯沸水（\(T\) 高）与一池温水（\(T\) 低），后者内能可能更多；「物体含有多少热量」这种说法在物理上是错的。</li>
+        <li><strong>在相变时仍用 \(Q=mc\,\Delta T\)。</strong>熔化、沸腾、凝结、凝固期间温度恒定，\(\Delta T=0\)，若机械套公式会得到 \(Q=0\)——错！相变期间能量用于打破/重建分子键，必须用 \(Q=mL\)。加热曲线上的「平台」不是「没有热流」，恰恰相反，热流继续但温度不变。</li>
+        <li><strong>量热学中过早取绝对值。</strong>正确做法是统一令 \(Q_i=m_ic_i(T_f-T_i)\)，让 \(T_f-T_i\) 的符号自然反映吸/放热（高温物体 \(T_f<T_i\)，得负；低温物体得正），再令 \(\sum Q_i=0\)。若先取绝对值再列等式，容易在含相变或多物体的问题里漏掉一项符号。</li>
+        <li><strong>用错了相的比热。</strong>冰、水、水蒸气的 \(c\) 各不相同（\(2090\)、\(4186\)、\(2010\)）。把 \(-10^{\circ}\mathrm{C}\) 的冰升温到 \(0^{\circ}\mathrm{C}\) 用 \(c_{\text{ice}}\)；把 \(150^{\circ}\mathrm{C}\) 蒸汽升温用 \(c_{\text{steam}}\)；只有液态水段才用 \(4186\)。</li>
+        <li><strong>低估汽化潜热。</strong>\(L_v(2256\,\mathrm{kJ/kg})\approx6.8\,L_f(334\,\mathrm{kJ/kg})\)，且远大于水的显热（\(100\,\mathrm{K}\times4186=419\,\mathrm{kJ/kg}\)）。把水「烧开」与「烧干」所需能量差近一个量级，工程上锅炉、人体出汗散热、蒸汽机都依赖这一巨大潜热。</li>
+        <li><strong>辐射公式中温度用摄氏度。</strong>Stefan–Boltzmann 定律 \(P=\sigma\varepsilon A T^{4}\) 中的 \(T\) <strong>必须</strong>用热力学温度（开尔文）。\(100^{\circ}\mathrm{C}=373\,\mathrm{K}\)，用 \(100\) 直接代入会差 \(373^{4}/100^{4}\approx195\) 倍。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 把 \(m=0.30\,\mathrm{kg}\) 的铁锅（\(c_{\text{Fe}}=450\,\mathrm{J/(kg\cdot K)}\)）从 \(20^{\circ}\mathrm{C}\) 加热到 \(200^{\circ}\mathrm{C}\)，需要多少热量？若放在 \(1.5\,\mathrm{kW}\) 的炉子上、不计损失，需多久？</summary>
+        <div class="hint">直接 \(Q=mc\Delta T\)，然后 \(t=Q/P\)。</div>
+        <div class="solution">\(\Delta T=180\,\mathrm{K}\)。
+          \[ Q=(0.30)(450)(180)=24\,300\,\mathrm{J}=24.3\,\mathrm{kJ}. \]
+          \(t=Q/P=24\,300/1500=16.2\,\mathrm{s}\)（不计损失的理想值）。
+          <span class="ans">\(Q\approx24\,\mathrm{kJ}\)，\(t\approx16\,\mathrm{s}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一块 \(m=0.200\,\mathrm{kg}\) 的金属样品在沸水（\(100.0^{\circ}\mathrm{C}\)）中恒温后，迅速投入盛有 \(0.400\,\mathrm{kg}\)、\(20.0^{\circ}\mathrm{C}\) 水的保温杯中，平衡温度为 \(27.8^{\circ}\mathrm{C}\)。求该金属的比热 \(c\)，并据表（Al \(900\)、Fe \(450\)、Cu \(385\)、Pb \(130\) \(\mathrm{J/(kg\cdot K)}\)）判断是哪种金属。</summary>
+        <div class="hint">令「金属放热 = 水吸热」，即 \(mc(100-27.8)=m_{\!W}c_{\!W}(27.8-20)\)。</div>
+        <div class="solution">水吸热：\(Q_{\!W}=(0.400)(4186)(27.8-20.0)=1674.4\times7.8=13\,060\,\mathrm{J}\)。
+          金属放热：\(Q_{\text{metal}}=(0.200)\,c\,(100-27.8)=14.44\,c\)。
+          二者相等：\(c=13\,060/14.44=904\,\mathrm{J/(kg\cdot K)}\)，与<strong>铝</strong>（\(900\)）相符。
+          <span class="ans">\(c\approx904\,\mathrm{J/(kg\cdot K)}\)，是<strong>铝</strong>。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 把 \(m_i=0.020\,\mathrm{kg}\)、\(0^{\circ}\mathrm{C}\) 的冰投入 \(m_{\!W}=0.200\,\mathrm{kg}\)、\(30^{\circ}\mathrm{C}\) 的水中（绝热）。冰能否全部熔化？最终温度多少？</summary>
+        <div class="hint">先比较「水降到 \(0^{\circ}\mathrm{C}\) 能放出的热」与「冰全部熔化所需的热」。若前者大于后者，冰全熔，再列方程求 \(T_f>0\)。</div>
+        <div class="solution">冰全部熔化需 \(Q_{\text{melt}}=m_iL_f=(0.020)(3.34\times10^{5})=6\,680\,\mathrm{J}\)。
+          水降到 \(0^{\circ}\mathrm{C}\) 能放 \(m_{\!W}c_{\!W}(30-0)=(0.200)(4186)(30)=25\,116\,\mathrm{J}\)。
+          因 \(25\,116\gg6\,680\)，冰全部熔化，且 \(T_f>0\)。能量守恒（熔化后总质量为 \(0.220\,\mathrm{kg}\)）：
+          \[ (0.200)(4186)(30-T_f)=(0.020)(3.34\times10^{5})+(0.020)(4186)(T_f-0). \]
+          \[ 25\,116-837.2T_f=6\,680+83.72T_f\;\Longrightarrow\;18\,436=920.92\,T_f, \]
+          \[ T_f=20.0^{\circ}\mathrm{C}. \]
+          <span class="ans">冰全熔；\(T_f\approx20.0^{\circ}\mathrm{C}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4.（双层玻璃）面积 \(A=1.50\,\mathrm{m^{2}}\) 的窗户，室内 \(20^{\circ}\mathrm{C}\)、室外 \(-5^{\circ}\mathrm{C}\)。比较：(a) 单层 \(3.0\,\mathrm{mm}\) 玻璃（\(k=0.84\)）；(b) 双层玻璃：两片 \(3.0\,\mathrm{mm}\) 玻璃夹 \(5.0\,\mathrm{mm}\) 空气隙（\(k_{\text{air}}=0.024\)）。求两种情形的传导功率比。</summary>
+        <div class="hint">串联热阻相加：\(R_{\text{tot}}=\sum L_i/(k_iA)\)，\(P=A\Delta T/R_{\text{tot}}\)。</div>
+        <div class="solution">(a) 单层玻璃 \(R=L/(kA)=0.003/(0.84\times1.50)=2.38\times10^{-3}\,\mathrm{K/W}\)，
+          \(P=A\Delta T/R=1.50\times25/0.00238=15\,750\,\mathrm{W}\)（用 \(P=kA\Delta T/L=0.84\times1.50\times25/0.003\) 同样得 \(10\,500\,\mathrm{W}\)；以热阻法为准，注意有效面积算法）。
+          重算：(a) \(P=0.84\times1.50\times25/0.003=10\,500\,\mathrm{W}\)。
+          (b) 双层：\(R_{\text{tot}}=\bigl[2(0.003)/0.84+0.005/0.024\bigr]/1.50=[0.00714+0.2083]/1.50=0.1436\,\mathrm{K/W}\)，
+          \(P=1.50\times25/0.1436=174\,\mathrm{W}\)。
+          降幅：\(10\,500/174\approx60\) 倍。
+          <span class="ans">单层 \(\approx10.5\,\mathrm{kW}\)；双层 \(\approx174\,\mathrm{W}\)；双层窗使热损失降到约 \(1/60\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（人体辐射）一成年人皮肤面积 \(A=1.8\,\mathrm{m^{2}}\)、发射率 \(\varepsilon=0.97\)、皮肤温度 \(33^{\circ}\mathrm{C}\)，处于 \(20^{\circ}\mathrm{C}\) 的房间内。求他/她的<strong>净</strong>辐射散热功率。（\(\sigma=5.670\times10^{-8}\,\mathrm{W/(m^{2}\cdot K^{4})}\)）</summary>
+        <div class="hint">温度必须化为开尔文：\(T_{\text{skin}}=306\,\mathrm{K}\)、\(T_{\text{env}}=293\,\mathrm{K}\)。用 \(P=\sigma\varepsilon A(T^{4}-T_{\text{env}}^{4})\)。</div>
+        <div class="solution">\(T_{\text{skin}}=33+273.15=306.15\,\mathrm{K}\)，\(T_{\text{env}}=293.15\,\mathrm{K}\)。
+          \(P=(5.670\times10^{-8})(0.97)(1.80)(306.15^{4}-293.15^{4})\)。
+          \(306.15^{4}\approx8.793\times10^{9}\)，\(293.15^{4}\approx7.380\times10^{9}\)，差 \(\approx1.413\times10^{9}\,\mathrm{K^{4}}\)。
+          \(P\approx(5.670\times10^{-8})(0.97)(1.80)(1.413\times10^{9})\approx139\,\mathrm{W}\)。
+          （代谢静息功率约 \(80\!-\!100\,\mathrm{W}\)，辐射加上传导/对流散热恰与代谢产热平衡。）
+          <span class="ans">净辐射功率 \(\approx140\,\mathrm{W}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>6.（挑战）证明：把质量 \(m_i\)、温度 \(T_i\)（开尔文）的若干物体放入绝热容器达到平衡，则平衡温度 \(T_f\) 满足 \(\sum_i m_ic_i(T_f-T_i)=0\)，<em>而且</em> \(T_f\) 必位于最低 \(T_i\) 与最高 \(T_i\) 之间。再说明：为何这一结论与「熵总是增加」不矛盾（熵增体现在哪里）？</summary>
+        <div class="hint">第一问用反证法：若 \(T_f\) 超过最大 \(T_i\)，则所有 \(T_f-T_i>0\)，\(\sum m_ic_i(T_f-T_i)>0\)，与 \(\sum=0\) 矛盾。第二问：可逆性。热自发地从热物体流向冷物体是不可逆的，\(\Delta S=\sum m_ic_i\ln(T_f/T_i)>0\)。</div>
+        <div class="solution">设 \(T_{\min}=\min T_i\)、\(T_{\max}=\max T_i\)。若 \(T_f>T_{\max}\)，则所有 \((T_f-T_i)>0\)，\(\sum_i m_ic_i(T_f-T_i)>0\)，与 \(\sum Q_i=0\) 矛盾；同理 \(T_f<T_{\min}\) 也不可能。故 \(T_f\in[T_{\min},T_{\max}]\)。
+          关于熵：能量守恒只约束 \(T_f\) 的<strong>位置</strong>；不可逆性来自热流方向。整个孤立系统熵变 \(\Delta S=\sum_i m_ic_i\ln(T_f/T_i)\)。对任意两温度 \(T_h>T_c\)，热量 \(\mathrm{d}Q\) 从 \(T_h\) 流向 \(T_c\) 时熵变 \(\mathrm{d}S=\mathrm{d}Q(1/T_c-1/T_h)>0\)。因此 \(\Delta S\ge0\)，等号仅在准静态（无穷小温差）下成立。第一定律决定能量账目，第二定律决定方向与耗散——两者互补，并不矛盾。
+          <span class="ans">\(T_f\in[T_{\min},T_{\max}]\)；熵增 \(\Delta S=\sum m_ic_i\ln(T_f/T_i)\ge0\) 体现不可逆性。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>水的加热曲线 Heating Curve for Water。</strong>以恒定电功率 \(P\) 加热一杯冰水混合系统（质量 \(m\)，从 \(-20\,{}^{\circ}\mathrm{C}\) 的冰开始）。画布上绘制<strong>温度 \(T\) 对累计热量 \(Q\)</strong> 的曲线：上升的斜坡（显热，斜率 \(=1/(mc)\)）与水平的平台（潜热，宽度 \(=mL\)）交替出现。可以清楚看到——熔化平台（\(L_f\)）窄，而<strong>汽化平台（\(L_v\)）约为其 7 倍宽</strong>。调节质量滑块 \(m\)（曲线整体拉伸，平台与斜坡都按 \(m\) 放大），调节功率滑块 \(P\)（控制点沿曲线推进的快慢，但不改变曲线形状）。蓝点为当前状态，红色为已走过的轨迹。仿真时间以 10 倍加速，使汽化段也能在一分钟内完成。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+
+          // ----- Physical constants (SI) -------------------------------------
+          var C_ICE = 2090, C_WATER = 4186, C_STEAM = 2010;   // J/(kg K)
+          var L_FUS = 334000, L_VAP = 2256000;                 // J/kg
+          var T_START = -20;                                    // °C, initial ice temp
+          var T_BOIL = 100, T_MELT = 0;
+          var T_END_TARGET = 130;                               // °C, final steam temp
+          var TIME_ACCEL = 10;                                  // sim runs 10x real time
+
+          // ----- Plot geometry -----------------------------------------------
+          var PLOT_L = 64, PLOT_R = W - 28, PLOT_T = 40, PLOT_B = H - 76;
+          var PLOT_W = PLOT_R - PLOT_L, PLOT_H = PLOT_B - PLOT_T;
+          var T_YMIN = -35, T_YMAX = 145;                       // y-axis °C range
+
+          var params = { m: 0.10, P: 500 };
+
+          // Specific-energy breakpoints (per kg) — independent of mass
+          function breakpoints() {
+            var q1 = C_ICE * (T_MELT - T_START);      // warm ice
+            var q2 = L_FUS;                            // melt
+            var q3 = C_WATER * (T_BOIL - T_MELT);     // warm water
+            var q4 = L_VAP;                            // boil
+            var q5 = C_STEAM * (T_END_TARGET - T_BOIL); // superheat
+            return { q1: q1, q2: q2, q3: q3, q4: q4, q5: q5, tot: q1 + q2 + q3 + q4 + q5 };
+          }
+
+          // Convert specific energy q (J/kg) → temperature (°C)
+          function qToT(q) {
+            var bp = breakpoints();
+            if (q < bp.q1) return T_START + (q / bp.q1) * (T_MELT - T_START);
+            q -= bp.q1;
+            if (q < bp.q2) return T_MELT;
+            q -= bp.q2;
+            if (q < bp.q3) return T_MELT + (q / bp.q3) * (T_BOIL - T_MELT);
+            q -= bp.q3;
+            if (q < bp.q4) return T_BOIL;
+            q -= bp.q4;
+            return T_BOIL + (q / C_STEAM);
+          }
+
+          // Phase label
+          function phaseOf(q) {
+            var bp = breakpoints();
+            if (q < bp.q1) return '冰升温 Ice warming';
+            if (q < bp.q1 + bp.q2) return '熔化 Melting (L_f)';
+            if (q < bp.q1 + bp.q2 + bp.q3) return '水升温 Water warming';
+            if (q < bp.q1 + bp.q2 + bp.q3 + bp.q4) return '汽化 Boiling (L_v)';
+            return '蒸汽过热 Superheating';
+          }
+
+          // Coordinate mapping. q_to_T gives T; x-axis displays total Q (kJ) = q*m.
+          function xPx(Q_J) {
+            var bp = breakpoints();
+            var Qmax = bp.tot * params.m;             // total J for current mass
+            return PLOT_L + (Q_J / Qmax) * PLOT_W;
+          }
+          function yPx(T) {
+            return PLOT_B - (T - T_YMIN) / (T_YMAX - T_YMIN) * PLOT_H;
+          }
+
+          // ---- Simulation ----------------------------------------------------
+          var sim = PS.createSim(canvas, {
+            state: function () { return { q: 0, t_sim: 0, done: false }; },
+            step: function (dt, t, s) {
+              if (s.done) return;
+              var bp = breakpoints();
+              // dq/dt = P/m  (specific energy accumulates faster for small m)
+              s.q += (params.P / params.m) * dt * TIME_ACCEL;
+              s.t_sim += dt * TIME_ACCEL;
+              if (s.q >= bp.tot) { s.q = bp.tot; s.done = true; }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var bp = breakpoints();
+              var Qmax = bp.tot * params.m;     // total energy J for current mass
+
+              // ---------- axes frame ----------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.moveTo(PLOT_L, PLOT_T); ctx.lineTo(PLOT_L, PLOT_B);
+              ctx.lineTo(PLOT_R, PLOT_B); ctx.stroke();
+              ctx.restore();
+
+              // ---------- y-axis ticks (°C) ---------------------------------
+              var yTicks = [-20, 0, 20, 40, 60, 80, 100, 120, 140];
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui';
+              ctx.globalAlpha = 0.75;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              yTicks.forEach(function (Tk) {
+                var yp = yPx(Tk);
+                ctx.beginPath(); ctx.moveTo(PLOT_L, yp); ctx.lineTo(PLOT_R, yp); ctx.stroke();
+                ctx.fillText(String(Tk), PLOT_L - 6, yp);
+              });
+              ctx.globalAlpha = 1;
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = 'bold 12px system-ui';
+              ctx.textAlign = 'center';
+              ctx.save();
+              ctx.translate(18, (PLOT_T + PLOT_B) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('温度 T (°C)', 0, 0);
+              ctx.restore();
+              ctx.restore();
+
+              // ---------- x-axis ticks (kJ) ---------------------------------
+              var nTicks = 6;
+              ctx.save();
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var i = 0; i <= nTicks; i++) {
+                var QJ = (i / nTicks) * Qmax;
+                var xp = xPx(QJ);
+                ctx.fillStyle = PS.colors.grid;
+                ctx.beginPath(); ctx.moveTo(xp, PLOT_T); ctx.lineTo(xp, PLOT_B); ctx.globalAlpha = 0.5; ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText((QJ / 1000).toFixed(0), xp, PLOT_B + 5);
+              }
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('累计热量 Q added (kJ)', (PLOT_L + PLOT_R) / 2, PLOT_B + 28);
+              ctx.restore();
+
+              // ---------- plateau guide lines (0°C and 100°C) ---------------
+              ctx.save();
+              ctx.setLineDash([4, 5]);
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.55;
+              [0, 100].forEach(function (Tk) {
+                var yp = yPx(Tk);
+                ctx.beginPath(); ctx.moveTo(PLOT_L, yp); ctx.lineTo(PLOT_R, yp); ctx.stroke();
+              });
+              ctx.restore();
+
+              // ---------- faint full theoretical curve ---------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.globalAlpha = 0.28;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              var Nfull = 600;
+              for (var k = 0; k <= Nfull; k++) {
+                var q = (k / Nfull) * bp.tot;
+                var T = qToT(q);
+                var px = xPx(q * params.m), py = yPx(T);
+                if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---------- traced (already-traversed) curve -----------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.8;
+              ctx.beginPath();
+              var Ntrace = Math.max(2, Math.floor(600 * s.q / bp.tot));
+              for (var j = 0; j <= Ntrace; j++) {
+                var qt = (j / Ntrace) * s.q;
+                var Tt = qToT(qt);
+                var px2 = xPx(qt * params.m), py2 = yPx(Tt);
+                if (j === 0) ctx.moveTo(px2, py2); else ctx.lineTo(px2, py2);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---------- current point -------------------------------------
+              var qNow = s.q;
+              var TNow = qToT(qNow);
+              var pxn = xPx(qNow * params.m), pyn = yPx(TNow);
+              PS.drawCircle(ctx, pxn, pyn, 6, { fill: PS.colors.primary, stroke: '#ffffff', lineWidth: 2 });
+
+              // ---------- stage label near the dot -------------------------
+              PS.drawText(ctx, phaseOf(qNow), pxn + 12, pyn - 10,
+                { font: 'bold 12px system-ui', color: PS.colors.primary });
+
+              // ---------- plateau annotations ------------------------------
+              PS.drawText(ctx, '熔化平台  融化  fusion (L_f = 334 kJ/kg)',
+              xPx(bp.q1 * params.m + (bp.q2 * params.m) / 2), yPx(0) - 8,
+                { font: 'bold 11px system-ui', color: PS.colors.accent2, align: 'center' });
+              PS.drawText(ctx, '汽化平台  蒸发  vaporization (L_v = 2256 kJ/kg)',
+              xPx((bp.q1 + bp.q2 + bp.q3) * params.m + (bp.q4 * params.m) / 2), yPx(100) - 8,
+                { font: 'bold 11px system-ui', color: PS.colors.accent2, align: 'center' });
+
+              // ---------- title --------------------------------------------
+              PS.drawText(ctx, '水的加热曲线  Heating Curve of Water', PLOT_L, 22,
+                { font: 'bold 14px system-ui', color: PS.colors.text });
+
+              // ---------- readout panel (bottom-left) ----------------------
+              var rx = PLOT_L, ry = H - 38;
+              PS.drawText(ctx, '阶段 Stage: ' + phaseOf(qNow) +
+                '   |   质量 m = ' + (params.m * 1000).toFixed(0) + ' g' +
+                '   |   功率 P = ' + params.P.toFixed(0) + ' W' +
+                '   |   Q = ' + ((qNow * params.m) / 1000).toFixed(1) + ' kJ' +
+                '   |   T = ' + TNow.toFixed(1) + ' °C' +
+                '   |   仿真时间 t = ' + s.t_sim.toFixed(1) + ' s' +
+                (s.done ? '   |   完成 ✓' : ''),
+                rx, ry, { font: '12px system-ui', color: PS.colors.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'm', label: '质量 m (g)', min: 50, max: 500, step: 10, value: 100 },
+            { type: 'slider', key: 'P', label: '功率 P (W)', min: 100, max: 2000, step: 50, value: 500 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('m', function (v) { params.m = v / 1000; });   // slider in grams → kg
+          ctl.on('P', function (v) { params.P = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>三组易混概念要分清：</strong>温度 \(T\)（状态、强度）、内能 \(U\)（状态、广延、储存）、热量 \(Q\)（过程量，因温差而<em>传递</em>的能量）。第一定律 \(\Delta U=Q-W\) 把三者联系起来。</li>
+        <li><strong>显热</strong>（无相变）：\(Q=mc\,\Delta T=nC_{\!M}\,\Delta T\)，\(C_{\!M}=cM\)。水的 \(c=4186\,\mathrm{J/(kg\cdot K)}\) 异常大。</li>
+        <li><strong>量热学</strong>（孤立系统）：\(\sum_i Q_i=0\)，每项 \(Q_i=m_ic_i(T_f-T_i)\)。平衡温度 \(T_f=\sum m_ic_iT_i/\sum m_ic_i\)（无相变时），是热容量 \(m_ic_i\) 的加权平均。</li>
+        <li><strong>潜热</strong>（等温相变）：\(Q=mL\)。水的 \(L_f=334\,\mathrm{kJ/kg}\)、\(L_v=2256\,\mathrm{kJ/kg}\)；\(L_v\gg L_f\)。加热曲线上斜坡对应显热，平台对应潜热。</li>
+        <li><strong>三种传热机制：</strong>传导（Fourier \(P=kA\,\Delta T/L\)）、对流（\(P=hA\Delta T\)，经验）、辐射（Stefan–Boltzmann \(P=\sigma\varepsilon A(T^{4}-T_{\text{env}}^{4})\)，温度须用 K）。</li>
+        <li>常见热导率 \(k\)（\(\mathrm{W/(m\cdot K)}\)）：Ag 429、Cu 401、Al 240、玻璃 0.84、空气 0.024。Stefan–Boltzmann 常数 \(\sigma=5.670\times10^{-8}\,\mathrm{W/(m^{2}\cdot K^{4})}\)。</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

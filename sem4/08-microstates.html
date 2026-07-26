@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 微观态·玻尔兹曼熵 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第8章 · 统计力学 Statistical Mechanics</p>
+      <h1>微观态·玻尔兹曼熵 <span class="en-title">Microstates &amp; Boltzmann Entropy</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>区分<strong>微观态</strong> (microstate) 与<strong>宏观态</strong> (macrostate)，理解一个宏观态通常对应天文数字般的微观态集合。</li>
+        <li>陈述<strong>统计力学的基本假设</strong>——孤立系统的所有可达微观态等概率 (equal a priori probabilities)，并由此推出「宏观态概率 ∝ 其包含的微观态数」。</li>
+        <li>用组合公式计算<strong>硬币/双态顺磁体</strong>的多重度 \(\Omega(N,n)=C(N,n)\) 与<strong>爱因斯坦固体</strong> (Einstein solid) 的 \(\Omega(N,q)=\dfrac{(q+N-1)!}{q!(N-1)!}\)。</li>
+        <li>应用<strong>玻尔兹曼熵公式</strong> \(S=k_{B}\ln\Omega\) 计算给定宏观态的熵，并解释它为何是通向热力学的桥梁。</li>
+        <li>论证两个热接触系统的总多重度 \(\Omega_{\text{tot}}=\Omega_{A}\Omega_{B}\) 在平衡处取最大值，并由此导出<strong>温度的统计定义</strong> \(1/T\equiv(\partial S/\partial U)_{V,N}\)。</li>
+        <li>解释<strong>第二定律</strong>如何在热力学极限下涌现：系统演化到 \(\Omega\) 更大的宏观态，因为后者在数量上压倒一切其他宏观态。</li>
+        <li>应用<strong>斯特林近似</strong> \(\ln N!\approx N\ln N-N\) 处理巨大阶乘，并知道何时应加入 \(\tfrac12\ln(2\pi N)\) 修正项。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 微观态 vs 宏观态 Microstate vs Macrostate</h3>
+      <p><strong>微观态</strong> (microstate) 是对系统的完整力学描述——每一枚硬币的正反面、每一个分子的位置与速度、每一个自旋的指向。<strong>宏观态</strong> (macrostate) 由宏观可观测量（如 \(T,P,V,U\)) 指定。关键事实是：<strong>一个宏观态通常对应许多微观态</strong>。对应某一宏观态的微观态数目，称为该宏观态的<strong>多重度</strong> (multiplicity，又称统计权重) \(\Omega\)。</p>
+      <p>例：4 枚硬币的系统中，"3 正 1 反"这一宏观态包含 \(C(4,3)=4\) 个微观态 \(\{(HHHT, HHTH, HTHH, THHH)\}\)；"2 正 2 反"包含 \(C(4,2)=6\) 个；而"全正"仅 1 个。\(\Omega\) 越大，该宏观态越概然。</p>
+      <div class="key-terms">microstate (微观态), macrostate (宏观态), multiplicity (多重度/统计权重), macroscopic variable (宏观变量)</div>
+
+      <h3>2. 基本假设——等先验概率 The Fundamental Postulate (Equal a Priori)</h3>
+      <p>对<strong>孤立系统</strong> (isolated system)——即能量 \(U\)、体积 \(V\)、粒子数 \(N\) 都固定的系统，对应<strong>微正则系综</strong> (microcanonical ensemble)——统计力学的基本假设是：<strong>所有可达微观态等概率</strong> (equal a priori probabilities)。若共有 \(\Omega\) 个可达微观态，每个的概率都是 \(1/\Omega\)。</p>
+      <p>由此立刻得到一条核心推论：</p>
+      <div class="formula">\[ P(\text{宏观态})\;=\;\frac{\text{该宏观态包含的微观态数}}{\Omega_{\text{tot}}}\;=\;\frac{\Omega}{\Omega_{\text{tot}}} \]</div>
+      <p>即<strong>包含微观态最多的宏观态最概然</strong>。这条假设无法从牛顿力学导出，但与所有实验一致，是统计力学的公理。</p>
+      <div class="key-terms">isolated system (孤立系统), microcanonical ensemble (微正则系综), equal a priori probabilities (等先验概率), fundamental postulate (基本假设)</div>
+
+      <h3>3. 多重度与玻尔兹曼熵 Multiplicity &amp; Boltzmann Entropy</h3>
+      <p>宏观系统的 \(\Omega\) 是天文数字（典型量级 \(10^{10^{23}}\)）。为了压缩动态范围并连接到热力学，Boltzmann 定义<strong>熵</strong> (entropy)：</p>
+      <div class="formula">\[ \boxed{\;S \;=\; k_{B}\,\ln\Omega\;} \]</div>
+      <p>这就是著名的玻尔兹曼熵公式（刻在维也纳 Boltzmann 墓碑上）。其中 \(k_{B}=1.380\,649\times 10^{-23}\,\mathrm{J/K}\) 是<strong>玻尔兹曼常数</strong> (Boltzmann constant)。它是通往热力学的桥梁：孤立系统演化时总是朝 \(\Omega\) 更大（即 \(S\) 更大）的宏观态移动——这是<strong>第二定律</strong>的统计版本。</p>
+      <div class="key-terms">entropy (熵), Boltzmann constant (玻尔兹曼常数), Boltzmann's tomb formula (玻尔兹曼墓碑公式)</div>
+
+      <h3>4. 计数一：硬币 / 双态顺磁体 Counting I — Coins &amp; Two-State Paramagnet</h3>
+      <p>\(N\) 个独立硬币（或 \(N\) 个<strong>自旋-1/2 磁偶极子</strong>在外磁场 \(B\) 中，即<strong>双态顺磁体</strong> two-state paramagnet）。宏观态用"正面数 \(n\)"（或"上自旋数 \(n\)"）指定。从 \(N\) 个位置中选 \(n\) 个为正面，微观态数为<strong>二项系数</strong>：</p>
+      <div class="formula">\[ \Omega(N,n)\;=\;C(N,n)\;=\;\binom{N}{n}\;=\;\frac{N!}{n!\,(N-n)!} \]</div>
+      <p>所有宏观态合并起来的总微观态数为 \(\displaystyle\sum_{n=0}^{N}\binom{N}{n}=2^{N}\)。最概然宏观态在 \(n=N/2\)（或最近整数），其多重度由<strong>中心极限定理</strong>给出的渐近形式（见例 1）：</p>
+      <div class="formula">\[ \Omega_{\max}=\binom{N}{N/2}\;\;\underset{N\gg 1}{\approx}\;\;2^{N}\sqrt{\frac{2}{\pi N}}. \]</div>
+      <p>对顺磁体，宏观态 "\(n\) 个上自旋" 对应能量 \(U(n)=-\mu B\,(2n-N)\)，其中 \(\mu\) 是磁矩——所以"宏观态 ↔ 微观态 ↔ 能量"三者完全绑定。</p>
+      <div class="key-terms">binomial coefficient (二项系数), two-state paramagnet (双态顺磁体), spin-1/2 (自旋-1/2), magnetic moment (磁矩)</div>
+
+      <h3>5. 计数二：爱因斯坦固体 Counting II — Einstein Solid</h3>
+      <p><strong>爱因斯坦固体</strong> (Einstein solid) 把晶体简化为 \(N\) 个独立的<strong>量子谐振子</strong> (quantum harmonic oscillator)，每个能级为 \(0,\varepsilon,2\varepsilon,3\varepsilon,\dots\)。若总能量 \(U=q\varepsilon\)（\(q\) 个能量量子），则把 \(q\) 个<strong>不可分辨</strong> (indistinguishable) 的量子分配给 \(N\) 个<strong>可分辨</strong> (distinguishable) 的振子，由<strong>星与条计数</strong> (stars and bars) 得：</p>
+      <div class="formula">\[ \boxed{\;\Omega(N,q)\;=\;\binom{q+N-1}{q}\;=\;\frac{(q+N-1)!}{q!\,(N-1)!}\;} \]</div>
+      <p>直觉：把 \(q\) 个量子当作"星 ★"，\(N\) 个振子当作由 \(N-1\) 个"分隔条 |"分组的盒子。例如 \(q=4,N=3\) 时，"★★|★|★" 表示振子 1 拿 2 个、振子 2 拿 1 个、振子 3 拿 1 个。在 \(q+N-1\) 个位置中选 \(q\) 个放星，即得上述组合数。</p>
+      <div class="key-terms">Einstein solid (爱因斯坦固体), quantum harmonic oscillator (量子谐振子), indistinguishable (不可分辨), distinguishable (可分辨), stars and bars (星与条计数)</div>
+
+      <h3>6. 两个热接触系统——平衡与温度 Two Systems in Contact — Equilibrium &amp; Temperature</h3>
+      <p>将两个系统 \(A\)、\(B\) <strong>热接触</strong> (thermal contact) 但与外界隔离。总能量 \(U_{\text{tot}}=U_{A}+U_{B}\) 固定。每个宏观态由能量分割 \((U_{A},U_{B})\) 指定。由乘法原理（两子系统微观态互相独立），<strong>总多重度</strong>：</p>
+      <div class="formula">\[ \Omega_{\text{tot}}(U_{A})\;=\;\Omega_{A}(U_{A})\cdot\Omega_{B}(U_{\text{tot}}-U_{A}) \]</div>
+      <p>最概然的能量分割使 \(\Omega_{\text{tot}}\) 最大，等价地使 \(S_{\text{tot}}=k_{B}\ln\Omega_{\text{tot}}=S_{A}+S_{B}\) 最大。在极大值处 \(dS_{\text{tot}}/dU_{A}=0\)，即</p>
+      <div class="formula">\[ \frac{\partial S_{A}}{\partial U_{A}}\;=\;\frac{\partial S_{B}}{\partial U_{B}}. \]</div>
+      <p>而热力学告诉我们：平衡时 \(T_{A}=T_{B}\)，且 \(dS=dU/T\)。把这两条放在一起，就得到<strong>温度的统计定义</strong>：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{T}\;\equiv\;\left(\frac{\partial S}{\partial U}\right)_{\!V,\,N}\;} \]</div>
+      <p>即温度是「每输入单位能量所换取的熵增量」的倒数。若 \(1/T_{A}&gt;1/T_{B}\)（\(A\) 更冷，每焦耳换来更多熵），则能量从 \(B\) 流向 \(A\) 能让总熵增大；流动持续到 \(T_{A}=T_{B}\)。<strong>温度差驱动热流，本质是总 \(\Omega_{\text{tot}}\) 在追求最大</strong>。</p>
+      <div class="key-terms">thermal contact (热接触), statistical definition of temperature (温度的统计定义), entropy exchange (熵交换)</div>
+
+      <h3>7. 第二定律的涌现 Emergence of the Second Law</h3>
+      <p>对小系统（如 \(N_{A}=N_{B}=3\)，\(q_{\text{tot}}=6\)），\(\Omega_{\text{tot}}\) 在不同能量分割之间变化温和——非平衡分割也有可观的概率（见例 3 与仿真）。但当 \(N\) 增大，\(\Omega_{\text{tot}}(q_{A})\) 的峰相对宽度 \(\sigma/q_{\text{tot}}\sim 1/\sqrt{N}\) 急剧变窄：</p>
+      <ul>
+        <li>\(N\sim 10\) 时 \(\sigma/q_{\text{tot}}\sim 20\text{--}30\%\) —— 涨落显著；</li>
+        <li>\(N\sim 10^{3}\) 时 \(\sigma/q_{\text{tot}}\sim 2\text{--}3\%\) —— 峰已明显占优；</li>
+        <li>\(N\sim N_{A}=6\times 10^{23}\) 时 \(\sigma/q_{\text{tot}}\sim 10^{-12}\) —— 系统实际上<strong>永远</strong>处于最概然分割。</li>
+      </ul>
+      <p>这就是第二定律的<strong>统计起源</strong>：它不是绝对的（涨落在小系统中很常见），但在宏观极限下「几乎」绝对——因为对应平衡的微观态数量在总数中占据压倒性比例。</p>
+      <div class="key-terms">thermodynamic limit (热力学极限), fluctuations (涨落), emergence (涌现), sharp peak (尖锐峰)</div>
+
+      <h3>8. 斯特林近似 Stirling's Approximation</h3>
+      <p>处理宏观系统的阶乘时，直接算 \(N!\) 会溢出。取对数后用<strong>斯特林近似</strong> (Stirling's approximation)：</p>
+      <div class="formula">\[ \ln N!\;\approx\;N\ln N-N\qquad(\text{leading order}) \]</div>
+      <p>更精确的形式加入对数修正项：</p>
+      <div class="formula">\[ \ln N!\;\approx\;N\ln N-N+\tfrac12\ln(2\pi N)\qquad(\text{improved}) \]</div>
+      <p>后者即使在 \(N=10\) 也已准确到 \(0.06\%\)（见例 5）。它是从 \(\Omega\) 计算 \(S=k_{B}\ln\Omega\) 的必备工具。</p>
+      <div class="key-terms">Stirling's approximation (斯特林近似), leading order (主导阶), logarithmic correction (对数修正)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 8.A — 爱因斯坦固体 \(\Omega\) 公式（星与条）Einstein-Solid Multiplicity by Stars &amp; Bars</h3>
+      <p class="step"><strong>步骤 1：</strong>考虑 \(q\) 个不可分辨的能量量子 ★ 分配到 \(N\) 个可分辨振子中。用 \(N-1\) 个分隔条 | 把序列分成 \(N\) 组（每组对应一个振子）。</p>
+      <p class="step"><strong>步骤 2：</strong>例：\(q=4,N=3\)。"★★|★|★" 表示振子 1 拿 2 个、振子 2 拿 1 个、振子 3 拿 1 个。任意一种分配对应星与条的一个长度为 \(q+N-1\) 的序列。</p>
+      <p class="step"><strong>步骤 3：</strong>序列有 \(q+N-1\) 个位置，其中选 \(q\) 个放星（其余 \(N-1\) 个自动放条）。所以分配方式数为：</p>
+      <div class="formula">\[ \Omega(N,q)\;=\;\binom{q+N-1}{q}\;=\;\frac{(q+N-1)!}{q!\,(N-1)!}. \]</div>
+      <p class="step"><strong>步骤 4 (验证)：</strong>\(N=3,q=4\Rightarrow\binom{6}{4}=15\)。手工枚举 \((n_{1},n_{2},n_{3})\) 满足 \(n_{1}+n_{2}+n_{3}=4\)，非负整数解个数 = 15 ✓。</p>
+
+      <h3>推导 8.B — 由 \(\Omega_{\text{tot}}\) 最大化导出温度 Temperature from Maximizing \(\Omega_{\text{tot}}\)</h3>
+      <p class="step"><strong>步骤 1：</strong>设两爱因斯坦固体 \(A,B\) 热接触，总能量子数 \(q_{\text{tot}}=q_{A}+q_{B}\) 固定。最概然能量分割 \(q_{A}^{\ast}\) 满足：</p>
+      <div class="formula">\[ \frac{d}{dq_{A}}\Big[\ln\Omega_{A}(q_{A})+\ln\Omega_{B}(q_{\text{tot}}-q_{A})\Big]_{q_{A}=q_{A}^{\ast}}=0. \]</div>
+      <p class="step"><strong>步骤 2：</strong>用斯特林 \(\ln\Omega(N,q)\approx(q+N)\ln(q+N)-q\ln q-N\ln N\)。对 \(q\) 求偏导：</p>
+      <div class="formula">\[ \frac{\partial\ln\Omega}{\partial q}\;=\;\ln(q+N)+1-(\ln q+1)\;=\;\ln\!\left(\frac{q+N}{q}\right)=\ln\!\left(1+\frac{N}{q}\right). \]</div>
+      <p class="step"><strong>步骤 3：</strong>由步骤 1，平衡时（注意 \(dq_{B}/dq_{A}=-1\)，两个负号相消）：</p>
+      <div class="formula">\[ \ln\!\left(1+\frac{N_{A}}{q_{A}^{\ast}}\right)=\ln\!\left(1+\frac{N_{B}}{q_{B}^{\ast}}\right)\;\;\Longrightarrow\;\;\frac{N_{A}}{q_{A}^{\ast}}=\frac{N_{B}}{q_{B}^{\ast}}\;\;\Longrightarrow\;\;\frac{q_{A}^{\ast}}{N_{A}}=\frac{q_{B}^{\ast}}{N_{B}}. \]</div>
+      <p class="step"><strong>结论：</strong>两固体平衡时<strong>每个振子平均分到的能量量子数相等</strong>，于是 \(q_{A}^{\ast}/q_{\text{tot}}=N_{A}/(N_{A}+N_{B})\)。</p>
+      <p class="step"><strong>步骤 4（识别温度）：</strong>由 \(U=q\varepsilon\) 与 \(S=k_{B}\ln\Omega\)：</p>
+      <div class="formula">\[ \frac{1}{T}\equiv\frac{\partial S}{\partial U}=\frac{k_{B}}{\varepsilon}\,\frac{\partial\ln\Omega}{\partial q}=\frac{k_{B}}{\varepsilon}\ln\!\left(1+\frac{N}{q}\right). \]</div>
+      <p class="step">两固体平衡时此量相等，正是 \(T_{A}=T_{B}\)。温度完全由 \(\Omega(U)\) 的<strong>斜率</strong>决定——它是关于「能量-熵交换」的物理量，不是能量本身。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 50 枚硬币：30 正与 25 正的多重度 50 Coins — \(\Omega(50,30)\) vs \(\Omega(50,25)\)</h4>
+        <p class="example-statement">50 枚独立硬币投掷，宏观态由"正面数 \(n\)"指定。计算 \(n=30\) 与 \(n=25\) 的多重度 \(\Omega(50,n)\)、概率 \(P(n)\)，并求最概然宏观态的玻尔兹曼熵 \(S=k_{B}\ln\Omega\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\Omega(50,n)=C(50,n)=\dfrac{50!}{n!\,(50-n)!}\)。</p>
+          <p class="step"><strong>(a) \(n=30\)：</strong>\(\Omega(50,30)=C(50,30)=C(50,20)=\dfrac{50!}{20!\cdot 30!}=\mathbf{4.712\,921\,224\,396\times 10^{13}}\)。</p>
+          <p class="step">总微观态数 \(2^{50}=1.125\,899\,906\,842\,624\times 10^{15}\)。概率：</p>
+          <p class="step">\(P(30)=\dfrac{\Omega(50,30)}{2^{50}}=\dfrac{4.712\,9\times 10^{13}}{1.125\,9\times 10^{15}}=\mathbf{0.041\,86}\)（约 \(4.19\%\)）。</p>
+          <p class="step"><strong>(b) \(n=25\)（最概然）：</strong>\(\Omega(50,25)=C(50,25)=\mathbf{1.264\,106\,064\,378\times 10^{14}}\)。</p>
+          <p class="step">\(P(25)=\dfrac{1.264\,1\times 10^{14}}{1.125\,9\times 10^{15}}=\mathbf{0.112\,28}\)（约 \(11.23\%\)）。</p>
+          <p class="step">注意 \(n=25\) 比 \(n=30\) 概率高 \(0.1123/0.0419\approx \mathbf{2.68\,倍}\)，正是因其多重度更大——「微观态多的宏观态更概然」。</p>
+          <p class="step"><strong>(c) 玻尔兹曼熵：</strong>最概然宏观态的熵：</p>
+          <p class="step">\(S=k_{B}\ln\Omega(50,25)=(1.380\,649\times 10^{-23}\,\mathrm{J/K})\cdot\ln(1.264\,1\times 10^{14})\)。</p>
+          <p class="step">\(\ln(1.264\,1\times 10^{14})=\ln(1.264\,1)+14\ln 10=0.234\,8+32.236=32.471\)。</p>
+          <p class="step">\(S=(1.380\,649\times 10^{-23})(32.471)=\mathbf{4.483\times 10^{-22}\,\mathrm{J/K}}\)。</p>
+          <p class="step"><strong>对照渐近公式</strong>：\(\Omega_{\max}\approx 2^{N}\sqrt{2/(\pi N)}=2^{50}\sqrt{2/(\pi\cdot 50)}=1.126\times 10^{15}\cdot 0.1128=1.270\times 10^{14}\)，与精确值 \(1.264\times 10^{14}\) 偏差仅 \(0.5\%\)。</p>
+          <p><span class="ans">答案：\(\Omega(50,30)=4.713\times 10^{13}\)、\(P(30)=4.19\%\)；\(\Omega(50,25)=1.264\times 10^{14}\)、\(P(25)=11.23\%\)；\(S(50,25)=4.48\times 10^{-22}\,\mathrm{J/K}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 爱因斯坦固体的小系统多重度 Einstein Solid — Small \(N,q\)</h4>
+        <p class="example-statement">计算爱因斯坦固体的多重度：(a) \(N=3,q=2\)；(b) \(N=3,q=4\)；(c) \(N=5,q=10\)。对 (b) 进一步求玻尔兹曼熵。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用 \(\Omega(N,q)=\dfrac{(q+N-1)!}{q!\,(N-1)!}\)。</p>
+          <p class="step"><strong>(a)</strong> \(\Omega(3,2)=\dfrac{(2+3-1)!}{2!\,(3-1)!}=\dfrac{4!}{2!\cdot 2!}=\dfrac{24}{4}=\mathbf{6}\)。</p>
+          <p class="step"><strong>(b)</strong> \(\Omega(3,4)=\dfrac{(4+3-1)!}{4!\cdot 2!}=\dfrac{6!}{24\cdot 2}=\dfrac{720}{48}=\mathbf{15}\)。</p>
+          <p class="step"><strong>(c)</strong> \(\Omega(5,10)=\dfrac{(10+5-1)!}{10!\cdot 4!}=\dfrac{14!}{10!\cdot 4!}=\dfrac{14\cdot 13\cdot 12\cdot 11}{4\cdot 3\cdot 2\cdot 1}=\dfrac{24\,024}{24}=\mathbf{1\,001}\)。</p>
+          <p class="step"><strong>(b) 的熵：</strong>\(S=k_{B}\ln\Omega(3,4)=(1.380\,649\times 10^{-23})\ln 15\)。</p>
+          <p class="step">\(\ln 15=2.708\,1\)，故 \(S=(1.380\,649\times 10^{-23})(2.708\,1)=\mathbf{3.74\times 10^{-23}\,\mathrm{J/K}}\)。</p>
+          <p class="step"><strong>直观核对：</strong>(a) 中 \(N=3,q=2\)，把 2 个量子分给 3 个振子，等价于求 \(n_{1}+n_{2}+n_{3}=2\) 的非负整数解数。手工枚举：\((2,0,0),(0,2,0),(0,0,2),(1,1,0),(1,0,1),(0,1,1)\)——共 6 个 ✓。</p>
+          <p><span class="ans">答案：\(\Omega(3,2)=6\)；\(\Omega(3,4)=15\)；\(\Omega(5,10)=1\,001\)；\(S(3,4)=3.74\times 10^{-23}\,\mathrm{J/K}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 两个爱因斯坦固体热接触：最概然能量分割 Two Solids in Contact — Most-Probable Split</h4>
+        <p class="example-statement">两个爱因斯坦固体 \(A,B\)，\(N_{A}=N_{B}=3\)，总能量子 \(q_{\text{tot}}=6\)。列出每个能量分割 \(q_{A}=0,\dots,6\) 的 \(\Omega_{A},\Omega_{B},\Omega_{\text{tot}}\)，求最概然分割，验证 \(\sum_{q_{A}}\Omega_{\text{tot}}=\Omega(N_{A}+N_{B},q_{\text{tot}})\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用例 2 的公式 \(\Omega(3,q)=\dfrac{(q+2)!}{q!\cdot 2!}=\dfrac{(q+2)!}{2\,q!}=\dfrac{(q+2)(q+1)}{2}\)。逐项计算：</p>
+          <table style="width:100%;border-collapse:collapse;margin:0.6em 0;">
+            <thead>
+              <tr style="border-bottom:2px solid currentColor;">
+                <th style="text-align:center;padding:4px 8px;">\(q_{A}\)</th>
+                <th style="text-align:center;padding:4px 8px;">\(q_{B}\)</th>
+                <th style="text-align:center;padding:4px 8px;">\(\Omega_{A}(3,q_{A})\)</th>
+                <th style="text-align:center;padding:4px 8px;">\(\Omega_{B}(3,q_{B})\)</th>
+                <th style="text-align:center;padding:4px 8px;">\(\Omega_{\text{tot}}=\Omega_{A}\Omega_{B}\)</th>
+                <th style="text-align:center;padding:4px 8px;">\(P(q_{A})\)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;">0</td><td style="text-align:center;">6</td><td style="text-align:center;">1</td><td style="text-align:center;">28</td><td style="text-align:center;">28</td><td style="text-align:center;">0.0606</td></tr>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;">1</td><td style="text-align:center;">5</td><td style="text-align:center;">3</td><td style="text-align:center;">21</td><td style="text-align:center;">63</td><td style="text-align:center;">0.1364</td></tr>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;">2</td><td style="text-align:center;">4</td><td style="text-align:center;">6</td><td style="text-align:center;">15</td><td style="text-align:center;">90</td><td style="text-align:center;">0.1948</td></tr>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;"><strong>3</strong></td><td style="text-align:center;"><strong>3</strong></td><td style="text-align:center;"><strong>10</strong></td><td style="text-align:center;"><strong>10</strong></td><td style="text-align:center;"><strong>100</strong></td><td style="text-align:center;"><strong>0.2165</strong></td></tr>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;">4</td><td style="text-align:center;">2</td><td style="text-align:center;">15</td><td style="text-align:center;">6</td><td style="text-align:center;">90</td><td style="text-align:center;">0.1948</td></tr>
+              <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);"><td style="text-align:center;">5</td><td style="text-align:center;">1</td><td style="text-align:center;">21</td><td style="text-align:center;">3</td><td style="text-align:center;">63</td><td style="text-align:center;">0.1364</td></tr>
+              <tr><td style="text-align:center;">6</td><td style="text-align:center;">0</td><td style="text-align:center;">28</td><td style="text-align:center;">1</td><td style="text-align:center;">28</td><td style="text-align:center;">0.0606</td></tr>
+            </tbody>
+          </table>
+          <p class="step"><strong>峰值</strong>在 \(q_{A}^{\ast}=3\)，\(\Omega_{\text{tot}}^{\max}=100\)，概率 \(P(3)=100/462=21.65\%\)。</p>
+          <p class="step"><strong>理论预测</strong>：\(q_{A}^{\ast}=\dfrac{N_{A}}{N_{A}+N_{B}}\cdot q_{\text{tot}}=\dfrac{3}{6}\cdot 6=3\) ✓。</p>
+          <p class="step"><strong>总数核对</strong>：\(\sum_{q_{A}}\Omega_{\text{tot}}=28+63+90+100+90+63+28=\mathbf{462}\)。</p>
+          <p class="step">而 \(\Omega(N_{A}+N_{B},q_{\text{tot}})=\Omega(6,6)=\dfrac{(6+6-1)!}{6!\cdot 5!}=\dfrac{11!}{720\cdot 120}=\dfrac{39\,916\,800}{86\,400}=\mathbf{462}\) ✓。</p>
+          <p class="step">这并非巧合——把所有能量分割合起来考虑，等价于把两固体视为一个组合的孤立系统（\(N_{A}+N_{B}=6\) 个振子、\(q_{\text{tot}}=6\) 个量子）。这是有力的<strong>一致性检查</strong>。</p>
+          <p class="step"><strong>涨落可观</strong>：峰值仅 21.6%，非平衡分割（如 \(q_{A}=2,4\)）各占 19.5%。这样的「小系统」会显著偏离最概然态——第二定律在此只是统计倾向，不「绝对」。</p>
+          <p><span class="ans">答案：峰值在 \(q_{A}^{\ast}=3\)（\(\Omega_{\text{tot}}=100\)，\(P=21.65\%\)）；\(\sum\Omega_{\text{tot}}=462=\Omega(6,6)\) ✓。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 1 摩尔爱因斯坦固体的熵 \(S=k_{B}\ln\Omega\) vs 热力学熵</h4>
+        <p class="example-statement">考虑 1 摩尔 <strong>1 维</strong>爱因斯坦固体（\(N=N_{A}=6.022\times 10^{23}\) 个振子），爱因斯坦特征温度 \(\Theta_{E}=200\,\mathrm{K}\)，温度 \(T=600\,\mathrm{K}\)。求每振子平均量子数 \(x=q/N\)、总能量 \(U\)、用 \(S=k_{B}\ln\Omega=N k_{B}[(1+x)\ln(1+x)-x\ln x]\) 计算熵，并与热力学公式对比。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（每振子量子数）：</strong>爱因斯坦模型给出平均占据数 \(x=\dfrac{1}{e^{\varepsilon/k_{B}T}-1}\)。这里 \(\dfrac{\varepsilon}{k_{B}T}=\dfrac{\Theta_{E}}{T}=\dfrac{200}{600}=\dfrac{1}{3}\)，故</p>
+          <p class="step">\(x=\dfrac{1}{e^{1/3}-1}=\dfrac{1}{1.395\,61-1}=\dfrac{1}{0.395\,61}=\mathbf{2.527\,8}\)。</p>
+          <p class="step"><strong>步骤 2（总能量）：</strong>\(q=xN=2.527\,8\times 6.022\times 10^{23}=1.522\times 10^{24}\)。</p>
+          <p class="step">\(\varepsilon=k_{B}\Theta_{E}=(1.380\,649\times 10^{-23})(200)=2.761\,\mathrm{J}\,\cdot\,10^{-21}\)。</p>
+          <p class="step">\(U=q\varepsilon=(1.522\times 10^{24})(2.761\times 10^{-21})=\mathbf{4\,203\,\mathrm{J/mol}}\)。</p>
+          <p class="step"><strong>步骤 3（每振子熵，统计公式）：</strong>用斯特林展开 \(\ln\Omega(N,q)\) 并除以 \(N\)，得到每振子熵（详见推导 8.B）：</p>
+          <div class="formula">\[ \frac{S}{N k_{B}}\;=\;(1+x)\ln(1+x)-x\ln x \]</div>
+          <p class="step">代入 \(x=2.527\,8\)：</p>
+          <p class="step">\((1+x)\ln(1+x)=3.527\,8\cdot\ln(3.527\,8)=3.527\,8\times 1.260\,34=4.446\,4\)。</p>
+          <p class="step">\(x\ln x=2.527\,8\cdot\ln(2.527\,8)=2.527\,8\times 0.927\,20=2.344\,2\)。</p>
+          <p class="step">差值：\(4.446\,4-2.344\,2=\mathbf{2.102\,3}\)。所以每摩尔：</p>
+          <p class="step">\(S=N k_{B}\cdot 2.102\,3=R\cdot 2.102\,3=(8.314)(2.102\,3)=\mathbf{17.49\,\mathrm{J/(mol\cdot K)}}\)。</p>
+          <p class="step"><strong>步骤 4（与热力学公式对照）：</strong>热力学中爱因斯坦固体的摩尔熵就是同一表达式 \(S=R[(1+x)\ln(1+x)-x\ln x]\)，其中 \(x=(e^{\Theta_{E}/T}-1)^{-1}\)。代入同样的 \(x=2.527\,8\)，得 \(S=17.49\,\mathrm{J/(mol\cdot K)}\) ✓。<strong>两者完全一致</strong>——这正是 \(S=k_{B}\ln\Omega\) 作为「桥梁」的力量：纯计数给出的熵与量热学给出的熵是同一个物理量。</p>
+          <p class="step"><strong>步骤 5（多重度）：</strong>每振子 \(\Omega_{\text{每site}}=e^{2.102\,3}=\mathbf{8.19}\)。总 \(\Omega=8.19^{N_{A}}\approx 10^{5.2\times 10^{23}}\)——一个无法写出的天文数字；但 \(\ln\Omega=2.102\,3\,N_{A}\) 完全可解，\(S=k_{B}\ln\Omega\) 把它压缩为 \(17.49\,\mathrm{J/(mol\cdot K)}\)。</p>
+          <p><span class="ans">答案：\(x=2.528\)、\(U=4\,203\,\mathrm{J/mol}\)、\(S=17.49\,\mathrm{J/(mol\cdot K)}\)（与热力学公式完全一致）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 斯特林近似的精度 Stirling's Approximation Accuracy</h4>
+        <p class="example-statement">对 \(N=10,100,1000\)，比较 \(\ln N!\) 的精确值与两种斯特林近似：(a) 主导阶 \(\ln N!\approx N\ln N-N\)；(b) 改进型 \(\ln N!\approx N\ln N-N+\tfrac12\ln(2\pi N)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>\(N=10\)：</strong>精确值 \(\ln(10!)=\ln(3\,628\,800)=\mathbf{15.104\,4}\)。</p>
+          <p class="step">(a) 主导阶：\(10\ln 10-10=23.025\,9-10=\mathbf{13.025\,9}\)，偏差 \(\mathbf{2.078\,5}\)（\(\mathbf{13.76\%}\)）。</p>
+          <p class="step">(b) 改进：加 \(\tfrac12\ln(2\pi\cdot 10)=\tfrac12\ln(62.832)=\tfrac12\cdot 4.140\,5=2.070\,3\)，得 \(13.025\,9+2.070\,3=\mathbf{15.096\,1}\)，偏差仅 \(0.008\,3\)（\(\mathbf{0.055\%}\)）。</p>
+          <p class="step"><strong>\(N=100\)：</strong>精确值 \(\ln(100!)\approx\mathbf{363.739\,4}\)。</p>
+          <p class="step">(a) \(100\ln 100-100=460.517-100=\mathbf{360.517\,0}\)，偏差 \(3.222\)（\(\mathbf{0.886\%}\)）。</p>
+          <p class="step">(b) 加 \(\tfrac12\ln(200\pi)=\tfrac12\cdot 6.442\,6=3.221\,3\)，得 \(\mathbf{363.738\,5}\)，偏差 \(0.001\)（\(\mathbf{0.000\,23\%}\)）。</p>
+          <p class="step"><strong>\(N=1000\)：</strong>精确值 \(\ln(1000!)\approx\mathbf{5\,912.128\,2}\)。</p>
+          <p class="step">(a) \(1000\ln 1000-1000=6\,907.755-1000=\mathbf{5\,907.755\,3}\)，偏差 \(4.37\)（\(\mathbf{0.074\%}\)）。</p>
+          <p class="step">(b) 加 \(\tfrac12\ln(2000\pi)=\tfrac12\cdot 8.745\,7=4.372\,8\)，得 \(\mathbf{5\,912.128\,1}\)，偏差 \(10^{-6}\) 量级（\(\mathbf{10^{-7}\%}\)）。</p>
+          <p class="step"><strong>结论：</strong>主导阶斯特林的<strong>相对误差</strong> \(\sim -\tfrac12\ln(2\pi N)/(N\ln N)\sim 1/N\) 量级；在 \(N\gtrsim 100\) 已足用于多数物理估计。但 \(N\lesssim 20\) 的小系统计算，必须加入 \(\tfrac12\ln(2\pi N)\) 修正——否则熵可能偏小几 percent。例 8.4 中 \(N\sim 10^{23}\)，主导阶已足够精确。</p>
+          <p><span class="ans">答案：\(N=10\):\(\,13.76\%\) vs \(0.055\%\)；\(N=100\):\(\,0.886\%\) vs \(0.000\,23\%\)；\(N=1000\):\(\,0.074\%\) vs \(\sim 10^{-7}\%\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「所有宏观态等概率」。</strong>错。基本假设是所有<strong>微观态</strong>等概率；宏观态的概率正比于它包含的微观态数 \(\Omega\)。包含 \(\Omega\) 最大的宏观态最概然——这正是「最概然宏观态 = \(\Omega\) 最大」原则的来源。</li>
+        <li><strong>「平衡时各子系统 \(\Omega\) 都最大」。</strong>错。平衡时是<strong>总</strong> \(\Omega_{\text{tot}}=\Omega_{A}\Omega_{B}\) 最大，<em>单个</em>子系统的 \(\Omega\) 通常<strong>不</strong>在最大值。例如冷固体 \(A\) 升温后 \(\Omega_{A}\) 增大、\(\Omega_{B}\) 减小，但乘积 \(\Omega_{\text{tot}}\) 在某个中间分割最大。</li>
+        <li><strong>把温度等同于能量。</strong>错。温度由 \(\partial S/\partial U=1/T\) 定义，是<strong>熵-能量曲线斜率的倒数</strong>。两系统接触时能量从高 \(T\) 流向低 \(T\)（使总 \(S\) 增加），而不是从「高 \(U\)」流向「低 \(U\)」。比热不同的两物体平衡时，\(T\) 相等但 \(U\) 通常差很多。</li>
+        <li><strong>对 \(N\lesssim 10\) 用主导阶斯特林 \(\ln N!\approx N\ln N-N\)。</strong>会得到 ~14% 的系统偏差。对 \(N\lesssim 100\) 的小系统，应使用改进型 \(\ln N!\approx N\ln N-N+\tfrac12\ln(2\pi N)\)。</li>
+        <li><strong>认为 \(S=k\ln\Omega\) 对小系统也「必然增加」。</strong>错。对小系统，熵涨落显著，第二定律只在<strong>统计意义</strong>上、且在 \(N\to\infty\) 的热力学极限下才「几乎绝对」。Fluctuation Theorem 甚至定量描述了短暂的反向熵减事件。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 1 摩尔顺磁体在零场的熵 Entropy of 1 mol Paramagnet at 50/50</summary>
+        <div class="hint">用渐近 \(\ln C(2m,m)\approx 2m\ln 2-\tfrac12\ln(\pi m)\)，并注意 \(S=k_{B}\ln\Omega=N k_{B}\cdot[\text{每site 熵}]\)。</div>
+        <div class="solution">
+          取 \(N=N_{A}=6.022\times 10^{23}\) 个自旋、\(n=N/2\)。每site 熵（用斯特林主导阶最方便）：
+          \(\dfrac{S}{N k_{B}}=\ln 2-\dfrac{1}{2N}\ln(\pi N/2)\to\ln 2\)（修正项 \(\sim 10^{-23}\)，可忽略）。
+          <br>故 \(S\approx N k_{B}\ln 2=R\ln 2=(8.314)(0.693\,1)=\mathbf{5.76\,\mathrm{J/(mol\cdot K)}}\)。
+          <br>这与"2 个等概率微观态/每site"的熵完全一致：\(S/N k_{B}=\ln 2\)。 <span class="ans">答：\(S=R\ln 2=5.76\,\mathrm{J/(mol\cdot K)}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 非对称组合：\(N_{A}=2,N_{B}=4,q_{\text{tot}}=8\)，求峰值 Find the Peak for an Asymmetric Pair</summary>
+        <div class="hint">理论 \(q_{A}^{\ast}=\dfrac{N_{A}}{N_{A}+N_{B}}\cdot q_{\text{tot}}\)。再枚举 \(\Omega_{\text{tot}}(q_{A})\) 找实际整数峰值。</div>
+        <div class="solution">
+          理论：\(q_{A}^{\ast}=\dfrac{2}{6}\cdot 8=\dfrac{8}{3}\approx 2.67\)。计算 \(\Omega(2,q_{A})=q_{A}+1\)（因 \(N=2\) 时 \(\Omega(2,q)=\tfrac{(q+1)!}{q!\cdot 1!}=q+1\)）与 \(\Omega(4,q_{B})=\tfrac{(q_{B}+3)!}{q_{B}!\cdot 3!}=C(q_{B}+3,3)\)：
+          <br>\(q_{A}=0:\,\Omega_{\text{tot}}=1\cdot C(11,3)=1\cdot 165=165\)
+          <br>\(q_{A}=1:\,2\cdot C(10,3)=2\cdot 120=240\)
+          <br>\(q_{A}=2:\,3\cdot C(9,3)=3\cdot 84=\mathbf{252}\) ← 峰值
+          <br>\(q_{A}=3:\,4\cdot C(8,3)=4\cdot 56=224\)
+          <br>\(q_{A}=4:\,5\cdot C(7,3)=5\cdot 35=175\)
+          <br>…继续递减。实际整数峰值在 \(q_{A}=2\)（\(\Omega_{\text{tot}}=252\)），与连续理论 \(2.67\) 最近整数。\(\sum\Omega_{\text{tot}}=165+240+252+224+175+120+70+32+9=1\,287=\Omega(6,8)\) ✓。 <span class="ans">答：峰值 \(q_{A}=2\)（\(\Omega_{\text{tot}}=252\)）；理论 \(q_{A}^{\ast}=2.67\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 由 \(\Omega_{\text{tot}}\) 最大化推导 \(T_{A}=T_{B}\) Derive Thermal Equilibrium</summary>
+        <div class="hint">在峰值处 \(dS_{\text{tot}}/dU_{A}=0\)，结合 \(1/T\equiv\partial S/\partial U\) 即得。</div>
+        <div class="solution">
+          孤立组合系统：\(U_{\text{tot}}=U_{A}+U_{B}\) 守恒，\(dU_{B}=-dU_{A}\)。最概然分割 → 总熵最大：
+          \(\dfrac{dS_{\text{tot}}}{dU_{A}}=\dfrac{\partial S_{A}}{\partial U_{A}}-\dfrac{\partial S_{B}}{\partial U_{B}}=0\Rightarrow\dfrac{\partial S_{A}}{\partial U_{A}}=\dfrac{\partial S_{B}}{\partial U_{B}}\)。
+          <br>代入统计定义 \(1/T\equiv\partial S/\partial U\)：\(\dfrac{1}{T_{A}}=\dfrac{1}{T_{B}}\Rightarrow\mathbf{T_{A}=T_{B}}\)。
+          <br>方向：若初始 \(T_{A}&lt;T_{B}\)（即 \(\partial S_{A}/\partial U_{A}&gt;\partial S_{B}/\partial U_{B}\)），微扰 \(dU_{A}&gt;0\)（能量流入 A）会使 \(dS_{\text{tot}}&gt;0\)，过程自发——直到 \(T_{A}=T_{B}\)。 <span class="ans">答：平衡条件即 \(T_{A}=T_{B}\)；能量从高 \(T\) 流向低 \(T\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 高温极限下 \(S=k\ln\Omega\) 与 \(U\approx NkT\) 自洽 High-T Limit Self-Consistency</summary>
+        <div class="hint">高温 \(x\gg 1\) 时 \(\ln(1+1/x)\approx 1/x\)，故 \(1/T\approx k_{B}/(\varepsilon x)\)。</div>
+        <div class="solution">
+          由推导 8.B：\(\dfrac{1}{T}=\dfrac{k_{B}}{\varepsilon}\ln\!\left(1+\dfrac{N}{q}\right)=\dfrac{k_{B}}{\varepsilon}\ln\!\left(1+\dfrac{1}{x}\right)\)。
+          <br>高温 \(x\gg 1\)：\(\ln(1+1/x)\approx 1/x\)，所以 \(T\approx\dfrac{\varepsilon x}{k_{B}}=\dfrac{\varepsilon q}{N k_{B}}=\dfrac{U}{N k_{B}}\)。
+          <br>故 \(U\approx N k_{B}T\)，这正是<strong>能量均分定理</strong>对 1 维谐振子（动能 + 势能各 \(\tfrac12 kT\)，共 \(kT\)/振子）的结果 ✓。
+          <br>对真实三维固体（\(3N\) 个振子）：\(U\approx 3NkT\)，\(C_{V}=dU/dT=3Nk_{B}=3R\)——这是<strong>杜隆-珀替定律</strong> (Dulong-Petit)。 <span class="ans">答：高温极限 \(U\to NkT\)（1D）或 \(3NkT\)（3D），与均分定理一致。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>两个爱因斯坦固体热接触 Two Einstein Solids in Thermal Contact。</strong>实时绘制 \(P(q_{A})=\Omega_{A}(q_{A})\cdot\Omega_{B}(q_{\text{tot}}-q_{A})/\sum\Omega_{\text{tot}}\)（蓝/红柱状图）。调节 \(N_{A}\)、\(N_{B}\)、\(q_{\text{tot}}\) 三个滑块，观察：<strong>(1)</strong> 峰值位置恒在理论平衡 \(q_{A}^{\ast}=\dfrac{N_{A}}{N_{A}+N_{B}}\,q_{\text{tot}}\)（绿色虚线）处；<strong>(2)</strong> 当 \(N\) 或 \(q_{\text{tot}}\) 增大时，分布<strong>急剧变窄</strong>——这就是第二定律在宏观极限下「几乎绝对」的来源。试试：从 \(N_{A}=N_{B}=3,\,q_{\text{tot}}=6\)（与例 3 对应，峰值概率仅 22%）开始，把两个 \(N\) 都滑到 50，再滑到 100——峰值相对宽度 \(\sigma/q_{\text{tot}}\) 从 ~27% 跌至 ~3%，分布收缩成一根细针。底部标注外推到 \(N\sim 6\times 10^{23}\)（1 摩尔）时的相对宽度。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="760" height="400"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          var DEFAULTS = { NA: 6, NB: 6, qTotal: 30 };
+          var params = { NA: DEFAULTS.NA, NB: DEFAULTS.NB, qTotal: DEFAULTS.qTotal };
+
+          // ---- Lanczos log-gamma (Γ(n+1)=n!, so logGamma(n+1)=ln(n!)) ----
+          function logGamma(x) {
+            var g = 7;
+            var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+                     771.32342877765313, -176.61502916214059, 12.507343278686905,
+                     -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+            if (x < 0.5) {
+              return Math.log(Math.PI / Math.sin(Math.PI * x)) - logGamma(1 - x);
+            }
+            x -= 1;
+            var a = c[0];
+            var t = x + g + 0.5;
+            for (var i = 1; i < g + 2; i++) a += c[i] / (x + i);
+            return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+          }
+
+          // ln Ω(N,q) = ln[(q+N-1)!/(q!(N-1)!)] = lnΓ(q+N) - lnΓ(q+1) - lnΓ(N)
+          function logOmega(N, q) {
+            return logGamma(q + N) - logGamma(q + 1) - logGamma(N);
+          }
+
+          var cached = null;
+          function invalidate() { cached = null; }
+
+          function compute() {
+            var NA = params.NA, NB = params.NB, qT = params.qTotal;
+            var lnOmg = new Array(qT + 1);
+            for (var qa = 0; qa <= qT; qa++) {
+              lnOmg[qa] = logOmega(NA, qa) + logOmega(NB, qT - qa);
+            }
+            var lnMax = -Infinity, idxMax = 0;
+            for (var qa = 0; qa <= qT; qa++) {
+              if (lnOmg[qa] > lnMax) { lnMax = lnOmg[qa]; idxMax = qa; }
+            }
+            // Normalize via max-subtraction to avoid overflow
+            var sum = 0;
+            var probs = new Array(qT + 1);
+            for (var qa = 0; qa <= qT; qa++) {
+              probs[qa] = Math.exp(lnOmg[qa] - lnMax);
+              sum += probs[qa];
+            }
+            for (var qa = 0; qa <= qT; qa++) probs[qa] /= sum;
+            // mean & variance (in q_A units)
+            var mean = 0, m2 = 0;
+            for (var qa = 0; qa <= qT; qa++) {
+              mean += qa * probs[qa];
+              m2 += qa * qa * probs[qa];
+            }
+            var sigma = Math.sqrt(Math.max(0, m2 - mean * mean));
+            // ln of total Ω over all splits = lnΓ(qT+NA+NB) - lnΓ(qT+1) - lnΓ(NA+NB)
+            //   (sanity check: equals logOmega(NA+NB, qT))
+            var lnOmegaCombined = logOmega(NA + NB, qT);
+            return {
+              probs: probs, lnOmg: lnOmg, lnMax: lnMax, idxMax: idxMax,
+              mean: mean, sigma: sigma,
+              theoryQA: NA / (NA + NB) * qT,
+              lnOmegaCombined: lnOmegaCombined,
+              lnTotalOmega: lnMax + Math.log(sum),
+            };
+          }
+          function getDistribution() { if (!cached) cached = compute(); return cached; }
+
+          // plot region
+          var plotL = 56, plotR = W - 24, plotT = 110, plotB = H - 56;
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static plot — recomputed only on slider change */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var d = getDistribution();
+              var qT = params.qTotal;
+
+              // ---- auto-scale y ----
+              var pMaxObs = 0;
+              for (var qa = 0; qa <= qT; qa++) pMaxObs = Math.max(pMaxObs, d.probs[qa]);
+              var yMax = Math.max(0.05, Math.ceil(pMaxObs * 20) / 20); // round up to 0.05
+
+              function toX(qa) { return plotL + (qT === 0 ? 0.5 : (qa / qT)) * (plotR - plotL); }
+              function toY(p)  { return plotB - (p / yMax) * (plotB - plotT); }
+
+              // ---- ±σ band ----
+              ctx.save();
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.10;
+              var bandL = toX(Math.max(0, d.idxMax - d.sigma));
+              var bandR = toX(Math.min(qT, d.idxMax + d.sigma));
+              ctx.fillRect(bandL, plotT, bandR - bandL, plotB - plotT);
+              ctx.restore();
+
+              // ---- horizontal grid + y ticks ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.45;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var i = 0; i <= 5; i++) {
+                var p = (i / 5) * yMax;
+                var y = toY(p);
+                ctx.beginPath(); ctx.moveTo(plotL, y); ctx.lineTo(plotR, y); ctx.stroke();
+                ctx.fillText(p.toFixed(2), plotL - 6, y);
+              }
+              ctx.restore();
+
+              // ---- x ticks ----
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              var xStep = Math.max(1, Math.ceil(qT / 10));
+              for (var qa = 0; qa <= qT; qa += xStep) {
+                ctx.fillText(String(qa), toX(qa), plotB + 4);
+              }
+              ctx.restore();
+
+              // ---- axis frame ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB); ctx.lineTo(plotR, plotB);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- axis labels ----
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('q_A — 固体 A 的能量子数  (quanta in solid A)',
+                           (plotL + plotR) / 2, plotB + 26);
+              ctx.translate(16, (plotT + plotB) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('P(q_A)  概率 / probability', 0, 0);
+              ctx.restore();
+
+              // ---- bars ----
+              var barW = (plotR - plotL) / Math.max(1, qT + 1);
+              for (var qa = 0; qa <= qT; qa++) {
+                var xCenter = toX(qa);
+                var xLeft = xCenter - barW / 2;
+                var p = d.probs[qa];
+                var y = toY(p);
+                var h = plotB - y;
+                ctx.save();
+                if (qa === d.idxMax) {
+                  ctx.fillStyle = PS.colors.accent;     // peak bar — red
+                } else {
+                  ctx.fillStyle = PS.colors.primary;    // others — blue
+                  ctx.globalAlpha = 0.78;
+                }
+                ctx.fillRect(xLeft, y, Math.max(1, barW - 0.4), h);
+                ctx.restore();
+              }
+
+              // ---- theoretical equilibrium line (dashed green) ----
+              var xTh = toX(d.theoryQA);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.6;
+              ctx.setLineDash([5, 4]);
+              ctx.beginPath(); ctx.moveTo(xTh, plotT); ctx.lineTo(xTh, plotB); ctx.stroke();
+              ctx.restore();
+
+              // ---- title + parameter readout ----
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('两个爱因斯坦固体热接触  Two Einstein Solids in Thermal Contact', plotL, 12);
+
+              ctx.font = '12px system-ui, sans-serif';
+              var relSig = (d.sigma / Math.max(1, qT) * 100);
+              // scaling to Avogadro: σ/q_tot ∝ 1/√N, so multiply by √((N_A+N_B)/N_Avo)
+              var avogadroScale = Math.sqrt((params.NA + params.NB) / 6.022e23);
+              var avogadroRel = relSig * avogadroScale;
+              ctx.fillText('N_A = ' + params.NA + '    N_B = ' + params.NB +
+                           '    q_total = ' + qT +
+                           '    （每振子能量子 x_A = ' + (d.idxMax / params.NA).toFixed(2) +
+                           '，  x_B = ' + ((qT - d.idxMax) / params.NB).toFixed(2) + '）',
+                           plotL, 36);
+
+              ctx.fillText('理论平衡 theoretical q_A* = ' + d.theoryQA.toFixed(2) +
+                           '   实际峰值 actual peak = ' + d.idxMax +
+                           '   σ = ' + d.sigma.toFixed(2) +
+                           '   σ/q_total = ' + relSig.toFixed(2) + '%',
+                           plotL, 56);
+
+              ctx.fillText('ln Ω_total(max) = ' + d.lnMax.toFixed(3) +
+                           '   →  S/(N_A+N_B)k_B = ' +
+                           (d.lnMax / (params.NA + params.NB)).toFixed(4) +
+                           '   per oscillator    |    总 ΣΩ = Ω(' +
+                           (params.NA + params.NB) + ',' + qT + '), ln = ' +
+                           d.lnOmegaCombined.toFixed(3),
+                           plotL, 76);
+
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.fillText('外推到 1 摩尔 (N ~ 6×10²³)：σ/q_total ~ ' +
+                           avogadroRel.toExponential(2) + '% — 第二定律在宏观极限下「几乎绝对」',
+                           plotL, 96);
+              ctx.restore();
+
+              // ---- legend (small, inside plot top-right) ----
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var lx = plotR - 188, ly = plotT + 8;
+              function leg(color, text) {
+                ctx.fillStyle = color;
+                ctx.fillRect(lx, ly + 3, 10, 10);
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(text, lx + 16, ly);
+                ly += 16;
+              }
+              leg(PS.colors.accent,  '峰值 peak q_A = ' + d.idxMax);
+              leg(PS.colors.primary, '其他 q_A');
+              leg(PS.colors.accent2, '理论 q_A* 与 ±σ 带');
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'NA',     label: 'N_A (固体 A 振子数)',     min: 1, max: 100, step: 1, value: DEFAULTS.NA },
+            { type: 'slider', key: 'NB',     label: 'N_B (固体 B 振子数)',     min: 1, max: 100, step: 1, value: DEFAULTS.NB },
+            { type: 'slider', key: 'qTotal', label: 'q_total (总能量子数)',     min: 4, max: 200, step: 1, value: DEFAULTS.qTotal },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('NA',     function (v) { params.NA = v;     invalidate(); });
+          ctl.on('NB',     function (v) { params.NB = v;     invalidate(); });
+          ctl.on('qTotal', function (v) { params.qTotal = v; invalidate(); });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-8 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.NA);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.NB);
+            if (sliders[2]) setSlider(sliders[2], DEFAULTS.qTotal);
+            invalidate();
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>微观态 vs 宏观态</strong>：微观态是完整力学描述；宏观态由宏观量指定。一个宏观态对应 \(\Omega\) 个微观态。\(\Omega\) 越大越概然。</li>
+        <li><strong>基本假设</strong>：孤立系统的所有可达微观态<strong>等概率</strong>（微正则系综）。\(P(\text{宏观态})=\Omega/\Omega_{\text{tot}}\)。</li>
+        <li><strong>玻尔兹曼熵</strong> \(S=k_{B}\ln\Omega\) —— 刻在 Boltzmann 墓碑上，是统计力学通往热力学的桥梁。</li>
+        <li><strong>计数公式</strong>：硬币/双态顺磁体 \(\Omega(N,n)=\binom{N}{n}\)，总数 \(2^{N}\)，最概然 \(n=N/2\)；爱因斯坦固体 \(\Omega(N,q)=\binom{q+N-1}{q}=\dfrac{(q+N-1)!}{q!(N-1)!}\)（星与条计数）。</li>
+        <li><strong>两系统热接触</strong>：\(\Omega_{\text{tot}}(U_{A})=\Omega_{A}(U_{A})\cdot\Omega_{B}(U_{\text{tot}}-U_{A})\)，平衡时取最大；对应 \(dS_{A}/dU_{A}=dS_{B}/dU_{B}\)。</li>
+        <li><strong>温度的统计定义</strong>：\(\dfrac{1}{T}\equiv\left(\dfrac{\partial S}{\partial U}\right)_{V,N}\)。能量从高 \(T\) 流向低 \(T\)，本质是总 \(\Omega\) 追求最大。</li>
+        <li><strong>第二定律涌现</strong>：相对峰宽 \(\sigma/q_{\text{tot}}\sim 1/\sqrt{N}\)，\(N\to\infty\) 时分布收缩为细针，第二定律在宏观极限下「几乎绝对」。</li>
+        <li><strong>斯特林近似</strong>：\(\ln N!\approx N\ln N-N\)（主导阶，\(N\gtrsim 100\) 足够）；\(\ln N!\approx N\ln N-N+\tfrac12\ln(2\pi N)\)（改进型，\(N\geq 10\) 已准确到 0.06%）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;S=k_{B}\ln\Omega,\quad \Omega(N,n)=\binom{N}{n},\quad \Omega(N,q)=\binom{q+N-1}{q},\quad \Omega_{\text{tot}}=\Omega_{A}\,\Omega_{B}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\frac{1}{T}\equiv\left(\frac{\partial S}{\partial U}\right)_{\!V,N},\qquad q_{A}^{\ast}=\frac{N_{A}}{N_{A}+N_{B}}\,q_{\text{tot}},\qquad \ln N!\approx N\ln N-N+\tfrac12\ln(2\pi N)\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

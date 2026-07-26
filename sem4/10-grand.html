@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 巨正则系综·化学势 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第10章 · 统计力学 Statistical Mechanics</p>
+      <h1>巨正则系综·化学势 <span class="en-title">Grand Canonical Ensemble &amp; Chemical Potential</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>说明为何需要<strong>巨正则系综</strong> (grand canonical ensemble)——一个既能与储库交换<strong>能量</strong>、又能交换<strong>粒子</strong> \(N\) 的开放系统，由 \((T,\mu,V)\) 指定；并写出其概率权重 \(P_i\propto e^{-\beta(E_i-\mu N_i)}\)。</li>
+        <li>定义<strong>巨配分函数</strong> (grand partition function) \(\;\mathcal{Z}_{G}=\sum_{i}e^{-\beta(E_i-\mu N_i)}\)，并由它导出 \(\langle N\rangle=(1/\beta)\,\partial\ln\mathcal{Z}_{G}/\partial\mu\)、\(\langle E\rangle=-(\partial\ln\mathcal{Z}_{G}/\partial\beta)+\mu\langle N\rangle\)。</li>
+        <li>导出<strong>粒子数涨落</strong> \(\langle(\Delta N)^{2}\rangle=k_{B}T\,(\partial\langle N\rangle/\partial\mu)_{T,V}\)，证明对理想气体它化为泊松值 \(\langle(\Delta N)^{2}\rangle=\langle N\rangle\)，故相对涨落 \(\sim 1/\sqrt{\langle N\rangle}\) 在宏观极限下可忽略。</li>
+        <li>解释<strong>化学势</strong> \(\mu\) 的物理含义：在恒定 \(T,V\) 下向系统加入一个粒子所付出的<strong>自由能代价</strong>，\(\;\mu=(\partial F/\partial N)_{T,V}\)；并论证两相/两组分平衡时 \(\mu\) 相等——这正是相平衡与化学平衡的判据。</li>
+        <li>由巨正则处理单个量子态导出 <strong>Fermi–Dirac</strong> 与 <strong>Bose–Einstein</strong> 平均占据数公式（第 11 章预览），并指出玻色子必有 \(\mu\le\epsilon_{0}\)。</li>
+        <li>应用巨正则方法求解实际问题：理想气体的 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)、<strong>Langmuir 吸附等温线</strong>、液体–蒸气平衡（饱和蒸气压）以及小体积中的粒子数涨落。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 从微正则/正则到巨正则 — 为什么要开放粒子数？ From Canonical to Grand Canonical</h3>
+      <p>第 8 章我们处理<strong>孤立系统</strong>（\(U,V,N\) 都固定，微正则系综 microcanonical ensemble）；第 9 章处理<strong>闭合但热接触</strong>的系统（\(T,V,N\) 固定，正则系综 canonical ensemble）。但许多真实系统是<strong>开放的</strong> (open)：与储库既交换能量又交换粒子。例：</p>
+      <ul>
+        <li>液体与其蒸气平衡的一小片表面（分子蒸发/凝聚）；</li>
+        <li>晶体表面吸附气体分子（吸附/脱附）；</li>
+        <li>半导体导带中的电子（与金属接触交换电子）；</li>
+        <li>化学反应中某一组分（反应改变 \(N\)）。</li>
+      </ul>
+      <p>对于这些情形，正确的系综是<strong>巨正则系综</strong> (grand canonical ensemble)：系统 \(S\) 与一个极大的储库 \(R\) 接触，储库 impose 了它的 \(T\) 和 \(\mu\)（注意：储库的 \(\mu\) 等于平衡时系统的 \(\mu\)）。系统的 \(N\) 与 \(E\) 都可涨落，由 \(T,V,\mu\) 三个参数指定。</p>
+      <div class="key-terms">grand canonical ensemble (巨正则系综), open system (开放系统), reservoir (储库/热源/粒子源), chemical potential (化学势)</div>
+
+      <h3>2. 巨正则概率权重 — 直观推导 The Grand-Canonical Weight</h3>
+      <p>把 \((S+R)\) 视为孤立，总能量 \(U_{\text{tot}}\)、总粒子数 \(N_{\text{tot}}\) 守恒。当 \(S\) 处于微观态 \(i\)（能量 \(E_i\)、粒子数 \(N_i\)）时，储库剩下 \(U_{\text{tot}}-E_i\)、\(N_{\text{tot}}-N_i\)。由基本假设，概率正比于储库的多重度 \(\Omega_R\)：</p>
+      <div class="formula">\[ P_i \;\propto\; \Omega_R(U_{\text{tot}}-E_i,\;N_{\text{tot}}-N_i). \]</div>
+      <p>由于 \(S\ll R\)，把 \(\ln\Omega_R=S_R/k_B\) 在 \((U_{\text{tot}},N_{\text{tot}})\) 处展开到一阶。利用热力学恒等式 \(dS=(1/T)\,dU+(p/T)\,dV-(\mu/T)\,dN\)（即 \(\partial S/\partial U=1/T\)，\(\partial S/\partial N=-\mu/T\)）：</p>
+      <div class="formula">\[ S_R(U_{\text{tot}}-E_i,N_{\text{tot}}-N_i)\;\approx\;S_R^{\max}-\frac{E_i}{T}+\frac{\mu N_i}{T}\;=\;S_R^{\max}-\frac{E_i-\mu N_i}{T}. \]</div>
+      <p>取指数便得 <strong>Gibbs 巨正则权重</strong>（\(\beta=1/(k_BT)\)）：</p>
+      <div class="formula">\[ \boxed{\;P_i\;=\;\frac{1}{\mathcal{Z}_{G}}\,e^{-\beta\,(E_i-\mu N_i)}\;,\qquad \mathcal{Z}_{G}(T,V,\mu)\;=\;\sum_{i}e^{-\beta(E_i-\mu N_i)}\;}\ \] </div>
+      <p>这里求和遍历<strong>所有微观态</strong>（不同 \(N\) 也分别计入）。量 \(e^{-\beta(E_i-\mu N_i)}\) 又叫 <strong>Gibbs 因子</strong>；正则权重 \(e^{-\beta E_i}\) 是它在 \(\mu=0\) 或 \(N\) 固定时的特例。归一化系数 \(\mathcal{Z}_{G}\) 即<strong>巨配分函数</strong> (grand partition function)。</p>
+      <div class="key-terms">Gibbs factor (Gibbs 因子), grand partition function (巨配分函数), fugacity (逸度 \(z\equiv e^{\beta\mu}\))</div>
+
+      <h3>3. 由 \(\mathcal{Z}_{G}\) 求平均 — \(\langle N\rangle,\langle E\rangle\) 与巨热力学势 \(\Omega_G\) Averages from \(\mathcal{Z}_{G}\)</h3>
+      <p>对 \(\mathcal{Z}_{G}=\sum_i e^{-\beta E_i+\beta\mu N_i}\) 求偏微商，立刻得到：</p>
+      <div class="formula">\[ \langle N\rangle \;=\;\frac{1}{\mathcal{Z}_{G}}\sum_i N_i\,e^{-\beta(E_i-\mu N_i)}\;=\;\frac{1}{\beta}\,\left(\frac{\partial\ln\mathcal{Z}_{G}}{\partial\mu}\right)_{\!T,V}\;=\;k_BT\,\left(\frac{\partial\ln\mathcal{Z}_{G}}{\partial\mu}\right)_{\!T,V} \]</div>
+      <div class="formula">\[ \langle E\rangle-\mu\langle N\rangle\;=\;-\left(\frac{\partial\ln\mathcal{Z}_{G}}{\partial\beta}\right)_{\!\mu,V}\qquad\Longrightarrow\qquad \langle E\rangle=-\left(\frac{\partial\ln\mathcal{Z}_{G}}{\partial\beta}\right)_{\!\mu,V}+\mu\langle N\rangle \]</div>
+      <p>定义<strong>巨热力学势</strong> (grand potential) \(\;\Omega_G\equiv -k_BT\ln\mathcal{Z}_{G}\)。它的热力学意义是 \(\Omega_G=F-\mu\langle N\rangle=U-TS-\mu\langle N\rangle\)。由 Euler 关系 \(U=TS-pV+\mu N\)，对理想流体 \(\Omega_G=-pV\)（一个非常有用的恒等式，见例 10.5）。</p>
+      <div class="formula">\[ \boxed{\;\Omega_G(T,V,\mu)\;=\;-k_BT\,\ln\mathcal{Z}_{G}\;=\;-pV\quad\text{(单组分理想流体)},\qquad S=-\!\left(\frac{\partial\Omega_G}{\partial T}\right)_{\!V,\mu}\!,\;\;p=-\!\left(\frac{\partial\Omega_G}{\partial V}\right)_{\!T,\mu}\!\!,\;\;\langle N\rangle=-\!\left(\frac{\partial\Omega_G}{\partial\mu}\right)_{\!T,V}\!\!\!\!\!\!\quad} \]</div>
+      <div class="key-terms">grand potential (巨热力学势), Euler relation (Euler 关系), thermodynamic potentials (热力学势)</div>
+
+      <h3>4. 粒子数涨落 — 为什么宏观系统「实际上」N 固定 Number Fluctuations</h3>
+      <p>对 \(\langle N\rangle=(1/\beta\mathcal{Z}_{G})(\partial\mathcal{Z}_{G}/\partial\mu)\) 再求一次 \(\mu\) 的偏微商，得到经典巨正则涨落公式：</p>
+      <div class="formula">\[ \boxed{\;\langle(\Delta N)^{2}\rangle\;\equiv\;\langle N^{2}\rangle-\langle N\rangle^{2}\;=\;k_BT\,\left(\frac{\partial\langle N\rangle}{\partial\mu}\right)_{\!T,V}\;} \]</div>
+      <p>对<strong>经典理想气体</strong>，由例 10.1 \(\langle N\rangle=V e^{\beta\mu}/\lambda_{\text{th}}^{3}\)，求偏微商得 \(\partial\langle N\rangle/\partial\mu=\beta\langle N\rangle\)，代入：</p>
+      <div class="formula">\[ \langle(\Delta N)^{2}\rangle\;=\;\langle N\rangle\qquad\text{(理想气体 → 泊松分布 Poisson)} \]</div>
+      <p>即 \(N\) 服从泊松分布，标准差 \(\sigma_N=\sqrt{\langle N\rangle}\)，<strong>相对涨落</strong>：</p>
+      <div class="formula">\[ \frac{\sigma_N}{\langle N\rangle}\;=\;\frac{1}{\sqrt{\langle N\rangle}}\;\;\xrightarrow{\;\langle N\rangle\sim 10^{23}\;}\;\;10^{-11.5}. \]</div>
+      <p>这就是为何在宏观系统中，「正则系综固定 \(N\)」与「巨正则系综 \(\langle N\rangle\) 自洽」给出完全相同的结果——粒子数涨落比 \(10^{-11}\) 还小。但对纳米尺度的小体积（如细胞器、纳米孔、单分子吸附位点），涨落可以达百分之几十，必须用巨正则处理（见例 10.4）。</p>
+      <div class="key-terms">number fluctuation (粒子数涨落), Poisson distribution (泊松分布), relative fluctuation (相对涨落)</div>
+
+      <h3>5. 化学势 \(\mu\) 究竟是什么？ What Exactly <em>Is</em> \(\mu\)?</h3>
+      <p>从定义出发：在<strong>恒温恒容</strong>下加入 \(dN\) 个粒子，Helmholtz 自由能 \(F=U-TS\) 增加多少？由 \(dF=-S\,dT-p\,dV+\mu\,dN\)，得：</p>
+      <div class="formula">\[ \boxed{\;\mu\;\equiv\;\left(\frac{\partial F}{\partial N}\right)_{\!T,V}\;=\;-T\!\left(\frac{\partial S}{\partial N}\right)_{\!U,V}\;\;} \]</div>
+      <p>即<strong>\(\mu\) 是在 \(T,V\) 不变下，每加入一个粒子所付出的自由能代价</strong>。它<strong>不是</strong>单个粒子的能量（常见误解），而是一个<strong>热力学势对 \(N\) 的偏微商</strong>——既有能量贡献，也有熵贡献。例如理想气体 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)（例 10.1），低密度下 \(n\to 0\)，\(\mu\to -\infty\)：加入粒子主要「释放」巨大的平动熵，所以自由能<strong>降低</strong>。</p>
+      <p>对其他热力学势，\(\mu\) 同样是「\(N\) 的共轭」：\(dG=-S\,dT+V\,dp+\mu\,dN\)，故 \(\mu=(\partial G/\partial N)_{T,p}\)；在 \(T,p\) 恒定时 \(\mu\) 就是<strong>摩尔 Gibbs 自由能</strong> \(G_m\)（这正是化学势名字的由来——「化学」反应里它是 \(N\) 的驱动力）。</p>
+      <div class="key-terms">Helmholtz free energy (Helmholtz 自由能 \(F\)), Gibbs free energy (Gibbs 自由能 \(G\)), conjugate variable (共轭变量)</div>
+
+      <h3>6. \(\mu\) 平衡判据 — 相平衡与化学平衡 \(\mu\)-Equalization in Equilibrium</h3>
+      <p>设两相 \(\alpha,\beta\)（如液体与蒸气）在恒温恒压下交换粒子。系统总 Gibbs 自由能 \(G=G_\alpha(N_\alpha)+G_\beta(N_\beta)\)，\(N_\alpha+N_\beta\) 固定。平衡条件 \(dG=0\)：</p>
+      <div class="formula">\[ dG=\mu_\alpha\,dN_\alpha+\mu_\beta\,dN_\beta=(\mu_\alpha-\mu_\beta)\,dN_\alpha=0\quad\Longrightarrow\quad \boxed{\;\mu_\alpha=\mu_\beta\;} \]</div>
+      <p>方向：若 \(\mu_\alpha>\mu_\beta\)，粒子从 \(\alpha\) 流向 \(\beta\)（\(dN_\alpha<0\)）使 \(dG<0\)，过程自发。<strong>平衡时各相 \(\mu\) 相等</strong>，正如热平衡时各相 \(T\) 相等。例 10.3 用此判据定量推出水的饱和蒸气压。</p>
+      <p>对化学反应 \(\nu_A A+\nu_B B\rightleftharpoons \nu_C C+\nu_D D\)，类似推导给出 <strong>反应平衡判据</strong> \(\sum_i \nu_i\mu_i=0\)（反应商与平衡常数由此而来）。这是化学势的核心应用。</p>
+      <div class="key-terms">phase equilibrium (相平衡), chemical equilibrium (化学平衡), reaction quotient (反应商), saturation vapor pressure (饱和蒸气压)</div>
+
+      <h3>7. Fermi–Dirac &amp; Bose–Einstein — 第 11 章预览 FD &amp; BE as Grand-Canonical Single-State Problems</h3>
+      <p>把<strong>一个量子态</strong>（能级 \(\epsilon\)）当成它自己的小「系统」，与粒子储库交换占据数。该态可被占据 \(n\) 次：</p>
+      <ul>
+        <li><strong>费米子</strong> (fermion) — Pauli 原理：\(n\in\{0,1\}\)。\(\;\mathcal{Z}_{\epsilon}=1+e^{-\beta(\epsilon-\mu)}\)。\(\langle n\rangle=e^{-\beta(\epsilon-\mu)}/\mathcal{Z}_{\epsilon}\)，给出 <strong>Fermi–Dirac 分布</strong>：</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\langle n_\epsilon\rangle_{\text{FD}}\;=\;\frac{1}{e^{\beta(\epsilon-\mu)}+1}\;} \]</div>
+      <ul>
+        <li><strong>玻色子</strong> (boson) — \(n\in\{0,1,2,\dots\}\)。\(\;\mathcal{Z}_{\epsilon}=\sum_{n=0}^{\infty}e^{-\beta n(\epsilon-\mu)}=\dfrac{1}{1-e^{-\beta(\epsilon-\mu)}}\)（几何级数，要求 \(\epsilon>\mu\)）。给出 <strong>Bose–Einstein 分布</strong>：</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\langle n_\epsilon\rangle_{\text{BE}}\;=\;\frac{1}{e^{\beta(\epsilon-\mu)}-1}\;,\qquad \mu<\epsilon_{\min}\;\;\text{(玻色子)}\;} \]</div>
+      <p>对于 <strong>Langmuir 吸附位点</strong>，把 \(\epsilon\) 当作「占据态能级」（如 \(\epsilon=-\varepsilon\)，\(\varepsilon>0\) 为结合能），位点等价于「费米子态」（最多 1 个分子），立即得覆盖度 \(\theta=\langle n\rangle_{\text{FD}}\) —— 见仿真与例 10.2。<strong>注意：</strong>玻色子的 \(\mu\) 必须<strong>低于</strong>最低单粒子能级，否则占据数发散——这是 Bose–Einstein 凝聚的征兆（第 11 章）。</p>
+      <div class="key-terms">fermion (费米子), boson (玻色子), Pauli exclusion principle (Pauli 不相容原理), Fermi–Dirac distribution (费米–狄拉克分布), Bose–Einstein distribution (玻色–爱因斯坦分布)</div>
+
+      <h3>8. 应用速览 Applications at a Glance</h3>
+      <ul>
+        <li><strong>Langmuir 吸附等温线</strong> (Langmuir adsorption isotherm)：表面位点单层吸附，\(\theta=KP/(1+KP)\)。低 \(P\) 时 \(\theta\propto P\)（Henry 律），高 \(P\) 时 \(\theta\to 1\)（饱和）。例 10.2。</li>
+        <li><strong>饱和蒸气压</strong> (saturation vapor pressure)：液–气平衡 \(\mu_{\text{liq}}(T)=\mu_{\text{vap}}(T,P_{\text{sat}})\) 解出 \(P_{\text{sat}}(T)\)。例 10.3。</li>
+        <li><strong>半导体载流子浓度</strong> (semiconductor carrier density)：电子在导带底的分布由 \(\mu\)（此处常称 Fermi 能级 \(E_F\)）通过 FD 分布决定；\(n=N_C\,e^{-(E_C-E_F)/kT}\)，\(p=N_V\,e^{-(E_F-E_V)/kT}\)，乘积 \(np=N_C N_V e^{-E_g/kT}\)（质量作用律）。</li>
+        <li><strong>渗透压</strong> (osmotic pressure)、<strong>化学电池电动势</strong> (Nernst equation)、<strong>合金相图</strong> 等都依赖 \(\mu\) 平衡。</li>
+      </ul>
+      <div class="key-terms">Langmuir isotherm (Langmuir 等温线), Henry's law (Henry 律), law of mass action (质量作用律), Fermi level (Fermi 能级)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 10.A — 巨正则权重的严格推导 Strict Derivation of \(e^{-\beta(E-\mu N)}\)</h3>
+      <p class="step"><strong>步骤 1（孤立组合系统）：</strong>系统 \(S\) 与极大储库 \(R\) 热+粒子接触，组合 \((S+R)\) 孤立。\(U_{\text{tot}}=E_i+U_R\)、\(N_{\text{tot}}=N_i+N_R\) 都守恒。由微正则基本假设：</p>
+      <div class="formula">\[ P_i\;=\;\frac{\Omega_R(U_{\text{tot}}-E_i,\,N_{\text{tot}}-N_i)}{\displaystyle\sum_j\Omega_R(U_{\text{tot}}-E_j,\,N_{\text{tot}}-N_j)}. \]</div>
+      <p class="step"><strong>步骤 2（储库熵展开）：</strong>取 \(S_R=k_B\ln\Omega_R\)，因 \(E_i,N_i\ll U_{\text{tot}},N_{\text{tot}}\)，Taylor 展开到一阶：</p>
+      <div class="formula">\[ S_R(U_{\text{tot}}-E_i,N_{\text{tot}}-N_i)\;\approx\;S_R^{\max}-\left(\frac{\partial S_R}{\partial U_R}\right)E_i-\left(\frac{\partial S_R}{\partial N_R}\right)N_i. \]</div>
+      <p class="step"><strong>步骤 3（识别 \(\partial S/\partial U\) 与 \(\partial S/\partial N\)）：</strong>由基本热力学恒等式（储库为简单流体）</p>
+      <div class="formula">\[ dU_R=T\,dS_R-p\,dV_R+\mu\,dN_R\quad\Longrightarrow\quad dS_R=\frac{1}{T}dU_R+\frac{p}{T}dV_R-\frac{\mu}{T}dN_R, \]</div>
+      <p class="step">故 \(\partial S_R/\partial U_R=1/T\)、\(\partial S_R/\partial N_R=-\mu/T\)（在 \(U,V\) 固定下）。代入步骤 2：</p>
+      <div class="formula">\[ S_R\;\approx\;S_R^{\max}-\frac{E_i}{T}-\!\left(-\frac{\mu}{T}\right)\!N_i\;=\;S_R^{\max}-\frac{E_i-\mu N_i}{T}. \]</div>
+      <p class="step"><strong>步骤 4（取指数）：</strong>\(\Omega_R=e^{S_R/k_B}=e^{S_R^{\max}/k_B}\cdot e^{-\beta(E_i-\mu N_i)}\)，其中 \(\beta=1/(k_BT)\)。指数前因子与 \(i\) 无关，归一化吸收：</p>
+      <div class="formula">\[ \boxed{\;P_i=\frac{1}{\mathcal{Z}_{G}}e^{-\beta(E_i-\mu N_i)}\;,\qquad \mathcal{Z}_{G}=\sum_i e^{-\beta(E_i-\mu N_i)}\;}\ \] </div>
+      <p class="step"><strong>步骤 5（验证正则为特例）：</strong>若系统粒子数固定为 \(N_0\)，求和只在 \(N_i=N_0\) 的态上进行，Gibbs 因子中 \(e^{\beta\mu N_0}\) 提出求和号，\(\mathcal{Z}_{G}=e^{\beta\mu N_0}Z(T,V,N_0)\)；归一化后得正则分布 \(P_i=e^{-\beta E_i}/Z\) ✓。</p>
+
+      <h3>推导 10.B — \(\langle N\rangle\) 与 \(\langle(\Delta N)^2\rangle\) 的微商规则 Derivative Idioms</h3>
+      <p class="step"><strong>步骤 1：</strong>定义 \(\mathcal{Z}_{G}=\sum_i e^{-\beta E_i+\beta\mu N_i}\)。对 \(\mu\) 求偏微商（\(\beta,V\) 固定）：</p>
+      <div class="formula">\[ \frac{\partial\mathcal{Z}_{G}}{\partial\mu}\;=\;\sum_i (\beta N_i)\,e^{-\beta(E_i-\mu N_i)}\;=\;\beta\,\mathcal{Z}_{G}\,\langle N\rangle \quad\Longrightarrow\quad \langle N\rangle=\frac{1}{\beta}\frac{\partial\ln\mathcal{Z}_{G}}{\partial\mu}. \]</div>
+      <p class="step"><strong>步骤 2：</strong>再求一次：</p>
+      <div class="formula">\[ \frac{\partial^{2}\ln\mathcal{Z}_{G}}{\partial\mu^{2}}\;=\;\frac{1}{\mathcal{Z}_{G}}\frac{\partial^{2}\mathcal{Z}_{G}}{\partial\mu^{2}}-\left(\frac{1}{\mathcal{Z}_{G}}\frac{\partial\mathcal{Z}_{G}}{\partial\mu}\right)^{\!2}=\beta^{2}\langle N^{2}\rangle-\beta^{2}\langle N\rangle^{2}=\beta^{2}\langle(\Delta N)^{2}\rangle. \]</div>
+      <p class="step">结合步骤 1 的 \(\langle N\rangle=(1/\beta)\partial\ln\mathcal{Z}_{G}/\partial\mu\)，两边乘 \(k_BT=1/\beta\)：</p>
+      <div class="formula">\[ \boxed{\;\langle(\Delta N)^{2}\rangle\;=\;k_BT\,\left(\frac{\partial\langle N\rangle}{\partial\mu}\right)_{\!T,V}\;=\;k_BT\,\frac{\partial^{2}\ln\mathcal{Z}_{G}}{\partial\mu^{2}\,\partial\mu}\;} \]</div>
+      <p class="step"><strong>步骤 3（涨落-响应关系）：</strong>上式右边的偏微商正是「压缩性型」响应。事实上，对单组分流体 \((\partial\langle N\rangle/\partial\mu)_{T,V}=(\langle N\rangle^{2}/V)\kappa_T\)（\(\kappa_T\) 为等温压缩率），所以</p>
+      <div class="formula">\[ \langle(\Delta N)^{2}\rangle\;=\;\frac{\langle N\rangle^{2}k_BT\kappa_T}{V}\;,\qquad \frac{\sigma_N}{\langle N\rangle}=\sqrt{\frac{k_BT\kappa_T}{V}}. \]</div>
+      <p class="step">体积越大，相对涨落越小（\(\propto 1/\sqrt{V}\)）；这与理想气体 \(1/\sqrt{\langle N\rangle}\) 等价（因 \(\langle N\rangle\propto V\)）。压缩率发散（临界点）时涨落发散——临界乳光现象的根源。</p>
+
+      <h3>推导 10.C — 单量子态 → Fermi–Dirac / Bose–Einstein FD &amp; BE from a Single State</h3>
+      <p class="step"><strong>步骤 1（巨配分函数）：</strong>把<strong>一个</strong>能量 \(\epsilon\) 的量子态当作系统。占据数为 \(n\)，能量 \(E_n=n\epsilon\)，粒子数 \(N_n=n\)。该态的巨配分函数：</p>
+      <div class="formula">\[ \mathcal{Z}_{\epsilon}\;=\;\sum_{n}e^{-\beta(n\epsilon-\mu n)}\;=\;\sum_{n}e^{-\beta n(\epsilon-\mu)}. \]</div>
+      <p class="step"><strong>步骤 2（费米子）：</strong>Pauli 不相容 → \(n=0,1\)。\(\mathcal{Z}_{\epsilon}=1+e^{-\beta(\epsilon-\mu)}\)。平均占据：</p>
+      <div class="formula">\[ \langle n\rangle_{\text{FD}}\;=\;\frac{0\cdot 1+1\cdot e^{-\beta(\epsilon-\mu)}}{\mathcal{Z}_{\epsilon}}\;=\;\frac{1}{e^{\beta(\epsilon-\mu)}+1}. \]</div>
+      <p class="step"><strong>步骤 3（玻色子）：</strong>\(n=0,1,2,\dots\)，无穷几何级数。当 \(\epsilon>\mu\)（即 \(e^{-\beta(\epsilon-\mu)}<1\)）时收敛：</p>
+      <div class="formula">\[ \mathcal{Z}_{\epsilon}\;=\;\frac{1}{1-e^{-\beta(\epsilon-\mu)}}. \]</div>
+      <p class="step">用 \(\langle n\rangle=(1/\beta)\partial\ln\mathcal{Z}_{\epsilon}/\partial\mu\)，注意 \(\ln\mathcal{Z}_{\epsilon}=-\ln(1-e^{-\beta(\epsilon-\mu)})\)：</p>
+      <div class="formula">\[ \langle n\rangle_{\text{BE}}\;=\;\frac{1}{\beta}\cdot\frac{-\beta\,e^{-\beta(\epsilon-\mu)}\cdot(-1)}{1-e^{-\beta(\epsilon-\mu)}}\cdot(-1)\;=\;\frac{1}{e^{\beta(\epsilon-\mu)}-1}. \]</div>
+      <p class="step"><strong>结论：</strong>两条公式只差分母中的 \(\pm 1\)，根源是占据数代数的差别。这正是第 11 章的起点。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 理想气体的化学势 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\) — 氮气在室温常压下</h4>
+        <p class="example-statement">把理想气体（单原子或双原子，平动自由度相同）的巨配分函数写成 \(\mathcal{Z}_{G}=\exp\!\big[V\,e^{\beta\mu}/\lambda_{\text{th}}^{3}\big]\)，其中热波长 \(\lambda_{\text{th}}=h/\sqrt{2\pi m k_BT}\)。求：(a) 由 \(\langle N\rangle=-\partial\Omega_G/\partial\mu\) 反解出 \(\mu(n,T)\)；(b) 计算 \(\mathrm{N_2}\) 在 \(T=300\,\mathrm{K}\)、\(P=1\,\mathrm{atm}\) 时的 \(\mu\)，分别以 eV/分子 与 kJ/mol 表示。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（\(\Omega_G\) 与 \(\langle N\rangle\)）：</strong>由 \(\Omega_G=-kT\ln\mathcal{Z}_{G}=-kT\cdot V e^{\beta\mu}/\lambda_{\text{th}}^{3}\)，求偏微商：</p>
+          <p class="step">\(\langle N\rangle=-\partial\Omega_G/\partial\mu=kT\cdot V\cdot\beta\cdot e^{\beta\mu}/\lambda_{\text{th}}^{3}=V e^{\beta\mu}/\lambda_{\text{th}}^{3}\)。</p>
+          <p class="step"><strong>步骤 2（反解 \(\mu\)）：</strong>令 \(n=\langle N\rangle/V\)，得 \(e^{\beta\mu}=n\lambda_{\text{th}}^{3}\)，即</p>
+          <div class="formula">\[ \boxed{\;\mu(T,n)\;=\;kT\,\ln\!\big(n\lambda_{\text{th}}^{3}\big)\;}\ \] </div>
+          <p class="step"><strong>步骤 3（数值，\(\mathrm{N_2}\) @ 300 K, 1 atm）：</strong>分子质量 \(m=28.014\,\mathrm{u}\times 1.660\,54\times 10^{-27}\,\mathrm{kg/u}=4.652\times 10^{-26}\,\mathrm{kg}\)。数密度 \(n=P/(kT)\)：</p>
+          <p class="step">\(n=\dfrac{1.013\times 10^{5}\,\mathrm{Pa}}{(1.380\,649\times 10^{-23})(300)}=\dfrac{1.013\times 10^{5}}{4.142\times 10^{-21}}=\mathbf{2.446\times 10^{25}\,\mathrm{m^{-3}}}\)。</p>
+          <p class="step"><strong>步骤 4（热波长）：</strong>\(\lambda_{\text{th}}=\dfrac{h}{\sqrt{2\pi m kT}}=\dfrac{6.626\times 10^{-34}}{\sqrt{2\pi\,(4.652\times 10^{-26})(4.142\times 10^{-21})}}\)。</p>
+          <p class="step">根号内：\(2\pi\times 4.652\times 10^{-26}\times 4.142\times 10^{-21}=2\pi\times 1.927\times 10^{-46}=1.211\times 10^{-45}\)，开方 \(=3.479\times 10^{-23}\)。</p>
+          <p class="step">\(\lambda_{\text{th}}=\dfrac{6.626\times 10^{-34}}{3.479\times 10^{-23}}=\mathbf{1.904\times 10^{-11}\,\mathrm{m}}\)（约 \(0.019\,\mathrm{nm}\)）。</p>
+          <p class="step"><strong>步骤 5（\(n\lambda_{\text{th}}^{3}\) 与 \(\mu\)）：</strong>\(\lambda_{\text{th}}^{3}=(1.904\times 10^{-11})^{3}=6.898\times 10^{-32}\,\mathrm{m^{3}}\)。</p>
+          <p class="step">\(n\lambda_{\text{th}}^{3}=(2.446\times 10^{25})(6.898\times 10^{-32})=\mathbf{1.687\times 10^{-6}}\)（远小于 1，符合经典极限）。</p>
+          <p class="step">\(\mu=kT\ln(1.687\times 10^{-6})=(4.142\times 10^{-21})\times[\ln 1.687+(-6)\ln 10]\)。</p>
+          <p class="step">\(\ln(1.687\times 10^{-6})=0.523-13.816=\mathbf{-13.292}\)。</p>
+          <p class="step">\(\mu=(4.142\times 10^{-21})(-13.292)=\mathbf{-5.50\times 10^{-20}\,\mathrm{J}}\)。</p>
+          <p class="step">换算：每分子 \(\mu/(1.602\times 10^{-19})=\mathbf{-0.343\,\mathrm{eV}}\)；每摩尔 \(\mu\cdot N_{A}=(-5.50\times 10^{-20})(6.022\times 10^{23})=\mathbf{-33.1\,\mathrm{kJ/mol}}\)。</p>
+          <p class="step"><strong>物理含义：</strong>\(\mu<0\) 因为 \(n\lambda_{\text{th}}^{3}\ll 1\)：经典稀薄气体有大量「未占据」的相空间，加粒子主要释放平动熵，故自由能降低。当 \(n\lambda_{\text{th}}^{3}\to 1\)（致密或低温）时 \(\mu\to 0\) 并最终量子简并（费米气体 \(\mu>0\) 进入简并态，第 11 章）。</p>
+          <p><span class="ans">答案：\(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)；对 \(\mathrm{N_2}\) @ \(300\,\mathrm{K}\)、\(1\,\mathrm{atm}\)：\(\mu=-5.50\times 10^{-20}\,\mathrm{J}=-0.343\,\mathrm{eV}=-33.1\,\mathrm{kJ/mol}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 Langmuir 吸附等温线 — CO 在活性炭上的覆盖度</h4>
+        <p class="example-statement">某活性炭表面有 \(M\) 个等价的吸附位点，每点结合能 \(\varepsilon=0.40\,\mathrm{eV}\)（即占据态能量 \(E_1=-\varepsilon\)），单层吸附（每点最多 1 个分子）。气体视为 \(\mathrm{N_2}\)（同例 10.1 的 \(m,T,\lambda_{\text{th}}\)）。\(T=300\,\mathrm{K}\)。求：(a) 覆盖度 \(\theta(P)\)；(b) 半覆盖压力 \(P_{1/2}\)；(c) 在 \(P=1\,\mathrm{atm}\)、\(P=1\,\mathrm{kPa}\) 时的覆盖度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（单点位巨配分函数）：</strong>每点视为「费米型」单态：占据 \((n=1,E=-\varepsilon)\) 或空 \((n=0,E=0)\)。</p>
+          <p class="step">\(\mathcal{Z}_{\text{site}}=1+e^{-\beta(-\varepsilon-\mu)}=1+e^{\beta(\varepsilon+\mu)}\)。</p>
+          <p class="step"><strong>步骤 2（覆盖度 \(\theta\)）：</strong>由 \(\theta=\langle n\rangle=(1/\beta)\partial\ln\mathcal{Z}_{\text{site}}/\partial\mu\)，或直接：</p>
+          <div class="formula">\[ \theta\;=\;\frac{e^{\beta(\varepsilon+\mu)}}{1+e^{\beta(\varepsilon+\mu)}}\;=\;\frac{1}{1+e^{-\beta(\varepsilon+\mu)}}. \]</div>
+          <p class="step"><strong>步骤 3（用气相 \(\mu\) 替换为 \(P\)）：</strong>由例 10.1 \(e^{\beta\mu}=n\lambda_{\text{th}}^{3}=P\lambda_{\text{th}}^{3}/(kT)\)（理想气体 \(n=P/kT\)）：</p>
+          <div class="formula">\[ \theta\;=\;\frac{KP}{1+KP}\;,\qquad K\;\equiv\;\frac{\lambda_{\text{th}}^{3}}{kT}\,e^{\beta\varepsilon}\quad\text{(Langmuir 常数)}. \]</div>
+          <p class="step"><strong>步骤 4（数值）：</strong>\(kT=4.142\times 10^{-21}\,\mathrm{J}\)、\(\lambda_{\text{th}}^{3}=6.898\times 10^{-32}\,\mathrm{m^{3}}\)（例 10.1）。\(\beta\varepsilon=\varepsilon/(kT)=0.40/(8.617\times 10^{-5}\times 300)=0.40/0.0259=\mathbf{15.47}\)。</p>
+          <p class="step">\(e^{\beta\varepsilon}=e^{15.47}=\mathbf{5.24\times 10^{6}}\)。</p>
+          <p class="step">\(K=\dfrac{6.898\times 10^{-32}}{4.142\times 10^{-21}}\times 5.24\times 10^{6}=(1.665\times 10^{-11})(5.24\times 10^{6})=\mathbf{8.73\times 10^{-5}\,\mathrm{Pa^{-1}}}\)。</p>
+          <p class="step"><strong>步骤 5（半覆盖压力）：</strong>\(\theta=1/2\) 时 \(KP_{1/2}=1\)，即</p>
+          <p class="step">\(P_{1/2}=1/K=\mathbf{1.15\times 10^{4}\,\mathrm{Pa}=11.5\,\mathrm{kPa}}\)（约 \(0.11\,\mathrm{atm}\)）。</p>
+          <p class="step"><strong>步骤 6（\(P=1\,\mathrm{atm}=1.013\times 10^{5}\,\mathrm{Pa}\)）：</strong>\(KP=(8.73\times 10^{-5})(1.013\times 10^{5})=\mathbf{8.84}\)。</p>
+          <p class="step">\(\theta=8.84/(1+8.84)=\mathbf{0.898}\)（接近饱和，约 90%）。</p>
+          <p class="step"><strong>步骤 7（\(P=1\,\mathrm{kPa}=10^{3}\,\mathrm{Pa}\)）：</strong>\(KP=(8.73\times 10^{-5})(10^{3})=\mathbf{0.0873}\)。</p>
+          <p class="step">\(\theta=0.0873/1.0873=\mathbf{0.0802}\)（约 8%，低覆盖，处于 Henry 律线性区 \(\theta\approx KP\)）。</p>
+          <p class="step"><strong>结论：</strong>\(\theta(P)\) 是双曲线形等温线——低压线性（Henry 律）、高压饱和至 1。\(\varepsilon\) 越大（结合越强），\(K\) 指数式增大，\(P_{1/2}\) 指数式减小：化学势/结合能的微小变化引起宏观覆盖度的巨大变化。这正是表面催化、传感器、储气材料的工作原理。</p>
+          <p><span class="ans">答案：\(\theta=KP/(1+KP)\)，\(K=8.73\times 10^{-5}\,\mathrm{Pa^{-1}}\)；\(P_{1/2}=11.5\,\mathrm{kPa}\)；\(\theta(1\,\mathrm{atm})=0.898\)；\(\theta(1\,\mathrm{kPa})=0.0802\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 \(\mu\) 平衡定饱和蒸气压 — 水 @ 298 K Saturation Vapor Pressure of Water</h4>
+        <p class="example-statement">由标准热力学表，\(T=298\,\mathrm{K}\) 时水蒸气（视为理想气体）与液态水的标准（\(P^{\circ}=1\,\mathrm{bar}=100\,\mathrm{kPa}\)）摩尔 Gibbs 自由能为 \(G_{m,\text{vap}}^{\circ}=-228.57\,\mathrm{kJ/mol}\)、\(G_{m,\text{liq}}^{\circ}=-237.13\,\mathrm{kJ/mol}\)。利用 \(\mu\) 平衡判据求水的饱和蒸气压 \(P_{\text{sat}}(298\,\mathrm{K})\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（化学势表达式）：</strong>理想气体的 \(\mu\) 随压强变化（恒温）：</p>
+          <div class="formula">\[ \mu_{\text{vap}}(T,P)\;=\;\mu_{\text{vap}}^{\circ}(T)+RT\ln\!\frac{P}{P^{\circ}}. \]</div>
+          <p class="step">液体近似不可压缩，\(P\) 在几个 bar 内变化时 \(\mu_{\text{liq}}(T,P)\approx\mu_{\text{liq}}^{\circ}(T)\)（其 \(V_m\,\Delta P\) 修正约 \(18\,\mathrm{cm^{3}/mol}\times 10^{5}\,\mathrm{Pa}=1.8\,\mathrm{J/mol}\)，远小于 kJ 量级）。</p>
+          <p class="step"><strong>步骤 2（\(\mu\) 平衡）：</strong>液–气平衡时 \(\mu_{\text{liq}}=\mu_{\text{vap}}(P_{\text{sat}})\)：</p>
+          <div class="formula">\[ \mu_{\text{liq}}^{\circ}\;=\;\mu_{\text{vap}}^{\circ}+RT\ln\!\frac{P_{\text{sat}}}{P^{\circ}}\quad\Longrightarrow\quad \ln\!\frac{P_{\text{sat}}}{P^{\circ}}=\frac{\mu_{\text{liq}}^{\circ}-\mu_{\text{vap}}^{\circ}}{RT}. \]</div>
+          <p class="step"><strong>步骤 3（代入数值）：</strong>分子 \(\mu_{\text{liq}}^{\circ}-\mu_{\text{vap}}^{\circ}=(-237.13)-(-228.57)=\mathbf{-8.56\,\mathrm{kJ/mol}}\)。</p>
+          <p class="step">分母 \(RT=(8.314)(298)=\mathbf{2477.6\,\mathrm{J/mol}}\)。</p>
+          <p class="step">\(\ln(P_{\text{sat}}/P^{\circ})=\dfrac{-8560}{2477.6}=\mathbf{-3.455}\)。</p>
+          <p class="step"><strong>步骤 4（解出 \(P_{\text{sat}}\)）：</strong>\(P_{\text{sat}}/P^{\circ}=e^{-3.455}=\mathbf{0.0317}\)。故</p>
+          <p class="step">\(P_{\text{sat}}=0.0317\times 100\,\mathrm{kPa}=\mathbf{3.17\,\mathrm{kPa}}\)（约 \(0.031\,\mathrm{atm}\) 或 \(23.8\,\mathrm{mmHg}\)）。</p>
+          <p class="step"><strong>步骤 5（验证与含义）：</strong>实验值 \(P_{\text{sat}}(298\,\mathrm{K})=3.17\,\mathrm{kPa}\) ✓。注意 \(\mu_{\text{liq}}^{\circ}<\mu_{\text{vap}}^{\circ}\)（液相在 \(P^{\circ}\) 下自由能更低，故液态水在 1 bar、298 K 稳定）。但当蒸气压降至 \(3.17\,\mathrm{kPa}\) 时蒸气相 \(\mu\) 降低（\(RT\ln 0.0317=-8.56\) kJ/mol）正好与液相相等——两相共存。若环境水汽分压 \(<3.17\,\mathrm{kPa}\)，水继续蒸发（\(\mu_{\text{liq}}>\mu_{\text{vap}}\)，蒸发使 \(G\) 降）；反之凝结。这就是相对湿度 RH\(=P_{\text{H_2O}}/P_{\text{sat}}\) 的物理根源。</p>
+          <p><span class="ans">答案：\(P_{\text{sat}}(298\,\mathrm{K})=3.17\,\mathrm{kPa}\)（\(=23.8\,\mathrm{mmHg}\)，与实验值完全吻合）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 小体积中的粒子数涨落 — 从纳米到宏观 Particle-Number Fluctuations</h4>
+        <p class="example-statement">理想气体在标准状态（STP: \(T=273\,\mathrm{K}\)、\(P=1\,\mathrm{atm}\)）下，数密度 \(n=P/(kT)=2.69\times 10^{25}\,\mathrm{m^{-3}}\)（Loschmidt 数）。考虑边长 \(L\) 的立方体积 \(V=L^{3}\)。对 (a) \(L=10\,\mathrm{\mu m}\)；(b) \(L=100\,\mathrm{nm}\)；(c) \(L=10\,\mathrm{nm}\)，求 \(\langle N\rangle\)、\(\sigma_{N}\)、相对涨落 \(\sigma_{N}/\langle N\rangle\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（理想气体泊松）：</strong>由核心概念 §4，\(\langle(\Delta N)^2\rangle=\langle N\rangle\)，故 \(\sigma_{N}=\sqrt{\langle N\rangle}\)、相对涨落 \(=1/\sqrt{\langle N\rangle}\)。</p>
+          <p class="step"><strong>步骤 2（\(\langle N\rangle=nV\)）：</strong></p>
+          <p class="step"><strong>(a) \(L=10\,\mathrm{\mu m}=10^{-5}\,\mathrm{m}\)、\(V=10^{-15}\,\mathrm{m^{3}}\)：</strong></p>
+          <p class="step">\(\langle N\rangle=(2.69\times 10^{25})(10^{-15})=\mathbf{2.69\times 10^{10}}\)。</p>
+          <p class="step">\(\sigma_{N}=\sqrt{2.69\times 10^{10}}=\mathbf{1.64\times 10^{5}}\)。</p>
+          <p class="step">相对涨落 \(=1/\sqrt{2.69\times 10^{10}}=\mathbf{6.10\times 10^{-6}=6.1\,\mathrm{ppm}}\)。完全可忽略。</p>
+          <p class="step"><strong>(b) \(L=100\,\mathrm{nm}=10^{-7}\,\mathrm{m}\)、\(V=10^{-21}\,\mathrm{m^{3}}\)：</strong></p>
+          <p class="step">\(\langle N\rangle=(2.69\times 10^{25})(10^{-21})=\mathbf{2.69\times 10^{4}}\)。</p>
+          <p class="step">\(\sigma_{N}=\sqrt{2.69\times 10^{4}}=\mathbf{164}\)。</p>
+          <p class="step">相对涨落 \(=1/\sqrt{2.69\times 10^{4}}=\mathbf{6.1\times 10^{-3}=0.61\%}\)。仍小，但在精密测量中可探测（如纳米孔测序）。</p>
+          <p class="step"><strong>(c) \(L=10\,\mathrm{nm}=10^{-8}\,\mathrm{m}\)、\(V=10^{-24}\,\mathrm{m^{3}}\)（典型蛋白质或纳米孔体积）：</strong></p>
+          <p class="step">\(\langle N\rangle=(2.69\times 10^{25})(10^{-24})=\mathbf{26.9}\)。</p>
+          <p class="step">\(\sigma_{N}=\sqrt{26.9}=\mathbf{5.19}\)。</p>
+          <p class="step">相对涨落 \(=5.19/26.9=\mathbf{0.193=19.3\%}\)。<strong>非常显著</strong>——这种尺度下「固定 \(N\)」的正则系综已不适用，必须用巨正则。</p>
+          <p class="step"><strong>步骤 3（宏观对照）：</strong>\(1\,\mathrm{mol}\) 气体 \(\langle N\rangle=N_A=6.022\times 10^{23}\)，相对涨落 \(=1/\sqrt{N_A}=\mathbf{1.29\times 10^{-12}}\)——这就是为何宏观热力学中「固定 \(N\)」与「\(\langle N\rangle\) 自洽」无差别。</p>
+          <p class="step"><strong>结论：</strong>\(1/\sqrt{\langle N\rangle}\) 标度意味着涨落在微观-介观尺度不可忽视，在宏观尺度消失。它定量说明了为什么我们能用同一组热力学公式描述封闭和开放系统，又同时解释了为什么细胞内（小体积）的「噪声」可以做信号（如基因表达 bursting）。</p>
+          <p><span class="ans">答案：(a) \(\langle N\rangle=2.69\times 10^{10}\)、相对 \(6.1\,\mathrm{ppm}\)；(b) \(\langle N\rangle=2.69\times 10^{4}\)、相对 \(0.61\%\)；(c) \(\langle N\rangle=26.9\)、相对 \(19.3\%\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 \(\mathcal{Z}_{G}\) 与正则配分函数的连接 — 理想气体 ⟨N⟩ 与 \(\Omega_G=-PV\) Connecting \(\mathcal{Z}_G\) to Canonical \(Z(N)\)</h4>
+        <p class="example-statement">单原子理想气体正则配分函数 \(Z(T,V,N)=\dfrac{1}{N!}\!\left(\dfrac{V}{\lambda_{\text{th}}^{3}}\right)^{\!N}\)（\(N\) 个不可分辨粒子，平动自由度）。(a) 求巨配分函数 \(\mathcal{Z}_{G}\)；(b) 由 \(\mathcal{Z}_{G}\) 求 \(\langle N\rangle\) 并验证等于正则系综的 \(N\)；(c) 证明 \(\Omega_G=-pV=-\langle N\rangle kT\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>步骤 1（\(\mathcal{Z}_G=\sum_N Z(N)e^{\beta\mu N}\)）：</strong>对所有 \(N=0,1,2,\dots\) 求和：</p>
+          <div class="formula">\[ \mathcal{Z}_{G}\;=\;\sum_{N=0}^{\infty}\frac{1}{N!}\!\left(\frac{V}{\lambda_{\text{th}}^{3}}\right)^{\!N}\!e^{\beta\mu N}\;=\;\sum_{N=0}^{\infty}\frac{1}{N!}\!\left(\frac{V\,e^{\beta\mu}}{\lambda_{\text{th}}^{3}}\right)^{\!N}. \]</div>
+          <p class="step"><strong>步骤 2（识别指数函数）：</strong>令 \(\eta\equiv V e^{\beta\mu}/\lambda_{\text{th}}^{3}\)（无量纲）。则 \(\mathcal{Z}_G=\sum_N \eta^N/N!=e^{\eta}\)，即</p>
+          <div class="formula">\[ \boxed{\;\ln\mathcal{Z}_{G}\;=\;\frac{V\,e^{\beta\mu}}{\lambda_{\text{th}}^{3}}\;} \]</div>
+          <p class="step"><strong>步骤 3（\(\langle N\rangle\)）：</strong>\(\langle N\rangle=(1/\beta)\partial\ln\mathcal{Z}_G/\partial\mu=(1/\beta)\cdot V\beta e^{\beta\mu}/\lambda_{\text{th}}^{3}=V e^{\beta\mu}/\lambda_{\text{th}}^{3}\)。故</p>
+          <div class="formula">\[ \langle N\rangle\;=\;\ln\mathcal{Z}_{G}\qquad\text{(理想气体).} \]</div>
+          <p class="step">反解 \(e^{\beta\mu}=\langle N\rangle\lambda_{\text{th}}^{3}/V=n\lambda_{\text{th}}^{3}\)，得 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)，与例 10.1 一致 ✓。这正是「巨正则 \(\langle N\rangle\)」与「正则 \(N\)」的连接：固定 \(\mu\) 给出确定的 \(\langle N\rangle\)，反之亦然。</p>
+          <p class="step"><strong>步骤 4（巨热力学势）：</strong>\(\Omega_G=-kT\ln\mathcal{Z}_G=-kT\cdot V e^{\beta\mu}/\lambda_{\text{th}}^{3}=-kT\langle N\rangle\)。</p>
+          <p class="step">与 \(\Omega_G=-pV\) 对照，得 <strong>理想气体状态方程</strong> \(pV=\langle N\rangle kT\) ✓ —— 从巨配分函数「免费」导出。</p>
+          <p class="step"><strong>步骤 5（泊松验证）：</strong>\(\langle(\Delta N)^2\rangle=kT\partial\langle N\rangle/\partial\mu=kT\cdot\langle N\rangle/(kT)=\langle N\rangle\)。即 \(N\) 服从泊松分布，方差 = 均值，正是步骤 1 中指数 \(\sum\eta^N/N!\) 的特征（泊松参数 \(\eta=\langle N\rangle\)）。</p>
+          <p><span class="ans">答案：\(\mathcal{Z}_G=\exp[V e^{\beta\mu}/\lambda_{\text{th}}^{3}]\)；\(\langle N\rangle=V e^{\beta\mu}/\lambda_{\text{th}}^{3}=\ln\mathcal{Z}_G\)；\(\Omega_G=-\langle N\rangle kT=-pV\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「化学势 \(\mu\) 是单个粒子的能量。」</strong>错。\(\mu=(\partial F/\partial N)_{T,V}\)，是<strong>自由能对 \(N\) 的偏微商</strong>，含能量和熵两部分。理想气体 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\) 可以是<strong>负的</strong>（经典极限），并非「每个分子的能量为负」——它衡量的是加入一个粒子对自由能的<strong>边际</strong>影响，包括所释放的熵。</li>
+        <li><strong>「\(\mu\) 越大粒子越多，所以 \(\mu\) 一定为正。」</strong>错。<strong>玻色子</strong>系统必有 \(\mu\le\epsilon_{0}\)（最低单粒子能级），否则 Bose–Einstein 分布 \(1/(e^{\beta(\epsilon-\mu)}-1)\) 分母发散。光子气体 \(\mu=0\)（粒子数不守恒）；声子、磁振子亦然。只有<strong>费米气体</strong>简并时 \(\mu\) 才大且为正（Fermi 能 \(E_F>0\)）。</li>
+        <li><strong>用正则系综处理变 \(N\) 的问题。</strong>错。若系统与储库交换粒子（吸附位点、液体蒸发、化学反应），必须用<strong>巨正则</strong>。强行固定 \(N\) 会使诸如「覆盖度随压强变化」「饱和蒸气压」「化学平衡常数」这些本质上变 \(N\) 的现象无法处理。</li>
+        <li><strong>把 \(\mathcal{Z}_G\) 与正则配分函数 \(Z\) 混淆。</strong>\(Z=\sum_i e^{-\beta E_i}\) 只对<strong>固定 \(N\)</strong> 的态求和；\(\mathcal{Z}_G=\sum_i e^{-\beta(E_i-\mu N_i)}\) 对<strong>所有 \(N\)</strong> 的态求和。两者量纲都为 1，但 \(\mathcal{Z}_G\) 依赖 \((T,V,\mu)\)、\(Z\) 依赖 \((T,V,N)\)。在 \(\mu\to -\infty\) 时 \(\mathcal{Z}_G\to 1\)（真空），与 \(Z\) 行为完全不同。</li>
+        <li><strong>「宏观系统粒子数没有涨落。」</strong>说法不严谨。涨落始终存在（\(\sigma_N=\sqrt{\langle N\rangle}\)），只是<strong>相对</strong>涨落 \(\sim 1/\sqrt{\langle N\rangle}\) 在 \(\langle N\rangle\to\infty\) 时趋于 0。在临界点（压缩率发散）或纳米尺度，涨落可以很大。统计力学的精髓正在于量化涨落，而非假定它为零。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. He 原子在低温低压下的 \(\mu\) Helium Chemical Potential</summary>
+        <div class="hint">用 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)，其中 \(n=P/(kT)\)、\(\lambda_{\text{th}}=h/\sqrt{2\pi m kT}\)。氦原子质量 \(m=4.003\,\mathrm{u}\)。</div>
+        <div class="solution">
+          已知 \(T=200\,\mathrm{K}\)、\(P=0.10\,\mathrm{atm}=1.013\times 10^{4}\,\mathrm{Pa}\)、\(m=4.003\times 1.660\,54\times 10^{-27}=6.646\times 10^{-27}\,\mathrm{kg}\)。
+          <br>数密度 \(n=\dfrac{1.013\times 10^{4}}{(1.380\,649\times 10^{-23})(200)}=3.669\times 10^{24}\,\mathrm{m^{-3}}\)。
+          <br>\(kT=(1.380\,649\times 10^{-23})(200)=2.761\times 10^{-21}\,\mathrm{J}\)。
+          <br>\(\lambda_{\text{th}}=\dfrac{6.626\times 10^{-34}}{\sqrt{2\pi(6.646\times 10^{-27})(2.761\times 10^{-21})}}=\dfrac{6.626\times 10^{-34}}{\sqrt{2\pi\times 1.835\times 10^{-47}}}=\dfrac{6.626\times 10^{-34}}{3.396\times 10^{-23}}=1.951\times 10^{-11}\,\mathrm{m}\)。
+          <br>\(\lambda_{\text{th}}^{3}=7.431\times 10^{-32}\,\mathrm{m^{3}}\)。
+          <br>\(n\lambda_{\text{th}}^{3}=(3.669\times 10^{24})(7.431\times 10^{-32})=2.727\times 10^{-7}\)。
+          <br>\(\mu=(2.761\times 10^{-21})\ln(2.727\times 10^{-7})=(2.761\times 10^{-21})(-15.115)=\mathbf{-4.17\times 10^{-20}\,\mathrm{J}=-0.260\,\mathrm{eV}=-25.1\,\mathrm{kJ/mol}}\)。
+          <br>对比例 10.1（\(\mathrm{N_2}\) @ 300 K, 1 atm: \(-0.34\,\mathrm{eV}\))：\(\mu\) 更接近 0，因为 He 更轻（\(\lambda_{\text{th}}\) 更大 → \(n\lambda_{\text{th}}^{3}\) 更接近 1）且压强更低（\(n\) 更小）。这些竞争因素由 \(\mu\) 统一编码。 <span class="ans">答：\(\mu\approx -0.260\,\mathrm{eV}=-25.1\,\mathrm{kJ/mol}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. Langmuir 等温线的两个极限 Langmuir Limits (Henry &amp; Saturation)</summary>
+        <div class="hint">对 \(\theta=KP/(1+KP)\) 取 \(KP\ll 1\) 与 \(KP\gg 1\) 极限。</div>
+        <div class="solution">
+          <strong>Henry 律（低 \(P\)）：\(KP\ll 1\)</strong>。展开 \(\theta=KP/(1+KP)\approx KP-(KP)^2+\cdots\)。主导项 \(\theta\approx KP\)，覆盖度<strong>线性</strong>于压强；斜率 \(K\) 与结合能 \(\varepsilon\) 指数相关（\(K\propto e^{\beta\varepsilon}\)）。
+          <br><strong>饱和（高 \(P\)）：\(KP\gg 1\)</strong>。\(\theta=1/(1+1/(KP))\approx 1-1/(KP)+\cdots\)。覆盖度趋于 1，空位率 \((1-\theta)\approx 1/(KP)\propto 1/P\)。
+          <br><strong>半覆盖</strong>：令 \(\theta=1/2\)，得 \(KP_{1/2}=1\)，\(P_{1/2}=1/K=(kT/\lambda_{\text{th}}^{3})e^{-\beta\varepsilon}\)。
+          <br><strong>斜率</strong>：\(d\theta/dP=K/(1+KP)^{2}\)，在 \(P=P_{1/2}\) 时为 \(K/4\)，在两极限处分别趋于 \(K\)（Henry）和 \(1/(K P^{2})\to 0\)（饱和）。
+          <br><strong>物理图像</strong>：低 \(P\) 下大多数位点空着，分子互不干扰，覆盖度反映气相化学势；高 \(P\) 下位点几乎占满，进一步吸附受 Pauli/位阻限制。这是「双曲线饱和」最简单的模型。 <span class="ans">答：\(\theta\to KP\)（Henry）、\(\theta\to 1\)（饱和）、\(P_{1/2}=1/K\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 找到使 \(\sigma_N/\langle N\rangle=1\%\) 的体积 Find Volume for 1% Number Fluctuation</summary>
+        <div class="hint">用 \(\sigma_N/\langle N\rangle=1/\sqrt{\langle N\rangle}=10^{-2}\) 解出 \(\langle N\rangle\)，再 \(V=\langle N\rangle/n\)。</div>
+        <div class="solution">
+          要求 \(1/\sqrt{\langle N\rangle}=0.01\) → \(\langle N\rangle=10^{4}\)。
+          <br>STP 下 \(n=2.69\times 10^{25}\,\mathrm{m^{-3}}\)，故
+          \(V=\langle N\rangle/n=10^{4}/(2.69\times 10^{25})=3.72\times 10^{-22}\,\mathrm{m^{3}}\)。
+          <br>立方体积边长 \(L=V^{1/3}=(3.72\times 10^{-22})^{1/3}=7.20\times 10^{-8}\,\mathrm{m}=\mathbf{72\,\mathrm{nm}}\)。
+          <br>即一个边长 \(72\,\mathrm{nm}\) 的立方体内 \(N\) 涨落约 \(1\%\)。这正是病毒、核糖体、纳米孔的尺度。若要求 \(0.1\%\)（\(\langle N\rangle=10^{6}\)），\(L=72\times 10^{2/3}\,\mathrm{nm}\approx 335\,\mathrm{nm}\)。 <span class="ans">答：\(L\approx 72\,\mathrm{nm}\)（\(V=3.72\times 10^{-22}\,\mathrm{m^{3}}\)）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. \(\mu\) 平衡定水的沸点 Boiling Point of Water from \(\mu\)-Equalization</summary>
+        <div class="hint">沸点定义即 \(P_{\text{sat}}(T_b)=1\,\mathrm{atm}\)（\(P^{\circ}\)）。在 \(T=373\,\mathrm{K}\) 用 \(\mu_{\text{vap}}^{\circ}-\mu_{\text{liq}}^{\circ}\) 与 \(RT\) 检验。</div>
+        <div class="solution">
+          沸点 \(T_b\) 满足 \(P_{\text{sat}}(T_b)=P^{\circ}=1\,\mathrm{atm}\)。此时 \(\ln(P_{\text{sat}}/P^{\circ})=0\)，由例 10.3 公式 \(\mu_{\text{vap}}^{\circ}(T_b)=\mu_{\text{liq}}^{\circ}(T_b)\)。
+          <br>查表 \(T=373\,\mathrm{K}\)：\(G_{m,\text{vap}}^{\circ}\approx -241.8\,\mathrm{kJ/mol}\)、\(G_{m,\text{liq}}^{\circ}\approx -241.8\,\mathrm{kJ/mol}\)（近似相等，差仅 \(\sim 0.1\,\mathrm{kJ/mol}\)，源自热力学表精度与理想气体近似）。
+          <br>精确沸点为 \(99.97\,^{\circ}\mathrm{C}=373.12\,\mathrm{K}\)，与 \(\mu\) 平衡判据吻合（误差来自所用 \(T=373\,\mathrm{K}\) 与表的精度）。
+          <br>方向：\(T<T_b\) 时 \(\mu_{\text{liq}}<\mu_{\text{vap}}(P^{\circ})\)，液态稳定；\(T>T_b\) 时反之，液体沸腾至全气化（在 1 atm 下）。Clausius–Clapeyron 方程 \(dP_{\text{sat}}/dT=L P_{\text{sat}}/(RT^{2})\)（\(L\) 为汽化潜热）给出 \(P_{\text{sat}}(T)\) 完整曲线，本质仍是 \(\mu\) 平衡。 <span class="ans">答：\(T_b\approx 373\,\mathrm{K}\)（\(100\,^{\circ}\mathrm{C}\) at \(1\,\mathrm{atm}\)）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 半导体本征载流子浓度 Intrinsic Carrier Density of a Semiconductor</summary>
+        <div class="hint">FD 分布在 \(\epsilon-\mu\gg kT\) 时化为 Boltzmann。导带底电子 \(\langle n\rangle\approx e^{-(E_C-\mu)/kT}\)，价带顶空穴 \(\langle p\rangle\approx e^{-(\mu-E_V)/kT}\)。本征 \(\langle n\rangle=\langle p\rangle\)。</div>
+        <div class="solution">
+          设 \(\mu\) 在带隙中（本征半导体近似成立）。电子浓度 \(n=N_C\,e^{-(E_C-\mu)/kT}\)、空穴浓度 \(p=N_V\,e^{-(\mu-E_V)/kT}\)，其中 \(N_C,N_V\) 为有效态密度（典型 \(10^{18}\text{--}10^{19}\,\mathrm{cm^{-3}}\) @ 300 K）。
+          <br>本征：\(n=p\) → \(N_C N_V e^{-(E_C-E_V)/kT}=n^{2}\)。故
+          \(n_i=\sqrt{N_C N_V}\,e^{-E_g/(2kT)}\)（<strong>质量作用律</strong>）。
+          <br>对 Si @ 300 K：\(E_g=1.12\,\mathrm{eV}\)、\(kT=0.0259\,\mathrm{eV}\)、\(N_C=2.8\times 10^{19}\,\mathrm{cm^{-3}}\)、\(N_V=1.04\times 10^{19}\,\mathrm{cm^{-3}}\)。
+          <br>\(e^{-E_g/(2kT)}=e^{-1.12/(2\times 0.0259)}=e^{-21.6}=4.1\times 10^{-10}\)。
+          <br>\(n_i=\sqrt{(2.8)(1.04)\times 10^{38}}\times 4.1\times 10^{-10}=(1.71\times 10^{19})(4.1\times 10^{-10})=\mathbf{7.0\times 10^{9}\,\mathrm{cm^{-3}}}\)。
+          <br>（实验值约 \(1.0\times 10^{10}\,\mathrm{cm^{-3}}\)，差异来自 \(N_C,N_V\) 的精确值。）FD 分布（核心概念 §7）是核心工具；化学势 \(\mu\)（半导体文献里称 Fermi 能级 \(E_F\)）的位置决定导电类型。
+          <br>温度依赖：\(n_i\propto e^{-E_g/(2kT)}\)，温度每升高 10 K 翻倍——半导体的热敏性来源。 <span class="ans">答：\(n_i\approx 7\times 10^{9}\,\mathrm{cm^{-3}}\)（Si @ 300 K）。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>朗缪尔吸附 — 单层吸附位点的巨正则蒙特卡洛 Langmuir Adsorption (Grand Canonical Monte Carlo)。</strong>左面板为一个 \(22\times 14=308\) 个吸附位点的晶格，每点占据态能量 \(E_1=-\varepsilon\)（结合能 \(\varepsilon=0.10\,\mathrm{eV}\)）、空态 \(E_0=0\)，可与气相储库（\(T,\mu\)）交换分子。每个位点独立服从<strong>费米型</strong>巨正则分布 \(\theta=\dfrac{1}{1+e^{-\beta(\mu+\varepsilon)}}=\dfrac{1}{1+e^{-\beta(\mu-E_1)}}\)。每 ~0.5 秒重新独立抽样一次，蓝色为占据、空圈为空位。右面板绘出 \(\theta(\mu)\) 等温线（绿色实线，与例 10.2 的 Langmuir 公式一致），红圈标出当前 \((\mu,\theta)\) 工作点。调节 <strong>T</strong> 与 <strong>\(\mu\)</strong> 两个滑块：(1) 升高 \(\mu\)（≡ 增加气相压强）→ 覆盖度上升至饱和；(2) 升高 \(T\) → 等温线变陡程度降低（β 减小，分布钝化），化学势的「拉动」作用减弱；(3) 当 \(\mu=-\varepsilon=-0.10\,\mathrm{eV}\) 时 \(\theta=0.5\)（与温度无关——这是 Fermi 能级的特征）。底部读出瞬时覆盖度、时间平均覆盖度与理论值，三者应吻合（验证泊松型涨落）。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="760" height="400"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- physics constants & defaults ----
+          var kB_eV = 8.617333262e-5;        // eV / K
+          var EPS = 0.10;                     // binding energy ε (eV); occupied-state energy E1 = -EPS
+          var DEFAULTS = { T: 350, mu: -0.10 }; // μ in eV; default μ = -ε gives θ = 0.5
+          var params = { T: DEFAULTS.T, mu: DEFAULTS.mu };
+
+          // ---- lattice ----
+          var NCOLS = 22, NROWS = 14, NSITES = NCOLS * NROWS;
+          var occupancy = new Array(NSITES);
+          var sampleTimer = 0;
+          var SAMPLE_INTERVAL = 0.5;          // resample every 0.5 s
+          var avgN = 0, avgCount = 0;         // running mean of instantaneous N
+
+          function kT_eV() { return kB_eV * params.T; }
+          function thetaTheo() {
+            var x = (params.mu + EPS) / kT_eV();   // (μ - E1)/kT with E1 = -EPS
+            if (x > 40) return 1;
+            if (x < -40) return 0;
+            return 1 / (1 + Math.exp(-x));
+          }
+          function resample() {
+            var th = thetaTheo();
+            for (var i = 0; i < NSITES; i++) occupancy[i] = Math.random() < th ? 1 : 0;
+          }
+
+          // ---- layout ----
+          var latL = 24, latR = 440, latT = 70, latB = 320;
+          var cellW = (latR - latL) / NCOLS, cellH = (latB - latT) / NROWS;
+          var plotL = 470, plotR = 740, plotT = 70, plotB = 320;
+          var muMin = -0.35, muMax = 0.05;
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              for (var i = 0; i < NSITES; i++) occupancy[i] = 0;
+              avgN = 0; avgCount = 0; sampleTimer = 0;
+              resample();
+              return {};
+            },
+            step: function (dt, t, s) {
+              sampleTimer += dt;
+              if (sampleTimer >= SAMPLE_INTERVAL) {
+                sampleTimer = 0;
+                resample();
+                var inst = 0;
+                for (var i = 0; i < NSITES; i++) inst += occupancy[i];
+                avgCount++;
+                avgN += (inst - avgN) / avgCount;   // running mean
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var kT = kT_eV();
+              var th = thetaTheo();
+              var inst = 0;
+              for (var i = 0; i < NSITES; i++) inst += occupancy[i];
+
+              // ---- title ----
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('朗缪尔吸附 — 巨正则蒙特卡洛  Langmuir Adsorption (Grand Canonical MC)', latL, 14);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillText('每site 占据态 E₁ = -ε = -' + EPS.toFixed(2) +
+                           ' eV，空态 E₀ = 0，N = 0 或 1；θ = 1 / (1 + e^(-β(μ+ε)))',
+                           latL, 36);
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.fillText('β = 1/(k_BT) = ' + (1 / kT).toFixed(2) +
+                           ' eV⁻¹，μ + ε = ' + (params.mu + EPS).toFixed(3) +
+                           ' eV  ⇒  θ_理论 = ' + th.toFixed(3),
+                           latL, 54);
+
+              // ---- lattice frame ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.strokeRect(latL - 0.5, latT - 0.5, latR - latL + 1, latB - latT + 1);
+              ctx.restore();
+
+              // ---- lattice cells ----
+              for (var r = 0; r < NROWS; r++) {
+                for (var c = 0; c < NCOLS; c++) {
+                  var idx = r * NCOLS + c;
+                  var x = latL + c * cellW;
+                  var y = latT + r * cellH;
+                  if (occupancy[idx]) {
+                    ctx.fillStyle = PS.colors.primary;
+                    ctx.fillRect(x + 1, y + 1, cellW - 2, cellH - 2);
+                  } else {
+                    ctx.strokeStyle = PS.colors.grid;
+                    ctx.lineWidth = 1;
+                    ctx.globalAlpha = 0.55;
+                    ctx.strokeRect(x + 1.5, y + 1.5, cellW - 3, cellH - 3);
+                    ctx.globalAlpha = 1;
+                  }
+                }
+              }
+
+              // ---- lattice label & stats ----
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              ctx.fillText('吸附位点 lattice  (' + NCOLS + '×' + NROWS + ' = ' + NSITES + ' sites)',
+                           (latL + latR) / 2, latB + 6);
+              ctx.textAlign = 'left';
+              ctx.fillText('瞬时 N = ' + inst + '/' + NSITES +
+                           '   θ_inst = ' + (inst / NSITES).toFixed(3),
+                           latL, latB + 26);
+              ctx.fillText('时间平均 θ_time = ' + (avgCount > 0 ? (avgN / NSITES).toFixed(3) : '—') +
+                           '   (理论 θ_theory = ' + th.toFixed(3) + ')',
+                           latL, latB + 44);
+
+              // ---- plot frame ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB); ctx.lineTo(plotR, plotB);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- y grid + ticks (0..1) ----
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.6;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var yi = 0; yi <= 4; yi++) {
+                var yv = yi / 4;
+                var yp = plotB - yv * (plotB - plotT);
+                ctx.beginPath(); ctx.moveTo(plotL, yp); ctx.lineTo(plotR, yp); ctx.stroke();
+                ctx.fillText(yv.toFixed(2), plotL - 6, yp);
+              }
+              ctx.globalAlpha = 1;
+              // ---- x ticks ----
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var xii = 0; xii <= 4; xii++) {
+                var mu_tick = muMin + (muMax - muMin) * xii / 4;
+                var xp = plotL + (mu_tick - muMin) / (muMax - muMin) * (plotR - plotL);
+                ctx.fillText(mu_tick.toFixed(2), xp, plotB + 4);
+              }
+              ctx.restore();
+
+              // ---- axis labels ----
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('μ  (eV)', (plotL + plotR) / 2, plotB + 22);
+              ctx.save();
+              ctx.translate(plotL - 34, (plotT + plotB) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('覆盖度 θ = ⟨N⟩/M', 0, 0);
+              ctx.restore();
+
+              // ---- plot title ----
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('θ(μ)  吸附等温线 isotherm', plotL, plotT - 22);
+
+              // ---- sigmoid curve θ(μ) at current T ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              var NP = 160;
+              for (var ip = 0; ip <= NP; ip++) {
+                var mu_i = muMin + (muMax - muMin) * ip / NP;
+                var x_i = (mu_i + EPS) / kT;
+                var th_i = (x_i > 40) ? 1 : (x_i < -40 ? 0 : 1 / (1 + Math.exp(-x_i)));
+                var xp = plotL + (mu_i - muMin) / (muMax - muMin) * (plotR - plotL);
+                var yp = plotB - th_i * (plotB - plotT);
+                if (ip === 0) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- μ = -ε reference line (θ = 0.5 axis) ----
+              var xHalf = plotL + (-EPS - muMin) / (muMax - muMin) * (plotR - plotL);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([2, 3]);
+              ctx.globalAlpha = 0.7;
+              ctx.beginPath(); ctx.moveTo(xHalf, plotT); ctx.lineTo(xHalf, plotB); ctx.stroke();
+              ctx.restore();
+              ctx.save();
+              ctx.font = '10px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+              ctx.fillText('μ = -ε', xHalf, plotT - 2);
+              ctx.restore();
+
+              // ---- current (μ, θ) marker ----
+              var xpNow = plotL + (params.mu - muMin) / (muMax - muMin) * (plotR - plotL);
+              var ypNow = plotB - th * (plotB - plotT);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 1.4;
+              ctx.setLineDash([4, 3]);
+              ctx.beginPath();
+              ctx.moveTo(xpNow, plotT); ctx.lineTo(xpNow, plotB);
+              ctx.moveTo(plotL, ypNow); ctx.lineTo(plotR, ypNow);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, xpNow, ypNow, 5.5,
+                { fill: PS.colors.accent, stroke: PS.colors.bg, lineWidth: 2 });
+
+              // ---- legend (top-right inside plot) ----
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var lx = plotR - 170, ly = plotT + 8;
+              function leg(color, text) {
+                ctx.fillStyle = color;
+                ctx.fillRect(lx, ly + 3, 10, 10);
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(text, lx + 16, ly);
+                ly += 16;
+              }
+              leg(PS.colors.primary, '占据 occupied');
+              leg(PS.colors.accent2, 'θ(μ) 等温 isotherm');
+              leg(PS.colors.accent,  '工作点 (μ, θ)');
+              ctx.restore();
+
+              // ---- bottom parameter line ----
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var line = 'T = ' + params.T.toFixed(0) + ' K    kT = ' + kT.toFixed(4) +
+                         ' eV    μ = ' + params.mu.toFixed(3) +
+                         ' eV    ε = ' + EPS.toFixed(2) + ' eV    |    ' +
+                         'μ + ε = ' + (params.mu + EPS).toFixed(3) + ' eV  →  θ_theory = ' +
+                         th.toFixed(3) + '   ⟨N⟩_theory = ' + (th * NSITES).toFixed(1);
+              ctx.fillText(line, latL, H - 22);
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'T',  label: '温度 T (K)',     min: 200, max: 800,  step: 5,    value: DEFAULTS.T },
+            { type: 'slider', key: 'mu', label: '化学势 μ (eV)',  min: muMin, max: muMax, step: 0.005, value: DEFAULTS.mu },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('T',  function (v) { params.T = v; });
+          ctl.on('mu', function (v) { params.mu = v; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-10 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.T);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.mu);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>巨正则系综</strong>：开放系统与储库交换能量<strong>和</strong>粒子，由 \((T,V,\mu)\) 指定。Gibbs 权重 \(P_i\propto e^{-\beta(E_i-\mu N_i)}\)。</li>
+        <li><strong>巨配分函数</strong> \(\mathcal{Z}_G=\sum_i e^{-\beta(E_i-\mu N_i)}\)（对所有微观态、所有 \(N\) 求和）。它生成一切热力学量。\(\Omega_G=-k_BT\ln\mathcal{Z}_G=-pV\)（理想流体）。</li>
+        <li><strong>平均值</strong>：\(\langle N\rangle=(1/\beta)\partial\ln\mathcal{Z}_G/\partial\mu\)；\(\langle E\rangle=-(\partial\ln\mathcal{Z}_G/\partial\beta)_{\mu,V}+\mu\langle N\rangle\)。</li>
+        <li><strong>粒子数涨落</strong> \(\langle(\Delta N)^2\rangle=k_BT\,(\partial\langle N\rangle/\partial\mu)_{T,V}\)。理想气体 → 泊松 \(\langle(\Delta N)^2\rangle=\langle N\rangle\)，相对涨落 \(1/\sqrt{\langle N\rangle}\) 宏观极限下可忽略。</li>
+        <li><strong>化学势 \(\mu\)</strong>：\(\mu=(\partial F/\partial N)_{T,V}\) = 加入一个粒子的自由能代价，<strong>不是</strong>单个粒子的能量。理想气体 \(\mu=kT\ln(n\lambda_{\text{th}}^{3})\)。</li>
+        <li><strong>\(\mu\) 平衡</strong>：两相/两组分平衡时 \(\mu\) 相等（\(\mu_\alpha=\mu_\beta\)），正如热平衡 \(T_\alpha=T_\beta\)。化学反应平衡 \(\sum_i\nu_i\mu_i=0\)。</li>
+        <li><strong>Fermi–Dirac / Bose–Einstein</strong>（第 11 章预览）：把单量子态视为巨正则子系统，分别得 \(\langle n\rangle=1/(e^{\beta(\epsilon-\mu)}\pm 1)\)，分母 \(-\) 对应玻色子（要求 \(\mu<\epsilon\)）、\(+\) 对应费米子。</li>
+        <li><strong>典型应用</strong>：Langmuir 等温 \(\theta=KP/(1+KP)\)；液–气平衡定 \(P_{\text{sat}}\)；半导体载流子 \(n_i=\sqrt{N_C N_V}\,e^{-E_g/(2kT)}\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;P_i=\frac{1}{\mathcal{Z}_G}e^{-\beta(E_i-\mu N_i)}\;,\qquad \mathcal{Z}_G=\sum_i e^{-\beta(E_i-\mu N_i)}\;,\qquad \Omega_G=-k_BT\ln\mathcal{Z}_G=-pV\;} \]</div>
+      <div class="formula">\[ \boxed{\;\langle N\rangle=\frac{1}{\beta}\frac{\partial\ln\mathcal{Z}_G}{\partial\mu}\;,\qquad \langle(\Delta N)^2\rangle=k_BT\!\left(\frac{\partial\langle N\rangle}{\partial\mu}\right)_{\!T,V}\;,\qquad \mu=\left(\frac{\partial F}{\partial N}\right)_{\!T,V}\;}\ \] </div>
+      <div class="formula">\[ \boxed{\;\mu_{\text{ideal gas}}=kT\ln(n\lambda_{\text{th}}^{3})\;,\qquad \theta_{\text{Langmuir}}=\frac{KP}{1+KP}\;,\qquad \langle n\rangle_{\text{FD/BE}}=\frac{1}{e^{\beta(\epsilon-\mu)}\pm 1}\;}\ \] </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

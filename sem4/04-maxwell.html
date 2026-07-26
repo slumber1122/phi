@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 麦克斯韦-玻尔兹曼分布 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第4章 · 热力学 Thermodynamics</p>
+      <h1>麦克斯韦-玻尔兹曼分布 <span class="en-title">Maxwell-Boltzmann Distribution</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>写出<strong>麦克斯韦-玻尔兹曼速率分布</strong> (Maxwell-Boltzmann speed distribution) \(f(v)\)，解释归一化因子、\(v^{2}\) 相空间因子与玻尔兹曼因子 \(\exp(-mv^{2}/2kT)\) 各自的物理来源。</li>
+        <li><strong>推导</strong>三个特征速率——最概然速率 \(v_{p}\)、平均速率 \(\langle v\rangle\)、方均根速率 \(v_{\mathrm{rms}}\)——并说明为何 \(v_{p}&lt;\langle v\rangle&lt;v_{\mathrm{rms}}\)。</li>
+        <li>分析温度 \(T\) 升高或分子质量 \(m\) 增大时分布如何<strong>平移、宽化、变矮</strong>（峰值由 \(f(v_{p})\propto\sqrt{m}\,T^{-1/2}\) 决定）。</li>
+        <li>应用<strong>能量均分定理</strong> (equipartition theorem) 计算单原子/双原子理想气体的摩尔热容 \(C_{V}\)、\(C_{P}\) 与绝热指数 \(\gamma=C_{P}/C_{V}\)。</li>
+        <li>用分布的高能尾部 (high-speed tail) 解释<strong>反应速率</strong> (Arrhenius) 与行星大气的<strong>金斯逃逸</strong> (Jeans escape)。</li>
+        <li>区分三个特征速率、避免「最概然速率 = 平均速率」等常见错误。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 从速度分量到速率分布 From Velocity Components to the Speed Distribution</h3>
+      <p>考虑体积 \(V\) 中处于热平衡 (thermal equilibrium) 的 \(N\) 个全同分子，温度 \(T\)。统计力学的基本结论是：每个速度分量 (velocity component) \(v_{i}\)（\(i=x,y,z\)) 都服从<strong>一维高斯分布</strong> (1-D Gaussian)，方差 \(\sigma^{2}=kT/m\)：</p>
+      <div class="formula">\[ g(v_{i})=\sqrt{\frac{m}{2\pi kT}}\,\exp\!\left(-\frac{mv_{i}^{2}}{2kT}\right),\qquad \int_{-\infty}^{\infty}g(v_{i})\,dv_{i}=1. \]</div>
+      <p>这是<strong>玻尔兹曼因子</strong> (Boltzmann factor) \(\exp(-E/kT)\) 作用于动能 \(E=\tfrac12 mv_{i}^{2}\) 的直接结果。由于三个分量<strong>统计独立</strong>且空间各向同性 (isotropic)，把三个分量在<strong>速度空间</strong> (velocity space) 中合并，并按「球壳体积」\(4\pi v^{2}\,dv\) 积分掉角度，就得到<strong>速率</strong> (speed，标量 \(v=|\vec v|\)) 的分布：</p>
+      <div class="formula">\[ \boxed{\;f(v)\,dv=4\pi\!\left(\frac{m}{2\pi kT}\right)^{\!3/2}\!v^{2}\,\exp\!\left(-\frac{mv^{2}}{2kT}\right)\,dv\;}\qquad\Big(\,\int_{0}^{\infty}f(v)\,dv=1\,\Big) \]</div>
+      <p>用<strong>摩尔</strong>量表示时（\(m=M/N_{A}\)、\(k=R/N_{A}\)，故 \(k/m = R/M\)），形式完全等价：</p>
+      <div class="formula">\[ f(v)=4\pi\!\left(\frac{M}{2\pi RT}\right)^{\!3/2}\!v^{2}\,\exp\!\left(-\frac{Mv^{2}}{2RT}\right), \]</div>
+      <p>其中 \(M\) 是<strong>摩尔质量</strong> (molar mass, kg/mol)，\(R=8.314\,\mathrm{J/(mol\cdot K)}\)。把 \(f(v)\) 拆成三个因子最便于理解：</p>
+      <ul>
+        <li><strong>\(4\pi\)</strong> — 来自速度空间球壳的立体角 (solid angle)；它体现「各向同性」。</li>
+        <li><strong>\(v^{2}\)</strong> — 相空间权重 (phase-space weight)。球壳 \(v\to v+dv\) 的体积正比于 \(v^{2}\,dv\)，所以即使玻尔兹曼因子在 \(v=0\) 处最大，\(v=0\) 附近的分子数仍然极少（球壳几乎没体积）。</li>
+        <li><strong>\(\exp(-mv^{2}/2kT)\)</strong> — 玻尔兹曼因子，把高动能态指数压低。三个因子的乘积给出一条从 0 单调上升、过峰值后长尾衰减的曲线（详见仿真）。</li>
+      </ul>
+      <div class="key-terms">thermal equilibrium (热平衡), velocity component (速度分量), speed (速率), Boltzmann factor (玻尔兹曼因子), phase space (相空间), isotropic (各向同性)</div>
+
+      <h3>2. 三个特征速率 Three Characteristic Speeds</h3>
+      <p>从 \(f(v)\) 可定义三种「代表速率」，它们<strong>互不相等</strong>但都 ∝ \(\sqrt{T/m}\)：</p>
+      <div class="formula">\[ \boxed{\;v_{p}=\sqrt{\frac{2kT}{m}},\qquad \langle v\rangle=\sqrt{\frac{8kT}{\pi m}},\qquad v_{\mathrm{rms}}=\sqrt{\frac{3kT}{m}}\;} \]</div>
+      <p>三者的<strong>比例</strong>与气体种类、温度无关：</p>
+      <div class="formula">\[ v_{p}:\langle v\rangle:v_{\mathrm{rms}} \;=\; \sqrt{2}:\sqrt{\frac{8}{\pi}}:\sqrt{3} \;\approx\; 1 : 1.128 : 1.225. \]</div>
+      <p>因此恒有 \(v_{p}&lt;\langle v\rangle&lt;v_{\mathrm{rms}}\)。这并不矛盾，因为分布<strong>右偏</strong> (right-skewed)——长尾把均值与方均根「拉到」最概然速率的右侧。注意 \(\langle v^{2}\rangle = v_{\mathrm{rms}}^{2}=3kT/m\)，于是每个分子的平均平动动能为</p>
+      <div class="formula">\[ \langle \mathrm{KE}\rangle=\tfrac12 m\langle v^{2}\rangle=\tfrac32 kT, \]</div>
+      <p>这正是<strong>能量按自由度均分</strong>（3 个平动自由度，每个 \(\tfrac12 kT\)）对平动的具体体现。</p>
+      <div class="key-terms">most probable speed (最概然速率), mean speed (平均速率), root-mean-square speed (方均根速率), translational kinetic energy (平动动能)</div>
+
+      <h3>3. 分布随 \(T\) 与 \(m\) 的变化 How \(f(v)\) Depends on \(T\) and \(m\)</h3>
+      <p>把 \(v_{p}=\sqrt{2kT/m}\) 代入 \(f\)，峰值高度</p>
+      <div class="formula">\[ f(v_{p})=\frac{4}{e}\,\sqrt{\frac{2}{\pi}}\,\bigg/\!v_{p}\;\;\propto\;\;\sqrt{m}\,T^{-1/2}. \]</div>
+      <p>而曲线下面积恒为 1，因此：</p>
+      <ul>
+        <li><strong>\(T\) 升高</strong>：\(v_{p}\propto\sqrt{T}\) 右移、峰值 \(f(v_{p})\propto T^{-1/2}\) <em>下降</em>，曲线<strong>变宽变矮</strong>，高能尾部显著增厚（这是反应速率对温度极敏感的根源）。</li>
+        <li><strong>\(m\) 增大</strong>（同温）：\(v_{p}\propto 1/\sqrt{m}\) 左移、峰值 <em>升高</em>，曲线<strong>变窄变高</strong>。即「相同温度下，轻分子跑得更快」——例如 \(H_{2}\) 的 \(v_{\mathrm{rms}}\) 是同温 \(O_{2}\) 的 \(\sqrt{32/2}=4\) 倍。</li>
+      </ul>
+      <div class="key-terms">high-speed tail (高能尾部), right-skewed (右偏)</div>
+
+      <h3>4. 能量均分与摩尔热容 Equipartition and Molar Heat Capacities</h3>
+      <p><strong>能量均分定理</strong> (equipartition theorem)：处于热平衡时，每个能量中表现为<strong>平方</strong>形式的自由度 (degree of freedom, dof) 平均分得 \(\tfrac12 kT\) 的能量（每摩尔 \(\tfrac12 RT\)）。记平动、转动、振动自由度数分别为 \(f_{\mathrm{trans}},f_{\mathrm{rot}},f_{\mathrm{vib}}\)（振动每个模式贡献 2 个平方项 — 动能 + 势能，所以贡献 \(RT\) 而非 \(\tfrac12 RT\)）。</p>
+      <p>对理想气体，\(U\) 只依赖于 \(T\)，迈尔关系 (Mayer's relation) 给出</p>
+      <div class="formula">\[ C_{V}=\frac{1}{n}\frac{dU}{dT},\qquad C_{P}=C_{V}+R,\qquad \gamma\equiv\frac{C_{P}}{C_{V}}. \]</div>
+      <table style="width:100%;border-collapse:collapse;margin:1em 0;">
+        <thead>
+          <tr style="border-bottom:2px solid currentColor;">
+            <th style="text-align:left;padding:4px 8px;">分子类型 Species</th>
+            <th style="text-align:center;padding:4px 8px;">活性自由度 Active dof</th>
+            <th style="text-align:center;padding:4px 8px;">\(C_{V}\)</th>
+            <th style="text-align:center;padding:4px 8px;">\(C_{P}\)</th>
+            <th style="text-align:center;padding:4px 8px;">\(\gamma\)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">单原子 monatomic (He, Ar)</td>
+            <td style="text-align:center;">3 (trans)</td>
+            <td style="text-align:center;">\(\tfrac32 R=12.47\)</td>
+            <td style="text-align:center;">\(\tfrac52 R=20.79\)</td>
+            <td style="text-align:center;">\(5/3\approx 1.667\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">双原子 diatomic (\(N_{2},O_{2}\), 室温)</td>
+            <td style="text-align:center;">5 (3 trans + 2 rot)</td>
+            <td style="text-align:center;">\(\tfrac52 R=20.79\)</td>
+            <td style="text-align:center;">\(\tfrac72 R=29.10\)</td>
+            <td style="text-align:center;">\(7/5=1.400\)</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 8px;">多原子 polyatomic (\(CO_{2},CH_{4}\), 室温)</td>
+            <td style="text-align:center;">6 (3 trans + 3 rot)</td>
+            <td style="text-align:center;">\(3R=24.94\)</td>
+            <td style="text-align:center;">\(4R=33.26\)</td>
+            <td style="text-align:center;">\(4/3\approx 1.333\)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>单位均为 \(\mathrm{J/(mol\cdot K)}\)。<strong>注意</strong>：振动模式在室温下通常被量子「冻结」 (frozen out)——例如 \(N_{2}\) 的振动特征温度 \(\Theta_{\mathrm{vib}}\approx 3390\,\mathrm{K}\)，故 300 K 时几乎不参与均分；只有到几千开时 \(C_{V}\) 才趋近 \(\tfrac72 R\)（含 1 个振动模式）。</p>
+      <div class="key-terms">equipartition theorem (能量均分定理), degree of freedom (自由度), molar heat capacity (摩尔热容), adiabatic index (绝热指数), frozen out (冻结)</div>
+
+      <h3>5. 应用：反应速率与金斯逃逸 Applications — Rates &amp; Escape</h3>
+      <p><strong>(a) 反应/激活速率。</strong>许多化学反应要求反应物动能超过阈值 \(E_{a}\)（激活能）。在气相中，碰撞相对动能超过 \(E_{a}\) 的分子比例近似为高能尾部积分，可解析地用余误差函数 (complementary error function) 表示。设 \(v_{\mathrm{th}}\) 对应于 \(E_{a}\)，即 \(\tfrac12 mv_{\mathrm{th}}^{2}=E_{a}\)，则</p>
+      <div class="formula">\[ F(v&gt;v_{\mathrm{th}})=\operatorname{erfc}\!\!\left(\frac{v_{\mathrm{th}}}{v_{p}}\right)+\frac{2}{\sqrt{\pi}}\frac{v_{\mathrm{th}}}{v_{p}}\exp\!\left(-\frac{v_{\mathrm{th}}^{2}}{v_{p}^{2}}\right). \]</div>
+      <p>当阈值远大于 \(v_{p}\) 时，主导项是 \(\sim \exp(-E_{a}/kT)\)（每摩尔 \(\exp(-E_{a}/RT)\)），这正是<strong>Arrhenius 方程</strong> \(k=A\,\exp(-E_{a}/RT)\) 的统计起源。</p>
+      <p><strong>(b) 金斯逃逸 (Jeans escape)。</strong>行星大气顶部（外逸层 exobase）分子若速率 \(v&gt;v_{\mathrm{esc}}\)（行星逃逸速度），且未受碰撞就可离去。单位时间逃逸通量正比于</p>
+      <div class="formula">\[ \Phi_{\mathrm{esc}}\propto n\,\langle v\rangle\,(1+v_{\mathrm{esc}}^{2}/v_{p}^{2})\,\exp\!\left(-\frac{mv_{\mathrm{esc}}^{2}}{2kT}\right) = n\,\langle v\rangle\,(1+\dots)\,\exp\!\left(-\frac{Mv_{\mathrm{esc}}^{2}}{2RT}\right), \]</div>
+      <p>对 \(M\) 与 \(T\) 都<strong>极其敏感</strong>。经验判据：若 \(v_{\mathrm{esc}}/v_{\mathrm{rms}}\gtrsim 6\)，则在太阳系年龄内该气体基本不逃逸。地球 \(v_{\mathrm{esc}}=11.2\,\mathrm{km/s}\)，外逸层 \(T\sim 1000\,\mathrm{K}\)：对 \(H_{2}\)、\(He\) 比例较小，故会缓慢流失；对 \(O_{2}\)、\(N_{2}\) 比例 \(\gg 6\)，被牢牢束缚（详见例 4）。</p>
+      <div class="key-terms">activation energy (激活能), Arrhenius equation (阿伦尼乌斯方程), escape velocity (逃逸速度), exobase (外逸层底)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 4.A — 由速度分量导出 \(f(v)\) From Component Gaussians to \(f(v)\)</h3>
+      <p class="step"><strong>步骤 1：</strong>取一维分量 \(v_{x}\)，其玻尔兹曼权重为 \(\exp(-mv_{x}^{2}/2kT)\)。归一化得 \(g(v_{x})=\sqrt{m/(2\pi kT)}\,\exp(-mv_{x}^{2}/2kT)\)。</p>
+      <p class="step"><strong>步骤 2：</strong>三方向独立，所以联合概率密度 \(P(v_{x},v_{y},v_{z})=g(v_{x})g(v_{y})g(v_{z})=\big(\tfrac{m}{2\pi kT}\big)^{3/2}\exp\!\big(-\tfrac{m(v_{x}^{2}+v_{y}^{2}+v_{z}^{2})}{2kT}\big)\)。</p>
+      <p class="step"><strong>步骤 3：</strong>把笛卡尔速度体元 \(dv_{x}\,dv_{y}\,dv_{z}\) 换成<strong>速度空间球坐标</strong> (spherical in velocity space) \((v,\theta,\phi)\) 的体元 \(v^{2}\sin\theta\,dv\,d\theta\,d\phi\)。注意 \(v_{x}^{2}+v_{y}^{2}+v_{z}^{2}=v^{2}\)。</p>
+      <p class="step"><strong>步骤 4：</strong>对所有方向（\(4\pi\) 立体角）积分，角度因子消失：</p>
+      <div class="formula">\[ f(v)\,dv=\int_{0}^{2\pi}\!\!d\phi\!\int_{0}^{\pi}\!\!\sin\theta\,d\theta\;\Big[\,\text{joint}\,\Big]\,v^{2}\,dv = 4\pi\!\Big(\frac{m}{2\pi kT}\Big)^{\!3/2}\!v^{2}\exp\!\Big(\!-\frac{mv^{2}}{2kT}\Big)\,dv. \]</div>
+
+      <h3>推导 4.B — 最概然速率 \(v_{p}\) Most-Probable Speed</h3>
+      <p>对 \(f(v)\) 求导并令其为零：</p>
+      <div class="formula">\[ \frac{df}{dv}=4\pi\!\Big(\frac{m}{2\pi kT}\Big)^{\!3/2}\!v\,\bigg[\,2-\frac{mv^{2}}{kT}\,\bigg]\exp\!\Big(\!-\frac{mv^{2}}{2kT}\Big)=0. \]</div>
+      <p>对 \(v&gt;0\) 的非平凡解：\(2-mv^{2}/(kT)=0\Rightarrow\)</p>
+      <div class="formula">\[ v_{p}=\sqrt{\frac{2kT}{m}}\;\;\Rightarrow\;\; f(v_{p})=\frac{4}{e}\sqrt{\frac{m}{2\pi kT}}\cdot\sqrt{\frac{2kT}{m}}\cdot\frac{1}{1}\;\propto\;\sqrt{m}\,T^{-1/2}. \]</div>
+      <p>可见 \(v_{p}\propto\sqrt{T/m}\)，而峰值高度 \(\propto\sqrt{m/T}\)——升高 \(T\) 让峰值右移、变矮；增大 \(m\) 让峰值左移、变高。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 氮气三个特征速率 The Three Speeds of \(N_{2}\) at 300 K</h4>
+        <p class="example-statement">已知 \(N_{2}\) 摩尔质量 \(M=28.0\,\mathrm{g/mol}=0.0280\,\mathrm{kg/mol}\)，温度 \(T=300\,\mathrm{K}\)。计算 \(v_{p}\)、\(\langle v\rangle\)、\(v_{\mathrm{rms}}\)，并验证 \(\langle\mathrm{KE}\rangle=\tfrac32 kT\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用摩尔形式 \(v=\sqrt{c\,RT/M}\)，其中 \(c=2,8/\pi,3\) 分别对应 \(v_{p},\langle v\rangle,v_{\mathrm{rms}}\)。代入 \(R=8.314\,\mathrm{J/(mol\cdot K)}\)：</p>
+          <p class="step">\(v_{p}=\sqrt{\dfrac{2(8.314)(300)}{0.0280}}=\sqrt{1.782\times 10^{5}}=\mathbf{422\,m/s}\)。</p>
+          <p class="step">\(\langle v\rangle=\sqrt{\dfrac{8(8.314)(300)}{\pi(0.0280)}}=\sqrt{2.269\times 10^{5}}=\mathbf{476\,m/s}\)。</p>
+          <p class="step">\(v_{\mathrm{rms}}=\sqrt{\dfrac{3(8.314)(300)}{0.0280}}=\sqrt{2.672\times 10^{5}}=\mathbf{517\,m/s}\)。</p>
+          <p class="step">比值验证：\(422:476:517=1:1.128:1.225\)，与 \(\sqrt{2}:\sqrt{8/\pi}:\sqrt{3}\) 一致 ✓。</p>
+          <p class="step"><strong>能量核对：</strong>\(\langle\mathrm{KE}\rangle_{\text{每摩尔}}=\tfrac12 Mv_{\mathrm{rms}}^{2}=\tfrac12(0.0280)(517)^{2}=3.74\times 10^{3}\,\mathrm{J/mol}\)；而 \(\tfrac32 RT=\tfrac32(8.314)(300)=3.74\times 10^{3}\,\mathrm{J/mol}\) ✓。两式吻合，证明 \(v_{\mathrm{rms}}\) 与均分定理自洽。</p>
+          <p><span class="ans">答案：\(v_{p}=422\,\mathrm{m/s}\)、\(\langle v\rangle=476\,\mathrm{m/s}\)、\(v_{\mathrm{rms}}=517\,\mathrm{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 单原子 vs 双原子热容 Heat Capacities of Ar and \(N_{2}\)</h4>
+        <p class="example-statement">计算 (a) 单原子氩 Ar 与 (b) 双原子氮 \(N_{2}\) 在室温下的 \(C_{V}\)、\(C_{P}\)、\(\gamma\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) Ar（单原子）：</strong>仅 3 个平动自由度。\(U=\tfrac32 nRT\)，故</p>
+          <p class="step">\(C_{V}=\big(\tfrac{\partial U}{\partial T}\big)_{V}=\tfrac32 R=\tfrac32(8.314)=\mathbf{12.47\,J/(mol\cdot K)}\)。</p>
+          <p class="step">\(C_{P}=C_{V}+R=\tfrac52 R=\mathbf{20.79\,J/(mol\cdot K)}\)。</p>
+          <p class="step">\(\gamma=C_{P}/C_{V}=5/3=\mathbf{1.667}\)。</p>
+          <p class="step"><strong>(b) \(N_{2}\)（双原子，室温）：</strong>3 平动 + 2 转动 = 5 自由度（振动 \(\Theta_{\mathrm{vib}}\approx 3390\,\mathrm{K}\)，被冻结）：</p>
+          <p class="step">\(C_{V}=\tfrac52 R=\mathbf{20.79\,J/(mol\cdot K)}\)。</p>
+          <p class="step">\(C_{P}=\tfrac72 R=\mathbf{29.10\,J/(mol\cdot K)}\)。</p>
+          <p class="step">\(\gamma=7/5=\mathbf{1.400}\)。</p>
+          <p class="step">两者在 300 K 与实验测得值偏差均 \(&lt;1\%\)，是均分定理早期最漂亮的成功之一。</p>
+          <p><span class="ans">答案：Ar — \(C_{V}=12.47\)、\(C_{P}=20.79\)、\(\gamma=1.667\)；\(N_{2}\) — \(C_{V}=20.79\)、\(C_{P}=29.10\)、\(\gamma=1.400\)（单位 \(\mathrm{J/(mol\cdot K)}\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 高能尾部对温度的敏感性 Sensitivity of the Tail to \(T\)</h4>
+        <p class="example-statement">求 \(T=300\,\mathrm{K}\) 与 \(T=600\,\mathrm{K}\) 时，\(N_{2}\) 中速率超过 \(v_{\mathrm{th}}=1000\,\mathrm{m/s}\) 的分子比例，并比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用闭式 \(F(v&gt;v_{\mathrm{th}})=\operatorname{erfc}(x)+\dfrac{2}{\sqrt{\pi}}x\,e^{-x^{2}}\)，其中 \(x=v_{\mathrm{th}}/v_{p}\)。</p>
+          <p class="step"><strong>300 K：</strong>由例 4.1，\(v_{p}=422\,\mathrm{m/s}\)，\(x=1000/422=2.37\)。</p>
+          <p class="step">\(e^{-x^{2}}=e^{-5.62}=3.62\times 10^{-3}\)；\(\operatorname{erfc}(2.37)\approx 7.9\times 10^{-4}\)。</p>
+          <p class="step">\(F=7.9\times 10^{-4}+\dfrac{2}{\sqrt{\pi}}(2.37)(3.62\times 10^{-3})=7.9\times 10^{-4}+1.128\times 2.37\times 3.62\times 10^{-3}=9.7\times 10^{-3}+7.9\times 10^{-4}=\mathbf{1.05\times 10^{-2}}\)（约 1.0%）。</p>
+          <p class="step"><strong>600 K：</strong>\(v_{p}=\sqrt{2}\times 422=597\,\mathrm{m/s}\)，\(x=1000/597=1.68\)。</p>
+          <p class="step">\(e^{-x^{2}}=e^{-2.81}=0.0602\)；\(\operatorname{erfc}(1.68)\approx 1.83\times 10^{-2}\)。</p>
+          <p class="step">\(F=1.83\times 10^{-2}+1.128\times 1.68\times 0.0602=0.0183+0.114=\mathbf{0.132}\)（约 13.2%）。</p>
+          <p class="step"><strong>对比：</strong>温度只翻倍，高能分子比例却放大 \(\dfrac{0.132}{0.0105}\approx\mathbf{12.6\,倍}\)。这正是为何许多反应速率在升温时<strong>指数式</strong>上升（Arrhenius 行为）。</p>
+          <p><span class="ans">答案：300 K 时 \(\approx 1.0\%\)；600 K 时 \(\approx 13.2\%\)（比例 \(\sim 13\times\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 金斯逃逸：地球留住 \(O_{2}\) 却留不住 \(H_{2}\) Jeans Escape: Earth Keeps \(O_{2}\), Loses \(H_{2}\)</h4>
+        <p class="example-statement">地球外逸层 \(T=1000\,\mathrm{K}\)，\(v_{\mathrm{esc}}=11.2\,\mathrm{km/s}\)。计算 \(H_{2}\)（\(M=2.016\,\mathrm{g/mol}\)）与 \(O_{2}\)（\(M=32.0\,\mathrm{g/mol}\)）的 \(v_{\mathrm{rms}}\)，以及单位分子逃逸的玻尔兹曼权重 \(\exp(-Mv_{\mathrm{esc}}^{2}/2RT)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>\(H_{2}\)：</strong>\(v_{\mathrm{rms}}=\sqrt{\dfrac{3(8.314)(1000)}{0.002016}}=\sqrt{1.237\times 10^{7}}=\mathbf{3520\,m/s}\)。</p>
+          <p class="step">\(\beta\equiv\dfrac{Mv_{\mathrm{esc}}^{2}}{2RT}=\dfrac{(0.002016)(11200)^{2}}{2(8.314)(1000)}=\dfrac{2.53\times 10^{5}}{1.663\times 10^{4}}=15.2\)。</p>
+          <p class="step">\(\exp(-\beta)=e^{-15.2}=\mathbf{2.5\times 10^{-7}}\)。\(\;v_{\mathrm{esc}}/v_{\mathrm{rms}}=11200/3520=\mathbf{3.18}\)（接近逃逸阈值 6，会缓慢流失）。</p>
+          <p class="step"><strong>\(O_{2}\)：</strong>\(v_{\mathrm{rms}}=\sqrt{\dfrac{3(8.314)(1000)}{0.0320}}=\sqrt{7.79\times 10^{5}}=\mathbf{883\,m/s}\)。</p>
+          <p class="step">\(\beta=\dfrac{(0.0320)(11200)^{2}}{2(8.314)(1000)}=\dfrac{4.01\times 10^{6}}{1.663\times 10^{4}}=241\)。</p>
+          <p class="step">\(\exp(-\beta)=e^{-241}\approx\mathbf{10^{-105}}\)（基本不可能）。\(\;v_{\mathrm{esc}}/v_{\mathrm{rms}}=11200/883=\mathbf{12.7}\)（远超 6，被地球牢牢束缚）。</p>
+          <p class="step"><strong>对比：</strong>每个 \(H_{2}\) 分子的逃逸权重是 \(O_{2}\) 的 \(\exp(241-15.2)\approx \mathbf{10^{98}}\) 倍。结论：地球在地质年代里基本保留 \(O_{2}\)、\(N_{2}\)，但已几乎耗尽原始 \(H_{2}\)、\(He\)。</p>
+          <p><span class="ans">答案：\(H_{2}\)：\(v_{\mathrm{rms}}=3520\,\mathrm{m/s}\)，\(\exp(-\beta)=2.5\times 10^{-7}\)；\(O_{2}\)：\(v_{\mathrm{rms}}=883\,\mathrm{m/s}\)，\(\exp(-\beta)\approx 10^{-105}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把三个特征速率混为一谈。</strong>\(v_{p}\)、\(\langle v\rangle\)、\(v_{\mathrm{rms}}\) <em>互不相等</em>，恒有关系 \(v_{p}&lt;\langle v\rangle&lt;v_{\mathrm{rms}}\)。在涉及动能（\(\tfrac12 m\langle v^{2}\rangle\)）的问题中必须用 \(v_{\mathrm{rms}}\)，而涉及碰撞通量 \(\Phi=\tfrac14 n\langle v\rangle\) 时要用 \(\langle v\rangle\)。</li>
+        <li><strong>「同温即同速」。</strong>错。\(v_{\mathrm{rms}}=\sqrt{3kT/m}\) 同时依赖于 \(m\)：温度相同时，\(H_{2}\) 比 \(O_{2}\) 快 4 倍。轻分子更容易逃逸、扩散更快。</li>
+        <li><strong>把分布当作对称钟形曲线。</strong>错。\(f(v)\) 是<strong>右偏</strong>的：高能尾部很长（直到 \(\infty\)），所以均值与方均根都被尾部「拉到」峰值的右边。这正是化学反应、蒸发、逃逸等现象存在的根源。</li>
+        <li><strong>「温度升高，峰值变大」。</strong>反了。曲线下面积恒为 1，\(T\) 升高时峰值 \(f(v_{p})\propto T^{-1/2}\) <em>下降</em>，曲线变宽变矮——而不是升高。</li>
+        <li><strong>把所有「原子间的自由度」都计入均分。</strong>错。均分定理只对<strong>能量中平方项</strong>且在温度下「充分激发」的自由度成立。双原子分子在 300 K 时振动被量子冻结（\(\Theta_{\mathrm{vib}}\sim 10^{3}\,\mathrm{K}\)），故 \(C_{V}=\tfrac52 R\) 而非 \(\tfrac72 R\)；只有高温才趋近后者。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 氦气三个速率 He at 200 K：计算 \(v_{p}\)、\(\langle v\rangle\)、\(v_{\mathrm{rms}}\)。</summary>
+        <div class="hint">用摩尔形式 \(v=\sqrt{cRT/M}\)，氦 \(M=4.00\,\mathrm{g/mol}=0.00400\,\mathrm{kg/mol}\)。</div>
+        <div class="solution">
+          \(v_{p}=\sqrt{2(8.314)(200)/0.00400}=\sqrt{8.314\times 10^{5}}=912\,\mathrm{m/s}\)；<br>
+          \(\langle v\rangle=\sqrt{8(8.314)(200)/(\pi\cdot 0.00400)}=1029\,\mathrm{m/s}\)；<br>
+          \(v_{\mathrm{rms}}=\sqrt{3(8.314)(200)/0.00400}=1117\,\mathrm{m/s}\)。<br>
+          作为对照，例 4.1 的 \(N_{2}\) 在 300 K 时 \(v_{\mathrm{rms}}=517\,\mathrm{m/s}\)；此处 He 即使温度更低（200 K），\(v_{\mathrm{rms}}\) 仍是其 \(\sqrt{28\cdot 300/(4\cdot 200)}=\sqrt{10.5}\approx 2.16\) 倍——可见质量项 \(\sqrt{1/M}\) 影响远大于温度项 \(\sqrt{T}\)。<span class="ans">答：\(v_{p}=912\)、\(\langle v\rangle=1029\)、\(v_{\mathrm{rms}}=1117\,\mathrm{m/s}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 由 \(C_{V}\) 反推气体类型 Identifying a Gas from \(C_{V}\)</summary>
+        <div class="hint">先求 \(C_{P}=C_{V}+R\) 和 \(\gamma\)；活性自由度 \(f=2C_{V}/R\)。</div>
+        <div class="solution">
+          已知 \(C_{V}=\tfrac52 R=20.79\,\mathrm{J/(mol\cdot K)}\)：<br>
+          \(C_{P}=C_{V}+R=\tfrac72 R=29.10\,\mathrm{J/(mol\cdot K)}\)；<br>
+          \(\gamma=C_{P}/C_{V}=7/5=1.400\)。<br>
+          \(f=2C_{V}/R=5\)：3 平动 + 2 转动，对应<strong>室温下的双原子分子</strong>（如 \(N_{2}\)、\(O_{2}\)、\(H_{2}\)、CO）。 <span class="ans">答：\(C_{P}=29.10\,\mathrm{J/(mol\cdot K)}\)、\(\gamma=1.400\)；双原子气体。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 让 \(H_{2}\) 的 \(v_{\mathrm{rms}}\) 达到 \(7000\,\mathrm{m/s}\) 需多高温度？此温度远高于地球外逸层说明什么？</summary>
+        <div class="hint">从 \(v_{\mathrm{rms}}=\sqrt{3RT/M}\) 解出 \(T=Mv_{\mathrm{rms}}^{2}/3R\)。</div>
+        <div class="solution">
+          \(T=\dfrac{(0.002016)(7000)^{2}}{3(8.314)}=\dfrac{9.88\times 10^{4}}{24.94}=\mathbf{3960\,K}\)。<br>
+          地球外逸层仅 \(\sim 1000\,\mathrm{K}\)，对应 \(v_{\mathrm{rms}}\approx 3520\,\mathrm{m/s}\)，远小于 \(v_{\mathrm{esc}}=11200\,\mathrm{m/s}\)。<br>
+          因此<strong>平均</strong>分子不会直接逃逸；但 MB 分布的<strong>高能尾部</strong>仍贡献极少量 \(v&gt;v_{\mathrm{esc}}\) 的分子，造成缓慢的金斯逃逸（见例 4.4）。 <span class="ans">答：\(T\approx 3960\,\mathrm{K}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 证明 MB 分布归一化 Prove \(\displaystyle\int_{0}^{\infty}f(v)\,dv=1\)。</summary>
+        <div class="hint">令 \(\alpha=m/(2kT)\)、\(C=4\pi(m/2\pi kT)^{3/2}\)，用 \(\displaystyle\int_{0}^{\infty}x^{2}e^{-\alpha x^{2}}\,dx=\frac{\sqrt{\pi}}{4\alpha^{3/2}}\)。</div>
+        <div class="solution">
+          \(\displaystyle\int_{0}^{\infty}f(v)\,dv=C\!\int_{0}^{\infty}v^{2}e^{-\alpha v^{2}}\,dv=C\cdot\dfrac{\sqrt{\pi}}{4\alpha^{3/2}}\)。<br>
+          代入 \(C=4\pi\big(\tfrac{\alpha}{\pi}\big)^{3/2}=4\pi\alpha^{3/2}/\pi^{3/2}\)：<br>
+          \(C\cdot\dfrac{\sqrt{\pi}}{4\alpha^{3/2}}=\dfrac{4\pi\alpha^{3/2}}{\pi^{3/2}}\cdot\dfrac{\sqrt{\pi}}{4\alpha^{3/2}}=\dfrac{\pi\sqrt{\pi}}{\pi^{3/2}}=1\quad\checkmark\)。<br>
+          这证明了 \(f(v)\) 是真正的概率密度。 <span class="ans">答：积分 = 1。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>麦克斯韦-玻尔兹曼分布 Maxwell-Boltzmann Distribution。</strong>实时绘制 \(f(v)\)（蓝色填充曲线）。调节<strong>温度 \(T\)</strong> 与<strong>摩尔质量 \(M\)</strong> 两个滑块，观察曲线如何<strong>平移、宽化、变高/变矮</strong>。三条虚线分别标出 \(v_{p}\)（绿）、\(\langle v\rangle\)（红）、\(v_{\mathrm{rms}}\)（紫），右上角图例同步显示数值。试试：把 \(M\) 固定为 2，从 100 K 滑到 1000 K——峰值右移、变矮、尾部显著增厚；再把 \(T\) 固定为 300 K，从 \(H_{2}\)(2) 滑到 \(CO_{2}\)(44)——峰值左移、变高、曲线变窄。建议对照例 4.1、4.3、4.4 的数值。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="760" height="400"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          var R = 8.314;                              // J/(mol·K)
+          var DEFAULTS = { T: 300, M: 28 };           // M in g/mol
+          var params = { T: DEFAULTS.T, M: DEFAULTS.M };
+
+          // Plot bounds (fixed so broadening is visually apparent)
+          var V_MAX = 4000;       // m/s
+          var F_MAX = 0.006;      // s/m
+          var plotL = 60, plotR = W - 20, plotT = 60, plotB = H - 44;
+          function toX(v) { return plotL + (v / V_MAX) * (plotR - plotL); }
+          function toY(f) { return plotB - (f / F_MAX) * (plotB - plotT); }
+
+          function mbDist(v, T, Msi) {
+            var a = Msi / (2 * Math.PI * R * T);
+            return 4 * Math.PI * Math.pow(a, 1.5) * v * v *
+                   Math.exp(-Msi * v * v / (2 * R * T));
+          }
+          function speeds(T, Msi) {
+            return {
+              vp:   Math.sqrt(2 * R * T / Msi),
+              vbar: Math.sqrt(8 * R * T / (Math.PI * Msi)),
+              vrms: Math.sqrt(3 * R * T / Msi),
+            };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static plot — no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var Msi = params.M / 1000;      // g/mol -> kg/mol
+              var T = params.T;
+              var sp = speeds(T, Msi);
+
+              // ---- axes, grid, tick labels ------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB);
+              ctx.lineTo(plotR, plotB); ctx.stroke();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              // x ticks every 500 m/s
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var vt = 0; vt <= V_MAX + 1; vt += 500) {
+                var xt = toX(vt);
+                ctx.beginPath(); ctx.moveTo(xt, plotT); ctx.lineTo(xt, plotB); ctx.stroke();
+                ctx.fillText(String(vt), xt, plotB + 4);
+              }
+              ctx.fillText('速率 v (m/s)   speed', (plotL + plotR) / 2, plotB + 22);
+              // y ticks every 0.001 s/m
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var ft = 0; ft <= F_MAX + 1e-9; ft += 0.001) {
+                var yt = toY(ft);
+                ctx.beginPath(); ctx.moveTo(plotL, yt); ctx.lineTo(plotR, yt); ctx.stroke();
+                ctx.fillText(ft.toFixed(3), plotL - 5, yt);
+              }
+              ctx.restore();
+              // y-axis label (rotated)
+              ctx.save();
+              ctx.translate(16, (plotT + plotB) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('f(v)  (s/m)', 0, 0);
+              ctx.restore();
+
+              // ---- the distribution: filled area + stroke ---------------
+              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(toX(0), toY(0));
+              for (var v = 0; v <= V_MAX; v += 10) {
+                ctx.lineTo(toX(v), toY(mbDist(v, T, Msi)));
+              }
+              ctx.lineTo(toX(V_MAX), toY(0));
+              ctx.closePath();
+              ctx.fillStyle = PS.colors.primary;
+              ctx.globalAlpha = 0.16;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.5;
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- vertical markers vp, vbar, vrms ----------------------
+              function markLine(v, color) {
+                var x = toX(v);
+                if (x < plotL || x > plotR) return;
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 4]);
+                ctx.beginPath(); ctx.moveTo(x, plotT); ctx.lineTo(x, plotB); ctx.stroke();
+                ctx.restore();
+              }
+              markLine(sp.vp,   PS.colors.accent2);
+              markLine(sp.vbar, PS.colors.accent);
+              markLine(sp.vrms, PS.colors.trace);
+
+              // ---- header (top-left): T and M ---------------------------
+              ctx.save();
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '13px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('T = ' + T + ' K    M = ' + params.M +
+                           ' g/mol   (' + (params.M === 2 ? 'H₂' :
+                                            params.M === 4 ? 'He' :
+                                            params.M === 16 ? 'CH₄' :
+                                            params.M === 20 ? 'Ne' :
+                                            params.M === 28 ? 'N₂' :
+                                            params.M === 32 ? 'O₂' :
+                                            params.M === 40 ? 'Ar' :
+                                            params.M === 44 ? 'CO₂' : '?') + ')',
+                           plotL, 12);
+              ctx.restore();
+
+              // ---- legend (top-right): characteristic speeds ------------
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var lx = plotR - 150, ly = 10;
+              function legEntry(color, label, val) {
+                ctx.fillStyle = color;
+                ctx.fillRect(lx, ly + 3, 10, 10);
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(label + ' = ' + val + ' m/s', lx + 16, ly);
+                ly += 16;
+              }
+              legEntry(PS.colors.accent2, 'v_p  (最概然 / most probable)',  Math.round(sp.vp));
+              legEntry(PS.colors.accent,  '⟨v⟩ (平均 / mean)',     Math.round(sp.vbar));
+              legEntry(PS.colors.trace,   'v_rms (方均根 / rms)',           Math.round(sp.vrms));
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'T', label: '温度 T (K)',           min: 100, max: 1000, step: 10, value: DEFAULTS.T },
+            { type: 'slider', key: 'M', label: '摩尔质量 M (g/mol)',    min: 2,   max: 44,   step: 1,  value: DEFAULTS.M },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('T', function (v) { params.T = v; });
+          ctl.on('M', function (v) { params.M = v; });
+          ctl.on('reset', function () {
+            // Restore both slider DOM positions, fire 'input' so labels update and params sync
+            var sliders = document.querySelectorAll('#controls-4 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.T);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.M);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>由玻尔兹曼因子作用于动能，并按速度空间球壳 \(4\pi v^{2}\,dv\) 积分，得<strong>麦克斯韦-玻尔兹曼速率分布</strong> \(f(v)=4\pi\big(\tfrac{m}{2\pi kT}\big)^{3/2}v^{2}e^{-mv^{2}/2kT}\)，归一化 \(\int_{0}^{\infty}f\,dv=1\)。摩尔形式把 \(m\to M\)、\(k\to R\) 即可。</li>
+        <li>三个特征速率 \(v_{p}=\sqrt{2kT/m}\)、\(\langle v\rangle=\sqrt{8kT/\pi m}\)、\(v_{\mathrm{rms}}=\sqrt{3kT/m}\)，恒有 \(v_{p}&lt;\langle v\rangle&lt;v_{\mathrm{rms}}\)，比例 \(\sqrt{2}:\sqrt{8/\pi}:\sqrt{3}\)。</li>
+        <li>分布<strong>右偏</strong>、长尾。\(\langle\mathrm{KE}\rangle=\tfrac12 mv_{\mathrm{rms}}^{2}=\tfrac32 kT\) 与能量均分定理自洽。</li>
+        <li>\(T\!\uparrow\)：峰值右移并 \(\propto T^{-1/2}\) 变矮、曲线变宽、高能尾部增厚；\(m\!\uparrow\)：峰值左移并 \(\propto\sqrt{m}\) 变高、曲线变窄。</li>
+        <li>能量均分：每平方自由度 \(\tfrac12 kT\)（每摩尔 \(\tfrac12 RT\)）。单原子 \(C_{V}=\tfrac32 R\)、\(\gamma=5/3\)；双原子（室温）\(C_{V}=\tfrac52 R\)、\(\gamma=7/5\)；多原子 \(C_{V}=3R\)、\(\gamma=4/3\)。\(C_{P}=C_{V}+R\)。振动模式在低温被量子冻结。</li>
+        <li>高能尾部 \(F(v&gt;v_{\mathrm{th}})=\operatorname{erfc}(v_{\mathrm{th}}/v_{p})+\tfrac{2}{\sqrt{\pi}}(v_{\mathrm{th}}/v_{p})e^{-(v_{\mathrm{th}}/v_{p})^{2}}\)，主导项 \(\sim e^{-E_{a}/kT}\) → Arrhenius 反应速率。金斯逃逸通量正比于 \(e^{-Mv_{\mathrm{esc}}^{2}/2RT}\)，对 \(M\) 与 \(T\) 极敏感，故地球保住 \(O_{2}\)、\(N_{2}\) 却持续丢失 \(H_{2}\)、\(He\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;f(v)=4\pi\!\Big(\frac{m}{2\pi kT}\Big)^{\!3/2}\!v^{2}e^{-mv^{2}/2kT},\;\; v_{p}=\sqrt{\frac{2kT}{m}},\;\; \langle v\rangle=\sqrt{\frac{8kT}{\pi m}},\;\; v_{\mathrm{rms}}=\sqrt{\frac{3kT}{m}},\;\; \langle\mathrm{KE}\rangle=\frac{3}{2}kT\;} \]</div>
+      <div class="formula">\[ \boxed{\;C_{V}=\frac{f}{2}R,\quad C_{P}=C_{V}+R,\quad \gamma=\frac{C_{P}}{C_{V}}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

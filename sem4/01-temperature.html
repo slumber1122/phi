@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 温度与热平衡 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第1章 · 热力学 Thermodynamics</p>
+      <h1>温度与热平衡 <span class="en-title">Temperature &amp; Thermal Equilibrium</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用「热接触 (thermal contact)」与「热平衡 (thermal equilibrium)」的语言陈述<strong>热力学第零定律 (Zeroth Law)</strong>，并论证「温度 (temperature)」概念正是由该定律所定义——而非由人的冷暖感觉定义。</li>
+        <li>在摄氏 (Celsius)、华氏 (Fahrenheit)、开尔文 (Kelvin) 三种温标之间熟练换算，并能解释为什么气体定律中<strong>必须</strong>使用绝对温标。</li>
+        <li>说明<strong>定容气体温度计 (constant-volume gas thermometer)</strong> 如何以水的三相点为定标基准定义绝对温标，并由此确定绝对零度 \(\;T_{0}=-273.15\,\mathrm{^{\circ}C}\equiv 0\,\mathrm{K}\)。</li>
+        <li>正确应用线膨胀 \(\Delta L=\alpha L_{0}\Delta T\)、面膨胀 \(\Delta A=2\alpha A_{0}\Delta T\)、体膨胀 \(\Delta V=\beta V_{0}\Delta T\) 公式，<strong>推导</strong>并解释各向同性固体 \(\beta\approx 3\alpha\) 的来源。</li>
+        <li>区分液体在容器中加热时的「真实膨胀 (real expansion)」与「表观膨胀 (apparent expansion)」，定量说明为何 \(\beta_{\text{app}}=\beta_{\text{liquid}}-\beta_{\text{container}}\)。</li>
+        <li>解释水的反常膨胀 (water anomaly)：4 °C 时密度最大；说明双金属片 (bimetallic strip) 在温度变化时的弯曲方向与曲率半径公式。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 热平衡与热力学第零定律 Thermal Equilibrium &amp; the Zeroth Law</h3>
+      <p>把一杯热咖啡与一罐冰可乐同放在一个隔热良好的保温箱中。足够长时间后，两者的所有可观测性质都不再随时间变化——我们说二者达到了<strong>热平衡</strong> (thermal equilibrium)。更严格地，<em>若两个系统通过导热壁接触后不再发生任何宏观变化，则它们处于热平衡</em>。注意：热平衡并不要求两者「热」或「冷」，只要求<strong>净热流为零</strong>。</p>
+      <p>实验事实告诉我们热平衡具有<strong>传递性</strong> (transitivity)：</p>
+      <div class="formula">\[ \text{若 }A\text{ 与 }B\text{ 热平衡，且 }A\text{ 与 }C\text{ 热平衡，则 }B\text{ 与 }C\text{ 也热平衡。} \]</div>
+      <p>这条看似平凡的陈述就是著名的<strong>热力学第零定律 (Zeroth Law of Thermodynamics)</strong>。它之所以命名为「第零」，是因为在第一、第二定律已建立之后，人们才意识到这条更基本的公理是定义「温度」的前提：传递性保证存在一个**与系统处于热平衡状态一一对应**的标量性质——这个性质就叫<strong>温度</strong> (temperature)。两系统热平衡当且仅当温度相同；若温度不同，热量便从高温流向低温。</p>
+      <p>注意第零定律并不告诉我们温度「是什么物质」——温度不是流体、不是热质 (caloric)，而是一个决定热流方向的<strong>状态参量</strong> (state variable)。具体的温标 (temperature scale) 需要选择一个可测物理量（如汞柱高度、气体压强、电阻）并按规则赋值，下节展开。</p>
+      <div class="key-terms">thermal contact (热接触), thermal equilibrium (热平衡), Zeroth Law of Thermodynamics (热力学第零定律), temperature (温度), transitivity (传递性)</div>
+
+      <h3>2. 温度计与温标 Thermometers &amp; Temperature Scales</h3>
+      <p>任何随温度单调变化的宏观性质都可作为<strong>测温属性</strong> (thermometric property)：汞的体积、铂丝的电阻、双金属片的曲率、热电偶的电动势……基于此构造的仪器叫<strong>温度计</strong> (thermometer)。把温度计与待测物体达到热平衡，读出测温属性之值，按事先约定即可换算为温度。</p>
+      <p>历史上最重要的三种经验温标 (empirical scales) 是：</p>
+      <ul>
+        <li><strong>摄氏温标 (Celsius, \(t\) 或 \(T_{C}\))：</strong>规定标准大气压下水的冰点为 \(0\,\mathrm{^{\circ}C}\)、沸点为 \(100\,\mathrm{^{\circ}C}\)，中间线性等分 100 格。</li>
+        <li><strong>华氏温标 (Fahrenheit, \(T_{F}\))：</strong>水的冰点 \(32\,\mathrm{^{\circ}F}\)、沸点 \(212\,\mathrm{^{\circ}F}\)，差 180 格。美、英少数地区仍日常使用。</li>
+        <li><strong>开尔文 / 绝对温标 (Kelvin, \(T\)）：</strong>绝对零度对应 \(0\,\mathrm{K}\)，水的三相点 (triple point) 定义为 \(273.16\,\mathrm{K}\)。SI 基本单位之一，单位间隔与摄氏相同 (\(1\,\mathrm{K}=1\,\mathrm{^{\circ}C}\) 的差)。</li>
+      </ul>
+      <p>三者的换算公式：</p>
+      <div class="formula">\[ \boxed{\;T_{F}=\tfrac{9}{5}\,T_{C}+32,\qquad T=T_{C}+273.15,\qquad T_{C}=\tfrac{5}{9}(T_{F}-32)\;} \]</div>
+      <p>注意一个易被忽略的事实：摄氏与华氏在 \(T_{C}=-40\,\mathrm{^{\circ}C}\) 处相交（\(T_{F}=-40\,\mathrm{^{\circ}F}\)）。这是因为 \(-40=\tfrac{9}{5}(-40)+32=-72+32=-40\)。</p>
+      <p>经验温标的缺陷是<strong>依赖测温物质</strong>：在 \(50\,\mathrm{^{\circ}C}\) 时汞温度计与铂电阻温度计的读数仅在线性插值下相同，严格而言可能有微小偏差。要建立一个与物质无关的温标，需用下节介绍的气体温度计。</p>
+      <div class="key-terms">thermometer (温度计), thermometric property (测温属性), Celsius scale (摄氏温标), Fahrenheit scale (华氏温标), Kelvin scale (开尔文温标), triple point (三相点)</div>
+
+      <h3>3. 定容气体温度计与绝对温标 Constant-Volume Gas Thermometer</h3>
+      <p>理想气体状态方程 \(PV=nRT\) 表明，固定物质的量 \(n\) 与体积 \(V\)，气体压强 \(P\) 与温度 \(T\) 严格成正比。这就是<strong>定容气体温度计</strong> (constant-volume gas thermometer) 的工作原理：把一定量气体封入刚性球泡，测其压强即可换算温度。</p>
+      <p>为了建立<strong>绝对温标</strong> (absolute temperature scale)，国际计量大会选择<strong>水的三相点</strong> (the triple point of water，即冰、液态水、水蒸气三相共存之唯一状态) 作为唯一定标点，规定其热力学温度为：</p>
+      <div class="formula">\[ T_{\text{tr}}=273.16\,\mathrm{K}\quad(\text{精确定义}) \]</div>
+      <p>于是任一温度 \(T\) 由下式给出：</p>
+      <div class="formula">\[ \boxed{\;T=273.16\,\mathrm{K}\times\lim_{P_{\text{tr}}\to 0}\frac{P}{P_{\text{tr}}}\;}\qquad(\text{定容气体温度计}) \]</div>
+      <p>其中 \(P\) 是待测温度下气体的压强，\(P_{\text{tr}}\) 是同一气体在水的三相点温度下的压强。取极限 \(P_{\text{tr}}\to 0\)（气体充分稀薄）是为了消除实际气体偏离理想气体所带来的小误差——任何气体在零压极限下都趋于理想气体，因此这样定义的温标<strong>与具体气体无关</strong>，是真正的「热力学温标」。</p>
+      <p>实验上，水的冰点（标准大气压下与空气饱和的水）约为 \(273.15\,\mathrm{K}\)，沸点为 \(373.15\,\mathrm{K}\)。所以摄氏温标重新定义为 \(T_{C}=T-273.15\,\mathrm{^{\circ}C}\)，与历史上的 \(0/100\) 定义高度一致。</p>
+      <div class="key-terms">constant-volume gas thermometer (定容气体温度计), absolute temperature scale (绝对温标), triple point of water (水的三相点), ideal gas (理想气体)</div>
+
+      <h3>4. 绝对零度 Absolute Zero</h3>
+      <p>从气体温度计公式看，当 \(P\to 0\)（在固定 \(V,n\) 下），\(T\to 0\,\mathrm{K}\)。也就是说，在绝对温标上存在一个<strong>下限</strong>：</p>
+      <div class="formula">\[ T_{0}=0\,\mathrm{K}=-273.15\,\mathrm{^{\circ}C}\approx-459.67\,\mathrm{^{\circ}F}\quad(\text{绝对零度 absolute zero}) \]</div>
+      <p>绝对零度是<strong>理论下限</strong>：实验上可无限逼近（已达到 \(10^{-10}\,\mathrm{K}\) 量级），但热力学第三定律 (Third Law) 表明不可能通过有限步骤达到 \(T=0\)。注意绝对零度并不意味着「一切运动停止」——量子零点能 (zero-point energy) 仍然存在；它指的是<strong>系统的熵变在等温过程中趋于零</strong>，或粗略地，「不能再从系统中提取热量」。</p>
+      <p>本章后文公式中，凡涉及气体定律 (gas laws) \(PV=nRT\)、\(PV^{\gamma}=\text{const}\) 等，<strong>温度必须用开尔文</strong>。若误用摄氏度，会出现「\(T=0\,\mathrm{^{\circ}C}\) 时 \(PV=0\)」的荒谬结论。</p>
+      <div class="key-terms">absolute zero (绝对零度), Third Law of Thermodynamics (热力学第三定律), zero-point energy (零点能)</div>
+
+      <h3>5. 线热膨胀 Linear Thermal Expansion</h3>
+      <p>经验表明，对绝大多数固体和液体，温度升高时长度增加，且在相当宽的温区内<strong>长度变化与温度变化成正比</strong>：</p>
+      <div class="formula">\[ \boxed{\;\Delta L=\alpha L_{0}\,\Delta T\;} \]</div>
+      <p>其中 \(L_{0}\) 是参考温度下的原长，\(\Delta T=T-T_{0}\)（摄氏或开尔文皆可，因为公式中只出现<strong>差值</strong>，二者数值相同），\(\alpha\) 是<strong>线膨胀系数</strong> (coefficient of linear expansion)，单位 \(\mathrm{K^{-1}}\) 或 \(\mathrm{^{\circ}C^{-1}}\)（二者数值相等）。下表给出常见材料（室温附近）的典型值：</p>
+      <div class="formula">
+      \[ \begin{array}{l|l||l|l}\text{材料 Material} & \alpha\,(10^{-6}\,\mathrm{K^{-1}}) & \text{材料 Material} & \alpha\,(10^{-6}\,\mathrm{K^{-1}})\\ \hline
+      \text{Invar (因瓦)} & 1.2 & \text{Concrete (混凝土)} & 12\\
+      \text{Pyrex 玻璃} & 3.3 & \text{Steel (钢)} & 12\\
+      \text{普通玻璃} & 9 & \text{Copper (铜)} & 17\\
+      \text{Platinum (铂)} & 9 & \text{Brass (黄铜)} & 19\\
+      \text{Quartz (石英)} & 0.5 & \text{Aluminum (铝)} & 23\\
+      \text{Ice (冰, }-10^{\circ}\mathrm{C}\text{)} & 51 & \text{Lead (铅)} & 29
+      \end{array} \]
+      </div>
+      <p>两个关键直觉：</p>
+      <ul>
+        <li>\(\Delta L\propto L_{0}\)：相同材料、相同 \(\Delta T\)，<strong>越长的物体伸长越多</strong>。一根 1 m 钢尺与一座 100 m 钢桥在同样升温下，桥的伸长是钢尺的 100 倍。这就是为什么铁轨、桥梁、混凝土路面必须留<strong>伸缩缝</strong> (expansion joint)。</li>
+        <li>\(\Delta L\propto\Delta T\)：对线性近似而言，无论温度升降，伸长量都与温差成正比。但若 \(\Delta T\) 极大（数百开尔文），\(\alpha\) 本身也随温度变化，公式需视为微分定义 \(\alpha=(1/L)\,\mathrm{d}L/\mathrm{d}T\)，对 \(T\) 积分。</li>
+      </ul>
+      <div class="key-terms">linear expansion (线膨胀), coefficient of linear expansion \(\alpha\) (线膨胀系数), expansion joint (伸缩缝)</div>
+
+      <h3>6. 面膨胀与体膨胀 Area &amp; Volume Expansion</h3>
+      <p>对各向同性 (isotropic) 的固体，沿三个方向的 \(\alpha\) 相同。一块平板加热后面积变化：</p>
+      <div class="formula">\[ \Delta A=2\alpha\,A_{0}\,\Delta T\equiv\gamma\,A_{0}\,\Delta T,\qquad \gamma=2\alpha \]</div>
+      <p>类似地，三维物体的体积变化：</p>
+      <div class="formula">\[ \boxed{\;\Delta V=\beta\,V_{0}\,\Delta T,\qquad \beta\approx 3\alpha\;}\quad(\text{各向同性固体}) \]</div>
+      <p>对液体没有「形状」可言，只能讨论体膨胀；常见液体的 \(\beta\) 远大于固体：</p>
+      <div class="formula">
+      \[ \begin{array}{l|c}\text{液体 Liquid} & \beta\,(10^{-6}\,\mathrm{K^{-1}})\\ \hline
+      \text{Mercury (水银)} & 182\\
+      \text{Water (水, }20^{\circ}\mathrm{C}\text{)} & 207\\
+      \text{Glycerin (甘油)} & 485\\
+      \text{Gasoline (汽油)} & 950\\
+      \text{Ethanol (乙醇)} & 1120
+      \end{array} \]
+      </div>
+      <p>由于 \(\beta_{\text{liquid}}\gg\beta_{\text{container}}\)，把液体装在玻璃泡中加热，液体「上升」的体积并不等于液体自身的真实膨胀，而要扣除玻璃泡膨胀的体积，这就是<strong>表观膨胀</strong> (apparent expansion) 概念：</p>
+      <div class="formula">\[ \Delta V_{\text{app}}=\Delta V_{\text{liquid}}-\Delta V_{\text{container}}=(\beta_{\text{liq}}-\beta_{\text{cont}})\,V_{0}\,\Delta T \]</div>
+      <p>对汞温度计，\(\beta_{\text{Hg}}=182\times10^{-6}\,\mathrm{K^{-1}}\)、\(\beta_{\text{Pyrex}}\approx 9.9\times10^{-6}\,\mathrm{K^{-1}}\)，故表观系数 \(\beta_{\text{app}}\approx 172\times10^{-6}\,\mathrm{K^{-1}}\)，约为真实值的 95%。精密温度计的标度已修正此差异。</p>
+      <div class="key-terms">area expansion (面膨胀), volume expansion (体膨胀), coefficient of volume expansion \(\beta\) (体膨胀系数), isotropic (各向同性), apparent expansion (表观膨胀)</div>
+
+      <h3>7. 水的反常膨胀 The Water Anomaly</h3>
+      <p>水是地球上最重要的「例外」：在 \(0\,\mathrm{^{\circ}C}\) 到 \(4\,\mathrm{^{\circ}C}\) 之间，<strong>冷却时膨胀</strong>（或等价地，<strong>加热时收缩</strong>），\(\beta<0\)。在 \(4\,\mathrm{^{\circ}C}\) 处水的密度达到最大值 \(\rho_{\max}\approx 999.97\,\mathrm{kg/m^{3}}\)；高于或低于此温度密度都较小。这一反常源于冰的氢键 (hydrogen bond) 形成开放晶格——液态水在接近冰点时仍保留部分这种「松散」结构。</p>
+      <p>这一反常对地球生态至关重要：湖泊从表面冷却时，\(4\,\mathrm{^{\circ}C}\) 的水沉到湖底，所以<strong>湖从上往下结冰</strong>。冰层浮在表面，既隔热又保护水下生命。若水像大多数液体那样「冷缩」，则湖从底部结冰，整个湖泊最终冻透，水生生物无法存活。</p>
+      <p>因此在精密工作中，水的 \(\beta\) 必须按温度分段给出，不能简单当常数。\(\beta\) 在 \(4\,\mathrm{^{\circ}C}\) 处变号、\(0\,\mathrm{^{\circ}C}\) 附近为负、约 \(20\,\mathrm{^{\circ}C}\) 升至 \(2.1\times10^{-4}\,\mathrm{K^{-1}}\)、\(100\,\mathrm{^{\circ}C}\) 升至 \(7.6\times10^{-4}\,\mathrm{K^{-1}}\)。</p>
+      <div class="key-terms">water anomaly (水的反常膨胀), hydrogen bond (氢键), density maximum (密度最大值)</div>
+
+      <h3>8. 双金属片 Bimetallic Strip</h3>
+      <p>把两条线膨胀系数差异显著的金属片焊在一起，就构成<strong>双金属片</strong> (bimetallic strip)。当温度升高时，\(\alpha\) 大的一侧伸长更多，迫使整个复合片向 \(\alpha\) 小的一侧弯曲。这是恒温器 (thermostat)、断路器、钟表摆轮温度补偿等装置的核心机构。</p>
+      <p>设两条等厚度（各厚 \(t\)）的金属片，线膨胀系数分别为 \(\alpha_{1}\) 和 \(\alpha_{2}\)（\(\alpha_{2}>\alpha_{1}\)），原长 \(L_{0}\)，温度升高 \(\Delta T\)。弯曲后近似为圆弧，曲率半径为 \(R\)。由几何与膨胀关系（推导见 D4）：</p>
+      <div class="formula">\[ \boxed{\;R=\frac{t}{(\alpha_{2}-\alpha_{1})\,\Delta T},\qquad \theta=\frac{L_{0}}{R}\;}\quad(\text{每片厚度 }t) \]</div>
+      <p>可见温差越大、\(\alpha\) 差越大、片越薄，弯曲越剧烈。自由端的横向偏移（小角度近似下）为 \(\delta\approx L_{0}^{2}/(2R)\)。</p>
+      <p>经典组合：黄铜 (\(\alpha=19\times10^{-6}\,\mathrm{K^{-1}}\)) 与钢 (\(\alpha=12\times10^{-6}\,\mathrm{K^{-1}}\))，或因瓦合金 (\(\alpha=1.2\times10^{-6}\,\mathrm{K^{-1}}\)) 与铜 (\(\alpha=17\times10^{-6}\,\mathrm{K^{-1}}\)，差最大)。后者能给出相同 \(\Delta T\) 下近 6 倍的曲率。</p>
+      <div class="key-terms">bimetallic strip (双金属片), thermostat (恒温器), curvature radius (曲率半径)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>D1. 各向同性固体的体膨胀系数 \(\beta=3\alpha\) Volume Coefficient from Linear</h3>
+      <p>设一各向同性固体在参考温度下是边长 \(L_{0}\) 的立方体，体积 \(V_{0}=L_{0}^{3}\)。升温 \(\Delta T\) 后，每一边变为 \(L=L_{0}(1+\alpha\,\Delta T)\)，新体积为：</p>
+      <p>\[ V=L^{3}=L_{0}^{3}(1+\alpha\,\Delta T)^{3}=V_{0}\bigl[1+3\alpha\,\Delta T+3\alpha^{2}(\Delta T)^{2}+\alpha^{3}(\Delta T)^{3}\bigr]. \]</p>
+      <p>对典型金属 \(\alpha\sim10^{-5}\,\mathrm{K^{-1}}\)，即使 \(\Delta T=100\,\mathrm{K}\)，也有 \(\alpha\,\Delta T\sim10^{-3}\ll1\)，故二阶以上项可忽略：</p>
+      <p>\[ V\approx V_{0}\bigl(1+3\alpha\,\Delta T\bigr)\quad\Longrightarrow\quad\Delta V=3\alpha\,V_{0}\,\Delta T. \]</p>
+      <p>对照 \(\Delta V=\beta V_{0}\Delta T\) 即得 \(\boxed{\beta=3\alpha}\)。同理，面积 \(A=L^{2}\)：\(A\approx A_{0}(1+2\alpha\,\Delta T)\)，故 \(\gamma=2\alpha\)。两条结论成立的条件是<strong>各向同性</strong>且 \(\alpha\,\Delta T\ll1\)；木材、石英等各向异性材料在不同方向 \(\alpha\) 不同，本式不适用。</p>
+
+      <h3>D2. 表观膨胀与真实膨胀 Apparent vs Real Expansion</h3>
+      <p>设液体初始体积 \(V_{0}\)（与容器初始容量相同），升温 \(\Delta T\)。液体的真实膨胀为：</p>
+      <p>\[ \Delta V_{\text{liq}}=\beta_{\text{liq}}\,V_{0}\,\Delta T. \]</p>
+      <p>同时容器本身也在膨胀，容量增加：</p>
+      <p>\[ \Delta V_{\text{cont}}=\beta_{\text{cont}}\,V_{0}\,\Delta T. \]</p>
+      <p>液体「溢出」或「在细颈中上升」的<strong>表观</strong>体积变化，是液体真实膨胀<strong>减去</strong>容器容量增加：</p>
+      <p>\[ \Delta V_{\text{app}}=\Delta V_{\text{liq}}-\Delta V_{\text{cont}}=(\beta_{\text{liq}}-\beta_{\text{cont}})\,V_{0}\,\Delta T\equiv\beta_{\text{app}}\,V_{0}\,\Delta T. \]</p>
+      <p>这给出有用的关系 \(\beta_{\text{app}}=\beta_{\text{liq}}-\beta_{\text{cont}}\)。对玻璃容器装水银，\(\beta_{\text{Hg}}-\beta_{\text{glass}}\approx(182-9.9)\times10^{-6}=172\times10^{-6}\,\mathrm{K^{-1}}\)——这就是水银温度计真正利用的有效膨胀系数。</p>
+
+      <h3>D3. 由气体温度计定义绝对温标 Absolute Scale from Gas Thermometer</h3>
+      <p>理想气体状态方程 \(PV=nRT\)（详见第 3 章气体动理论推导）在固定 \(V\)、\(n\) 下给出 \(P/T=\text{const}\)，即 \(P\propto T\)。把比例常数用水的三相点定标：</p>
+      <p>\[ \frac{P}{T}=\frac{P_{\text{tr}}}{T_{\text{tr}}},\qquad T_{\text{tr}}\equiv 273.16\,\mathrm{K}\ (\text{定义}). \]</p>
+      <p>解出：</p>
+      <p>\[ T=273.16\,\mathrm{K}\times\frac{P}{P_{\text{tr}}}. \]</p>
+      <p>但实际气体并非严格理想，所以测量同一温度时不同气体给出的 \(P/P_{\text{tr}}\) 略有不同（偏差 \(\sim10^{-4}\)）。为消除物质依赖性，定义<strong>热力学温度</strong>：</p>
+      <p>\[ T=\lim_{P_{\text{tr}}\to 0}\,273.16\,\mathrm{K}\times\frac{P}{P_{\text{tr}}}. \]</p>
+      <p>取 \(P_{\text{tr}}\to0\)（气体充分稀薄）时，所有气体趋于理想气体，比值 \(P/P_{\text{tr}}\) 收敛到与具体气体无关的极限值。这就建立了<strong>物质无关</strong>的温标，并自然给出绝对零度：当 \(P\to0\) 时 \(T\to0\,\mathrm{K}\)，对应 \(T_{C}=-273.15\,\mathrm{^{\circ}C}\)。</p>
+
+      <h3>D4. 双金属片曲率半径 Radius of Curvature of a Bimetallic Strip</h3>
+      <p>设两条等厚（各厚 \(t\)）、等长 \(L_{0}\) 的金属片在界面处焊合，线膨胀系数分别为 \(\alpha_{1}\)（内层）与 \(\alpha_{2}\)（外层），\(\alpha_{2}>\alpha_{1}\)。升温 \(\Delta T\) 后片体弯曲为圆弧，圆心角 \(\theta\)。设界面（焊合面）所在弧的半径为 \(R\)。</p>
+      <p><strong>几何关系：</strong>两条片的<strong>中心线</strong>分别在半径 \(R-t/2\)（内）与 \(R+t/2\)（外）处。两条中心线的弧长为：</p>
+      <p>\[ L_{1}=\Bigl(R-\tfrac{t}{2}\Bigr)\theta,\qquad L_{2}=\Bigl(R+\tfrac{t}{2}\Bigr)\theta. \]</p>
+      <p><strong>物理关系：</strong>各片自由膨胀后的长度（中心线）为：</p>
+      <p>\[ L_{1}=L_{0}(1+\alpha_{1}\,\Delta T),\qquad L_{2}=L_{0}(1+\alpha_{2}\,\Delta T). \]</p>
+      <p><strong>相减：</strong></p>
+      <p>\[ L_{2}-L_{1}=t\,\theta=L_{0}(\alpha_{2}-\alpha_{1})\,\Delta T. \]</p>
+      <p><strong>相加（近似）：</strong>忽略 \(\alpha\,\Delta T\) 一阶项后 \(L_{1}+L_{2}\approx 2L_{0}=2R\theta\)，即 \(L_{0}=R\theta\)。代入上式：</p>
+      <p>\[ t\,\theta=R\theta\,(\alpha_{2}-\alpha_{1})\,\Delta T\quad\Longrightarrow\quad\boxed{\;R=\frac{t}{(\alpha_{2}-\alpha_{1})\,\Delta T},\quad \theta=\frac{L_{0}}{R}\;}. \]</p>
+      <p>这就是核心结论。注意 \(R\) <strong>与片长无关</strong>（仅取决于厚度、\(\alpha\) 差、\(\Delta T\)）；自由端偏移 \(\delta\approx L_{0}^{2}/(2R)\) 才与 \(L_{0}^{2}\) 成正比——所以恒温器总把双金属片做得很长（或盘成螺旋）以放大位移。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 三种温标的换算 Converting Between Celsius, Fahrenheit &amp; Kelvin</h4>
+        <p class="example-statement">(a) 健康人的体温为 \(T_{F}=98.6\,\mathrm{^{\circ}F}\)，求对应的摄氏与开尔文值。(b) 干冰 (dry ice, 固态 \(\mathrm{CO_{2}}\)) 升华温度为 \(-78.5\,\mathrm{^{\circ}C}\)，求开尔文与华氏值。(c) 验证 \(-40^{\circ}\) 时摄氏与华氏读数相同。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 \(T_{C}=\tfrac{5}{9}(T_{F}-32)\)：</p>
+          <p class="step">\[ T_{C}=\tfrac{5}{9}(98.6-32)=\tfrac{5}{9}\times 66.6=37.0\,\mathrm{^{\circ}C}. \]
+            \[ T=T_{C}+273.15=37.0+273.15=310.15\,\mathrm{K}\approx 310\,\mathrm{K}. \]</p>
+          <p class="step">(b) \(T=-78.5+273.15=194.65\,\mathrm{K}\approx 195\,\mathrm{K}\)。再算华氏：
+            \[ T_{F}=\tfrac{9}{5}T_{C}+32=\tfrac{9}{5}(-78.5)+32=-141.3+32=-109.3\,\mathrm{^{\circ}F}. \]</p>
+          <p class="step">(c) 令 \(T_{C}=T_{F}\)，则 \(T_{C}=\tfrac{9}{5}T_{C}+32\)，移项得 \(-\tfrac{4}{5}T_{C}=32\)，解出 \(T_{C}=-40\,\mathrm{^{\circ}C}=-40\,\mathrm{^{\circ}F}\)。验证完毕。</p>
+          <p><span class="ans">答案：(a) \(37.0\,\mathrm{^{\circ}C}=310.15\,\mathrm{K}\)；(b) \(194.65\,\mathrm{K}=-109.3\,\mathrm{^{\circ}F}\)；(c) \(-40^{\circ}\) 时两温标相交。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 钢轨的线膨胀与热应力 Expansion &amp; Thermal Stress in a Steel Rail</h4>
+        <p class="example-statement">一段钢轨在 \(T_{0}=15\,\mathrm{^{\circ}C}\) 时长 \(L_{0}=25.0\,\mathrm{m}\)。夏季暴晒下钢轨温度升至 \(T=50\,\mathrm{^{\circ}C}\)。钢的线膨胀系数 \(\alpha=12\times10^{-6}\,\mathrm{K^{-1}}\)，杨氏模量 \(Y=2.0\times10^{11}\,\mathrm{Pa}\)。求：(a) 自由膨胀时的伸长量 \(\Delta L\)；(b) 若两轨被刚性固定无法伸长，轨内产生的热应力 \(\sigma\)；(c) 若允许在 \(T_{0}\) 时预留伸缩缝，使 \(T=50\,\mathrm{^{\circ}C}\) 时刚好接触，缝宽应留多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\Delta T=50-15=35\,\mathrm{K}\)。</p>
+          <p class="step">(a) \(\Delta L=\alpha L_{0}\,\Delta T=(12\times10^{-6})(25.0)(35)=1.05\times10^{-2}\,\mathrm{m}=10.5\,\mathrm{mm}\)。一段 25 m 钢轨在 35 K 温差下伸长逾一厘米！</p>
+          <p class="step">(b) 若固定无法伸长，则「欲伸长而被阻止」的部分等效为「先伸长再被压回」。产生的应变为：
+            \[ \varepsilon=\frac{\Delta L}{L_{0}}=\alpha\,\Delta T=(12\times10^{-6})(35)=4.2\times10^{-4}. \]
+            由胡克定律 \(\sigma=Y\varepsilon\)：
+            \[ \sigma=(2.0\times10^{11})(4.2\times10^{-4})=8.4\times10^{7}\,\mathrm{Pa}=84\,\mathrm{MPa}. \]
+            这一压应力远超混凝土抗拉强度（\(\sim5\,\mathrm{MPa}\)），足以使轨道翘曲（俗称「sun kink」）——这就是无缝线路必须定期放散应力的原因。</p>
+          <p class="step">(c) 预留缝宽 \(=\Delta L=10.5\,\mathrm{mm}\)。在 \(15\,\mathrm{^{\circ}C}\) 施工时两轨之间留 \(10.5\,\mathrm{mm}\) 间隙，到 \(50\,\mathrm{^{\circ}C}\) 时刚闭合、应力为零。</p>
+          <p><span class="ans">答案：(a) \(\Delta L=10.5\,\mathrm{mm}\)；(b) \(\sigma=84\,\mathrm{MPa}\)（压应力）；(c) 缝宽 \(10.5\,\mathrm{mm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 派热克斯瓶中的水银——表观 vs 真实膨胀 Apparent vs Real Expansion of Mercury in Pyrex</h4>
+        <p class="example-statement">一只派热克斯 (Pyrex) 玻璃容量瓶在 \(20\,\mathrm{^{\circ}C}\) 时恰好盛 \(V_{0}=100.0\,\mathrm{cm^{3}}\) 水银。瓶内水银装到瓶口。加热至 \(60\,\mathrm{^{\circ}C}\)，水银的体膨胀系数 \(\beta_{\text{Hg}}=1.82\times10^{-4}\,\mathrm{K^{-1}}\)，Pyrex 玻璃 \(\beta_{\text{glass}}=9.9\times10^{-6}\,\mathrm{K^{-1}}\)。求：(a) 水银的真实膨胀体积；(b) 玻璃瓶容量的膨胀；(c) 溢出的水银体积（表观膨胀）；(d) 表观膨胀系数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\Delta T=60-20=40\,\mathrm{K}\)。</p>
+          <p class="step">(a) 水银真实膨胀：
+            \[ \Delta V_{\text{Hg}}=\beta_{\text{Hg}}\,V_{0}\,\Delta T=(1.82\times10^{-4})(100.0)(40)=0.728\,\mathrm{cm^{3}}. \]</p>
+          <p class="step">(b) 容器容量增加：
+            \[ \Delta V_{\text{glass}}=\beta_{\text{glass}}\,V_{0}\,\Delta T=(9.9\times10^{-6})(100.0)(40)=0.0396\,\mathrm{cm^{3}}\approx 0.040\,\mathrm{cm^{3}}. \]</p>
+          <p class="step">(c) 溢出体积：
+            \[ \Delta V_{\text{app}}=\Delta V_{\text{Hg}}-\Delta V_{\text{glass}}=0.728-0.0396=0.6884\,\mathrm{cm^{3}}\approx 0.69\,\mathrm{cm^{3}}. \]</p>
+          <p class="step">(d) \(\beta_{\text{app}}=\beta_{\text{Hg}}-\beta_{\text{glass}}=1.82\times10^{-4}-0.099\times10^{-4}=1.72\times10^{-4}\,\mathrm{K^{-1}}\)。
+            验算：\((1.72\times10^{-4})(100.0)(40)=0.688\,\mathrm{cm^{3}}\) ✓</p>
+          <p><span class="ans">答案：(a) \(0.728\,\mathrm{cm^{3}}\)；(b) \(0.040\,\mathrm{cm^{3}}\)；(c) 溢出 \(0.69\,\mathrm{cm^{3}}\)；(d) \(\beta_{\text{app}}=1.72\times10^{-4}\,\mathrm{K^{-1}}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 黄铜—钢双金属片的弯曲 Brass–Steel Bimetallic Strip</h4>
+        <p class="example-statement">一双金属片由黄铜 (\(\alpha_{b}=19\times10^{-6}\,\mathrm{K^{-1}}\)) 与钢 (\(\alpha_{s}=12\times10^{-6}\,\mathrm{K^{-1}}\)) 焊合，每片厚度 \(t=0.50\,\mathrm{mm}\)，长度 \(L_{0}=5.0\,\mathrm{cm}\)，初始温度 \(20\,\mathrm{^{\circ}C}\)。加热至 \(120\,\mathrm{^{\circ}C}\)。求：(a) 哪一侧在外（凹/凸）？(b) 曲率半径 \(R\)；(c) 圆心角 \(\theta\)；(d) 自由端的横向偏移 \(\delta\)（小角度近似）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 黄铜的 \(\alpha\) 更大，升温时黄铜一侧伸长更多，被迫处于<strong>外侧</strong>（凸面），钢在内侧（凹面）。整个片向钢一侧弯曲。</p>
+          <p class="step">(b) \(\Delta T=120-20=100\,\mathrm{K}\)，\(\alpha_{2}-\alpha_{1}=\alpha_{b}-\alpha_{s}=7\times10^{-6}\,\mathrm{K^{-1}}\)。每片厚 \(t=0.50\,\mathrm{mm}=5.0\times10^{-4}\,\mathrm{m}\)。
+            \[ R=\frac{t}{(\alpha_{2}-\alpha_{1})\,\Delta T}=\frac{5.0\times10^{-4}}{(7\times10^{-6})(100)}=\frac{5.0\times10^{-4}}{7.0\times10^{-4}}=0.714\,\mathrm{m}. \]</p>
+          <p class="step">(c) \(\theta=L_{0}/R=0.050/0.714=0.0700\,\mathrm{rad}\approx 4.0^{\circ}\)。</p>
+          <p class="step">(d) 小角度下自由端偏移
+            \[ \delta\approx\frac{L_{0}^{2}}{2R}=\frac{(0.050)^{2}}{2(0.714)}=\frac{2.5\times10^{-3}}{1.428}=1.75\times10^{-3}\,\mathrm{m}=1.75\,\mathrm{mm}. \]
+            这个 \(2\,\mathrm{mm}\) 量级的位移足以接通/断开恒温器的电触点。若换用「因瓦合金—铜」（\(\Delta\alpha=15.8\times10^{-6}\,\mathrm{K^{-1}}\)，约为本题的 2.3 倍），同样条件下 \(R\) 缩小到原值的 \(1/2.3\)，\(\delta\) 放大 2.3 倍。</p>
+          <p><span class="ans">答案：(a) 黄铜在外，弯向钢侧；(b) \(R=0.714\,\mathrm{m}\)；(c) \(\theta\approx 0.070\,\mathrm{rad}=4.0^{\circ}\)；(d) \(\delta\approx 1.75\,\mathrm{mm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 用定容气体温度计测量沸点 Constant-Volume Gas Thermometer at the Boiling Point</h4>
+        <p class="example-statement">一台定容气体温度计在水的三相点 (\(T_{\text{tr}}=273.16\,\mathrm{K}\)) 时内部压强为 \(P_{\text{tr}}=50.0\,\mathrm{kPa}\)。把它浸入正在沸腾 (1 atm) 的水中，平衡后压强读数 \(P=68.3\,\mathrm{kPa}\)。(a) 用气体温度计公式计算未知温度 \(T\)；(b) 换算为摄氏度；(c) 与已知的水沸点 \(99.97\,\mathrm{^{\circ}C}\)（1 atm）比较，说明误差来源。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 \(T=273.16\,\mathrm{K}\times(P/P_{\text{tr}})\)：
+            \[ T=273.16\times\frac{68.3}{50.0}=273.16\times 1.366=373.15\,\mathrm{K}. \]</p>
+          <p class="step">(b) \(T_{C}=T-273.15=373.15-273.15=100.0\,\mathrm{^{\circ}C}\)。</p>
+          <p class="step">(c) 与「精确值」\(99.974\,\mathrm{^{\circ}C}\) 相差仅 \(0.03\,\mathrm{K}\)，在测量误差范围内。误差主要来自：(i) 气体并非严格理想（\(P_{\text{tr}}=50\,\mathrm{kPa}\) 还不够稀薄）；(ii) 气体泡的有限膨胀； (iii) 压强计精度。若把 \(P_{\text{tr}}\) 逐步降低（\(25,\,10,\,5\,\mathrm{kPa}\)）并外推到 \(P_{\text{tr}}\to 0\)，所得 \(T\) 才严格等于热力学温标下的沸点。这一过程展示了「绝对温标物质无关性」的实验根据。</p>
+          <p><span class="ans">答案：(a) \(T=373.15\,\mathrm{K}\)；(b) \(100.0\,\mathrm{^{\circ}C}\)；(c) 与精确值相差 \(0.03\,\mathrm{K}\)，源于实际气体的非理想性等。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>气体定律误用摄氏温度。</strong>\(PV=nRT\) 中 \(T\) 必须用<strong>开尔文</strong>。若用 \(T_{C}=0\,\mathrm{^{\circ}C}\) 代入会得出 \(PV=0\) 的荒谬结论——这正是因为摄氏温标的「零点」是任意选定的（水的冰点），并不对应「无热运动」。任何含绝对温度的公式（如理想气体定律、斯特藩—玻尔兹曼定律 \(P/A=\sigma T^{4}\)、卡诺效率 \(1-T_{C}/T_{H}\)）都必须用 \(T\)（开尔文）；而仅含<strong>温差</strong> \(\Delta T\) 的公式（如 \(\Delta L=\alpha L_{0}\Delta T\)）摄氏与开尔文均可，因为 \(\Delta T\) 数值相同。</li>
+        <li><strong>把温度计读数当成液体的「真实膨胀」。</strong>水银温度计中水银柱上升的体积，是<strong>表观</strong>膨胀（已扣除玻璃泡容量的膨胀）。若把 \(\Delta V_{\text{app}}\) 当作 \(\Delta V_{\text{Hg}}\)，会高估 \(\beta_{\text{Hg}}\) 约 \(5\%\)（玻璃修正）或更多（薄壁容器）。精密测量必须 \(\beta_{\text{liq}}\to\beta_{\text{liq}}-\beta_{\text{cont}}\)。</li>
+        <li><strong>误以为同样 \(\Delta T\) 下伸长量与原长无关。</strong>\(\Delta L=\alpha L_{0}\Delta T\) <strong>正比于 \(L_{0}\)</strong>。1 m 钢尺升温 30 K 伸长 \(0.36\,\mathrm{mm}\)，而 100 m 钢桥同样条件下伸长 \(36\,\mathrm{mm}\)——是 100 倍。这是桥梁伸缩缝存在的根本原因。</li>
+        <li><strong>对水盲目套用 \(\Delta V=\beta V_{0}\Delta T\)。</strong>水在 \(0\,\mathrm{^{\circ}C}\) 至 \(4\,\mathrm{^{\circ}C}\) 之间 \(\beta<0\)（反常膨胀），且 \(\beta\) 随温度剧烈变化（\(20\,\mathrm{^{\circ}C}\) 时为 \(2.1\times10^{-4}\,\mathrm{K^{-1}}\)，\(80\,\mathrm{^{\circ}C}\) 时为 \(6.4\times10^{-4}\,\mathrm{K^{-1}}\)）。把 \(\beta\) 当常数处理大温差的水会引入显著误差。</li>
+        <li><strong>搞错双金属片弯曲方向。</strong>规律很简单：<strong>\(\alpha\) 大的一侧在外（凸面）</strong>，因为它需要变得更长。把 \(\alpha\) 大的金属放在内侧反而不会弯向正确方向。常见错误是直觉认为「胀得快的一侧把它顶过去」——其实胀得快的一侧是被<strong>拉长</strong>成更长的弧。</li>
+        <li><strong>把 \(\alpha\) 单位记成 \(\mathrm{^{\circ}F^{-1}}\)。</strong>\(\alpha\) 的单位是 \(\mathrm{K^{-1}}\) 或 \(\mathrm{^{\circ}C^{-1}}\)（数值相同，因为对应同样 1 K 的温差）。若涉及华氏温度，必须先把 \(\Delta T_{F}\) 换算为 \(\Delta T_{C}=\tfrac{5}{9}\Delta T_{F}\) 再代入公式。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 室温 \(72\,\mathrm{^{\circ}F}\)。换算为摄氏度与开尔文。</summary>
+        <div class="hint">用 \(T_{C}=\tfrac{5}{9}(T_{F}-32)\)，再 \(T=T_{C}+273.15\)。</div>
+        <div class="solution">\(T_{C}=\tfrac{5}{9}(72-32)=\tfrac{5}{9}\times 40=22.2\,\mathrm{^{\circ}C}\)。
+          \(T=22.2+273.15=295.35\,\mathrm{K}\approx 295\,\mathrm{K}\)。
+          <span class="ans">\(22.2\,\mathrm{^{\circ}C}\)，\(295.4\,\mathrm{K}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一根铜线在 \(20\,\mathrm{^{\circ}C}\) 时长 \(L_{0}=3.00\,\mathrm{m}\)。夏天暴晒升温到 \(80\,\mathrm{^{\circ}C}\)。求伸长量 \(\Delta L\)（取 \(\alpha_{\text{Cu}}=17\times10^{-6}\,\mathrm{K^{-1}}\)）。</summary>
+        <div class="hint">直接套 \(\Delta L=\alpha L_{0}\Delta T\)，注意 \(\Delta T=60\,\mathrm{K}\)。</div>
+        <div class="solution">\(\Delta L=(17\times10^{-6})(3.00)(60)=3.06\times10^{-3}\,\mathrm{m}=3.06\,\mathrm{mm}\)。
+          伸长仅约 3 mm，但若电缆被刚性固定，会在横截面 \(\sim1\,\mathrm{mm^{2}}\) 上产生数十牛的张力。
+          <span class="ans">\(\Delta L=3.06\,\mathrm{mm}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一个铝锅（\(\beta_{\text{Al}}=69\times10^{-6}\,\mathrm{K^{-1}}\)，由 \(3\alpha\) 算出）在 \(20\,\mathrm{^{\circ}C}\) 时容量 \(V_{0}=500\,\mathrm{cm^{3}}\)，注满水（\(20\,\mathrm{^{\circ}C}\) 时 \(\beta_{\text{water}}=207\times10^{-6}\,\mathrm{K^{-1}}\)）。加热到 \(80\,\mathrm{^{\circ}C}\) 时有多少水溢出？</summary>
+        <div class="hint">溢出 = 水的真实膨胀 − 铝锅容量膨胀；\(\Delta T=60\,\mathrm{K}\)。</div>
+        <div class="solution">\(\Delta V_{\text{water}}=(207\times10^{-6})(500)(60)=6.21\,\mathrm{cm^{3}}\)。
+          \(\Delta V_{\text{Al}}=(69\times10^{-6})(500)(60)=2.07\,\mathrm{cm^{3}}\)。
+          溢出 \(=6.21-2.07=4.14\,\mathrm{cm^{3}}\)。
+          注意：水在 \(20\to 80\,\mathrm{^{\circ}C}\) 范围 \(\beta\) 略有变化（\(80\,\mathrm{^{\circ}C}\) 处约 \(6.4\times10^{-4}\,\mathrm{K^{-1}}\)），本题为简化取常数。
+          <span class="ans">溢出约 \(4.1\,\mathrm{cm^{3}}\)（即 \(4.1\,\mathrm{mL}\)）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 挑战：从定义 \(A=L_{x}L_{y}\)、\(V=L_{x}L_{y}L_{z}\) 出发，证明对各向同性固体，<strong>面</strong>膨胀系数 \(\gamma=2\alpha\)、<strong>体</strong>膨胀系数 \(\beta=3\alpha\)（保留到 \(\alpha\,\Delta T\) 一阶）。</summary>
+        <div class="hint">把每边长写为 \(L=L_{0}(1+\alpha\,\Delta T)\)，展开乘积后忽略 \((\alpha\,\Delta T)^{2}\) 及更高次项。</div>
+        <div class="solution">面积 \(A=L_{x}L_{y}=L_{x,0}(1+\alpha\,\Delta T)\cdot L_{y,0}(1+\alpha\,\Delta T)=A_{0}(1+\alpha\,\Delta T)^{2}=A_{0}(1+2\alpha\,\Delta T+\alpha^{2}(\Delta T)^{2})\)。
+          略去二阶项得 \(\Delta A=2\alpha A_{0}\Delta T\)，故 \(\gamma=2\alpha\)。
+          体积 \(V=L_{x}L_{y}L_{z}=V_{0}(1+\alpha\,\Delta T)^{3}=V_{0}(1+3\alpha\,\Delta T+\cdots)\)，
+          同理 \(\Delta V=3\alpha V_{0}\Delta T\)，故 \(\beta=3\alpha\)。
+          若 \(\Delta T=100\,\mathrm{K}\)、\(\alpha=2\times10^{-5}\,\mathrm{K^{-1}}\)，则二阶项 \(\sim 4\times10^{-7}\)（百万分之几），通常可略；精密测量时需保留。
+          <span class="ans">\(\gamma=2\alpha,\ \beta=3\alpha\)（一阶近似）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 一根因瓦合金—铜双金属片（\(\alpha_{\text{Invar}}=1.2\times10^{-6}\,\mathrm{K^{-1}}\)、\(\alpha_{\text{Cu}}=17\times10^{-6}\,\mathrm{K^{-1}}\)），每片厚 \(t=0.20\,\mathrm{mm}\)，长 \(L_{0}=30\,\mathrm{mm}\)。初始 \(20\,\mathrm{^{\circ}C}\)，加热到 \(100\,\mathrm{^{\circ}C}\)。求曲率半径 \(R\) 与自由端偏移 \(\delta\)，并与「黄铜—钢」（\(\Delta\alpha=7\times10^{-6}\,\mathrm{K^{-1}}\)）比较。</summary>
+        <div class="hint">\(R=t/[(\alpha_{2}-\alpha_{1})\Delta T]\)，\(\delta\approx L_{0}^{2}/(2R)\)。注意 Invar 与 Cu 的 \(\Delta\alpha=15.8\times10^{-6}\,\mathrm{K^{-1}}\)。</div>
+        <div class="solution">\(\Delta T=80\,\mathrm{K}\)，\(\Delta\alpha=(17-1.2)\times10^{-6}=15.8\times10^{-6}\,\mathrm{K^{-1}}\)。
+          \[ R=\frac{0.20\times10^{-3}}{(15.8\times10^{-6})(80)}=\frac{2.0\times10^{-4}}{1.264\times10^{-3}}=0.158\,\mathrm{m}. \]
+          \[ \theta=L_{0}/R=0.030/0.158=0.190\,\mathrm{rad}=10.9^{\circ}. \]
+          \[ \delta\approx L_{0}^{2}/(2R)=(0.030)^{2}/(2\times 0.158)=9.0\times10^{-3}/0.316=2.85\times10^{-3}\,\mathrm{m}=2.85\,\mathrm{mm}. \]
+          对比「黄铜—钢」（\(\Delta\alpha=7\times10^{-6}\)），其他条件相同时 \(R\) 大约是本题的 \(15.8/7=2.26\) 倍，\(\delta\) 小 2.26 倍。所以 Invar/铜组合在恒温器中更灵敏。
+          <span class="ans">\(R=0.158\,\mathrm{m}\)，\(\delta\approx 2.85\,\mathrm{mm}\)；Invar–Cu 比 Brass–Steel 灵敏约 2.3 倍。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>线膨胀与伸缩缝 Linear Expansion &amp; Expansion Joint。</strong>一根可调材料、可调长度 \(L_{0}\) 的金属杆固定在左侧刚性墙。调节材料（线膨胀系数 \(\alpha\)，从 Invar 到 Lead）、原长 \(L_{0}\)、温度变化 \(\Delta T\)，杆按公式 \(\Delta L=\alpha L_{0}\Delta T\) 伸缩；右侧墙的间隙 (gap) 也可调。当 \(\Delta L\) 达到或超过 gap 时，杆接触右墙（红色高亮 + 闪烁），对应工程中「伸缩缝闭合、热应力开始累积」的临界点。底部实时显示数值；\(\Delta L\) 与 gap 在画布上被放大显示以便观察，\(L_{0}\) 仍按米数比例绘制。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="760" height="380"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- pixel scales ------------------------------------------------
+          var PX_PER_M  = 32;   // base rod-length scale
+          var PX_PER_MM = 5;    // magnified scale for ΔL and gap
+          var OX   = 56;        // left wall x-position
+          var ROD_Y = H / 2 + 16;
+
+          // ---- materials (index by slider) --------------------------------
+          var MATERIALS = [
+            { name: 'Invar (因瓦合金)', a: 1.2e-6 },
+            { name: 'Pyrex 玻璃',        a: 3.3e-6 },
+            { name: 'Steel 钢',          a: 12e-6 },
+            { name: 'Copper 铜',         a: 17e-6 },
+            { name: 'Brass 黄铜',        a: 19e-6 },
+            { name: 'Aluminum 铝',       a: 23e-6 },
+            { name: 'Lead 铅',           a: 29e-6 }
+          ];
+
+          var params = {
+            L0: 5.0,        // m
+            matIdx: 2,      // steel
+            dT: 30,         // °C
+            gap: 4.0        // mm
+          };
+
+          function matIdx()  { return Math.max(0, Math.min(MATERIALS.length - 1, Math.round(params.matIdx))); }
+          function alpha()   { return MATERIALS[matIdx()].a; }
+          function matName() { return MATERIALS[matIdx()].name; }
+          function targetDL_mm() { return alpha() * params.L0 * params.dT * 1000; } // mm
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { dLDisp: 0, flashT: 0, lastContact: false }; },
+            step: function (dt, t, s) {
+              var target = targetDL_mm();
+              // smooth approach so user sees the rod grow/shrink as params change
+              s.dLDisp += (target - s.dLDisp) * Math.min(1, dt * 4.5);
+              var nowContact = s.dLDisp >= params.gap - 1e-3;
+              if (nowContact && !s.lastContact) s.flashT = 0.7;
+              s.lastContact = nowContact;
+              if (s.flashT > 0) s.flashT = Math.max(0, s.flashT - dt);
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var L0_m   = params.L0;
+              var dL_mm  = s.dLDisp;
+              var gap_mm = params.gap;
+              var aVal   = alpha();
+
+              var rodBasePx = L0_m * PX_PER_M;
+              var dLpx      = dL_mm  * PX_PER_MM;
+              var gapPx     = gap_mm * PX_PER_MM;
+              var rodRightPx = rodBasePx + dLpx;
+              var wallRelX   = rodBasePx + gapPx;            // right wall position relative to OX
+              var contact = s.lastContact;
+
+              // ---- ground line --------------------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.4;
+              ctx.globalAlpha = 0.55;
+              ctx.beginPath();
+              ctx.moveTo(0, ROD_Y + 30);
+              ctx.lineTo(W, ROD_Y + 30);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- left wall (anchor, hatched) ----------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(OX, ROD_Y - 34);
+              ctx.lineTo(OX, ROD_Y + 30);
+              ctx.stroke();
+              ctx.lineWidth = 1.2;
+              ctx.globalAlpha = 0.85;
+              for (var y = ROD_Y - 34; y < ROD_Y + 30; y += 7) {
+                ctx.beginPath();
+                ctx.moveTo(OX - 12, y);
+                ctx.lineTo(OX, y + 6);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- reference dashed line at L0 (initial rod-end position) -------
+              var refX = OX + rodBasePx;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.9;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath();
+              ctx.moveTo(refX, ROD_Y - 50);
+              ctx.lineTo(refX, ROD_Y + 40);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'L₀ 端', refX + 4, ROD_Y - 44,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- right wall (hatched) -----------------------------------------
+              var wallX = OX + wallRelX;
+              var wallTop = ROD_Y - 50, wallBot = ROD_Y + 30;
+              if (wallX < W - 4) {
+                ctx.save();
+                ctx.strokeStyle = contact ? PS.colors.accent : PS.colors.text;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(wallX, wallTop);
+                ctx.lineTo(wallX, wallBot);
+                ctx.stroke();
+                ctx.lineWidth = 1.2;
+                ctx.globalAlpha = 0.85;
+                for (var y2 = wallTop; y2 < wallBot; y2 += 7) {
+                  ctx.beginPath();
+                  ctx.moveTo(wallX, y2 + 6);
+                  ctx.lineTo(wallX + 12, y2);
+                  ctx.stroke();
+                }
+                ctx.restore();
+              }
+
+              // ---- rod rectangle ------------------------------------------------
+              var rodH = 28;
+              var rodLeft = OX;
+              var rodRight = OX + rodRightPx;
+              if (contact) {
+                // pin rod's right end to the wall (it can't extend past)
+                rodRight = Math.min(rodRight, wallX);
+              }
+              // flash overlay on contact
+              if (s.flashT > 0) {
+                ctx.save();
+                ctx.fillStyle = PS.colors.accent;
+                ctx.globalAlpha = s.flashT * 0.45;
+                ctx.fillRect(rodLeft - 6, ROD_Y - rodH/2 - 6,
+                              (rodRight - rodLeft) + 12, rodH + 12);
+                ctx.restore();
+              }
+              // body — gradient tinted by temperature sign
+              ctx.save();
+              var grad = ctx.createLinearGradient(rodLeft, 0, rodRight, 0);
+              if (params.dT > 0) {
+                grad.addColorStop(0, '#fbbf24');
+                grad.addColorStop(1, '#ef4444');
+              } else if (params.dT < 0) {
+                grad.addColorStop(0, '#93c5fd');
+                grad.addColorStop(1, '#1e3a8a');
+              } else {
+                grad.addColorStop(0, PS.colors.primary);
+                grad.addColorStop(1, PS.colors.primary);
+              }
+              ctx.fillStyle = grad;
+              ctx.fillRect(rodLeft, ROD_Y - rodH/2, Math.max(2, rodRight - rodLeft), rodH);
+              ctx.strokeStyle = contact ? PS.colors.accent : PS.colors.text;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(rodLeft, ROD_Y - rodH/2, Math.max(2, rodRight - rodLeft), rodH);
+              ctx.restore();
+              // label L0 inside rod (centred)
+              PS.drawText(ctx, 'L₀ = ' + L0_m.toFixed(1) + ' m',
+                rodLeft + rodBasePx / 2, ROD_Y + 4,
+                { font: 'bold 12px system-ui', color: '#ffffff', align: 'center' });
+
+              // ---- ΔL dimension arrow (above rod) -------------------------------
+              if (Math.abs(dLpx) > 1.5) {
+                var dimY = ROD_Y - 22;
+                var a1x = refX, a2x = refX + dLpx;
+                PS.drawArrow(ctx, a1x, dimY, a2x, dimY, PS.colors.accent2);
+                PS.drawText(ctx,
+                  'ΔL = ' + dL_mm.toFixed(2) + ' mm ' +
+                  (dL_mm >= 0 ? '(伸长)' : '(缩短)'),
+                  (a1x + a2x) / 2, dimY - 8,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent2, align: 'center' });
+              }
+
+              // ---- gap dimension (below rod) ------------------------------------
+              var gapDimY = ROD_Y + 50;
+              if (gapPx > 1.5 && wallX < W - 4) {
+                PS.drawArrow(ctx, refX, gapDimY, wallX, gapDimY,
+                  contact ? PS.colors.accent : PS.colors.text);
+                var gapLabel = contact
+                  ? 'gap 已被 ΔL 跨过（接触）'
+                  : 'gap = ' + gap_mm.toFixed(1) + ' mm';
+                PS.drawText(ctx, gapLabel, (refX + wallX) / 2, gapDimY + 14,
+                  { font: 'bold 12px system-ui',
+                    color: contact ? PS.colors.accent : PS.colors.text,
+                    align: 'center' });
+              }
+
+              // ---- header / readouts (top of canvas) ----------------------------
+              var rx = 14, ry = 22;
+              PS.drawText(ctx,
+                '材料 Material: ' + matName() + '    α = ' +
+                (aVal * 1e6).toFixed(1) + ' × 10⁻⁶ /°C',
+                rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'L₀ = ' + L0_m.toFixed(1) + ' m,   ΔT = ' +
+                params.dT.toFixed(0) + ' °C,   gap = ' + gap_mm.toFixed(1) + ' mm',
+                rx, ry + 20,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'ΔL = α · L₀ · ΔT = ' +
+                (aVal * 1e6).toFixed(1) + '×10⁻⁶ × ' + L0_m.toFixed(1) +
+                ' × ' + params.dT.toFixed(0) +
+                ' = ' + targetDL_mm().toFixed(2) + ' mm',
+                rx, ry + 40,
+                { font: '12px system-ui', color: PS.colors.primary });
+
+              // status line
+              var status = contact
+                ? '✗ 接触 CONTACT — ΔL ≥ gap，热应力开始累积 thermal stress begins'
+                : '✓ 未接触 NO contact — gap 仍存在';
+              PS.drawText(ctx, status, rx, ry + 60,
+                { font: 'bold 13px system-ui',
+                  color: contact ? PS.colors.accent : PS.colors.accent2 });
+
+              // footer note about magnification
+              PS.drawText(ctx,
+                '注 Note：ΔL 与 gap 在图中按 5 px/mm 放大；L₀ 按 32 px/m 按比例绘制。',
+                rx, H - 12,
+                { font: '11px system-ui', color: PS.colors.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'L0',     label: '原长 L₀ (m)',                min: 1.0,  max: 10.0, step: 0.5, value: 5.0 },
+            { type: 'slider', key: 'matIdx', label: '材料 (0=Invar … 6=Lead)',    min: 0,    max: 6,    step: 1,   value: 2 },
+            { type: 'slider', key: 'dT',     label: '温度变化 ΔT (°C)',           min: -50,  max: 100,  step: 5,   value: 30 },
+            { type: 'slider', key: 'gap',    label: '伸缩缝 gap (mm)',            min: 0,    max: 30,   step: 0.5, value: 4.0 },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('L0',     function (v) { params.L0 = v; });
+          ctl.on('matIdx', function (v) { params.matIdx = v; });
+          ctl.on('dT',     function (v) { params.dT = v; });
+          ctl.on('gap',    function (v) { params.gap = v; });
+          ctl.on('reset',  function ()  { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>热平衡具有传递性 → <strong>热力学第零定律</strong>。该定律<strong>定义</strong>了温度：两系统热平衡 ⇔ 温度相同。</li>
+        <li>三温标换算：\(T_{F}=\tfrac{9}{5}T_{C}+32\)、\(T=T_{C}+273.15\)。气体定律必须用开尔文 \(T\)，含 \(\Delta T\) 的公式摄氏与开尔文均可。</li>
+        <li>定容气体温度计以水的三相点 \(T_{\text{tr}}=273.16\,\mathrm{K}\) 定标：\(T=273.16\,\mathrm{K}\times\lim_{P_{\text{tr}}\to 0}(P/P_{\text{tr}})\)，给出物质无关的绝对温标；外推得绝对零度 \(0\,\mathrm{K}=-273.15\,\mathrm{^{\circ}C}\)。</li>
+        <li>线膨胀 \(\Delta L=\alpha L_{0}\Delta T\)（\(\Delta L\propto L_{0}\) 是关键直觉）；面膨胀 \(\Delta A=2\alpha A_{0}\Delta T\)；体膨胀 \(\Delta V=\beta V_{0}\Delta T\)，各向同性固体 \(\beta=3\alpha\)。</li>
+        <li>液体在容器中的表观膨胀 \(\Delta V_{\text{app}}=(\beta_{\text{liq}}-\beta_{\text{cont}})V_{0}\Delta T\)——读数偏小，必须做容器修正。</li>
+        <li>水反常膨胀：\(0\to 4\,\mathrm{^{\circ}C}\) 区间 \(\beta<0\)，\(4\,\mathrm{^{\circ}C}\) 密度最大；湖泊自上而下结冰，水生态得以保全。</li>
+        <li>双金属片：\(\alpha\) 大的一侧在外侧；曲率半径 \(R=t/[(\alpha_{2}-\alpha_{1})\Delta T]\)（每片厚 \(t\)），自由端偏移 \(\delta\approx L_{0}^{2}/(2R)\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;T_{F}=\tfrac{9}{5}T_{C}+32,\ \ T=T_{C}+273.15,\ \ T=273.16\,\mathrm{K}\cdot\tfrac{P}{P_{\text{tr}}},\ \ \Delta L=\alpha L_{0}\Delta T,\ \ \Delta V=\beta V_{0}\Delta T,\ \ \beta=3\alpha,\ \ R=\tfrac{t}{(\alpha_{2}-\alpha_{1})\Delta T}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

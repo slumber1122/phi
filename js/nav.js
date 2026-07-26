@@ -104,6 +104,27 @@
         ]},
       ],
     },
+    {
+      name: '第四学期 · 热力学与统计物理 Thermal & Statistical Physics',
+      parts: [
+        { name: '热力学 Thermodynamics', items: [
+          { url: 'sem4/01-temperature.html', title: '温度与热平衡', en: 'Temperature & Equilibrium' },
+          { url: 'sem4/02-heat.html', title: '热量·比热·潜热', en: 'Heat & Calorimetry' },
+          { url: 'sem4/03-ideal-gas.html', title: '理想气体与气体动理论', en: 'Ideal Gas & Kinetic Theory' },
+          { url: 'sem4/04-maxwell.html', title: '麦克斯韦-玻尔兹曼分布', en: 'Maxwell-Boltzmann Distribution' },
+          { url: 'sem4/05-first-law.html', title: '热力学第一定律与过程', en: 'First Law & Processes' },
+          { url: 'sem4/06-engines.html', title: '热机·卡诺·第二定律', en: 'Engines, Carnot & 2nd Law' },
+          { url: 'sem4/07-entropy.html', title: '熵·热力学势·相变', en: 'Entropy, Potentials & Phases' },
+        ]},
+        { name: '统计力学 Statistical Mechanics', items: [
+          { url: 'sem4/08-microstates.html', title: '微观态·玻尔兹曼熵', en: 'Microstates & Boltzmann Entropy' },
+          { url: 'sem4/09-canonical.html', title: '正则系综·配分函数', en: 'Canonical Ensemble & Z' },
+          { url: 'sem4/10-grand.html', title: '巨正则系综·化学势', en: 'Grand Canonical & μ' },
+          { url: 'sem4/11-quantum-stats.html', title: '量子统计', en: 'Quantum Statistics' },
+          { url: 'sem4/12-fluctuations.html', title: '涨落与输运现象', en: 'Fluctuations & Transport' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }

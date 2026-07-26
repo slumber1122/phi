@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 熵·热力学势·相变 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第7章 · 热力学 Thermodynamics</p>
+      <h1>熵·热力学势·相变 <span class="en-title">Entropy, Thermodynamic Potentials &amp; Phase Transitions</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用<strong>克劳修斯定义</strong> (Clausius definition) \(dS = dQ_{\mathrm{rev}}/T\) 把熵 (entropy) \(S\) 表述为<strong>状态函数</strong> (state function)，并对等温、等压、相变等典型过程<strong>计算</strong> \(\Delta S\)。</li>
+        <li>陈述<strong>热力学第二定律</strong> (second law) \(\Delta S_{\mathrm{universe}}\ge 0\)；区分<strong>可逆</strong> (reversible) 与<strong>不可逆</strong> (irreversible) 过程，并用「热自发地从高温流向低温」这类例子证明 \(\Delta S_{\mathrm{univ}}>0\)。</li>
+        <li>写出<strong>克劳修斯不等式</strong> (Clausius inequality) \(\displaystyle\oint \frac{dQ}{T}\le 0\)，并指出等号何时成立。</li>
+        <li>叙述<strong>熵的统计意义</strong> (statistical meaning) \(S=k\ln W\)（玻尔兹曼墓碑铭文），并预告第 8 章的统计力学推导。</li>
+        <li>掌握四个<strong>热力学势</strong> (thermodynamic potentials) — \(U,\,H,\,F,\,G\) — 各自的<strong>自然变量</strong>、最小化条件与对应实验约束（恒 \(S,V\) / 恒 \(P,S\) / 恒 \(T,V\) / 恒 \(T,P\)）。</li>
+        <li>由 \(dG=-S\,dT+V\,dP\) 等<strong>麦克斯韦关系</strong> (Maxwell relations) 进行变量替换，并能查表选用。</li>
+        <li>应用<strong>克拉珀龙—克劳修斯方程</strong> (Clausius–Clapeyron) \(\displaystyle \frac{dP}{dT}=\frac{L}{T\,\Delta V}\) 分析<strong>相图</strong> (phase diagram)：三相点 (triple point)、临界点 (critical point)、共存曲线 (coexistence curve)；用<strong>吉布斯相律</strong> (Gibbs phase rule) \(f=C-P+2\) 判断自由度。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 熵的克劳修斯定义 Entropy via Clausius</h3>
+      <p>对<strong>可逆</strong>微元过程，体系熵 (entropy) \(S\) 的微变定义为</p>
+      <div class="formula">\[ \boxed{\;dS=\frac{dQ_{\mathrm{rev}}}{T}\;} \qquad\text{(Clausius, 1865)} \]</div>
+      <p>\(S\) 是一个<strong>状态函数</strong> (state function)：只要初末态确定，\(\Delta S\) 就确定，与路径无关。这与「\(Q\)」本身截然不同——热量 \(Q\) 是过程量。对一段有限可逆过程，</p>
+      <div class="formula">\[ \Delta S = S_{B}-S_{A}=\int_{A}^{B}\frac{dQ_{\mathrm{rev}}}{T}. \]</div>
+      <p><strong>关键技巧</strong>：欲求任意（甚至不可逆）过程系统从 \(A\to B\) 的 \(\Delta S\)，只需<strong>设计一条连接同样两个端点的可逆路径</strong>并按上式积分——因为 \(S\) 是状态函数。环境熵则需按环境实际所经历的过程计算。</p>
+      <div class="key-terms">entropy (熵), state function (状态函数), reversible process (可逆过程), heat (热量)</div>
+
+      <h3>2. 常见过程的 \(\Delta S\) Formulas for Common Processes</h3>
+      <p>把 \(dS=dQ_{\mathrm{rev}}/T\) 代入各类可逆过程，得到一组必须熟记的「熵变菜单」：</p>
+      <table style="width:100%;border-collapse:collapse;margin:1em 0;">
+        <thead>
+          <tr style="border-bottom:2px solid currentColor;">
+            <th style="text-align:left;padding:4px 8px;">过程 Process</th>
+            <th style="text-align:left;padding:4px 8px;">约束 Constraint</th>
+            <th style="text-align:left;padding:4px 8px;">熵变 \(\Delta S\)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">理想气体等温膨胀 isothermal expansion</td>
+            <td style="padding:4px 8px;">\(T=\text{const}\)</td>
+            <td style="padding:4px 8px;">\(nR\ln\!\dfrac{V_{f}}{V_{i}}=-nR\ln\!\dfrac{P_{f}}{P_{i}}\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">等压升温 isobaric heating</td>
+            <td style="padding:4px 8px;">\(P=\text{const}\)</td>
+            <td style="padding:4px 8px;">\(mc\ln\!\dfrac{T_{f}}{T_{i}}\) 或 \(nC_{P}\ln\!\dfrac{T_{f}}{T_{i}}\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">等容升温 isochoric heating</td>
+            <td style="padding:4px 8px;">\(V=\text{const}\)</td>
+            <td style="padding:4px 8px;">\(mc\ln\!\dfrac{T_{f}}{T_{i}}\) 或 \(nC_{V}\ln\!\dfrac{T_{f}}{T_{i}}\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">绝热可逆 reversible adiabatic</td>
+            <td style="padding:4px 8px;">\(dQ_{\mathrm{rev}}=0\)</td>
+            <td style="padding:4px 8px;">\(0\)（等熵过程 isentropic）</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">相变 phase transition</td>
+            <td style="padding:4px 8px;">\(T=\text{const}\)</td>
+            <td style="padding:4px 8px;">\(\dfrac{mL}{T}=\dfrac{nL_{\mathrm{mol}}}{T}\)</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 8px;">恒温热源 reservoir</td>
+            <td style="padding:4px 8px;">\(T=\text{const}\)</td>
+            <td style="padding:4px 8px;">\(\dfrac{Q}{T}\)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>其中 \(c\) 为比热容 (specific heat)、\(C\) 为摩尔热容；\(L\) 为潜热 (latent heat)。所有公式都来自 \(dS=dQ/T\) 加上对应过程的第一定律 \(dQ\) 表达式。</p>
+      <div class="key-terms">isothermal (等温), isobaric (等压), isochoric (等容), isentropic (等熵), latent heat (潜热)</div>
+
+      <h3>3. 第二定律 The Second Law</h3>
+      <p><strong>开尔文—普朗克表述</strong>：不可能从单一热源吸热并完全变为功而不产生其他效果（即第二类永动机不可能）。<strong>克劳修斯表述</strong>：热量不可能<strong>自发</strong>地从低温物体流向高温物体。两种表述等价。</p>
+      <p>用熵来陈述最为简洁：对<strong>任何</strong>过程，</p>
+      <div class="formula">\[ \boxed{\;\Delta S_{\mathrm{universe}}=\Delta S_{\mathrm{system}}+\Delta S_{\mathrm{surroundings}}\ge 0\;} \]</div>
+      <p>等号当且仅当过程<strong>可逆</strong>时成立；一切<strong>不可逆</strong>（实际）过程都使 \(\Delta S_{\mathrm{univ}}>0\)。这是「时间之箭」(arrow of time) 的微观起源：宇宙作为一个整体熵在增加。</p>
+      <p><strong>典型不可逆热传导</strong>：热量 \(Q\) 自发地从 \(T_{h}\) 流向 \(T_{c}\)（\(T_{h}>T_{c}\)）。高温热源损失 \(-Q/T_{h}\)，低温热源获得 \(+Q/T_{c}\)，故</p>
+      <div class="formula">\[ \Delta S_{\mathrm{univ}}=-\frac{Q}{T_{h}}+\frac{Q}{T_{c}}=Q\!\left(\frac{1}{T_{c}}-\frac{1}{T_{h}}\right)>0\qquad(\because\,T_{h}>T_{c}). \]</div>
+      <div class="key-terms">second law (第二定律), Kelvin–Planck statement (开尔文—普朗克表述), Clausius statement (克劳修斯表述), arrow of time (时间之箭)</div>
+
+      <h3>4. 克劳修斯不等式 Clausius Inequality</h3>
+      <p>对任意循环（可逆或不可逆），</p>
+      <div class="formula">\[ \boxed{\;\oint \frac{dQ}{T}\le 0\;} \]</div>
+      <p>等号当且仅当<strong>可逆循环</strong>成立；不可逆循环取严格「\(<0\)」。该不等式是第二定律的数学化身，并且直接给出「熵是状态函数」的论证：因为对可逆循环 \(\oint dQ_{\mathrm{rev}}/T=0\)，积分与路径无关，必为某状态函数 \(S\) 之全微分，即 \(dS=dQ_{\mathrm{rev}}/T\)。</p>
+
+      <h3>5. 熵的统计意义（预告） Statistical Preview</h3>
+      <p>1877 年玻尔兹曼给出熵的<strong>微观诠释</strong> (microscopic interpretation)：宏观态对应的微观状态数 (microstates) 越多，熵越大。</p>
+      <div class="formula">\[ \boxed{\;S=k_{B}\ln W\;} \qquad\text{(engraved on Boltzmann's tomb, Vienna)} \]</div>
+      <p>这里 \(k_{B}=1.381\times 10^{-23}\,\mathrm{J/K}\) 为玻尔兹曼常数，\(W\) 为该宏观态对应的<strong>微观状态数</strong>。该公式把「气体的不可逆膨胀」翻译成「分子可占据的格子数从 \(W_{i}\) 增至 \(W_{f}\)」，故 \(\Delta S=k_{B}\ln(W_{f}/W_{i})>0\)。完整的配分函数 \(Z\)、\(\beta=1/kT\)、玻尔兹曼分布等留待<strong>第 8 章</strong>统计力学展开。</p>
+      <div class="key-terms">Boltzmann constant (玻尔兹曼常数), microstates (微观状态数), partition function (配分函数, ch.8)</div>
+
+      <h3>6. 热力学势 Thermodynamic Potentials</h3>
+      <p>在不同的实验约束下，体系「自发方向」由不同的能量泛函决定。除内能 \(U\) 外，我们引入三个<strong>勒让德变换</strong> (Legendre transforms)：</p>
+      <table style="width:100%;border-collapse:collapse;margin:1em 0;">
+        <thead>
+          <tr style="border-bottom:2px solid currentColor;">
+            <th style="text-align:left;padding:4px 8px;">名称 Potential</th>
+            <th style="text-align:left;padding:4px 8px;">定义 Definition</th>
+            <th style="text-align:left;padding:4px 8px;">自然变量 Natural vars</th>
+            <th style="text-align:left;padding:4px 8px;">微分 Differential</th>
+            <th style="text-align:left;padding:4px 8px;">最小化 Minimized at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">内能 \(U\) internal energy</td>
+            <td style="padding:4px 8px;">—</td>
+            <td style="padding:4px 8px;">\(S,V\)</td>
+            <td style="padding:4px 8px;">\(dU=T\,dS-P\,dV\)</td>
+            <td style="padding:4px 8px;">恒 \(S,V\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">焓 \(H\) enthalpy</td>
+            <td style="padding:4px 8px;">\(H=U+PV\)</td>
+            <td style="padding:4px 8px;">\(S,P\)</td>
+            <td style="padding:4px 8px;">\(dH=T\,dS+V\,dP\)</td>
+            <td style="padding:4px 8px;">恒 \(S,P\)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--sim-grid,#cbd5e1);">
+            <td style="padding:4px 8px;">赫姆霍兹 \(F\) Helmholtz</td>
+            <td style="padding:4px 8px;">\(F=U-TS\)</td>
+            <td style="padding:4px 8px;">\(T,V\)</td>
+            <td style="padding:4px 8px;">\(dF=-S\,dT-P\,dV\)</td>
+            <td style="padding:4px 8px;">恒 \(T,V\)</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 8px;">吉布斯 \(G\) Gibbs</td>
+            <td style="padding:4px 8px;">\(G=H-TS=U+PV-TS\)</td>
+            <td style="padding:4px 8px;">\(T,P\)</td>
+            <td style="padding:4px 8px;">\(dG=-S\,dT+V\,dP\)</td>
+            <td style="padding:4px 8px;">恒 \(T,P\)（化学/生物最常用）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>极小原理</strong>：在对应的自然变量被外界钳制的情形下，平衡态使该势取<strong>极小</strong>。例如恒 \(T,P\) 下封闭体系自发进行 \(dG&lt;0\) 的过程，平衡时 \(G\) 极小；这就是化学中「\(\Delta G&lt;0\) 自发」的根源。等温等压下由 \(G\) 算出的「最大非体积功」\(W_{\mathrm{other},\max}=\Delta G\)（可逆时取等）。</p>
+      <p>对单组分、粒子数 \(N\) 可变的体系，所有势都再加 \(\mu\,dN\) 项，\(\mu=(\partial G/\partial N)_{T,P}\) 称<strong>化学势</strong> (chemical potential)——例如化学电池、相平衡中各相 \(\mu\) 相等。</p>
+      <div class="key-terms">internal energy (内能), enthalpy (焓), Helmholtz free energy (赫姆霍兹自由能), Gibbs free energy (吉布斯自由能), Legendre transform (勒让德变换), chemical potential (化学势)</div>
+
+      <h3>7. 麦克斯韦关系 Maxwell Relations</h3>
+      <p>由四个势的微分式（每个都是恰当微分），可得一对偏导交叉相等的<strong>麦克斯韦关系</strong>（共四个）。最常用的两个：</p>
+      <div class="formula">\[ \left(\frac{\partial S}{\partial V}\right)_{T}=\left(\frac{\partial P}{\partial T}\right)_{V},\qquad \left(\frac{\partial S}{\partial P}\right)_{T}=-\left(\frac{\partial V}{\partial T}\right)_{P}. \]</div>
+      <p>实用价值：把「难以测的 \(\partial S/\partial V\)」换成「可测的 \(\partial P/\partial T\)」。例如对理想气体 \(PV=nRT\) 给出 \((\partial P/\partial T)_{V}=nR/V\)，于是等温膨胀 \(\Delta S=\int(nR/V)\,dV=nR\ln(V_{f}/V_{i})\)——正是我们已熟的公式。</p>
+
+      <h3>8. 相平衡与克拉珀龙—克劳修斯方程 Phase Equilibrium &amp; Clausius–Clapeyron</h3>
+      <p>两相 \(\alpha,\beta\) 在 \(T,P\) 共存的条件是<strong>化学势相等</strong>：\(\mu^{\alpha}(T,P)=\mu^{\beta}(T,P)\)。沿共存曲线 \(P(T)\) 微小位移 \(dT,dP\) 必须保持二者仍相等：</p>
+      <div class="formula">\[ d\mu^{\alpha}=-S_{m}^{\alpha}\,dT+V_{m}^{\alpha}\,dP=-S_{m}^{\beta}\,dT+V_{m}^{\beta}\,dP=d\mu^{\beta}. \]</div>
+      <p>解出 \(dP/dT\)：</p>
+      <div class="formula">\[ \boxed{\;\frac{dP}{dT}=\frac{\Delta S_{m}}{\Delta V_{m}}=\frac{L_{\mathrm{mol}}}{T\,\Delta V_{m}}\;} \qquad\text{(Clausius–Clapeyron)} \]</div>
+      <p>第二步用了相变 \(\Delta S_{m}=L_{\mathrm{mol}}/T\)。该公式给出<strong>所有</strong>共存曲线的斜率，是相图理论的基石：</p>
+      <ul>
+        <li><strong>气液</strong>：\(\Delta V_{m}\) 大且正，故斜率小而正——曲线缓慢上升。</li>
+        <li><strong>固液</strong>：\(\Delta V_{m}\) 很小，故斜率<strong>极大</strong>（曲线近乎竖直）；对水这类「冰比液轻」的物质，\(\Delta V_{m}&lt;0\)，斜率为<strong>负</strong>（罕见）。</li>
+        <li><strong>固气升华</strong>：\(\Delta V_{m}\) 更大（气体全部从无到有），斜率比气液还陡。</li>
+      </ul>
+      <p><strong>近似形式</strong>（仅气液、固气，假设蒸汽为理想气体且 \(V_{\mathrm{solid/liquid}}\ll V_{\mathrm{gas}}\)）：</p>
+      <div class="formula">\[ \frac{dP}{dT}\approx\frac{L_{\mathrm{mol}}P}{RT^{2}}\;\;\Longrightarrow\;\; \ln\frac{P_{2}}{P_{1}}=-\frac{L_{\mathrm{mol}}}{R}\!\left(\frac{1}{T_{2}}-\frac{1}{T_{1}}\right). \]</div>
+      <div class="key-terms">coexistence curve (共存曲线), phase boundary (相界), chemical potential (化学势)</div>
+
+      <h3>9. 相图、三相点、临界点 Phase Diagrams</h3>
+      <p>典型的 \(P\text{–}T\) 相图包含三条共存曲线（升华、熔化、汽化），它们<strong>交于一点</strong>——<strong>三相点</strong> (triple point)，唯一一个三相共存的状态。水的三相点 \(T_{\mathrm{tp}}=273.16\,\mathrm{K}\)、\(P_{\mathrm{tp}}=611.66\,\mathrm{Pa}\)（开尔文温标的定义固定点）。</p>
+      <p>汽化曲线<strong>终止</strong>于<strong>临界点</strong> (critical point)：水 \(T_{c}=647.10\,\mathrm{K}\)、\(P_{c}=22.06\,\mathrm{MPa}\)。越过临界点，气液不再可区分，称为<strong>超临界流体</strong> (supercritical fluid)。三相点与临界点共同规定了物质相图的「骨架」。</p>
+      <div class="key-terms">triple point (三相点), critical point (临界点), supercritical fluid (超临界流体)</div>
+
+      <h3>10. 吉布斯相律 Gibbs Phase Rule</h3>
+      <p>对 \(C\) 组分、\(P\) 相共存的体系，可独立变化的强度量（\(T,P,\) 浓度）个数为</p>
+      <div class="formula">\[ \boxed{\;f=C-P+2\;} \qquad\text{(Gibbs phase rule)} \]</div>
+      <p>单组分 \(C=1\)：单相区 \(f=2\)（\(T,P\) 都可独立变）；两相共存曲线 \(f=1\)（\(P\) 随 \(T\) 确定）；三相点 \(f=0\)（唯一一组 \(T,P\)）。这就解释了「为何三相点是个<strong>点</strong>而不是区域」。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 7.A — 由第二定律推出 \(\Delta S_{\mathrm{univ}}\ge 0\) From the 2nd Law to Universal Entropy</h3>
+      <p class="step"><strong>步骤 1：拆分。</strong>把宇宙分为「系统 + 环境」。熵是广延量 (extensive)，故 \(\Delta S_{\mathrm{univ}}=\Delta S_{\mathrm{sys}}+\Delta S_{\mathrm{surr}}\)。</p>
+      <p class="step"><strong>步骤 2：克劳修斯不等式应用于系统。</strong>对系统所经历的循环 \(\displaystyle\oint\frac{dQ}{T_{\mathrm{surr}}}\le 0\)。注意分母是<strong>环境温度</strong> \(T_{\mathrm{surr}}\)（可逆过程时等于系统温度，不可逆时不等）。</p>
+      <p class="step"><strong>步骤 3：把系统熵沿实际路径积分。</strong>\(dS_{\mathrm{sys}}\ge dQ/T_{\mathrm{surr}}\)，可逆取等，不可逆取严格大于。环境在恒温 \(T_{\mathrm{surr}}\) 下交换 \(-dQ\)，故 \(dS_{\mathrm{surr}}=-dQ/T_{\mathrm{surr}}\)。两者相加：</p>
+      <div class="formula">\[ dS_{\mathrm{univ}}=dS_{\mathrm{sys}}+dS_{\mathrm{surr}}\ge\frac{dQ}{T_{\mathrm{surr}}}-\frac{dQ}{T_{\mathrm{surr}}}=0. \]</div>
+      <p class="step"><strong>步骤 4：积分得 \(\Delta S_{\mathrm{univ}}\ge 0\)。</strong>等号当且仅当全过程可逆。证毕。此即「熵增原理」。</p>
+
+      <h3>推导 7.B — 由 \(\boldsymbol{\mu}\) 相等推出 Clausius–Clapeyron</h3>
+      <p class="step"><strong>步骤 1：化学势相等。</strong>相 \(\alpha,\beta\) 共存要求 \(\mu^{\alpha}(T,P)=\mu^{\beta}(T,P)\)。</p>
+      <p class="step"><strong>步骤 2：沿曲线求全微分。</strong>沿 \(P(T)\) 移动 \(dT,dP\)，必须保持 \(\mu\) 之差为零，故 \(d\mu^{\alpha}=d\mu^{\beta}\)。</p>
+      <p class="step"><strong>步骤 3：代入 \(d\mu\)。</strong>对单组分，摩尔吉布斯能 \(G_{m}=\mu\)，由 \(dG=-S\,dT+V\,dP\) 得 \(d\mu=-S_{m}\,dT+V_{m}\,dP\)。</p>
+      <p class="step"><strong>步骤 4：解 \(dP/dT\)。</strong>整理 \(-S_{m}^{\alpha}\,dT+V_{m}^{\alpha}\,dP=-S_{m}^{\beta}\,dT+V_{m}^{\beta}\,dP\)，得</p>
+      <div class="formula">\[ \frac{dP}{dT}=\frac{S_{m}^{\beta}-S_{m}^{\alpha}}{V_{m}^{\beta}-V_{m}^{\alpha}}=\frac{\Delta S_{m}}{\Delta V_{m}}=\frac{L_{\mathrm{mol}}}{T\,\Delta V_{m}}\quad(\text{用}\;\Delta S_{m}=L/T). \]</div>
+      <p class="step">这是热力学最美的结果之一：用一条曲线的斜率读出相变潜热与体积差之间的关系。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 等温膨胀的熵变 Isothermal Expansion of an Ideal Gas</h4>
+        <p class="example-statement">\(2.00\,\mathrm{mol}\) 理想气体在 \(T=300\,\mathrm{K}\) 下由 \(V_{i}=10.0\,\mathrm{L}\) 可逆等温膨胀到 \(V_{f}=30.0\,\mathrm{L}\)。求气体的 \(\Delta S\)。若换成<strong>向真空自由膨胀</strong>（不可逆）到同样末态，气体的 \(\Delta S\) 又是多少？环境呢？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（可逆）：</strong>等温下理想气体 \(\Delta U=0\)，由第一定律 \(dQ_{\mathrm{rev}}=dW=P\,dV=nRT\,dV/V\)，故</p>
+          <p class="step">\(\displaystyle\Delta S_{\mathrm{gas}}=\int\frac{dQ_{\mathrm{rev}}}{T}=\int_{V_{i}}^{V_{f}}\frac{nR}{V}\,dV=nR\ln\!\frac{V_{f}}{V_{i}}\)。</p>
+          <p class="step">代入数据：\(\Delta S_{\mathrm{gas}}=(2.00)(8.314)\ln(30.0/10.0)=16.628\times\ln 3=16.628\times 1.0986=\mathbf{18.3\,J/K}\)。</p>
+          <p class="step"><strong>解（自由膨胀）：</strong>自由膨胀 \(Q=0,\,W=0\)，故环境无热量交换，\(\Delta S_{\mathrm{surr}}=0\)。但气体仍从同样的 \(V_{i}\) 到 \(V_{f}\)，<strong>熵是状态函数</strong>，所以 \(\Delta S_{\mathrm{gas}}=\mathbf{18.3\,J/K}\) <em>不变</em>（用一条连接同样端点的可逆等温路径来计算）。</p>
+          <p class="step"><strong>校验第二定律：</strong>\(\Delta S_{\mathrm{univ}}=\Delta S_{\mathrm{gas}}+\Delta S_{\mathrm{surr}}=18.3+0=18.3\,\mathrm{J/K}>0\) ✓。自由膨胀确实不可逆，宇宙熵增加——符合第二定律。</p>
+          <p><span class="ans">答案：两种情形气体 \(\Delta S=18.3\,\mathrm{J/K}\)；可逆时环境 \(-18.3\,\mathrm{J/K}\)、\(\Delta S_{\mathrm{univ}}=0\)；自由膨胀时环境 \(0\)、\(\Delta S_{\mathrm{univ}}=+18.3\,\mathrm{J/K}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 不可逆热传导 \(\boldsymbol{\Delta S_{\mathrm{univ}}>0}\) Irreversible Heat Conduction</h4>
+        <p class="example-statement">\(Q=1200\,\mathrm{J}\) 的热量自发地从 \(T_{h}=500\,\mathrm{K}\) 的热库流向 \(T_{c}=300\,\mathrm{K}\) 的冷库。求两热库及宇宙的熵变。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>热库在等温下交换热量，\(\Delta S=\pm Q/T\)。</p>
+          <p class="step">\(\Delta S_{h}=-Q/T_{h}=-1200/500=\mathbf{-2.40\,J/K}\)（高温库失去熵）。</p>
+          <p class="step">\(\Delta S_{c}=+Q/T_{c}=+1200/300=\mathbf{+4.00\,J/K}\)（低温库获得更多熵）。</p>
+          <p class="step">\(\Delta S_{\mathrm{univ}}=\Delta S_{h}+\Delta S_{c}=-2.40+4.00=\mathbf{+1.60\,J/K}>0\) ✓。</p>
+          <p class="step"><strong>物理意义：</strong>低温库「单位热量对应的熵」更大（\(1/T\) 更大），所以同一 \(Q\) 在低温端产生的熵比高温端损失的熵多——净熵增加。这就是「热自发地从高温流向低温」的熵表述。若试图让热量反向流动（\(T_{c}\to T_{h}\)），\(\Delta S_{\mathrm{univ}}=-1.60\,\mathrm{J/K}&lt;0\)，第二定律禁止——除非外界做功（如冰箱）。</p>
+          <p><span class="ans">答案：\(\Delta S_{h}=-2.40\,\mathrm{J/K}\)、\(\Delta S_{c}=+4.00\,\mathrm{J/K}\)、\(\Delta S_{\mathrm{univ}}=+1.60\,\mathrm{J/K}>0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 冰融化的熵变 Melting Ice</h4>
+        <p class="example-statement">在 \(1\,\mathrm{atm}\)、\(0^{\circ}\mathrm{C}\) 下缓慢融化 \(m=50.0\,\mathrm{g}\) 的冰。已知冰的熔化潜热 \(L_{f}=334\,\mathrm{kJ/kg}\)。求：水的 \(\Delta S\)；若环境是 \(T_{\mathrm{surr}}=300\,\mathrm{K}\) 的大气，宇宙熵变为何？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（系统熵）：</strong>相变在<strong>恒温</strong> \(T_{m}=273.15\,\mathrm{K}\) 下进行，可逆相变 \(\Delta S=mL_{f}/T_{m}\)：</p>
+          <p class="step">\(\Delta S_{\mathrm{water}}=\dfrac{(0.0500)(334000)}{273.15}=\dfrac{16700}{273.15}=\mathbf{+61.1\,J/K}\)。</p>
+          <p class="step">（摩尔版本：\(\Delta S_{m}=L_{f,\mathrm{mol}}/T_{m}=6010/273.15=22.0\,\mathrm{J/(mol\cdot K)}\)——与<strong>特鲁顿规则</strong> (Trouton's rule) 比较，水的熔化熵远小于蒸发熵 \(\sim 109\,\mathrm{J/(mol\cdot K)}\)，因为液固有序度差别小。）</p>
+          <p class="step"><strong>解（环境熵）：</strong>环境（大气）在 \(300\,\mathrm{K}\) 下提供热量 \(Q=mL_{f}=16700\,\mathrm{J}\)，故</p>
+          <p class="step">\(\Delta S_{\mathrm{surr}}=-Q/T_{\mathrm{surr}}=-16700/300=\mathbf{-55.7\,J/K}\)。</p>
+          <p class="step"><strong>校验：</strong>\(\Delta S_{\mathrm{univ}}=+61.1-55.7=\mathbf{+5.4\,J/K}>0\) ✓。冰在 \(25^{\circ}\mathrm{C}\) 房间里自发融化——第二定律所容许。</p>
+          <p><span class="ans">答案：\(\Delta S_{\mathrm{water}}=+61.1\,\mathrm{J/K}\)；\(\Delta S_{\mathrm{surr}}=-55.7\,\mathrm{J/K}\)；\(\Delta S_{\mathrm{univ}}=+5.4\,\mathrm{J/K}>0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 沸点随压强变化（珠峰煮水）Boiling on Mount Everest</h4>
+        <p class="example-statement">水的汽化潜热取 \(L_{v}=43.3\,\mathrm{kJ/mol}\)（273–373 K 之间的有效值）。已知参改点 \((T_{1},P_{1})=(373.15\,\mathrm{K},\,101.325\,\mathrm{kPa})\)。求：(a) 在珠峰顶 \(P_{2}=31.4\,\mathrm{kPa}\)（约 \(0.310\,\mathrm{atm}\)）下水的沸点；(b) 在 \(1.50\,\mathrm{atm}\) 高压锅中的沸点。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对气液相变，\(V_{\mathrm{liq}}\ll V_{\mathrm{vap}}\)，且蒸汽近似理想气体，故使用近似 Clausius–Clapeyron：</p>
+          <p class="step">\(\displaystyle\ln\!\frac{P_{2}}{P_{1}}=-\frac{L_{v}}{R}\!\left(\frac{1}{T_{2}}-\frac{1}{T_{1}}\right)\)。</p>
+          <p class="step"><strong>(a) 珠峰：</strong>\(\ln(31.4/101.3)=\ln(0.310)=-1.171\)。</p>
+          <p class="step">\(\displaystyle\frac{1}{T_{2}}=\frac{1}{T_{1}}-\frac{R}{L_{v}}\ln\!\frac{P_{2}}{P_{1}}=\frac{1}{373.15}-\frac{8.314}{43300}(-1.171)=2.680\times 10^{-3}+2.249\times 10^{-4}=2.905\times 10^{-3}\,\mathrm{K^{-1}}\)。</p>
+          <p class="step">\(T_{2}=1/(2.905\times 10^{-3})=\mathbf{344\,K}\)，即 \(\mathbf{71^{\circ}C}\)。这就是为何珠峰上煮鸡蛋不容易熟——必须用高压锅。</p>
+          <p class="step"><strong>(b) 高压锅（\(P_{2}=1.50\,\mathrm{atm}=152.0\,\mathrm{kPa}\)）：</strong>\(\ln(152.0/101.3)=\ln(1.50)=0.405\)。</p>
+          <p class="step">\(\displaystyle\frac{1}{T_{2}}=2.680\times 10^{-3}-\frac{8.314}{43300}(0.405)=2.680\times 10^{-3}-7.78\times 10^{-5}=2.602\times 10^{-3}\,\mathrm{K^{-1}}\)。</p>
+          <p class="step">\(T_{2}=1/(2.602\times 10^{-3})=\mathbf{384\,K}=\mathbf{111^{\circ}C}\)。比常压沸点高 \(11\,\mathrm{K}\)，所以高压锅炖肉更快。</p>
+          <p><span class="ans">答案：(a) \(344\,\mathrm{K}\approx 71^{\circ}\mathrm{C}\)；(b) \(384\,\mathrm{K}\approx 111^{\circ}\mathrm{C}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 吉布斯能与冰的稳定性 Gibbs Free Energy &amp; the Phase Criterion</h4>
+        <p class="example-statement">水的摩尔熔化焓 \(\Delta H_{m}=+6.01\,\mathrm{kJ/mol}\)、熔化熵 \(\Delta S_{m}=+22.0\,\mathrm{J/(mol\cdot K)}\)（均视为常数，\(0^{\circ}\mathrm{C}\) 附近）。求 \(1\,\mathrm{atm}\) 下、\(T=263\,\mathrm{K}\) (\(-10^{\circ}\mathrm{C}\)) 时「冰 → 水」的 \(\Delta G\)，并判断过程是否自发。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>恒温等压下，\(\Delta G=\Delta H-T\Delta S\)。</p>
+          <p class="step">\(\Delta G_{\mathrm{melt}}(263\,\mathrm{K})=6010-(263)(22.0)=6010-5786=\mathbf{+224\,J/mol}\)。</p>
+          <p class="step"><strong>\(\Delta G>0\)</strong>，故在 \(1\,\mathrm{atm}\)、\(-10^{\circ}\mathrm{C}\) 下冰 <em>不会</em>自发融化；相反「水 → 冰」\(\Delta G=-224\,\mathrm{J/mol}&lt;0\) 自发——液态水会结冰，符合经验。</p>
+          <p class="step"><strong>平衡温度：</strong>令 \(\Delta G=0\)，\(T^{*}=\Delta H/\Delta S=6010/22.0=\mathbf{273.2\,K}\)（正是正常熔点）。低于 \(T^{*}\)，固相 \(G\) 更低、稳定；高于 \(T^{*}\)，液相 \(G\) 更低、稳定。</p>
+          <p class="step"><strong>核验：</strong>\(T=283\,\mathrm{K}\)：\(\Delta G=6010-283\cdot 22.0=6010-6226=\mathbf{-216\,J/mol}&lt;0\)，融化自发 ✓。</p>
+          <p><span class="ans">答案：\(\Delta G_{\mathrm{melt}}(263\,\mathrm{K})=+224\,\mathrm{J/mol}\)（非自发）；平衡温度 \(273.2\,\mathrm{K}\)；\(T&gt;T^{*}\) 液相稳定、\(T&lt;T^{*}\) 固相稳定。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「绝热即 \(\Delta S=0\)」。</strong>错。只有<strong>可逆绝热</strong>（\(dQ_{\mathrm{rev}}=0\)）才是等熵；<strong>不可逆绝热</strong>（如自由膨胀）系统的 \(\Delta S&gt;0\)。务必区分实际过程与可逆参考路径。</li>
+        <li><strong>把第二定律误用在「系统」上。</strong>\(\Delta S_{\mathrm{sys}}\) 可正可负（如水结冰放热时 \(\Delta S_{\mathrm{sys}}&lt;0\)）；第二定律约束的是 \(\Delta S_{\mathrm{universe}}=\Delta S_{\mathrm{sys}}+\Delta S_{\mathrm{surr}}\ge 0\)。水结冰之所以可能，是因为环境吸热获得更多熵。</li>
+        <li><strong>对不可逆过程直接用 \(dQ/T\) 求系统熵变。</strong>错。\(\Delta S_{\mathrm{sys}}\) 必须沿一条<strong>可逆</strong>路径积分。例如自由膨胀 \(Q=0\) 但 \(\Delta S_{\mathrm{sys}}=nR\ln(V_{f}/V_{i})\)（用可逆等温代替）。</li>
+        <li><strong>把相变当作 \(T\) 变化的过程。</strong>在 \(1\,\mathrm{atm}\) 下水的沸腾是<strong>恒温</strong> \(T=373\,\mathrm{K}\) 过程，温度不再上升直到全部汽化。该过程 \(\Delta S=L/T\) 而非 \(0\)。</li>
+        <li><strong>认为 \(\Delta G&lt;0\) 在任何条件下都表示自发。</strong>不对。\(\Delta G&lt;0\) 仅在<strong>恒温等压、只有 \(PV\) 功</strong>时给出方向。在等温等容条件下应判 \(\Delta F&lt;0\)；在等熵等压下判 \(\Delta H&lt;0\)。要按约束挑对势。</li>
+        <li><strong>混淆 \(C_{V}\) 与 \(C_{P}\) 在 \(\Delta S\) 公式中的角色。</strong>等容过程用 \(nC_{V}\ln(T_{f}/T_{i})\)，等压过程用 \(nC_{P}\ln(T_{f}/T_{i})\)。换错会偏差 \(R\ln(\cdot)\) 量级。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 自由膨胀的 \(\Delta S\) Free Expansion Entropy</summary>
+        <div class="hint">系统熵是状态函数；用一条等温可逆路径连接同样端点。环境没有热量交换。</div>
+        <div class="solution">
+          \(1.00\,\mathrm{mol}\) 单原子理想气体由 \(V_{i}=1.00\,\mathrm{L}\) 向真空自由膨胀到 \(V_{f}=5.00\,\mathrm{L}\)。\(\Delta T=0\)。\(\Delta S_{\mathrm{gas}}=nR\ln(V_{f}/V_{i})=(1.00)(8.314)\ln 5.00=8.314\times 1.609=\mathbf{13.4\,J/K}\)。环境 \(Q=0\)，\(\Delta S_{\mathrm{surr}}=0\)。\(\Delta S_{\mathrm{univ}}=+13.4\,\mathrm{J/K}>0\) ✓ 不可逆。<span class="ans">答：\(\Delta S_{\mathrm{gas}}=13.4\,\mathrm{J/K}\)、\(\Delta S_{\mathrm{univ}}=13.4\,\mathrm{J/K}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 等压加热的 \(\Delta S\) Isobaric Heating of Copper</summary>
+        <div class="hint">用 \(\Delta S=mc\ln(T_{f}/T_{i})\)，铜 \(c=385\,\mathrm{J/(kg\cdot K)}\)。</div>
+        <div class="solution">
+          \(m=0.500\,\mathrm{kg}\) 铜块在 \(1\,\mathrm{atm}\) 下由 \(T_{i}=300\,\mathrm{K}\) 加热到 \(T_{f}=500\,\mathrm{K}\)。<br>
+          \(\Delta S=(0.500)(385)\ln(500/300)=192.5\times\ln(5/3)=192.5\times 0.511=\mathbf{98.3\,J/K}\)。<br>
+          注意虽然 \(Q=mc\,\Delta T=192.5\times 200=38500\,\mathrm{J}\)，但不能写成 \(Q/T\)，因为 \(T\) 在变；必须对每个 \(dQ=mc\,dT\) 除以当前的 \(T\) 再积分，得对数形式。<span class="ans">答：\(\Delta S=98.3\,\mathrm{J/K}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 混合两种温度的水 — 宇宙熵增 Entropy of Mixing Hot and Cold Water</summary>
+        <div class="hint">先由能量守恒求末温 \(T_{f}=(m_{1}T_{1}+m_{2}T_{2})/(m_{1}+m_{2})\)，再分别用 \(mc\ln(T_{f}/T_{i})\) 求两部分的 \(\Delta S\)，求和。</div>
+        <div class="solution">
+          \(m_{1}=1.0\,\mathrm{kg}\) 水 \(T_{1}=350\,\mathrm{K}\) 与 \(m_{2}=1.0\,\mathrm{kg}\) 水 \(T_{2}=290\,\mathrm{K}\) 在绝热容器中混合。末温 \(T_{f}=(350+290)/2=320\,\mathrm{K}\)。<br>
+          \(\Delta S_{1}=mc\ln(T_{f}/T_{1})=(1.0)(4186)\ln(320/350)=4186\ln(0.9143)=4186(-0.0896)=\mathbf{-375\,J/K}\)；<br>
+          \(\Delta S_{2}=(1.0)(4186)\ln(320/290)=4186\ln(1.103)=4186(0.0980)=\mathbf{+410\,J/K}\)。<br>
+          \(\Delta S_{\mathrm{univ}}=-375+410=\mathbf{+35\,J/K}>0\) ✓ 不可逆（热自发由热端流向冷端）。<span class="ans">答：\(T_{f}=320\,\mathrm{K}\)、\(\Delta S_{\mathrm{univ}}=+35\,\mathrm{J/K}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 干冰的升华压强 Sublimation Pressure of \(CO_{2}\)</summary>
+        <div class="hint">用近似 Clausius–Clapeyron：\(\ln(P_{2}/P_{1})=-(L_{s}/R)(1/T_{2}-1/T_{1})\)。</div>
+        <div class="solution">
+          已知 \(CO_{2}\) 三相点 \(T_{1}=216.6\,\mathrm{K}\)、\(P_{1}=5.18\times 10^{5}\,\mathrm{Pa}\)，升华潜热 \(L_{s}=25.2\,\mathrm{kJ/mol}\)。求 \(T_{2}=194.7\,\mathrm{K}\)（即干冰温度）时的饱和蒸汽压。<br>
+          \(\ln(P_{2}/P_{1})=-(25200/8.314)(1/194.7-1/216.6)=-3031\times(5.136\times 10^{-3}-4.617\times 10^{-3})=-3031\times 5.19\times 10^{-4}=-1.573\)。<br>
+          \(P_{2}=P_{1}e^{-1.573}=(5.18\times 10^{5})(0.2074)=\mathbf{1.07\times 10^{5}\,Pa}\approx 1.06\,\mathrm{atm}\)。<br>
+          实测约 \(1.0\,\mathrm{atm}\)，与计算吻合（误差来自 \(L_{s}\) 视为常数）。这也解释了为何常压下干冰直接升华而不熔化——\(CO_{2}\) 三相点压强 \(5.18\,\mathrm{atm}&gt;1\,\mathrm{atm}\)。<span class="ans">答：\(P\approx 1.07\times 10^{5}\,\mathrm{Pa}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 用麦克斯韦关系求 \((\partial S/\partial P)_{T}\) Maxwell Relation Drill</summary>
+        <div class="hint">从 \(dG=-S\,dT+V\,dP\) 出发，用 Schwartz 定理 \(\partial^{2}G/\partial T\partial P=\partial^{2}G/\partial P\partial T\)。</div>
+        <div class="solution">
+          \(G(T,P)\) 是状态函数，\(dG\) 是恰当微分，故<br>
+          \(\displaystyle\left(\frac{\partial}{\partial P}\left(\frac{\partial G}{\partial T}\right)_{P}\right)_{T}=\left(\frac{\partial}{\partial T}\left(\frac{\partial G}{\partial P}\right)_{T}\right)_{P}\)。<br>
+          代入 \((\partial G/\partial T)_{P}=-S\) 与 \((\partial G/\partial P)_{T}=V\)：<br>
+          \(\displaystyle\left(\frac{\partial(-S)}{\partial P}\right)_{T}=\left(\frac{\partial V}{\partial T}\right)_{P}\)，即 \(\displaystyle\left(\frac{\partial S}{\partial P}\right)_{T}=-\left(\frac{\partial V}{\partial T}\right)_{P}=-V\alpha\)，其中 \(\alpha\) 是体膨胀系数。<span class="ans">答：\((\partial S/\partial P)_{T}=-(\partial V/\partial T)_{P}=-V\alpha\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>水的相图 Phase Diagram of Water (\(P\)–\(T\))。</strong>纵轴为压强（对数刻度 \(\log_{10}P\)，单位 \(\mathrm{Pa}\)），横轴为温度 \(T\)（\(\mathrm{K}\)）。三条曲线由<strong>克拉珀龙—克劳修斯方程</strong>给出：<span style="color:var(--sim-accent2,#16a34a);">绿色</span>=升华（固气），<span style="color:var(--sim-accent,#dc2626);">红色</span>=熔化（固液，注意水的<strong>负斜率</strong>，反映冰的密度比水小），<span style="color:var(--sim-primary,#2563eb);">蓝色</span>=汽化（液气），终止于<strong>临界点</strong>（紫圈）。三相点用绿色大圆标出。三条曲线将平面分为<strong>固/液/气</strong>三区。移动 <strong>T</strong>、<strong>\(\log_{10}P\)</strong> 两个滑块，白色圆点会随之移动，画布上方实时显示该 \((T,P)\) 处的相态（及饱和蒸汽压对照）。试试：固定 \(\log_{10}P=5\)，从 \(T=200\,\mathrm{K}\) 滑到 \(600\,\mathrm{K}\)，会依次穿越升华线→液相→汽化线→气相；或固定 \(T=270\,\mathrm{K}\) 改变 \(P\)，可在固/气之间转换（升华）。建议对照例 7.4（沸点）与例 7.5（熔点）。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="760" height="440"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- water constants (SI) ----------------------------------------
+          var R = 8.314;                       // J/(mol·K)
+          var T_TP = 273.16;                   // triple-point temperature [K]
+          var P_TP = 611.66;                   // triple-point pressure [Pa]
+          var T_C = 647.10;                    // critical temperature [K]
+          var P_C = 2.2064e7;                  // critical pressure [Pa]
+          var L_VAP = 43316;                   // J/mol  (avg, gives 1 atm at 373 K)
+          var L_SUBL = 51000;                  // J/mol  (≈ L_fus + L_vap)
+          // Fusion line for water has NEGATIVE slope (ice less dense than water):
+          //   dP/dT = L_fus / (T·ΔV), ΔV = V_liq − V_sol < 0  → slope ≈ −13.8 MPa/K
+          var FUS_SLOPE = -1.376e7;            // Pa/K
+
+          // ---- axis ranges --------------------------------------------------
+          var T_MIN = 200, T_MAX = 700;        // K
+          var LP_MIN = 0, LP_MAX = 8;          // log10(P / Pa), i.e. 1 Pa .. 100 MPa
+          var plotL = 64, plotR = W - 18, plotT = 56, plotB = H - 48;
+          function toX(T)  { return plotL + (T - T_MIN) / (T_MAX - T_MIN) * (plotR - plotL); }
+          function toY(lp) { return plotB - (lp - LP_MIN) / (LP_MAX - LP_MIN) * (plotB - plotT); }
+
+          // ---- coexistence-curve equations ---------------------------------
+          function vapPressure(T) {
+            // Clausius–Clapeyron (ideal-gas vapour), valid for T in [T_TP, T_C]
+            return P_TP * Math.exp((L_VAP / R) * (1 / T_TP - 1 / T));
+          }
+          function sublPressure(T) {
+            // Sublimation curve, valid for T < T_TP
+            return P_TP * Math.exp((L_SUBL / R) * (1 / T_TP - 1 / T));
+          }
+          function fusPressure(T) {
+            // Fusion line: nearly vertical, slight negative slope for water
+            // anchored at triple point
+            return P_TP + FUS_SLOPE * (T - T_TP);
+          }
+          function lpSafe(P) { return Math.max(LP_MIN - 0.5, Math.min(LP_MAX + 0.5, Math.log10(P))); }
+
+          // ---- phase at a given (T, P) -------------------------------------
+          function phaseAt(T, P) {
+            if (T >= T_C) {
+              if (P >= P_C) return { key: 'sc', label: '超临界流体 Supercritical' };
+              return { key: 'sc', label: '超临界流体 Supercritical (gas-like)' };
+            }
+            if (T < T_TP) {
+              var Ps = sublPressure(T);
+              return P > Ps ? { key: 'sol', label: '固相 Solid (冰 ice)' }
+                            : { key: 'gas', label: '气相 Gas (水蒸气 vapour)' };
+            }
+            // T_TP <= T < T_C
+            var Pv = vapPressure(T);
+            if (P > Pv) {
+              // Could be liquid, or solid at very high P / low T near TP.
+              // Use fusion line: P > fusion pressure on the "left" side → solid
+              var Pf = fusPressure(T);
+              if (T < T_TP + 5 && P > Pf) return { key: 'sol', label: '固相 Solid (高压冰 high-P ice)' };
+              return { key: 'liq', label: '液相 Liquid (水 water)' };
+            }
+            return { key: 'gas', label: '气相 Gas (水蒸气 vapour)' };
+          }
+
+          var DEFAULTS = { T: 300, LP: 5.0 };  // 300 K, 10^5 Pa = 1 atm
+          var params = { T: DEFAULTS.T, LP: DEFAULTS.LP };
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static phase diagram — no time evolution */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ---- region fills -------------------------------------------
+              // (cheap approximation: fill rectangles for solid/liquid/gas zones)
+              ctx.save();
+              // gas region: below both vap and subl curves
+              ctx.fillStyle = PS.colors.primary;
+              ctx.globalAlpha = 0.07;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotB);
+              ctx.lineTo(plotL, toY(lpSafe(sublPressure(T_MIN))));
+              for (var T = T_MIN; T <= T_TP; T += 3) ctx.lineTo(toX(T), toY(lpSafe(sublPressure(T))));
+              for (var T2 = T_TP; T2 <= T_C; T2 += 3) ctx.lineTo(toX(T2), toY(lpSafe(vapPressure(T2))));
+              ctx.lineTo(plotR, plotB);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              // ---- axes, ticks, labels ------------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB);
+              ctx.lineTo(plotR, plotB); ctx.stroke();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              // x ticks every 100 K
+              for (var tt = 200; tt <= T_MAX; tt += 100) {
+                var xt = toX(tt);
+                ctx.strokeStyle = PS.colors.grid;
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(xt, plotT); ctx.lineTo(xt, plotB); ctx.stroke();
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(String(tt), xt, plotB + 4);
+              }
+              ctx.fillText('温度 T (K)   temperature', (plotL + plotR) / 2, plotB + 22);
+              // y ticks every 2 decades
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              var sup = ['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸'];
+              for (var lp = 0; lp <= LP_MAX; lp += 2) {
+                var yt = toY(lp);
+                ctx.beginPath(); ctx.moveTo(plotL, yt); ctx.lineTo(plotR, yt); ctx.stroke();
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText('10' + sup[lp] + ' Pa', plotL - 6, yt);
+              }
+              ctx.restore();
+              // y-axis label (rotated)
+              ctx.save();
+              ctx.translate(14, (plotT + plotB) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('压强 P (Pa, 对数刻度 log scale)', 0, 0);
+              ctx.restore();
+
+              // ---- draw coexistence curves --------------------------------
+              function drawCurve(xFn, T_lo, T_hi, color, dash) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.4;
+                if (dash) ctx.setLineDash(dash);
+                ctx.beginPath();
+                var first = true;
+                for (var T = T_lo; T <= T_hi + 1e-9; T += 2) {
+                  var P = xFn(T);
+                  var lp = lpSafe(P);
+                  if (lp < LP_MIN - 0.4 || lp > LP_MAX + 0.4) continue;
+                  var x = toX(T), y = toY(lp);
+                  if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+              // Sublimation (solid-gas): green, T in [T_MIN, T_TP]
+              drawCurve(sublPressure, T_MIN, T_TP, PS.colors.accent2);
+              // Vaporization (liquid-gas): blue, T in [T_TP, T_C]
+              drawCurve(vapPressure, T_TP, T_C, PS.colors.primary);
+              // Fusion (solid-liquid): red — for water, slope is NEGATIVE.
+              // Draw as nearly-vertical line from triple point upward.
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var T_a = T_TP - 0.5;             // slight tilt visible at top
+              var T_b = T_TP - 6.0;             // shift left by 6 K at top of plot
+              ctx.moveTo(toX(T_a), toY(lpSafe(fusPressure(T_a))));
+              ctx.lineTo(toX(T_b), toY(LP_MAX));
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- region labels ------------------------------------------
+              ctx.save();
+              ctx.font = '14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.globalAlpha = 0.85;
+              ctx.textAlign = 'center';
+              ctx.fillText('固 Solid', toX(240), toY(6.2));
+              ctx.fillText('液 Liquid', toX(380), toY(6.2));
+              ctx.fillText('气 Gas', toX(420), toY(1.6));
+              ctx.fillText('超临界 Supercritical', toX(640), toY(7.2));
+              ctx.restore();
+
+              // ---- triple point and critical point ------------------------
+              // Triple point (green large circle)
+              PS.drawCircle(ctx, toX(T_TP), toY(lpSafe(P_TP)), 6,
+                { fill: PS.colors.accent2, stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawText(ctx, '三相点 Triple point\n273.16 K, 612 Pa',
+                toX(T_TP) + 10, toY(lpSafe(P_TP)) - 4,
+                { font: '10px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'bottom' });
+              // Critical point (purple circle)
+              PS.drawCircle(ctx, toX(T_C), toY(lpSafe(P_C)), 6,
+                { fill: PS.colors.trace, stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawText(ctx, '临界点 Critical point\n647 K, 22.1 MPa',
+                toX(T_C) - 10, toY(lpSafe(P_C)) + 12,
+                { font: '10px system-ui, sans-serif', color: PS.colors.text, align: 'right', baseline: 'top' });
+              // Boiling point reference (1 atm, 373 K)
+              PS.drawCircle(ctx, toX(373.15), toY(lpSafe(101325)), 3.5,
+                { fill: PS.colors.text });
+              PS.drawText(ctx, '沸点 373 K, 1 atm',
+                toX(373.15) + 6, toY(lpSafe(101325)) - 6,
+                { font: '10px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'bottom' });
+
+              // ---- movable marker -----------------------------------------
+              var Pnow = Math.pow(10, params.LP);
+              var ph = phaseAt(params.T, Pnow);
+              // color by phase
+              var markerColor = ph.key === 'sol' ? PS.colors.accent2 :
+                                ph.key === 'liq' ? PS.colors.accent :
+                                ph.key === 'gas' ? PS.colors.primary :
+                                PS.colors.trace;
+              // crosshair
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([3, 4]);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(toX(params.T), plotT); ctx.lineTo(toX(params.T), plotB);
+              ctx.moveTo(plotL, toY(params.LP)); ctx.lineTo(plotR, toY(params.LP));
+              ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, toX(params.T), toY(params.LP), 7,
+                { fill: '#ffffff', stroke: markerColor, lineWidth: 3 });
+
+              // ---- header text --------------------------------------------
+              ctx.save();
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '13px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('T = ' + params.T.toFixed(0) + ' K    P = 10^' +
+                           params.LP.toFixed(2) + ' = ' + Pnow.toExponential(2) + ' Pa',
+                           plotL, 16);
+              ctx.font = 'bold 13px system-ui, sans-serif';
+              ctx.fillStyle = markerColor;
+              ctx.fillText('相态 Phase: ' + ph.label, plotL, 34);
+              ctx.restore();
+
+              // ---- legend (top right) -------------------------------------
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var lx = plotR - 162, ly = 8;
+              function legEntry(color, label) {
+                ctx.strokeStyle = color; ctx.lineWidth = 2.4;
+                ctx.beginPath(); ctx.moveTo(lx, ly + 6); ctx.lineTo(lx + 16, ly + 6); ctx.stroke();
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(label, lx + 22, ly);
+                ly += 14;
+              }
+              legEntry(PS.colors.accent2, '升华 Sublimation');
+              legEntry(PS.colors.accent,  '熔化 Fusion (water: − slope)');
+              legEntry(PS.colors.primary, '汽化 Vaporization');
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'T',  label: '温度 T (K)',         min: 200, max: 680, step: 1,    value: DEFAULTS.T },
+            { type: 'slider', key: 'LP', label: 'log₁₀ P (Pa)',       min: 0,   max: 8,   step: 0.02, value: DEFAULTS.LP },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('T',  function (v) { params.T  = v; });
+          ctl.on('LP', function (v) { params.LP = v; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-7 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.T);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.LP);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>熵的定义</strong> \(dS=dQ_{\mathrm{rev}}/T\)。熵是状态函数，\(\Delta S\) 仅取决于始末态，与路径无关。</li>
+        <li><strong>常用 \(\Delta S\) 公式</strong>：等温膨胀 \(nR\ln(V_{f}/V_{i})\)；等压/等容加热 \(mc\ln(T_{f}/T_{i})\)（用 \(C_{P}\) 或 \(C_{V}\)）；可逆绝热 \(0\)；相变 \(mL/T\)。</li>
+        <li><strong>第二定律</strong>：\(\Delta S_{\mathrm{univ}}=\Delta S_{\mathrm{sys}}+\Delta S_{\mathrm{surr}}\ge 0\)，等号仅当可逆。<strong>克劳修斯不等式</strong> \(\oint dQ/T\le 0\)。</li>
+        <li><strong>统计意义</strong>：\(S=k\ln W\)（玻尔兹曼墓碑）。微观状态数越多，熵越大。完整推导见第 8 章。</li>
+        <li><strong>四个热力学势</strong>：\(H=U+PV\)、\(F=U-TS\)、\(G=H-TS\)。各自在自然变量约束下取极小：\(U|_{S,V}\)、\(H|_{S,P}\)、\(F|_{T,V}\)、\(G|_{T,P}\)。化学/相变最常用 \(G\)，判据 \(\Delta G_{T,P}\le 0\)。</li>
+        <li><strong>麦克斯韦关系</strong>：由各势的恰当微分读出。最常用 \((\partial S/\partial V)_{T}=(\partial P/\partial T)_{V}\)、\((\partial S/\partial P)_{T}=-(\partial V/\partial T)_{P}\)。</li>
+        <li><strong>克拉珀龙—克劳修斯方程</strong>：\(\displaystyle\frac{dP}{dT}=\frac{L_{\mathrm{mol}}}{T\,\Delta V_{m}}\)。给出所有共存曲线的斜率；理想气近似下汽化/升华可积分得 \(\ln(P_{2}/P_{1})=-(L/R)(1/T_{2}-1/T_{1})\)。</li>
+        <li><strong>相图骨架</strong>：三条共存曲线交于<strong>三相点</strong>（唯一）；汽化曲线终止于<strong>临界点</strong>（气液不可分辨 → 超临界流体）。</li>
+        <li><strong>吉布斯相律</strong>：\(f=C-P+2\)。单组分单相 \(f=2\)、两相 \(f=1\)、三相点 \(f=0\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;dS=\frac{dQ_{\mathrm{rev}}}{T},\quad \Delta S_{\mathrm{univ}}\ge 0,\quad S=k_{B}\ln W\;} \]</div>
+      <div class="formula">\[ \boxed{\;H=U+PV,\quad F=U-TS,\quad G=H-TS,\quad dG=-S\,dT+V\,dP\;} \]</div>
+      <div class="formula">\[ \boxed{\;\frac{dP}{dT}=\frac{L_{\mathrm{mol}}}{T\,\Delta V_{m}},\quad \ln\frac{P_{2}}{P_{1}}\approx-\frac{L_{\mathrm{mol}}}{R}\!\left(\frac{1}{T_{2}}-\frac{1}{T_{1}}\right),\quad f=C-P+2\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

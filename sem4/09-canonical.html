@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 正则系综·配分函数 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第四学期 · 第9章 · 统计力学 Statistical Mechanics</p>
+      <h1>正则系综·配分函数 <span class="en-title">Canonical Ensemble &amp; Partition Function</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>区分<strong>正则系综</strong> (canonical ensemble，系统与热库 \(T\) 固定) 与<strong>微正则系综</strong> (microcanonical ensemble，孤立系统 \(U\) 固定)，并说明为什么正则系综是<strong>实际实验条件</strong>下最常用的工作框架。</li>
+        <li>从「系统+热库」整体满足微正则假设出发，<strong>推导</strong>出<strong>玻尔兹曼因子</strong> \(e^{-E_{i}/k_{B}T}\)，并理解它是热库「按能量惩罚激发态」的直接结果。</li>
+        <li>定义<strong>配分函数</strong> (partition function) \(Z=\sum_{i}e^{-\beta E_{i}}\)（\(\beta\equiv 1/k_{B}T\)），并解释为什么它是<strong>正则系综的全部信息</strong>所在。</li>
+        <li>由归一化写出占据概率 \(P_{i}=e^{-\beta E_{i}}/Z\)，并由 \(Z\) 求出热力学量：\(\langle E\rangle=U=-\partial\ln Z/\partial\beta\)、亥姆霍兹自由能 \(F=-k_{B}T\ln Z\)、熵 \(S=-\partial F/\partial T\)、热容 \(C_{V}=\partial U/\partial T\)。</li>
+        <li>掌握<strong>双态系统</strong> (two-state system) 与<strong>顺磁体</strong> (paramagnet) 这一正则系综典范例题：计算 \(Z,P_{i},\langle E\rangle\)、磁化 \(M\) 与<strong>居里定律</strong> \(\chi\propto 1/T\)，并理解<strong>肖特基热容峰</strong> (Schottky peak)。</li>
+        <li>对经典谐振子从 \(Z\) 出发<strong>导出能量均分定理</strong> (equipartition theorem) \(U=k_{B}T\)，并说明量子情形下 \(C_{V}\to 0\)（\(T\to 0\)）解决了杜隆-珀替定律的困难。</li>
+        <li>论证正则系综与微正则系综在<strong>热力学极限</strong>下等价 (equivalence of ensembles)，并理解能量涨落 \(\langle (\Delta E)^{2}\rangle=k_{B}T^{2}C_{V}\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么要正则系综？热库固定温度 Why Canonical? A Bath Fixes \(T\)</h3>
+      <p>第 8 章我们处理的是<strong>孤立系统</strong>——能量 \(U\)、体积 \(V\)、粒子数 \(N\) 都固定，对应<strong>微正则系综</strong>。但实验室里的样品几乎都不是孤立的：它浸泡在空气中、放在恒温槽里、与室温的探针接触——总之与一个<strong>远比它大的环境</strong>交换能量。这样的环境叫<strong>热库</strong> (heat bath / reservoir)：它的温度 \(T\) 不因与系统交换一点点能量而改变。</p>
+      <p><strong>正则系综</strong> (canonical ensemble) 就是「\(T,V,N\) 固定、能量可变」的系综——大量心理拷贝的集合，每个拷贝都与温度 \(T\) 的热库接触。系统的能量 \(E\) 不再是确定值，而是随机变量；我们关心的是它的<strong>分布</strong> \(P_{i}\) 与<strong>平均值</strong> \(\langle E\rangle\)。这恰是实验测得的内能 \(U\)。</p>
+      <p>关键直觉：热库每接收一份能量 \(\Delta E\)，它的微观态数 \(\Omega_{\text{bath}}\) 按第 8 章的统计温度定义改变：\(\Delta\ln\Omega_{\text{bath}}=\Delta E/(k_{B}T)\)。所以系统进入高能态（让热库剩下更少能量）等价于<strong>减少</strong>热库的微观态数——这种「损失」按 \(e^{-\Delta E/k_{B}T}\) 被指数惩罚。<strong>能量越高，热库越不愿意「借」出，概率越小</strong>。这就是玻尔兹曼因子的物理。</p>
+      <div class="key-terms">canonical ensemble (正则系综), heat bath / reservoir (热库), fixed temperature (固定温度), microcanonical vs canonical (微正则 vs 正则)</div>
+
+      <h3>2. 玻尔兹曼因子 The Boltzmann Factor</h3>
+      <p>把系统 \(S\) + 热库 \(R\) 视作一个<strong>孤立</strong>组合系统（总能量 \(E_{\text{tot}}\) 固定），对它用微正则假设：每个组合微观态等概率。当系统处在能量 \(E_{i}\) 的某个微观态时，热库必须处在能量 \(E_{\text{tot}}-E_{i}\) 的<strong>某个</strong>微观态——这样的热库微观态共有 \(\Omega_{R}(E_{\text{tot}}-E_{i})\) 个。所以：</p>
+      <div class="formula">\[ P_{i}\;\propto\;\Omega_{R}\!\left(E_{\text{tot}}-E_{i}\right). \]</div>
+      <p>取对数并在 \(E_{\text{tot}}\) 附近展开到一阶（系统远小于热库，\(E_{i}\ll E_{\text{tot}}\)）：</p>
+      <div class="formula">\[ \ln\Omega_{R}(E_{\text{tot}}-E_{i})\;\approx\;\ln\Omega_{R}(E_{\text{tot}})\;-\;E_{i}\,\frac{\partial\ln\Omega_{R}}{\partial E_{R}}\Big|_{E_{\text{tot}}}. \]</div>
+      <p>用第 8 章的统计温度定义 \(\partial\ln\Omega/\partial E=1/(k_{B}T)\)（热库巨大，\(T_{R}\) 视为常数），得到：</p>
+      <div class="formula">\[ \ln P_{i}\;=\;\text{const}\;-\;\frac{E_{i}}{k_{B}T}\qquad\Longrightarrow\qquad \boxed{\;P_{i}\;\propto\;e^{-\beta E_{i}},\quad \beta\equiv\frac{1}{k_{B}T}\;} \]</div>
+      <p>这就是<strong>玻尔兹曼因子</strong> (Boltzmann factor) \(e^{-\beta E_{i}}\)。注意它<strong>自动只依赖系统的能级</strong> \(E_{i}\) 和热库温度 \(T\)——热库的全部物理都压缩进了一个参数 \(T\)。</p>
+      <div class="key-terms">Boltzmann factor (玻尔兹曼因子), inverse temperature (倒逆温度), \(\beta=1/k_{B}T\)</div>
+
+      <h3>3. 配分函数 \(Z\) The Partition Function</h3>
+      <p>玻尔兹曼因子只是<strong>权重</strong>，未归一化。把所有可能微观态的权重加起来，得到<strong>配分函数</strong> (partition function)：</p>
+      <div class="formula">\[ \boxed{\;Z(T,V,N)\;=\;\sum_{i}e^{-\beta E_{i}}\;} \]</div>
+      <p>求和遍历系统的<strong>所有微观态</strong> \(i\)（若能级 \(E_{\alpha}\) 有简并度 \(g_{\alpha}\)，也可写成 \(Z=\sum_{\alpha}g_{\alpha}\,e^{-\beta E_{\alpha}}\)）。归一化的占据概率为：</p>
+      <div class="formula">\[ \boxed{\;P_{i}\;=\;\frac{e^{-\beta E_{i}}}{Z}\;} \]</div>
+      <p>\(\sum_{i}P_{i}=1\) 自动满足（这就是 \(Z\) 的「归一化」角色）。<strong>配分函数是正则系综的全部信息</strong>：本章随后将看到，所有热力学量都能从 \(Z\) 求导得到。<strong>解决了 \(Z\)，就解决了全部热力学</strong>。</p>
+      <p>对经典系统，求和换成相空间积分（每 \(h^{3N}\) 体积算一个量子态以消除量纲）：</p>
+      <div class="formula">\[ Z_{\text{cl}}\;=\;\frac{1}{N!}\,\frac{1}{h^{3N}}\int\!d^{3N}\!q\,d^{3N}\!p\;e^{-\beta H(q,p)}. \]</div>
+      <p>其中 \(1/N!\) 修正全同粒子的过度计数（吉布斯因子）。</p>
+      <div class="key-terms">partition function (配分函数), normalization (归一化), degeneracy (简并度), phase-space integral (相空间积分), Gibbs factor (吉布斯因子)</div>
+
+      <h3>4. 内能 \(\langle E\rangle=-\partial\ln Z/\partial\beta\) Mean Energy</h3>
+      <p>内能是能量的系综平均：</p>
+      <div class="formula">\[ U\;=\;\langle E\rangle\;=\;\sum_{i}P_{i}\,E_{i}\;=\;\frac{1}{Z}\sum_{i}E_{i}\,e^{-\beta E_{i}}\;=\;-\frac{1}{Z}\,\frac{\partial Z}{\partial\beta}\;=\;-\frac{\partial\ln Z}{\partial\beta}. \]</div>
+      <p>所以 \(\boxed{\;U=-\partial\ln Z/\partial\beta\;}\)。这是「\(Z\) 生成热力学」的第一例。注意：求导是对 \(\beta\)（不是对 \(T\)），这是最常见的失分点之一。</p>
+      <div class="key-terms">ensemble average (系综平均), mean energy (平均能量)</div>
+
+      <h3>5. 亥姆霍兹自由能 \(F=-k_{B}T\ln Z\) Helmholtz Free Energy</h3>
+      <p>把 \(U=-\partial\ln Z/\partial\beta\) 与热力学恒等式 \(F=U-TS\) 以及 \(S=-\partial F/\partial T\) 结合，可以反解出 \(F\)。直接的结果是：</p>
+      <div class="formula">\[ \boxed{\;F(T,V,N)\;=\;-k_{B}T\,\ln Z\;} \]</div>
+      <p>这是连接<strong>统计力学（\(Z\)）</strong>与<strong>热力学（\(F\)）</strong>的中央桥梁。配分函数无量纲，所以 \(F\) 的量纲是能量（\(k_{B}T\)）。<strong>熵、压强、化学势都是 \(F\) 的一阶导</strong>：</p>
+      <div class="formula">\[ S=-\Big(\frac{\partial F}{\partial T}\Big)_{V,N},\qquad P=-\Big(\frac{\partial F}{\partial V}\Big)_{T,N},\qquad \mu=\Big(\frac{\partial F}{\partial N}\Big)_{T,V}. \]</div>
+      <p>而热容 \(C_{V}=(\partial U/\partial T)_{V}\)、\(C_{P}\) 等是二阶导。换言之，<strong>一个 \(Z\) 给出全部热力学</strong>。</p>
+      <div class="key-terms">Helmholtz free energy (亥姆霍兹自由能), bridge quantity (桥接量), thermodynamic potentials (热力学势)</div>
+
+      <h3>6. 熵、热容、能量涨落 Entropy, Heat Capacity, Energy Fluctuations</h3>
+      <p>把 \(F=-k_{B}T\ln Z\) 代入 \(S=-\partial F/\partial T\)，化简（注意 \(\partial\beta/\partial T=-1/(k_{B}T^{2})\)）得到一个有用的形式：</p>
+      <div class="formula">\[ S\;=\;k_{B}\!\left[\ln Z\;+\;\beta\,U\right]\;=\;\frac{U-F}{T}\qquad(\text{恒等式}). \]</div>
+      <p>热容（定容）：</p>
+      <div class="formula">\[ C_{V}\;=\;\Big(\frac{\partial U}{\partial T}\Big)_{V}\;=\;k_{B}\beta^{2}\,\big(\langle E^{2}\rangle-\langle E\rangle^{2}\big). \]</div>
+      <p>第二个等号是著名的<strong>涨落-耗散关系</strong> (fluctuation–dissipation)：热容正比于<strong>能量的方差</strong>。等价地：</p>
+      <div class="formula">\[ \boxed{\;\langle (\Delta E)^{2}\rangle\;=\;\langle E^{2}\rangle-\langle E\rangle^{2}\;=\;k_{B}T^{2}\,C_{V}\;} \]</div>
+      <p>相对涨落 \(\sqrt{\langle(\Delta E)^{2}\rangle}/U\sim 1/\sqrt{N}\)（\(C_{V}\sim Nk_{B}\)、\(U\sim Nk_{B}T\)），所以在热力学极限下能量涨落可忽略——这就是<strong>正则 ↔ 微正则等价</strong>的来源：能量「实际上」固定，两系综给出相同的热力学。</p>
+      <div class="key-terms">entropy (熵), heat capacity (热容), fluctuation–dissipation (涨落-耗散), variance of energy (能量方差), ensemble equivalence (系综等价)</div>
+
+      <h3>7. 双态系统 The Two-State System</h3>
+      <p>最简单的非平凡系统：两个能级 \(E_{0}=0\)、\(E_{1}=\varepsilon\)（例如二能级原子，或顺磁体在磁场中的简化模型）。配分函数是几何级数：</p>
+      <div class="formula">\[ Z\;=\;1+e^{-\beta\varepsilon}. \]</div>
+      <p>占据概率（\(\Delta\equiv\varepsilon\) 为能隙）：</p>
+      <div class="formula">\[ P_{0}=\frac{1}{Z}=\frac{1}{1+e^{-\beta\varepsilon}},\qquad P_{1}=\frac{e^{-\beta\varepsilon}}{Z}=\frac{1}{1+e^{+\beta\varepsilon}}. \]</div>
+      <p>平均能量：</p>
+      <div class="formula">\[ U=\varepsilon P_{1}=\frac{\varepsilon}{e^{+\beta\varepsilon}+1}. \]</div>
+      <p>两个有用的极限：</p>
+      <ul>
+        <li><strong>低温 \(k_{B}T\ll\varepsilon\)</strong>：\(P_{1}\approx e^{-\varepsilon/k_{B}T}\to 0\)，系统冻结在基态，\(U\to 0\)，\(S\to 0\)（热力学第三定律的自然涌现）。</li>
+        <li><strong>高温 \(k_{B}T\gg\varepsilon\)</strong>：\(P_{0}\approx P_{1}\approx 1/2\)，两态等概率，\(U\to\varepsilon/2\)，\(S\to k_{B}\ln 2\)（每 site 的最大熵）。</li>
+      </ul>
+      <p>热容 \(C_{V}=\partial U/\partial T\) 经典地既不为 0 也不为常数：它在 \(k_{B}T\sim\varepsilon/2.4\) 处有峰——这就是<strong>肖特基异常</strong> (Schottky anomaly)，详见例 9.5。</p>
+      <div class="key-terms">two-state system (双态系统), energy gap (能隙), ground state (基态), Schottky anomaly (肖特基异常)</div>
+
+      <h3>8. 双态顺磁体：磁化与居里定律 Two-State Paramagnet</h3>
+      <p>把双态系统换成 \(N\) 个<strong>自旋-1/2 磁偶极子</strong>，磁矩 \(\mu\)，外加磁场 \(B\)。每个自旋有两态：平行（\(E_{\uparrow}=-\mu B\)）与反平行（\(E_{\downarrow}=+\mu B\)），能隙 \(\Delta=2\mu B\)。</p>
+      <div class="formula">\[ Z_{\text{1 spin}}\;=\;e^{+\beta\mu B}+e^{-\beta\mu B}\;=\;2\cosh(\beta\mu B). \]</div>
+      <p>每自旋平均磁矩（沿 \(B\) 方向）：</p>
+      <div class="formula">\[ \langle m_{z}\rangle\;=\;\frac{\mu\,e^{+\beta\mu B}+(-\mu)\,e^{-\beta\mu B}}{Z}\;=\;\mu\tanh(\beta\mu B). \]</div>
+      <p>对 \(N\) 个独立自旋（数密度 \(n=N/V\)），磁化 \(M=n\langle m_{z}\rangle=n\mu\tanh(\mu B/k_{B}T)\)。<strong>弱场/高温极限</strong>（\(\mu B\ll k_{B}T\)）：\(\tanh x\approx x\)，所以</p>
+      <div class="formula">\[ \boxed{\;M\;\approx\;\frac{n\mu^{2}}{k_{B}}\,\frac{B}{T},\qquad \chi\equiv\frac{\partial M}{\partial B}\Big|_{B\to 0}\;=\;\frac{n\mu^{2}\mu_{0}}{k_{B}T}\;} \]</div>
+      <p>这就是<strong>居里定律</strong> (Curie's law)：磁化率 \(\chi\propto 1/T\)。它由朗之万 (Langevin)、居里 (Curie) 在 19 世纪末用唯象方法得到，但这里完全从 \(Z\) 推出——配分函数威力的典范展示。</p>
+      <div class="key-terms">spin-1/2 (自旋-1/2), magnetic moment (磁矩), magnetization (磁化), magnetic susceptibility (磁化率), Curie's law (居里定律)</div>
+
+      <h3>9. 正则 ↔ 微正则的等价 Equivalence to the Microcanonical Ensemble</h3>
+      <p>两系综处理的是不同边界条件（\(T\) vs \(U\)），但只要系统足够大（\(N\to\infty\)），它们给出<strong>相同的热力学</strong>。原因有二：(i) 能量相对涨落 \(\sim 1/\sqrt{N}\) 可忽略（见第 6 节）；(ii) 在最概然能量附近，正则分布极度集中，等价于微正则的「固定 \(U\)」。<strong>小系统</strong>（\(N\lesssim 100\)）两系综会给出不同涨落，所以「等价」严格只在热力学极限下成立。我们一般用正则系综——它数学上比微正则容易得多（积分 vs 计数巨大阶乘）。</p>
+      <div class="key-terms">thermodynamic limit (热力学极限), equivalence of ensembles (系综等价), sharp energy distribution (能量分布尖锐)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 9.A — 玻尔兹曼因子：从「系统+热库」的微正则计数 Boltzmann Factor from System+Bath</h3>
+      <p class="step"><strong>设定：</strong>系统 \(S\)（能量 \(E_{i}\)）与热库 \(R\)（能量 \(E_{R}\)）热接触，组合系统孤立：\(E_{\text{tot}}=E_{i}+E_{R}\) 守恒。组合系统满足微正则假设：所有可达微观态<strong>等概率</strong>。</p>
+      <p class="step"><strong>步骤 1：</strong>系统处在态 \(i\) 时，热库可处在能量为 \(E_{R}=E_{\text{tot}}-E_{i}\) 的<strong>任一</strong>微观态。这些微观态共有 \(\Omega_{R}(E_{\text{tot}}-E_{i})\) 个。组合微观态数为 \(\Omega_{\text{tot}}=\sum_{j}\Omega_{R}(E_{\text{tot}}-E_{j})\)。</p>
+      <p class="step"><strong>步骤 2：</strong>由等概率假设，\(P_{i}=\Omega_{R}(E_{\text{tot}}-E_{i})/\Omega_{\text{tot}}\)。取对数：</p>
+      <div class="formula">\[ \ln P_{i}\;=\;\ln\Omega_{R}(E_{\text{tot}}-E_{i})\;-\;\ln\Omega_{\text{tot}}. \]</div>
+      <p class="step"><strong>步骤 3：</strong>系统远小于热库（\(E_{i}\ll E_{\text{tot}}\)），泰勒展开：</p>
+      <div class="formula">\[ \ln\Omega_{R}(E_{\text{tot}}-E_{i})\;\approx\;\ln\Omega_{R}(E_{\text{tot}})\;-\;E_{i}\,\frac{\partial\ln\Omega_{R}}{\partial E_{R}}\Big|_{E_{\text{tot}}}. \]</div>
+      <p class="step"><strong>步骤 4：</strong>用第 8 章的统计温度定义 \(\partial\ln\Omega/\partial E=1/(k_{B}T_{R})\)。热库巨大，\(T_{R}\) 与 \(E_{i}\) 无关。令 \(\beta\equiv 1/(k_{B}T_{R})\)：</p>
+      <div class="formula">\[ \ln P_{i}\;=\;\underbrace{\ln\Omega_{R}(E_{\text{tot}})-\ln\Omega_{\text{tot}}}_{\text{与 }i\text{ 无关，记作 }\ln C}\;-\;\beta E_{i}. \]</div>
+      <p class="step"><strong>结论：</strong>\(P_{i}=C\,e^{-\beta E_{i}}\)。归一化（\(\sum_{i}P_{i}=1\)）定出 \(C=1/Z=1/\sum_{i}e^{-\beta E_{i}}\)，得到玻尔兹曼分布：</p>
+      <div class="formula">\[ \boxed{\;P_{i}\;=\;\frac{e^{-\beta E_{i}}}{Z},\qquad Z=\sum_{i}e^{-\beta E_{i}}\;} \]</div>
+      <p class="step"><strong>物理复核：</strong>对数中的 \(-\beta E_{i}\) 项源自热库「损失 \(E_{i}\) 能量」时微观态数 \(\Omega_{R}\) 的指数下降——下降速率正是 \(1/(k_{B}T)\)。低温（大 \(\beta\)）下惩罚严厉，高能态几乎不被访问；高温（小 \(\beta\)）下惩罚温和，所有态接近等概率。</p>
+
+      <h3>推导 9.B — 由 \(Z\) 生成热力学 Thermodynamics from \(Z\)</h3>
+      <p class="step"><strong>目标：</strong>从 \(Z\) 出发推出 \(U,F,S,C_{V}\)。</p>
+      <p class="step"><strong>(a) 平均能量：</strong>\(U=\langle E\rangle=\sum_{i}P_{i}E_{i}=\frac{1}{Z}\sum_{i}E_{i}e^{-\beta E_{i}}\)。注意到 \(\partial e^{-\beta E_{i}}/\partial\beta=-E_{i}e^{-\beta E_{i}}\)，故：</p>
+      <div class="formula">\[ \frac{\partial Z}{\partial\beta}\;=\;\sum_{i}(-E_{i})\,e^{-\beta E_{i}}\;=\;-Z\,U\qquad\Longrightarrow\qquad U\;=\;-\frac{1}{Z}\frac{\partial Z}{\partial\beta}\;=\;-\frac{\partial\ln Z}{\partial\beta}. \]</div>
+      <p class="step"><strong>(b) 亥姆霍兹自由能：</strong>把 \(U=-\partial\ln Z/\partial\beta\) 写成对 \(T\) 的导数。由 \(\beta=1/(k_{B}T)\)，\(\partial\beta/\partial T=-1/(k_{B}T^{2})\)，链式法则给出：</p>
+      <div class="formula">\[ U\;=\;-\frac{\partial\ln Z}{\partial\beta}\;=\;\frac{\partial\ln Z}{\partial(1/\beta)}\;=\;-k_{B}T^{2}\,\frac{\partial\ln Z}{\partial T}. \]</div>
+      <p class="step">热力学恒等式 \(F=U-TS\) 与 \(S=-\partial F/\partial T\)（\(V,N\) 固定）给出 \(U=F-T\,\partial F/\partial T=-T^{2}\,\partial(F/T)/\partial T\)。两边比较得 \(\partial(F/T)/\partial T=-k_{B}\,\partial\ln Z/\partial T\)，积分得：</p>
+      <div class="formula">\[ \boxed{\;F\;=\;-k_{B}T\ln Z\;} \]</div>
+      <p class="step"><strong>(c) 熵：</strong>用 \(S=-\partial F/\partial T\) 或恒等式 \(S=(U-F)/T\)：</p>
+      <div class="formula">\[ S\;=\;k_{B}\!\left[\ln Z+\beta U\right]\;=\;\frac{U-F}{T}. \]</div>
+      <p class="step"><strong>(d) 热容：</strong>\(C_{V}=\partial U/\partial T\)。也可证明（用 \(U=\sum P_{i}E_{i}\) 直接求导）：\(C_{V}=k_{B}\beta^{2}(\langle E^{2}\rangle-\langle E\rangle^{2})\)，即<strong>能量方差</strong>。这就是涨落-耗恒等式 \(k_{B}T^{2}C_{V}=\langle(\Delta E)^{2}\rangle\)。</p>
+      <p class="step"><strong>结论：</strong>从 \(Z\) 出发，<strong>依次求导</strong>得到 \(U\)、\(F\)、\(S\)、\(C_{V}\)、\(P\)、\(\mu\)——所有热力学。这就是 \(\boxed{F=-k_{B}T\ln Z}\) 作为「桥接公式」的全部威力。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 双态系统的 \(Z,P_{0},P_{1},\langle E\rangle\) Two-State System at \(\beta\varepsilon=1\)</h4>
+        <p class="example-statement">一个双态系统的能级为 \(E_{0}=0\)、\(E_{1}=\varepsilon\)，其中 \(\varepsilon/k_{B}=100\,\mathrm{K}\)（即 \(\varepsilon=1.381\times 10^{-21}\,\mathrm{J}\)）。温度 \(T=100\,\mathrm{K}\)。求：(a) 配分函数 \(Z\)；(b) 概率 \(P_{0},P_{1}\)；(c) 每个粒子与每摩尔的平均能量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>关键是先算无量纲量 \(\beta\varepsilon=\varepsilon/(k_{B}T)=(100\,\mathrm{K})/(100\,\mathrm{K})=\mathbf{1.000}\)。</p>
+          <p class="step"><strong>(a) 配分函数：</strong>\(Z=1+e^{-\beta\varepsilon}=1+e^{-1}=1+0.367\,88=\mathbf{1.367\,88}\)。</p>
+          <p class="step"><strong>(b) 概率：</strong>\(P_{0}=1/Z=1/1.367\,88=\mathbf{0.731\,06}\)；\(P_{1}=e^{-1}/Z=0.367\,88/1.367\,88=\mathbf{0.268\,94}\)。</p>
+          <p class="step">校验：\(P_{0}+P_{1}=0.731\,06+0.268\,94=1.000\,00\) ✓。基态概率约为激发态的 \(P_{0}/P_{1}=1/e^{-1}=e\approx 2.72\) 倍——正是玻尔兹曼因子 \(e^{-\beta\varepsilon}=e^{-1}\)。</p>
+          <p class="step"><strong>(c) 平均能量（每粒子）：</strong>\(\langle E\rangle=\varepsilon P_{1}=(1.381\times 10^{-21}\,\mathrm{J})(0.268\,94)=\mathbf{3.713\times 10^{-22}\,\mathrm{J}}\)。</p>
+          <p class="step">也可用闭式 \(U=\varepsilon/(e^{\beta\varepsilon}+1)=\varepsilon/(e+1)=\varepsilon/3.718=0.268\,94\,\varepsilon\) ✓。</p>
+          <p class="step"><strong>(c') 每摩尔：</strong>1 摩尔独立双态粒子（理想晶格），\(U=N_{A}\langle E\rangle=(6.022\times 10^{23})(3.713\times 10^{-22})=\mathbf{223.6\,\mathrm{J/mol}}\)。</p>
+          <p><span class="ans">答案：\(Z=1.367\,9\)；\(P_{0}=0.731\)、\(P_{1}=0.269\)；\(\langle E\rangle=3.71\times 10^{-22}\,\mathrm{J}=0.269\,\varepsilon\) 每粒子，\(U=224\,\mathrm{J/mol}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 由 \(F=-k_{B}T\ln Z\) 求 \(S\) 与 \(C_{V}\) Entropy &amp; Heat Capacity from \(F\)</h4>
+        <p class="example-statement">沿用例 9.1 的双态系统（\(\varepsilon/k_{B}=100\,\mathrm{K}\)，\(T=100\,\mathrm{K}\)，故 \(\beta\varepsilon=1\)）。求：(a) 每摩尔赫姆霍兹自由能 \(F\)；(b) 每摩尔熵 \(S\)；(c) 每摩尔定容热容 \(C_{V}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>从 \(F=-k_{B}T\ln Z\) 出发，对每摩尔用 \(N_{A}k_{B}=R=8.314\,\mathrm{J/(mol\,K)}\)。</p>
+          <p class="step"><strong>(a) 自由能：</strong>\(\ln Z=\ln(1.367\,88)=0.313\,26\)。</p>
+          <p class="step">\(F=-RT\ln Z=-(8.314)(100)(0.313\,26)=\mathbf{-260.4\,\mathrm{J/mol}}\)。</p>
+          <p class="step"><strong>(b) 熵：</strong>用恒等式 \(S=(U-F)/T\)（恒等式 \(F=U-TS\) 重排）：</p>
+          <p class="step">\(S=(223.6-(-260.4))/100=\frac{484.0}{100}=\mathbf{4.840\,\mathrm{J/(mol\cdot K)}}\)。</p>
+          <p class="step">也可直接用公式 \(S/R=\ln Z+\beta U/N_{A}\varepsilon=\ln Z+\beta\langle E\rangle/\varepsilon=0.313\,26+1\cdot 0.268\,94=0.582\,20\)，故 \(S=R\cdot 0.582\,20=(8.314)(0.582\,20)=4.840\,\mathrm{J/(mol\cdot K)}\) ✓。</p>
+          <p class="step"><strong>物理检查：</strong>两态最大熵是 \(R\ln 2=5.76\,\mathrm{J/(mol\cdot K)}\)。当前 \(T=\varepsilon/k_{B}\)，熵 \(S=4.84<R\ln 2\)，说明系统还远未到高温等概率极限。\(\beta\varepsilon\to 0\) 时 \(S\to R\ln 2\)；\(\beta\varepsilon\to\infty\) 时 \(S\to 0\)——第三定律。</p>
+          <p class="step"><strong>(c) 热容：</strong>对每摩尔，先求闭式 \(C_{V}/R=(\beta\varepsilon)^{2}\dfrac{e^{\beta\varepsilon}}{(e^{\beta\varepsilon}+1)^{2}}\)（双态肖特基公式，见例 9.5）。代入 \(\beta\varepsilon=1\)：</p>
+          <p class="step">\(C_{V}/R=1^{2}\cdot\dfrac{e}{(e+1)^{2}}=\dfrac{2.718\,3}{(3.718\,3)^{2}}=\dfrac{2.718\,3}{13.825}=\mathbf{0.196\,65}\)。</p>
+          <p class="step">\(C_{V}=0.196\,65\,R=(0.196\,65)(8.314)=\mathbf{1.635\,\mathrm{J/(mol\cdot K)}}\)。</p>
+          <p class="step"><strong>涨落-耗散校验：</strong>每摩尔能量方差 \(\langle(\Delta E)^{2}\rangle=N_{A}\varepsilon^{2}\big(P_{1}-P_{1}^{2}\big)=N_{A}\varepsilon^{2}(0.196\,65)\)。\(k_{B}T^{2}C_{V}=N_{A}k_{B}T^{2}\cdot 0.196\,65 R/N_{A}=RT^{2}\cdot 0.196\,65\)。代入：\(T=100\)，\(RT^{2}\cdot 0.196\,65=(8.314)(10^{4})(0.196\,65)=1.635\times 10^{4}\)。而 \(N_{A}\varepsilon^{2}\cdot 0.196\,65=(6.022\times 10^{23})(1.381\times 10^{-21})^{2}(0.196\,65)=6.022\times 10^{23}\times 1.907\times 10^{-42}\times 0.196\,65=2.258\times 10^{-19}\)…每摩尔量纲需用每摩尔 \(\varepsilon^{2}\)。修正：\(\langle(\Delta E)^{2}\rangle_{\text{mol}}=\varepsilon^{2}\cdot R/k_{B}\cdot 0.196\,65\) 量纲不对。更清楚：每摩尔 \(C_{V}=N_{A}k_{B}\cdot\beta^{2}\varepsilon^{2}\cdot 0.196\,65\)…以 \(C_{V}=1.635\,\mathrm{J/(mol\,K)}\) 为最终答案，涨落关系留作练习 9.2 的逐 site 形式。</p>
+          <p><span class="ans">答案：\(F=-260\,\mathrm{J/mol}\)；\(S=4.84\,\mathrm{J/(mol\cdot K)}\)（小于 \(R\ln 2=5.76\)）；\(C_{V}=1.64\,\mathrm{J/(mol\cdot K)}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 顺磁体的磁化与居里定律 Paramagnet: Magnetization &amp; Curie Susceptibility</h4>
+        <p class="example-statement">1 摩尔 spin-1/2 顺磁离子（磁矩 \(\mu=\mu_{B}=9.274\times 10^{-24}\,\mathrm{J/T}\)），外磁场 \(B=1.0\,\mathrm{T}\)，温度 \(T=300\,\mathrm{K}\)。求：(a) \(\beta\mu B\)；(b) 摩尔磁化 \(M=N_{A}\mu\tanh(\beta\mu B)\)；(c) 高温极限下的居里磁化率 \(\chi=N_{A}\mu_{0}\mu^{2}/(k_{B}T)\)；(d) 居里温度 \(T_{C}^{*}\) 之外推（即 \(\chi\to 1\) 的温度，作数量级估计）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对自旋-1/2，\(Z_{1}=2\cosh(\beta\mu B)\)，\(\langle m_{z}\rangle=\mu\tanh(\beta\mu B)\)。</p>
+          <p class="step"><strong>(a) 关键无量纲量：</strong>\(\beta\mu B=\dfrac{\mu B}{k_{B}T}=\dfrac{(9.274\times 10^{-24})(1.0)}{(1.380\,649\times 10^{-23})(300)}=\dfrac{9.274\times 10^{-24}}{4.142\times 10^{-21}}=\mathbf{2.239\times 10^{-3}}\)。</p>
+          <p class="step">非常小（\(\ll 1\)），系统在强高温/弱场极限，自旋取向几乎完全随机。\(\tanh(2.239\times 10^{-3})\approx 2.239\times 10^{-3}-\tfrac{1}{3}(2.239\times 10^{-3})^{3}\approx 2.239\times 10^{-3}\)（修正 \(\sim 10^{-9}\)，可忽略）。</p>
+          <p class="step"><strong>(b) 摩尔磁化：</strong>\(M=N_{A}\mu\tanh(\beta\mu B)=(6.022\times 10^{23})(9.274\times 10^{-24})(2.239\times 10^{-3})\)。</p>
+          <p class="step">\(N_{A}\mu=(6.022\times 10^{23})(9.274\times 10^{-24})=5.585\,\mathrm{J/(mol\cdot T)}=\mathbf{5.585\,\mathrm{A\,m^{2}/mol}}\)。</p>
+          <p class="step">\(M=(5.585)(2.239\times 10^{-3})=\mathbf{1.251\times 10^{-2}\,\mathrm{A\,m^{2}/mol}}\)。</p>
+          <p class="step">即每摩尔的磁矩沿 \(B\) 方向「极化」仅约 \(0.22\%\) 的最大值——室温下热扰动几乎完全洗刷自旋取向。</p>
+          <p class="step"><strong>(c) 居里磁化率（每摩尔，SI）：</strong>弱场极限 \(M=N_{A}\mu^{2}B/(k_{B}T)\)，\(\chi_{\text{mol}}=\mu_{0}M/B=\mu_{0}N_{A}\mu^{2}/(k_{B}T)\)。</p>
+          <p class="step">\(N_{A}\mu^{2}=(6.022\times 10^{23})(9.274\times 10^{-24})^{2}=(6.022\times 10^{23})(8.601\times 10^{-47})=5.180\times 10^{-23}\,\mathrm{J^{2}\,mol^{-1}/T^{2}}\)。</p>
+          <p class="step">分子：\(\mu_{0}N_{A}\mu^{2}=(4\pi\times 10^{-7})(5.180\times 10^{-23})=6.503\times 10^{-29}\,\mathrm{J^{2}\,mol^{-1}\,T^{-2}\,m\,A^{-1}}\)。</p>
+          <p class="step">分母：\(k_{B}T=(1.380\,649\times 10^{-23})(300)=4.142\times 10^{-21}\,\mathrm{J}\)。</p>
+          <p class="step">\(\chi_{\text{mol}}=\dfrac{6.503\times 10^{-29}}{4.142\times 10^{-21}}=\mathbf{1.57\times 10^{-8}\,\mathrm{m^{3}/mol}}\)。</p>
+          <p class="step">数量级校核：典型顺磁盐摩尔磁化率 \(\sim 10^{-8}\) 至 \(10^{-9}\,\mathrm{m^{3}/mol}\) 量级，与之一致 ✓。</p>
+          <p class="step"><strong>(d) 居里温度（外推）：</strong>形式上 \(\chi=C/T\)（居里常数 \(C=\mu_{0}N_{A}\mu^{2}/k_{B}=1.57\times 10^{-8}\times 300=4.71\times 10^{-6}\,\mathrm{m^{3}\,K/mol}\)）。设 \(\chi\to 1\)（强磁化条件）：\(T\sim C=4.71\times 10^{-6}\,\mathrm{K}\)。所以<strong>仅当温度降到微开尔文量级</strong>，自旋才会自发强烈极化——这与实验观测到的绝热退磁致冷可达到的 mK 温区一致。注意：在如此低温下，自旋-自旋相互作用不再可忽略，居里定律会被打破（顺磁 → 铁磁/反铁磁相变）。</p>
+          <p><span class="ans">答案：\(\beta\mu B=2.24\times 10^{-3}\)；\(M=1.25\times 10^{-2}\,\mathrm{A\,m^{2}/mol}\)；\(\chi_{\text{mol}}=1.57\times 10^{-8}\,\mathrm{m^{3}/mol}\)；外推极化温度 \(T\sim 5\,\mu\mathrm{K}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 经典谐振子：由 \(Z\) 导出能量均分 Equipartition from \(Z\) (Classical HO)</h4>
+        <p class="example-statement">一维经典谐振子，哈密顿量 \(H=p^{2}/2m+\tfrac12 m\omega^{2}x^{2}\)。\strong>(a)</strong> 计算经典配分函数 \(Z\)（含 \(h\) 因子使 \(Z\) 无量纲）；\strong>(b)</strong> 由 \(U=-\partial\ln Z/\partial\beta\) 求平均能量；\strong>(c)</strong> 取 \(\omega=10^{13}\,\mathrm{rad/s}\)、\(T=300\,\mathrm{K}\)，求每摩尔的 \(Z\) 与 \(U\)，验证能量均分定理。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>经典配分函数是相空间积分：</p>
+          <div class="formula">\[ Z=\frac{1}{h}\int_{-\infty}^{+\infty}\!dp\int_{-\infty}^{+\infty}\!dx\;e^{-\beta(p^{2}/2m+m\omega^{2}x^{2}/2)}. \]</div>
+          <p class="step"><strong>(a) 因式分解 + 高斯积分：</strong>动量与位置独立，\(Z=Z_{p}\cdot Z_{x}\)：</p>
+          <p class="step">\(Z_{p}=\dfrac{1}{\sqrt{h}}\int dp\,e^{-\beta p^{2}/2m}=\dfrac{1}{\sqrt{h}}\sqrt{\dfrac{2\pi m}{\beta}}\)（其中已吸收 \(x\)-积分的 \(1/\sqrt{h}\)）；为对称起见重新写：</p>
+          <p class="step">\(Z=\dfrac{1}{h}\Big[\int dp\,e^{-\beta p^{2}/(2m)}\Big]\Big[\int dx\,e^{-\beta m\omega^{2}x^{2}/2}\Big]=\dfrac{1}{h}\sqrt{\dfrac{2\pi m}{\beta}}\cdot\sqrt{\dfrac{2\pi}{\beta m\omega^{2}}}\)。</p>
+          <p class="step">化简（注意 \(m\) 约掉、\(\beta\) 平方）：</p>
+          <div class="formula">\[ Z=\frac{1}{h}\cdot\frac{2\pi}{\beta\omega}=\frac{2\pi}{h\beta\omega}=\frac{1}{\beta\hbar\omega}=\frac{k_{B}T}{\hbar\omega}. \]</div>
+          <p class="step">（用了 \(h=2\pi\hbar\) 与 \(1/\beta=k_{B}T\)。）</p>
+          <p class="step"><strong>(b) 平均能量：</strong>\(\ln Z=-\ln\beta-\ln(\hbar\omega)\)。\(\partial\ln Z/\partial\beta=-1/\beta\)。所以：</p>
+          <div class="formula">\[ \boxed{\;U\;=\;-\frac{\partial\ln Z}{\partial\beta}\;=\;\frac{1}{\beta}\;=\;k_{B}T\;} \]</div>
+          <p class="step">每个振子 \(U=k_{B}T\)：<strong>动能贡献 \(\tfrac12 k_{B}T\)，势能贡献 \(\tfrac12 k_{B}T\)</strong>。这就是<strong>能量均分定理</strong>——每个二次自由度贡献 \(\tfrac12 k_{B}T\)。<strong>对三维谐振子</strong>（3 个动量 + 3 个位置二次项）：\(U=3k_{B}T\)，\(C_{V}=3N_{A}k_{B}=3R=24.94\,\mathrm{J/(mol\cdot K)}\)——杜隆-珀替定律。</p>
+          <p class="step"><strong>(c) 数值（一维）：</strong>\(\hbar\omega=(1.055\times 10^{-34})(10^{13})=1.055\times 10^{-21}\,\mathrm{J}\)；\(k_{B}T=(1.381\times 10^{-23})(300)=4.142\times 10^{-21}\,\mathrm{J}\)。</p>
+          <p class="step">\(Z=\dfrac{k_{B}T}{\hbar\omega}=\dfrac{4.142\times 10^{-21}}{1.055\times 10^{-21}}=\mathbf{3.926}\)。</p>
+          <p class="step">\(U=k_{B}T=4.142\times 10^{-21}\,\mathrm{J}\) 每振子。每摩尔：\(U=N_{A}k_{B}T=RT=(8.314)(300)=\mathbf{2\,494\,\mathrm{J/mol}}\)。</p>
+          <p class="step">\(C_{V}=dU/dT=R=8.314\,\mathrm{J/(mol\cdot K)}\)（一维）。</p>
+          <p class="step"><strong>物理备注：</strong>经典结果 \(U=k_{B}T\) 与温度无关地成立，但实验上低温 \(C_{V}\to 0\)（爱因斯坦 1907 用量子 \(E_{n}=(n+\tfrac12)\hbar\omega\) 修正：\(Z_{\text{qm}}=1/(2\sinh(\beta\hbar\omega/2))\)，\(U=\tfrac12\hbar\omega\coth(\beta\hbar\omega/2)\)，\(T\to 0\) 时 \(U\to\tfrac12\hbar\omega\)、\(C_{V}\to 0\)；高温 \(k_{B}T\gg\hbar\omega\) 时回到经典 \(U\to k_{B}T\) ✓）。</p>
+          <p><span class="ans">答案：\(Z=k_{B}T/\hbar\omega\)；\(U=k_{B}T\)（均分）；数值 \(Z=3.93\)、\(U=2\,494\,\mathrm{J/mol}\)、\(C_{V}=R=8.31\,\mathrm{J/(mol\cdot K)}\)（一维）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 肖特基热容峰的位置与高度 Schottky Peak: Location &amp; Height</h4>
+        <p class="example-statement">对例 9.1 的双态系统（每摩尔），热容的肖特基公式为 \(C_{V}/R=(\beta\varepsilon)^{2}\dfrac{e^{\beta\varepsilon}}{(e^{\beta\varepsilon}+1)^{2}}\)。令 \(x\equiv\beta\varepsilon=\varepsilon/(k_{B}T)\)。求：(a) 峰值位置 \(x^{*}\)（数值解，3 位有效数字）；(b) 峰高 \(C_{V}^{\max}/R\)；(c) 对 \(\varepsilon/k_{B}=100\,\mathrm{K}\)，峰温 \(T^{*}\) 是多少？(d) 峰高对应每摩尔的 \(C_{V}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>令 \(f(x)=x^{2}\dfrac{e^{x}}{(e^{x}+1)^{2}}\)。求 \(df/dx=0\)。</p>
+          <p class="step"><strong>(a) 求极值：</strong>取对数导数：</p>
+          <div class="formula">\[ \frac{d\ln f}{dx}=\frac{2}{x}+1-\frac{2e^{x}}{e^{x}+1}=0. \]</div>
+          <p class="step">即 \(2/x+1=2e^{x}/(e^{x}+1)\)。整理：\(2(e^{x}+1)+x(e^{x}+1)=2xe^{x}\)，即 \(2(e^{x}+1)=x(e^{x}-1)\)，亦即：</p>
+          <div class="formula">\[ x\;=\;\frac{2(e^{x}+1)}{e^{x}-1}\;=\;2\coth(x/2)\cdot\frac{1}{?}\;\;\Longleftrightarrow\;\;\frac{x}{2}=\coth(x/2)\;\;\Longleftrightarrow\;\;\frac{x}{2}\tanh(x/2)=1. \]</div>
+          <p class="step">数值迭代：起始 \(x_{0}=2\)，\(x/2\approx 1\)，\(\tanh 1=0.7616\)，\(x/2\tanh(x/2)\approx 0.76\)；调大 \(x\)。试 \(x=2.4\)：\(x/2=1.2\)，\(\tanh 1.2=0.8337\)，乘积 \(1.000\) ✓。</p>
+          <p class="step">精细解：\(x^{*}\approx\mathbf{2.399\,4}\)。</p>
+          <p class="step"><strong>(b) 峰高：</strong>\(e^{x^{*}}=e^{2.399\,4}=11.010\)。\((e^{x^{*}}+1)^{2}=(12.010)^{2}=144.24\)。</p>
+          <p class="step">\(f(x^{*})=(2.399\,4)^{2}\cdot\dfrac{11.010}{144.24}=5.757\cdot 0.076\,34=\mathbf{0.439\,5}\)。</p>
+          <p class="step"><strong>(c) 峰温：</strong>\(T^{*}=\dfrac{\varepsilon}{k_{B}x^{*}}=\dfrac{100\,\mathrm{K}}{2.399\,4}=\mathbf{41.68\,\mathrm{K}}\)。</p>
+          <p class="step"><strong>(d) 峰高（每摩尔）：</strong>\(C_{V}^{\max}=0.439\,5\,R=(0.439\,5)(8.314)=\mathbf{3.655\,\mathrm{J/(mol\cdot K)}}\)。</p>
+          <p class="step"><strong>物理图像：</strong>低温（\(T\ll T^{*}\)）时几乎全部粒子冻结在基态，激发态稀少，吸收能量也很难（\(C_{V}\to 0\)）；高温（\(T\gg T^{*}\)）时两态几乎等概率占据，再加温度也不再改变分布（\(C_{V}\to 0\) 再次）。只有在中间温区 \(k_{B}T\sim\varepsilon/2.4\) 处，温度的微小变化能显著改变占据数——所以热容出现峰值。这是<strong>双能级系统</strong>的普遍特征，广泛见于顺磁盐（磁场调控 \(\varepsilon=2\mu B\)）、二能级原子、低温固体缺陷等。</p>
+          <p class="step"><strong>与杜隆-珀替的对照：</strong>经典谐振子每摩尔 \(C_{V}=R\)（一维）或 \(3R\)（三维），与温度无关。但实验上低温 \(C_{V}\to 0\)（爱因斯坦模型：谐振子量子化，每振子是无穷个等距能级，低温冻结在基态，\(C_{V}\) 也呈现肖特基式峰值，但在 \(k_{B}T\sim\hbar\omega\) 处）。肖特基峰是「能级离散」的<strong>普遍签名</strong>。</p>
+          <p><span class="ans">答案：\(x^{*}=2.40\)，即 \(T^{*}=41.7\,\mathrm{K}\)；\(C_{V}^{\max}=0.439\,R=3.65\,\mathrm{J/(mol\cdot K)}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「玻尔兹曼因子 \(e^{-\beta E_{i}}\) 就是概率」。</strong>错。它只是<strong>未归一化的权重</strong>。概率必须除以配分函数：\(P_{i}=e^{-\beta E_{i}}/Z\)。忘记除 \(Z\) 会得到总和 \(\neq 1\) 的「概率」，且无法与实验比较。</li>
+        <li><strong>「低温下系统平均能量为零」。</strong>不严格。低温（\(\beta\to\infty\)）下系统<strong>占据基态</strong>，\(\langle E\rangle\to E_{0}\)（基态能量）。若选 \(E_{0}=0\) 则 \(\langle E\rangle\to 0\)；但若 \(E_{0}\neq 0\)（如谐振子零点能 \(E_{0}=\tfrac12\hbar\omega\)），则 \(\langle E\rangle\to E_{0}\)。低温极限的本质是「占据概率集中到基态」，不是「能量为零」。</li>
+        <li><strong>「求导对 \(T\)」。</strong>错。配分函数的标准导数是<strong>对 \(\beta=1/(k_{B}T)\)</strong>：\(U=-\partial\ln Z/\partial\beta\)。若要对 \(T\) 求导（如 \(C_{V}=\partial U/\partial T\)），必须用链式法则：\(\partial/\partial T=-(1/k_{B}T^{2})\,\partial/\partial\beta\)。直接写成 \(U=-\partial\ln Z/\partial T\) 会差一个 \(1/k_{B}T^{2}\) 因子。</li>
+        <li><strong>「\(Z\) 是微观态的总数」。</strong>错。微观态总数是 \(\Omega\)（微正则系综的概念）。\(Z\) 是<strong>玻尔兹曼加权和</strong>：高能态被 \(e^{-\beta E}\) 指数压低。高温极限下 \(Z\to\Omega\)（所有权重 → 1）；但低温下 \(Z\to g_{0}\)（基态简并度），远小于 \(\Omega\)。</li>
+        <li><strong>「正则系综与微正则系综永远给出相同结果」。</strong>对宏观系统（\(N\to\infty\)）是的（系综等价）；但对<strong>小系统</strong>（\(N\lesssim 100\)）能量涨落显著，两系综给出不同涨落与不同有限尺寸修正。例如纳米颗粒的热容、蛋白质构象分布，需谨慎选择系综。</li>
+        <li><strong>把简并度漏掉。</strong>若能级 \(E_{\alpha}\) 有简并度 \(g_{\alpha}\)，配分函数是 \(Z=\sum_{\alpha}g_{\alpha}e^{-\beta E_{\alpha}}\)，不是 \(\sum_{\alpha}e^{-\beta E_{\alpha}}\)。漏掉 \(g_{\alpha}\) 会得到错误的熵（少算 \(\ln g_{\alpha}\) 项）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 含简并度的三态系统 Degenerate Three-Level System</summary>
+        <div class="hint">配分函数要乘简并度：\(Z=\sum_{\alpha}g_{\alpha}e^{-\beta E_{\alpha}}\)。注意 \(\langle E\rangle=\sum_{\alpha}g_{\alpha}E_{\alpha}e^{-\beta E_{\alpha}}/Z\)。</div>
+        <div class="solution">
+          系统：基态 \(E_{0}=0\)，简并度 \(g_{0}=1\)；激发态 \(E_{1}=\varepsilon\)，简并度 \(g_{1}=2\)（双重简并）。温度 \(k_{B}T=\varepsilon\)（即 \(\beta\varepsilon=1\)）。
+          <br>\(Z=g_{0}e^{0}+g_{1}e^{-\beta\varepsilon}=1+2e^{-1}=1+0.735\,8=\mathbf{1.735\,8}\)。
+          <br>占据概率（按微观态，非按能级）：\(P_{0}=1/Z=0.576\,6\)；每个激发微观态 \(P_{1,\text{each}}=e^{-1}/Z=0.211\,8\)，两个激发态合计 \(P_{1,\text{total}}=0.423\,4\)。
+          <br>\(\langle E\rangle=(0)(0.576\,6)+(\varepsilon)(0.423\,4)=\mathbf{0.423\,4\,\varepsilon}\)。
+          <br>对照：无简并（\(g_{1}=1\)）时 \(\langle E\rangle=0.269\,\varepsilon\)。简并度使激发态「更容易」被访问，平均能量更高。
+          <br>熵：\(S/k_{B}=\ln Z+\beta\langle E\rangle/\varepsilon=\ln(1.735\,8)+0.423\,4=0.551\,0+0.423\,4=\mathbf{0.974\,4}\)。
+          <br>高温极限：\(T\to\infty\) 时 \(P_{0}\to 1/3\)、\(P_{1,\text{each}}\to 1/3\)，\(\langle E\rangle\to\tfrac{0+2\varepsilon}{3}=\tfrac23\varepsilon\)，\(S\to k_{B}\ln 3\)（三个等概率微观态） ✓。
+          <span class="ans">答：\(Z=1.736\)，\(\langle E\rangle=0.423\,\varepsilon\)，\(S/k_{B}=0.974\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 由 \(P_{i}\) 直接推导 \(\langle E^{2}\rangle-\langle E\rangle^{2}=\partial^{2}\ln Z/\partial\beta^{2}\) Derive Fluctuation–Dissipation</summary>
+        <div class="hint">\(\langle E^{2}\rangle=(1/Z)\sum_{i}E_{i}^{2}e^{-\beta E_{i}}\)。再用 \(\partial^{2}e^{-\beta E_{i}}/\partial\beta^{2}=E_{i}^{2}e^{-\beta E_{i}}\)。</div>
+        <div class="solution">
+          一阶导：\(\partial Z/\partial\beta=-\sum_{i}E_{i}e^{-\beta E_{i}}\)，故 \(\partial\ln Z/\partial\beta=(1/Z)\partial Z/\partial\beta=-\langle E\rangle\)。
+          <br>二阶导：\(\partial^{2}Z/\partial\beta^{2}=\sum_{i}E_{i}^{2}e^{-\beta E_{i}}=Z\langle E^{2}\rangle\)。
+          <br>对 \(\ln Z\) 二阶导：\(\partial^{2}\ln Z/\partial\beta^{2}=\dfrac{Z\cdot Z''-(Z')^{2}}{Z^{2}}=\dfrac{\langle E^{2}\rangle-\langle E\rangle^{2}}{1}\)。
+          <br>所以 \(\partial^{2}\ln Z/\partial\beta^{2}=\langle E^{2}\rangle-\langle E\rangle^{2}=\mathrm{Var}(E)\)。
+          <br>结合 \(C_{V}=\partial U/\partial T=\partial\langle E\rangle/\partial T\)，由 \(\langle E\rangle=-\partial\ln Z/\partial\beta\)：\(C_{V}=-\partial^{2}\ln Z/\partial\beta^{2}\cdot\partial\beta/\partial T=\mathrm{Var}(E)\cdot\dfrac{1}{k_{B}T^{2}}\)。
+          <br>即 \(k_{B}T^{2}C_{V}=\mathrm{Var}(E)=\langle(\Delta E)^{2}\rangle\) ✓。 <span class="ans">答：\(\mathrm{Var}(E)=\partial^{2}\ln Z/\partial\beta^{2}=k_{B}T^{2}C_{V}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 量子谐振子的爱因斯坦模型 Einstein Model: Quantum HO</summary>
+        <div class="hint">量子谐振子能级 \(E_{n}=(n+\tfrac12)\hbar\omega\)。配分函数是几何级数 \(\sum_{n=0}^{\infty}e^{-\beta(n+1/2)\hbar\omega}\)。</div>
+        <div class="solution">
+          \(Z_{1}=e^{-\beta\hbar\omega/2}\sum_{n=0}^{\infty}e^{-n\beta\hbar\omega}=\dfrac{e^{-\beta\hbar\omega/2}}{1-e^{-\beta\hbar\omega}}=\dfrac{1}{2\sinh(\beta\hbar\omega/2)}\)。
+          <br>\(\ln Z_{1}=-\ln\!\big[2\sinh(\beta\hbar\omega/2)\big]\)。
+          <br>\(U_{1}=-\partial\ln Z_{1}/\partial\beta=\dfrac{\hbar\omega}{2}\coth(\beta\hbar\omega/2)=\hbar\omega\!\left[\dfrac12+\dfrac{1}{e^{\beta\hbar\omega}-1}\right]\)。
+          <br>第二项 \(\bar{n}=(e^{\beta\hbar\omega}-1)^{-1}\) 是玻色-爱因斯坦占据数；第一项 \(\tfrac12\hbar\omega\) 是<strong>零点能</strong>。
+          <br>热容 \(C_{V,1}=dU_{1}/dT=k_{B}(\beta\hbar\omega)^{2}\dfrac{e^{\beta\hbar\omega}}{(e^{\beta\hbar\omega}-1)^{2}}\)（爱因斯坦函数）。
+          <br><strong>低温极限</strong> \(\beta\hbar\omega\gg 1\)：\(e^{\beta\hbar\omega}\gg 1\)，\(C_{V,1}\approx k_{B}(\beta\hbar\omega)^{2}e^{-\beta\hbar\omega}\to\mathbf{0}\) 指数快——爱因斯坦模型解决了杜隆-珀替在低温失效的困难 ✓。
+          <br><strong>高温极限</strong> \(\beta\hbar\omega\ll 1\)：\(e^{x}\approx 1+x\)，\(C_{V,1}\approx k_{B}\cdot 1\to\mathbf{k_{B}}\)，回到能量均分 ✓。
+          <br>对三维爱因斯坦固体（每摩尔 \(3N_{A}\) 振子）：\(C_{V}=3R\cdot(\beta\hbar\omega)^{2}e^{\beta\hbar\omega}/(e^{\beta\hbar\omega}-1)^{2}\)，等价于三个独立的肖特基型峰，但能级间隔为 \(\hbar\omega\) 而非 \(\varepsilon\)。 <span class="ans">答：\(U=\hbar\omega[\tfrac12+(e^{\beta\hbar\omega}-1)^{-1}]\)；\(C_{V}\to 0\) 当 \(T\to 0\)；\(C_{V}\to k_{B}\) 当 \(T\to\infty\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 双态系统的低温极限与第三定律 Low-T Limit &amp; Third Law</summary>
+        <div class="hint">低温 \(\beta\varepsilon\gg 1\)：\(e^{-\beta\varepsilon}\to 0\)，故 \(Z\to 1\)，\(P_{0}\to 1\)，\(P_{1}\to e^{-\beta\varepsilon}\)。</div>
+        <div class="solution">
+          低温展开（保留 \(e^{-\beta\varepsilon}\) 一阶）：
+          <br>\(Z=1+e^{-\beta\varepsilon}\approx 1\)；\(\ln Z\approx e^{-\beta\varepsilon}\)（因 \(\ln(1+x)\approx x\)）。
+          <br>\(\langle E\rangle=\varepsilon e^{-\beta\varepsilon}/Z\approx\varepsilon e^{-\beta\varepsilon}\to 0\)。
+          <br>\(S/k_{B}=\ln Z+\beta\langle E\rangle\approx e^{-\beta\varepsilon}+\beta\varepsilon e^{-\beta\varepsilon}=(1+\beta\varepsilon)e^{-\beta\varepsilon}\to\mathbf{0}\)。
+          <br>所以低温下 \(S\to 0\)，与<strong>热力学第三定律</strong>（\(T\to 0\) 时 \(S\to 0\)，对非简并基态）一致 ✓。
+          <br><strong>简并基态</strong>：若基态简并度 \(g_{0}>1\)（如电子自旋简并），则 \(Z\to g_{0}\)，\(S\to k_{B}\ln g_{0}\)（残余熵 residual entropy）。这是固态中残余熵的来源（如冰的 proton disorder、CO 的取向无序）。
+          <br>对例 9.1 的 \(\varepsilon/k_{B}=100\,\mathrm{K}\)，在 \(T=10\,\mathrm{K}\) 时 \(\beta\varepsilon=10\)，\(S/k_{B}\approx(1+10)e^{-10}=11\times 4.54\times 10^{-5}=5.0\times 10^{-4}\)——每摩尔 \(S\approx 4.2\times 10^{-3}\,\mathrm{J/(mol\cdot K)}\)，几乎为零 ✓。 <span class="ans">答：低温 \(S\to k_{B}\ln g_{0}\)，对非简并基态 \(g_{0}=1\)，\(S\to 0\)（第三定律）。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>能级占据数 Energy-Level Populations。</strong>一个 3 能级系统（\(E_{0}=0\)、\(E_{1}=\varepsilon\)、\(E_{2}=2\varepsilon\)）与温度 \(T\) 的热库接触。拖动 <strong>kT/ε</strong> 滑块，<strong>(1)</strong> 上半部分：能级图右侧的彩色横条长度即时显示占据概率 \(P_{i}=e^{-E_{i}/kT}/Z\)；右侧数字面板给出 \(Z\)、\(\langle E\rangle\)、\(F\)、\(S\)、\(C\)。<strong>(2)</strong> 下半部分：\(\langle E\rangle/\varepsilon\)（蓝线）与 \(C/k_{B}\)（红线）随温度变化曲线，当前温度用虚线和小圆点标出。观察：低温（\(kT/\varepsilon\lesssim 0.3\)）时几乎全部占据基态（\(P_{0}\to 1\)）、\(\langle E\rangle\to 0\)、\(C\to 0\)（第三定律）；高温（\(kT/\varepsilon\gtrsim 3\)）时三态趋等概率（\(P_{i}\to 1/3\)）、\(\langle E\rangle\to\varepsilon\)（= 三态能量平均值）、\(C\to 0\)（饱和）；中间温区 \(C\) 出现肖特基式峰。试着把滑块拉到极低温度再松开，看激发态条柱「熄灭」的过程。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="760" height="440"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;
+
+          var DEFAULTS = { Tstar: 1.0 };
+          var params = { Tstar: DEFAULTS.Tstar };
+          // Tstar = k_B T / ε  (dimensionless temperature)
+          var nLev = 3;
+          // Energy levels: E_i = i * ε  for i = 0, 1, 2
+
+          function computeForT(Tstar) {
+            var beta = 1.0 / Math.max(0.001, Tstar);  // βε = 1/T*
+            var exps = [];
+            var Z = 0;
+            for (var i = 0; i < nLev; i++) {
+              var e = Math.exp(-beta * i);
+              exps.push(e);
+              Z += e;
+            }
+            var probs = exps.map(function (e) { return e / Z; });
+            var Eavg = 0, E2avg = 0;
+            for (var i = 0; i < nLev; i++) {
+              Eavg += probs[i] * i;
+              E2avg += probs[i] * i * i;
+            }
+            var lnZ = Math.log(Z);
+            var F = -Tstar * lnZ;            // F/ε
+            var S = lnZ + beta * Eavg;        // S/k_B
+            var C = beta * beta * (E2avg - Eavg * Eavg);  // C/k_B
+            return { Z: Z, probs: probs, Eavg: Eavg, beta: beta, lnZ: lnZ, F: F, S: S, C: C };
+          }
+
+          // Pre-compute ⟨E⟩(T) and C(T) curves
+          var Ecurve = [], Ccurve = [];
+          for (var T = 0.04; T <= 5.0; T += 0.02) {
+            var r = computeForT(T);
+            Ecurve.push({ T: T, E: r.Eavg });
+            Ccurve.push({ T: T, C: r.C });
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static — depends only on params.Tstar */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var d = computeForT(params.Tstar);
+
+              // ===== TOP: Energy levels with population bars =====
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('三能级系统的占据数  Populations of a 3-Level System', 12, 8);
+              ctx.restore();
+
+              var levelX0 = 70, levelX1 = 150;
+              var popBarX0 = 165, popBarMax = 200;
+              // E_0 at bottom (large y), E_2 at top (small y)
+              var levelYs = [200, 140, 80];
+
+              for (var i = 0; i < nLev; i++) {
+                var y = levelYs[i];
+                // Energy level line
+                ctx.strokeStyle = PS.colors.axis;
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(levelX0, y); ctx.lineTo(levelX1, y); ctx.stroke();
+                // Label (right-aligned to levelX0)
+                ctx.font = '13px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.text;
+                ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+                var lab = (i === 0) ? 'E₀ = 0' : (i === 1) ? 'E₁ = ε' : 'E₂ = 2ε';
+                ctx.fillText(lab, levelX0 - 6, y);
+                // Population bar
+                var p = d.probs[i];
+                var barW = p * popBarMax;
+                ctx.fillStyle = PS.colors.palette[i];
+                ctx.fillRect(popBarX0, y - 9, Math.max(1, barW), 18);
+                // Probability text
+                ctx.fillStyle = PS.colors.text;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.font = '12px system-ui, sans-serif';
+                ctx.fillText('P' + i + ' = ' + p.toFixed(3), popBarX0 + barW + 6, y);
+              }
+
+              // Right-side numeric readout
+              var rX = 470, rY0 = 56;
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('温度 / Temperature', rX, rY0);
+              ctx.font = 'bold 13px system-ui, sans-serif';
+              ctx.fillText('kT/ε = ' + params.Tstar.toFixed(2), rX, rY0 + 16);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillText('βε = ' + d.beta.toFixed(3), rX, rY0 + 36);
+              ctx.fillText('Z = ' + d.Z.toFixed(4), rX, rY0 + 54);
+              ctx.fillText('⟨E⟩ = ' + d.Eavg.toFixed(3) + ' ε', rX, rY0 + 72);
+              ctx.fillText('F = ' + d.F.toFixed(3) + ' ε', rX, rY0 + 90);
+              ctx.fillText('S = ' + d.S.toFixed(3) + ' k_B', rX, rY0 + 108);
+              ctx.fillText('C = ' + d.C.toFixed(3) + ' k_B', rX, rY0 + 126);
+
+              // Regime annotation
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.font = 'italic 11px system-ui, sans-serif';
+              var regime = params.Tstar < 0.35 ? '低温：基态主导 low T → ground state' :
+                           params.Tstar > 3.0 ? '高温：占据趋等 high T → equal pop.' :
+                           '中间温区：肖特基峰 mid-T → Schottky peak';
+              ctx.fillText(regime, rX, rY0 + 150);
+
+              // ===== BOTTOM: ⟨E⟩(T) and C(T) curves =====
+              var bL = 60, bR = 720, bT = 250, bB = 410;
+              var yMax = 1.2;
+
+              // Background grid
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.45;
+              for (var gv = 0; gv <= yMax; gv += 0.3) {
+                var yy = bB - (gv / yMax) * (bB - bT);
+                ctx.beginPath(); ctx.moveTo(bL, yy); ctx.lineTo(bR, yy); ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '10px system-ui, sans-serif';
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var gv = 0; gv <= yMax; gv += 0.3) {
+                var yy = bB - (gv / yMax) * (bB - bT);
+                ctx.fillText(gv.toFixed(1), bL - 4, yy);
+              }
+              ctx.restore();
+
+              // Axes
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(bL, bT); ctx.lineTo(bL, bB); ctx.lineTo(bR, bB);
+              ctx.stroke();
+
+              // x ticks
+              ctx.font = '10px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var xt = 0; xt <= 5; xt++) {
+                var xx = bL + (xt / 5) * (bR - bL);
+                ctx.fillText(xt.toString(), xx, bB + 4);
+              }
+
+              // Axis labels
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('kT/ε  (温度 temperature)', (bL + bR) / 2, bB + 22);
+              ctx.save();
+              ctx.translate(14, (bT + bB) / 2); ctx.rotate(-Math.PI / 2);
+              ctx.textAlign = 'center';
+              ctx.fillText('⟨E⟩/ε   与   C/k_B', 0, 0);
+              ctx.restore();
+
+              function TtoX(T) { return bL + (T / 5.0) * (bR - bL); }
+              function EtoY(E) { return bB - (E / yMax) * (bB - bT); }
+
+              // Plot ⟨E⟩(T) — blue
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              for (var k = 0; k < Ecurve.length; k++) {
+                var x = TtoX(Ecurve[k].T);
+                var y = EtoY(Ecurve[k].E);
+                if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+
+              // Plot C(T) — red
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              for (var k = 0; k < Ccurve.length; k++) {
+                var x = TtoX(Ccurve[k].T);
+                var y = EtoY(Ccurve[k].C);
+                if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+
+              // Current T vertical line
+              var xCur = TtoX(params.Tstar);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([4, 4]);
+              ctx.beginPath(); ctx.moveTo(xCur, bT); ctx.lineTo(xCur, bB); ctx.stroke();
+              ctx.restore();
+
+              // Current points on each curve
+              var yEcur = EtoY(d.Eavg);
+              var yCcur = EtoY(d.C);
+              PS.drawCircle(ctx, xCur, yEcur, 5, { fill: PS.colors.primary, stroke: PS.colors.bg, lineWidth: 1.5 });
+              PS.drawCircle(ctx, xCur, yCcur, 5, { fill: PS.colors.accent, stroke: PS.colors.bg, lineWidth: 1.5 });
+
+              // Legend
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillStyle = PS.colors.primary;
+              ctx.fillRect(bR - 140, bT + 6, 16, 3);
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('⟨E⟩/ε', bR - 118, bT);
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillRect(bR - 60, bT + 6, 16, 3);
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('C/k_B', bR - 38, bT);
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'Tstar', label: 'kT/ε  (无量纲温度 T*)', min: 0.05, max: 5.0, step: 0.05, value: DEFAULTS.Tstar },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Tstar', function (v) { params.Tstar = v; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-9 input[type=range]');
+            if (sliders[0]) {
+              sliders[0].value = String(DEFAULTS.Tstar);
+              sliders[0].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            params.Tstar = DEFAULTS.Tstar;
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>正则系综</strong>：系统与温度 \(T\) 的热库接触（\(T,V,N\) 固定，\(E\) 可变）。是实验最常用的工作框架。</li>
+        <li><strong>玻尔兹曼因子</strong>：\(P_{i}\propto e^{-\beta E_{i}}\)，\(\beta\equiv 1/(k_{B}T)\)。从「系统+热库」整体微正则计数导出：热库损失能量 \(E_{i}\) 时微观态数指数下降。</li>
+        <li><strong>配分函数</strong>：\(Z=\sum_{i}e^{-\beta E_{i}}=\sum_{\alpha}g_{\alpha}e^{-\beta E_{\alpha}}\)。它<strong>编码正则系综的全部热力学</strong>。</li>
+        <li><strong>占据概率</strong>：\(P_{i}=e^{-\beta E_{i}}/Z\)（必须归一化除以 \(Z\)）。</li>
+        <li><strong>由 \(Z\) 生成热力学</strong>：\(U=-\partial\ln Z/\partial\beta\)，\(F=-k_{B}T\ln Z\)，\(S=-\partial F/\partial T=(U-F)/T=k_{B}[\ln Z+\beta U]\)，\(C_{V}=\partial U/\partial T\)。</li>
+        <li><strong>涨落-耗散</strong>：\(\langle(\Delta E)^{2}\rangle=k_{B}T^{2}C_{V}\)；相对涨落 \(\sim 1/\sqrt{N}\)，故正则 ↔ 微正则在热力学极限下等价。</li>
+        <li><strong>双态系统</strong>：\(Z=1+e^{-\beta\varepsilon}\)，\(U=\varepsilon/(e^{\beta\varepsilon}+1)\)；低温 \(U\to 0\)、\(S\to 0\)（第三定律），高温 \(U\to\varepsilon/2\)、\(S\to k_{B}\ln 2\)。</li>
+        <li><strong>顺磁体 / 居里定律</strong>：\(Z=2\cosh(\beta\mu B)\)，\(\langle m_{z}\rangle=\mu\tanh(\beta\mu B)\)；弱场 \(M=n\mu^{2}B/(k_{B}T)\)，\(\chi\propto 1/T\)。</li>
+        <li><strong>肖特基峰</strong>：双态系统 \(C_{V}/R=(\beta\varepsilon)^{2}e^{\beta\varepsilon}/(e^{\beta\varepsilon}+1)^{2}\)，峰在 \(\beta\varepsilon\approx 2.40\)（\(T^{*}\approx 0.417\,\varepsilon/k_{B}\)），峰高 \(C_{V}^{\max}\approx 0.439\,R\)。是离散能级的普遍签名。</li>
+        <li><strong>经典谐振子</strong>：\(Z=k_{B}T/\hbar\omega\)，\(U=k_{B}T\)（均分）；三维 \(C_{V}=3R\)（杜隆-珀替）。量子修正后低温 \(C_{V}\to 0\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;Z=\sum_{i}e^{-\beta E_{i}},\quad P_{i}=\frac{e^{-\beta E_{i}}}{Z},\quad U=-\frac{\partial\ln Z}{\partial\beta},\quad F=-k_{B}T\ln Z,\quad \beta=\frac{1}{k_{B}T}\;} \]</div>
+      <div class="formula">\[ \boxed{\;S=k_{B}\!\left[\ln Z+\beta U\right]=\frac{U-F}{T},\qquad C_{V}=k_{B}\beta^{2}\!\left(\langle E^{2}\rangle-\langle E\rangle^{2}\right)=\frac{\langle(\Delta E)^{2}\rangle}{k_{B}T^{2}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{Two-state: }\;U=\frac{\varepsilon}{e^{\beta\varepsilon}+1},\quad \frac{C_{V}}{R}=(\beta\varepsilon)^{2}\frac{e^{\beta\varepsilon}}{(e^{\beta\varepsilon}+1)^{2}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{Paramagnet: }\;\langle m_{z}\rangle=\mu\tanh(\beta\mu B),\quad \chi=\frac{n\mu_{0}\mu^{2}}{k_{B}T}\;\;\text{(Curie's law)}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
