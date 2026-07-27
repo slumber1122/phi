@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 超导电性 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第5章 · 凝聚态物理 Condensed Matter</p>
+      <h1>超导电性 <span class="en-title">Superconductivity</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>1911 年，Kamerlingh Onnes 在液氦温度下测量汞的电阻，发现 \( T<4.2\,\mathrm{K} \) 时电阻<strong>突然降为零</strong>——这就是<strong>超导电性</strong> (superconductivity)。零电阻本身只是「完美导电」的一个侧面；1933 年 Meissner 与 Ochsenfeld 又发现超导体<strong>主动排出体内的磁场</strong>，这一现象（迈斯纳效应）与零电阻一道构成了超导态的两个独立标志。本章把超导电性当作凝聚态物理的「标志性 emergent 现象」来处理：从唯象的伦敦方程，到热力学临界场曲线，再到 BCS 微观理论（库珀对、能隙）、磁通量子化与约瑟夫森效应，最后简述高温铜氧化物超导体。学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述超导态的两个独立判据——<strong>零电阻</strong> (zero resistance) 与<strong>迈斯纳效应</strong> (Meissner effect, 体内 \( \vec{B}=0 \))，并解释为何迈斯纳效应不能由「完美导电」推出（即二者在物理上独立）。</li>
+        <li>推导并运用 <strong>伦敦方程</strong> (London equations) 与<strong>穿透深度</strong> (penetration depth) \( \lambda_L=\sqrt{m/(\mu_0 n_s e^2)} \)，估算典型值 \( \lambda_L\sim 20\text{–}200\,\mathrm{nm} \)。</li>
+        <li>区分<strong>第一类</strong> (type-I) 与<strong>第二类</strong> (type-II) 超导体：前者只有单一临界场 \( H_c \)，后者有下临界场 \( H_{c1} \)、上临界场 \( H_{c2} \)，其间为带<strong>磁通涡旋</strong> (flux vortices) 的混合态。</li>
+        <li>用超导相变的热力学（熵下降、凝聚能 \( H_c^2/(2\mu_0) \)、近似抛物线 \( H_c(T)\approx H_c(0)\bigl[1-(T/T_c)^2\bigr] \)）分析临界场曲线。</li>
+        <li>阐述 <strong>BCS 理论</strong>的核心机制：电子-声子吸引使费米面附近一对动量相反、自旋反平行的电子结成<strong>库珀对</strong> (Cooper pair)，激发谱打开<strong>能隙</strong> \( \Delta \)，\( T=0 \) 时 \( 2\Delta\approx 3.5\,k_BT_c \)。</li>
+        <li>从规范不变性导出<strong>磁通量子化</strong> (flux quantization) \( \Phi_0=h/(2e)\approx 2.07\times10^{-15}\,\mathrm{Wb} \)，并简述 <strong>约瑟夫森效应</strong> (Josephson effect) 的电压-频率关系 \( f=2eV/h \) 及其计量学应用。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 零电阻与临界温度 Zero Resistance and the Critical Temperature</h3>
+      <p>在某一<strong>临界温度</strong> (critical temperature) \( T_c \) 以下，许多金属与化合物的直流电阻率会<strong>陡降为零</strong>。这种「陡降」发生在 \( \Delta T/T_c\sim 10^{-3} \) 的窄温区内，是真正的<strong>相变</strong> (phase transition)，而非随温度降低而逐渐减小的散射减弱。一旦在超导环中激发电流，电流可在无外接电源的情况下持续数年衰减不到 1%——实验上电阻率上限 \( <10^{-25}\,\Omega\cdot\mathrm{m} \)，比铜低 \( 10^{16} \) 倍以上。</p>
+      <p>但「零电阻」并不唯一刻画超导态：<strong>理想导体</strong>（假想无散射的金属）也是零电阻的，但它对磁场的行为完全由「历史」决定（磁场被「冻结」在体内）。下面将看到，超导体做了一件理想导体做不到的事——<strong>主动排出体内的磁场</strong>。</p>
+
+      <h3>2. 迈斯纳效应 The Meissner Effect</h3>
+      <p>1933 年 Meissner 与 Ochsenfeld 发现：当 \( T<T_c \) 且外加磁场小于某临界值时，<strong>超导体内部的磁感应强度 \( \vec{B} \) 恒为零</strong>，与样品历史无关。即：无论先降温再加磁场、还是先加磁场再降温，最终体内 \( \vec{B}=0 \)。这称为<strong>迈斯纳效应</strong> (Meissner effect)，它是<strong>独立于零电阻</strong>的超导态标志。</p>
+      <div class="formula">\[ \vec{B} \;=\; \mu_0\,(\vec{H}+\vec{M}) \;=\; 0 \quad (\text{体内}),\qquad\Rightarrow\quad \vec{M}=-\vec{H} \]</div>
+      <p>故超导体是<strong>理想抗磁体</strong> (perfect diamagnet)，磁化率 \( \chi=-1 \)。磁场并非在数学意义上的界面突然消失，而是<strong>在表面薄层内指数衰减</strong>：\( B(x)=B_0\,e^{-x/\lambda_L} \)，特征长度 \( \lambda_L \) 称<strong>伦敦穿透深度</strong> (London penetration depth, 典型 \( 20\text{–}200\,\mathrm{nm} \))。</p>
+
+      <div class="formula">\[ B(x) \;=\; B_0\,\exp\!\left(-\frac{x}{\lambda_L}\right) \qquad (x>0\text{，从表面进入体内}) \]</div>
+
+      <p><strong>关键区别：迈斯纳效应 ≠ 完美导电。</strong> 对一个理想导体（无散射），Faraday 定律 \( \partial\vec{B}/\partial t\propto\nabla\times\vec{E}=\vec{0} \) 仅保证 <em>\( \vec{B} \) 不随时间变化</em>——也就是说，体内保留它进入超导态那一刻所携带的磁场（「冻结磁通」）。而迈斯纳效应则告诉我们超导体<strong>主动重排电流</strong>把磁场排出，与历史无关。这是「超导体 ≠ 电阻为零的金属」的实验判据。</p>
+
+      <h3>3. 伦敦方程 The London Equations (1935)</h3>
+      <p>London 兄弟假设超导电流 \( \vec{j}_s \) 由密度为 \( n_s \)、电荷 \( -e \)、质量 \( m \) 的「超流电子」承担。Newton 定律（无散射阻尼）给出：</p>
+      <div class="formula">\[ \boxed{\;\frac{\partial\vec{j}_s}{\partial t} \;=\; \frac{n_s e^2}{m}\,\vec{E}\;} \qquad\text{(第一伦敦方程 London 1)} \]</div>
+      <p>取旋度并用 Faraday 定律 \( \nabla\times\vec{E}=-\partial\vec{B}/\partial t \)，得 \( \partial(\nabla\times\vec{j}_s)/\partial t=(n_s e^2/m)\,\partial\vec{B}/\partial t \)。London 进一步<strong>假定</strong>积分常数为零：</p>
+      <div class="formula">\[ \boxed{\;\nabla\times\vec{j}_s \;=\; -\frac{n_s e^2}{m}\,\vec{B}\;} \qquad\text{(第二伦敦方程 London 2)} \]</div>
+      <p>代入 Ampère 定律 \( \nabla\times\vec{B}=\mu_0\vec{j}_s \) 并取旋度 \( \nabla\times(\nabla\times\vec{B})=-\nabla^2\vec{B} \)（用 \( \nabla\cdot\vec{B}=0 \)），得<strong>穿透深度方程</strong>：</p>
+      <div class="formula">\[ \nabla^2\vec{B} \;=\; \frac{\vec{B}}{\lambda_L^{\,2}},\qquad \lambda_L \;=\; \sqrt{\frac{m}{\mu_0\,n_s\,e^2}} \;\approx\; 20\text{–}200\,\mathrm{nm} \]</div>
+      <p>半无限大空间的解即上面的指数衰减。第二伦敦方程<strong>不能</strong>从零电阻导出——它是 Meissner 效应的<strong>数学编码</strong>。</p>
+
+      <h3>4. 第一类与第二类超导体 Type-I vs Type-II Superconductors</h3>
+      <p>按对磁场的响应，超导体分两类：</p>
+      <ul>
+        <li><strong>第一类</strong> (type-I)：纯金属如 Hg、Pb、Al。在 \( H<H_c(T) \) 时完全 Meissner 态；一旦 \( H>H_c \) 立即整体进入正常态（<em>不</em>存在中间态）。\( H_c(0) \) 通常很小（\( \sim 10^{-2}\,\mathrm{T} \) 量级），故第一类材料基本不能用作超导磁体。</li>
+        <li><strong>第二类</strong> (type-II)：合金、化合物、所有高温超导体。存在<strong>两个</strong>临界场：\( H_{c1}<H<H_{c2} \) 时进入<strong>混合态</strong> (mixed state)——磁场以<strong>磁通涡旋</strong> (flux vortices / Abrikosov vortices) 的形式贯穿样品，每个涡旋携带一个磁通量子 \( \Phi_0 \)；其余部分仍为 Meissner 态。当 \( H>H_{c2} \) 才整体恢复正常态。\( H_{c2} \) 可远高于 \( H_c \)（例如 Nb₃Sn 的 \( H_{c2}\sim 23\,\mathrm{T} \)），这是<strong>超导磁体的物理基础</strong>。</li>
+      </ul>
+      <p>区分两类的判据是 <strong>Ginzburg–Landau 参数</strong> \( \kappa=\lambda_L/\xi \)（\( \xi \) 为<strong>相干长度</strong> coherence length）：</p>
+      <div class="formula">\[ \kappa \;<\; \frac{1}{\sqrt{2}} \;\Rightarrow\; \text{type-I},\qquad \kappa \;>\; \frac{1}{\sqrt{2}} \;\Rightarrow\; \text{type-II} \]</div>
+      <p>典型：Pb 的 \( \kappa\approx 0.45 \)（type-I）；Nb 的 \( \kappa\approx 1.0 \)（type-II，临界值附近）；YBa₂Cu₃O₇ 的 \( \kappa\sim 100 \)（极端 type-II）。</p>
+
+      <p><strong>混合态与涡旋</strong>：在第二类超导体的混合态中，每个涡旋中心是一个<strong>正常态芯</strong> (normal core, 半径 \( \sim\xi \))，周围超流电子环绕形成持续电流（半径 \( \sim\lambda_L \)），把磁通约束在涡旋内。Abrikosov 1957 年证明这些涡旋排成<strong>三角格子</strong> (Abrikosov lattice)，相邻间距随 \( H \) 增大而减小。</p>
+
+      <h3>5. 临界场的温度曲线 The Critical-Field Curve \( H_c(T) \)</h3>
+      <p>实验上 \( H_c(T) \) 近似为抛物线：</p>
+      <div class="formula">\[ \boxed{\;H_c(T) \;=\; H_c(0)\left[1-\left(\frac{T}{T_c}\right)^2\right]\;} \]</div>
+      <p>对第二类超导体，\( H_{c1}(T) \) 与 \( H_{c2}(T) \) 也近似遵循同形式。\( H_c(0) \) 关联到<strong>凝聚能密度</strong> (condensation energy density)：</p>
+      <div class="formula">\[ u_{\text{cond}} \;=\; \frac{1}{2}\mu_0 H_c^{\,2}(0) \;=\; \frac{B_c^{\,2}(0)}{2\mu_0} \qquad (T=0) \]</div>
+      <p>这是 \( T=0 \) 时正常态与超导态的自由能密度之差。代入 Pb 的 \( H_c(0)=6.39\times 10^{4}\,\mathrm{A/m} \)（即 \( B_c=\mu_0 H_c\approx 80\,\mathrm{mT} \)），得 \( u_{\text{cond}}\approx 2.57\times 10^{3}\,\mathrm{J/m^3} \)。每立方厘米仅约 \( 2.6\,\mathrm{mJ} \)——能量虽小，但足以维持宏观量子态。</p>
+
+      <h3>6. 相变热力学 Thermodynamics of the Transition</h3>
+      <p>无外磁场时，\( T=T_c \) 处超导-正常相变是<strong>二级相变</strong> (second-order)：自由能的一阶导（熵）连续，但二阶导（比热）跃变。由 \( H_c(T) \) 曲线可严格求出熵密度差 \( S_n-S_s \) 与超导电子比热 \( C_{es} \)：</p>
+      <div class="formula">\[ S_n - S_s \;=\; -\mu_0 H_c\,\frac{dH_c}{dT} \;>\; 0\quad(\text{超导态熵更低}),\qquad C_n - C_s \;=\; \mu_0 T\,H_c\,\frac{d^2 H_c}{dT^2}+\mu_0 T\left(\frac{dH_c}{dT}\right)^2 \]</div>
+      <p>代入抛物线 \( H_c(T) \)：\( S_n-S_s=2\mu_0 H_c^{\,2}(0)\,(T/T_c^2) \)，\( C_{es}\propto T^3 \)（\( T\to 0 \)），与晶格比热同量级。在 \( T=T_c \) 处比热跃变量为 \( \Delta C=1.43\,\gamma T_c \)（\( \gamma \) 为正常态电子比热系数），这是 BCS 理论的著名预言（已为实验精确证实）。</p>
+
+      <h3>7. BCS 理论：库珀对与能隙 BCS Theory — Cooper Pairs and the Energy Gap</h3>
+      <p>1957 年 Bardeen、Cooper、Schrieffer 提出的微观理论（<strong>BCS 理论</strong>）解决了超导机制问题。核心要点：</p>
+      <ul>
+        <li><strong>电子-声子吸引</strong>：一个电子在晶格中行进时会吸引正离子，留下一个「正电荷的尾迹」，反过来吸引另一个电子。在费米面附近两动量相反、自旋反平行的电子之间，这一间接作用表现为<strong>有效吸引</strong>。</li>
+        <li><strong>库珀不稳定性</strong> (Cooper 1956)：无论吸引多弱，都足以使费米面上一对电子结成<strong>束缚态</strong>——<strong>库珀对</strong> (Cooper pair)。其结合能在费米面上形成一个<strong>能隙</strong> \( 2\Delta \)。</li>
+        <li><strong>BCS 基态</strong>：所有库珀对相干地凝聚到同一个量子态（动量为零、自旋单态），形成宏观相干的<strong>超流凝聚体</strong>。</li>
+      </ul>
+      <p>弱耦合极限下 BCS 给出的关键普适数字：</p>
+      <div class="formula">\[ \boxed{\;2\Delta(0) \;\approx\; 3.5\,k_BT_c,\qquad \Delta(0) \;\approx\; 1.76\,k_BT_c,\qquad \frac{\Delta C}{\gamma T_c}\Bigg|_{T_c} \;\approx\; 1.43\;} \]</div>
+      <p>对经典超导体这些关系精确到百分之几（如 Al 实测 \( 2\Delta/k_BT_c=3.4 \)；Pb 与 Hg 因强耦合偏离较大）。能隙 \( \Delta(T) \) 随温度上升而减小，\( T\to T_c \) 时连续趋于零（与二级相变一致）。</p>
+      <p>拆散一个库珀对产生<strong>两个准粒子</strong> (quasiparticles)，每个能量至少 \( \Delta \)。低于 \( 2\Delta \) 的能量无法被吸收（除非有库珀对集体激发），这正如半导体带隙——只不过尺度是 \( \mathrm{meV} \) 而非 \( \mathrm{eV} \)。</p>
+
+      <h3>8. 磁通量子化 Flux Quantization</h3>
+      <p>超导凝聚体的波函数 \( \Psi=\sqrt{n_s}\,e^{i\theta} \) 必须单值。绕环一周相位变化 \( 2\pi \) 的整数倍：</p>
+      <div class="formula">\[ \oint \nabla\theta\cdot d\vec{\ell} \;=\; 2\pi\,n,\qquad n\in\mathbb{Z} \]</div>
+      <p>库珀对电荷 \( -2e \)、质量 \( 2m \)，其规范不变动量为 \( 2m\vec{v}_s-2e\vec{A}=\hbar\nabla\theta \)。在环内深处 \( \vec{v}_s=0 \)（无电流），于是：</p>
+      <div class="formula">\[ \boxed{\;\Phi \;=\; \oint\vec{A}\cdot d\vec{\ell} \;=\; n\,\frac{h}{2e} \;=\; n\,\Phi_0,\qquad \Phi_0 \;=\; \frac{h}{2e} \;\approx\; 2.0678338\times 10^{-15}\,\mathrm{Wb}\;} \]</div>
+      <p>磁通<strong>只取 \( \Phi_0 \) 的整数倍</strong>——分母是 \( 2e \)（库珀对电荷），而非 \( e \)。1961 年由 Doll–Näbauer 与 Deaver–Fairbank 两组实验独立观测到，是库珀对荷 \( 2e \) 的直接证据。</p>
+
+      <h3>9. 约瑟夫森效应 The Josephson Effect (1962)</h3>
+      <p>两层超导体被一薄绝缘层（\( \sim 1\,\mathrm{nm} \)）隔开形成<strong>约瑟夫森结</strong> (Josephson junction)。库珀对通过量子隧穿产生<strong>超流电流</strong>，电流与两边相位差 \( \varphi \) 满足：</p>
+      <div class="formula">\[ I \;=\; I_c\,\sin\varphi,\qquad \frac{d\varphi}{dt} \;=\; \frac{2eV}{\hbar} \;=\; 2\pi\,\frac{2eV}{h} \]</div>
+      <p>第二式预言：加恒压 \( V \) 时结辐射频率 \( f=2eV/h\approx 483.6\,\mathrm{GHz/V}\times V \)。这给出 <strong>1 V ↔ 483.6 THz</strong> 的精密关系，是国际伏特基准的物理基础。<strong>DC SQUID</strong>（超导量子干涉器件）利用两个并联约瑟夫森结测磁通，灵敏度可达 \( 10^{-15}\,\mathrm{Wb} \)，是迄今最灵敏的磁场探测器。</p>
+
+      <h3>10. 高 \( T_c \) 超导体简注 Note on High-\( T_c \) Superconductors</h3>
+      <p>1986 年 Bednorz 与 Müller 在铜氧化物 <strong>La-Ba-Cu-O</strong> 中发现 \( T_c\approx 30\,\mathrm{K} \)（获 1987 年诺贝尔奖）；随后 <strong>YBa₂Cu₃O₇</strong>（YBCO, \( T_c\approx 92\,\mathrm{K} \)）首次越过液氮沸点 77 K，开启了高温超导工程时代。这类<strong>铜氧化物</strong> (cuprates) 的 \( T_c \) 最高已达 \( \sim 133\,\mathrm{K} \)（常压）、\( \sim 164\,\mathrm{K} \)（高压）。它们都是极端第二类超导体（\( \kappa\sim 100 \)），且为各向异性层状结构。其配对机制至今<strong>未由主流理论定论</strong>（虽肯定存在库珀对，但吸引作用可能并非纯电子-声子，可能与磁性涨落有关）。此外，2001 年发现 \( \mathrm{MgB_2} \)（\( T_c\approx 39\,\mathrm{K} \)，二硼化物，可用 BCS 解释）、2008 年发现铁基超导体（\( T_c\sim 55\,\mathrm{K} \)），丰富了超导家族。</p>
+
+      <div class="key-terms">superconductivity (超导电性), critical temperature \( T_c \) (临界温度), zero resistance (零电阻), Meissner effect (迈斯纳效应), perfect diamagnet (理想抗磁体), penetration depth \( \lambda_L \) (穿透深度), London equations (伦敦方程), superfluid density \( n_s \) (超流电子密度), type-I / type-II superconductor (第一类/第二类超导体), critical field \( H_c \) (临界场), lower/upper critical field \( H_{c1},H_{c2} \) (下/上临界场), mixed state (混合态), flux vortex / Abrikosov vortex (磁通涡旋), coherence length \( \xi \) (相干长度), GL parameter \( \kappa=\lambda_L/\xi \) (GL 参数), condensation energy (凝聚能), \( H_c(T) \) curve (临界场曲线), BCS theory (BCS 理论), Cooper pair (库珀对), electron-phonon interaction (电子-声子相互作用), energy gap \( \Delta \) (能隙), flux quantum \( \Phi_0=h/(2e) \) (磁通量子), Josephson effect (约瑟夫森效应), SQUID, cuprate / high-\( T_c \) (铜氧化物/高温超导体)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由伦敦方程导出穿透深度方程与 \( \lambda_L=\sqrt{m/(\mu_0 n_s e^2)} \)</h3>
+      <p class="step"><strong>出发点：</strong> Newton 第二定律对超流电子（无散射）\( m\,d\vec{v}_s/dt=-e\vec{E} \)；超导电流密度 \( \vec{j}_s=-n_s e\vec{v}_s \)。两者结合：</p>
+      <p>\[ \frac{\partial\vec{j}_s}{\partial t}=-n_s e\,\frac{\partial\vec{v}_s}{dt}=\frac{n_s e^2}{m}\vec{E} \]</p>
+      <p class="step">这是<strong>第一伦敦方程</strong>。两边取旋度：</p>
+      <p>\[ \frac{\partial}{\partial t}(\nabla\times\vec{j}_s)=\frac{n_s e^2}{m}(\nabla\times\vec{E})=-\frac{n_s e^2}{m}\frac{\partial\vec{B}}{\partial t} \]</p>
+      <p class="step">即 \( \partial_t\bigl[\nabla\times\vec{j}_s+(n_s e^2/m)\vec{B}\bigr]=0 \)。London <em>假设</em>方括号内恒为零（这相当于选择「Meissner 态」初条件，对应实验观察）：</p>
+      <p>\[ \nabla\times\vec{j}_s \;=\; -\frac{n_s e^2}{m}\,\vec{B}\qquad\text{(第二伦敦方程)} \]</p>
+      <p class="step"><strong>关键一步（结合 Ampère 定律）：</strong> \( \nabla\times\vec{B}=\mu_0\vec{j}_s \)，两边再取旋度：</p>
+      <p>\[ \nabla\times(\nabla\times\vec{B})=\mu_0\,\nabla\times\vec{j}_s=-\frac{\mu_0 n_s e^2}{m}\vec{B} \]</p>
+      <p class="step">用矢量恒等式 \( \nabla\times(\nabla\times\vec{B})=\nabla(\nabla\cdot\vec{B})-\nabla^2\vec{B}=-\nabla^2\vec{B} \)（无磁单极 \( \nabla\cdot\vec{B}=0 \)），得到 Helmholtz 方程：</p>
+      <div class="formula">\[ \nabla^2\vec{B} \;=\; \frac{1}{\lambda_L^{\,2}}\vec{B},\qquad \lambda_L^{\,2}\equiv\frac{m}{\mu_0 n_s e^2} \]</div>
+      <p class="step"><strong>半无限大解：</strong> 对占据 \( x>0 \)、表面 \( x=0 \) 的超导体，外场平行表面。方程退化为 \( d^2B/dx^2=B/\lambda_L^{\,2} \)，通解 \( B(x)=A\,e^{-x/\lambda_L}+C\,e^{x/\lambda_L} \)。要求 \( x\to\infty \) 时 \( B\to 0 \)（体内无场）得 \( C=0 \)，故：</p>
+      <div class="formula">\[ B(x) \;=\; B(0)\,e^{-x/\lambda_L} \]</div>
+      <p class="step">磁场在表面 \( \lambda_L\sim 20\text{–}200\,\mathrm{nm} \) 厚度内<strong>指数衰减</strong>。代入 \( n_s=10^{28}\,\mathrm{m^{-3}} \)、\( m=m_e \)、\( e=1.602\times 10^{-19}\,\mathrm{C} \) 得 \( \lambda_L\approx 53\,\mathrm{nm} \)（见例 5.2），与实测相符至数量级。注意 \( n_s \) 随 \( T \) 升高而减小（库珀对被拆散），故 \( \lambda_L(T) \) 随 \( T \) 升高而增大，\( \lambda_L(T_c)\to\infty \)。</p>
+
+      <h3>B. 磁通量子化 \( \Phi_0=h/(2e) \) 的推导</h3>
+      <p class="step"><strong>前提：</strong> 超导凝聚体由库珀对组成，质量 \( 2m \)、电荷 \( -2e \)、波函数 \( \Psi=\sqrt{n_s}\,e^{i\theta} \)。在电磁场中，<strong>规范不变的</strong>动量-动量关系为：</p>
+      <p>\[ 2m\,\vec{v}_s \;=\; \hbar\nabla\theta + 2e\,\vec{A} \]</p>
+      <p class="step">（注意：库珀对电荷 \( -2e \)，但 \( q\vec{A} \) 项里 \( q=-2e \)，整理后符号为 \( +2e\vec{A} \)。）</p>
+      <p class="step"><strong>单值条件：</strong> \( \Psi \) 单值意味着绕闭合回路 \( C \) 一周相位变化 \( 2\pi n \)：</p>
+      <p>\[ \oint_C \nabla\theta\cdot d\vec{\ell} \;=\; 2\pi n,\qquad n\in\mathbb{Z} \]</p>
+      <p class="step"><strong>代入规范不变动量并取环内深处 \( \vec{v}_s=0 \)：</strong> 把 \( \nabla\theta=(2m\vec{v}_s-2e\vec{A})/\hbar \) 代入：</p>
+      <p>\[ \oint_C \frac{2m\vec{v}_s-2e\vec{A}}{\hbar}\cdot d\vec{\ell} \;=\; 2\pi n \]</p>
+      <p class="step"><strong>取环路在超导体深处（远离表面）</strong>，那里 \( \vec{j}_s=-n_s e\vec{v}_s=0 \)，故 \( \vec{v}_s=0 \)：</p>
+      <p>\[ -\frac{2e}{\hbar}\oint\vec{A}\cdot d\vec{\ell} \;=\; 2\pi n \quad\Rightarrow\quad \oint\vec{A}\cdot d\vec{\ell} \;=\; -\,\frac{2\pi\hbar}{2e}\,n \;=\; -\,\frac{h}{2e}\,n \]</p>
+      <p class="step">取绝对值，磁通 \( \Phi=\oint\vec{A}\cdot d\vec{\ell}=\iint\vec{B}\cdot d\vec{S} \) 量子化：</p>
+      <div class="formula">\[ \boxed{\;\Phi \;=\; n\,\Phi_0,\qquad \Phi_0 \;=\; \frac{h}{2e} \;=\; \frac{\pi\hbar}{e} \;\approx\; 2.0678338\times 10^{-15}\,\mathrm{Wb}\;} \]</div>
+      <p class="step"><strong>关键点：</strong> 分母是 \( 2e \) 而非 \( e \)，正是库珀对的电荷。如果实验上测得量子是 \( h/e \)，就说明载流子是单个电子；测得 \( h/(2e) \) 则证明载流子是<strong>双电子束缚态</strong>——这正是 1961 年实验对 BCS 理论的直接验证。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 铅的临界场与凝聚能密度</h4>
+        <p class="example-statement">铅 (Pb) 是经典的第一类超导体，\( T_c=7.20\,\mathrm{K} \)，\( H_c(0)=803\,\mathrm{Oe} \)。求：(a) \( H_c(0) \) 与 \( B_c(0)=\mu_0 H_c(0) \) 在 SI 单位下的值；(b) \( T=0 \) 时超导态的凝聚能密度 \( u_{\text{cond}} \)；(c) 一个 \( 1.0\,\mathrm{cm^3} \) 的 Pb 样品的总凝聚能。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 由 \( 1\,\mathrm{Oe}=10^3/(4\pi)\,\mathrm{A/m}\approx 79.577\,\mathrm{A/m} \)：</p>
+          <p>\[ H_c(0)=803\times\frac{10^3}{4\pi}=803\times 79.577=6.39\times 10^{4}\,\mathrm{A/m} \]</p>
+          <p>\[ B_c(0)=\mu_0 H_c(0)=(4\pi\times 10^{-7})(6.39\times 10^{4})=8.03\times 10^{-2}\,\mathrm{T}=80.3\,\mathrm{mT} \]</p>
+          <p class="step"><strong>解 (b)：</strong> 凝聚能密度：</p>
+          <p>\[ u_{\text{cond}}=\frac{1}{2}\mu_0 H_c^{\,2}(0)=\frac{1}{2}(4\pi\times 10^{-7})(6.39\times 10^{4})^2 \]</p>
+          <p>\[ =\frac{1}{2}(1.2566\times 10^{-6})(4.083\times 10^{9})=\frac{1}{2}(5.131\times 10^{3}) \]</p>
+          <p>\[ u_{\text{cond}}=2.57\times 10^{3}\,\mathrm{J/m^3} \]</p>
+          <p class="step">或等价地 \( u_{\text{cond}}=B_c^{\,2}/(2\mu_0)=(0.0803)^2/(2\times 1.2566\times 10^{-6})=2.57\times 10^{3}\,\mathrm{J/m^3} \) ✓。</p>
+          <p class="step"><strong>解 (c)：</strong> \( V=1.0\,\mathrm{cm^3}=1.0\times 10^{-6}\,\mathrm{m^3} \)。</p>
+          <p>\[ U=u_{\text{cond}}\cdot V=(2.57\times 10^{3})(1.0\times 10^{-6})=2.57\times 10^{-3}\,\mathrm{J}=2.57\,\mathrm{mJ} \]</p>
+          <p class="step"><strong>评论：</strong> 仅几毫焦的能量差维持了 Pb 的整个宏观量子态——每立方厘米约 \( 10^{22} \) 个库珀对凝聚到同一相干态。能量虽小，但状态高度有序。</p>
+          <p><span class="ans">\( H_c(0)=6.39\times 10^{4}\,\mathrm{A/m} \)、\( B_c(0)=80.3\,\mathrm{mT} \)；\( u_{\text{cond}}=2.57\times 10^{3}\,\mathrm{J/m^3} \)；\( U=2.57\,\mathrm{mJ} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 伦敦穿透深度的数值估计</h4>
+        <p class="example-statement">用伦敦公式 \( \lambda_L=\sqrt{m/(\mu_0 n_s e^2)} \) 估计一典型超导体的穿透深度。取超流电子密度 \( n_s=1.0\times 10^{28}\,\mathrm{m^{-3}} \)，电子质量 \( m=9.109\times 10^{-31}\,\mathrm{kg} \)，电子电荷量值 \( e=1.602\times 10^{-19}\,\mathrm{C} \)，\( \mu_0=4\pi\times 10^{-7}\,\mathrm{T\,m/A} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 分两步：先算分母 \( \mu_0 n_s e^2 \)，再开方。</p>
+          <p>\[ e^2=(1.602\times 10^{-19})^2=2.566\times 10^{-38}\,\mathrm{C^2} \]</p>
+          <p>\[ \mu_0 n_s e^2=(4\pi\times 10^{-7})(1.0\times 10^{28})(2.566\times 10^{-38}) \]</p>
+          <p>\[ =(1.2566\times 10^{-6})(2.566\times 10^{-10})=3.225\times 10^{-16}\,\mathrm{(SI)} \]</p>
+          <p>\[ \frac{m}{\mu_0 n_s e^2}=\frac{9.109\times 10^{-31}}{3.225\times 10^{-16}}=2.825\times 10^{-15}\,\mathrm{m^2} \]</p>
+          <p>\[ \lambda_L=\sqrt{2.825\times 10^{-15}}=5.32\times 10^{-8}\,\mathrm{m}=53.2\,\mathrm{nm} \]</p>
+          <p class="step"><strong>合理性：</strong> 实测典型 \( \lambda_L \)（\( T=0 \)）：Al \( \approx 50\,\mathrm{nm} \)、Pb \( \approx 39\,\mathrm{nm} \)、Nb \( \approx 40\,\mathrm{nm} \)，与估计同数量级。注意 \( n_s \) 应理解为<strong>凝聚态电子密度</strong>，\( T=0 \) 时接近全部传导电子，\( T\to T_c \) 时 \( n_s\to 0 \)，故 \( \lambda_L(T) \) 在接近 \( T_c \) 时发散，实验上常拟合为 \( \lambda_L(T)=\lambda_L(0)/\sqrt{1-(T/T_c)^4} \)（二流体模型）。</p>
+          <p><span class="ans">\( \lambda_L\approx 53\,\mathrm{nm} \)（\( n_s=10^{28}\,\mathrm{m^{-3}} \) 时）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 铌的能隙：从 \( T_c \) 到 \( \Delta \)</h4>
+        <p class="example-statement">铌 (Nb) 是经典的弱耦合第二类超导体，\( T_c=9.20\,\mathrm{K} \)。用 BCS 弱耦合公式 \( 2\Delta(0)=3.5\,k_BT_c \)（即 \( \Delta(0)=1.76\,k_BT_c \)）求：(a) 能隙 \( \Delta(0) \)（以 eV 与 meV 表示）；(b) 对应的「能隙频率」 \( \nu=\Delta/h \)（即拆散一个库珀对所需光子频率下限）；(c) 与同温度 \( k_BT_c \) 的比值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> \( k_B=8.617\times 10^{-5}\,\mathrm{eV/K} \)。</p>
+          <p>\[ k_BT_c=(8.617\times 10^{-5})(9.20)=7.93\times 10^{-4}\,\mathrm{eV}=0.793\,\mathrm{meV} \]</p>
+          <p>\[ \Delta(0)=1.76\,k_BT_c=1.76\times 7.93\times 10^{-4}=1.40\times 10^{-3}\,\mathrm{eV}=1.40\,\mathrm{meV} \]</p>
+          <p class="step">相应地 \( 2\Delta(0)=2.80\,\mathrm{meV} \)。实验测 Nb 的 \( 2\Delta/k_BT_c\approx 3.8 \)（略高于 BCS 弱耦合的 3.5，因 Nb 略偏强耦合），我们的估计 \( 2\Delta=2.80\,\mathrm{meV} \) 与实验 \( \sim 3.0\,\mathrm{meV} \) 相差约 7%。</p>
+          <p class="step"><strong>解 (b)：</strong> 由 \( \Delta=h\nu \)：</p>
+          <p>\[ \nu=\frac{\Delta}{h}=\frac{1.40\times 10^{-3}\times 1.602\times 10^{-19}}{6.626\times 10^{-34}}=\frac{2.243\times 10^{-22}}{6.626\times 10^{-34}}=3.38\times 10^{11}\,\mathrm{Hz} \]</p>
+          <p>\[ \nu\approx 338\,\mathrm{GHz}\quad(\text{亚毫米波 / 微波波段}) \]</p>
+          <p class="step">这解释了为何 BCS 能隙可由微波吸收或红外隧道谱直接测量。</p>
+          <p class="step"><strong>解 (c)：</strong> 比值：</p>
+          <p>\[ \frac{\Delta(0)}{k_BT_c}=1.76\,\text{(无量纲)},\qquad \frac{2\Delta(0)}{k_BT_c}=3.5 \]</p>
+          <p class="step"><strong>对照铝 (Al)：</strong> \( T_c=1.20\,\mathrm{K} \)，\( \Delta(0)=1.76\times 8.617\times 10^{-5}\times 1.20=1.82\times 10^{-4}\,\mathrm{eV}=0.182\,\mathrm{meV}=182\,\mathrm{\mu eV} \)。Al 实测 \( 2\Delta/k_BT_c\approx 3.4 \)，与 BCS 几乎完美吻合。</p>
+          <p><span class="ans">\( \Delta(0)=1.40\,\mathrm{meV} \)（Nb）；\( \nu\approx 338\,\mathrm{GHz} \)；\( \Delta/k_BT_c=1.76 \)、\( 2\Delta/k_BT_c=3.5 \)。Al 的 \( \Delta(0)\approx 0.18\,\mathrm{meV} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 磁通量子 \( \Phi_0=h/(2e) \) 的数值</h4>
+        <p class="example-statement">由基本常数 \( h=6.62607015\times 10^{-34}\,\mathrm{J\cdot s} \)、\( e=1.602176634\times 10^{-19}\,\mathrm{C} \) 计算：(a) 磁通量子 \( \Phi_0=h/(2e) \)；(b) 若一超导环所围面积 \( A=1.0\,\mathrm{cm^2} \) 上加上均匀磁场 \( B=1.0\times 10^{-4}\,\mathrm{T} \)（约地磁场量级），环中磁通以 \( \Phi_0 \) 为单位的量子数 \( n \)；(c) 一个 DC SQUID（环路面积 \( A=0.01\,\mathrm{mm^2} \)）能分辨单个 \( \Phi_0 \) 时，对应的磁场分辨率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong></p>
+          <p>\[ \Phi_0=\frac{h}{2e}=\frac{6.62607015\times 10^{-34}}{2\times 1.602176634\times 10^{-19}}=\frac{6.62607015\times 10^{-34}}{3.204353268\times 10^{-19}} \]</p>
+          <p>\[ =2.0678338\times 10^{-15}\,\mathrm{Wb}\quad(\mathrm{T\cdot m^2}) \]</p>
+          <p class="step">换算：\( 1\,\mathrm{Wb}=10^{8}\,\mathrm{maxwell}=10^{8}\,\mathrm{G\cdot cm^2} \)，故 \( \Phi_0=2.07\times 10^{-7}\,\mathrm{G\cdot cm^2} \)。</p>
+          <p class="step"><strong>解 (b)：</strong> \( A=1.0\,\mathrm{cm^2}=1.0\times 10^{-4}\,\mathrm{m^3} \)。注意单位：\( 1\,\mathrm{cm^2}=10^{-4}\,\mathrm{m^2} \)。</p>
+          <p>\[ \Phi=BA=(1.0\times 10^{-4})(1.0\times 10^{-4})=1.0\times 10^{-8}\,\mathrm{Wb} \]</p>
+          <p>\[ n=\frac{\Phi}{\Phi_0}=\frac{1.0\times 10^{-8}}{2.0678338\times 10^{-15}}=4.84\times 10^{6} \]</p>
+          <p class="step">即地磁场下、\( 1\,\mathrm{cm^2} \) 环中约含<strong>五百万个磁通量子</strong>。这反映了 \( \Phi_0 \) 之小。</p>
+          <p class="step"><strong>解 (c)：</strong> SQUID 面积 \( A=0.01\,\mathrm{mm^2}=0.01\times 10^{-6}\,\mathrm{m^2}=1.0\times 10^{-8}\,\mathrm{m^2} \)。一个 \( \Phi_0 \) 对应：</p>
+          <p>\[ B_{\min}=\frac{\Phi_0}{A}=\frac{2.0678338\times 10^{-15}}{1.0\times 10^{-8}}=2.07\times 10^{-7}\,\mathrm{T}=0.207\,\mathrm{\mu T} \]</p>
+          <p class="step">这是单量子对应的磁场。SQUID 实际可分辨 \( 10^{-6}\Phi_0 \) 甚至更小，对应磁场灵敏度高至 \( \sim 10^{-13}\,\mathrm{T} \)（\( 10^{-9} \) 地磁场），可用于心磁图、脑磁图等生物磁信号探测。</p>
+          <p><span class="ans">\( \Phi_0=2.07\times 10^{-15}\,\mathrm{Wb} \)；\( n\approx 4.8\times 10^{6} \)；\( B_{\min}\approx 0.21\,\mathrm{\mu T} \)（每 \( \Phi_0 \)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 由 GL 参数判定第一类/第二类</h4>
+        <p class="example-statement">已知铅 (Pb) 的 \( \lambda_L\approx 39\,\mathrm{nm} \)、\( \xi\approx 87\,\mathrm{nm} \)；铌 (Nb) 的 \( \lambda_L\approx 40\,\mathrm{nm} \)、\( \xi\approx 38\,\mathrm{nm} \)。判定每种材料是第一类还是第二类超导体，并估算 Nb 的下临界场 \( H_{c1} \)（已知 Nb 的热力学临界场 \( H_c(0)=0.20\,\mathrm{T} \)，即 \( \mu_0 H_c=0.20\,\mathrm{T} \)，\( H_c\approx 1.59\times 10^{5}\,\mathrm{A/m} \)）。近似公式 \( H_{c1}\approx \dfrac{\Phi_0}{4\pi\mu_0\lambda_L^{\,2}}\ln\kappa \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> GL 参数 \( \kappa=\lambda_L/\xi \)。</p>
+          <p>\[ \kappa_{\text{Pb}}=\frac{39}{87}=0.448<\frac{1}{\sqrt{2}}=0.707\;\Rightarrow\;\text{type-I} \]</p>
+          <p>\[ \kappa_{\text{Nb}}=\frac{40}{38}=1.05>0.707\;\Rightarrow\;\text{type-II}\;\checkmark \]</p>
+          <p class="step">Pb 是经典第一类（与例 5.1 一致），Nb 是经典第二类（接近临界值，故 \( H_{c2} \) 不太大但显著高于 \( H_c \)）。</p>
+          <p class="step"><strong>估算 Nb 的 \( H_{c1} \)：</strong> 取 \( \lambda_L=40\,\mathrm{nm}=4.0\times 10^{-8}\,\mathrm{m} \)，\( \ln\kappa=\ln 1.05\approx 0.049 \)（NB：\( \kappa \) 接近 1，对数项小）：</p>
+          <p>\[ \mu_0 H_{c1} \approx \frac{\Phi_0}{4\pi\lambda_L^{\,2}}\ln\kappa = \frac{2.068\times 10^{-15}}{4\pi(4.0\times 10^{-8})^2}\times 0.049 \]</p>
+          <p>\[ =\frac{2.068\times 10^{-15}}{4\pi\times 1.6\times 10^{-15}}\times 0.049 =\frac{2.068}{20.11}\times 0.049 \]</p>
+          <p>\[ =0.1028\times 0.049=5.0\times 10^{-3}\,\mathrm{T}=5.0\,\mathrm{mT} \]</p>
+          <p class="step">即 \( B_{c1}=\mu_0 H_{c1}\approx 5\,\mathrm{mT} \)，远小于 \( B_c=200\,\mathrm{mT} \)（这是 type-II 的典型特征）。实测 Nb 的 \( B_{c1}\approx 130\text{–}170\,\mathrm{mT} \)，比上述简化估计高得多——这是因为公式中近似 \( \ln\kappa \) 在 \( \kappa\sim 1 \) 时不准（实际系数更接近 \( \ln\kappa+0.5 \)），且 Nb 的 \( \kappa \) 实际上略大（\( \sim 1.3 \)）。但数量级已显示出 type-II 材料 \( H_{c1}<H_c \) 的关键特征。</p>
+          <p><span class="ans">Pb \( \kappa\approx 0.45 \)→第一类；Nb \( \kappa\approx 1.05 \)→第二类；Nb \( B_{c1}\sim 5\text{–}150\,\mathrm{mT} \)（粗估 \( \sim 5\,\mathrm{mT} \)，实测更高）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「超导就是电阻为零的金属」——错。</strong> 零电阻仅是「完美导电」，它只能保证体内磁场<strong>不随时间变化</strong>（冻结磁通）。超导体还必须满足<strong>迈斯纳效应</strong>——主动排出体内磁场，与历史无关。这是 1933 年 Meissner 才澄清的关键区别。判断一个材料是否真超导，必须看到<strong>两个</strong>独立现象。</li>
+        <li><strong>「磁通量子是 \( h/e \)」——错。</strong> 实验测得 \( \Phi_0=h/(2e) \)，分母是 \( 2e \)。这<strong>直接证明</strong>了超导载流子是<strong>库珀对</strong>（电荷 \( -2e \)）而非单个电子。若理论预言 \( h/e \)，就被实验驳倒了——这是 BCS 理论的胜利之一。</li>
+        <li><strong>「所有超导体都有磁通涡旋」——错。</strong> 涡旋<strong>只出现在第二类</strong>超导体的混合态（\( H_{c1}<H<H_{c2} \)）。第一类超导体在 \( H<H_c \) 时是纯 Meissner 态（体内完全无场），\( H>H_c \) 时直接整体进入正常态——中间<strong>没有</strong>涡旋态。把「涡旋」与「超导」画等号是常见混淆。</li>
+        <li><strong>「超导体内部磁场严格为零」——错（严格说）。</strong> 磁场是在表面 \( \lambda_L\sim 20\text{–}200\,\mathrm{nm} \) 厚度内<strong>指数衰减</strong>，并非数学意义上的「界面突变」。对宏观样品（\( \gg\lambda_L \)）可近似视作体内 \( B=0 \)，但对纳米尺度的薄膜或细颗粒，穿透深度可与样品尺寸相比，磁场显著渗入。</li>
+        <li><strong>「能隙 \( \Delta \) 等于凝聚能 \( \tfrac{1}{2}\mu_0 H_c^{\,2} \)」——错（量纲与含义都不同）。</strong> \( \Delta \) 是<strong>拆散一个库珀对</strong>所需能量（\( \sim\mathrm{meV} \)，每粒子量级）；\( \tfrac{1}{2}\mu_0 H_c^{\,2} \) 是凝聚态<strong>自由能密度</strong>（\( \sim\mathrm{kJ/m^3} \)，每体积量级）。两者通过 BCS 理论相联系但不可等同。粗略地，凝聚能密度 \( \approx \tfrac{1}{2}N(0)\Delta^2 \)（\( N(0) \) 为费米面态密度）。</li>
+        <li><strong>「高 \( T_c \) 已被 BCS 解释」——错。</strong> BCS 弱耦合电子-声子机制只对 \( T_c\lesssim 40\,\mathrm{K} \) 的常规超导体（如 Al、Nb、MgB₂）有效。铜氧化物（\( T_c\sim 100\,\mathrm{K} \)）虽肯定存在库珀对，但配对机制至今<strong>无主流共识</strong>，可能与磁性涨落、d 波配对等有关，是凝聚态物理的开放问题。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 用 \( h=6.62607015\times 10^{-34}\,\mathrm{J\cdot s} \)、\( e=1.602176634\times 10^{-19}\,\mathrm{C} \) 计算磁通量子 \( \Phi_0=h/(2e) \)。若把分母写成 \( e \)（即假设载流子是单电子），结果如何？</summary>
+        <div class="hint">直接代数；\( h/e \) 与 \( h/(2e) \) 差一倍因子 2。</div>
+        <div class="solution">
+          <p>\( \Phi_0=\dfrac{6.62607015\times 10^{-34}}{2\times 1.602176634\times 10^{-19}}=\dfrac{6.62607015\times 10^{-34}}{3.204353268\times 10^{-19}}=2.0678338\times 10^{-15}\,\mathrm{Wb} \)。</p>
+          <p>若分母为 \( e \)：\( h/e=4.1356676\times 10^{-15}\,\mathrm{Wb}=2\Phi_0 \)。</p>
+          <p><span class="ans">\( \Phi_0=2.07\times 10^{-15}\,\mathrm{Wb} \)；单电子假设给出两倍大的量子，与实验矛盾。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一超导体 \( n_s=4.0\times 10^{28}\,\mathrm{m^{-3}} \)。求 \( \lambda_L \)（用 \( m_e \)、\( e \)、\( \mu_0 \)）。该值大约对应何种元素？（提示：与例 5.2 比较）。</summary>
+        <div class="hint">\( \lambda_L=\sqrt{m/(\mu_0 n_s e^2)} \)；例 5.2 用 \( n_s=10^{28} \) 得 \( 53\,\mathrm{nm} \)，\( n_s \) 翻 4 倍使 \( \lambda_L \) 减半。</div>
+        <div class="solution">
+          <p>\( \mu_0 n_s e^2=(4\pi\times 10^{-7})(4.0\times 10^{28})(2.566\times 10^{-38})=1.290\times 10^{-15} \)。</p>
+          <p>\( \lambda_L=\sqrt{9.109\times 10^{-31}/1.290\times 10^{-15}}=\sqrt{7.061\times 10^{-16}}=2.66\times 10^{-8}\,\mathrm{m}=26.6\,\mathrm{nm} \)。</p>
+          <p>这接近 Nb 或 Pb 的实测范围（\( \sim 40\,\mathrm{nm} \)），与例 5.2 同数量级——估计偏小是因为简单伦敦公式未考虑 Pippard 非局域修正（对清洁极限的 Al 这种 \( \xi \) 很大的材料影响显著）。</p>
+          <p><span class="ans">\( \lambda_L\approx 27\,\mathrm{nm} \)。对应于中等密度金属超导体。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （a）已知 Al 的 \( T_c=1.20\,\mathrm{K} \)，求 BCS 弱耦合下的能隙 \( \Delta(0) \)（meV）。（b）波长多长的光子能量刚好等于 \( 2\Delta \)？（用于红外吸收实验。）</summary>
+        <div class="hint">\( \Delta=1.76\,k_BT_c \)；\( \lambda=hc/(2\Delta) \)。\( hc=1.2398\times 10^{-6}\,\mathrm{eV\cdot m} \)。</div>
+        <div class="solution">
+          <p>(a) \( \Delta(0)=1.76\times 8.617\times 10^{-5}\times 1.20=1.82\times 10^{-4}\,\mathrm{eV}=0.182\,\mathrm{meV}=182\,\mathrm{\mu eV} \)。</p>
+          <p>(b) \( 2\Delta=0.364\,\mathrm{meV}=3.64\times 10^{-4}\,\mathrm{eV} \)。</p>
+          <p>\( \lambda=\dfrac{hc}{2\Delta}=\dfrac{1.2398\times 10^{-6}}{3.64\times 10^{-4}}=3.41\times 10^{-3}\,\mathrm{m}=3.41\,\mathrm{mm} \)。</p>
+          <p>即<strong>毫米波</strong>（\( \nu=c/\lambda\approx 88\,\mathrm{GHz} \)）。这正是测 Al 能隙的实验频段。</p>
+          <p><span class="ans">\( \Delta(0)=0.18\,\mathrm{meV} \)；\( \lambda(2\Delta)\approx 3.4\,\mathrm{mm} \)（约 88 GHz）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 一第一类超导体的 \( H_c(0)=5.0\times 10^{4}\,\mathrm{A/m} \)，\( T_c=4.2\,\mathrm{K} \)。用抛物线公式 \( H_c(T)=H_c(0)\bigl[1-(T/T_c)^2\bigr] \) 求：(a) \( T=2.1\,\mathrm{K} \)（即 \( T=T_c/2 \)）时的 \( H_c \)；(b) 此温度下的凝聚能密度；(c) 此温度下的 \( dH_c/dT \)，并由此估算熵密度差 \( S_n-S_s \)。</summary>
+        <div class="hint">\( u_{\text{cond}}=\tfrac{1}{2}\mu_0 H_c^2 \)；\( S_n-S_s=-\mu_0 H_c\,dH_c/dT \)。</div>
+        <div class="solution">
+          <p>(a) \( H_c(T_c/2)=H_c(0)\bigl[1-\tfrac{1}{4}\bigr]=\tfrac{3}{4}H_c(0)=3.75\times 10^{4}\,\mathrm{A/m} \)。</p>
+          <p>(b) \( u_{\text{cond}}=\tfrac{1}{2}(4\pi\times 10^{-7})(3.75\times 10^{4})^2=\tfrac{1}{2}(1.2566\times 10^{-6})(1.406\times 10^{9})=8.84\times 10^{2}\,\mathrm{J/m^3} \)。</p>
+          <p>(c) \( \dfrac{dH_c}{dT}=H_c(0)\cdot\bigl(-2T/T_c^2\bigr)=-\dfrac{2H_c(0)\cdot T}{T_c^2} \)。</p>
+          <p>在 \( T=T_c/2=2.1\,\mathrm{K} \)：\( dH_c/dT=-2(5.0\times 10^{4})(2.1)/(4.2)^2=-1.19\times 10^{4}\,\mathrm{(A/m)/K} \)。</p>
+          <p>\( S_n-S_s=-\mu_0 H_c\,dH_c/dT=-(4\pi\times 10^{-7})(3.75\times 10^{4})(-1.19\times 10^{4}) \)。</p>
+          <p>\( =(1.2566\times 10^{-6})(4.46\times 10^{8})=5.60\times 10^{2}\,\mathrm{J/(m^3\cdot K)} \)。</p>
+          <p><strong>合理性：</strong> \( S_n-S_s>0 \) ✓（超导态熵更低，更有序）。在 \( T=0 \)，\( dH_c/dT=0\Rightarrow S_n-S_s=0 \)（热力学第三定律要求）；在 \( T=T_c \)，\( H_c=0\Rightarrow S_n-S_s=0 \)（也连续，对应二级相变）。</p>
+          <p><span class="ans">\( H_c(T_c/2)=3.75\times 10^{4}\,\mathrm{A/m} \)；\( u_{\text{cond}}\approx 884\,\mathrm{J/m^3} \)；\( S_n-S_s\approx 560\,\mathrm{J/(m^3\cdot K)} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 一个约瑟夫森结两端加恒压 \( V=10\,\mathrm{\mu V} \)。求结辐射的频率 \( f \)（AC 约瑟夫森效应）。若改用 \( V=1\,\mathrm{mV} \)，频率又是多少？</summary>
+        <div class="hint">\( f=2eV/h \)；常数 \( 2e/h=483.5979\,\mathrm{GHz/V} \)。</div>
+        <div class="solution">
+          <p>\( f=\dfrac{2e}{h}\,V=483.5979\times 10^{9}\,\mathrm{Hz/V}\times V \)。</p>
+          <p>\( V=10\,\mathrm{\mu V}=1.0\times 10^{-5}\,\mathrm{V} \)：\( f=483.5979\times 10^{9}\times 10^{-5}=4.84\times 10^{6}\,\mathrm{Hz}=4.84\,\mathrm{MHz} \)（短波电台频段）。</p>
+          <p>\( V=1\,\mathrm{mV}=10^{-3}\,\mathrm{V} \)：\( f=483.5979\times 10^{9}\times 10^{-3}=4.84\times 10^{8}\,\mathrm{Hz}=484\,\mathrm{GHz} \)（亚毫米波）。</p>
+          <p>这就是为什么约瑟夫森结可用于<strong>电压基准</strong>：固定频率的微波辐照结会在 I-V 曲线上产生 Shapiro 阶梯，\( V_n=nhf/(2e) \)，把电压精确地锁定到频率（频率可由原子钟极精密测定）。</p>
+          <p><span class="ans">\( f(10\,\mathrm{\mu V})\approx 4.84\,\mathrm{MHz} \)；\( f(1\,\mathrm{mV})\approx 484\,\mathrm{GHz} \)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真展示<strong>磁场线</strong>（field lines, 蓝色箭头链）如何响应超导圆柱（横截面）。默认为<strong>第一类</strong>：当 \( H/H_c<1 \) 时处于<strong>迈斯纳态</strong>，磁力线<strong>绕过</strong>圆柱（被排出）；当 \( H/H_c>1 \) 时整个样品进入<strong>正常态</strong>，磁力线笔直穿过。切换到<strong>第二类</strong>，则在 \( H_{c1}<H<H_{c2} \) 区间出现<strong>混合态</strong>——几个<strong>磁通涡旋</strong>（红色亮点）贯穿样品内部，每个携带一个磁通量子 \( \Phi_0 \)。沿每条磁力线滑动的<strong>脉冲点</strong>指示磁场方向。底部刻度标出 \( H_c \)（或 \( H_{c1}, H_c, H_{c2} \)）。滑动 <strong>H / H_c</strong>、切换类型，观察相变。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+
+          /* ---------- Geometry of the superconducting cylinder (cross-section) ---------- */
+          var cx = W / 2, cy = H / 2 + 4;
+          var R = 70;                  // radius in pixels
+          var Hc1 = 0.40, Hc2 = 1.50;  // for type-II (in units of H_c)
+
+          /* ---------- Parameters ---------- */
+          var DEFAULTS = { Hn: 0.55, typeII: false };
+          var params = Object.assign({}, DEFAULTS);
+
+          /* ---------- Mode determination ---------- */
+          function mode(Hn, typeII) {
+            if (typeII) {
+              if (Hn < Hc1) return 'meissner';
+              if (Hn < Hc2) return 'mixed';
+              return 'normal';
+            }
+            return Hn < 1 ? 'meissner' : 'normal';
+          }
+
+          /* ---------- Analytical B-field of perfectly diamagnetic cylinder (2D) ----------
+             Outside a cylinder of radius R in a uniform applied field B0 along +x:
+                 B_x/B0 = 1 - R^2 (dx^2 - dy^2) / (dx^2 + dy^2)^2
+                 B_y/B0 = - R^2 * (2 dx dy)        / (dx^2 + dy^2)^2
+             Inside: in Meissner state B = 0; in mixed state average field ≈ (H/Hc2) B0. */
+          function fieldAt(x, y, m, Hn) {
+            var dx = x - cx, dy = y - cy;
+            var r2 = dx * dx + dy * dy;
+            var a2 = R * R;
+            var inside = r2 < a2;
+            if (m === 'normal') return { bx: 1, by: 0, inside: inside };
+            if (inside) {
+              if (m === 'meissner') return { bx: 0, by: 0, inside: true };
+              // mixed: averaged interior field grows from 0 at Hc1 to ~B0 at Hc2
+              var s = (Hn - Hc1) / (Hc2 - Hc1);
+              s = Math.max(0, Math.min(1, s));
+              return { bx: 0.2 + 0.8 * s, by: 0, inside: true };
+            }
+            var inv = a2 / (r2 * r2);
+            var bx = 1 - inv * (dx * dx - dy * dy);
+            var by = -inv * (2 * dx * dy);
+            return { bx: bx, by: by, inside: false };
+          }
+
+          /* ---------- Streamline tracer: integrate field direction from a seed at left edge ---------- */
+          function traceStreamline(y0, m, Hn, maxSteps) {
+            var pts = [];
+            var x = -4, y = y0;
+            var step = 2.6;
+            var startedUp = (y0 < cy); // seeded above center?
+            for (var i = 0; i < maxSteps; i++) {
+              pts.push([x, y]);
+              var f = fieldAt(x, y, m, Hn);
+              var mag = Math.hypot(f.bx, f.by);
+              var ux, uy;
+              if (mag < 0.04) {
+                // Shadow region (field vanishes): slide tangentially around the cylinder
+                var dx = x - cx, dy = y - cy;
+                var d = Math.hypot(dx, dy) || 1;
+                // Radial outward direction; tangent perpendicular (CW if started above, CCW if below)
+                var sign = startedUp ? +1 : -1;
+                ux = (-dy / d) * sign;
+                uy = ( dx / d) * sign;
+              } else {
+                ux = f.bx / mag; uy = f.by / mag;
+              }
+              var nx = x + ux * step;
+              var ny = y + uy * step;
+              // Reject penetration into the cylinder when in Meissner state
+              if (m === 'meissner') {
+                var ddx = nx - cx, ddy = ny - cy;
+                var dd = Math.hypot(ddx, ddy);
+                if (dd < R + 1.5) {
+                  nx = cx + (ddx / (dd || 1)) * (R + 1.5);
+                  ny = cy + (ddy / (dd || 1)) * (R + 1.5);
+                }
+              }
+              x = nx; y = ny;
+              if (x > W + 4 || y < -8 || y > H + 8) break;
+            }
+            return pts;
+          }
+
+          /* ---------- Streamline seeds ---------- */
+          var seeds = [];
+          (function buildSeeds() {
+            // Even grid of seeds across the left edge, skipping exact center
+            var N = 16;
+            for (var k = 0; k < N; k++) {
+              var y = 18 + (k / (N - 1)) * (H - 36);
+              if (Math.abs(y - cy) < 6) continue; // skip the equatorial shadow line
+              seeds.push(y);
+            }
+            // a couple close to center to better show field going around
+            seeds.push(cy - 5);
+            seeds.push(cy + 5);
+          })();
+
+          /* ---------- Cached streamlines & vortex layout ---------- */
+          var lines = [];
+          var cumLen = [];
+          var totalLen = [];
+          function rebuildLines() {
+            var m = mode(params.Hn, params.typeII);
+            lines = [];
+            cumLen = [];
+            totalLen = [];
+            for (var i = 0; i < seeds.length; i++) {
+              var pts = traceStreamline(seeds[i], m, params.Hn, 500);
+              lines.push(pts);
+              var cl = [0];
+              for (var j = 1; j < pts.length; j++) {
+                cl[j] = cl[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
+              }
+              cumLen.push(cl);
+              totalLen.push(cl.length ? cl[cl.length - 1] : 0);
+            }
+          }
+          rebuildLines();
+
+          /* ---------- Hex-ish vortex lattice for the mixed state ---------- */
+          var vortices = [];
+          (function buildVortices() {
+            var grid = [
+              [0, 0],
+              [-0.45, -0.40], [0.45, -0.40],
+              [-0.45,  0.40], [0.45,  0.40],
+              [0, -0.65], [0, 0.65],
+              [-0.75, 0], [0.75, 0]
+            ];
+            for (var i = 0; i < grid.length; i++) {
+              var gx = grid[i][0], gy = grid[i][1];
+              if (Math.hypot(gx, gy) < 0.85) vortices.push([gx, gy]);
+            }
+          })();
+
+          /* ---------- Sim ---------- */
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0 }; },
+            setup: function (ctx, s, env) { rebuildLines(); },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var Hn = params.Hn;
+              var typeII = params.typeII;
+              var m = mode(Hn, typeII);
+              var t = s.t;
+
+              /* ===== Title ===== */
+              var typeLabel = typeII ? 'Type-II 第二类' : 'Type-I 第一类';
+              PS.drawText(ctx,
+                '超导体磁场响应 Field Response   (' + typeLabel + ')',
+                W / 2, 14,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              /* ===== State color ===== */
+              var stateCol = m === 'meissner' ? C.primary :
+                             m === 'mixed'   ? C.trace   :
+                                               C.accent;
+
+              /* ===== Streamlines ===== */
+              ctx.save();
+              ctx.lineWidth = 1.2;
+              for (var i = 0; i < lines.length; i++) {
+                var pts = lines[i];
+                if (pts.length < 2) continue;
+                ctx.strokeStyle = C.primary;
+                ctx.globalAlpha = 0.55;
+                ctx.beginPath();
+                ctx.moveTo(pts[0][0], pts[0][1]);
+                for (var j = 1; j < pts.length; j++) ctx.lineTo(pts[j][0], pts[j][1]);
+                ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              /* ===== Cylinder body (semi-transparent fill so streamlines show around it) ===== */
+              ctx.save();
+              ctx.globalAlpha = m === 'normal' ? 0.10 : 0.20;
+              PS.drawCircle(ctx, cx, cy, R, { fill: stateCol });
+              ctx.restore();
+              PS.drawCircle(ctx, cx, cy, R, { stroke: stateCol, lineWidth: 2.5 });
+
+              /* ===== Vortices in mixed state ===== */
+              if (m === 'mixed') {
+                for (var vi = 0; vi < vortices.length; vi++) {
+                  var vx = cx + vortices[vi][0] * R;
+                  var vy = cy + vortices[vi][1] * R;
+                  ctx.save();
+                  ctx.globalAlpha = 0.30;
+                  PS.drawCircle(ctx, vx, vy, 10, { fill: C.accent });
+                  ctx.restore();
+                  PS.drawCircle(ctx, vx, vy, 4, { fill: C.accent, stroke: C.bg, lineWidth: 1.5 });
+                }
+              }
+
+              /* ===== Animated pulses traveling along each streamline (constant arc-speed) ===== */
+              var speed = 110;             // pixels / second
+              var offset = 28;             // spacing between pulses on same line
+              for (var k = 0; k < lines.length; k++) {
+                var pts2 = lines[k];
+                var cl = cumLen[k];
+                var L = totalLen[k];
+                if (L < 4) continue;
+                var nPulses = Math.max(1, Math.floor(L / 90));
+                for (var p = 0; p < nPulses; p++) {
+                  var sAlong = ((t * speed + p * (L / nPulses)) % L + L) % L;
+                  // binary search index in cl
+                  var lo = 0, hi = cl.length - 1;
+                  while (lo < hi - 1) {
+                    var mid = (lo + hi) >> 1;
+                    if (cl[mid] < sAlong) lo = mid; else hi = mid;
+                  }
+                  var segL = cl[hi] - cl[lo];
+                  var f = segL > 0 ? (sAlong - cl[lo]) / segL : 0;
+                  var px = pts2[lo][0] + (pts2[hi][0] - pts2[lo][0]) * f;
+                  var py = pts2[lo][1] + (pts2[hi][1] - pts2[lo][1]) * f;
+                  // direction along streamline
+                  var ux2 = pts2[hi][0] - pts2[lo][0];
+                  var uy2 = pts2[hi][1] - pts2[lo][1];
+                  var um = Math.hypot(ux2, uy2) || 1;
+                  // short arrow
+                  ctx.save();
+                  PS.drawArrow(ctx,
+                    px - (ux2 / um) * 4, py - (uy2 / um) * 4,
+                    px + (ux2 / um) * 4, py + (uy2 / um) * 4,
+                    C.accent2);
+                  ctx.restore();
+                }
+              }
+
+              /* ===== Applied-field arrow at top-left ===== */
+              var ax = 26, ay = 30;
+              var arrowLen = 12 + 56 * Math.min(Hn, 1.6) / 1.6;
+              PS.drawArrow(ctx, ax, ay, ax + arrowLen, ay, C.accent2, 'H₀');
+
+              /* ===== State label inside cylinder ===== */
+              var stateText;
+              if (m === 'meissner') stateText = 'Meissner\n迈斯纳态';
+              else if (m === 'mixed') stateText = 'Mixed\n混合态';
+              else stateText = 'Normal\n正常态';
+              var lines2 = stateText.split('\n');
+              for (var li = 0; li < lines2.length; li++) {
+                PS.drawText(ctx, lines2[li], cx, cy - 8 + li * 14, {
+                  font: 'bold 12px system-ui', color: C.bg, align: 'center'
+                });
+              }
+
+              /* ===== Critical-field scale (bottom) ===== */
+              var barY = H - 32, x1 = 60, x2 = W - 60;
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(x1, barY); ctx.lineTo(x2, barY); ctx.stroke();
+              ctx.restore();
+              function tick(frac, label, color) {
+                var x = x1 + frac * (x2 - x1);
+                ctx.save();
+                ctx.strokeStyle = color || C.axis; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(x, barY - 5); ctx.lineTo(x, barY + 5); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, label, x, barY + 18, {
+                  font: '10px system-ui', color: color || C.text, align: 'center'
+                });
+              }
+              tick(0, '0');
+              if (typeII) {
+                tick(Hc1 / 2, 'H_c1', C.trace);
+                tick(0.5,    'H_c',  C.text);
+                tick(Hc2 / 2, 'H_c2', C.accent);
+              } else {
+                tick(0.5, 'H_c', C.accent);
+              }
+              // current H marker
+              var fracH = Math.min(Hn, 2) / 2;
+              var xH = x1 + fracH * (x2 - x1);
+              PS.drawCircle(ctx, xH, barY, 5, { fill: C.accent2, stroke: C.bg, lineWidth: 2 });
+              PS.drawText(ctx, 'H/H_c = ' + Hn.toFixed(2), xH, barY - 12, {
+                font: 'bold 11px system-ui', color: C.accent2, align: 'center'
+              });
+              PS.drawText(ctx, '外加磁场刻度 Applied-field scale', W / 2, H - 6, {
+                font: '10px system-ui', color: C.text, align: 'center'
+              });
+            }
+          });
+
+          /* ---------- Controls ---------- */
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'Hn',     label: '外加磁场 H / H_c',     min: 0, max: 2, step: 0.02, value: DEFAULTS.Hn },
+            { type: 'toggle', key: 'typeII', label: 'Type-II 第二类超导体', value: DEFAULTS.typeII },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('Hn', function (v) { params.Hn = v; rebuildLines(); });
+          ctl.on('typeII', function (v) { params.typeII = v; rebuildLines(); });
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            var container = document.getElementById('controls-5');
+            var slider = container.querySelector('input[type=range]');
+            var toggle = container.querySelector('input[type=checkbox]');
+            var valSpan = container.querySelector('.ctrl-value');
+            slider.value = DEFAULTS.Hn;
+            toggle.checked = DEFAULTS.typeII;
+            ctl.set('Hn', DEFAULTS.Hn);
+            ctl.set('typeII', DEFAULTS.typeII);
+            if (valSpan) valSpan.textContent = DEFAULTS.Hn.toFixed(2);
+            rebuildLines();
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>超导态有<strong>两个独立</strong>标志：零电阻与迈斯纳效应（体内 \( \vec{B}=0 \)，与历史无关）。后者区分了超导体与「理想导体」。</li>
+        <li>伦敦方程把 Meissner 效应编码为 \( \nabla\times\vec{j}_s=-(n_s e^2/m)\vec{B} \)，给出穿透深度 \( \lambda_L=\sqrt{m/(\mu_0 n_s e^2)}\sim 20\text{–}200\,\mathrm{nm} \)；磁场在表面以 \( e^{-x/\lambda_L} \) 衰减。</li>
+        <li>第一类超导体在 \( H_c(T) \) 处直接 Meissner→正常态相变；第二类有混合态（\( H_{c1}<H<H_{c2} \)），其中磁通以涡旋形式贯穿，每个涡旋携带 \( \Phi_0 \)。判据 \( \kappa=\lambda_L/\xi \gtrless 1/\sqrt{2} \)。</li>
+        <li>临界场曲线近似为 \( H_c(T)=H_c(0)[1-(T/T_c)^2] \)；\( T=0 \) 时凝聚能密度 \( u_{\text{cond}}=\tfrac{1}{2}\mu_0 H_c^{\,2}(0) \)（典型 \( \sim\mathrm{kJ/m^3} \)）。</li>
+        <li>BCS 理论：电子-声子吸引 → 库珀对（动量相反、自旋单态）→ 能隙 \( \Delta \)。弱耦合 \( 2\Delta(0)\approx 3.5\,k_BT_c \)，比热跃变 \( \Delta C/(\gamma T_c)\approx 1.43 \)。</li>
+        <li>磁通量子化 \( \Phi=n\Phi_0 \)，\( \Phi_0=h/(2e)\approx 2.07\times 10^{-15}\,\mathrm{Wb} \)——分母 \( 2e \) 证明载流子是库珀对。</li>
+        <li>约瑟夫森结：\( I=I_c\sin\varphi \)，\( d\varphi/dt=2eV/\hbar \)，即 \( f=2eV/h\approx 483.6\,\mathrm{GHz/V}\times V \)。是电压基准与 SQUID 磁强计的物理基础。</li>
+        <li>高温铜氧化物（如 YBCO, \( T_c\approx 92\,\mathrm{K} \)，高于液氮 77 K）配对机制至今未决；MgB₂（\( T_c\approx 39\,\mathrm{K} \)）与铁基（\( T_c\sim 55\,\mathrm{K} \)）丰富了超导家族。</li>
+      </ul>
+      <div class="formula">\[ \lambda_L=\sqrt{\frac{m}{\mu_0 n_s e^2}},\qquad \nabla\times\vec{j}_s=-\frac{n_s e^2}{m}\vec{B},\qquad H_c(T)=H_c(0)\!\left[1-\left(\frac{T}{T_c}\right)^2\right] \]</div>
+      <div class="formula">\[ u_{\text{cond}}=\tfrac{1}{2}\mu_0 H_c^{\,2}(0),\qquad 2\Delta(0)\approx 3.5\,k_BT_c,\qquad \Phi_0=\frac{h}{2e}=2.0678338\times 10^{-15}\,\mathrm{Wb} \]</div>
+      <div class="formula">\[ \kappa=\frac{\lambda_L}{\xi}\;\lessgtr\;\frac{1}{\sqrt{2}}\;\Rightarrow\;\text{type-I / type-II},\qquad f_{\text{Josephson}}=\frac{2e}{h}V \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 晶格振动与声子 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第2章 · 凝聚态物理 Condensed Matter</p>
+      <h1>晶格振动与声子 <span class="en-title">Lattice Vibrations &amp; Phonons</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>把晶体中的原子描述成由弹簧耦合的<strong>谐振子链</strong> (coupled harmonic oscillators)，理解其集体激发——<strong>简正模</strong> (normal modes)——是独立的平面波 \(u_n\propto e^{i(kna-\omega t)}\)，波矢 \(k\) 被限制在第一布里渊区 (first Brillouin zone) \(-\pi/a\le k\le\pi/a\)。</li>
+        <li>从牛顿方程严格推导<strong>一维单原子链</strong> (1-D monoatomic chain) 的色散关系 \(\omega(k)=2\sqrt{K/m}\,|\sin(ka/2)|\)；在长波极限 \(k\to 0\) 还原为声波 \(\omega=v_s|k|\)，并给出声速 \(v_s=a\sqrt{K/m}\)。</li>
+        <li>对<strong>一维双原子链</strong> (diatomic chain, 原子质量 \(M,m\)) 推导两支色散——<strong>声学支</strong> (acoustic branch) 与<strong>光学支</strong> (optical branch)——的封闭表达式；解释为什么声学支在 \(k=0\) 处 \(\omega=0\)（两子晶格同相平动）、光学支在 \(k=0\) 处 \(\omega=\sqrt{2K(1/M+1/m)}\)（两子晶格反相），并讨论质量比 \(M/m\) 对带隙 (gap) 的影响与单原子极限。</li>
+        <li>陈述<strong>声子</strong> (phonon) 概念：晶格振动能量的量子为 \(\hbar\omega\)，频率为 \(\omega\) 的模式能量 \(E_{n_k}=(n_k+\tfrac12)\hbar\omega\)，声子是玻色子 (bosons)、化学势为零。</li>
+        <li>用<strong>德拜模型</strong> (Debye model) 推导固体定容热容 \(C_V\)：低温极限 \(C_V\approx(12\pi^{4}/5)Nk_{B}(T/\Theta_D)^{3}\propto T^{3}\)（德拜 \(T^{3}\) 律），高温极限 \(C_V\to 3Nk_{B}=3R\)（杜隆–珀蒂定律）；定义德拜温度 \(\Theta_D=\hbar\omega_D/k_B\)。</li>
+        <li>对比<strong>爱因斯坦模型</strong> (Einstein model) 与德拜模型，说明为什么爱因斯坦模型在低温下给出指数抑制 \(C_V\sim e^{-\Theta_E/T}\)，与实验的 \(T^{3}\) 律不符。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 晶体作为耦合谐振子链 Crystal as Coupled Oscillators</h3>
+      <p>第 1 章我们看到晶体中原子排在平衡格点 (equilibrium lattice sites) \(\vec{R}_n\) 上。令 \(u_n\) 为第 \(n\) 个原子相对其平衡位置的<strong>小位移</strong> (small displacement)。在简谐近似 (harmonic approximation) 下——即位移足够小、势能展开只保留到二阶——相邻原子间作用力可线性化为一根弹簧：</p>
+      <div class="formula">\[ U_{\text{pot}}=\tfrac12\sum_{n}K\,(u_{n+1}-u_n)^{2}, \qquad F_n=-\frac{\partial U_{\text{pot}}}{\partial u_n}. \]</div>
+      <p>于是第 \(n\) 个原子受力 \(F_n=K(u_{n+1}-u_n)-K(u_n-u_{n-1})=K(u_{n+1}+u_{n-1}-2u_n)\)，运动方程为 \(m\ddot u_n=K(u_{n+1}+u_{n-1}-2u_n)\)。这是 \(N\) 个<strong>耦合</strong>振子的方程组——并非 \(N\) 个独立振子。然而通过适当的坐标变换（离散傅里叶变换），可化为 \(N\) 个<strong>独立</strong>简正模。</p>
+      <div class="key-terms">coupled harmonic oscillators (耦合谐振子), harmonic approximation (简谐近似), spring constant \(K\) (弹簧常量), displacement \(u_n\) (位移)</div>
+
+      <h3>2. 简正模与第一布里渊区 Normal Modes &amp; the First Brillouin Zone</h3>
+      <p>线性平移不变的链具有<strong>布洛赫形式</strong> (Bloch form) 的本征解：\(u_n(t)=A\,e^{i(kna-\omega t)}\)，即一列波长 \(\lambda=2\pi/|k|\)、频率 \(\omega\) 的<strong>行波</strong>。代入运动方程可解出色散关系 \(\omega(k)\)（见推导 2.A）。</p>
+      <p>由于离散格点，\(k\) 与 \(k+2\pi/a\) 给出完全相同的物理位移（\(e^{i(k+2\pi/a)na}=e^{ikna}\cdot e^{i2\pi n}=e^{ikna}\)），所以 \(k\) 只在<strong>第一布里渊区</strong> \(-\pi/a\le k\le\pi/a\) 取值即可。布里渊区有 \(N\) 个允许的 \(k\) 值（周期性边界条件下等距分布），正好对应系统的 \(N\) 个自由度。</p>
+      <p>对一个含 \(N\) 个原子的三维晶体，每支色散 (acoustic / optical × 3 偏振) 共有 \(3N\) 个独立模式——这就是固体中声子的总数。</p>
+      <div class="key-terms">normal mode (简正模), Bloch form (布洛赫形式), wavevector \(k\) (波矢), first Brillouin zone (第一布里渊区), wavelength \(\lambda=2\pi/k\) (波长)</div>
+
+      <h3>3. 声子——晶格振动的能量量子 The Phonon: Quantized Lattice Vibration</h3>
+      <p>量子化耦合振子链等价于 \(N\) 个<strong>独立量子谐振子</strong>（每个对应一个简正模）。频率为 \(\omega_k\) 的模式能量量子化：</p>
+      <div class="formula">\[ E_{n_k}=\Bigl(n_k+\tfrac12\Bigr)\hbar\omega_k,\qquad n_k=0,1,2,\dots \]</div>
+      <p>该模式中能量为 \(\hbar\omega_k\) 的<strong>能量量子</strong>称为一个<strong>声子</strong> (phonon)；\(n_k\) 是该模式中的声子数。零点能 \(\tfrac12\hbar\omega_k\) 即使在基态（绝对零度）也存在。声子是玻色型准粒子 (bosonic quasiparticle)：自旋为零，无化学势（声子数不守恒，可由热激发自由产生与湮灭）。在热平衡下，频率为 \(\omega\) 的模式的平均声子数遵循<strong>玻色–爱因斯坦分布</strong>：</p>
+      <div class="formula">\[ \langle n(\omega)\rangle=\frac{1}{e^{\hbar\omega/k_BT}-1}. \]</div>
+      <p>声子不是「真正的」基本粒子（它不能在真空中存在，是晶格集体激发的产物），但在固体物理中它 behaves 几乎像粒子：可传播、散射、衰变，并携带能量与准动量 \(\hbar k\)（称为<strong>晶格动量</strong>，只在倒格矢 \(\hbar\vec{G}\) 模 2 意义下守恒）。</p>
+      <div class="key-terms">phonon (声子), energy quantum \(\hbar\omega\) (能量量子), zero-point energy (零点能), bosonic quasiparticle (玻色型准粒子), Bose–Einstein distribution (玻色–爱因斯坦分布), crystal momentum \(\hbar k\) (晶格动量)</div>
+
+      <h3>4. 单原子链的色散与声速 Monoatomic Chain Dispersion &amp; Sound Velocity</h3>
+      <p>对一维单原子链（每个元胞含一个原子，质量 \(m\)，相邻原子由弹簧 \(K\) 联结，格点间距 \(a\)），代入行波解 \(u_n=Ae^{i(kna-\omega t)}\) 得（详见推导 2.A）：</p>
+      <div class="formula">\[ \boxed{\;\omega(k)=2\sqrt{\frac{K}{m}}\,\bigl|\sin(ka/2)\bigr|\;} \]</div>
+      <p>性质：(i) 周期 \(\omega(k+2\pi/a)=\omega(k)\)；(ii) 反演对称 \(\omega(-k)=\omega(k)\)；(iii) 在布里渊区中心 \(k=0\) 处 \(\omega=0\)，在边界 \(k=\pm\pi/a\) 处取极大 \(\omega_{\max}=2\sqrt{K/m}\)；(iv) 长波极限 \(ka\ll 1\) 下 \(\sin(ka/2)\approx ka/2\)，故 \(\omega\approx\sqrt{K/m}\,a|k|\)，即线性声波 \(\omega=v_s|k|\)，声速为：</p>
+      <div class="formula">\[ v_s=\frac{\omega}{|k|}\Bigl|_{k\to 0}=a\sqrt{\frac{K}{m}}. \]</div>
+      <p>典型固体 \(v_s\sim 2\text{–}6\times 10^{3}\,\mathrm{m/s}\)，对应于宏观测量的声速（如铜中纵波 \(v_s\approx 4700\,\mathrm{m/s}\)）。</p>
+      <div class="key-terms">dispersion relation (色散关系), Brillouin-zone center (布里渊区中心), long-wavelength limit (长波极限), sound velocity \(v_s\) (声速), acoustic wave \(\omega=v_s k\) (声波)</div>
+
+      <h3>5. 双原子链：声学支与光学支 Diatomic Chain: Acoustic &amp; Optical Branches</h3>
+      <p>当每个元胞含两个不同质量的原子（如 NaCl、SiC、GaAs 等离子或共价晶体）时，色散分裂为两支（推导 2.B）。设偶数位原子质量为 \(M\)、奇数位为 \(m\)，弹簧常量 \(K\)，元胞长 \(a\)（即同类原子间距），结果为：</p>
+      <div class="formula">\[ \boxed{\;\omega_{\pm}^{2}(k)=\frac{K}{Mm}\Bigl[(M+m)\pm\sqrt{M^{2}+m^{2}+2Mm\cos(ka)}\,\Bigr]\;} \]</div>
+      <p>取「\(-\)」号为<strong>声学支</strong> (acoustic branch) \(\omega_{-}\)：在 \(k=0\) 处 \(\omega_{-}=0\)（两子晶格整体平移，对应刚性平动，频率为零）；长波下 \(\omega_{-}\approx v_s|k|\)，\(v_s=a\sqrt{K/[2(M+m)]}\)。取「\(+\)」号为<strong>光学支</strong> (optical branch) \(\omega_{+}\)：在 \(k=0\) 处取有限值：</p>
+      <div class="formula">\[ \omega_{+}(0)=\sqrt{2K\Bigl(\frac1M+\frac1m\Bigr)},\qquad \omega_{-}(\pi/a)=\sqrt{\frac{2K}{\max(M,m)}},\qquad \omega_{+}(\pi/a)=\sqrt{\frac{2K}{\min(M,m)}}. \]</div>
+      <p>在 \(k=\pi/a\) 处两支之间出现<strong>频率带隙</strong> (frequency gap) \(\Delta\omega=\sqrt{2K/\min}-\sqrt{2K/\max}\)，正比于质量差 \(\sqrt{M/m}-\sqrt{m/M}\)。<strong>光学支</strong>得名于其在 \(k=0\) 处对应两子晶格反向振荡（电偶极矩振荡），可与红外光耦合——这就是离子晶体红外吸收的根源（详见例 2.2 与误区 2）。</p>
+      <p><strong>单原子极限</strong>：当 \(M=m\) 时，两支在 \(k=\pi/a\) 处相接（带隙为零）；折叠回 \(k\in[0,\pi/a]\) 后正好重构出元胞长 \(a/2\) 的单原子链色散 \(\omega=2\sqrt{K/m}\,|\sin(ka_{\text{mono}}/2)|\)。这是晶格<strong>能带折叠</strong> (band folding) 的最简单实例。</p>
+      <div class="key-terms">acoustic branch (声学支), optical branch (光学支), frequency gap (频率带隙), sublattice (子晶格), band folding (能带折叠), monoatomic limit (单原子极限)</div>
+
+      <h3>6. 爱因斯坦模型与德拜模型 Einstein vs. Debye Model of \(C_V\)</h3>
+      <p><strong>爱因斯坦模型</strong> (Einstein, 1907)：假定所有原子以<strong>同一</strong>频率 \(\omega_E\) 独立振荡（每个原子 = 一个独立量子谐振子）。每个振子能量 \(\langle E\rangle=\hbar\omega_E(\langle n\rangle+\tfrac12)\)，故每个原子对热容贡献：</p>
+      <div class="formula">\[ C_V^{\text{Ei}}=3Nk_B\Bigl(\frac{\Theta_E}{T}\Bigr)^{2}\frac{e^{\Theta_E/T}}{(e^{\Theta_E/T}-1)^{2}},\qquad \Theta_E\equiv\frac{\hbar\omega_E}{k_B}. \]</div>
+      <p>高温 \(T\gg\Theta_E\) 时 \(C_V\to 3Nk_B=3R\)（杜隆–珀蒂），符合实验；但低温 \(T\ll\Theta_E\) 时 \(C_V\sim 3Nk_B(\Theta_E/T)^{2}e^{-\Theta_E/T}\) 指数趋于零，而实验测得所有绝缘固体低温下 \(C_V\propto T^{3}\)，与爱因斯坦不符——它的物理错误在于忽略了声学模的长波长、低频贡献。</p>
+      <p><strong>德拜模型</strong> (Debye, 1912)：把固体视为<strong>连续弹性介质</strong>，所有模式都是声波 \(\omega=v_s k\)，但<strong>截止</strong>到德拜频率 \(\omega_D\) 使总模式数恰为 \(3N\)。在三维下：</p>
+      <div class="formula">\[ 3\cdot\frac{V}{(2\pi)^{3}}\cdot\frac{4\pi}{3}k_D^{3}=3N \;\Rightarrow\; k_D^{3}=6\pi^{2}\frac{N}{V},\qquad \omega_D=v_sk_D,\qquad \Theta_D\equiv\frac{\hbar\omega_D}{k_B}. \]</div>
+      <p>内能 \(U=9Nk_BT(T/\Theta_D)^{3}\int_{0}^{\Theta_D/T}\frac{x^{3}}{e^{x}-1}\,\mathrm{d}x\)（\(x=\hbar\omega/k_BT\)）。两个极限：</p>
+      <div class="formula">\[ T\gg\Theta_D:\ C_V\to 3Nk_B\quad(\text{Dulong–Petit});\qquad T\ll\Theta_D:\ C_V\approx\frac{12\pi^{4}}{5}Nk_B\Bigl(\frac{T}{\Theta_D}\Bigr)^{3}\propto T^{3}\ \ (\text{Debye }T^{3}\text{ 律}). \]</div>
+      <p>低温 \(T^{3}\) 律来自声学声子的低频模式密度 \(g(\omega)\propto\omega^{2}\)（三维连续介质），是德拜模型最伟大的成就。每摩尔形式下，\(Nk_B\to R\)，故 \(C_V^{\text{mol}}\approx 234\,R\,(T/\Theta_D)^{3}\)。</p>
+      <p>德拜温度 \(\Theta_D\) 是材料的特征「硬度」标度：软、重原子晶体 \(\Theta_D\) 小（如 Pb \(105\,\mathrm{K}\)、Hg \(72\,\mathrm{K}\)）；硬、轻原子晶体 \(\Theta_D\) 大（如金刚石 \(2230\,\mathrm{K}\)、Si \(645\,\mathrm{K}\)）。\(\Theta_D\) 越大意味着在越高温度下还能保持 \(T^{3}\) 行为。</p>
+      <div class="key-terms">Einstein frequency \(\omega_E\) (爱因斯坦频率), Debye frequency \(\omega_D\) (德拜频率), Debye temperature \(\Theta_D\) (德拜温度), density of states \(g(\omega)\) (模式密度), Dulong–Petit law \(3R\) (杜隆–珀蒂定律), Debye \(T^{3}\) law (德拜 \(T^{3}\) 律)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 2.A — 单原子链的色散关系 Dispersion of the 1-D Monoatomic Chain</h3>
+      <p class="step"><strong>步骤 1（模型与方程）：</strong>设 \(N\) 个质量为 \(m\) 的原子等距排列，格点间距 \(a\)，仅考虑最近邻间的弹簧 \(K\)。第 \(n\) 个原子位移 \(u_n(t)\)。势能 \(U=\tfrac12 K\sum_n(u_{n+1}-u_n)^{2}\)，故运动方程：</p>
+      <div class="formula">\[ m\ddot u_n=K(u_{n+1}+u_{n-1}-2u_n). \]</div>
+      <p class="step"><strong>步骤 2（行波解）：</strong>由于链有平移不变性，本征解必为布洛赫形式 \(u_n(t)=A\,e^{i(kna-\omega t)}\)（\(k\) 为待定波矢，\(\omega\) 为待定频率）。代入：</p>
+      <div class="formula">\[ -m\omega^{2}\,A\,e^{i(kna-\omega t)}=KA\,e^{i(kna-\omega t)}\bigl(e^{ika}+e^{-ika}-2\bigr). \]</div>
+      <p class="step"><strong>步骤 3（消去公因子）：</strong>两边除以 \(A\,e^{i(kna-\omega t)}\)：</p>
+      <div class="formula">\[ -m\omega^{2}=K\bigl(e^{ika}+e^{-ika}-2\bigr)=K\bigl(2\cos(ka)-2\bigr)=-4K\sin^{2}\!\frac{ka}{2}. \]</div>
+      <p class="step"><strong>步骤 4（解出 \(\omega(k)\)）：</strong>\(\omega^{2}=\dfrac{4K}{m}\sin^{2}(ka/2)\)，取正根：</p>
+      <div class="formula">\[ \boxed{\;\omega(k)=2\sqrt{\frac{K}{m}}\,\bigl|\sin(ka/2)\bigr|\;} \]</div>
+      <p class="step"><strong>步骤 5（布里渊区）：</strong>由 \(e^{i(k+2\pi/a)na}=e^{ikna}\) 知 \(\omega\) 关于 \(k\) 有周期 \(2\pi/a\)，故只取第一布里渊区 \(-\pi/a\le k\le\pi/a\)。在 \(k=0\)：\(\omega=0\)（集体平动）；在 \(k=\pi/a\)：\(\omega=2\sqrt{K/m}\)（相邻原子反相，最强恢复力）。</p>
+      <p class="step"><strong>步骤 6（长波极限 → 声速）：</strong>当 \(ka\ll 1\)，\(\sin(ka/2)\approx ka/2\)，故 \(\omega\approx\sqrt{K/m}\,a|k|=v_s|k|\)，其中</p>
+      <div class="formula">\[ \boxed{\;v_s=a\sqrt{\frac{K}{m}}\;} \]</div>
+      <p>线性色散 \(\omega=v_s k\) 正是连续介质中的声波。在 \(k\to\pi/a\) 处色散变平（群速度 \(v_g=\mathrm{d}\omega/\mathrm{d}k\to 0\)），反映短波长时晶格离散性使传播「停顿」。</p>
+
+      <h3>推导 2.B — 双原子链：声学支与光学支 Diatomic Chain: Acoustic &amp; Optical Branches</h3>
+      <p class="step"><strong>步骤 1（模型与方程）：</strong>每个元胞含两原子：偶数位质量 \(M\) 位移 \(U_n\)，奇数位质量 \(m\) 位移 \(V_n\)，元胞长 \(a\)（同类原子间距），弹簧 \(K\) 联结所有最近邻。运动方程：</p>
+      <div class="formula">\[ M\ddot U_n=K(V_n+V_{n-1}-2U_n),\qquad m\ddot V_n=K(U_n+U_{n+1}-2V_n). \]</div>
+      <p class="step"><strong>步骤 2（双行波解）：</strong>令 \(U_n=U\,e^{i(kna-\omega t)}\)、\(V_n=V\,e^{i(kna-\omega t)}\)（同波矢、同频率，振幅 \(U,V\) 待定）。代入：</p>
+      <div class="formula">\[ -M\omega^{2}U=K\bigl(V+Ve^{-ika}-2U\bigr),\qquad -m\omega^{2}V=K\bigl(U+Ue^{ika}-2V\bigr). \]</div>
+      <p class="step"><strong>步骤 3（齐次线性方程组）：</strong>整理为关于 \((U,V)\) 的本征值问题：</p>
+      <div class="formula">\[ \begin{pmatrix}2K-M\omega^{2} & -K(1+e^{-ika})\\[2pt] -K(1+e^{ika}) & 2K-m\omega^{2}\end{pmatrix}\!\begin{pmatrix}U\\ V\end{pmatrix}=0. \]</div>
+      <p class="step"><strong>步骤 4（可解条件 = 行列式为零）：</strong></p>
+      <div class="formula">\[ (2K-M\omega^{2})(2K-m\omega^{2})-K^{2}(1+e^{-ika})(1+e^{ika})=0. \]</div>
+      <p class="step"><strong>步骤 5（化简）：</strong>\((1+e^{-ika})(1+e^{ika})=2+2\cos(ka)=4\cos^{2}(ka/2)\)。展开行列式：</p>
+      <div class="formula">\[ Mm\,\omega^{4}-2K(M+m)\,\omega^{2}+4K^{2}\sin^{2}\!\frac{ka}{2}=0\quad\text{（已用 }1-\cos^{2}=\sin^{2}\text{）}. \]</div>
+      <p class="step"><strong>步骤 6（解二次方程）：</strong>\(\omega^{2}\) 的二次方程，解为：</p>
+      <div class="formula">\[ \omega_{\pm}^{2}=\frac{K}{Mm}\!\Bigl[(M+m)\pm\sqrt{(M+m)^{2}-4Mm\sin^{2}(ka/2)}\,\Bigr]. \]</div>
+      <p class="step"><strong>步骤 7（化简根号）：</strong>用 \(2\sin^{2}(ka/2)=1-\cos(ka)\)：</p>
+      <div class="formula">\[ (M+m)^{2}-4Mm\sin^{2}\!\frac{ka}{2}=M^{2}+m^{2}+2Mm\cos(ka). \]</div>
+      <p>代入得最终封闭形式：</p>
+      <div class="formula">\[ \boxed{\;\omega_{\pm}^{2}(k)=\frac{K}{Mm}\Bigl[(M+m)\pm\sqrt{M^{2}+m^{2}+2Mm\cos(ka)}\,\Bigr]\;} \]</div>
+      <p class="step"><strong>步骤 8（验证两支的边界值）：</strong></p>
+      <ul>
+        <li>\(k=0\)：\(\sqrt{\,\cdot\,}=M+m\)。\(\omega_{-}^{2}(0)=0\)（声学支，集体平动）；\(\omega_{+}^{2}(0)=2K(M+m)/(Mm)=2K(1/M+1/m)\)（光学支，两子晶格反相）。</li>
+        <li>\(k=\pi/a\)：\(\sqrt{\,\cdot\,}=|M-m|\)。\(\omega_{-}^{2}(\pi/a)=2K/\max(M,m)\)；\(\omega_{+}^{2}(\pi/a)=2K/\min(M,m)\)。两者之间形成带隙。</li>
+        <li>\(M=m\)：两支在 \(\pi/a\) 处相接（带隙为零），重构单原子链色散。</li>
+      </ul>
+      <p class="step"><strong>步骤 9（本征矢量 = 模式形状）：</strong>从第二行 \(-K(1+e^{ika})U+(2K-m\omega^{2})V=0\)：</p>
+      <div class="formula">\[ \frac{V}{U}=\frac{K(1+e^{ika})}{2K-m\omega^{2}}. \]</div>
+      <p>声学支 \(k\to 0\)：\(V/U\to 1\)（两子晶格同相，集体平动）。光学支 \(k=0\)：\(V/U\to -M/m\)（两子晶格反相，质心固定，轻原子振幅大）。这正是离子晶体光学支可耦合电磁波的根源——两子晶格反相振荡产生交变电偶极矩。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 单原子链色散与声速 Monoatomic Chain Dispersion &amp; Sound Velocity</h4>
+        <p class="example-statement">一维单原子链，原子质量 \(m=6.0\times10^{-26}\,\mathrm{kg}\)（约 \(36\,\mathrm{u}\)，氩原子量级），最近邻弹簧常量 \(K=12\,\mathrm{N/m}\)，格点间距 \(a=0.30\,\mathrm{nm}\)。求：(a) 色散关系 \(\omega(k)\) 与最大角频率 \(\omega_{\max}\)；(b) 最大频率 \(\nu_{\max}=\omega_{\max}/2\pi\)（THz）；(c) 长波声速 \(v_s\)；(d) 波长 \(\lambda=10a\) 的模式的频率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>常数：</strong>\(m=6.0\times10^{-26}\,\mathrm{kg}\)、\(K=12\,\mathrm{N/m}\)、\(a=3.0\times10^{-10}\,\mathrm{m}\)。</p>
+          <p class="step"><strong>(a) 色散：</strong>由推导 2.A，</p>
+          <div class="formula">\[ \omega(k)=2\sqrt{\frac{K}{m}}\,|\sin(ka/2)|,\qquad \omega_{\max}=2\sqrt{\frac{K}{m}}. \]</div>
+          <p class="step"><strong>(b) 最大频率：</strong>\(\sqrt{K/m}=\sqrt{12/(6.0\times10^{-26})}=\sqrt{2.0\times10^{26}}=1.414\times10^{13}\,\mathrm{s^{-1}}\)。故 \(\omega_{\max}=2.83\times10^{13}\,\mathrm{rad/s}\)，</p>
+          <div class="formula">\[ \nu_{\max}=\frac{\omega_{\max}}{2\pi}=\frac{2.83\times10^{13}}{6.283}=4.50\times10^{12}\,\mathrm{Hz}=\mathbf{4.50\,\mathrm{THz}}. \]</div>
+          <p>（实验上固态氩的声子截止频率约 \(2\text{–}3\,\mathrm{THz}\)，本模型数量级合理。）</p>
+          <p class="step"><strong>(c) 声速：</strong>长波极限 \(\omega\approx a\sqrt{K/m}\,|k|\)，</p>
+          <div class="formula">\[ v_s=a\sqrt{\frac{K}{m}}=(3.0\times10^{-10})\times(1.414\times10^{13})=\mathbf{4.24\times10^{3}\,\mathrm{m/s}}. \]</div>
+          <p>（与典型固体声速 \(2\text{–}6\times10^{3}\,\mathrm{m/s}\) 一致；固态氩实验纵波声速约 \(1.6\text{–}2.0\times10^{3}\,\mathrm{m/s}\)；本模型偏大因为我们用了较大的 \(K\)。）</p>
+          <p class="step"><strong>(d) \(\lambda=10a\) 模式：</strong>\(k=2\pi/\lambda=2\pi/(10a)=\pi/(5a)\)，故 \(ka/2=\pi/10=0.314\)。\(\sin(0.314)=0.309\)。</p>
+          <div class="formula">\[ \omega=2\sqrt{K/m}\cdot 0.309=2\times 1.414\times10^{13}\times 0.309=8.74\times10^{12}\,\mathrm{rad/s}, \]</div>
+          <p>\(\nu=\omega/2\pi=1.39\times10^{12}\,\mathrm{Hz}=\mathbf{1.39\,\mathrm{THz}}\)。</p>
+          <p><span class="ans">答案：(a) \(\omega(k)=2\sqrt{K/m}\,|\sin(ka/2)|\)；(b) \(\omega_{\max}=2.83\times10^{13}\,\mathrm{rad/s}\)、\(\nu_{\max}=4.50\,\mathrm{THz}\)；(c) \(v_s=4.24\times10^{3}\,\mathrm{m/s}\)；(d) \(\omega=8.74\times10^{12}\,\mathrm{rad/s}\)（\(\nu=1.39\,\mathrm{THz}\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 NaCl 双原子链：声学/光学支与质量比效应 NaCl Diatomic Chain: Branches &amp; Mass Ratio</h4>
+        <p class="example-statement">把 NaCl 晶体简化成一维双原子链：Na\(^+\) 质量 \(M_{\text{Na}}=23.0\,\mathrm{u}=3.82\times10^{-26}\,\mathrm{kg}\)，Cl\(^{-}\) 质量 \(m_{\text{Cl}}=35.5\,\mathrm{u}=5.89\times10^{-26}\,\mathrm{kg}\)，弹簧常量 \(K=12\,\mathrm{N/m}\)，元胞长 \(a=0.564\,\mathrm{nm}\)（实际 NaCl 最近邻距离的两倍）。求：(a) 光学支在 \(k=0\) 处的角频率与频率（THz）；(b) 两支在 \(k=\pi/a\)（布里渊区边界）处的频率；(c) 带隙 \(\Delta\nu\)；(d) 假想把 Cl 换成更重的 I（\(M_{\text{I}}=127\,\mathrm{u}\)），保持 Na 不变，求新的 \(\nu_{+}(0)\)，并讨论质量比效应。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 光学支 \(k=0\)：</strong></p>
+          <div class="formula">\[ \omega_{+}(0)=\sqrt{2K\Bigl(\frac1M+\frac1m\Bigr)}=\sqrt{2\times 12\Bigl(\frac1{3.82\times10^{-26}}+\frac1{5.89\times10^{-26}}\Bigr)}. \]</div>
+          <p class="step">数值：\(1/M=2.62\times10^{25}\)、\(1/m=1.70\times10^{25}\)，和 \(4.32\times10^{25}\)。</p>
+          <div class="formula">\[ \omega_{+}(0)=\sqrt{24\times 4.32\times10^{25}}=\sqrt{1.037\times10^{27}}=3.22\times10^{13}\,\mathrm{rad/s}, \]</div>
+          <p>\(\nu_{+}(0)=\omega/2\pi=\mathbf{5.12\,\mathrm{THz}}\)。实验上 NaCl 在 \(\Gamma\) 点的横光学模 (TO) 频率约 \(5.0\text{–}5.2\,\mathrm{THz}\)，与本模型惊人吻合（一维模型碰巧很准，因为 \(k=0\) 光学模只涉及相对位移，对维度不敏感）。</p>
+          <p class="step"><strong>(b) 区边界 \(k=\pi/a\)：</strong>\(\max(M,m)=m_{\text{Cl}}=5.89\times10^{-26}\)、\(\min(M,m)=M_{\text{Na}}=3.82\times10^{-26}\)。</p>
+          <div class="formula">\[ \omega_{-}(\pi/a)=\sqrt{\frac{2K}{\max}}=\sqrt{\frac{24}{5.89\times10^{-26}}}=\sqrt{4.07\times10^{26}}=2.02\times10^{13}\,\mathrm{rad/s}, \]</div>
+          <div class="formula">\[ \omega_{+}(\pi/a)=\sqrt{\frac{2K}{\min}}=\sqrt{\frac{24}{3.82\times10^{-26}}}=\sqrt{6.28\times10^{26}}=2.51\times10^{13}\,\mathrm{rad/s}. \]</div>
+          <p class="step"><strong>(c) 带隙：</strong>\(\Delta\omega=\omega_{+}(\pi/a)-\omega_{-}(\pi/a)=4.9\times10^{12}\,\mathrm{rad/s}\)，</p>
+          <div class="formula">\[ \Delta\nu=\frac{\Delta\omega}{2\pi}=\mathbf{0.78\,\mathrm{THz}}. \]</div>
+          <p class="step"><strong>(d) 把 Cl 换成 I：</strong>\(M_{\text{I}}=127\,\mathrm{u}=2.11\times10^{-25}\,\mathrm{kg}\)，\(M_{\text{Na}}=3.82\times10^{-26}\,\mathrm{kg}\)，质量比 \(M_{\text{I}}/M_{\text{Na}}=5.52\)（很大）。新的 \(\nu_{+}(0)\)：</p>
+          <div class="formula">\[ \omega_{+}(0)=\sqrt{2K\Bigl(\frac1{M_{\text{Na}}}+\frac1{M_{\text{I}}}\Bigr)}=\sqrt{24\bigl(2.62\times10^{25}+0.474\times10^{25}\bigr)}=\sqrt{24\times 3.10\times10^{25}}=2.73\times10^{13}\,\mathrm{rad/s}, \]</div>
+          <p>\(\nu_{+}(0)=2.73\times10^{13}/2\pi=\mathbf{4.34\,\mathrm{THz}}\)。实验 NaI 光学模约 \(4.2\text{–}4.5\,\mathrm{THz}\)，吻合。<strong>质量比效应：</strong>更重的卤族原子使 \(1/M_{\text{I}}\) 减小（\(0.47\) vs Cl 的 \(1.70\)），整体 \((1/M+1/m)\) 下降，故 \(\omega_{+}(0)\) 下降。同时带隙变大（区边界 \(\omega_{+}\approx\sqrt{2K/M_{\text{Na}}}=2.51\times10^{13}\)、\(\omega_{-}\approx\sqrt{2K/M_{\text{I}}}=1.07\times10^{13}\)，\(\Delta\nu\approx 2.29\,\mathrm{THz}\)，是 NaCl 的近 3 倍）——质量差越大，声学/光学支分得越开。</p>
+          <p><span class="ans">答案：(a) \(\omega_{+}(0)=3.22\times10^{13}\,\mathrm{rad/s}\)、\(\nu_{+}(0)=5.12\,\mathrm{THz}\)；(b) \(\omega_{-}(\pi/a)=2.02\times10^{13}\)、\(\omega_{+}(\pi/a)=2.51\times10^{13}\,\mathrm{rad/s}\)；(c) \(\Delta\nu=0.78\,\mathrm{THz}\)；(d) NaI 的 \(\nu_{+}(0)=4.34\,\mathrm{THz}\)、\(\Delta\nu\approx 2.29\,\mathrm{THz}\)（更重的卤族原子 → 更低光学频率、更大带隙）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 铜的德拜热容：低温与高温极限 Debye \(C_V\) of Copper at Low &amp; High \(T\)</h4>
+        <p class="example-statement">铜的德拜温度 \(\Theta_D=343\,\mathrm{K}\)。计算每摩尔定容热容 \(C_V\)：(a) 在 \(T=30\,\mathrm{K}\)（\(T\ll\Theta_D\)，用德拜 \(T^{3}\) 律）；(b) 在 \(T=500\,\mathrm{K}\)（\(T>\Theta_D\)，高温极限）；(c) 比较两种情形，验证杜隆–珀蒂值 \(3R=24.94\,\mathrm{J/(mol\cdot K)}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>常数：</strong>\(R=N_Ak_B=8.314\,\mathrm{J/(mol\cdot K)}\)，德拜 \(T^{3}\) 系数 \(12\pi^{4}/5=233.79\)。</p>
+          <p class="step"><strong>(a) 低温 \(T=30\,\mathrm{K}\)：</strong>\(T/\Theta_D=30/343=0.0875\ll 1\)，\(T^{3}\) 律适用：</p>
+          <div class="formula">\[ C_V\approx\frac{12\pi^{4}}{5}R\Bigl(\frac{T}{\Theta_D}\Bigr)^{3}=233.79\times 8.314\times(0.0875)^{3}. \]</div>
+          <p class="step">\((0.0875)^{3}=6.70\times10^{-4}\)，故</p>
+          <div class="formula">\[ C_V=233.79\times 8.314\times 6.70\times10^{-4}=1944\times 6.70\times10^{-4}=\mathbf{1.30\,\mathrm{J/(mol\cdot K)}}. \]</div>
+          <p>实验值约 \(1.4\text{–}1.5\,\mathrm{J/(mol\cdot K)}\)，德拜 \(T^{3}\) 律给出准确数量级。</p>
+          <p class="step"><strong>(b) 高温 \(T=500\,\mathrm{K}\)：</strong>\(T/\Theta_D=1.46>1\)，高温极限：</p>
+          <div class="formula">\[ C_V\to 3R=3\times 8.314=\mathbf{24.94\,\mathrm{J/(mol\cdot K)}}. \]</div>
+          <p class="step"><strong>(c) 验证与对照：</strong></p>
+          <div class="formula">\[ \begin{array}{l|c|c|c}T\,(\mathrm{K})&T/\Theta_D&C_V\,(\mathrm{J/(mol\cdot K)})&\text{方法}\\\hline 30&0.0875&1.30&T^{3}\text{ 律}\\500&1.46&24.94&\text{Dulong--Petit}\end{array} \]</div>
+          <p>比值 \(C_V(500)/C_V(30)\approx 19.2\)。可见低温下大部分高频模式被「冻结」（\(\hbar\omega\gg k_BT\)，玻色因子 \(e^{-\hbar\omega/k_BT}\to 0\)），只有长波声学模贡献热容，故 \(C_V\) 远低于经典值 \(3R\)。这正是爱因斯坦模型在 \(T=30\,\mathrm{K}\) 会严重低估的原因（见例 2.5）。</p>
+          <p><span class="ans">答案：(a) \(C_V(30\,\mathrm{K})\approx 1.30\,\mathrm{J/(mol\cdot K)}\)；(b) \(C_V(500\,\mathrm{K})\to 24.94\,\mathrm{J/(mol\cdot K)}=3R\)（杜隆–珀蒂）；(c) 低温被冻结、高温趋于经典极限，比值约 19。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 由热容数据反推德拜温度 Extracting \(\Theta_D\) from \(C_V\) Data</h4>
+        <p class="example-statement">固态氩在某极低温 \(T=5\,\mathrm{K}\) 下测得摩尔热容 \(C_V=0.31\,\mathrm{J/(mol\cdot K)}\)。假定此时 \(T\ll\Theta_D\)，用德拜 \(T^{3}\) 律反推氩的德拜温度 \(\Theta_D\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>公式反解：</strong>德拜 \(T^{3}\) 律 \(C_V=\dfrac{12\pi^{4}}{5}R\Bigl(\dfrac{T}{\Theta_D}\Bigr)^{3}\)。两边开立方：</p>
+          <div class="formula">\[ \frac{T}{\Theta_D}=\Bigl(\frac{C_V}{(12\pi^{4}/5)R}\Bigr)^{1/3}\;\Rightarrow\;\Theta_D=T\Bigl(\frac{(12\pi^{4}/5)R}{C_V}\Bigr)^{1/3}. \]</div>
+          <p class="step"><strong>代入数值：</strong>\((12\pi^{4}/5)R=233.79\times 8.314=1944\,\mathrm{J/(mol\cdot K)}\)。</p>
+          <div class="formula">\[ \frac{1944}{C_V}=\frac{1944}{0.31}=6271. \]</div>
+          <p class="step">开立方：\(6271^{1/3}\)。\(18^{3}=5832\)、\(19^{3}=6859\)，插值 \(6271^{1/3}\approx 18.43\)。</p>
+          <div class="formula">\[ \Theta_D=T\times 18.43=5\times 18.43=\mathbf{92.2\,\mathrm{K}}. \]</div>
+          <p class="step"><strong>实验对照：</strong>固态氩的德拜温度实验值 \(\Theta_D\approx 92\,\mathrm{K}\)，与反推值几乎完美吻合。<strong>合理性检查：</strong>\(T/\Theta_D=5/92.2=0.054\ll 1\)，\(T^{3}\) 律适用前提满足 ✓。这就是为什么德拜模型被誉为固体比热的「正确」低温描述——一个简单的 \(T^{3}\) 律就能把任意绝缘体的极低温热容统一描述。</p>
+          <p><span class="ans">答案：\(\Theta_D\approx 92\,\mathrm{K}\)（实验 92 K，完美吻合）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 爱因斯坦 vs 德拜：铜在 \(T=30\,\mathrm{K}\) Einstein vs. Debye: Cu at 30 K</h4>
+        <p class="example-statement">铜的 \(\Theta_D=343\,\mathrm{K}\)。在 \(T=30\,\mathrm{K}\) 时：(a) 用德拜 \(T^{3}\) 律计算 \(C_V\)（参考例 2.3）；(b) 假定爱因斯坦温度 \(\Theta_E=\Theta_D=343\,\mathrm{K}\)，用爱因斯坦公式计算 \(C_V\)；(c) 计算两者比值，并解释为什么德拜与实验吻合而爱因斯坦严重低估。已知实验 \(C_V(30\,\mathrm{K})\approx 1.4\,\mathrm{J/(mol\cdot K)}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 德拜 \(T^{3}\)：</strong>由例 2.3，\(C_V^{\text{Debye}}=\mathbf{1.30\,\mathrm{J/(mol\cdot K)}}\)。</p>
+          <p class="step"><strong>(b) 爱因斯坦：</strong>\(\Theta_E/T=343/30=11.43\)。令 \(x=11.43\)。</p>
+          <div class="formula">\[ C_V^{\text{Ei}}=3R\,\frac{x^{2}e^{x}}{(e^{x}-1)^{2}}. \]</div>
+          <p class="step">数值：\(x^{2}=130.6\)、\(e^{x}=e^{11.43}\)。计算 \(e^{11.43}\)：\(e^{11}=59874\)、\(e^{0.43}=1.537\)，故 \(e^{11.43}\approx 92025\)。\((e^{x}-1)^{2}\approx (92025)^{2}=8.47\times10^{9}\)。分子：\(x^{2}e^{x}=130.6\times 92025=1.202\times10^{7}\)。比值：\(1.202\times10^{7}/8.47\times10^{9}=1.419\times10^{-3}\)。</p>
+          <div class="formula">\[ C_V^{\text{Ei}}=3R\times 1.419\times10^{-3}=24.94\times 1.419\times10^{-3}=\mathbf{0.0354\,\mathrm{J/(mol\cdot K)}}. \]</div>
+          <p class="step"><strong>(c) 比值：</strong></p>
+          <div class="formula">\[ \frac{C_V^{\text{Debye}}}{C_V^{\text{Ei}}}=\frac{1.30}{0.0354}\approx 37. \]</div>
+          <p>德拜比爱因斯坦大近 40 倍，与实验 \(1.4\,\mathrm{J/(mol\cdot K)}\) 完全一致。</p>
+          <p class="step"><strong>物理解释：</strong>爱因斯坦模型假设<strong>所有</strong>原子以同一高频 \(\omega_E\) 振荡。在 \(T\ll\Theta_E\) 时，激发一个爱因斯坦量子需要能量 \(\hbar\omega_E\gg k_BT\)，玻色因子 \(e^{-\hbar\omega_E/k_BT}=e^{-11.43}\approx 1.1\times10^{-5}\) 极小，热激发被「指数冻结」。而德拜模型还包含了<strong>声学支的长波低频模式</strong>（\(\omega=v_sk\)，\(\omega\to 0\) 当 \(k\to 0\)），这些模式的 \(\hbar\omega\lesssim k_BT\) 始终可被激发，其状态密度 \(g(\omega)\propto\omega^{2}\) 给出 \(T^{3}\) 律。低温物理的全部关键就在「低频声学声子」——这是德拜洞见而爱因斯坦缺失的。</p>
+          <p><span class="ans">答案：(a) 德拜 \(1.30\,\mathrm{J/(mol\cdot K)}\)；(b) 爱因斯坦 \(0.0354\,\mathrm{J/(mol\cdot K)}\)；(c) 德拜/爱因斯坦 \(\approx 37\)，实验支持德拜。差别源于德拜包含低频声学声子（\(T^{3}\) 律），爱因斯坦只有单一高频振子（指数抑制）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把声学支的色散当成整体线性。</strong>声学支只<strong>在长波极限 \(ka\ll 1\)</strong>下才线性 \(\omega=v_sk\)；在布里渊区边界附近色散明显变弯（群速度 \(v_g=\mathrm{d}\omega/\mathrm{d}k\to 0\)），不能外推。计算声速时只能用 \(k\to 0\) 的斜率。同样，单原子链色散 \(\omega=2\sqrt{K/m}|\sin(ka/2)|\) 是<strong>非线性</strong>的——只在原点附近近似为线性。</li>
+        <li><strong>以为光学支必然与光耦合。</strong>光学支得名于「<strong>离子</strong>晶体中两子晶格反相振荡产生交变电偶极矩」可耦合红外光（如 NaCl 在 \(5\,\mathrm{THz}\) 的强红外吸收）。但在<strong>同极共价</strong>晶体（如 Si、Ge）中两个子晶格电荷对称（同为 Si），反相振荡不产生电偶极矩，故<strong>不能</strong>直接吸收光子——光学支仍是「光学的」只是历史命名，实际须通过拉曼散射或其他二阶过程探测。判断「能否耦合光」要看模式有无电偶极矩，不是看它叫不叫「光学支」。</li>
+        <li><strong>把声子当作真实粒子、无视动量守恒的「模 \(\hbar\vec{G}\)」约定。</strong>声子携带的「动量」\(\hbar\vec{k}\) 实际是<strong>晶格动量</strong> (crystal momentum)，只在<strong>模一个倒格矢</strong> \(\hbar\vec{G}\) 的意义下守恒。声子-声子、声子-电子、声子-光子散射过程分两类：<strong>正常过程</strong> (N-process, 总 \(\vec{k}\) 严格守恒) 与<strong>倒逆过程</strong> (Umklapp process, 总 \(\vec{k}\) 差一个 \(\vec{G}\)，把动量传给整个晶格)。Umklapp 是金属高温电阻与晶体热导率下降的主因。把声子动量当成严格的牛顿动量会导致错误。</li>
+        <li><strong>忘记德拜模型只数到德拜频率 \(\omega_D\) 为止的模式。</strong>德拜把固体视为连续介质，给出 \(g(\omega)\propto\omega^{2}\) 的状态密度——但这个幂律<strong>只对 \(\omega\le\omega_D\)</strong> 成立，超过 \(\omega_D\) 的模式<strong>不存在</strong>（被截断以保证总模式数 \(=3N\)）。常见错误是直接 \(\int_{0}^{\infty}\omega^{2}\,\mathrm{d}\omega\) 发散——必须用上限 \(\omega_D\)。在积分换元 \(x=\hbar\omega/k_BT\) 后，低温下 \(\Theta_D/T\to\infty\) 才可近似为 \(\int_{0}^{\infty}\)，但这是极限操作，不是物理本身。</li>
+        <li><strong>把德拜 \(T^{3}\) 律外推到高温。</strong>\(C_V\propto T^{3}\) 是<strong>严格低温极限</strong>（\(T\ll\Theta_D\)，经验上 \(T\lesssim\Theta_D/10\)）。中温区（\(T\sim\Theta_D\)）必须用完整德拜积分 \(C_V=9Nk_B(T/\Theta_D)^{3}\int_{0}^{\Theta_D/T}\frac{x^{4}e^{x}}{(e^{x}-1)^{2}}\,\mathrm{d}x\)；高温下 \(C_V\to 3R\)（杜隆–珀蒂），完全<strong>不是</strong> \(T^{3}\)。把 \(T^{3}\) 律套到 \(T\sim\Theta_D\) 处会严重高估（例：把铜 \(T^{3}\) 律用到 \(T=300\,\mathrm{K}\) 会给 \(C_V\approx 1300\,\mathrm{J/(mol\cdot K)}\)，而实际是 \(24\,\mathrm{J/(mol\cdot K)}\)，差 50 倍）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 推导单原子链色散的群速度 Group Velocity of the Monoatomic Chain</summary>
+        <div class="hint">\(v_g=\mathrm{d}\omega/\mathrm{d}k\)。对 \(\omega=2\sqrt{K/m}\,|\sin(ka/2)|\)（取 \(k&gt;0\)，去绝对值）求导，并讨论 \(k=0\)、\(k=\pi/(2a)\)、\(k=\pi/a\) 处的值。</div>
+        <div class="solution">
+          对 \(k&gt;0\)：\(\omega=2\sqrt{K/m}\sin(ka/2)\)。
+          \[ v_g=\frac{\mathrm{d}\omega}{\mathrm{d}k}=2\sqrt{\frac{K}{m}}\cdot\frac{a}{2}\cos\frac{ka}{2}=a\sqrt{\frac{K}{m}}\cos\frac{ka}{2}. \]
+          <br>在 \(k=0\)：\(v_g(0)=a\sqrt{K/m}=v_s\)（声速）✓。
+          <br>在 \(k=\pi/(2a)\)（即 \(ka/2=\pi/4\)）：\(v_g=a\sqrt{K/m}\cos(\pi/4)=a\sqrt{K/m}/\sqrt{2}\approx 0.707\,v_s\)。
+          <br>在 \(k=\pi/a\)（布里渊区边界）：\(v_g=a\sqrt{K/m}\cos(\pi/2)=0\)。<strong>区边界群速度为零</strong>——这是驻波（相邻原子完全反相），能量不再传播，对应布拉格反射条件 \(2a=\lambda\)。这正是声子色散在短波时「停顿」的物理。
+          <span class="ans">答：\(v_g(k)=a\sqrt{K/m}\cos(ka/2)\)；\(v_g(0)=v_s\)、\(v_g(\pi/a)=0\)（驻波，对应布拉格反射）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 单原子极限验证：令双原子链 \(M\to m\) Diatomic → Monoatomic Limit</summary>
+        <div class="hint">在 \(\omega_{\pm}^{2}\) 表达式中令 \(M=m=\mu\)，化简两支；把它们画在 \(k\in[0,\pi/a]\) 上，证明合并后等价于元胞长 \(a/2\) 的单原子链色散。</div>
+        <div class="solution">
+          令 \(M=m=\mu\)：根号内 \(M^{2}+m^{2}+2Mm\cos(ka)=2\mu^{2}(1+\cos(ka))=4\mu^{2}\cos^{2}(ka/2)\)，故 \(\sqrt{\,\cdot\,}=2\mu|\cos(ka/2)|\)。
+          <br>对 \(k\in[0,\pi/a]\)，\(\cos(ka/2)\ge 0\)，故
+          \[ \omega_{\pm}^{2}=\frac{K}{\mu^{2}}\bigl[2\mu\pm 2\mu\cos(ka/2)\bigr]=\frac{2K}{\mu}\bigl[1\pm\cos(ka/2)\bigr]. \]
+          <br>声学支（\(-\)）：\(\omega_{-}^{2}=(2K/\mu)\cdot 2\sin^{2}(ka/4)=(4K/\mu)\sin^{2}(ka/4)\)，故 \(\omega_{-}=2\sqrt{K/\mu}\sin(ka/4)\)。
+          <br>光学支（\(+\)）：\(\omega_{+}^{2}=(2K/\mu)\cdot 2\cos^{2}(ka/4)=(4K/\mu)\cos^{2}(ka/4)\)，故 \(\omega_{+}=2\sqrt{K/\mu}\cos(ka/4)\)。
+          <br>令 \(k'=k/2\)（即把 \(k\) 重新参数化，对应元胞长 \(a/2\)）：\(\omega_{-}=2\sqrt{K/\mu}\sin(k'a/2)\)，\(\omega_{+}=2\sqrt{K/\mu}\cos(k'a/2)=2\sqrt{K/\mu}\sin\bigl((\pi/k'a)\cdot(\text{...})\bigr)\)... 把 \(k'\) 延拓到 \([0,2\pi/a]\)，两支恰好拼成单原子链色散 \(\omega=2\sqrt{K/\mu}\sin(k'a/2)\)。带隙在 \(k=\pi/a\) 处为零：\(\omega_{-}=\omega_{+}=2\sqrt{K/\mu}\sin(\pi/4)=\sqrt{2K/\mu}\) ✓。
+          <br><strong>物理：</strong>这就是<strong>能带折叠</strong>——把单原子链的元胞加倍（间距 \(a/2\to a\)）后布里渊区减半（\(\pi/(a/2)\to\pi/a\)），原本一支折叠成两支并在区边界相接。能带论中电子能带也遵循同样图像。
+          <span class="ans">答：\(M=m=\mu\) 下两支 \(\omega_{-}=2\sqrt{K/\mu}\sin(ka/4)\)、\(\omega_{+}=2\sqrt{K/\mu}\cos(ka/4)\)，在 \(k=\pi/a\) 处相接（带隙为零）；折叠回 \(k'\in[0,2\pi/a]\) 即单原子链色散。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 金刚石与铅的德拜热容比较 Diamond vs. Lead Debye \(C_V\)</summary>
+        <div class="hint">金刚石 \(\Theta_D=2230\,\mathrm{K}\)、铅 \(\Theta_D=105\,\mathrm{K}\)。在 \(T=300\,\mathrm{K}\) 用合适近似分别计算 \(C_V\)（每摩尔），解释为什么金刚石在室温下 \(C_V\) 远低于 \(3R\) 而铅已接近 \(3R\)。</div>
+        <div class="solution">
+          <br><strong>铅（\(T=300\,\mathrm{K}\)、\(\Theta_D=105\,\mathrm{K}\)）：</strong>\(T/\Theta_D=2.86&gt;1\)，高温极限。
+          \[ C_V^{\text{Pb}}\approx 3R=24.94\,\mathrm{J/(mol\cdot K)}. \]
+          实验值约 \(26.7\,\mathrm{J/(mol\cdot K)}\)，非常接近 \(3R\)（铅在室温就是经典杜隆–珀蒂值的标准范例）。
+          <br><strong>金刚石（\(T=300\,\mathrm{K}\)、\(\Theta_D=2230\,\mathrm{K}\)）：</strong>\(T/\Theta_D=0.135\ll 1\)，\(T^{3}\) 律适用：
+          \[ C_V^{\text{C}}\approx 233.79\times 8.314\times(0.135)^{3}=1944\times 2.46\times10^{-3}=4.78\,\mathrm{J/(mol\cdot K)}. \]
+          实验值约 \(6.1\,\mathrm{J/(mol\cdot K)}\)，\(T^{3}\) 律略低（\(T/\Theta_D=0.135\) 还不算「极低」，完整德拜积分给 \(5.7\,\mathrm{J/(mol\cdot K)}\)，更接近实验）。
+          <br><strong>对比：</strong>铅 \(C_V\approx 24.9\)，金刚石 \(C_V\approx 4.8\)——金刚石比铅低 5 倍！物理上，金刚石由轻原子（\(^{12}\mathrm{C}\)）+ 共价键强（弹簧常量大）→ \(\Theta_D\) 极高 → 室温下大部分声子模式仍被「冻结」（\(\hbar\omega\gg k_BT\)）。铅则重原子 + 金属键弱 → \(\Theta_D\) 低 → 室温已是「高温」。这就是为什么 <strong>\(\Theta_D\) 是材料「硬度」的热学标度</strong>。
+          <br><strong>注：</strong>历史上有名的「金刚石室温 \(C_V\) 远低于 \(3R\)」正是 19 世纪末困扰杜隆–珀蒂定律的难题，爱因斯坦 1907 年用第一个量子热容模型（爱因斯坦模型）成功解释了它——量子论的早期胜利之一。
+          <span class="ans">答：铅 \(C_V\approx 24.9\,\mathrm{J/(mol\cdot K)}\approx 3R\)（高温极限）；金刚石 \(C_V\approx 4.8\,\mathrm{J/(mol\cdot K)}\)（\(T^{3}\) 律，实验约 6）；差距源于 \(\Theta_D\) 相差 21 倍。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 双原子链的光学模振荡模式 Optical-Mode Eigenmode at \(k=0\)</summary>
+        <div class="hint">在 \(k=0\) 光学支中，两子晶格振幅比 \(V/U=-M/m\)（负号表反向）。对 NaCl（\(M_{\text{Na}}=23\,\mathrm{u}\)、\(m_{\text{Cl}}=35.5\,\mathrm{u}\)）求振幅比，并验证质心不动。</div>
+        <div class="solution">
+          \(V/U=-M/m=-23/35.5=-0.648\)。即 Na\(^+\) 位移幅 \(U=1\) 时，Cl\(^{-}\) 位移幅 \(-0.648\)（反向、幅值较小）。
+          <br>质心位置：\(X_{\text{cm}}=(M\cdot U+m\cdot V)/(M+m)=(23\times 1+35.5\times(-0.648))/(23+35.5)=(23-23.0)/58.5=0\) ✓。
+          <br><strong>物理：</strong>光学模中两子晶格反向振荡保持质心固定——这是不含外力的封闭系统所需的动量守恒。Cl 比 Na 重，故 Cl 振幅小（重原子惯性大）；振幅反比于质量，恰使两子晶格的动量大小相等方向相反。
+          <br>这种反向振荡在 NaCl 中产生交变电偶极矩 \(\vec{p}=q(\vec{u}_{+}-\vec{u}_{-})\)，可与同频率（\(5.1\,\mathrm{THz}\)、波长 \(60\,\mu\mathrm{m}\)、远红外）的电磁波共振耦合——这就是 NaCl 对红外光强吸收的根源（剩余射线带 Reststrahlen band）。
+          <span class="ans">答：\(V/U=-0.648\)；质心不动 ✓；偶极矩振荡使离子晶体吸收红外光。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 由声速估算德拜温度 Estimating \(\Theta_D\) from Sound Velocity</summary>
+        <div class="hint">三维各向同性固体中，德拜模型用平均声速 \(v_s\)（含 1 个纵 + 2 个横分量）和原子数密度 \(n=N/V\)。公式 \(k_D=(6\pi^{2}n)^{1/3}\)、\(\Theta_D=\hbar v_s k_D/k_B\)。对铜：\(v_s\approx 3000\,\mathrm{m/s}\)（平均）、密度 \(\rho=8.96\times10^{3}\,\mathrm{kg/m^{3}}\)、摩尔质量 \(63.5\,\mathrm{g/mol}\)。估算 \(\Theta_D\) 并与实验值 \(343\,\mathrm{K}\) 比较。</div>
+        <div class="solution">
+          <br>原子数密度 \(n=\rho\cdot N_A/M_{\text{mol}}\)：
+          \[ n=\frac{8.96\times10^{3}\times 6.022\times10^{23}}{0.0635}=8.50\times10^{28}\,\mathrm{m^{-3}}. \]
+          <br>德拜波矢 \(k_D=(6\pi^{2}n)^{1/3}\)：
+          \[ 6\pi^{2}n=59.22\times 8.50\times10^{28}=5.03\times10^{30}, \quad k_D=(5.03\times10^{30})^{1/3}=1.71\times10^{10}\,\mathrm{m^{-1}}. \]
+          <br>德拜频率 \(\omega_D=v_sk_D=3000\times 1.71\times10^{10}=5.13\times10^{13}\,\mathrm{rad/s}\)。
+          <br>德拜温度：
+          \[ \Theta_D=\frac{\hbar\omega_D}{k_B}=\frac{1.055\times10^{-34}\times 5.13\times10^{13}}{1.381\times10^{-23}}=\frac{5.41\times10^{-21}}{1.381\times10^{-23}}=392\,\mathrm{K}. \]
+          <br>实验值 \(\Theta_D=343\,\mathrm{K}\)，估算偏高约 \(14\%\)。偏差来自：(i) 我们用单一平均 \(v_s\) 而实际需用 \(1/v_s^{3}=(1/3)(1/v_l^{3}+2/v_t^{3})\) 的精确平均（横波速度小，使有效 \(v_s\) 减小）；(ii) 高频色散非严格线性。但数量级完全正确——这表明德拜模型把固体当作连续弹性介质的图像是物理上自洽的。
+          <span class="ans">答：估算 \(\Theta_D\approx 392\,\mathrm{K}\)，实验 \(343\,\mathrm{K}\)，偏差 \(14\%\)（来自声速各向异性与色散）。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>双原子链的声子色散关系 — Phonon Dispersion of the 1-D Diatomic Chain.</strong>上图绘制声学支（蓝）与光学支（红）\(\omega_{\pm}(k)\) 在第一布里渊区 \(k\in[0,\pi/a]\) 中的形状；下图动画展示选定模式（\(k=\pi/2a\)）下两子晶格的实时位移（蓝原子 = 较重的 \(M\)，红原子 = 较轻的 \(m\)，弹簧为灰线）。<strong>调节质量比 \(M/m\)</strong>：比值越大，带隙越宽，光学支上限越高；比值 \(=1\) 时两支在 \(k=\pi/a\) 处相接（单原子极限，带隙为零）。<strong>切换「光学支」开关</strong>：声学模中两子晶格大致同相运动；光学模中两子晶格反相运动（质心近似固定）——后者在离子晶体中产生交变电偶极矩，可与红外光耦合。改变弹簧常量 \(K\) 与轻原子质量 \(m\) 观察整体频率标度变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="640" height="460"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+
+          // Defaults: M/m ratio, spring K, base (light) mass in atomic units
+          var DEFAULTS = { ratio: 1.85, K: 15, mMass: 20, branch: true };
+          var params = {
+            ratio: DEFAULTS.ratio,
+            K: DEFAULTS.K,
+            mMass: DEFAULTS.mMass,
+            branch: DEFAULTS.branch, // true=optical, false=acoustic
+          };
+
+          var AMU = 1.66054e-27; // kg per amu
+
+          function masses() {
+            var m = params.mMass * AMU;
+            var M = params.ratio * m;
+            return { M: M, m: m };
+          }
+
+          // ω² for given branch, k∈[0, π/a] (a = 1 in our units)
+          function omega2(k, optical) {
+            var ms = masses();
+            var M = ms.M, m = ms.m;
+            var K = params.K;
+            var s = Math.sqrt(M * M + m * m + 2 * M * m * Math.cos(k));
+            var sum = M + m;
+            return optical ? K * (sum + s) / (M * m) : K * (sum - s) / (M * m);
+          }
+
+          function omegaAtBoundary(optical) {
+            var ms = masses();
+            var mn = Math.min(ms.M, ms.m);
+            var mx = Math.max(ms.M, ms.m);
+            return optical ? Math.sqrt(2 * params.K / mn) : Math.sqrt(2 * params.K / mx);
+          }
+
+          // Complex V/U eigen-amplitude ratio: V/U = K(1+e^{ika})/(2K - mω²)
+          function vOverU(k, optical) {
+            var ms = masses();
+            var m = ms.m;
+            var K = params.K;
+            var w2 = omega2(k, optical);
+            var den = 2 * K - m * w2;
+            if (Math.abs(den) < 1e-30) return { re: 0, im: 0 };
+            return {
+              re: K * (1 + Math.cos(k)) / den,
+              im: K * Math.sin(k) / den,
+            };
+          }
+
+          function toTHz(w) { return w / (2 * Math.PI) / 1e12; }
+
+          // Plot geometry
+          var px0 = 56, py0 = 70, pw = 540, ph = 240;
+          var px1 = px0 + pw, py1 = py0 + ph;
+
+          // Chain geometry
+          var chainY = 380, chainX0 = 50, chainX1 = 590;
+          var nCells = 7;
+          var kAnim = Math.PI / 2; // representative k for animation
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var ms = masses();
+              var M = ms.M, m = ms.m;
+              var wMax = omegaAtBoundary(true);
+              var fMax = toTHz(wMax);
+
+              // ---- Plot frame ----
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(px0, py0, pw, ph);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(px0, py0, pw, ph);
+              ctx.restore();
+
+              // Gridlines
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.45;
+              ctx.lineWidth = 1;
+              for (var g = 1; g < 4; g++) {
+                var gy = py0 + (g / 4) * ph;
+                ctx.beginPath(); ctx.moveTo(px0, gy); ctx.lineTo(px1, gy); ctx.stroke();
+                var gx = px0 + (g / 4) * pw;
+                ctx.beginPath(); ctx.moveTo(gx, py0); ctx.lineTo(gx, py1); ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              function kToX(k) { return px0 + (k / Math.PI) * pw; }
+              function fToY(f) { return py1 - Math.max(0, Math.min(1, f / fMax)) * ph; }
+
+              // Draw branches
+              function drawBranch(optical, color, lw) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lw;
+                ctx.beginPath();
+                var Npts = 220;
+                for (var i = 0; i <= Npts; i++) {
+                  var k = (i / Npts) * Math.PI;
+                  var w = Math.sqrt(omega2(k, optical));
+                  var X = kToX(k), Y = fToY(toTHz(w));
+                  if (i === 0) ctx.moveTo(X, Y);
+                  else ctx.lineTo(X, Y);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+              drawBranch(false, PS.colors.primary, 2.8);
+              drawBranch(true, PS.colors.accent, 2.8);
+
+              // Gap highlight at zone boundary
+              var fAb = toTHz(omegaAtBoundary(false));
+              var fOb = toTHz(omegaAtBoundary(true));
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([5, 4]);
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.moveTo(kToX(Math.PI), fToY(fAb));
+              ctx.lineTo(kToX(Math.PI), fToY(fOb));
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              // Marker at animated k
+              var wAnimAc = Math.sqrt(omega2(kAnim, false));
+              var wAnimOp = Math.sqrt(omega2(kAnim, true));
+              ctx.save();
+              ctx.fillStyle = PS.colors.primary;
+              ctx.beginPath(); ctx.arc(kToX(kAnim), fToY(toTHz(wAnimAc)), 4.5, 0, 2 * Math.PI); ctx.fill();
+              ctx.fillStyle = PS.colors.accent;
+              ctx.beginPath(); ctx.arc(kToX(kAnim), fToY(toTHz(wAnimOp)), 4.5, 0, 2 * Math.PI); ctx.fill();
+              ctx.restore();
+
+              // Axis labels & ticks
+              ctx.save();
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('波矢 k  (单位 π/a)', (px0 + px1) / 2, py1 + 34);
+              ctx.save();
+              ctx.translate(px0 - 40, (py0 + py1) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('频率 ν = ω/2π  (THz)', 0, 0);
+              ctx.restore();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ['0', 'π/4a', 'π/2a', '3π/4a', 'π/a'].forEach(function (lbl, i) {
+                ctx.fillText(lbl, px0 + (i / 4) * pw, py1 + 16);
+              });
+              ctx.textAlign = 'right';
+              ctx.textBaseline = 'middle';
+              for (var ti = 0; ti <= 4; ti++) {
+                var fv = (ti / 4) * fMax;
+                ctx.fillText(fv.toFixed(1), px0 - 5, fToY(fv));
+              }
+              ctx.restore();
+
+              // Legend + title + params
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('双原子链色散  Dispersion ω(k)', 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              var mAmu = (m / AMU).toFixed(1);
+              var MAmu = (M / AMU).toFixed(1);
+              ctx.fillText('M = ' + MAmu + ' u,  m = ' + mAmu + ' u,  M/m = ' + params.ratio.toFixed(2) + ',  K = ' + params.K + ' N/m', 14, 30);
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'middle';
+              ctx.fillStyle = PS.colors.primary;
+              ctx.fillText('● 声学支 acoustic', px0 + pw - 200, py0 + 12);
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillText('● 光学支 optical', px0 + pw - 200, py0 + 30);
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.fillText('┊ 带隙 gap', px0 + pw - 200, py0 + 48);
+              ctx.restore();
+
+              // Readout at zone boundary
+              ctx.save();
+              ctx.font = '11px ui-monospace, Menlo, monospace';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('ν₋(π/a) = ' + fAb.toFixed(2) + ' THz', px0 + 8, py0 + 78);
+              ctx.fillText('ν₊(π/a) = ' + fOb.toFixed(2) + ' THz', px0 + 8, py0 + 94);
+              ctx.fillText('ν₊(0)   = ' + toTHz(Math.sqrt(omega2(0, true))).toFixed(2) + ' THz', px0 + 8, py0 + 110);
+              ctx.fillText('Δν gap  = ' + (fOb - fAb).toFixed(2) + ' THz', px0 + 8, py0 + 126);
+              ctx.restore();
+
+              // ===== Animated chain =====
+              var wAnim = Math.sqrt(omega2(kAnim, params.branch));
+              var phase = s.t * wAnim;
+              var vC = vOverU(kAnim, params.branch);
+              var ampMax = Math.max(1, Math.abs(vC.re), Math.abs(vC.im));
+              var dispScale = 22 / ampMax;
+
+              // Atom radii (visual cue for mass)
+              var rM = Math.min(Math.max(6 + 3 * Math.cbrt(params.ratio), 5), 13);
+              var rm = Math.min(Math.max(6 + 3 / Math.cbrt(params.ratio), 5), 13);
+
+              var cellW = (chainX1 - chainX0) / nCells;
+
+              // Equilibrium guide line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.6;
+              ctx.lineWidth = 1;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(chainX0, chainY); ctx.lineTo(chainX1, chainY);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              // Compute positions for spring drawing
+              var posM = [], posm = [];
+              for (var n = 0; n < nCells; n++) {
+                var cellX = chainX0 + (n + 0.5) * cellW;
+                var xM_eq = cellX - cellW * 0.25;
+                var xm_eq = cellX + cellW * 0.25;
+                var ph = kAnim * n - phase;
+                var dispM = Math.cos(ph) * dispScale;          // U = 1
+                var dispm = (vC.re * Math.cos(ph) + vC.im * Math.sin(ph)) * dispScale;
+                posM.push({ x: xM_eq, y: chainY + dispM });
+                posm.push({ x: xm_eq, y: chainY + dispm });
+              }
+
+              // Springs (M_n -- m_n) and (m_n -- M_{n+1})
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1.4;
+              for (var nn = 0; nn < nCells; nn++) {
+                ctx.beginPath();
+                ctx.moveTo(posM[nn].x, posM[nn].y);
+                ctx.lineTo(posm[nn].x, posm[nn].y);
+                ctx.stroke();
+                if (nn < nCells - 1) {
+                  ctx.beginPath();
+                  ctx.moveTo(posm[nn].x, posm[nn].y);
+                  ctx.lineTo(posM[nn + 1].x, posM[nn + 1].y);
+                  ctx.stroke();
+                }
+              }
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              // Atoms
+              for (var nn2 = 0; nn2 < nCells; nn2++) {
+                PS.drawCircle(ctx, posM[nn2].x, posM[nn2].y, rM, { fill: PS.colors.primary, stroke: PS.colors.text, lineWidth: 1 });
+                PS.drawCircle(ctx, posm[nn2].x, posm[nn2].y, rm, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+              }
+
+              // Chain annotations
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('动画模式  k = π/2a,  分支：' + (params.branch ? '光学 optical' : '声学 acoustic') + ',  ν = ' + toTHz(wAnim).toFixed(2) + ' THz', chainX0, chainY - 38);
+              var hint = params.branch
+                ? '★ 光学模：M 与 m 大致反相 — 离子晶体中此模式耦合红外光'
+                : '★ 声学模：M 与 m 同相 — 长波极限下趋近声波 v_s';
+              ctx.fillStyle = params.branch ? PS.colors.accent : PS.colors.primary;
+              ctx.fillText(hint, chainX0, chainY - 22);
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'right';
+              ctx.fillText('蓝 = M (重), 红 = m (轻)', chainX1, chainY + 38);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'ratio', label: '质量比 M/m', min: 1, max: 5, step: 0.05, value: DEFAULTS.ratio },
+            { type: 'slider', key: 'K', label: '弹簧常量 K (N/m)', min: 5, max: 60, step: 1, value: DEFAULTS.K },
+            { type: 'slider', key: 'mMass', label: '轻原子 m (u)', min: 10, max: 60, step: 1, value: DEFAULTS.mMass },
+            { type: 'toggle', key: 'branch', label: '光学支 (反相振荡)', value: DEFAULTS.branch },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('ratio', function (v) { params.ratio = v; });
+          ctl.on('K', function (v) { params.K = v; });
+          ctl.on('mMass', function (v) { params.mMass = v; });
+          ctl.on('branch', function (v) { params.branch = v; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-2 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.ratio);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.K);
+            if (sliders[2]) setSlider(sliders[2], DEFAULTS.mMass);
+            var toggle = document.querySelector('#controls-2 input[type=checkbox]');
+            if (toggle) {
+              toggle.checked = DEFAULTS.branch;
+              toggle.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>晶体 = 耦合谐振子链</strong>：原子小位移在简谐近似下等价于由弹簧 \(K\) 联结的耦合振子；集体激发 = 简正模，是平面波 \(u_n\propto e^{i(kna-\omega t)}\)，\(k\) 限制在第一布里渊区。</li>
+        <li><strong>单原子链色散</strong>：\(\omega(k)=2\sqrt{K/m}\,|\sin(ka/2)|\)。长波极限 \(\omega\to v_s k\)，声速 \(v_s=a\sqrt{K/m}\)。区边界 \(k=\pi/a\) 群速度为零（布拉格反射条件）。</li>
+        <li><strong>双原子链</strong>：分裂为声学支（\(-\)）与光学支（\(+\)）。封闭表达式 \(\omega_{\pm}^{2}=K[(M+m)\pm\sqrt{M^{2}+m^{2}+2Mm\cos(ka)}]/(Mm)\)。声学支 \(k=0\)：\(\omega=0\)；光学支 \(k=0\)：\(\omega=\sqrt{2K(1/M+1/m)}\)。区边界带隙正比于质量差。</li>
+        <li><strong>声子</strong>：晶格振动能量量子为 \(\hbar\omega\)，模式能量 \(E=(n+\tfrac12)\hbar\omega\)，\(n\) 为声子数；玻色子，无化学势，玻色–爱因斯坦分布 \(\langle n\rangle=1/(e^{\hbar\omega/k_BT}-1)\)。晶格动量 \(\hbar k\) 仅模 \(\hbar G\) 守恒（N-与 U-过程）。</li>
+        <li><strong>德拜模型</strong>：声波色散 \(\omega=v_sk\) 截止到 \(\omega_D\)，模式密度 \(g(\omega)\propto\omega^{2}\)。低温 \(C_V\approx(12\pi^{4}/5)Nk_B(T/\Theta_D)^{3}\propto T^{3}\)；高温 \(C_V\to 3Nk_B=3R\)。德拜温度 \(\Theta_D=\hbar\omega_D/k_B\) 是材料「硬度」标度。</li>
+        <li><strong>爱因斯坦模型</strong>：所有原子同频率 \(\omega_E\) 独立振荡，低温 \(C_V\sim e^{-\Theta_E/T}\) 指数衰减；缺少低频声学模式，与实验 \(T^{3}\) 律不符。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\text{单原子链: }\omega(k)=2\sqrt{\frac{K}{m}}\,\bigl|\sin(ka/2)\bigr|,\qquad v_s=a\sqrt{\frac{K}{m}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{双原子链: }\omega_{\pm}^{2}(k)=\frac{K}{Mm}\!\Bigl[(M+m)\pm\sqrt{M^{2}+m^{2}+2Mm\cos(ka)}\,\Bigr]\;} \]</div>
+      <div class="formula">\[ \boxed{\;\omega_{+}(0)=\sqrt{2K\Bigl(\frac1M+\frac1m\Bigr)},\quad \omega_{-}(\pi/a)=\sqrt{\frac{2K}{\max(M,m)}},\quad \omega_{+}(\pi/a)=\sqrt{\frac{2K}{\min(M,m)}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;E_{n_k}=\Bigl(n_k+\tfrac12\Bigr)\hbar\omega_k,\qquad \langle n(\omega)\rangle=\frac{1}{e^{\hbar\omega/k_BT}-1}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{Debye: }C_V\approx\frac{12\pi^{4}}{5}Nk_B\Bigl(\frac{T}{\Theta_D}\Bigr)^{3}\ (T\ll\Theta_D),\qquad C_V\to 3Nk_B\ (T\gg\Theta_D)\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

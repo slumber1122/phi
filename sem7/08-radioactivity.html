@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 放射性与核衰变 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第8章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>放射性与核衰变 <span class="en-title">Radioactivity &amp; Nuclear Decay</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够由「每个核在 \(dt\) 内以恒定概率 \( \lambda\,dt \) 衰变」这一统计前提导出指数衰变定律 (exponential decay law) \( \dv{N}{t}=-\lambda N \)、\( N(t)=N_0 e^{-\lambda t} \)，并说明衰变「无记忆」(memoryless) 的统计本质。</li>
+        <li>能够熟练换算衰变常数 (decay constant) \( \lambda \)、半衰期 (half-life) \( t_{1/2}=\ln 2/\lambda \) 与平均寿命 (mean lifetime) \( \tau=1/\lambda \)，并计算样品的活度 (activity) \( A=\lambda N \)（贝可 Becquerel 与居里 Curie）。</li>
+        <li>能够用量子隧穿 (quantum tunneling) 与 Gamow 因子分析 \( \alpha \) 衰变，说明为何 \( Q_\alpha \) 仅几 MeV 的差异会造成半衰期跨越 \( 10^{20} \) 倍以上（Geiger–Nuttall 律）。</li>
+        <li>能够区分 \( \beta^- \)、\( \beta^+ \) 与电子俘获 (electron capture, EC) 三种弱相互作用衰变模式，写出反应式与 \( Q \)-值，并解释中微子 (neutrino) 假说如何挽救能量动量守恒与连续 β 谱。</li>
+        <li>能够分析多级衰变链 (decay chain) 与久期平衡 (secular equilibrium) \( A_2=A_1 \)，并将其用于放射测年（如 \( {}^{14}\mathrm{C} \) 测年）。</li>
+        <li>能够区分吸收剂量 (absorbed dose, Gy) 与当量剂量 (equivalent dose, Sv)，并解释品质因数 (quality factor) 的物理意义。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 衰变定律与活度 The Decay Law and Activity</h3>
+      <p>实验事实：一切放射性核素每个原子核在任意小时间 \( dt \) 内发生衰变的概率<strong>恒为</strong> \( \lambda\,dt \)，与它的「年龄」、外界条件（温度、压力、化学环境）<em>无关</em>。这就是<strong>无记忆性</strong> (memoryless)。设时刻 \( t \) 尚有 \( N(t) \) 个未衰变核，则在 \( dt \) 内预期衰变数为 \( \lambda N\,dt \)，故</p>
+      <div class="formula">\[ \boxed{\;\dv{N}{t}=-\lambda N\;},\qquad N(t)=N_0\,e^{-\lambda t} \]</div>
+      <p>比例系数 \( \lambda \) 称为<strong>衰变常数</strong> (decay constant)，单位 \( \mathrm{s^{-1}} \)。该定律是<strong>统计</strong>性的：单次实验中 \( \Delta N \) 围绕均值 \( \lambda N\,dt \) 有泊松涨落 (Poisson fluctuation)，仅当 \( N\gg 1 \) 时趋于光滑指数。</p>
+      <p>单位时间内发生衰变的次数称为<strong>活度</strong> (activity)：</p>
+      <div class="formula">\[ A\equiv-\dv{N}{t}=\lambda N=\lambda N_0\,e^{-\lambda t}=A_0\,e^{-\lambda t} \]</div>
+      <p>活度的 SI 单位是<strong>贝可</strong> (Becquerel, Bq)，\( 1\,\mathrm{Bq}=1\,\mathrm{s^{-1}} \)。历史上常用<strong>居里</strong> (Curie, Ci)，定义为 \( 1\,\mathrm{g} \) 镭 \( {}^{226}\mathrm{Ra} \) 的活度：</p>
+      <div class="formula">\[ 1\,\mathrm{Ci}=3.7\times 10^{10}\,\mathrm{Bq}=37\,\mathrm{GBq} \]</div>
+      <p>典型实验室「放射源」约 \( 10^3\)–\(10^6\,\mathrm{Bq} \)（即 \( \mu\mathrm{Ci} \) 至 \( 100\,\mu\mathrm{Ci} \) 量级）。</p>
+
+      <h3>2. 半衰期与平均寿命 Half-Life and Mean Lifetime</h3>
+      <p>令 \( N \) 减半所需的时间 \( t_{1/2} \) 称为<strong>半衰期</strong>：</p>
+      <div class="formula">\[ \frac{N_0}{2}=N_0 e^{-\lambda t_{1/2}}\;\Rightarrow\;\boxed{\;t_{1/2}=\frac{\ln 2}{\lambda}\approx\frac{0.693}{\lambda}\;} \]</div>
+      <p>另一个自然的时间尺度是<strong>平均寿命</strong> \( \tau \)，即每个核从「现在」算起的预期存活时间的统计平均：</p>
+      <div class="formula">\[ \tau=\int_0^\infty t\,\lambda e^{-\lambda t}\,dt=\frac{1}{\lambda}=\frac{t_{1/2}}{\ln 2}\approx 1.443\,t_{1/2} \]</div>
+      <p>注意 \( \tau>t_{1/2} \)：长尾的存在把均值抬到半衰期之上。三者关系总览：\( \lambda t_{1/2}=\ln 2 \)，\( \lambda\tau=1 \)。</p>
+
+      <h3>3. α 衰变与量子隧穿 Alpha Decay and Quantum Tunneling</h3>
+      <p>许多重核（\( Z>82 \)）自发发射 \( \alpha \) 粒子（即 \( {}^4_2\mathrm{He} \) 核）：</p>
+      <div class="formula">\[ {}^{A}_{Z}X\;\longrightarrow\;{}^{A-4}_{Z-2}Y+{}^4_2\mathrm{He} \]</div>
+      <p>释放的动能 \( Q_\alpha \) 典型为 4–9 MeV，例如 \( {}^{238}\mathrm{U}\to{}^{234}\mathrm{Th}+\alpha \)（\( Q=4.27\,\mathrm{MeV} \)）。<strong>经典物理无法解释这一过程</strong>：\( \alpha \) 粒子距核中心约 \( R\sim 9\,\mathrm{fm} \) 处所受库仑势垒 \( V_C(R)\sim 28\,\mathrm{MeV}\gg Q \)，经典粒子能量不足绝无可能越过。1928 年 Gamow（与独立地 Gurney–Condon）指出 \( \alpha \) 衰变是<strong>量子隧穿</strong> (quantum tunneling)。</p>
+      <p>WKB 近似给出穿透概率 (penetration probability)</p>
+      <div class="formula">\[ P\;\approx\;e^{-2G},\qquad G=\frac{1}{\hbar}\int_{R}^{b}\sqrt{2\mu\bigl(V(r)-Q\bigr)}\,dr \]</div>
+      <p>其中 \( V(r)=2Z_d\,e^2/(4\pi\varepsilon_0 r) \) 是子核电荷对 \( \alpha \) 的库仑势，\( b=2Z_d e^2/(4\pi\varepsilon_0 Q) \) 是经典外转折点（\( V(b)=Q \)），\( \mu \) 是约化质量。完成积分并取 \( R\ll b \) 的主项得（见推导 B）：</p>
+      <div class="formula">\[ 2G\;\approx\;2\pi\,\alpha Z_d\,\sqrt{\frac{2\mu c^2}{Q}}\;\times\;\bigl[\text{有限 }R\text{ 修正}\bigr] \]</div>
+      <p>关键点是 \( 2G\propto Z_d/\sqrt{Q} \)。因为概率是 \( e^{-2G} \)，\( Q \) 仅改变 2 倍就足以让 \( P \)（因而 \( t_{1/2} \)）变化 \( 10^{20} \) 倍以上——这正是 <strong>Geiger–Nuttall 律</strong> (1912)：</p>
+      <div class="formula">\[ \boxed{\;\log_{10} t_{1/2}\;\propto\;\frac{Z_d}{\sqrt{Q_\alpha}}\;}\qquad(t_{1/2}\in[\mathrm{s}],\;Q\in[\mathrm{MeV}]) \]</div>
+
+      <h3>4. β 衰变与弱相互作用 Beta Decay and the Weak Force</h3>
+      <p>β 衰变是核内中子与质子相互转化的过程，由<strong>弱相互作用</strong> (weak interaction) 中介。共三种模式：</p>
+      <ul>
+        <li><strong>β⁻ 衰变</strong>：核内 \( n\to p+e^-+\bar{\nu}_e \)，即 \( {}^{A}_{Z}X\to{}^{A}_{Z+1}Y+e^-+\bar{\nu}_e \)。例：\( {}^{14}\mathrm{C}\to{}^{14}\mathrm{N}+e^-+\bar{\nu}_e \)（\( t_{1/2}=5730 \) yr）。</li>
+        <li><strong>β⁺ 衰变</strong>：核内 \( p\to n+e^++{\nu}_e \)，即 \( {}^{A}_{Z}X\to{}^{A}_{Z-1}Y+e^++{\nu}_e \)。要求 \( M_{\text{母}}-M_{\text{子}}>2m_e \)（见下）。</li>
+        <li><strong>电子俘获</strong> (electron capture, EC)：内层轨道电子被核俘获，\( p+e^-\to n+{\nu}_e \)，即 \( {}^{A}_{Z}X+e^-\to{}^{A}_{Z-1}Y+{\nu}_e \)。</li>
+      </ul>
+      <p>1930 年 Pauli 为挽救 β 衰变中的能量、动量、角动量守恒提出<strong>中微子</strong> (neutrino) 假说：若仅发射电子，则由两体能量守恒电子动能应取确定值；但实验测得电子动能是<strong>从 0 到 \( Q \) 的连续谱</strong> (continuous spectrum)。剩馀能量被一个几乎不与物质相互作用的中性粒子——中微子——带走，问题迎刃而解（1956 年 Reines–Cowan 直接探测到反中微子）。</p>
+      <p>用<strong>原子质量</strong>（中性原子，含全部电子）算 \( Q \) 最方便：电子质量恰好抵消（β⁻）或显式扣去 \( 2m_e \)（β⁺，因要产生正电子）：</p>
+      <div class="formula">\[ Q_{\beta^-}=\bigl[M({}^{A}_{Z}X)-M({}^{A}_{Z+1}Y)\bigr]c^2 \]</div>
+      <div class="formula">\[ Q_{\beta^+}=\bigl[M({}^{A}_{Z}X)-M({}^{A}_{Z-1}Y)-2m_e\bigr]c^2,\qquad Q_{EC}=\bigl[M({}^{A}_{Z}X)-M({}^{A}_{Z-1}Y)\bigr]c^2 \]</div>
+      <p>电子动能的最大值（<strong>端点能</strong> endpoint energy）\( T_{e,\max}\approx Q \)（略去核反冲与中微子静质量）。気 \( {}^3\mathrm{H}\to{}^3\mathrm{He}+e^-+\bar{\nu}_e \) 的端点仅 \( 18.6\,\mathrm{keV} \)，KATRIN 实验正是用测量此端点附近的谱形来约束中微子静质量。</p>
+
+      <h3>5. γ 衰变 Gamma Decay</h3>
+      <p>α 或 β 衰变后的子核常处于<strong>激发态</strong>。它通过发射高能光子（γ 射线，典型 \( 0.1\)–\(3\,\mathrm{MeV} \)）退激发到基态或较低能级：</p>
+      <div class="formula">\[ {}^{A}_{Z}X^{*}\;\longrightarrow\;{}^{A}_{Z}X+\gamma,\qquad E_\gamma\approx E_i-E_f \]</div>
+      <p>γ 谱是<strong>分立</strong>的（反映核能级），与连续的 β 谱对照鲜明。退激发的另一种途径是<strong>内转换</strong> (internal conversion)：激发能直接传给核外轨道电子使其发射。若激发态寿命很长（可达年），称该核素为<strong>同核异能素</strong> (isomer)，如 \( {}^{99\mathrm{m}}\mathrm{Tc} \)（\( t_{1/2}=6.0\,\mathrm{hr} \)，医学显像常用）。</p>
+
+      <h3>6. 衰变链与久期平衡 Decay Chains and Secular Equilibrium</h3>
+      <p>重放射性核素往往衰变成仍具放射性的子核，形成<strong>衰变链</strong>。自然界存在三条始于长寿命母核的链：\( {}^{238}\mathrm{U} \) 系（4n+2）、\( {}^{235}\mathrm{U} \) 系（4n+3）、\( {}^{232}\mathrm{Th} \) 系（4n）。设两级衰变 \( N_1\xrightarrow{\lambda_1}N_2\xrightarrow{\lambda_2}N_3 \)（稳定），Bateman 方程给出</p>
+      <div class="formula">\[ N_1(t)=N_{10}e^{-\lambda_1 t},\qquad N_2(t)=\frac{\lambda_1 N_{10}}{\lambda_2-\lambda_1}\bigl(e^{-\lambda_1 t}-e^{-\lambda_2 t}\bigr)\;\;\;( +\,N_{20}e^{-\lambda_2 t}) \]</div>
+      <p>当 \( \lambda_1\ll\lambda_2 \)（母核远比子核长寿），且 \( t\gg 1/\lambda_2 \) 但 \( t\ll 1/\lambda_1 \)，有 \( N_2\to \lambda_1 N_1/\lambda_2 \)，即</p>
+      <div class="formula">\[ \boxed{\;A_2=\lambda_2 N_2=\lambda_1 N_1=A_1\;}\qquad\text{（久期平衡 secular equilibrium）} \]</div>
+      <p>子核活度等于母核活度。铀矿中 \( {}^{226}\mathrm{Ra} \)、\( {}^{222}\mathrm{Rn} \) 等的活度均等于母核 \( {}^{238}\mathrm{U} \) 的活度，正是久期平衡的体现。</p>
+
+      <h3>7. Q 值 Q-Value</h3>
+      <p>任意核反应或衰变的<strong>Q 值</strong>定义为反应前后<strong>静质量差</strong>对应的能量：</p>
+      <div class="formula">\[ Q=\Bigl(\sum M_{\text{反应物}}-\sum M_{\text{产物}}\Bigr)c^2 \]</div>
+      <p>\( Q>0 \)（放热）是过程<strong>自发发生</strong>的热力学必要条件（无需外加能量）；\( Q<0 \) 则需外界供能。Q 全部转化为产物的动能（与轻子静质量）。</p>
+
+      <h3>8. 应用：测年与剂量 Applications — Dating &amp; Dose</h3>
+      <p><strong>放射性测年</strong> (radiometric dating) 利用已知 \( t_{1/2} \) 的核素作为「时钟」。</p>
+      <ul>
+        <li><strong>\( {}^{14}\mathrm{C} \) 测年</strong> (Libby, 1949)：宇宙射线在高层大气产生中子，经 \( {}^{14}\mathrm{N}(n,p){}^{14}\mathrm{C} \) 持续生成 \( {}^{14}\mathrm{C} \)；它以 \( t_{1/2}=5730 \) yr 衰变回 \( {}^{14}\mathrm{N} \)。稳态下大气与活体生物中 \( {}^{14}\mathrm{C}/{}^{12}\mathrm{C}\approx 1.2\times 10^{-12} \)。机体死亡后停止与大气交换，\( {}^{14}\mathrm{C} \) 单调减少：测出现存活度 \( A \) 与初始 \( A_0 \) 之比即得年代 \( t=(t_{1/2}/\ln 2)\ln(A_0/A) \)。适用范围约 500–50000 yr。</li>
+        <li><strong>\( {}^{40}\mathrm{K}\!-\!{}^{40}\mathrm{Ar} \)</strong> 与 <strong>\( {}^{87}\mathrm{Rb}\!-\!{}^{87}\mathrm{Sr} \)</strong>：用长寿命母核测岩石年龄（\( 10^8\)–\(10^9 \) yr），是地质年代学的基础。</li>
+      </ul>
+      <p><strong>辐射剂量</strong> (radiation dose)：</p>
+      <ul>
+        <li><strong>吸收剂量</strong> (absorbed dose)：单位质量物质吸收的辐射能，\( D=E/m \)。SI 单位 <strong>戈瑞</strong> (gray, Gy) \( =1\,\mathrm{J/kg} \)。</li>
+        <li><strong>当量剂量</strong> (equivalent dose)：\( H=D\cdot Q \)，其中 \( Q \) 为反映传能线密度（LET）的<strong>品质因数</strong> (quality factor)：光子与电子 \( Q\approx 1 \)、中子 \( 5\)–\(20 \)、\( \alpha \) 粒子 \( Q\approx 20 \)。SI 单位 <strong>希沃特</strong> (sievert, Sv)。</li>
+      </ul>
+      <p>天然本底约 \( 2\)–\(3\,\mathrm{mSv/yr} \)；医学胸部 CT 约 \( 7\,\mathrm{mSv} \)；急性全身 \( \sim 5\,\mathrm{Sv} \) 致死剂量。注意 \( 1\,\mathrm{Gy} \) 的 \( \alpha \)（\( 20\,\mathrm{Sv} \)）比 \( 1\,\mathrm{Gy} \) 的 \( \gamma \)（\( 1\,\mathrm{Sv} \)）生物损伤大 20 倍——这正是吸入 α 放射体极危险的原因。</p>
+
+      <div class="key-terms">decay constant \( \lambda \) (衰变常数), exponential decay law (指数衰变定律), activity \( A=\lambda N \) (活度), Becquerel Bq (贝可), Curie Ci (居里), half-life \( t_{1/2}=\ln 2/\lambda \) (半衰期), mean lifetime \( \tau=1/\lambda \) (平均寿命), memoryless (无记忆性), alpha decay (α衰变), Coulomb barrier (库仑势垒), quantum tunneling (量子隧穿), Gamow factor \( G \) (Gamow 因子), Geiger–Nuttall law (Geiger–Nuttall 律), beta decay \( \beta^\pm \) (β衰变), electron capture EC (电子俘获), weak interaction (弱相互作用), neutrino \( \nu \) (中微子), continuous spectrum (连续谱), endpoint energy (端点能), gamma decay (γ衰变), isomer (同核异能素), internal conversion (内转换), decay chain (衰变链), Bateman equation (Bateman 方程), secular equilibrium \( A_2=A_1 \) (久期平衡), Q-value (Q值), radiocarbon dating (放射性碳测年), absorbed dose Gy (吸收剂量), equivalent dose Sv (当量剂量), quality factor \( Q \) (品质因数)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由「无记忆」前提导出指数衰变定律与 \( \tau \)、\( t_{1/2} \)</h3>
+      <p class="step"><strong>前提</strong>：单个核在 \( [t,t+dt] \) 内衰变的条件概率为 \( \lambda\,dt \)，与该核此前存活了多久无关（无记忆性）。设 \( N(t) \) 为 \( t \) 时刻未衰变核数。</p>
+      <p class="step"><strong>第一步（微分方程）</strong>：在 \( dt \) 内预期衰变数为 \( \lambda N\,dt \)，故 \( N \) 的改变量</p>
+      <p>\[ dN=-\lambda N\,dt\;\Rightarrow\;\dv{N}{t}=-\lambda N \]</p>
+      <p class="step"><strong>第二步（积分）</strong>：分离变量 \( dN/N=-\lambda\,dt \)，两边积分 \( \ln N=-\lambda t+C \)。代入 \( N(0)=N_0 \) 定常数：</p>
+      <div class="formula">\[ N(t)=N_0\,e^{-\lambda t} \]</div>
+      <p class="step"><strong>第三步（半衰期）</strong>：令 \( N(t_{1/2})=N_0/2 \)，则 \( e^{-\lambda t_{1/2}}=1/2 \)，两边取对数：</p>
+      <div class="formula">\[ t_{1/2}=\frac{\ln 2}{\lambda} \]</div>
+      <p class="step"><strong>第四步（平均寿命）</strong>：每个核的存活时间 \( t \) 是随机变量，其概率密度为 \( \lambda e^{-\lambda t} \)（恰好在 \( t \) 附近的 \( dt \) 内衰变）。于是</p>
+      <p>\[ \tau=\int_0^\infty t\,\bigl(\lambda e^{-\lambda t}\bigr)\,dt=\Bigl[-t e^{-\lambda t}\Bigr]_0^\infty+\int_0^\infty e^{-\lambda t}\,dt=\frac{1}{\lambda} \]</p>
+      <p class="step"><strong>评注</strong>：\( \tau=t_{1/2}/\ln 2\approx 1.443\,t_{1/2} \)。指数分布的「长尾」使均值大于中位数——这与单凭直觉认为「两者相等」相反。</p>
+
+      <h3>B. Gamow 隧穿因子与 Geiger–Nuttall 律</h3>
+      <p class="step"><strong>设定</strong>：\( \alpha \) 粒子（电荷 \( +2e \)、约化质量 \( \mu \)、能量 \( Q \)）穿出子核（电荷 \( Z_d \)）。核内 \( r<R \) 区被近似为方势阱（\( V=0 \)），核外是库仑势 \( V(r)=2Z_d e^2/(4\pi\varepsilon_0 r) \)。经典禁区为 \( R<r<b \)，其中外转折点</p>
+      <p>\[ b=\frac{2Z_d e^2}{4\pi\varepsilon_0 Q} \]</p>
+      <p class="step"><strong>第一步（WKB 因子）</strong>：透射概率 \( P\approx e^{-2G} \)，</p>
+      <p>\[ G=\frac{1}{\hbar}\int_R^b\sqrt{2\mu\bigl(V(r)-Q\bigr)}\,dr \]</p>
+      <p class="step"><strong>第二步（化简被积函数）</strong>：把 \( V(r)=Q\,b/r \) 代入：\( V-Q=Q(b/r-1) \)，故</p>
+      <p>\[ G=\frac{\sqrt{2\mu Q}}{\hbar}\int_R^b\sqrt{\frac{b}{r}-1}\,dr \]</p>
+      <p class="step"><strong>第三步（换元积分）</strong>：令 \( r=b\sin^2\theta \)，则 \( dr=2b\sin\theta\cos\theta\,d\theta \)，\( \sqrt{b/r-1}=\cot\theta \)。下限对应 \( \theta_0=\arcsin\sqrt{R/b} \)，上限 \( \theta=\pi/2 \)：</p>
+      <p>\[ \int_R^b\sqrt{\frac{b}{r}-1}\,dr=\int_{\theta_0}^{\pi/2}2b\cos^2\theta\,d\theta=b\Bigl[\theta+\sin\theta\cos\theta\Bigr]_{\theta_0}^{\pi/2}=b\bigl[\arccos\sqrt{R/b}-\sqrt{(R/b)(1-R/b)}\bigr] \]</p>
+      <p class="step"><strong>第四步（主项）</strong>：利用 \( \sqrt{2\mu Q}\,b/\hbar=2\alpha Z_d\sqrt{2\mu c^2/Q} \)（用 \( e^2/4\pi\varepsilon_0=\alpha\hbar c \)），并取 \( R/b\to 0 \) 的主导项 \( \arccos 0=\pi/2 \)：</p>
+      <div class="formula">\[ \boxed{\;2G\;\approx\;2\pi\alpha Z_d\sqrt{\frac{2\mu c^2}{Q}}\;}\;\Rightarrow\;P\sim\exp\!\Bigl(-2\pi\alpha Z_d\sqrt{2\mu c^2/Q}\Bigr) \]</div>
+      <p class="step"><strong>第五步（Geiger–Nuttall）</strong>：衰变常数 \( \lambda=fP \)，其中 \( f\sim v/(2R)\sim 10^{21}\,\mathrm{s^{-1}} \) 是「撞击频率」，几乎不随核变化。故</p>
+      <p>\[ \log_{10}\lambda=\log_{10} f-\frac{2G}{\ln 10}\;\Rightarrow\;\log_{10}t_{1/2}=\text{const}+\frac{2\pi\alpha Z_d}{\ln 10}\sqrt{\frac{2\mu c^2}{Q}} \]</p>
+      <p>即 \( \log_{10}t_{1/2}\propto Z_d/\sqrt{Q_\alpha} \)——Geiger–Nuttall 律从量子力学自然涌现。注：有限 \( R \) 修正（括号项 \( &lt;\pi/2 \)）与核结构（α 预形成概率）只影响绝对值（差几个量级），不影响 \( Z_d/\sqrt{Q} \) 这一标度，故实验数据在 \( \log t \)–\( 1/\sqrt{Q} \) 平面上几乎落在一条直线上，跨越 20 多个数量级。</p>
+
+      <h3>C. 用原子质量计算 β 衰变 \( Q \) 值（电子质量的巧妙抵消）</h3>
+      <p class="step"><strong>β⁻</strong>：核过程 \( {}^{A}_{Z}X\to{}^{A}_{Z+1}Y+e^-+\bar\nu_e \)。设母核原子质量 \( M_X \)（含 \( Z \) 个电子），子核原子质量 \( M_Y \)（含 \( Z+1 \) 个电子）。反应产物的「核质量 + 现存电子质量」之和：母核原子 = 核 \( +Z m_e \)；子核原子 = 核 \( +(Z+1)m_e \)，但子核原子多含的 1 个电子正是从母核继承来的 \( Z \) 个电子之一——而放出的 β 电子是<strong>额外产生</strong>的。仔细清点：</p>
+      <p>\[ Q_{\beta^-}=\bigl[M_X^{\,\text{核}}-M_Y^{\,\text{核}}-m_e\bigr]c^2=\bigl[(M_X-Zm_e)-(M_Y-(Z+1)m_e)-m_e\bigr]c^2=\bigl[M_X-M_Y\bigr]c^2 \]</p>
+      <p>即电子质量<strong>完全抵消</strong>——直接查原子质量表相减即可。</p>
+      <p class="step"><strong>β⁺</strong>：\( {}^{A}_{Z}X\to{}^{A}_{Z-1}Y+e^++\nu_e \)。放出的是正电子（质量 \( m_e \)），且子核原子比母核少含 1 个电子：</p>
+      <p>\[ Q_{\beta^+}=\bigl[M_X^{\,\text{核}}-M_Y^{\,\text{核}}-m_e\bigr]c^2=\bigl[(M_X-Zm_e)-(M_Y-(Z-1)m_e)-m_e\bigr]c^2=\bigl[M_X-M_Y-2m_e\bigr]c^2 \]</p>
+      <p>所以 β⁺ 有 \( 2m_e c^2=1.022\,\mathrm{MeV} \) 的<strong>阈值</strong>：仅当母核原子比子核原子重 \( >1.022\,\mathrm{MeV}/c^2 \) 时 β⁺ 才可能。这正是 EC（无此阈值）常与 β⁺ 竞争、并在小 \( Q \) 时占优的原因。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 \( {}^{60}\mathrm{Co} \) 样品的衰变常数与活度</h4>
+        <p class="example-statement">医用 \( {}^{60}\mathrm{Co} \) 源（\( t_{1/2}=5.27\,\mathrm{yr} \)）质量 \( 1.00\,\mu\mathrm{g} \)。求：(a) 衰变常数 \( \lambda \)（\( \mathrm{s^{-1}} \)）；(b) 平均寿命 \( \tau \)；(c) 当前活度 \( A \)（Bq 与 Ci）；(d) 5 年后剩余的分数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：先换算 \( t_{1/2} \) 为秒。\( 1\,\mathrm{yr}=365.25\times 24\times 3600=3.156\times 10^7\,\mathrm{s} \)。</p>
+          <p>\[ t_{1/2}=5.27\times 3.156\times 10^7=1.663\times 10^8\,\mathrm{s} \]</p>
+          <p>\[ \lambda=\frac{\ln 2}{t_{1/2}}=\frac{0.6931}{1.663\times 10^8}=4.17\times 10^{-9}\,\mathrm{s^{-1}} \]</p>
+          <p class="step"><strong>解 (b)</strong>：\( \tau=1/\lambda=1/(4.17\times 10^{-9})=2.40\times 10^8\,\mathrm{s}=7.60\,\mathrm{yr} \)。注意 \( \tau/t_{1/2}=1.443 \)。</p>
+          <p class="step"><strong>解 (c)</strong>：先算原子数。\( {}^{60}\mathrm{Co} \) 摩尔质量 \( M\approx 59.93\,\mathrm{g/mol} \)。</p>
+          <p>\[ N=\frac{m}{M}N_A=\frac{1.00\times 10^{-6}}{59.93}\,(6.022\times 10^{23})=1.005\times 10^{16}\;\text{个} \]</p>
+          <p>\[ A=\lambda N=(4.17\times 10^{-9})(1.005\times 10^{16})=4.19\times 10^7\,\mathrm{Bq} \]</p>
+          <p>\[ A=\frac{4.19\times 10^7}{3.7\times 10^{10}}=1.13\times 10^{-3}\,\mathrm{Ci}=1.13\,\mathrm{mCi} \]</p>
+          <p class="step"><strong>解 (d)</strong>：\( t=5\,\mathrm{yr}=1.578\times 10^8\,\mathrm{s} \)，\( \lambda t=0.658 \)。</p>
+          <p>\[ \frac{N}{N_0}=e^{-\lambda t}=e^{-0.658}=0.518\;\;(\text{即 }51.8\%) \]</p>
+          <p class="step"><strong>评论</strong>：仅 \( 1\,\mu\mathrm{g} \)（肉眼几乎不可见）即每秒发生 \( 4\times 10^7 \) 次衰变——这正说明放射性核的「能量密度」极高。\( {}^{60}\mathrm{Co} \) 每次 β⁻ 衰变后还放出 1.17 与 1.33 MeV 的两条 γ，故常用于放射治疗与工业探伤。</p>
+          <p><span class="ans">\( \lambda=4.17\times 10^{-9}\,\mathrm{s^{-1}} \)；\( \tau=7.60\,\mathrm{yr} \)；\( A=4.19\times 10^7\,\mathrm{Bq}=1.13\,\mathrm{mCi} \)；5 年后剩 \( 51.8\% \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 α 衰变 Gamow 因子：为何半衰期跨越 \( 10^{20} \) 倍</h4>
+        <p class="example-statement">对比 \( {}^{238}\mathrm{U}\to{}^{234}\mathrm{Th}+\alpha \)（\( Q=4.27\,\mathrm{MeV} \)，实测 \( t_{1/2}=4.47\times 10^9\,\mathrm{yr} \)）与 \( {}^{212}\mathrm{Po}\to{}^{208}\mathrm{Pb}+\alpha \)（\( Q=8.95\,\mathrm{MeV} \)，实测 \( t_{1/2}=0.30\,\mu\mathrm{s} \)）。计算两者的 Gamow 因子 \( 2G \) 与透射概率 \( P=e^{-2G} \)，验证 Geiger–Nuttall 趋势。取 \( Z_d=90 \)（U 系）与 \( Z_d=82 \)（Po 系），\( r_0=1.2\,\mathrm{fm} \)，\( \alpha=1/137.04 \)，\( 1\,\mathrm{u}c^2=931.5\,\mathrm{MeV} \)，\( e^2/(4\pi\varepsilon_0)=1.440\,\mathrm{MeV\,fm} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：用推导 B 的精确括号形式</strong>。公式：</p>
+          <p>\[ 2G=4\alpha Z_d\sqrt{\frac{2\mu c^2}{Q}}\,\bigl[\arccos\sqrt{R/b}-\sqrt{(R/b)(1-R/b)}\bigr] \]</p>
+          <p>其中 \( R=r_0(A_d^{1/3}+4^{1/3}) \)，\( \mu=m_\alpha M_d/(m_\alpha+M_d) \)，\( b=2 Z_d\cdot 1.440/Q \)。</p>
+          <p class="step"><strong>(i) \( {}^{238}\mathrm{U} \)</strong>：\( A_d=234 \)，\( m_\alpha=4.003\,\mathrm{u} \)，\( M_d=234.04\,\mathrm{u} \)。</p>
+          <p>\[ \mu=\frac{(4.003)(234.04)}{238.04}=3.936\,\mathrm{u}\;\Rightarrow\;2\mu c^2=2\times 3.936\times 931.5=7334\,\mathrm{MeV} \]</p>
+          <p>\[ R=1.2\,(234^{1/3}+4^{1/3})=1.2\,(6.162+1.587)=9.30\,\mathrm{fm},\quad b=\frac{2(90)(1.440)}{4.27}=60.7\,\mathrm{fm} \]</p>
+          <p>\[ \frac{R}{b}=0.153,\;\sqrt{R/b}=0.391,\;\arccos(0.391)=1.169,\;\sqrt{(R/b)(1-R/b)}=0.360 \]</p>
+          <p>\[ 2G=4(1/137.04)(90)\sqrt{7334/4.27}\,(1.169-0.360)=2.627\times 41.45\times 0.809=88.1 \]</p>
+          <p>\[ P_U=e^{-88.1}=8.3\times 10^{-39} \]</p>
+          <p class="step"><strong>(ii) \( {}^{212}\mathrm{Po} \)</strong>：\( A_d=208 \)，\( Z_d=82 \)，\( M_d=208\,\mathrm{u} \)。</p>
+          <p>\[ \mu=3.925\,\mathrm{u},\;2\mu c^2=7313\,\mathrm{MeV},\;R=1.2\,(208^{1/3}+4^{1/3})=9.02\,\mathrm{fm},\;b=\frac{2(82)(1.440)}{8.95}=26.4\,\mathrm{fm} \]</p>
+          <p>\[ R/b=0.342,\;\arccos\sqrt{0.342}=0.942,\;\sqrt{(R/b)(1-R/b)}=0.474 \]</p>
+          <p>\[ 2G=4(1/137.04)(82)\sqrt{7313/8.95}\,(0.942-0.474)=2.394\times 28.58\times 0.468=32.0 \]</p>
+          <p>\[ P_{Po}=e^{-32.0}=1.3\times 10^{-14} \]</p>
+          <p class="step"><strong>比较</strong>：</p>
+          <p>\[ \frac{P_{Po}}{P_U}=\frac{1.3\times 10^{-14}}{8.3\times 10^{-39}}=1.6\times 10^{24} \]</p>
+          <p>理论预测 \( {}^{212}\mathrm{Po} \) 比 \( {}^{238}\mathrm{U} \) 衰变快约 \( 10^{24} \) 倍。实测：</p>
+          <p>\[ \frac{t_{1/2}(U)}{t_{1/2}(Po)}=\frac{4.47\times 10^9\times 3.156\times 10^7}{0.30\times 10^{-6}}=\frac{1.41\times 10^{17}}{3.0\times 10^{-7}}=4.7\times 10^{23} \]</p>
+          <p>理论 \( 1.6\times 10^{24} \) 与实测 \( 4.7\times 10^{23} \) 仅差 ~3 倍——量子力学把 47 个数量级的跨度压到误差之内！关键在于 \( Q \) 从 4.27 升到 8.95 MeV（仅 2.1 倍），\( 2G \) 从 88 降到 32，使 \( P \) 暴涨 \( 10^{24} \) 倍。<strong>这就是 Geiger–Nuttall 律的物理内核</strong>。</p>
+          <p class="step"><strong>评注</strong>：绝对 \( t_{1/2} \) 还依赖「预形成概率」（核内 \( \alpha \) 集团出现的概率，\( \sim 10^{-3}\)–\( 10^{-7} \)）与有限 \( R \) 修正，故 Gamow 理论通常把绝对值低估几个量级；但<strong>相对趋势几乎精确</strong>。</p>
+          <p><span class="ans">\( {}^{238}\mathrm{U}:\;2G=88,\;P\sim 10^{-38} \)；\( {}^{212}\mathrm{Po}:\;2G=32,\;P\sim 10^{-14} \)；理论速率比 \( \sim 10^{24} \)，实测 \( \sim 5\times 10^{23} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 氚 β⁻ 衰变的 \( Q \) 值与端点能</h4>
+        <p class="example-statement">気 \( {}^3_1\mathrm{H}\to{}^3_2\mathrm{He}+e^-+\bar{\nu}_e \)，\( t_{1/2}=12.3\,\mathrm{yr} \)。已知原子质量 \( M({}^3\mathrm{H})=3.016049\,\mathrm{u} \)，\( M({}^3\mathrm{He})=3.016029\,\mathrm{u} \)，\( 1\,\mathrm{u}c^2=931.494\,\mathrm{MeV} \)。求：(a) \( Q_{\beta^-} \)；(b) 电子的最大动能（端点能）\( T_{e,\max} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：β⁻ 用原子质量时电子质量自动抵消（见推导 C）：</p>
+          <p>\[ Q_{\beta^-}=\bigl[M({}^3\mathrm{H})-M({}^3\mathrm{He})\bigr]c^2=(3.016049-3.016029)\times 931.494 \]</p>
+          <p>\[ =0.000020\times 931.494=0.0186\,\mathrm{MeV}=18.6\,\mathrm{keV} \]</p>
+          <p class="step"><strong>解 (b)</strong>：\( Q \) 在电子、反中微子、子核反冲三者间分配。当反中微子动能 \( \approx 0 \) 且核反冲可略时，电子动能取最大：</p>
+          <p>\[ T_{e,\max}\approx Q=18.6\,\mathrm{keV} \]</p>
+          <p class="step"><strong>核反冲修正</strong>：动量守恒要求子核获得与电子相等的动量 \( p \)。\( p_{\max}\approx\sqrt{2m_e Q}=\sqrt{2(511)(0.0186)}=\sqrt{19.0}\approx 4.36\,\mathrm{keV}/c \)。子核（\( M\approx 3\,\mathrm{u}=2805\,\mathrm{MeV}/c^2 \)）的反冲动能</p>
+          <p>\[ T_{\mathrm{recoil}}=\frac{p^2}{2M_dc^2}=\frac{19.0\,\mathrm{keV}^2}{2\times 2.805\times 10^6\,\mathrm{keV}}\approx 3.4\times 10^{-6}\,\mathrm{keV}\approx 3\,\mathrm{meV} \]</p>
+          <p>完全可略。\(\Rightarrow T_{e,\max}=18.6\,\mathrm{keV}\)。</p>
+          <p class="step"><strong>评注</strong>：気的端点能是所有 β 衰变中最低的之一，这正是 KATRIN 实验选它来精密测量端点附近谱形、从而限制中微子静质量的原因（目前上限 \( m_\nu\lesssim 0.8\,\mathrm{eV} \)）。</p>
+          <p><span class="ans">\( Q_{\beta^-}=18.6\,\mathrm{keV} \)；\( T_{e,\max}\approx 18.6\,\mathrm{keV} \)（核反冲 \( \sim 3\,\mathrm{meV} \) 可略）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 用 \( {}^{14}\mathrm{C} \) 测年定年代</h4>
+        <p class="example-statement">考古遗址出土的木炭，测得每克碳的 \( {}^{14}\mathrm{C} \) 活度为 \( A=0.10\,\mathrm{Bq/g} \)。现代碳（与大气交换中的活体组织）参考值为 \( A_0=0.23\,\mathrm{Bq/g} \)。取 \( t_{1/2}({}^{14}\mathrm{C})=5730\,\mathrm{yr} \)。求该木炭的年代。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：活度 \( A(t)=A_0 e^{-\lambda t} \)，故</p>
+          <p>\[ t=\frac{1}{\lambda}\ln\!\frac{A_0}{A}=\frac{t_{1/2}}{\ln 2}\,\ln\!\frac{A_0}{A} \]</p>
+          <p class="step"><strong>第一步（比值）</strong>：\( A_0/A=0.23/0.10=2.30 \)。</p>
+          <p class="step"><strong>第二步（代入）</strong>：</p>
+          <p>\[ t=\frac{5730}{0.6931}\,\ln(2.30)=8270\times 0.833=6888\,\mathrm{yr} \]</p>
+          <p class="step"><strong>合理性检验</strong>：\( A/A_0=0.435 \)，相当于约 1.20 个半衰期（\( 2^{-1.20}=0.435 \) ✓）。一个半衰期（5730 yr）后活度应剩 0.115 Bq/g；现测得 0.10 Bq/g 略低，故年代应略大于 5730 yr——与 6888 yr 一致 ✓。</p>
+          <p class="step"><strong>评注</strong>：(i) 该法假设古代大气 \( {}^{14}\mathrm{C}/{}^{12}\mathrm{C} \) 与现代相同；实际须用树轮、珊瑚等独立定年作「校准曲线」(IntCal) 修正，因宇宙射线流强、地磁强度、化石燃料稀释（Suess 效应）等都会改变初始比值。(ii) \( A_0=0.23\,\mathrm{Bq/g} \) 对应 \( {}^{14}\mathrm{C}/{}^{12}\mathrm{C}\approx 1.2\times 10^{-12} \)：1 g 碳中 \( \sim 6\times 10^{10} \) 个 \( {}^{14}\mathrm{C} \) 原子，每秒仅约 0.23 个衰变——测量需精密低本底探测器。</p>
+          <p><span class="ans">\( t\approx 6.9\times 10^3\,\mathrm{yr} \)（约 6900 年前）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 两级衰变链 \( {}^{90}\mathrm{Sr}\to{}^{90}\mathrm{Y}\to{}^{90}\mathrm{Zr} \) 的久期平衡</h4>
+        <p class="example-statement">核裂变产物 \( {}^{90}\mathrm{Sr} \) 经 \( \beta^- \) 衰变为 \( {}^{90}\mathrm{Y} \)，后者再 \( \beta^- \) 衰变为稳定 \( {}^{90}\mathrm{Zr} \)。已知 \( t_{1/2}(\mathrm{Sr})=28.8\,\mathrm{yr} \)，\( t_{1/2}(\mathrm{Y})=64.1\,\mathrm{hr} \)。一纯 \( {}^{90}\mathrm{Sr} \) 样品初始质量 \( 1.00\,\mu\mathrm{g} \)（无 \( {}^{90}\mathrm{Y} \)）。求：(a) 初始 \( {}^{90}\mathrm{Sr} \) 活度 \( A_1 \)；(b) 待久期平衡建立后 \( {}^{90}\mathrm{Y} \) 的活度 \( A_2 \) 与总活度；(c) 建立平衡所需时间。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：\( \lambda_1=\ln 2/(28.8\times 3.156\times 10^7)=0.6931/(9.089\times 10^8)=7.63\times 10^{-10}\,\mathrm{s^{-1}} \)。</p>
+          <p>\[ N_{10}=\frac{10^{-6}}{89.91}(6.022\times 10^{23})=6.70\times 10^{15} \]</p>
+          <p>\[ A_1=\lambda_1 N_{10}=(7.63\times 10^{-10})(6.70\times 10^{15})=5.11\times 10^6\,\mathrm{Bq}=5.1\,\mathrm{MBq} \]</p>
+          <p class="step"><strong>解 (b)</strong>：先核验 \( \lambda_1\ll\lambda_2 \)：\( \lambda_2=0.6931/(64.1\times 3600)=3.00\times 10^{-6}\,\mathrm{s^{-1}} \)，比值 \( \lambda_2/\lambda_1\approx 3940\gg 1 \) ✓，久期平衡适用。</p>
+          <p>\[ \boxed{\;A_2=A_1=5.1\,\mathrm{MBq}\;}\;\Rightarrow\;\text{总活度 }A_{\text{tot}}=A_1+A_2\approx 10.2\,\mathrm{MBq} \]</p>
+          <p>即样品总活度（约 10 MBq）是纯 \( {}^{90}\mathrm{Sr} \) 单独活度的两倍，等价活度按 \( {}^{90}\mathrm{Y} \) 的硬 β⁻（\( Q=2.28\,\mathrm{MeV} \)）释放——这也是 \( {}^{90}\mathrm{Sr} \) 在体内（如「锶-90」污染）危害的主要来源。</p>
+          <p class="step"><strong>解 (c)</strong>：子核活度按 \( 1-e^{-\lambda_2 t} \) 趋近平衡（视母核近似不变）。取 \( e^{-\lambda_2 t}\le 0.01 \)（达到 99%）：</p>
+          <p>\[ t=\frac{\ln 100}{\lambda_2}=\frac{4.605}{3.00\times 10^{-6}}=1.53\times 10^6\,\mathrm{s}=17.8\,\mathrm{d}\approx 6.7\,t_{1/2}(\mathrm{Y}) \]</p>
+          <p class="step"><strong>评注</strong>：所谓「锶-90 源」在医用或科研货架上放置几个月后，其总活度自动加倍——子核 \( {}^{90}\mathrm{Y} \) 一直在「偷走」母核活度的一半贡献给总剂量。化学分离（「挤奶」milking）可定期提取纯 \( {}^{90}\mathrm{Y} \)（医学靶向治疗常用），这正是 \( {}^{99}\mathrm{Mo}\!-\!{}^{99\mathrm{m}}\mathrm{Tc} \)「母牛」generator 的原理。</p>
+          <p><span class="ans">\( A_1=5.1\,\mathrm{MBq} \)；久期平衡下 \( A_2=A_1=5.1\,\mathrm{MBq} \)，总 \( 10.2\,\mathrm{MBq} \)；建立时间 \( \approx 18\,\mathrm{d} \)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「半衰期 = 平均寿命」——错。</strong>两者差一个 \( \ln 2 \)：\( \tau=t_{1/2}/\ln 2\approx 1.443\,t_{1/2} \)。指数分布的长尾使平均寿命大于「中位」寿命。记法：活度公式 \( A=\lambda N \) 中 \( \lambda=1/\tau \)（不是 \( 1/t_{1/2} \)）。</li>
+        <li><strong>「衰变有记忆，老核更易衰变」——错。</strong>无记忆性是核心前提：无论核已存在多久，下一个 \( dt \) 内的衰变概率始终是 \( \lambda\,dt \)。类比：每次掷骰子与前次无关。<em>这正是</em>为什么 \( N(t) \) 严格呈指数，而不是某种「老化的」分布。</li>
+        <li><strong>「α 衰变是 α 粒子越过后飞出」——错（经典图像）。</strong>α 动能 4–9 MeV 远低于库仑势垒峰 \( \sim 25\)–\( 30\,\mathrm{MeV} \)。它只能用量子隧穿解释；把这一过程套用经典力学必然预测半衰期 \( &gt;10^{100}\,\mathrm{yr} \)，与实测矛盾。</li>
+        <li><strong>「β⁻ 只放出一个电子」——错。</strong>β⁻ 同时放出电子<strong>与反中微子</strong> \( \bar{\nu}_e \)（β⁺ 与 ν）。若不如此，电子动能应是单值（两体衰变），但实验测得的是从 0 到 \( Q \) 的<strong>连续谱</strong>——这正是否定「仅一个电子」的最直接证据。中微子近乎无质量、中性、仅参与弱相互作用，故难以直接探测。</li>
+        <li><strong>「\( {}^{14}\mathrm{C} \) 测年直接给出准确年龄」——需小心。</strong>该法隐含假设：古代大气 \( {}^{14}\mathrm{C}/{}^{12}\mathrm{C} \) 与现代参考值相同。事实上宇宙射线流强、地磁场、火山喷发、工业化石燃料稀释（Suess 效应）、核试验（1960s）都改变初始比值，必须用树轮/珊瑚校准曲线。超过 ~5 万年（\( \gtrsim 9 \) 个半衰期，残留 \( &lt;0.2\% \)）也不可靠。</li>
+        <li><strong>「Gy 与 Sv 可以混用」——错。</strong>Gy 描写<strong>吸收的能量</strong>（与辐射种类无关）；Sv 是<strong>生物损伤的当量</strong>，等于 Gy 乘品质因数 \( Q \)。同样 1 Gy 的 \( \alpha \)（\( 20\,\mathrm{Sv} \)）比 1 Gy 的 \( \gamma \)（\( 1\,\mathrm{Sv} \)）杀伤大 20 倍。防护剂量学几乎只用 Sv。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （活度与剩余分数）\( {}^{137}\mathrm{Cs} \)（\( t_{1/2}=30.05\,\mathrm{yr} \)）样品质量 \( 1.0\,\mu\mathrm{g} \)。求衰变常数 \( \lambda \)、活度 \( A \)（Bq 与 mCi）、以及经过 10 年后剩余的活度。</summary>
+        <div class="hint">\( \lambda=\ln 2/t_{1/2} \)（先把 \( t_{1/2} \) 换成秒）；\( N=(m/M)N_A \)，\( M\approx 136.91\,\mathrm{g/mol} \)；\( A_0=\lambda N \)；\( A(t)=A_0 e^{-\lambda t} \)。</div>
+        <div class="solution">
+          <p>\( t_{1/2}=30.05\times 3.156\times 10^7=9.484\times 10^8\,\mathrm{s} \)；\( \lambda=0.6931/9.484\times 10^8=7.31\times 10^{-10}\,\mathrm{s^{-1}} \)。</p>
+          <p>\( N=(10^{-6}/136.91)(6.022\times 10^{23})=4.40\times 10^{15} \)；\( A_0=\lambda N=(7.31\times 10^{-10})(4.40\times 10^{15})=3.21\times 10^6\,\mathrm{Bq} \)。</p>
+          <p>\( A_0=3.21\times 10^6/3.7\times 10^{10}=8.7\times 10^{-5}\,\mathrm{Ci}=0.087\,\mathrm{mCi} \)（即 87 μCi）。</p>
+          <p>10 年后：\( \lambda t=(7.31\times 10^{-10})(10\times 3.156\times 10^7)=0.231 \)；\( A=A_0 e^{-0.231}=(3.21\times 10^6)(0.794)=2.55\times 10^6\,\mathrm{Bq} \)。<span class="ans">\( \lambda=7.31\times 10^{-10}\,\mathrm{s^{-1}} \)；\( A_0=3.2\,\mathrm{MBq}\approx 0.087\,\mathrm{mCi} \)；10 年后 \( 2.55\,\mathrm{MBq} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （β⁺ Q 值与阈值）\( {}^{22}\mathrm{Na}\to{}^{22}\mathrm{Ne}+e^++\nu_e \)（基态到基态）。原子质量 \( M({}^{22}\mathrm{Na})=21.994437\,\mathrm{u} \)，\( M({}^{22}\mathrm{Ne})=21.991385\,\mathrm{u} \)，\( m_e=0.000549\,\mathrm{u} \)。求 \( Q_{\beta^+} \)，并说明为何 β⁺ 衰变存在 \( 1.022\,\mathrm{MeV} \) 的能量阈值。</summary>
+        <div class="hint">用 \( Q_{\beta^+}=[M_{\text{母}}-M_{\text{子}}-2m_e]c^2 \)。\( 1\,\mathrm{u}c^2=931.494\,\mathrm{MeV} \)。阈值的来源是要产生一个正电子（额外 \( m_e c^2 \)）同时子核原子比母核少含 1 个电子（再差 \( m_e c^2 \)）。</div>
+        <div class="solution">
+          <p>\( \Delta M=M_{\text{母}}-M_{\text{子}}-2m_e=21.994437-21.991385-2(0.000549)=0.001954\,\mathrm{u} \)。</p>
+          <p>\( Q_{\beta^+}=(0.001954)(931.494)=1.82\,\mathrm{MeV} \)。</p>
+          <p>正电子的最大动能 \( T_{e^+,\max}\approx Q=1.82\,\mathrm{MeV} \)（略去核反冲）。</p>
+          <p>阈值来源：母核核质量与子核核质量之差必须同时 (i) 创造一个正电子（\( m_e c^2 \)），(ii) 补偿母原子比子原子多出的那 1 个束缚电子的质量（\( m_e c^2 \)）。共 \( 2m_e c^2=1.022\,\mathrm{MeV} \)。所以仅当 \( [M_{\text{母原子}}-M_{\text{子原子}}]c^2>1.022\,\mathrm{MeV} \) 时 β⁺ 才可能；不满足时只能走 EC（无此阈值）。<span class="ans">\( Q_{\beta^+}=1.82\,\mathrm{MeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （Rb-Sr 测年）\( {}^{87}\mathrm{Rb}\to{}^{87}\mathrm{Sr} \)（β⁻，无分支），\( t_{1/2}=4.88\times 10^{10}\,\mathrm{yr} \)。一块辉长岩样品测得现存同位素比 \( {}^{87}\mathrm{Sr}/{}^{87}\mathrm{Rb}=0.030 \)（设初始 \( {}^{87}\mathrm{Sr} \) 为 0，且 Sr 一直被封闭在矿物中）。求岩石年龄。</summary>
+        <div class="hint">设现存 \( {}^{87}\mathrm{Rb} \) 数为 \( N \)，则 \( N_0=N+N_{Sr}=N(1+0.030) \)，\( e^{\lambda t}=N_0/N \)。<code>\( t=(t_{1/2}/\ln 2)\ln(1+N_{Sr}/N_{Rb}) \)</code>。</div>
+        <div class="solution">
+          <p>\( N_{Sr}/N_{Rb}=e^{\lambda t}-1=0.030\;\Rightarrow\;e^{\lambda t}=1.030 \)。</p>
+          <p>\( \lambda t=\ln(1.030)=0.02956 \)。</p>
+          <p>\( t=(t_{1/2}/\ln 2)(0.02956)=(4.88\times 10^{10}/0.6931)(0.02956)=(7.04\times 10^{10})(0.02956)=2.08\times 10^9\,\mathrm{yr} \)。</p>
+          <p>合理性检验：\( t/t_{1/2}=0.043 \)，远小于 1，故 \( \lambda t\ll 1 \)，\( e^{\lambda t}-1\approx\lambda t \) ✓。<span class="ans">\( t\approx 2.1\times 10^9\,\mathrm{yr} \)（约 21 亿年，前寒武纪）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （剂量比较）一名 \( 70\,\mathrm{kg} \) 的工人受到全身 \( 2.0\,\mathrm{mGy} \) 的 γ 射线照射。(a) 求吸收的总能量（J）与当量剂量（mSv）。(b) 若换成等吸收剂量的 α 粒子（品质因数 \( Q=20 \)），当量剂量是多少？哪种情形生物损伤更大？</summary>
+        <div class="hint">吸收剂量 \( D=E/m\Rightarrow E=D\cdot m \)；当量剂量 \( H=D\cdot Q \)，γ 的 \( Q=1 \)。</div>
+        <div class="solution">
+          <p>(a) \( E=D\cdot m=(2.0\times 10^{-3}\,\mathrm{J/kg})(70\,\mathrm{kg})=0.14\,\mathrm{J} \)。\( H_\gamma=D\cdot Q=2.0\,\mathrm{mGy}\times 1=2.0\,\mathrm{mSv} \)（约等于一次胸部 CT 的 1/3.5，或半年的天然本底）。</p>
+          <p>(b) \( H_\alpha=2.0\,\mathrm{mGy}\times 20=40\,\mathrm{mSv} \)——同样吸收能量下生物损伤是 γ 的 20 倍。注意 α 粒子穿透力极弱（一层纸或皮肤角质即可阻挡），故外照射几乎无害；但一旦通过吸入/食入进入体内（如 \( {}^{210}\mathrm{Po} \)、\( {}^{239}\mathrm{Pu} \)），能量将全部沉积在活组织中，损伤极大。<span class="ans">(a) \( E=0.14\,\mathrm{J} \)，\( H=2.0\,\mathrm{mSv} \)；(b) \( H=40\,\mathrm{mSv} \)，α 内照射远更危险。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （久期平衡的核数比）在 \( {}^{238}\mathrm{U}\to{}^{234}\mathrm{Th}\to\cdots \) 链中，设已达久期平衡。求 \( N({}^{234}\mathrm{Th})/N({}^{238}\mathrm{U}) \)。已知 \( t_{1/2}(U)=4.47\times 10^9\,\mathrm{yr} \)，\( t_{1/2}(\mathrm{Th})=24.1\,\mathrm{d} \)。</summary>
+        <div class="hint">久期平衡 \( \lambda_2 N_2=\lambda_1 N_1 \)，故 \( N_2/N_1=\lambda_1/\lambda_2=t_{1/2,2}/t_{1/2,1} \)。</div>
+        <div class="solution">
+          <p>\( \dfrac{N({}^{234}\mathrm{Th})}{N({}^{238}\mathrm{U})}=\dfrac{\lambda_U}{\lambda_{Th}}=\dfrac{t_{1/2,Th}}{t_{1/2,U}}=\dfrac{24.1\,\mathrm{d}}{4.47\times 10^9\,\mathrm{yr}}\times\dfrac{1\,\mathrm{yr}}{365.25\,\mathrm{d}} \)。</p>
+          <p>\( =\dfrac{24.1}{4.47\times 10^9\times 365.25}=\dfrac{24.1}{1.633\times 10^{12}}=1.48\times 10^{-11} \)。</p>
+          <p>即每摩尔 \( {}^{238}\mathrm{U} \) 中只有约 \( 10^{-11} \) 摩尔的 \( {}^{234}\mathrm{Th} \) 原子——但二者<strong>活度相等</strong>（每秒衰变次数相同），只是 \( {}^{234}\mathrm{Th} \)「换得快」。<span class="ans">\( N_{Th}/N_U\approx 1.5\times 10^{-11} \)；活度 \( A_{Th}=A_U \)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真直观展示<strong>指数衰变定律</strong>。上方为 160 个放射性核（蓝色实心点）。每个核在每个时间步以概率 \( \lambda\,dt \) 随机衰变；衰变瞬间以橙色闪光标记，之后变为浅色空圈。下方实时绘制<strong>实验</strong> \( N(t) \) 曲线（紫色实线）与<strong>理论</strong> \( N_0 e^{-\lambda t} \)（红色虚线）。当 \( N \) 首次降到 \( N_0/2 \) 时，绿色虚线标出对应的 \( t_{1/2} \)。拖动滑块改变半衰期 \( t_{1/2} \)（仿真时间 2–15 s），观察曲线的陡缓与半衰期标记的移动；点击 <strong>↺ 重置</strong> 重新开始一批新核。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          var params = { halfLife: 5.0 };   // seconds (sim time)
+
+          var NCOLS = 20, NROWS = 8;
+          var N0 = NCOLS * NROWS;           // 160 nuclei
+
+          // grid layout (upper region)
+          var gridX0 = 70, gridY0 = 30;
+          var gridW = 460, gridH = 180;
+          var cellW = gridW / NCOLS, cellH = gridH / NROWS;
+
+          // plot layout (lower region)
+          var plotX0 = 56, plotY0 = 252, plotW = 524, plotH = 104;
+
+          function tWindow() { return 6 * params.halfLife; }   // show ~6 half-lives
+
+          function makeNuclei() {
+            var arr = [];
+            for (var r = 0; r < NROWS; r++) {
+              for (var c = 0; c < NCOLS; c++) {
+                arr.push({
+                  x: gridX0 + cellW * (c + 0.5),
+                  y: gridY0 + cellH * (r + 0.5),
+                  alive: true,
+                  flash: 0,
+                });
+              }
+            }
+            return arr;
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () {
+              return { t: 0, nuclei: makeNuclei(), N: N0, hist: [], crossedHalf: false, halfCrossT: null };
+            },
+            step: function (dt, t, s) {
+              s.t += dt;
+              var lambda = Math.LN2 / params.halfLife;
+              var pDecay = 1 - Math.exp(-lambda * dt);
+              var nAlive = 0;
+              for (var i = 0; i < s.nuclei.length; i++) {
+                var n = s.nuclei[i];
+                if (n.flash > 0) n.flash = Math.max(0, n.flash - dt);
+                if (n.alive) {
+                  if (Math.random() < pDecay) {
+                    n.alive = false;
+                    n.flash = 0.40;   // seconds of visible flash
+                  } else {
+                    nAlive++;
+                  }
+                }
+              }
+              s.N = nAlive;
+              // sample history at ~20 Hz for the plot
+              var lastT = s.hist.length ? s.hist[s.hist.length - 1].t : -1;
+              if (s.t - lastT >= 0.05) s.hist.push({ t: s.t, N: nAlive });
+              if (!s.crossedHalf && nAlive <= N0 / 2) {
+                s.crossedHalf = true;
+                s.halfCrossT = s.t;
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var lambda = Math.LN2 / params.halfLife;
+
+              // ===== Title =====
+              PS.drawText(ctx,
+                '放射性衰变 · Radioactive Decay   N₀ = ' + N0 +
+                ',   t½ = ' + params.halfLife.toFixed(1) + ' s' +
+                '   (λ = ln2 / t½ = ' + lambda.toFixed(3) + ' s⁻¹)',
+                W / 2, 14,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              // ===== Nuclei panel =====
+              PS.drawText(ctx, '核 Nuclei  (未衰变 alive = ' + s.N + ' / ' + N0 + ')',
+                gridX0 - 8, gridY0 - 12, { font: '11px system-ui', color: C.text });
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.strokeRect(gridX0 - 10, gridY0 - 6, gridW + 20, gridH + 12);
+              ctx.restore();
+              for (var i = 0; i < s.nuclei.length; i++) {
+                var n = s.nuclei[i];
+                if (n.alive) {
+                  PS.drawCircle(ctx, n.x, n.y, 5, { fill: C.primary });
+                } else if (n.flash > 0) {
+                  var a = n.flash / 0.40;
+                  // expanding ring (decay event)
+                  PS.drawCircle(ctx, n.x, n.y, 5 + 9 * (1 - a),
+                    { stroke: 'rgba(220,38,38,' + a.toFixed(2) + ')', lineWidth: 2 });
+                  PS.drawCircle(ctx, n.x, n.y, 5, { fill: 'rgba(220,38,38,' + (0.6 * a).toFixed(2) + ')' });
+                } else {
+                  PS.drawCircle(ctx, n.x, n.y, 4, { stroke: C.grid, lineWidth: 1 });
+                }
+              }
+
+              // ===== N(t) plot =====
+              function yPlot(N) { return plotY0 + plotH * (1 - N / N0); }
+              function xPlot(tt) { return plotX0 + (tt / tWindow()) * plotW; }
+
+              // gridlines + y ticks (N0, N0/2, 0)
+              var yTicks = [N0, N0 / 2, 0];
+              for (var yi = 0; yi < yTicks.length; yi++) {
+                var yy = yPlot(yTicks[yi]);
+                ctx.save();
+                ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, String(yTicks[yi]), plotX0 - 6, yy + 4,
+                  { font: '11px system-ui', color: C.text, align: 'right' });
+              }
+              // x ticks at 0, t1/2, 2t1/2, ...
+              for (var k = 0; k <= 6; k++) {
+                var tk = k * params.halfLife;
+                var xx = xPlot(tk);
+                if (xx > plotX0 + plotW + 1) break;
+                PS.drawText(ctx, tk.toFixed(0), xx, plotY0 + plotH + 14,
+                  { font: '11px system-ui', color: C.text, align: 'center' });
+                if (k > 0) {
+                  ctx.save();
+                  ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+                  ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+                  ctx.restore();
+                }
+              }
+              // axes
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0); ctx.lineTo(plotX0, plotY0 + plotH); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0 + plotH); ctx.lineTo(plotX0 + plotW, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'N(t)', plotX0 - 34, plotY0 + 6, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 't (s)', plotX0 + plotW + 4, plotY0 + plotH + 4,
+                { font: '12px system-ui', color: C.text, align: 'left' });
+
+              // theoretical N0 e^{-\lambda t}
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 1.6; ctx.setLineDash([6, 4]); ctx.globalAlpha = 0.85;
+              ctx.beginPath();
+              var plotted = false;
+              for (var tt = 0; tt <= tWindow(); tt += tWindow() / 200) {
+                var Nt = N0 * Math.exp(-lambda * tt);
+                var xp = xPlot(tt), yp = yPlot(Nt);
+                if (!plotted) { ctx.moveTo(xp, yp); plotted = true; } else ctx.lineTo(xp, yp);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // empirical trace
+              if (s.hist.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = C.trace; ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                for (var j = 0; j < s.hist.length; j++) {
+                  var h = s.hist[j];
+                  var xp = xPlot(h.t), yp = yPlot(h.N);
+                  if (j === 0) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // half-life marker
+              if (s.crossedHalf && s.halfCrossT != null) {
+                var xh = xPlot(s.halfCrossT);
+                ctx.save();
+                ctx.strokeStyle = C.accent2; ctx.lineWidth = 1.5; ctx.setLineDash([3, 3]);
+                ctx.beginPath(); ctx.moveTo(xh, plotY0); ctx.lineTo(xh, plotY0 + plotH); ctx.stroke();
+                ctx.restore();
+                PS.drawCircle(ctx, xh, yPlot(N0 / 2), 4, { fill: C.accent2 });
+                PS.drawText(ctx, 't½ ≈ ' + s.halfCrossT.toFixed(1) + ' s',
+                  xh + 5, plotY0 + 12, { font: 'bold 11px system-ui', color: C.accent2 });
+              } else {
+                // predicted half-life tick (where N0/2 will be crossed analytically)
+                var xhp = xPlot(params.halfLife);
+                PS.drawText(ctx, '预测 t½', xhp + 5, yPlot(N0 / 2) - 6,
+                  { font: '10px system-ui', color: C.text });
+              }
+
+              // legend
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 2.2;
+              ctx.beginPath(); ctx.moveTo(plotX0 + 8, plotY0 - 8); ctx.lineTo(plotX0 + 30, plotY0 - 8); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '实验 empirical', plotX0 + 34, plotY0 - 5,
+                { font: '10px system-ui', color: C.text });
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 1.6; ctx.setLineDash([5, 3]);
+              ctx.beginPath(); ctx.moveTo(plotX0 + 130, plotY0 - 8); ctx.lineTo(plotX0 + 152, plotY0 - 8); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '理论 N₀ e^−λt', plotX0 + 156, plotY0 - 5,
+                { font: '10px system-ui', color: C.text });
+
+              // readout
+              var Ntheor = N0 * Math.exp(-lambda * s.t);
+              PS.drawText(ctx,
+                't = ' + s.t.toFixed(1) + ' s ,   N = ' + s.N +
+                '   (理论 ' + Ntheor.toFixed(0) + ',   偏差 ' +
+                (s.N - Ntheor).toFixed(0) + ')',
+                W / 2, H - 4, { font: '12px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'halfLife', label: '半衰期 t½ (s)', min: 2, max: 15, step: 0.5, value: 5 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('halfLife', function (v) { params.halfLife = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>放射性衰变是<strong>统计</strong>过程，单核衰变概率与历史无关（无记忆性）。由此得指数衰变定律 \( \dv{N}{t}=-\lambda N \)、\( N=N_0 e^{-\lambda t} \)。</li>
+        <li>三个时间常数关系：\( t_{1/2}=\ln 2/\lambda \)、\( \tau=1/\lambda \)、\( \tau=t_{1/2}/\ln 2\approx 1.443\,t_{1/2} \)。</li>
+        <li>活度 \( A=\lambda N \)（Bq = s⁻¹；1 Ci = \( 3.7\times 10^{10} \) Bq），自身也按 \( e^{-\lambda t} \) 衰减。</li>
+        <li>α 衰变：\( {}^{A}_{Z}X\to{}^{A-4}_{Z-2}Y+\alpha \)，量子隧穿穿透库仑势垒。Gamow 因子 \( 2G\propto Z_d/\sqrt{Q_\alpha} \) ⇒ Geiger–Nuttall 律 \( \log t_{1/2}\propto Z_d/\sqrt{Q} \)（半衰期跨 ~20 数量级）。</li>
+        <li>β 衰变（弱相互作用）：β⁻ (\( n\to p e^-\bar\nu \))、β⁺ (\( p\to n e^+\nu \))、EC (\( pe^-\to n\nu \))。中微子解释了连续 β 谱。用原子质量：\( Q_{\beta^-}=M_P-M_D \)、\( Q_{\beta^+}=M_P-M_D-2m_e \)、\( Q_{EC}=M_P-M_D \)。</li>
+        <li>γ 衰变：核激发态退激发放出分立能量光子；另一种途径是内转换。</li>
+        <li>衰变链：久期平衡（\( \lambda_1\ll\lambda_2 \)）下 \( A_2=A_1 \)；可用于 \( {}^{99}\mathrm{Mo}\!-\!{}^{99\mathrm{m}}\mathrm{Tc} \) 等核素母牛。</li>
+        <li>应用：\( {}^{14}\mathrm{C} \) 测年 \( t=(t_{1/2}/\ln 2)\ln(A_0/A) \)；K-Ar、Rb-Sr 测岩石年龄。剂量：Gy（吸收）、Sv = Gy×\( Q \)（当量，α \( Q=20 \)）。</li>
+      </ul>
+      <div class="formula">\[ \dv{N}{t}=-\lambda N,\quad N=N_0 e^{-\lambda t},\quad A=\lambda N,\quad t_{1/2}=\frac{\ln 2}{\lambda},\quad \tau=\frac{1}{\lambda} \]</div>
+      <div class="formula">\[ 2G\approx 2\pi\alpha Z_d\sqrt{\frac{2\mu c^2}{Q_\alpha}},\quad \log_{10}t_{1/2}\propto\frac{Z_d}{\sqrt{Q_\alpha}} \]</div>
+      <div class="formula">\[ Q_{\beta^-}=[M_P-M_D]c^2,\quad Q_{\beta^+}=[M_P-M_D-2m_e]c^2,\quad Q_{EC}=[M_P-M_D]c^2 \]</div>
+      <div class="formula">\[ \text{久期平衡}\;A_2=A_1;\qquad {}^{14}\mathrm{C}\text{ 测年}\;t=\frac{t_{1/2}}{\ln 2}\ln\frac{A_0}{A};\qquad H=D\cdot Q\;(\mathrm{Sv}=\mathrm{Gy}\times Q) \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

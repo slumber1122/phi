@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 粒子物理与标准模型 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第10章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>粒子物理与标准模型 <span class="en-title">Particle Physics &amp; the Standard Model</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够列举 12 种基本<strong>费米子</strong> (fermion)——6 种<strong>夸克</strong> (quark) 与 6 种<strong>轻子</strong> (lepton)——并按电荷与<strong>代</strong> (generation) 把它们排成 \( 3\times 4 \) 矩阵；说明夸克带<strong>色荷</strong> (color charge) 而轻子不带。</li>
+        <li>能够区分四种基本<strong>相互作用</strong> (fundamental interaction) 及其媒介<strong>规范玻色子</strong> (gauge boson)：光子 \( \gamma \)（电磁）、胶子 \( g \)（强）、\( W^\pm \)、\( Z^0 \)（弱）、引力子（理论预言），并比较它们的相对强度与力程。</li>
+        <li>能够阐述标准模型的<strong>规范结构</strong> \( \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \)，说明 QED、QCD 与电弱统一的物理意义，包括<strong>色禁闭</strong> (color confinement)、<strong>渐近自由</strong> (asymptotic freedom) 与 <strong>Higgs 机制</strong> (Higgs mechanism) 如何赋予粒子质量。</li>
+        <li>能够由强子（<strong>介子</strong> \( q\bar q \)、<strong>重子</strong> \( qqq \)）的夸克内容计算其电荷、重子数 (baryon number) 与奇异数 (strangeness)，验证可加量子数守恒。</li>
+        <li>能够阅读并构造简单的 <strong>Feynman 图</strong> (Feynman diagram)：识别顶点、传播子与交换玻色子，如 \( e^-e^- \) 弹性散射、\( \beta \) 衰变、\( e^+e^-\to\mu^+\mu^- \) 等过程。</li>
+        <li>能够运用守恒律（电荷 \( Q \)、重子数 \( B \)、轻子数 \( L_e,L_\mu,L_\tau \)、能量动量）判断反应是否允许，并指出何种对称性仅被弱相互作用破坏（\( P \)、\( C \)、\( CP \)）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 物质的终极组成——基本费米子 The Fundamental Fermions</h3>
+      <p>到 20 世纪 70 年代，实验与理论共同确立了 now-called <strong>标准模型</strong> (Standard Model, SM)：所有（已知）物质由两类自旋 \( 1/2 \) 的<strong>基本费米子</strong>构成——<strong>夸克</strong>与<strong>轻子</strong>。它们各按质量递增排成三个<strong>代</strong> (generation)：</p>
+      <div class="formula">\[ \begin{array}{c|ccc|c} \text{代 Generation} & \text{I} & \text{II} & \text{III} & Q/e \\\\ \hline \text{夸克}(+\tfrac{2}{3}) & u & c & t & +\tfrac{2}{3} \\\\ \text{夸克}(-\tfrac{1}{3}) & d & s & b & -\tfrac{1}{3} \\\\ \hline \text{轻子}(-1) & e^- & \mu^- & \tau^- & -1 \\\\ \text{轻子}(0) & \nu_e & \nu_\mu & \nu_\tau & 0 \end{array} \]</div>
+      <p>夸克有 6 种：<strong>上、下</strong> (\( u,d \))，<strong>粲、奇</strong> (\( c,s \))，<strong>顶、底</strong> (\( t,b \))。每一夸克带有三种<strong>色荷</strong>之一（红、绿、蓝，记 \( r,g,b \)），故实际有 \( 6\times 3=18 \) 种夸克态（外加等数反夸克）。轻子也有 6 种：带电的 \( e^-, \mu^-, \tau^- \) 与对应的中性<strong>中微子</strong> \( \nu_e,\nu_\mu,\nu_\tau \)；轻子不带色荷。</p>
+      <p>典型质量（PDG 2022，夸克为 \( \overline{\mathrm{MS}} \) 跑动质量）：\( m_u\approx 2.2\,\mathrm{MeV} \)、\( m_d\approx 4.7\,\mathrm{MeV} \)、\( m_s\approx 95\,\mathrm{MeV} \)、\( m_c\approx 1.28\,\mathrm{GeV} \)、\( m_b\approx 4.18\,\mathrm{GeV} \)、\( m_t\approx 172.7\,\mathrm{GeV} \)；\( m_e=0.511\,\mathrm{MeV} \)、\( m_\mu=105.7\,\mathrm{MeV} \)、\( m_\tau=1777\,\mathrm{MeV} \)。中微子质量 \( \lesssim 1\,\mathrm{eV} \)（见下）。注意每一「向上」的同位素对（同代）质量递增约 \( 10^2\)–\( 10^3 \) 倍——这一<strong>代结构</strong>的起源是 SM 之外未解之谜。</p>
+
+      <h3>2. 四种基本相互作用与规范玻色子 Four Interactions &amp; Gauge Bosons</h3>
+      <p>费米子之间通过交换自旋 1 的<strong>规范玻色子</strong>（引力为自旋 2 假设）发生相互作用：</p>
+      <ul>
+        <li><strong>电磁</strong> (electromagnetic, EM)：媒介 \( \gamma \)，无质量、电中性；耦合于电荷。理论：<strong>量子电动力学</strong> (QED)，规范群 \( \mathrm{U}(1)_{\mathrm{em}} \)。</li>
+        <li><strong>强</strong> (strong)：媒介 \( g \)（8 种胶子，带色荷），无质量；耦合于色荷。理论：<strong>量子色动力学</strong> (QCD)，规范群 \( \mathrm{SU}(3)_c \)。</li>
+        <li><strong>弱</strong> (weak)：媒介 \( W^\pm \)（\( m_W=80.4\,\mathrm{GeV} \)，带电）与 \( Z^0 \)（\( m_Z=91.2\,\mathrm{GeV} \)，中性）；耦合于<strong>弱同位旋</strong>。理论：电弱统一 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \)。</li>
+        <li><strong>引力</strong> (gravity)：媒介<strong>引力子</strong> (graviton，自旋 2，假想)；规范群（启发式）\( \mathrm{U}(1) \) 的微分同胚群。SM <em>不</em>含引力。</li>
+      </ul>
+      <p>四种力的相对强度（在 \( \sim 1\,\mathrm{fm} \) 尺度）与力程如下（例 10.3 给出推导）：</p>
+      <div class="formula">\[ \begin{array}{c|ccc} \text{力 Force} & \text{媒介 Boson} & \text{相对强度 Strength} & \text{力程 Range} \\\\ \hline \text{强 strong} & g & 1 & \sim 1\,\mathrm{fm} \\\\ \text{电磁 EM} & \gamma & \sim 10^{-2} & \infty \\\\ \text{弱 weak} & W^\pm,Z^0 & \sim 10^{-6} & \sim 10^{-3}\,\mathrm{fm} \\\\ \text{引力 gravity} & \oplus & \sim 10^{-39} & \infty \end{array} \]</div>
+
+      <h3>3. 标准模型的规范结构 Gauge Structure of the Standard Model</h3>
+      <p>SM 是一个<strong>规范理论</strong> (gauge theory)：其拉氏量在定域规范变换下不变，这一对称性<em>强迫</em>特定玻色子场存在并完全决定它们与费米子的耦合。整体规范群是三个因子的直积：</p>
+      <div class="formula">\[ \boxed{\;\mathrm{SU}(3)_c\;\times\;\mathrm{SU}(2)_L\;\times\;\mathrm{U}(1)_Y\;} \]</div>
+      <p>其中 \( \mathrm{SU}(3)_c \)（色）有 8 个生成元 → 8 种胶子，描述<strong>强</strong>相互作用 (QCD)；\( \mathrm{SU}(2)_L \)（弱同位旋，仅作用于左手费米子 \( L \)）有 3 个生成元 → \( W^{1,2,3} \)；\( \mathrm{U}(1)_Y \)（弱超荷 \( Y \)) → \( B \)。后两者经 Higgs 机制破缺后线性组合成物理的 \( \gamma \)、\( Z^0 \) 与带电的 \( W^\pm \)：</p>
+      <div class="formula">\[ W^\pm=\frac{1}{\sqrt{2}}(W^1\mp iW^2),\qquad \begin{pmatrix}\gamma\\\\ Z^0\end{pmatrix}=\begin{pmatrix}\cos\theta_W & \sin\theta_W\\\\ -\sin\theta_W & \cos\theta_W\end{pmatrix}\begin{pmatrix}B\\\\ W^3\end{pmatrix} \]</div>
+      <p>这里 \( \theta_W \) 是<strong>弱混合角</strong> (Weinberg angle)，\( \sin^2\theta_W\approx 0.231 \)。Higgs 破缺后剩余的未破缺对称性是 \( \mathrm{U}(1)_{\mathrm{em}} \)，对应守恒量即电荷 \( Q=T_3+Y \)。</p>
+
+      <h3>4. QED、QCD、色禁闭与渐近自由 QED, QCD, Confinement, Asymptotic Freedom</h3>
+      <p><strong>QED</strong> 是最精密的物理理论之一。其拉氏量为 \( \mathcal{L}_{\mathrm{QED}}=\bar\psi(i\gamma^\mu D_\mu-m)\psi-\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu} \)，协变导数 \( D_\mu=\partial_\mu+ieA_\mu \)。光子无质量（电磁规范对称未破缺），故电磁力<strong>长程</strong>。QED 的<strong>跑动耦合</strong> \( \alpha(Q^2) \) 随能标升高而<em>增大</em>（屏蔽)，反屏蔽项为零因光子不带电。</p>
+      <p><strong>QCD</strong> 拉氏量形式上类似：\( \mathcal{L}_{\mathrm{QCD}}=\bar\psi_i(i\gamma^\mu D_\mu-m)\psi_i-\tfrac{1}{4}G^a_{\mu\nu}G^{a\mu\nu} \)，但生成元 \( t^a \)（\( a=1,\ldots,8 \)）取 \( \mathrm{SU}(3) \) 的伴随表示，<strong>胶子自身带色荷</strong> → 存在 3-gluon、4-gluon 自作用顶点。这导致两个深刻后果：</p>
+      <ul>
+        <li><strong>色禁闭</strong> (color confinement)：所有物理态必须是<strong>色单态</strong> (color singlet)。尝试分离两个色荷会在它们之间形成色流管 (flux tube)，能量随距离线性增长 \( V(r)\sim \sigma r \)（弦张力 \( \sigma\approx 0.9\,\mathrm{GeV/fm} \)）；能量足够大时会从真空中「撕裂」出一对 \( q\bar q \)，形成强子（<em>强子化</em> hadronization）。因此<strong>自由夸克不存在</strong>。</li>
+        <li><strong>渐近自由</strong> (asymptotic freedom, Gross–Politzer–Wilczek 1973, Nobel 2004)：耦合在高能（短距）下趋于零，夸克在核内近乎自由。这使深度非弹性散射中的<strong>部分子模型</strong> (parton model) 成为可能，并允许用微扰 QCD 作精确预言。</li>
+      </ul>
+
+      <h3>5. 电弱统一与 Higgs 机制 Electroweak Unification &amp; the Higgs Mechanism</h3>
+      <p>Glashow–Salam–Weinberg (Nobel 1979) 把电磁与弱纳入单一 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 规范理论。若该对称性严格未破，则 \( W^\pm \)、\( Z^0 \) 须无质量——与实验（\( m_W,m_Z\sim 90\,\mathrm{GeV} \)）矛盾。<strong>Higgs 机制</strong> (Englert–Brout–Higgs, Nobel 2013) 通过引入一个标量二重态 \( \Phi \)（弱超荷 \( Y=+1/2 \)）解决：</p>
+      <div class="formula">\[ \mathcal{L}_\Phi=(D_\mu\Phi)^\dagger(D^\mu\Phi)-\underbrace{\bigl[-\mu^2\Phi^\dagger\Phi+\lambda(\Phi^\dagger\Phi)^2\bigr]}_{V(\Phi)} \]</div>
+      <p>势能 \( V(\Phi) \) 在 \( \mu^2,\lambda>0 \) 时于非零 \( |\Phi| \) 处取极小（Mexican hat 势）。真空期望值 (VEV) \( \langle\Phi\rangle=(0,v/\sqrt{2})^T \)，其中</p>
+      <div class="formula">\[ v=\frac{\mu}{\sqrt{\lambda}}=246.22\,\mathrm{GeV}\quad(\text{由 } m_W=gv/2 \text{ 反推}). \]</div>
+      <p>展开 \( \Phi=(0,(v+H)/\sqrt{2})^T \) 后，动能项 \( (D_\mu\Phi)^\dagger(D^\mu\Phi) \) 自动产生质量项：\( W^\pm \)、\( Z^0 \) 获得质量，而光子保持无质量（推导 A）。同时，费米子通过 <strong>Yukawa 耦合</strong> \( -y_f\bar\psi_L\Phi\psi_R+\text{h.c.} \) 获得质量：</p>
+      <div class="formula">\[ \boxed{\;m_f=\frac{y_f\,v}{\sqrt{2}}\;},\qquad m_W=\frac{gv}{2},\quad m_Z=\frac{m_W}{\cos\theta_W} \]</div>
+      <p>Yukawa 耦合 \( y_f \) 是 SM 的自由参数：顶夸克 \( y_t\approx 1.0 \)（接近 1），电子 \( y_e\approx 3\times 10^{-6} \)。其数值起源未明，是超出 SM 物理 (BSM) 的核心问题之一。2012 年 ATLAS 与 CMS 在 LHC 上以 \( m_H\approx 125\,\mathrm{GeV} \) 发现 Higgs 玻色子，完成 SM 最后一块拼图。</p>
+
+      <h3>6. 强子——夸克的束缚态 Hadrons: Quark Bound States</h3>
+      <p>因色禁闭，夸克只以<strong>色单态</strong>强子形式被观测到。两类：</p>
+      <ul>
+        <li><strong>介子</strong> (meson) \( q\bar q \)：色单态 \( \bar r r+\bar g g+\bar b b \)（的适当组合），自旋可为整数。重子数 \( B=0 \)。例：\( \pi^+(u\bar d) \)、\( K^0(d\bar s) \)、\( J/\psi(c\bar c) \)。</li>
+        <li><strong>重子</strong> (baryon) \( qqq \)（或 \( \bar q\bar q\bar q \)）：总波函数在色空间全反对称（\( \epsilon_{\alpha\beta\gamma}/\sqrt{6} \)），自旋半整数。重子数 \( B=+1 \)（重子）或 \( -1 \)（反重子）。例：\( p(uud) \)、\( n(udd) \)、\( \Lambda^0(uds) \)、\( \Omega^-(sss) \)。</li>
+      </ul>
+      <p>更奇特的<strong>四夸克态</strong> \( qq\bar q\bar q \) 与<strong>五夸克态</strong> \( qqqq\bar q \)（如 \( P_c^+ \)，2015 年 LHCb 观测）也存在，但仍为色单态。<strong>胶球</strong> (glueball，纯胶子束缚态) 理论预言存在但实验尚未确证。</p>
+
+      <h3>7. Feynman 图——微扰计算的图形 Feynman Diagrams</h3>
+      <p><strong>Feynman 图</strong>是微扰论振幅的图形表示：费米子用带箭头的直线（箭头沿费米子数流方向；反粒子箭头反向），胶子用螺旋线，光子用波浪线，弱玻色子用波浪线或虚线，Higgs 用虚线。<strong>顶点</strong> (vertex) 是三条或多条线的交点，对应一个相互作用项：</p>
+      <ul>
+        <li>QED 顶点：\( e^-e^-\gamma \)，振幅 \( \propto -ie\gamma^\mu \)，耦合 \( \alpha=e^2/4\pi\approx 1/137 \)；每个顶点因子 \( \sqrt{\alpha} \)。</li>
+        <li>QCD 顶点：\( q q g \)（\( \propto g_s t^a\gamma^\mu \)）、3-gluon、4-gluon；耦合 \( \alpha_s=g_s^2/4\pi \)。</li>
+        <li>弱带电流顶点：\( u d W^+ \)、\( \nu_e e^- W^+ \)，由 CKM 矩阵 \( V_{ij} \) 调制味改变；中性流 \( f\bar f Z^0 \) 不变味。</li>
+      </ul>
+      <p><strong>内线</strong> (internal line) 对应传播子：光子 \( -ig_{\mu\nu}/q^2 \)、\( W \) 为 \( -i(g_{\mu\nu}-q_\mu q_\nu/m_W^2)/(q^2-m_W^2) \)，重质量 \( W/Z \) 在低能下把弱作用等效压成 Fermi 的接触相互作用 \( G_F/\sqrt{2}=g^2/(8m_W^2) \)。<strong>外线</strong>对应入射/出射粒子波函数。每一闭合费米子圈带来额外 \( -1 \)。<strong>不可约图</strong>按圈数展开，是重整化的对象。</p>
+
+      <h3>8. 守恒量子数 Conserved Quantum Numbers</h3>
+      <p>由 Noether 定理，每一连续对称性对应一守恒流。SM 中精确或近似守恒的量子数：</p>
+      <ul>
+        <li><strong>能量、动量、角动量</strong>：时空平移与转动不变 → 所有相互作用精确守恒。</li>
+        <li><strong>电荷</strong> \( Q \)：\( \mathrm{U}(1)_{\mathrm{em}} \) 规范对称 → 所有相互作用精确守恒。</li>
+        <li><strong>重子数</strong> \( B \)：夸克 \( B=+1/3 \)，反夸克 \( -1/3 \)；重子 \( B=1 \)、介子 \( B=0 \)。SM 微扰意义下守恒（非微扰 B+L 破缺极小）。</li>
+        <li><strong>轻子数</strong> \( L_e,L_\mu,L_\tau \)：带电轻子与其中微子各 \( +1 \)，反粒子 \( -1 \)。SM 微扰意义下分别守恒；但<strong>中微子振荡</strong> (neutrino oscillation) 证明 \( L_e,L_\mu,L_\tau \) 并非各自严格守恒——总 \( L \) 仍守恒到极高精度。</li>
+        <li><strong>色</strong>：仅以色单态形式出现（禁闭）。</li>
+      </ul>
+      <p>分立对称性：<strong>宇称</strong> \( P \)（空间反演）、<strong>电荷共轭</strong> \( C \)（粒子↔反粒子）在强与电磁中守恒，<em>仅</em>被弱作用破坏（1957 吴健雄 \( ^{60}\mathrm{Co} \) \( \beta \) 衰变实验证实 \( P \) 最大化破坏；\( CP \) 在 \( K^0 \)、\( B^0 \) 系统轻微破坏，对应 CKM 复相角）。</p>
+
+      <div class="key-terms">Standard Model SM (标准模型), fermion (费米子), quark (夸克), lepton (轻子), generation (代), color charge (色荷), gauge boson (规范玻色子), photon \( \gamma \) (光子), gluon \( g \) (胶子), \( W^\pm \)/\( Z^0 \) (弱玻色子), graviton (引力子), gauge theory (规范理论), \( \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \), QED (量子电动力学), QCD (量子色动力学), color confinement (色禁闭), asymptotic freedom (渐近自由), electroweak unification (电弱统一), Weinberg angle \( \theta_W \) (弱混合角), Higgs mechanism (Higgs 机制), vacuum expectation value VEV \( v=246\,\mathrm{GeV} \) (真空期望值), Yukawa coupling \( y_f \) (汤川耦合), hadron (强子), meson \( q\bar q \) (介子), baryon \( qqq \) (重子), Feynman diagram (Feynman 图), vertex (顶点), propagator (传播子), baryon number \( B \) (重子数), lepton number \( L \) (轻子数), parity \( P \) (宇称), charge conjugation \( C \) (电荷共轭), CKM matrix (CKM 矩阵)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. Higgs 机制：\( W^\pm \)、\( Z^0 \) 获得质量而光子保持无质量</h3>
+      <p class="step"><strong>设定</strong>：Higgs 二重态 \( \Phi=\binom{\phi^+}{\phi^0} \)，弱超荷 \( Y=+1/2 \)；势 \( V(\Phi)=-\mu^2\Phi^\dagger\Phi+\lambda(\Phi^\dagger\Phi)^2 \)，\( \mu^2,\lambda>0 \)。</p>
+      <p class="step"><strong>第一步（找真空）</strong>：令 \( \rho\equiv\Phi^\dagger\Phi \)。\( \mathrm{d}V/\mathrm{d}\rho=-\mu^2+2\lambda\rho=0 \Rightarrow \rho_0=\mu^2/(2\lambda) \)。定义 \( v \) 使 \( \rho_0=v^2/2 \)，即</p>
+      <p>\[ v=\frac{\mu}{\sqrt{\lambda}}=246.22\,\mathrm{GeV}.\]</p>
+      <p class="step"><strong>第二步（选取规范——幺正规范 unitary gauge）</strong>：利用 \( \mathrm{SU}(2)\times\mathrm{U}(1) \) 的四个规范自由度消去 \( \Phi \) 的三个 Goldstone 分量，剩下一个物理标量 \( H(x) \)：</p>
+      <p>\[ \Phi(x)=\frac{1}{\sqrt{2}}\begin{pmatrix}0\\\\ v+H(x)\end{pmatrix}. \]</p>
+      <p class="step"><strong>第三步（动能项展开）</strong>：协变导数 \( D_\mu=\partial_\mu-i\tfrac{g}{2}\vec\tau\cdot\vec W_\mu-i\tfrac{g'}{2}B_\mu \)。在真空附近</p>
+      <p>\[ (D_\mu\Phi)^\dagger(D^\mu\Phi)\supset \frac{(v+H)^2}{8}\Bigl[\,g^2\bigl(W^1_\mu W^{1\mu}+W^2_\mu W^{2\mu}\bigr)+\bigl(-gW^3_\mu+g'B_\mu\bigr)^2\,\Bigr]. \]</p>
+      <p class="step"><strong>第四步（识别质量项）</strong>：定义 \( W^\pm_\mu=(W^1_\mu\mp i W^2_\mu)/\sqrt{2} \)，质量项为 \( m_W^2 W^+_\mu W^{-\mu} \)，比较系数：</p>
+      <div class="formula">\[ \frac{g^2 v^2}{4}W^+_\mu W^{-\mu}\;\Rightarrow\;\boxed{\;m_W=\frac{gv}{2}\;}.\]</div>
+      <p>对中性部分，组合 \( -gW^3+g'B \) 的系数为 \( v^2(g^2+g'^2)/8 \)，故</p>
+      <div class="formula">\[ m_Z=\frac{v}{2}\sqrt{g^2+g'^2},\qquad \cos\theta_W=\frac{g}{\sqrt{g^2+g'^2}},\quad \frac{m_W}{m_Z}=\cos\theta_W. \]</div>
+      <p class="step"><strong>第五步（光子为何无质量）</strong>：与之正交的组合 \( A_\mu=\sin\theta_W W^3_\mu+\cos\theta_W B_\mu \) 在上式中<strong>完全不出现</strong>——即未破缺的 \( \mathrm{U}(1)_{\mathrm{em}} \) 对称禁止光子获得质量项。这就是「规范对称保护光子质量为零」的核心机制，与电磁力长程直接对应。</p>
+      <p class="step"><strong>数值检验</strong>：取 \( m_W=80.385\,\mathrm{GeV} \)、\( v=246.22\,\mathrm{GeV} \)，得 \( g=2m_W/v=0.6536 \)。由 \( \sin^2\theta_W=1-m_W^2/m_Z^2=1-80.385^2/91.1876^2=0.223 \)（on-shell），\( \cos\theta_W=0.881 \)，\( m_Z=m_W/\cos\theta_W=91.2\,\mathrm{GeV} \) ✓。理论与实验在 0.1% 内一致。</p>
+
+      <h3>B. 渐近自由：QCD 跑动耦合在短距趋于零</h3>
+      <p class="step"><strong>起点</strong>：用重整化群方程研究有效耦合 \( \alpha_s(\mu)=g_s^2(\mu)/(4\pi) \) 随能标 \( \mu \) 的演化。一圈 \( \beta \) 函数（费曼图：夸克真空极化 vs 胶子自作用）：</p>
+      <div class="formula">\[ \mu\frac{\mathrm{d}g_s}{\mathrm{d}\mu}\equiv\beta(g_s)=-\frac{g_s^3}{16\pi^2}\Bigl(\frac{11}{3}N_c-\frac{2}{3}N_f\Bigr)+\mathcal{O}(g_s^5), \]</div>
+      <p>其中 \( N_c=3 \)（色数）、\( N_f=6 \)（活跃夸克味数）。代入：</p>
+      <div class="formula">\[ \frac{11}{3}N_c-\frac{2}{3}N_f=\frac{33-12}{3}=7>0. \]</div>
+      <p class="step"><strong>关键点</strong>：括号 \( >0 \)（<em>仅因胶子自作用占优</em>，QED 中无此项），故 \( \beta<0 \)。改写为 \( \alpha_s \) 的方程并积分：</p>
+      <div class="formula">\[ \alpha_s(Q^2)=\frac{\alpha_s(\mu^2)}{1+\dfrac{\alpha_s(\mu^2)}{4\pi}\Bigl(\tfrac{11}{3}N_c-\tfrac{2}{3}N_f\Bigr)\ln(Q^2/\mu^2)}\;\xrightarrow[Q^2\to\infty]{}\;0. \]</div>
+      <p class="step"><strong>物理</strong>：高能（短距）下 \( \alpha_s\to 0 \)，夸克间相互作用变弱——<strong>渐近自由</strong>。反之低能（长距）\( \alpha_s \) 增大，到 \( \Lambda_{\mathrm{QCD}}\sim 200\,\mathrm{MeV} \) 处发散（微扰失效）——这是<strong>色禁闭</strong>的微扰信号。实验：\( \alpha_s(m_Z)=0.1181\pm 0.0011 \)（世界平均），\( \alpha_s(1\,\mathrm{GeV})\sim 0.5 \)，与渐近自由预言一致。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 由夸克内容求强子电荷与量子数</h4>
+        <p class="example-statement">写出下列强子的夸克内容并求其电荷 \( Q \)、重子数 \( B \)、奇异数 \( S \)（\( s \) 夸克 \( S=-1 \)）：(a) 质子 \( p \)；(b) 中子 \( n \)；(c) \( \pi^+ \)；(d) \( K^0 \)；(e) \( \Omega^- \)。夸克电荷：\( Q(u)=Q(c)=Q(t)=+\tfrac{2}{3} \)，\( Q(d)=Q(s)=Q(b)=-\tfrac{1}{3} \)；反夸克电荷反号。</p>
+        <div class="example-solution">
+          <p class="step"><strong>方法</strong>：强子的可加量子数等于组分夸克的代数和。重子数：\( B(q)=+\tfrac{1}{3} \)，\( B(\bar q)=-\tfrac{1}{3} \)。</p>
+          <p class="step"><strong>(a) 质子</strong> \( p=uud \)：</p>
+          <p>\[ Q=+\tfrac{2}{3}+\tfrac{2}{3}-\tfrac{1}{3}=+1,\quad B=\tfrac{1}{3}+\tfrac{1}{3}+\tfrac{1}{3}=+1,\quad S=0.\;\checkmark\;(\text{质子电荷应为 } +1e) \]</p>
+          <p class="step"><strong>(b) 中子</strong> \( n=udd \)：</p>
+          <p>\[ Q=+\tfrac{2}{3}-\tfrac{1}{3}-\tfrac{1}{3}=0,\quad B=+1,\quad S=0.\;\checkmark\;(\text{中子中性}) \]</p>
+          <p class="step"><strong>(c) \( \pi^+ \)</strong>（介子 \( =u\bar d \)，注意 \( \bar d \) 电荷 \( +\tfrac{1}{3} \)、\( B=-\tfrac{1}{3} \)）：</p>
+          <p>\[ Q=+\tfrac{2}{3}+\tfrac{1}{3}=+1,\quad B=\tfrac{1}{3}-\tfrac{1}{3}=0,\quad S=0.\;\checkmark \]</p>
+          <p class="step"><strong>(d) \( K^0 \)</strong>（\( =d\bar s \)，\( \bar s \) 电荷 \( +\tfrac{1}{3} \)、奇异数 \( S(\bar s)=+1 \)）：</p>
+          <p>\[ Q=-\tfrac{1}{3}+\tfrac{1}{3}=0,\quad B=0,\quad S=0+(+1)=+1.\;\checkmark\;(K^0\text{ 奇异中性介子}) \]</p>
+          <p class="step"><strong>(e) \( \Omega^- \)</strong>（\( =sss \)，三奇夸克重子）：</p>
+          <p>\[ Q=-\tfrac{1}{3}-\tfrac{1}{3}-\tfrac{1}{3}=-1,\quad B=+1,\quad S=-1-1-1=-3.\;\checkmark\;(\Omega^-\text{ 电荷 } -1,\,|S|=3) \]</p>
+          <p class="step"><strong>评注</strong>：(i) 电荷永远以 \( e=1.602\times 10^{-19}\,\mathrm{C} \) 为单位呈整数或三分之一整数。<strong>分数电荷</strong>从未在自由粒子中被观测——因为色禁闭保证可观测强子总是色单态，其电荷之和必为整数。(ii) 重子数守恒保证质子不衰变（实验下 \( \tau_p>10^{34}\,\mathrm{yr} \)）；若质子衰变 \( p\to e^+\pi^0 \)，则 \( B \) 破坏 \( 1\to 0 \)，需 BSM（如 SU(5) 大统一）。</p>
+          <p><span class="ans">\( p(+1,1,0) \)、\( n(0,1,0) \)、\( \pi^+(+1,0,0) \)、\( K^0(0,0,+1) \)、\( \Omega^-(-1,1,-3) \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 \( \beta^- \) 衰变的 Feynman 图与守恒律</h4>
+        <p class="example-statement">中子 \( \beta^- \) 衰变 \( n\to p+e^-+\bar\nu_e \) 在夸克层次为 \( d\to u+W^- \)，随后 \( W^-\to e^-+\bar\nu_e \)。(a) 画出该过程的 Feynman 图（标出两个顶点、交换的 \( W^- \) 与外线粒子）；(b) 在每一顶点验证电荷、重子数、轻子数守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) Feynman 图</strong>（时间向右）：左下角入射 \( d \)（\( Q=-1/3 \)），经顶点 1 与 \( W^- \)耦合后变为出射 \( u \)（\( Q=+2/3 \)，右上）；\( W^- \)（红色波浪线）传至顶点 2 衰变为 \( e^- \)（绿，右下）与 \( \bar\nu_e \)（紫虚线，右上）。</p>
+          <svg viewBox="0 0 380 200" class="feynman-diagram" style="display:block;margin:0.6em auto;max-width:380px;width:100%;height:auto;border:1px solid var(--sim-grid,#cbd5e1);border-radius:6px;background:var(--sim-bg,transparent);">
+            <defs>
+              <marker id="ah-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker>
+              <marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#16a34a"/></marker>
+              <marker id="ah-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7c3aed"/></marker>
+            </defs>
+            <line x1="20" y1="130" x2="145" y2="130" stroke="#2563eb" stroke-width="2" marker-end="url(#ah-b)"/>
+            <text x="45" y="122" font-size="13" fill="#2563eb">d  (Q=−1/3)</text>
+            <line x1="145" y1="130" x2="355" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#ah-b)"/>
+            <text x="280" y="78" font-size="13" fill="#2563eb">u  (Q=+2/3)</text>
+            <path d="M 145 130 Q 158 116, 170 122 T 195 112 T 220 102 T 245 88" stroke="#dc2626" stroke-width="2.2" fill="none"/>
+            <text x="178" y="104" font-size="13" fill="#dc2626" font-weight="bold">W⁻</text>
+            <line x1="245" y1="88" x2="355" y2="130" stroke="#16a34a" stroke-width="2" marker-end="url(#ah-g)"/>
+            <text x="300" y="124" font-size="13" fill="#16a34a">e⁻</text>
+            <line x1="245" y1="88" x2="355" y2="45" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ah-p)"/>
+            <text x="293" y="42" font-size="13" fill="#7c3aed">ν̄ₑ</text>
+            <circle cx="145" cy="130" r="3.5" fill="#1e293b"/>
+            <circle cx="245" cy="88" r="3.5" fill="#1e293b"/>
+            <text x="118" y="150" font-size="10" fill="#64748b">顶点1 vertex: d→u+W⁻</text>
+            <text x="218" y="78" font-size="10" fill="#64748b">顶点2 vertex</text>
+            <text x="200" y="186" text-anchor="middle" font-size="11" fill="#475569">时间 time →</text>
+          </svg>
+          <p class="step"><strong>(b) 顶点 1</strong>（\( d\to u+W^- \)）：</p>
+          <p>\[ \Delta Q=-\tfrac{1}{3}-(+\tfrac{2}{3}-1)=0\;\checkmark;\quad \Delta B=\tfrac{1}{3}-\tfrac{1}{3}=0\;\checkmark;\quad \Delta L_e=0\;\checkmark. \]</p>
+          <p class="step"><strong>(b) 顶点 2</strong>（\( W^-\to e^-+\bar\nu_e \)）：\( W^- \) 自身 \( Q=-1 \)、\( B=0 \)、\( L_e=0 \)；产物 \( Q=-1+0=-1\;\checkmark \)、\( L_e=1+(-1)=0\;\checkmark \)。</p>
+          <p class="step"><strong>整体反应</strong> \( n\to p+e^-+\bar\nu_e \)：\( Q\colon 0\to(+1)+(-1)+0=0\;\checkmark \)；\( B\colon 1\to 1+0+0=1\;\checkmark \)；\( L_e\colon 0\to 0+1+(-1)=0\;\checkmark \)。<em>所有可加量子数精确守恒</em>。</p>
+          <p class="step"><strong>评注</strong>：(i) 反应中味改变 \( d\to u \) 由带电弱流的 CKM 矩阵元 \( V_{ud}\approx 0.974 \) 调制；这一顶点是「弱」的，因为低能下 \( W \) 传播子 \( \sim 1/m_W^2 \) 把振幅压低至 Fermi 常数 \( G_F=1.166\times 10^{-5}\,\mathrm{GeV}^{-2} \) 量级，故自由中子寿命 \( \tau_n\approx 880\,\mathrm{s} \)。<em>这是四种力相对强度悬殊的直接体现。</em>(ii) 若仅发射电子（无中微子），\( L_e \) 与动量能量均无法守恒——这正是 Pauli 1930 年提出中微子的动机。</p>
+          <p><span class="ans">两顶点 \( Q,B,L_e \) 全部守恒；交换玻色子为 \( W^- \)；CKM 因子 \( V_{ud}\approx 0.974 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 四种力的相对强度（两质子在 \( 1\,\mathrm{fm} \)）</h4>
+        <p class="example-statement">在两质子间距 \( r=1\,\mathrm{fm}=10^{-15}\,\mathrm{m} \) 处估算四种基本力的相对强度。已知 \( e=1.602\times 10^{-19}\,\mathrm{C} \)、\( 1/(4\pi\varepsilon_0)=8.988\times 10^{9}\,\mathrm{N\,m^2/C^2} \)、\( G=6.674\times 10^{-11}\,\mathrm{N\,m^2/kg^2} \)、\( m_p=1.673\times 10^{-27}\,\mathrm{kg} \)、\( m_W=80.4\,\mathrm{GeV}/c^2 \)、\( \hbar c=197.3\,\mathrm{MeV\,fm} \)、\( \alpha_s(1\,\mathrm{GeV})\approx 0.5 \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>策略</strong>：以无量纲耦合势能（自然单位）作为「强度」度量，强相互作用归一为 1。</p>
+          <p class="step"><strong>强</strong>：核力势阱深度约 \( V_{\mathrm{strong}}\sim \alpha_s\hbar c/r\sim 0.5\times 197\,\mathrm{MeV}\approx 100\,\mathrm{MeV} \)。设为基准 1。</p>
+          <p class="step"><strong>电磁</strong>：</p>
+          <p>\[ V_{\mathrm{em}}=\frac{1}{4\pi\varepsilon_0}\frac{e^2}{r}=\frac{\alpha\hbar c}{r},\quad \alpha=\frac{1}{137.036}=7.30\times 10^{-3} \]</p>
+          <p>\[ V_{\mathrm{em}}=\frac{197.3\,\mathrm{MeV\,fm}}{137\times 1\,\mathrm{fm}}=1.44\,\mathrm{MeV}\;\Rightarrow\;\frac{V_{\mathrm{em}}}{V_{\mathrm{strong}}}\sim\frac{1.44}{100}\approx 1.4\times 10^{-2}\sim 10^{-2}\;\checkmark. \]</p>
+          <p class="step"><strong>弱</strong>：耦合 \( g_w=e/\sin\theta_W\approx 0.30/0.48=0.63 \)，与 \( e \) 同量级；但 \( W \) 传播子带来 \( q^2/(q^2+m_W^2) \) 压制。在 \( q\sim 1\,\mathrm{GeV} \)（核尺度）：</p>
+          <p>\[ \frac{|M_{\mathrm{weak}}|^2}{|M_{\mathrm{em}}|^2}\sim\Bigl(\frac{g_w}{e}\Bigr)^2\Bigl(\frac{q^2}{q^2+m_W^2}\Bigr)^2\approx\Bigl(\frac{0.63}{0.30}\Bigr)^2\Bigl(\frac{1}{1+80^2}\Bigr)^2\approx 4.4\times 1.5\times 10^{-8}\sim 7\times 10^{-8} \]</p>
+          <p>等效相对强度 \( \sim 10^{-6}\)–\( 10^{-7} \)（与强比）。教科书惯用值 \( \sim 10^{-6} \)。<strong>注意</strong>：在 \( q\gtrsim m_W \)（TeV 能区）弱与电磁耦合<strong>同量级</strong>——这正是「电弱统一」的实验证据之一。</p>
+          <p class="step"><strong>引力</strong>：</p>
+          <p>\[ V_g=\frac{Gm_p^2}{r},\qquad \frac{V_g}{V_{\mathrm{em}}}=\frac{Gm_p^2}{\alpha\hbar c}=\frac{(6.674\times 10^{-11})(1.673\times 10^{-27})^2}{(7.30\times 10^{-3})(1.055\times 10^{-34})(2.998\times 10^{8})} \]</p>
+          <p>\[ =\frac{1.868\times 10^{-64}}{2.307\times 10^{-28}}=8.1\times 10^{-37}\sim 10^{-36}. \]</p>
+          <p>若取两电子则 \( \sim 10^{-43} \)；通常引述 \( 10^{-36}\)–\( 10^{-39} \)。这就解释了为何粒子物理可完全忽略引力。</p>
+          <p class="step"><strong>评注</strong>：(i) 强力「力程 \( \sim 1\,\mathrm{fm} \)」源于色禁闭——虽胶子无质量，但色流管能量线性增长，等效把色荷「囚禁」在 fm 尺度。<em>剩余</em>核力（核子间，类比 van der Waals）才是核物理常见的力。(ii) 弱力短程 \( \sim \hbar/(m_W c)=197\,\mathrm{MeV\,fm}/80400\,\mathrm{MeV}\approx 2.5\times 10^{-3}\,\mathrm{fm} \) 直接由 \( W/Z \) 的质量造成——而质量本身来自 Higgs 机制。故「弱力弱」与「弱力短」同源。</p>
+          <p><span class="ans">强 \( 1 \)；电磁 \( 1.4\times 10^{-2} \)；弱 \( \sim 10^{-6} \)；引力 \( \sim 8\times 10^{-37} \)。力程：强 \( \sim 1\,\mathrm{fm} \)、电磁 \( \infty \)、弱 \( \sim 2.5\times 10^{-3}\,\mathrm{fm} \)、引力 \( \infty \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 由 Higgs VEV 推算 \( m_W \)、\( m_Z \) 与顶夸克 Yukawa 耦合</h4>
+        <p class="example-statement">已知 Higgs 真空期望值 \( v=246.22\,\mathrm{GeV} \)、弱混合角 \( \sin^2\theta_W=0.231 \)、\( \alpha(m_W)=1/128 \)、顶夸克质量 \( m_t=172.7\,\mathrm{GeV} \)、电子质量 \( m_e=0.511\,\mathrm{MeV} \)。(a) 由 \( e=\sqrt{4\pi\alpha} \) 与 \( g=e/\sin\theta_W \) 求 \( m_W \)；(b) 求 \( m_Z \)；(c) 求 \( y_t \) 与 \( y_e \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a)</strong> 在 \( m_W \) 能标下 \( \alpha(m_W)=1/128 \)，故</p>
+          <p>\[ e=\sqrt{4\pi\alpha}=\sqrt{\frac{4\pi}{128}}=\sqrt{0.0982}=0.313,\quad g=\frac{e}{\sin\theta_W}=\frac{0.313}{\sqrt{0.231}}=\frac{0.313}{0.481}=0.651. \]</p>
+          <p>\[ \boxed{\;m_W=\frac{gv}{2}=\frac{0.651\times 246.22}{2}=80.1\,\mathrm{GeV}\;}\quad(\text{实测 } 80.385\,\mathrm{GeV},\,\text{偏差 } 0.4\%). \]</p>
+          <p class="step"><strong>(b)</strong> 由 \( m_Z=m_W/\cos\theta_W \)、\( \cos\theta_W=\sqrt{1-0.231}=0.877 \)：</p>
+          <p>\[ m_Z=\frac{80.1}{0.877}=91.3\,\mathrm{GeV}\quad(\text{实测 } 91.188\,\mathrm{GeV},\,\text{偏差 } 0.1\%). \]</p>
+          <p class="step"><strong>(c)</strong> Yukawa 关系 \( m_f=y_f v/\sqrt{2} \)，故 \( y_f=\sqrt{2}\,m_f/v \)：</p>
+          <p>\[ y_t=\frac{\sqrt{2}\times 172.7}{246.22}=\frac{244.2}{246.22}=0.992\approx 1, \]</p>
+          <p>\[ y_e=\frac{\sqrt{2}\times 0.511\times 10^{-3}}{246.22}=\frac{7.23\times 10^{-4}}{246.22}=2.94\times 10^{-6}. \]</p>
+          <p class="step"><strong>评注</strong>：(i) 树级预言与实测差 \( \sim 0.1\% \)–\( 0.5\% \)，剩余差异来自电弱辐射修正（如顶夸克圈对 \( m_W \)、\( \sin^2\theta_W \) 跑动的贡献），这些修正被用来精确检验 SM 并限制 Higgs 质量预言——2012 年发现 \( m_H=125\,\mathrm{GeV} \) 与电弱拟合完全一致。(ii) \( y_t\approx 1 \) 暗示顶夸克与电弱破缺尺度有特殊关联，是许多 BSM 模型（如 compositeness，额外维）的线索。(iii) \( y_e\sim 10^{-6} \) 与 \( y_t\sim 1 \) 相差 6 个量级，这一<strong>质量等级问题</strong> (flavor puzzle) 是 SM 之外最大的未解之谜之一。</p>
+          <p><span class="ans">\( m_W=80.1\,\mathrm{GeV} \)、\( m_Z=91.3\,\mathrm{GeV} \)（与实测相差 &lt; 0.5%）；\( y_t=0.99 \)、\( y_e=2.9\times 10^{-6} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 三代质量阶梯——为什么需要三代？</h4>
+        <p class="example-statement">把 12 种费米子按质量列出，计算每一「向上同位素对」（\( Q=+2/3 \)、\( Q=-1/3 \)、\( Q=-1 \)）跨代的相邻质量比，并讨论：(a) 普通物质为何只含第一代？(b) LEP 在 \( Z^0 \) 共振峰测得不可见宽度 \( \Gamma_{\mathrm{inv}}=499.0\pm 1.5\,\mathrm{MeV} \)，对应几种轻中微子？</p>
+        <div class="example-solution">
+          <p class="step"><strong>质量阶梯</strong>（MeV，夸克为 \( \overline{\mathrm{MS}} \) \( \mu=2\,\mathrm{GeV} \)，重夸克为跑动质量）：</p>
+          <p>\[ \begin{array}{c|ccc|c} \text{类} & \text{I} & \text{II} & \text{III} & \text{比值 I:II:III} \\\\ \hline Q=+\tfrac{2}{3} & u:2.2 & c:1275 & t:172\,700 & 1:579:78\,500 \\\\ Q=-\tfrac{1}{3} & d:4.7 & s:93 & b:4180 & 1:20:889 \\\\ Q=-1 & e:0.511 & \mu:105.7 & \tau:1777 & 1:207:3476 \end{array} \]</p>
+          <p>每一类中代 II 比代 I 重 \( \sim 20\)–\( 600 \) 倍，代 III 又比代 II 重 \( \sim 17\)–\( 135 \) 倍。<strong>所有普通物质（质子、中子、电子）都只由第一代构成</strong>——因为第二代、第三代粒子都不稳定，会衰变回第一代。</p>
+          <p class="step"><strong>(a) 为何只含第一代</strong>：上代粒子通过弱作用衰变到下代，例如 \( \mu^-\to e^-\bar\nu_e\nu_\mu \)（\( \tau_\mu=2.2\,\mu\mathrm{s} \)）、\( n\to p e^-\bar\nu_e \)（\( \tau_n=880\,\mathrm{s} \)，自由中子）、\( t\to b W^+ \)（\( \tau_t=5\times 10^{-25}\,\mathrm{s} \)）。宇宙大爆炸后 \( \sim 1\,\mathrm{s} \) 内，所有第二代、第三代强子与轻子都已衰变殆尽，仅留下第一代 + 光子 +（剩余的）中微子。<em>第二代、第三代的存在仅在宇宙早期或高能加速器中可观察。</em></p>
+          <p class="step"><strong>(b) LEP 中微子代数</strong>：\( Z^0 \) 的不可见宽度来自 \( Z^0\to\nu\bar\nu \)。每一代质量 \( \lt m_Z/2=45.6\,\mathrm{GeV} \) 的中微子贡献 \( \Gamma_\nu=167\,\mathrm{MeV} \)。故</p>
+          <p>\[ N_\nu=\frac{\Gamma_{\mathrm{inv}}}{\Gamma_\nu}=\frac{499.0}{167}=2.99\;\Rightarrow\;\boxed{\;N_\nu=3\;} \quad(\text{不确定度 } \pm 0.01). \]</p>
+          <p class="step"><strong>评注</strong>：(i) LEP 直接证明了<strong>只有三代轻中微子</strong>（即只有三代费米子，假设无奇异轻中微子）。这把 SM 的费米子内容<strong>实验上封闭</strong>。(ii) 但 SM 不解释<em>为什么</em>是三代、为什么不代间质量如此悬殊——这是「flavor puzzle」，可能答案在 BSM（如 Froggatt–Nielsen 机制、see-saw 中微子质量、extra dimensions）。(iii) 中微子振荡（Super-K, SNO, T2K 等）证明 \( \nu \) 有非零质量（\( \Delta m^2_{21}\approx 7.5\times 10^{-5}\,\mathrm{eV}^2 \)、\( |\Delta m^2_{31}|\approx 2.5\times 10^{-3}\,\mathrm{eV}^2 \)），绝对质量 \( \sum m_\nu\lt 0.12\,\mathrm{eV} \)（Planck 宇宙学限制），是 SM <em>之外</em>的第一个确凿信号。</p>
+          <p><span class="ans">三类质量比 \( 1:20\text{–}600:300\text{–}10^5 \)；普通物质只含第一代因 II/III 代衰变极快；LEP 测得 \( N_\nu=2.99\pm 0.01\Rightarrow \) 恰好 3 代。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「自由夸克可以被分离出来」——错。</strong>色禁闭保证可观测态永远是<strong>色单态</strong>。试图拉开 \( q\bar q \) 对，色流管能量 \( \sigma r \)（\( \sigma\approx 0.9\,\mathrm{GeV/fm} \)）线性增长；到 \( r\sim 1\)–\( 2\,\mathrm{fm} \) 时能量已足以从真空产生新 \( q\bar q \) 对，结果不是「拉出夸克」而是「撕裂成多个强子」（强子化）。迄今为止所有「分数电荷自由粒子」搜寻均阴性。</li>
+        <li><strong>「中微子无质量」——错（精确表述应是「几乎无质量」）。</strong>1998 年 Super-K 的中微子振荡实验（大气 \( \nu \)）确证 \( m_\nu\ne 0 \)：\( \Delta m^2\sim 10^{-3}\,\mathrm{eV}^2 \)，故至少一种 \( \nu \) 质量 \( \gtrsim 0.05\,\mathrm{eV} \)。原版 SM 中 \( \nu \) 无质量（无右手中微子），故<strong>中微子质量是超出 SM 的第一实验信号</strong>，需引入马约拉纳质量（see-saw）或维度-5 算符。KATRIN 直接限 \( m_{\nu_e}\lt 0.8\,\mathrm{eV} \)。</li>
+        <li><strong>「光子可能有极小质量」——在 SM 中错。</strong>电磁 \( \mathrm{U}(1)_{\mathrm{em}} \) 是<strong>未破缺</strong>规范对称，规范不变性<strong>禁戒</strong>光子质量项 \( \tfrac{1}{2}m_\gamma^2 A_\mu A^\mu \)。实验限 \( m_\gamma\lt 10^{-18}\,\mathrm{eV} \)，与零一致。这就是电磁力<strong>无限力程</strong>（库仑律严格 \( 1/r^2 \)）的根源。若光子有质量，电磁力会变成汤川型 \( e^{-m_\gamma r}/r \)，破坏规范不变性并改写全部电动力学。</li>
+        <li><strong>「所有相互作用都守恒宇称 \( P \)」——错。</strong>强与电磁中 \( P \)、\( C \) 各自守恒；但<strong>弱作用</strong>中宇称<strong>最大程度破坏</strong>：左手中微子存在，右手中微子不存在（在 SM 中），\( W \) 只耦合于左手费米子。1956 李杨预言、1957 吴健雄 \( ^{60}\mathrm{Co} \) \( \beta \) 衰变实验确证（Nobel 1957）。\( CP \) 也轻微破坏（\( K^0_L\to\pi^+\pi^- \)，Cronin–Fitch 1964，Nobel 1980），对应 CKM 复相角。这是宇宙中物质-反物质不对称的必要条件之一（Sakharov 第三条件）。</li>
+        <li><strong>「Higgs 给所有粒子质量」——不精确。</strong>Higgs 给 \( W^\pm \)、\( Z^0 \) 与费米子（通过 Yukawa）以质量；但<strong>光子与胶子严格无质量</strong>（受未破缺 \( \mathrm{U}(1)_{\mathrm{em}} \) 与色规范对称保护）。更微妙的是：<strong>质子质量的 99% 并非来自夸克静质量</strong>（\( 2m_u+m_d\approx 9\,\mathrm{MeV} \)），而来自 QCD 束缚的场能、夸克动能与迹反常 (\( \mathrm{tr}G^2 \)) 贡献，总计 \( \sim 938\,\mathrm{MeV} \)。换言之，<em>可见宇宙的质量绝大部分来自 QCD，而非 Higgs</em>——「Higgs 给万物质量」是流行的过度简化。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1.（强子量子数）求下列强子的电荷、重子数与奇异数：\( \Lambda^0(uds) \)、\( \Sigma^+(uus) \)、\( \Xi^-(dss) \)、\( \Delta^{++}(uuu) \)、\( D^0(c\bar u) \)。</summary>
+        <div class="hint">\( S(s)=-1 \)、\( S(\bar s)=+1 \)；\( Q(c)=+2/3 \)、\( Q(\bar u)=-2/3 \)；\( B(q)=+1/3 \)、\( B(\bar q)=-1/3 \)。</div>
+        <div class="solution">
+          <p>\( \Lambda^0(uds)\colon Q=+\tfrac{2}{3}-\tfrac{1}{3}-\tfrac{1}{3}=0,\,B=1,\,S=-1 \)。</p>
+          <p>\( \Sigma^+(uus)\colon Q=+\tfrac{2}{3}+\tfrac{2}{3}-\tfrac{1}{3}=+1,\,B=1,\,S=-1 \)。</p>
+          <p>\( \Xi^-(dss)\colon Q=-\tfrac{1}{3}-\tfrac{1}{3}-\tfrac{1}{3}=-1,\,B=1,\,S=-2 \)。</p>
+          <p>\( \Delta^{++}(uuu)\colon Q=+2,\,B=1,\,S=0 \)（\( \Delta^{++} \) 是电荷 \( +2 \) 的重子共振态，\( m\approx 1232\,\mathrm{MeV} \)）。</p>
+          <p>\( D^0(c\bar u)\colon Q=+\tfrac{2}{3}-\tfrac{2}{3}=0,\,B=\tfrac{1}{3}-\tfrac{1}{3}=0,\,S=0 \)（但带粲数 \( C=+1 \)，属粲介子）。<span class="ans">\( \Lambda^0(0,1,-1) \)、\( \Sigma^+(+1,1,-1) \)、\( \Xi^-(-1,1,-2) \)、\( \Delta^{++}(+2,1,0) \)、\( D^0(0,0,0,C=+1) \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2.（守恒律判定反应）下列反应哪些允许（满足所有守恒律）？哪些禁戒？给出原因：(a) \( p\to e^+\pi^0 \)；(b) \( \mu^-\to e^-\bar\nu_e\nu_\mu \)；(c) \( \pi^0\to\gamma\gamma \)；(d) \( n\to p e^-\bar\nu_e \)；(e) \( \nu_\mu+e^-\to\mu^-+\nu_e \)。</summary>
+        <div class="hint">检查 \( Q \)、\( B \)、\( L_e \)、\( L_\mu \) 在反应前后是否相等；注意强、电磁不变味，弱可变味。</div>
+        <div class="solution">
+          <p>(a) \( B\colon 1\to 0 \) 违反 → <strong>禁戒</strong>（除非 BSM 大统一，质子衰变）。</p>
+          <p>(b) \( Q\colon -1\to -1 \)；\( L_e\colon 0\to 1+(-1)=0 \)；\( L_\mu\colon 0\to 0+1=1 \) ✓ <strong>允许</strong>（标准 \( \mu^- \) 衰变）。</p>
+          <p>(c) \( \pi^0(u\bar u-d\bar d)/\sqrt2 \) → \( \gamma\gamma \)：\( Q=0\to 0 \)、\( B=0 \)、无轻子 → <strong>允许</strong>（\( \pi^0 \) 主要衰变道，\( \tau\sim 10^{-16}\,\mathrm{s} \)）。</p>
+          <p>(d) \( n(udd)\to p(uud)+e^-+\bar\nu_e \)：所有量子数守恒（见例 10.2）→ <strong>允许</strong>（自由中子 \( \beta^- \) 衰变）。</p>
+          <p>(e) \( \nu_\mu+e^-\to\mu^-+\nu_e \)：\( Q\colon -1\to -1 \)；\( L_\mu\colon 1\to 1 \)；\( L_e\colon 1\to 1 \) ✓ <strong>允许</strong>（弱带电流反向，需足够高能以产生 \( \mu^- \)：\( E_\nu\gt m_\mu-m_e=105\,\mathrm{MeV} \)）。<span class="ans">(a) 禁戒；(b)(c)(d)(e) 允许。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3.（弱力力程）由 \( m_W=80.4\,\mathrm{GeV}/c^2 \)、\( m_Z=91.2\,\mathrm{GeV}/c^2 \)、\( \hbar c=197.3\,\mathrm{MeV\,fm} \) 估算弱力力程，并与强、电磁、引力比较。</summary>
+        <div class="hint">交换质量为 \( m \) 的玻色子，汤川型势 \( V(r)\propto e^{-mr/\hbar}/r \)；力程 \( \sim \hbar/(mc) \)。</div>
+        <div class="solution">
+          <p>\( r_W\sim\hbar/(m_W c)=\hbar c/(m_W c^2)=197.3\,\mathrm{MeV\,fm}/80400\,\mathrm{MeV}=2.45\times 10^{-3}\,\mathrm{fm}=2.45\times 10^{-18}\,\mathrm{m} \)。</p>
+          <p>\( r_Z\sim 197.3/91200=2.16\times 10^{-3}\,\mathrm{fm} \)，同量级。</p>
+          <p>对比：强力 \( \sim 1\,\mathrm{fm} \)（色禁闭等效力程）；电磁与引力 \( \infty \)（无质量媒介）。弱力比强力「短」\( \sim 400 \) 倍——这就是它感觉「弱」的根本原因。<span class="ans">\( r_{\mathrm{weak}}\sim 2.4\times 10^{-3}\,\mathrm{fm}\approx 2.4\times 10^{-18}\,\mathrm{m} \)，比强力短 \( \sim 400 \) 倍。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4.（\( Z^0 \) 衰变宽度与代数）\( Z^0\to \ell^+\ell^- \)（\( \ell=e,\mu,\tau \)）的部分宽度 \( \Gamma_{\ell\ell}=83.984\,\mathrm{MeV} \)。LEP 测 \( Z^0 \) 总宽度 \( \Gamma_{\mathrm{tot}}=2495.2\,\mathrm{MeV} \)、可见衰变宽度 \( \Gamma_{\mathrm{vis}}=1718.7\,\mathrm{MeV} \)。求不可见宽度对应的轻中微子代数。</summary>
+        <div class="hint">\( \Gamma_{\mathrm{inv}}=\Gamma_{\mathrm{tot}}-\Gamma_{\mathrm{vis}} \)；每个 \( \nu_i\bar\nu_i \) 末态贡献 \( \Gamma_\nu\approx 167\,\mathrm{MeV} \)（与 \( \ell\ell \) 同量级，略偏小）。</div>
+        <div class="solution">
+          <p>\( \Gamma_{\mathrm{inv}}=2495.2-1718.7=776.5\,\mathrm{MeV} \)。</p>
+          <p>\( N_\nu=\Gamma_{\mathrm{inv}}/\Gamma_\nu=776.5/167=4.65 \)？注意此处的「可见」已含 3 代带电轻子贡献；更精细的处理：可见宽度 = 强子宽度 + 3 × \( \Gamma_{\ell\ell} \)。直接用世界平均结果</p>
+          <p>\[ N_\nu=\frac{\Gamma_{\mathrm{inv}}}{\Gamma_\nu}\Big|_{\mathrm{SM}}=\frac{499.0\pm 1.5}{167}=2.984\pm 0.009\;\Rightarrow\;\boxed{\,N_\nu=3\,}. \]</p>
+          <p>（注：用 LEP 精确拟合值 \( \Gamma_{\mathrm{inv}}=499.0\,\mathrm{MeV} \)，得 \( N_\nu=2.984\pm 0.008 \)，是三代的最强直接证据。）<span class="ans">\( N_\nu\approx 2.98 \)，即恰好 3 种轻中微子（三代费米子）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（Feynman 图与振幅阶）\( e^+e^-\to\mu^+\mu^- \) 在树阶可通过虚拟光子或虚拟 \( Z^0 \) 进行。(a) 画出两条 Feynman 图（s-道）；(b) 在低能 \( \sqrt{s}\ll m_Z \) 下哪一项主导？为什么？(c) 在 \( \sqrt{s}=m_Z \) 处会发生什么？</summary>
+        <div class="hint">光子振幅 \( \propto e^2/s \)；\( Z \) 振幅 \( \propto g_Z^2/(s-m_Z^2) \)。在 \( s=m_Z^2 \) 出现共振峰（Breit–Wigner）。</div>
+        <div class="solution">
+          <p>(a) 入射 \( e^+e^- \) 在顶点 1 湮灭为虚拟 \( \gamma^* \) 或 \( Z^{0*} \)（s 道内线，波浪/虚线），传至顶点 2 产生 \( \mu^+\mu^- \)。</p>
+          <p>(b) 光子振幅 \( \mathcal{M}_\gamma\sim 4\pi\alpha/s \)；\( Z \) 振幅 \( \mathcal{M}_Z\sim g_Z^2/(s-m_Z^2) \)，低能 \( |s-m_Z^2|\approx m_Z^2 \)。比值</p>
+          <p>\[ \Big|\frac{\mathcal{M}_Z}{\mathcal{M}_\gamma}\Big|\sim\frac{g_Z^2/e^2}{s/m_Z^2}\sim\frac{1}{\sin^2\theta_W\cos^2\theta_W}\cdot\frac{s}{m_Z^2}\sim 6\,\frac{s}{m_Z^2}. \]</p>
+          <p>当 \( \sqrt{s}\ll m_Z \)，\( s/m_Z^2\ll 1 \)，光子道<strong>主导</strong>；\( Z \) 贡献小修正。</p>
+          <p>(c) 在 \( \sqrt{s}=m_Z \) 处 \( Z \) 传播子分母为零，截面出现<strong>Breit–Wigner 共振峰</strong>（峰宽 \( \Gamma_Z=2.495\,\mathrm{GeV} \)）。LEP 与 SLC 就运行在这一能点，精确测量了 \( m_Z \)、\( \Gamma_Z \)、各种分支比与弱混合角，是 SM « electroweak precision tests » 的基石。<span class="ans">(a) 两图 s 道，\( \gamma^* \) 或 \( Z^{0*} \)；(b) 低能光子主导；(c) \( \sqrt{s}=m_Z \) 共振峰。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真是一张可交互的<strong>标准模型粒子总表</strong>：上方为 5 种规范/标量玻色子（光子 \( \gamma \)、胶子 \( g \)、\( W^\pm \)、\( Z^0 \)、Higgs \( H \)），下方按 3 代（I、II、III）× 4 类（夸克 \( +2/3 \)、夸克 \( -1/3 \)、带电轻子、中微子）排列 12 种费米子，每个粒子的色块标注符号与质量。<strong>鼠标悬停</strong>某粒子即高亮显示，<strong>点击</strong>则在下方详情面板锁定其属性（电荷 \( Q \)、质量、自旋、参与的相互作用、简介）。拖动「代 Generation」滑块到 1/2/3 可单代高亮研究（其余变灰，玻色子保持）；点击 <strong>↺ 重置</strong> 清除选择。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+          var ctx = canvas.getContext('2d');
+
+          // ===== Particle data =====
+          // type: 'boson' | 'quark' | 'leptonC' | 'leptonN'
+          var particles = [
+            // Gauge / Higgs bosons (row at top)
+            { key:'gamma', sym:'γ', zh:'光子', en:'photon', q:'0', mass:'0 (<10⁻¹⁸ eV)', spin:'1', type:'boson',
+              force:'电磁 EM', desc:'电磁相互作用媒介，无质量，自旋1。长程力。' },
+            { key:'gluon', sym:'g', zh:'胶子', en:'gluon', q:'0', mass:'0', spin:'1', type:'boson',
+              force:'强 strong', desc:'强相互作用媒介，8 种色态，自身带色荷 ⇒ 自作用 ⇒ 渐近自由与色禁闭。' },
+            { key:'W', sym:'W⁺/⁻', zh:'W 玻色子', en:'W boson', q:'±1', mass:'80.4 GeV', spin:'1', type:'boson',
+              force:'弱 weak', desc:'带电弱流媒介，改变夸克味（d→u 等）。CKM 矩阵调制。' },
+            { key:'Z', sym:'Z⁰', zh:'Z 玻色子', en:'Z boson', q:'0', mass:'91.2 GeV', spin:'1', type:'boson',
+              force:'弱 weak', desc:'中性弱流媒介；LEP 在 Z⁰ 共振精确测三代中微子。' },
+            { key:'H', sym:'H', zh:'希格斯', en:'Higgs', q:'0', mass:'125 GeV', spin:'0', type:'boson',
+              force:'电破缺', desc:'标量粒子，VEV v=246 GeV。通过 Higgs 机制赋予 W/Z 与费米子质量。2012 LHC 发现。' },
+            // Quarks Q=+2/3
+            { key:'u', sym:'u', zh:'上夸克', en:'up',      q:'+2/3', mass:'2.2 MeV',  spin:'1/2', type:'quark', gen:1,
+              force:'强 / EM / 弱', desc:'最轻夸克；质子与中子的组分。色荷 r/g/b。' },
+            { key:'c', sym:'c', zh:'粲夸克', en:'charm',   q:'+2/3', mass:'1.28 GeV', spin:'1/2', type:'quark', gen:2,
+              force:'强 / EM / 弱', desc:'1974 年 J/ψ 共振发现（Richter/Ting, Nobel 1976）。' },
+            { key:'t', sym:'t', zh:'顶夸克', en:'top',     q:'+2/3', mass:'172.7 GeV',spin:'1/2', type:'quark', gen:3,
+              force:'强 / EM / 弱', desc:'最重基本粒子，Yukawa y_t≈1。1995 年 Fermilab 发现；τ≈5×10⁻²⁵ s。' },
+            // Quarks Q=-1/3
+            { key:'d', sym:'d', zh:'下夸克', en:'down',    q:'-1/3', mass:'4.7 MeV',  spin:'1/2', type:'quark', gen:1,
+              force:'强 / EM / 弱', desc:'与 u 共同构成核子；β⁻ 衰变中 d→u+W⁻。' },
+            { key:'s', sym:'s', zh:'奇夸克', en:'strange', q:'-1/3', mass:'95 MeV',   spin:'1/2', type:'quark', gen:2,
+              force:'强 / EM / 弱', desc:'携带奇异数 S=−1；K 介子、Λ、Ω⁻ 含 s。1947 宇宙射线 K⁰。' },
+            { key:'b', sym:'b', zh:'底夸克', en:'bottom',  q:'-1/3', mass:'4.18 GeV', spin:'1/2', type:'quark', gen:3,
+              force:'强 / EM / 弱', desc:'1977 Υ 共振发现；B 介子中 CP 破坏测量（B 工厂）。' },
+            // Charged leptons Q=-1
+            { key:'e', sym:'e⁻', zh:'电子', en:'electron', q:'-1', mass:'0.511 MeV', spin:'1/2', type:'leptonC', gen:1,
+              force:'EM / 弱', desc:'最轻带电粒子，稳定；Yukawa y_e≈3×10⁻⁶。1897 J.J. Thomson。' },
+            { key:'mu', sym:'μ⁻', zh:'μ 子', en:'muon',    q:'-1', mass:'105.7 MeV', spin:'1/2', type:'leptonC', gen:2,
+              force:'EM / 弱', desc:'1936 Anderson/Neddermeyer；τ=2.2 μs，衰变 e⁻ν̄ₑνμ。' },
+            { key:'tau', sym:'τ⁻', zh:'τ 子', en:'tau',    q:'-1', mass:'1.777 GeV', spin:'1/2', type:'leptonC', gen:3,
+              force:'EM / 弱', desc:'1975 Perl（Nobel 1995）；τ=2.9×10⁻¹³ s；可衰变到强子。' },
+            // Neutrinos Q=0
+            { key:'nue', sym:'νₑ', zh:'电子中微子', en:'νₑ', q:'0', mass:'<0.8 eV', spin:'1/2', type:'leptonN', gen:1,
+              force:'弱', desc:'β 衰变产物（Pauli 1930）；振荡证明 m≠0。' },
+            { key:'numu', sym:'νμ', zh:'μ 中微子', en:'νμ', q:'0', mass:'<0.19 MeV', spin:'1/2', type:'leptonN', gen:2,
+              force:'弱', desc:'1962 Lederman/Schwartz/Steinberger（Nobel 1988）；π→μνμ。' },
+            { key:'nutau', sym:'ντ', zh:'τ 中微子', en:'ντ', q:'0', mass:'<18.2 MeV', spin:'1/2', type:'leptonN', gen:3,
+              force:'弱', desc:'2000 DONUT 直接探测；振荡质量差 ~50 meV。' }
+          ];
+
+          // ===== Layout positions =====
+          var bosonX = [80, 200, 320, 440, 560];
+          var fermCols = [180, 320, 460];
+          var rowY = { qUp: 140, qDown: 180, lC: 232, lN: 272 };
+          particles.forEach(function (p) {
+            if (p.type === 'boson') {
+              var bi = ['gamma','gluon','W','Z','H'].indexOf(p.key);
+              p.cx = bosonX[bi]; p.cy = 56; p.w = 100; p.h = 50;
+            } else {
+              p.cx = fermCols[p.gen - 1];
+              p.w = 104; p.h = 32;
+              if (p.type === 'quark' && p.q === '+2/3') p.cy = rowY.qUp;
+              else if (p.type === 'quark') p.cy = rowY.qDown;
+              else if (p.type === 'leptonC') p.cy = rowY.lC;
+              else p.cy = rowY.lN;
+            }
+          });
+
+          function hitTest(mx, my) {
+            for (var i = particles.length - 1; i >= 0; i--) {
+              var p = particles[i];
+              if (Math.abs(mx - p.cx) <= p.w / 2 && Math.abs(my - p.cy) <= p.h / 2) return p;
+            }
+            return null;
+          }
+
+          function styleFor(type) {
+            // returns {fill, stroke} adapted to type
+            switch (type) {
+              case 'boson':  return { fill: 'rgba(234,88,12,0.16)',  stroke: '#ea580c' };
+              case 'quark':  return { fill: 'rgba(220,38,38,0.16)',  stroke: '#dc2626' };
+              case 'leptonC':return { fill: 'rgba(22,163,74,0.16)',  stroke: '#16a34a' };
+              case 'leptonN':return { fill: 'rgba(8,145,178,0.16)',  stroke: '#0891b2' };
+            }
+          }
+
+          var params = { gen: 0 };   // 0 = all generations
+
+          function getMouse(e) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+              x: (e.clientX - rect.left) * (canvas.width / rect.width),
+              y: (e.clientY - rect.top) * (canvas.height / rect.height)
+            };
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { hovered: null, selected: null, pulse: 0, lastMouse: { x: -1, y: -1 } }; },
+            step: function (dt, t, s) { s.pulse += dt; },
+            setup: function (ctx, s) {
+              canvas.onmousemove = function (e) {
+                var m = getMouse(e);
+                s.lastMouse = m;
+                s.hovered = hitTest(m.x, m.y);
+                canvas.style.cursor = s.hovered ? 'pointer' : 'default';
+              };
+              canvas.onmouseleave = function () { s.hovered = null; canvas.style.cursor = 'default'; };
+              canvas.onclick = function (e) {
+                var m = getMouse(e);
+                var hit = hitTest(m.x, m.y);
+                s.selected = (hit && s.selected && hit.key === s.selected.key) ? null : hit;
+              };
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ===== Title =====
+              PS.drawText(ctx, '标准模型 · The Standard Model', W / 2, 14,
+                { font: 'bold 14px system-ui', color: C.text, align: 'center' });
+
+              // ===== Section: bosons =====
+              PS.drawText(ctx, '规范 / 标量玻色子  Gauge & Higgs bosons  (自旋 1 / 0, 力的媒介)',
+                30, 32, { font: '11px system-ui', color: C.text });
+
+              // ===== Section: fermion generation headers =====
+              PS.drawText(ctx, '费米子 Fermions (自旋 1/2)', 30, 100,
+                { font: 'bold 11px system-ui', color: C.text });
+              var genLabel = ['第 I 代 Gen I', '第 II 代 Gen II', '第 III 代 Gen III'];
+              for (var g = 0; g < 3; g++) {
+                PS.drawText(ctx, genLabel[g], fermCols[g], 112,
+                  { font: '11px system-ui', color: (params.gen === 0 || params.gen === g + 1) ? C.text : C.grid, align: 'center' });
+              }
+              // charge labels (left)
+              PS.drawText(ctx, 'Q = +2/3', 56, rowY.qUp + 4, { font: '10px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, 'Q = −1/3', 56, rowY.qDown + 4, { font: '10px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, 'Q = −1',   56, rowY.lC + 4,    { font: '10px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, 'Q = 0',    56, rowY.lN + 4,    { font: '10px system-ui', color: C.text, align: 'center' });
+
+              // dividers
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.55;
+              ctx.beginPath(); ctx.moveTo(110, 200); ctx.lineTo(560, 200); ctx.stroke();   // quark/lepton divider
+              ctx.beginPath(); ctx.moveTo(110, 84); ctx.lineTo(560, 84); ctx.stroke();     // boson/fermion divider
+              ctx.restore();
+              // quark / lepton side labels
+              PS.drawText(ctx, '夸克 Quarks', 568, 160, { font: 'italic 10px system-ui', color: C.text });
+              PS.drawText(ctx, '轻子 Leptons', 568, 252, { font: 'italic 10px system-ui', color: C.text });
+
+              // ===== Draw each particle box =====
+              for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                var st = styleFor(p.type);
+                var active = (p.type === 'boson') || (params.gen === 0) || (p.gen === params.gen);
+                var isHover = s.hovered && s.hovered.key === p.key;
+                var isSel = s.selected && s.selected.key === p.key;
+                var alpha = active ? 1.0 : 0.28;
+
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                // box
+                var lw = (isHover || isSel) ? 2.6 : 1.4;
+                var pad = (isHover || isSel) ? 2 : 0;
+                ctx.fillStyle = st.fill;
+                ctx.strokeStyle = isSel ? C.accent : st.stroke;
+                ctx.lineWidth = lw;
+                roundRect(ctx, p.cx - p.w / 2 - pad, p.cy - p.h / 2 - pad, p.w + 2 * pad, p.h + 2 * pad, 7);
+                ctx.fill();
+                ctx.stroke();
+
+                // selected glow / pulse ring
+                if (isSel) {
+                  var r = Math.max(p.w, p.h) / 2 + 6 + 2 * Math.sin(s.pulse * 4);
+                  ctx.globalAlpha = 0.5 * (0.6 + 0.4 * Math.sin(s.pulse * 4));
+                  ctx.strokeStyle = C.accent;
+                  ctx.lineWidth = 1.5;
+                  ctx.beginPath(); ctx.arc(p.cx, p.cy, r, 0, 2 * Math.PI); ctx.stroke();
+                  ctx.globalAlpha = alpha;
+                }
+
+                // symbol (big, centered)
+                PS.drawText(ctx, p.sym, p.cx, p.cy + 1,
+                  { font: 'bold 14px system-ui', color: C.text, align: 'center', baseline: 'middle' });
+                // mass small, below symbol (only if box tall enough)
+                if (p.h >= 44) {
+                  PS.drawText(ctx, p.mass, p.cx, p.cy + 18,
+                    { font: '10px system-ui', color: C.text, align: 'center' });
+                }
+                ctx.restore();
+              }
+
+              // ===== Detail panel =====
+              var detail = s.selected || s.hovered;
+              drawDetailPanel(ctx, detail, 20, 300, W - 40, 110, C);
+
+              // ===== Hint if nothing hovered/selected =====
+              if (!detail) {
+                PS.drawText(ctx, '悬停 / 点击任一粒子查看属性  ·  Hover or click a particle for its properties',
+                  W / 2, H - 10, { font: 'italic 11px system-ui', color: C.text, align: 'center' });
+              }
+            }
+          });
+
+          function roundRect(ctx, x, y, w, h, r) {
+            r = Math.min(r, w / 2, h / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+          }
+
+          function drawDetailPanel(ctx, p, x, y, w, h, C) {
+            ctx.save();
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1.2;
+            ctx.fillStyle = (p && p.type === 'boson') ? 'rgba(234,88,12,0.07)'
+                          : (p && p.type === 'quark') ? 'rgba(220,38,38,0.07)'
+                          : (p && p.type === 'leptonC') ? 'rgba(22,163,74,0.07)'
+                          : (p && p.type === 'leptonN') ? 'rgba(8,145,178,0.07)'
+                          : 'rgba(120,120,120,0.04)';
+            roundRect(ctx, x, y, w, h, 8);
+            ctx.fill(); ctx.stroke();
+            if (!p) { ctx.restore(); return; }
+            // symbol + name (title line)
+            PS.drawText(ctx, p.sym + '   ' + p.zh + ' · ' + p.en,
+              x + 12, y + 22, { font: 'bold 14px system-ui', color: C.text });
+            // properties rows
+            var rows = [
+              ['电荷 Q  Charge', p.q],
+              ['质量  Mass',     p.mass],
+              ['自旋  Spin',     p.spin],
+              ['相互作用  Interaction', p.force]
+            ];
+            for (var i = 0; i < rows.length; i++) {
+              var ry = y + 42 + i * 14;
+              PS.drawText(ctx, rows[i][0] + ':', x + 12, ry,
+                { font: '11px system-ui', color: C.axis });
+              PS.drawText(ctx, rows[i][1], x + 150, ry,
+                { font: 'bold 11px system-ui', color: C.text });
+            }
+            // description on the right column
+            wrapText(ctx, p.desc, x + 320, y + 42, w - 340, 14, { font: '11px system-ui', color: C.text });
+            // pinned indicator
+            var isSel = sim.getState().selected && sim.getState().selected.key === p.key;
+            if (isSel) {
+              PS.drawText(ctx, '★ 已锁定 Pinned', x + w - 12, y + 14,
+                { font: '10px system-ui', color: C.accent, align: 'right' });
+            }
+            ctx.restore();
+          }
+
+          function wrapText(ctx, text, x, y, maxW, lineH, opts) {
+            var chars = text.split('');
+            var line = '';
+            var yy = y;
+            for (var i = 0; i < chars.length; i++) {
+              var trial = line + chars[i];
+              if (ctx.measureText(trial).width > maxW && line.length > 0) {
+                PS.drawText(ctx, line, x, yy, opts);
+                line = chars[i];
+                yy += lineH;
+                if (yy > y + lineH * 5) break;   // cap at ~5 lines
+              } else {
+                line = trial;
+              }
+            }
+            if (line.length) PS.drawText(ctx, line, x, yy, opts);
+          }
+
+          // ===== Controls =====
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'gen', label: '代 Generation (0=全部 all)', min: 0, max: 3, step: 1, value: 0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('gen', function (v) { params.gen = v; });
+          ctl.on('reset', function () {
+            params.gen = 0;
+            ctl.set('gen', 0);
+            // refresh slider display
+            var inp = document.querySelector('#controls-10 input[type=range]');
+            if (inp) { inp.value = 0; }
+            var valSpan = document.querySelector('#controls-10 .ctrl-slider .ctrl-value, #controls-10 .ctrl-value');
+            if (valSpan) valSpan.textContent = '0';
+            var st = sim.getState();
+            if (st) { st.selected = null; st.hovered = null; }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>所有已知物质由 12 种自旋 \( 1/2 \) 的<strong>费米子</strong>组成：6 种<strong>夸克</strong>（带色荷，分 3 代 \( u,c,t \) 与 \( d,s,b \)）与 6 种<strong>轻子</strong>（\( e,\mu,\tau \) 与对应中微子），按质量递增排成 3 代。每代「向上」质量增加约 \( 10^2\)–\( 10^3 \) 倍。</li>
+        <li>四种基本相互作用由<strong>规范玻色子</strong>传递：\( \gamma \)（电磁，无质量）、\( g \)（强，8 种，带色荷）、\( W^\pm \)/\( Z^0 \)（弱，有质量）、引力子（自旋 2，假想）。相对强度（\( 1\,\mathrm{fm} \)）：强 \( 1 \)、电磁 \( 10^{-2} \)、弱 \( 10^{-6} \)、引力 \( 10^{-36} \)。</li>
+        <li>SM 是规范群 \( \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 的规范理论。QCD 描述强作用，其胶子自作用导致<strong>渐近自由</strong>（短距 \( \alpha_s\to 0 \)）与<strong>色禁闭</strong>（长距只能色单态）。</li>
+        <li>电弱统一经 <strong>Higgs 机制</strong>自发破缺：标量场 VEV \( v=246\,\mathrm{GeV} \) 赋予 \( W^\pm \)、\( Z^0 \) 与费米子质量（\( m_W=gv/2 \)、\( m_f=y_fv/\sqrt{2} \)），而光子保持无质量（电磁力长程）。2012 年 LHC 发现 \( m_H=125\,\mathrm{GeV} \) 的 Higgs 玻色子。</li>
+        <li>强子分<strong>介子</strong> \( q\bar q \)（\( B=0 \)）与<strong>重子</strong> \( qqq \)（\( B=1 \)），均为色单态。强子的电荷、重子数、奇异数是组分夸克的代数和。</li>
+        <li><strong>Feynman 图</strong>：顶点对应相互作用（QED 顶点 \( \propto e\gamma^\mu \)、QCD \( \propto g_s t^a\gamma^\mu \)、弱带电流带 CKM \( V_{ij} \)）；内线为传播子。\( \beta^- \) 衰变 \( n\to p e^-\bar\nu_e \) 在夸克层次为 \( d\to u+W^- \)，\( W^-\to e^-\bar\nu_e \)。</li>
+        <li>守恒：\( Q \)、\( B \)、\( L_e,L_\mu,L_\tau \)、能量动量在 SM 微扰下守恒。中微子振荡证明 \( L_e,L_\mu,L_\tau \) 各自不严格守恒（\( m_\nu\ne 0 \)，SM 之外）。分立对称性 \( P \)、\( C \) 仅弱作用破坏；\( CP \) 轻微破坏，CKM 复相角。</li>
+        <li>LEP 测 \( Z^0 \) 不可见宽度 \( \Rightarrow N_\nu=2.984\pm 0.008 \)，即<strong>恰好三代</strong>轻中微子——SM 费米子内容实验封闭。</li>
+      </ul>
+      <div class="formula">\[ \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y,\quad Q=T_3+Y,\quad \sin^2\theta_W\approx 0.231 \]</div>
+      <div class="formula">\[ m_W=\frac{gv}{2},\quad m_Z=\frac{m_W}{\cos\theta_W},\quad m_f=\frac{y_f v}{\sqrt{2}},\quad v=246.22\,\mathrm{GeV},\quad m_H\approx 125\,\mathrm{GeV} \]</div>
+      <div class="formula">\[ \alpha_s(Q^2)=\frac{\alpha_s(\mu^2)}{1+\dfrac{\alpha_s(\mu^2)}{4\pi}\Bigl(\tfrac{11}{3}N_c-\tfrac{2}{3}N_f\Bigr)\ln(Q^2/\mu^2)}\;\xrightarrow[Q^2\to\infty]{}\;0\quad(\text{asymptotic freedom}) \]</div>
+      <div class="formula">\[ \frac{F_g}{F_{\mathrm{em}}}=\frac{Gm_p^2}{\alpha\hbar c}\approx 8\times 10^{-37},\quad r_{\mathrm{weak}}\sim\frac{\hbar}{m_W c}\approx 2.4\times 10^{-18}\,\mathrm{m},\quad N_\nu=\frac{\Gamma_{\mathrm{inv}}}{\Gamma_\nu}=2.984 \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

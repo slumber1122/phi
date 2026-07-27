@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 核反应、裂变与聚变 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第9章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>核反应·裂变·聚变 <span class="en-title">Nuclear Reactions, Fission &amp; Fusion</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够用反应物与产物的<strong>原子质量</strong>计算任意核反应 (nuclear reaction) 的 <strong>Q 值</strong> \( Q=(\sum M_{\text{反}}-\sum M_{\text{产}})c^2 \)，判断放热 (exothermic, \( Q&gt;0 \)) 与吸热 (endothermic, \( Q&lt;0 \))，并用质心系不变量导出吸热反应的实验系<strong>阈能</strong> (threshold energy) \( T_{\text{thr}}=-Q(1+m_a/m_A) \)。</li>
+        <li>能够运用四大<strong>守恒律</strong>——电荷 \( Z \)、核子数 \( A \)、能量、动量——配平核反应方程，并解释为何这些守恒律排除了某些「看似可能」的反应通道。</li>
+        <li>能够定义<strong>反应截面</strong> \( \sigma \)（单位 barn，\( 1\,\mathrm{b}=10^{-28}\,\mathrm{m^2} \)）与<strong>平均自由程</strong> \( \ell=1/(n\sigma) \)，并将其与<strong>链式反应</strong> (chain reaction) 的中子平衡联系起来。</li>
+        <li>能够计算 \( {}^{235}\mathrm{U} \) 裂变与 D–T 聚变的能量产额（分别 \( \sim 200\,\mathrm{MeV} \) 与 \( 17.6\,\mathrm{MeV} \)），并用<strong>每核子结合能曲线</strong> (binding-energy curve, 第 7 章) 解释为何轻核聚变与重核裂变都释放能量（两者都向 Fe-56「下坡」）。</li>
+        <li>能够用<strong>中子增殖因数</strong> \( k \)、四因子公式 \( k_\infty=\eta f p\varepsilon \) 与<strong>点堆动力学</strong>分析临界条件 (criticality)，区分亚临界 / 临界 / 超临界，以及<strong>缓发中子</strong>如何使反应堆可控。</li>
+        <li>能够用 <strong>Gamow 隧穿</strong> \( P\sim e^{-\sqrt{E_G/E}} \) 与 Maxwell 分布的乘积导出<strong>Gamow 峰</strong> (Gamow peak) \( E_0=[(kT)^2 E_G/4]^{1/3} \)，解释为何太阳核心 \( T\sim 1.5\times 10^7\,\mathrm{K} \)（\( kT\sim 1.3\,\mathrm{keV} \)，远低于 \( \sim 600\,\mathrm{keV} \) 的库仑势垒）仍能缓慢聚变；并能描述恒星核合成 (stellar nucleosynthesis) 的主要通道（pp 链、CNO 循环、α 过程、s/r 过程）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 核反应与 Q 值 Nuclear Reactions and the Q-Value</h3>
+      <p><strong>核反应</strong>是两个原子核（或一个核与一个核子、γ 等）碰撞产生新核的过程。Rutherford 1919 年首次观测到的人造核反应是</p>
+      <div class="formula">\[ {}^{4}_{2}\mathrm{He}+{}^{14}_{7}\mathrm{N}\;\longrightarrow\;{}^{1}_{1}\mathrm{H}+{}^{17}_{8}\mathrm{O} \]</div>
+      <p>一般记为 \( a+A\to b+B \)，或紧凑形式 \( A(a,b)B \)。任何反应必须满足四大<strong>守恒律</strong> (conservation laws)：</p>
+      <ul>
+        <li><strong>电荷守恒</strong>：反应前后总电荷相等 \( \sum Z_{\text{反}}=\sum Z_{\text{产}} \)（含 β 衰变中放出的 \( e^\pm \)）。</li>
+        <li><strong>核子数守恒</strong> (nucleon number / baryon number)：\( \sum A_{\text{反}}=\sum A_{\text{产}} \)。</li>
+        <li><strong>能量守恒</strong>：包含静质量能。定义 <strong>Q 值</strong></li>
+        <li><strong>动量守恒</strong>：在质心系与实验系均成立，是确定产物动能分配的关键。</li>
+      </ul>
+      <p><strong>Q 值</strong>是反应释放（或吸收）的净动能：</p>
+      <div class="formula">\[ \boxed{\;Q=\Bigl(\sum_{\text{反应物}} M_i-\sum_{\text{产物}} M_f\Bigr)c^2\;} \]</div>
+      <p>当所有反应物与产物都以中性原子质量（atomic mass）代入、且反应前后总 \( Z \) 相等时，电子质量自动抵消。例：上面的 \( {}^{14}\mathrm{N}(\alpha,p){}^{17}\mathrm{O} \) 反应 \( Q\approx -1.19\,\mathrm{MeV} \)（吸热，详见例 9.1）。</p>
+      <ul>
+        <li>\( Q&gt;0 \)：<strong>放热</strong> (exothermic)，可自发发生（如裂变、聚变、α 衰变）。</li>
+        <li>\( Q&lt;0 \)：<strong>吸热</strong> (endothermic)，需外界供能；入射粒子动能必须超过<strong>阈能</strong> \( T_{\text{thr}} \)（见推导 A）。</li>
+      </ul>
+
+      <h3>2. 阈能与截面 Threshold Energy and Cross Section</h3>
+      <p>对于入射粒子 \( a \) 撞击静止靶 \( A \) 的吸热反应，质心系能量至少要等于产物静质量之和。由 4-动量不变量 \( s \)（推导 A）可证<strong>实验系阈能</strong>：</p>
+      <div class="formula">\[ \boxed{\;T_{\text{thr}}=-Q\Bigl(1+\frac{m_a}{m_A}\Bigr)\;}\qquad(Q&lt;0) \]</div>
+      <p>例：\( {}^{14}\mathrm{N}(\alpha,p){}^{17}\mathrm{O} \)，\( Q=-1.19\,\mathrm{MeV} \)，\( m_a/m_A=4/14 \)：\( T_{\text{thr}}=1.19\times(1+0.286)=1.53\,\mathrm{MeV} \)。Rutherford 使用的 Ra-C' α 动能 \( \sim 7.7\,\mathrm{MeV}\gg T_{\text{thr}} \)，足以触发。</p>
+      <p><strong>反应截面</strong> (cross section) \( \sigma \) 描绘「碰撞引发反应的概率」，相当于靶核呈现的有效面积：</p>
+      <div class="formula">\[ \sigma=\frac{\text{单位时间每个靶核的反应数}}{\text{入射粒子通量 }j}\,,\qquad [\sigma]=\mathrm{barn}=10^{-28}\,\mathrm{m^2} \]</div>
+      <p>典型核反应截面在 \( \mathrm{mb} \)（毫靶）到几 b 之间。中子在 \( {}^{235}\mathrm{U} \) 上的热中子裂变截面 \( \sigma_f\approx 585\,\mathrm{b} \)，远大于散射截面，这正是为什么<strong>慢（热）中子</strong>最容易引发裂变。中子在介质中的<strong>平均自由程</strong>：</p>
+      <div class="formula">\[ \ell=\frac{1}{n\,\sigma} \]</div>
+      <p>其中 \( n \) 是靶核数密度。例如普通水慢化剂中 \( 2\,\mathrm{MeV} \) 快中子的散射平均自由程 \( \sim 1\,\mathrm{cm} \)，热中子扩散长度 \( \sim 3\,\mathrm{cm} \)。</p>
+
+      <h3>3. 核裂变 Nuclear Fission</h3>
+      <p>1938 年 Hahn、Strassmann 与 Meitner 发现：用中子轰击 \( {}^{235}\mathrm{U} \) 会让重核<strong>分裂</strong>为两块中等质量的碎片，同时释放 2–3 个中子与约 \( 200\,\mathrm{MeV} \) 能量。典型裂变通道：</p>
+      <div class="formula">\[ n+{}^{235}_{92}\mathrm{U}\;\longrightarrow\;{}^{141}_{56}\mathrm{Ba}+{}^{92}_{36}\mathrm{Kr}+3\,n \]</div>
+      <p>碎片继而经历多次 β⁻ 衰变（如 \( {}^{141}\mathrm{Ba}\to{}^{141}\mathrm{La}\to\cdots\to{}^{141}\mathrm{Pr} \)）直至稳定。能量来源是<strong>每核子结合能</strong>：\( {}^{235}\mathrm{U} \) 的 \( B/A\approx 7.6\,\mathrm{MeV} \) 而裂变碎片（\( A\sim 95 \) 与 \( 140 \)）\( B/A\approx 8.5\,\mathrm{MeV} \)。每核子多束缚 \( \sim 0.9\,\mathrm{MeV} \)，共 \( 235\times 0.9\approx 210\,\mathrm{MeV} \)，与实测吻合（例 9.2）。</p>
+      <p>并非所有重核都能被慢中子引发裂变——只有<strong>易裂变核</strong> (fissile) \( {}^{235}\mathrm{U} \)、\( {}^{239}\mathrm{Pu} \)、\( {}^{233}\mathrm{U} \) 可以。自然界丰度最高的 \( {}^{238}\mathrm{U} \)（占 99.27%）需快中子（\( E&gt;1\,\mathrm{MeV} \)）才能裂变；它可在堆中吸收中子后经两次 β⁻ 转化为<strong>可裂变</strong> (fertile → fissile) 的 \( {}^{239}\mathrm{Pu} \)：</p>
+      <div class="formula">\[ {}^{238}\mathrm{U}(n,\gamma){}^{239}\mathrm{U}\;\xrightarrow{\beta^-}\;{}^{239}\mathrm{Np}\;\xrightarrow{\beta^-}\;{}^{239}\mathrm{Pu}\qquad(t_{1/2}=23.5\,\mathrm{min},\;2.36\,\mathrm{d}) \]</div>
+      <p>这正是<strong>增殖-增殖堆</strong> (breeder reactor) 的物理基础。</p>
+
+      <h4>3.1 中子链式反应 The Neutron Chain Reaction</h4>
+      <p>一次裂变放出 \( \nu\approx 2.5 \) 个中子；若每个新一代中子又能引发下一次裂变，则中子数（与裂变率）按 \( k \) <strong>几何级数</strong>增长。定义<strong>有效增殖因数</strong> (effective multiplication factor)：</p>
+      <div class="formula">\[ k_{\text{eff}}=\frac{\text{新一代中子数}}{\text{上一代中子数}} \]</div>
+      <ul>
+        <li>\( k&lt;1 \)：<strong>亚临界</strong> (sub-critical)，链式指数衰减。</li>
+        <li>\( k=1 \)：<strong>临界</strong> (critical)，自持稳态——反应堆正常工况。</li>
+        <li>\( k&gt;1 \)：<strong>超临界</strong> (super-critical)，链式指数增长——武器或失控。</li>
+      </ul>
+      <p>第 \( n \) 代中子数 \( N_n=N_0\,k^n \)。若 \( k=1.005 \)，经 1000 代增长 \( 1.005^{1000}\approx e^5\approx 150 \) 倍。</p>
+      <p>对无限大均匀堆，\( k_\infty \) 由<strong>四因子公式</strong> (four-factor formula) 给出：</p>
+      <div class="formula">\[ \boxed{\;k_\infty=\eta\,f\,p\,\varepsilon\;} \]</div>
+      <ul>
+        <li>\( \eta \) = 每次<strong>燃料吸收</strong>产生的裂变中子数（\( {}^{235}\mathrm{U} \) 热中子 \( \eta\approx 2.08 \)）。</li>
+        <li>\( f \) = <strong>热中子利用因数</strong>：被燃料吸收的比例（与慢化剂、结构材料竞争）。</li>
+        <li>\( p \) = <strong>共振逃逸概率</strong>：慢化过程中穿过 \( {}^{238}\mathrm{U} \) 共振峰而不被吸收的概率。</li>
+        <li>\( \varepsilon \) = <strong>快裂变因数</strong>（\( &gt;1 \)，快中子在 \( {}^{238}\mathrm{U} \) 上引发裂变的贡献）。</li>
+      </ul>
+      <p>实际有限尺寸的反应堆还有<strong>泄漏</strong>，故 \( k_{\text{eff}}=k_\infty\,P_{\mathrm{NL}} \)，\( P_{\mathrm{NL}} \) 为不泄漏概率。典型压水堆：\( \eta f p\varepsilon\approx 2.08\times 0.71\times 0.87\times 1.03\approx 1.32 \)，扣除泄漏后 \( k_{\text{eff}}\approx 1.25 \)；运行时靠<strong>控制棒</strong>（硼、镉，强中子吸收）将 \( k_{\text{eff}} \) 调到恰好 1.000。</p>
+
+      <h4>3.2 临界质量与反应堆 Critical Mass and Reactors</h4>
+      <p>要维持链式，燃料几何必须足够大以使泄漏不致过多。裸球<strong>临界质量</strong> (critical mass)：纯 \( {}^{235}\mathrm{U} \) 约 \( 52\,\mathrm{kg} \)（直径 \( 17\,\mathrm{cm} \)），纯 \( {}^{239}\mathrm{Pu} \) 约 \( 10\,\mathrm{kg} \)。加<strong>反射层</strong>（铍、天然铁）可显著降低临界质量。</p>
+      <p><strong>反应堆功率控制</strong>依赖<strong>缓发中子</strong> (delayed neutrons)。\( {}^{235}\mathrm{U} \) 裂变中子约 \( \beta\approx 0.65\% \) 来自裂变碎片 β 衰变后的中子发射，延迟数秒至数十秒。即便 \( k_{\text{eff}} \) 略大于 1（仍在 \( 1&lt;k&lt;1+\beta \) 范围内），链式反应主要由缓发中子主导，时间常数 \( \sim \)秒，可机械控制；若 \( k&gt;1+\beta \)，则<strong>瞬发临界</strong> (prompt critical)，时间常数 \( \sim 10^{-4}\,\mathrm{s} \)——切尔诺贝利事故即此情形。<strong>武器</strong>则用快中子（无慢化剂）、\( k\sim 2 \)、代时 \( \Lambda\sim 10\,\mathrm{ns} \)，80 代仅 \( 0.8\,\mu\mathrm{s} \) 即释放千吨 TNT 当量，远快于任何机械响应，故不需控制。</p>
+
+      <h3>4. 核聚变 Nuclear Fusion</h3>
+      <p>把两个轻核合并为更紧的核，因 \( B/A \) 沿轻核段陡升（\( {}^2\mathrm{H} \) 的 \( B/A=1.11 \)、\( {}^4\mathrm{He} \) 的 \( B/A=7.07\,\mathrm{MeV} \)），同样释放能量。最重要的聚变反应：</p>
+      <div class="formula">\[ {}^2_1\mathrm{H}+{}^3_1\mathrm{H}\;\longrightarrow\;{}^4_2\mathrm{He}+n+17.59\,\mathrm{MeV}\qquad\text{(D--T)} \]</div>
+      <p>由动量守恒，产物动能反比于质量（例 9.3）：\( T_n\approx 14.1\,\mathrm{MeV} \)，\( T_\alpha\approx 3.5\,\mathrm{MeV} \)。其他主要反应：D–D（\( Q=3.27 \) 与 \( 4.03\,\mathrm{MeV} \)，分支）、\( {}^3\mathrm{He} \)–D（\( Q=18.3\,\mathrm{MeV} \)，无中子）、p–\( {}^{11}\mathrm{B} \)（\( Q=8.7\,\mathrm{MeV} \)，「无中子聚变」).</p>
+
+      <h4>4.1 库仑势垒与 Gamow 隧穿 Coulomb Barrier and Gamow Tunneling</h4>
+      <p>两核带正电，接触时库仑势垒（推导见例 9.4）</p>
+      <div class="formula">\[ V_C(R)=\frac{Z_1 Z_2\,e^2}{4\pi\varepsilon_0\,R}=\frac{Z_1 Z_2\cdot 1.440\,\mathrm{MeV\,fm}}{r_0(A_1^{1/3}+A_2^{1/3})} \]</div>
+      <p>对 p–p：\( V_C\sim 0.55\,\mathrm{MeV} \)；对 D–T：\( V_C\sim 0.44\,\mathrm{MeV} \)。但太阳核心 \( T_c\approx 1.5\times 10^7\,\mathrm{K} \)，\( kT\approx 1.3\,\mathrm{keV} \)——比势垒低约 <strong>500 倍</strong>。经典粒子绝无可能融合，必须靠<strong>量子隧穿</strong>。</p>
+      <p>WKB 近似下，两核相对能量为 \( E \) 时的透射概率（推导见第 8 章及本章推导 C）：</p>
+      <div class="formula">\[ P(E)\;\approx\;\exp\!\Bigl(-\sqrt{E_G/E}\Bigr),\qquad E_G=2\mu c^2(\pi\alpha Z_1 Z_2)^2 \]</div>
+      <p>\( E_G \) 称 <strong>Gamow 能量</strong>，\( \mu \) 为约化质量。对 p–p：\( E_G\approx 493\,\mathrm{keV} \)；对 D–T：\( E_G\approx 1.18\,\mathrm{MeV} \)。在太阳核心典型能量 \( E\sim kT=1.3\,\mathrm{keV} \) 处，\( P\sim e^{-\sqrt{493/1.3}}=e^{-19.5}\sim 3\times 10^{-9} \)。</p>
+
+      <h4>4.2 pp 链与 CNO 循环 The pp-Chain and CNO Cycle</h4>
+      <p>太阳 99% 的能量来自<strong>质子-质子链</strong> (pp-chain, Bethe 1939)。关键第一步：</p>
+      <div class="formula">\[ p+p\;\longrightarrow\;{}^2\mathrm{H}+e^++\nu_e\qquad(Q=0.42\,\mathrm{MeV},\;\text{弱相互作用！}) \]</div>
+      <p>这一步必须把一个质子转化为中子，由<strong>弱相互作用</strong>中介，截面极小（\( \sim 10^{-20}\,\mathrm{b} \)，比 D–T 小 17 个量级）。单个质子在太阳核心平均 \( \sim 5\times 10^9\,\mathrm{yr} \) 才发生一次——这正是太阳缓慢稳定燃烧、寿命百亿年的根本原因。后续步骤由强相互作用主导，极快：</p>
+      <div class="formula">\[ {}^2\mathrm{H}+p\to{}^3\mathrm{He}+\gamma,\qquad {}^3\mathrm{He}+{}^3\mathrm{He}\to{}^4\mathrm{He}+2p \]</div>
+      <p>净结果：\( 4p\to{}^4\mathrm{He}+2e^++2\nu_e+26.7\,\mathrm{MeV} \)（其中中微子带走 \( \sim 2\% \)，地球上的「太阳中微子实验」即测此通量）。</p>
+      <p>质量更大的恒星（\( \gtrsim 1.3\,M_\odot \)，核心更热）以 <strong>CNO 循环</strong>为主：以 \( {}^{12}\mathrm{C} \) 为催化剂，经 \( {}^{13}\mathrm{N} \)、\( {}^{13}\mathrm{C} \)、\( {}^{14}\mathrm{N} \)、\( {}^{15}\mathrm{O} \)、\( {}^{15}\mathrm{C} \) 循环回到 \( {}^{12}\mathrm{C} \)，同样净结果 \( 4p\to\alpha \)。CNO 对温度更敏感（\( \langle\sigma v\rangle\propto T^{17} \) vs pp 的 \( T^4 \)），故高温下占优。</p>
+
+      <h4>4.3 聚变反应堆概念 Fusion Reactor Concepts</h4>
+      <p>地面聚变需将 D–T 等离子体约束在 \( T\gtrsim 10^8\,\mathrm{K} \)（\( kT\sim 10\,\mathrm{keV} \)），并满足 <strong>Lawson 判据</strong> \( n\tau_E\gtrsim 10^{20}\,\mathrm{s/m^3} \)（D–T）。两条主流路径：</p>
+      <ul>
+        <li><strong>磁约束</strong> (magnetic confinement)：托卡马克 (tokamak)、仿星器。ITER 装置（建设中）目标 \( Q=10 \)（聚变功率与加热功率之比）。</li>
+        <li><strong>惯性约束</strong> (inertial confinement)：用高功率激光对称压缩 D–T 靶丸至密度 \( \sim 1000\,\mathrm{g/cm^3} \)。NIF（美国国家点火装置）2022 年首次实现 \( Q&gt;1 \)。</li>
+      </ul>
+      <p>氚在自然界稀缺（半衰期 12.3 yr），需在堆包层用中子照射 \( {}^6\mathrm{Li} \) 增殖：<strong>冷反应</strong> \( {}^6\mathrm{Li}+n\to{}^4\mathrm{He}+{}^3\mathrm{H} \)（\( Q=4.8\,\mathrm{MeV} \)），实现「氚自给」。</p>
+
+      <h3>5. 恒星核合成 Stellar Nucleosynthesis</h3>
+      <p>宇宙中除大爆炸产生的 H、He 外，所有重元素都来自恒星内部及剧烈事件。Burbidge、Burbidge、Fowler、Hoyle（B²FH, 1957）系统化地给出了元素合成的八大过程：</p>
+      <ul>
+        <li><strong>氢燃烧</strong>：pp 链 / CNO 循环（主序星）。</li>
+        <li><strong>氦燃烧</strong>：\( 3\,\alpha\to{}^{12}\mathrm{C} \)（红巨星核心，\( T\sim 10^8\,\mathrm{K} \)）。\( {}^{12}\mathrm{C}(\alpha,\gamma){}^{16}\mathrm{O} \)。</li>
+        <li><strong>α 过程</strong>（α ladder）：\( {}^{12}\mathrm{C} \)、\( {}^{16}\mathrm{O} \)、\( {}^{20}\mathrm{Ne} \)、\( {}^{24}\mathrm{Mg} \)、…、\( {}^{56}\mathrm{Ni} \)（每次加一个 α，直至 \( A=56 \)——注意 \( {}^{56}\mathrm{Ni} \) 经两次 β⁺ 衰变成 \( {}^{56}\mathrm{Fe} \)，正位于 \( B/A \) 曲线峰！）。这是宇宙中铁族元素的主要来源。</li>
+        <li><strong>重元素合成</strong>：超过 Fe 后聚变吸热，不能再释放能量。重元素由<strong>中子俘获</strong> (neutron capture) 形成：s 过程（slow，氦燃烧壳层，几千年一次）、r 过程（rapid，超新星 / 中子星合并，毫秒级一次）、p 过程（质子俘获，稀少）。</li>
+      </ul>
+      <p>所以「人体里每个碳原子都来自远古恒星核合成」——我们确实是<strong>星尘</strong> (star dust)。</p>
+
+      <h3>6. 与结合能曲线的统一视角 Unifying View: The Binding-Energy Curve</h3>
+      <p>第 7 章给出的每核子结合能曲线 \( B/A \) 在 \( {}^{56}\mathrm{Fe} \) 达全局极大 \( \sim 8.79\,\mathrm{MeV} \)。无论是<strong>聚变</strong>（\( A&lt;56 \) 向 Fe 推进）还是<strong>裂变</strong>（\( A&gt;56 \) 向 Fe 后退），系统都「下坡」——能量以动能、γ、中微子形式释放。具体释放量可直接由曲线读取：</p>
+      <div class="formula">\[ Q_{\text{fusion}}\approx (B/A)_{\text{产物}}\cdot A_{\text{产物}}-\sum (B/A)_i A_i,\qquad Q_{\text{fission}}\approx \sum (B/A)_f A_f-(B/A)_i A_i \]</div>
+      <p>对 D–T：\( Q=7.07\times 4-1.11\times 2-2.83\times 3=28.3-2.22-8.49=17.6\,\mathrm{MeV} \) ✓；对 \( {}^{235}\mathrm{U} \) 裂变（碎片平均 \( B/A\approx 8.5 \)）：\( Q\approx 235\times(8.5-7.6)\approx 210\,\mathrm{MeV} \)。两者都是同一物理——沿 \( B/A \) 曲线下坡释放能量。曲线两侧坡度不同，所以聚变<strong>每核子</strong>释放约 \( 3.5\,\mathrm{MeV} \)，是裂变（\( \sim 0.85\,\mathrm{MeV} \)）的 4 倍，这是聚变燃料「能量密度极高」的根源。</p>
+
+      <div class="key-terms">nuclear reaction (核反应), Q-value (Q 值), exothermic (放热), endothermic (吸热), threshold energy \( T_{\text{thr}} \) (阈能), conservation laws (守恒律), cross section \( \sigma \) (反应截面), barn (靶恩), mean free path \( \ell \) (平均自由程), nuclear fission (核裂变), fissile / fertile (易裂变 / 可增殖), chain reaction (链式反应), multiplication factor \( k \) (增殖因数), four-factor formula \( k_\infty=\eta f p\varepsilon \) (四因子公式), critical / sub-critical / super-critical (临界 / 亚临界 / 超临界), critical mass (临界质量), delayed neutrons (缓发中子), prompt critical (瞬发临界), nuclear fusion (核聚变), Coulomb barrier \( V_C \) (库仑势垒), Gamow tunneling (Gamow 隧穿), Gamow energy \( E_G \) (Gamow 能量), Gamow peak \( E_0 \) (Gamow 峰), pp-chain (pp 链), CNO cycle (CNO 循环), Lawson criterion (Lawson 判据), tokamak (托卡马克), inertial confinement (惯性约束), stellar nucleosynthesis (恒星核合成), α-process (α 过程), s/r/p-process (s/r/p 过程)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由质心不变量导出吸热反应阈能</h3>
+      <p class="step"><strong>设定</strong>：吸热反应 \( a+A\to b+B \)（或更一般地，二体→二体），靶 \( A \) 在实验室系静止，入射粒子 \( a \) 动能 \( T_a \)。求使反应得以发生的最小 \( T_a \)（阈能）。</p>
+      <p class="step"><strong>第一步（不变量 \( s \)）</strong>：4-动量平方 \( s=(p_a+p_A)^2 \) 是 Lorentz 不变量。在实验系（\( A \) 静止）：</p>
+      <p>\[ s=m_a^2 c^4+m_A^2 c^4+2m_A c^2 E_{a,\text{lab}} \]</p>
+      <p>其中 \( E_{a,\text{lab}}=m_a c^2+T_a \)。</p>
+      <p class="step"><strong>第二步（阈条件）</strong>：在质心系，反应产物以最小能量出现 = 二者静止（无相对动能）。故</p>
+      <p>\[ \sqrt{s_{\text{thr}}}=(m_b+m_B)c^2 \]</p>
+      <p class="step"><strong>第三步（代入）</strong>：</p>
+      <p>\[ m_a^2 c^4+m_A^2 c^4+2m_A c^2(m_a c^2+T_{\text{thr}})=(m_b+m_B)^2 c^4 \]</p>
+      <p class="step"><strong>第四步（解出 \( T_{\text{thr}} \)）</strong>：</p>
+      <p>\[ T_{\text{thr}}=\frac{(m_b+m_B)^2-(m_a+m_A)^2}{2m_A}\,c^2=\frac{\bigl[(m_b+m_B)-(m_a+m_A)\bigr]\bigl[(m_b+m_B)+(m_a+m_A)\bigr]}{2m_A}\,c^2 \]</p>
+      <p>注意到 \( Q=[(m_a+m_A)-(m_b+m_B)]c^2 \)，即 \( [(m_b+m_B)-(m_a+m_A)]c^2=-Q \)，且总质量 \( M=(m_a+m_A)c^2\approx(m_b+m_B)c^2 \)（核反应中 \( |Q|\ll Mc^2 \)）：</p>
+      <p>\[ T_{\text{thr}}\approx -Q\cdot\frac{2M}{2m_A c^2}\cdot c^2\cdot\frac{1}{c^2}=-Q\Bigl(1+\frac{m_a}{m_A}\Bigr) \]</p>
+      <div class="formula">\[ \boxed{\;T_{\text{thr}}=-Q\Bigl(1+\frac{m_a}{m_A}\Bigr)\quad(Q&lt;0)\;} \]</div>
+      <p class="step"><strong>物理意义</strong>：阈值比 \( |Q| \) 多出的部分 \( |Q|\cdot m_a/m_A \) 是<strong>质心运动</strong>所需能量——实验系下并非所有入射动能都可转化为内部能，部分必须用于保持整体动量守恒。两核质量越悬殊，"浪费" 越多。</p>
+
+      <h3>B. 临界条件、四因子公式与点堆动力学</h3>
+      <p class="step"><strong>增殖因数定义</strong>：以 \( N_n \) 记第 \( n \) 代中子数，\( k\equiv N_{n+1}/N_n \)。则 \( N_n=N_0 k^n \)。\( k&gt;1 \) 指数增长，\( k=1 \) 稳态，\( k&lt;1 \) 衰减。</p>
+      <p class="step"><strong>四因子公式</strong>（无限大均匀堆）：跟踪一个热中子从「被燃料吸收」到「产生新一代裂变中子并被慢化至热能」的全过程：</p>
+      <ul>
+        <li>被燃料吸收后产生的裂变中子数 = \( \eta \)（每次燃料吸收的裂变产额）。</li>
+        <li>其中被燃料吸收（而非慢化剂 / 结构材料）的概率 = \( f \)（热利用因数）。</li>
+        <li>从快中子慢化到热能过程中逃过 \( {}^{238}\mathrm{U} \) 共振吸收的概率 = \( p \)（共振逃逸）。</li>
+        <li>快中子在 \( {}^{238}\mathrm{U} \) 上引发额外裂变的因子 = \( \varepsilon \)。</li>
+      </ul>
+      <p>\[ k_\infty=\eta\cdot f\cdot p\cdot\varepsilon \]</p>
+      <p class="step"><strong>有限堆</strong>：扣除泄漏，\( k_{\text{eff}}=k_\infty\cdot P_{\mathrm{NL}} \)。临界条件 \( k_{\text{eff}}=1 \)。</p>
+      <p class="step"><strong>点堆动力学</strong>（中子密度 \( N \)，缓发中子先驱核 \( C_i \)）：</p>
+      <div class="formula">\[ \dv{N}{t}=\frac{\rho-\beta}{\Lambda}N+\sum_i\lambda_i C_i,\qquad \dv{C_i}{t}=\frac{\beta_i}{\Lambda}N-\lambda_i C_i \]</div>
+      <p>其中 \( \rho=(k_{\text{eff}}-1)/k_{\text{eff}} \) 为<strong>反应性</strong>，\( \beta=\sum\beta_i\approx 0.0065 \)（\( {}^{235}\mathrm{U} \)），\( \Lambda \) 为<strong>中子代时</strong>（热堆 \( \sim 10^{-4}\,\mathrm{s} \)，快堆 / 武器 \( \sim 10^{-8}\,\mathrm{s} \)），\( \lambda_i \) 为各先驱核衰变常数（\( \sim 0.1\text{--}1\,\mathrm{s^{-1}} \)）。</p>
+      <p class="step"><strong>关键结论</strong>：当 \( 0&lt;\rho&lt;\beta \)（即 \( 1&lt;k_{\text{eff}}&lt;1+\beta \)），系统响应时间由缓发中子主导（\( \sim 1/\lambda\sim \)秒），可机械控制；若 \( \rho&gt;\beta \)（瞬发临界），响应时间 \( \sim\Lambda \)（微秒或更短），不可控。这就是为什么武器用快中子（无慢化剂、\( \beta \) 不重要），而反应堆用热中子并精细调节 \( \rho \) 严格小于 \( \beta \)。</p>
+
+      <h3>C. Gamow 峰：Maxwell 尾与隧穿因子的乘积</h3>
+      <p class="step"><strong>设定</strong>：温度 \( T \) 的等离子体中，反应率正比于 \( \langle\sigma v\rangle=\int_0^\infty \sigma(E)\,v(E)\,f_{\text{MB}}(E)\,dE \)。</p>
+      <p class="step"><strong>第一步</strong>：带电粒子反应的截面可写为 \( \sigma(E)=\frac{S(E)}{E}\,e^{-\sqrt{E_G/E}} \)，其中 \( S(E) \) 是去除库仑穿透后的<strong>天体物理 S 因子</strong>（随 \( E \) 缓变），指数项是 Gamow 隧穿因子。</p>
+      <p class="step"><strong>第二步</strong>：Maxwell–Boltzmann 分布（每单位能量）\( f_{\text{MB}}(E)\propto \sqrt{E}\,e^{-E/kT} \)，乘以速度 \( v\propto\sqrt{E/m} \)，被积函数</p>
+      <p>\[ \sigma v f_{\text{MB}}\;\propto\;S(E)\,e^{-E/kT}\cdot e^{-\sqrt{E_G/E}} \]</p>
+      <p class="step"><strong>第三步（求峰位）</strong>：令指数 \( g(E)=E/kT+\sqrt{E_G/E} \) 取极小，\( \dv{g}{E}=0 \)：</p>
+      <p>\[ \frac{1}{kT}-\frac{1}{2}\sqrt{E_G}\,E^{-3/2}=0\;\Rightarrow\;E^{-3/2}=\frac{2}{kT\sqrt{E_G}}\;\Rightarrow\;\boxed{\;E_0=\Bigl[\frac{(kT)^2\,E_G}{4}\Bigr]^{1/3}\;} \]</p>
+      <p class="step"><strong>第四步（数值估算，太阳核心 p–p）</strong>：\( kT=1.29\,\mathrm{keV} \)，\( E_G=493\,\mathrm{keV} \)。</p>
+      <p>\[ E_0=\Bigl[\frac{(1.29)^2\times 493}{4}\Bigr]^{1/3}=(205)^{1/3}=5.9\,\mathrm{keV} \]</p>
+      <p>即反应主要集中在 \( E\sim 6\,\mathrm{keV} \)（约 \( 5\,kT \)，远在 MB 尾部），同时库仑穿透因子 \( e^{-\sqrt{493/5.9}}=e^{-9.1}\sim 10^{-4} \)。两者乘积形成的「Gamow 窗」非常窄（相对宽度 \( \Delta/E_0\sim 0.5 \)）。这是热核反应率对温度高度敏感（\( \propto T^n \)，\( n\sim 4\) for pp，\( n\sim 17\) for CNO）的根本原因。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 历史上第一次人造核反应 \( {}^{14}\mathrm{N}(\alpha,p){}^{17}\mathrm{O} \)</h4>
+        <p class="example-statement">1919 年 Rutherford 用 \( {}^{226}\mathrm{Ra} \) 衰变产生的 \( \alpha \) 粒子（能量约 \( 7.7\,\mathrm{MeV} \)）轰击氮气，观测到质子产生。已知原子质量：\( M({}^4\mathrm{He})=4.002603\,\mathrm{u} \)、\( M({}^{14}\mathrm{N})=14.003074\,\mathrm{u} \)、\( M({}^1\mathrm{H})=1.007825\,\mathrm{u} \)、\( M({}^{17}\mathrm{O})=16.999132\,\mathrm{u} \)，\( 1\,\mathrm{u}c^2=931.494\,\mathrm{MeV} \)。求：(a) 反应 \( Q \) 值；(b) 实验系阈能 \( T_{\text{thr}} \)；(c) 产物在质心系中的动能分配。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：反应前后总 \( Z \) 相等（\( 2+7=1+8=9 \)），可直接用原子质量相减：</p>
+          <p>\[ Q=\bigl[M({}^4\mathrm{He})+M({}^{14}\mathrm{N})-M({}^1\mathrm{H})-M({}^{17}\mathrm{O})\bigr]c^2 \]</p>
+          <p>\[ =(4.002603+14.003074-1.007825-16.999132)\times 931.494 \]</p>
+          <p>\[ =(18.005677-18.006957)\times 931.494=(-0.001280)(931.494) \]</p>
+          <p>\[ \boxed{\;Q=-1.19\,\mathrm{MeV}\;}\quad(\text{吸热 endothermic}) \]</p>
+          <p class="step"><strong>解 (b)</strong>：用推导 A 的阈能公式（\( m_a \) 为 α，\( m_A \) 为 \( {}^{14}\mathrm{N} \)）：</p>
+          <p>\[ T_{\text{thr}}=-Q\Bigl(1+\frac{m_a}{m_A}\Bigr)=1.19\,\mathrm{MeV}\times\Bigl(1+\frac{4}{14}\Bigr)=1.19\times 1.286=1.53\,\mathrm{MeV} \]</p>
+          <p>实验中 α 动能 \( 7.7\,\mathrm{MeV}\gg 1.53\,\mathrm{MeV} \)，远超阈值，故反应得以发生。多余能量 \( 7.7-1.19=6.5\,\mathrm{MeV} \)（减去质心运动所需后）转化为产物动能。</p>
+          <p class="step"><strong>解 (c)</strong>：阈处质心系产物动能为零；非阈处由动量守恒分配。在阈附近略去 \( T_a-T_{\text{thr}} \) 的小剩馀，质心系中 \( p \) 与 \( {}^{17}\mathrm{O} \) 动量大小相等方向相反：</p>
+          <p>\[ T_p=\frac{p^2}{2m_p}\,,\quad T_{^{17}\mathrm{O}}=\frac{p^2}{2m_{^{17}\mathrm{O}}}\;\Rightarrow\;\frac{T_p}{T_{^{17}\mathrm{O}}}=\frac{m_{^{17}\mathrm{O}}}{m_p}=\frac{17}{1} \]</p>
+          <p>即质子动能是重核的 17 倍。一般地，两体产物动能反比于质量：轻粒子拿走绝大部分能量（这是裂变碎片中较轻的碎片获得较大动能、D–T 中 \( 14\,\mathrm{MeV} \) 中子携带 80% 能量的同一原理）。</p>
+          <p class="step"><strong>评注</strong>：实验上 Rutherford 不仅看到质子，还通过云室径迹长度验证了上述能量分配。这是首次实现「元素嬗变」 (transmutation)，并直接验证了 Einstein 质能关系 \( Q=\Delta M\,c^2 \)。</p>
+          <p><span class="ans">\( Q=-1.19\,\mathrm{MeV} \)（吸热）；\( T_{\text{thr}}=1.53\,\mathrm{MeV} \)；\( T_p/T_{^{17}\mathrm{O}}=17/1 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 \( {}^{235}\mathrm{U} \) 裂变释放的能量（约 \( 200\,\mathrm{MeV} \)）</h4>
+        <p class="example-statement">典型裂变通道 \( n+{}^{235}\mathrm{U}\to{}^{141}\mathrm{Ba}+{}^{92}\mathrm{Kr}+3n \)，碎片经多次 β⁻ 衰变至稳定 \( {}^{141}\mathrm{Pr} \) 与 \( {}^{92}\mathrm{Zr} \)。已知原子质量 \( M({}^{235}\mathrm{U})=235.043930\,\mathrm{u} \)、\( M({}^{141}\mathrm{Pr})=140.907653\,\mathrm{u} \)、\( M({}^{92}\mathrm{Zr})=91.905040\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)。求：(a) 用稳定末端产物计算总 \( Q \)；(b) 估算 1 GW（热）反应堆每天消耗的 \( {}^{235}\mathrm{U} \) 质量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：净反应（含 β 衰变链）\( n+{}^{235}\mathrm{U}\to{}^{141}\mathrm{Pr}+{}^{92}\mathrm{Zr}+2n+7\,e^-+7\bar\nu_e \)。验证守恒：核子数 \( 1+235=141+92+2=235 \) ✓；电荷 \( 0+92=59+40+0=99 \)，差 7 由 7 次 β⁻ 衰变补足（\( n\to p+e^-+\bar\nu \)，每次使 \( Z \) 加 1）✓。用原子质量（电子云自动匹配），\( 2m_n \) 为净外溢的中子（3 个出 − 1 个入 = 2）：</p>
+          <p>\[ Q=\bigl[M({}^{235}\mathrm{U})-M({}^{141}\mathrm{Pr})-M({}^{92}\mathrm{Zr})-2m_n\bigr]c^2 \]</p>
+          <p>\[ =\bigl[235.043930-140.907653-91.905040-2(1.008665)\bigr]\times 931.494 \]</p>
+          <p>\[ =\bigl[235.043930-234.830023\bigr]\times 931.494=(0.213907)(931.494) \]</p>
+          <p>\[ \boxed{\;Q=199.3\,\mathrm{MeV}\;\approx\;200\,\mathrm{MeV}\;} \]</p>
+          <p class="step"><strong>能量去向</strong>（典型分配）：</p>
+          <ul>
+            <li>裂变碎片动能 \( \sim 168\,\mathrm{MeV} \)（库仑斥能把两块推开）。</li>
+            <li>瞬发 γ \( \sim 7\,\mathrm{MeV} \)；瞬发中子动能 \( \sim 5\,\mathrm{MeV} \)。</li>
+            <li>碎片 β⁻ 衰变电子 \( \sim 7\,\mathrm{MeV} \)；后续 γ \( \sim 8\,\mathrm{MeV} \)。</li>
+            <li>中微子（不可回收）\( \sim 10\,\mathrm{MeV} \)。</li>
+          </ul>
+          <p>合计 \( \sim 205\,\mathrm{MeV} \)，可回收 \( \sim 195\,\mathrm{MeV} \)。与每核子结合能曲线估算 \( 235\times(8.5-7.6)\sim 210\,\mathrm{MeV} \) 一致。</p>
+          <p class="step"><strong>解 (b)</strong>：1 个裂变释放 \( Q=199.3\,\mathrm{MeV}=199.3\times 1.602\times 10^{-13}\,\mathrm{J}=3.19\times 10^{-11}\,\mathrm{J} \)。1 GW（热）= \( 10^9\,\mathrm{J/s} \)，每天（86400 s）需能量 \( 8.64\times 10^{13}\,\mathrm{J} \)，故需裂变数</p>
+          <p>\[ N_f=\frac{8.64\times 10^{13}}{3.19\times 10^{-11}}=2.71\times 10^{24}\;\text{次裂变 / 天} \]</p>
+          <p>对应 \( {}^{235}\mathrm{U} \) 质量（摩尔质量 \( 235\,\mathrm{g/mol} \)）：</p>
+          <p>\[ m=\frac{N_f}{N_A}\times 235\,\mathrm{g}=\frac{2.71\times 10^{24}}{6.022\times 10^{23}}\times 235\,\mathrm{g}=4.50\times 235\,\mathrm{g}=1058\,\mathrm{g}\approx\boxed{\;1.06\,\mathrm{kg/天}\;} \]</p>
+          <p class="step"><strong>评注</strong>：每 kg \( {}^{235}\mathrm{U} \) 释放 \( \sim 8\times 10^{13}\,\mathrm{J} \)，是 1 kg 煤（\( \sim 24\,\mathrm{MJ} \)）的 \( 3\times 10^6 \) 倍——这就是核能「能量密度极高」的物理来源（每个 \( {}^{235}\mathrm{U} \) 核释放约 0.2 GeV，而每个 C+O₂ 化学反应仅约 4 eV，比值 \( \sim 5\times 10^7 \)，抵消质量比后约 \( 3\times 10^6 \) 倍）。1 GW 电功率（按热电效率 33%）需约 3 kg/天。</p>
+          <p><span class="ans">\( Q\approx 199\,\mathrm{MeV}\approx 200\,\mathrm{MeV} \)；1 GW（热）堆耗 \( {}^{235}\mathrm{U}\approx 1.06\,\mathrm{kg} \)/天。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 D–T 聚变 Q 值与产物动能分配</h4>
+        <p class="example-statement">反应 \( {}^2\mathrm{H}+{}^3\mathrm{H}\to{}^4\mathrm{He}+n \)。已知 \( M({}^2\mathrm{H})=2.014102\,\mathrm{u} \)、\( M({}^3\mathrm{H})=3.016049\,\mathrm{u} \)、\( M({}^4\mathrm{He})=4.002603\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)。求：(a) Q 值；(b) 在质心系（反应物相对动能 \( E\ll Q \) 时近似守恒）产物 \( \alpha \) 与中子的动能。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：反应前后总 \( Z=1 \)（\( 1+1=2+0 \)，电子云在 D、T 原子与 He 原子间相差 1，但 He 原子比 D+T 少一个电子——直接用原子质量，会差一个 \( m_e \)；处理办法：用核质量或显式补 \( m_e \)。这里 D、T 是中性原子，He 也按中性原子：\( Z_{\text{反}}=1+1=2 \)、\( Z_{\text{产}}=2+0=2 \)，电子云匹配，可直接相减：</p>
+          <p>\[ Q=\bigl[M({}^2\mathrm{H})+M({}^3\mathrm{H})-M({}^4\mathrm{He})-m_n\bigr]c^2 \]</p>
+          <p>\[ =(2.014102+3.016049-4.002603-1.008665)\times 931.494 \]</p>
+          <p>\[ =(5.030151-5.011268)\times 931.494=(0.018883)(931.494) \]</p>
+          <p>\[ \boxed{\;Q=17.59\,\mathrm{MeV}\;} \]</p>
+          <p>每核子 \( Q/5=3.52\,\mathrm{MeV/nucleon} \)——是裂变 \( 0.85\,\mathrm{MeV/nucleon} \) 的 4 倍以上。</p>
+          <p class="step"><strong>解 (b)</strong>：在质心系，反应前总动量为零（近似取反应物动能为 0），由动量守恒 \( \vec p_\alpha+\vec p_n=0 \)，故 \( |\vec p_\alpha|=|\vec p_n|\equiv p \)。能量守恒 \( Q=T_\alpha+T_n \)，\( T=p^2/(2m) \)：</p>
+          <p>\[ T_\alpha=\frac{p^2}{2m_\alpha}=\frac{Q\cdot m_n}{m_\alpha+m_n}=\frac{17.59\times 1.008665}{4.002603+1.008665}=\frac{17.59}{5.0113}\times 1.0087=17.59\times 0.2013 \]</p>
+          <p>\[ \boxed{\;T_\alpha=3.54\,\mathrm{MeV}\;},\qquad T_n=Q-T_\alpha=17.59-3.54=14.05\,\mathrm{MeV}\;\Rightarrow\;\boxed{\;T_n=14.1\,\mathrm{MeV}\;} \]</p>
+          <p>即中子带走 \( 14.1/17.6=80\% \) 的能量。这正是托卡马克设计中子包容层（blanket）必须承受 14 MeV 中子的原因——同时利用这些中子照射 \( {}^6\mathrm{Li} \) 增殖氚。</p>
+          <p class="step"><strong>每克燃料能量密度</strong>：1 mol D + T（5 g）释放 \( 6.022\times 10^{23}\times 17.59\,\mathrm{MeV}=1.06\times 10^{25}\,\mathrm{MeV}=1.70\times 10^{12}\,\mathrm{J} \)，即 \( 3.4\times 10^{11}\,\mathrm{J/g}=340\,\mathrm{TJ/kg} \)。1 L 海水含 \( \sim 33\,\mathrm{mg} \) 氘，若全部聚变（与氚配对，氚来自 \( {}^6\mathrm{Li} \)）释放 \( \sim 11\,\mathrm{MJ} \)，相当于 \( \sim 300\,\mathrm{L} \) 汽油——「1 L 海水 = 300 L 汽油」的来源。</p>
+          <p><span class="ans">\( Q=17.59\,\mathrm{MeV} \)；\( T_\alpha=3.5\,\mathrm{MeV} \)、\( T_n=14.1\,\mathrm{MeV} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 太阳核心的库仑势垒与 Gamow 峰</h4>
+        <p class="example-statement">太阳核心 \( T_c\approx 1.5\times 10^7\,\mathrm{K} \)。求：(a) 质子–质子库仑势垒 \( V_C \)（取 \( r_0=1.2\,\mathrm{fm} \)，\( e^2/(4\pi\varepsilon_0)=1.440\,\mathrm{MeV\,fm} \)）；(b) \( kT \) 与势垒之比；(c) p–p 反应的 Gamow 能量 \( E_G \) 与 Gamow 峰位 \( E_0 \)；(d) 峰位处的隧穿概率 \( P(E_0) \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：两质子接触时 \( R=r_0(A_1^{1/3}+A_2^{1/3})=1.2(1+1)=2.4\,\mathrm{fm} \)。</p>
+          <p>\[ V_C=\frac{e^2}{4\pi\varepsilon_0 R}=\frac{1.440\,\mathrm{MeV\,fm}}{2.4\,\mathrm{fm}}=0.600\,\mathrm{MeV}=600\,\mathrm{keV} \]</p>
+          <p class="step"><strong>解 (b)</strong>：\( kT=k_B T=(8.617\times 10^{-5}\,\mathrm{eV/K})(1.5\times 10^7\,\mathrm{K})=1293\,\mathrm{eV}\approx 1.3\,\mathrm{keV} \)。</p>
+          <p>\[ \boxed{\;\frac{kT}{V_C}=\frac{1.3}{600}=2.2\times 10^{-3}\;}\quad\text{（即 }kT\text{ 比势垒低约 460 倍）} \]</p>
+          <p>经典粒子绝无可能融合。</p>
+          <p class="step"><strong>解 (c)</strong>：p–p 约化质量 \( \mu=m_p/2 \)，\( \mu c^2=469.1\,\mathrm{MeV} \)，\( 2\mu c^2=938.3\,\mathrm{MeV} \)；\( (\pi\alpha)^2=(\pi/137.036)^2=5.255\times 10^{-4} \)。</p>
+          <p>\[ E_G=2\mu c^2(\pi\alpha Z_1 Z_2)^2=938.3\times 5.255\times 10^{-4}=0.493\,\mathrm{MeV}=493\,\mathrm{keV} \]</p>
+          <p>Gamow 峰位：</p>
+          <p>\[ E_0=\Bigl[\frac{(kT)^2 E_G}{4}\Bigr]^{1/3}=\Bigl[\frac{(1.3)^2\times 493}{4}\Bigr]^{1/3}=[208]^{1/3}=\boxed{\;5.9\,\mathrm{keV}\;} \]</p>
+          <p>即聚变最可能在 \( E\approx 6\,\mathrm{keV}\approx 4.5\,kT \) 处发生（在 Maxwell 尾部），此处仍比势垒低约 100 倍。</p>
+          <p class="step"><strong>解 (d)</strong>：</p>
+          <p>\[ P(E_0)=e^{-\sqrt{E_G/E_0}}=e^{-\sqrt{493/5.9}}=e^{-\sqrt{83.6}}=e^{-9.14}=1.1\times 10^{-4} \]</p>
+          <p>\[ \boxed{\;P(E_0)\sim 10^{-4}\;} \]</p>
+          <p>即「幸运动能 + 幸运隧穿」联合概率约 \( 10^{-4}\times e^{-E_0/kT}=10^{-4}\times e^{-4.6}=10^{-6} \)。然而真正限制太阳聚变率的是 pp 链第一步的<strong>弱相互作用</strong>截面（\( \sigma\sim 10^{-47}\,\mathrm{m^2} \)，比 D–T 小 17 个量级）——这把单个质子在太阳核心的聚变时标拉到 \( \sim 5\times 10^9\,\mathrm{yr} \)，恰好与太阳总寿命 \( \sim 10^{10}\,\mathrm{yr} \) 相当。<strong>太阳稳定发光数十亿年的根本原因就是 pp 第一步极慢</strong>。</p>
+          <p><span class="ans">\( V_C=600\,\mathrm{keV} \)；\( kT/V_C\approx 2.2\times 10^{-3} \)；\( E_G=493\,\mathrm{keV} \)、\( E_0=5.9\,\mathrm{keV} \)；\( P(E_0)\sim 10^{-4} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 链式反应的临界与临界质量</h4>
+        <p class="example-statement">一压水堆燃料为 3% 浓缩 \( {}^{235}\mathrm{U} \)（即 \( {}^{235}\mathrm{U}/{}^{238}\mathrm{U}=3/97 \)）。已知 \( \eta({}^{235}\mathrm{U},\text{热})=2.08 \)、\( \varepsilon=1.03 \)、\( p=0.87 \)、\( f=0.71 \)、不泄漏概率 \( P_{\mathrm{NL}}=0.95 \)。求：(a) \( k_\infty \) 与 \( k_{\text{eff}} \)；(b) 反应性 \( \rho \)，是否超瞬发临界？(c) 若把燃料换成纯 \( {}^{235}\mathrm{U} \) 金属球（\( k_\infty\approx 2.0 \)、\( P_{\mathrm{NL}}=0.9 \)）、代时 \( \Lambda=10\,\mathrm{ns} \)，估算 80 代内中子数增幅与时间。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：</p>
+          <p>\[ k_\infty=\eta f p\varepsilon=2.08\times 0.71\times 0.87\times 1.03 \]</p>
+          <p>\[ =2.08\times 0.71=1.477;\quad 1.477\times 0.87=1.285;\quad 1.285\times 1.03=\boxed{\;1.323\;} \]</p>
+          <p>\[ k_{\text{eff}}=k_\infty\,P_{\mathrm{NL}}=1.323\times 0.95=\boxed{\;1.257\;} \]</p>
+          <p class="step"><strong>解 (b)</strong>：反应性</p>
+          <p>\[ \rho=\frac{k_{\text{eff}}-1}{k_{\text{eff}}}=\frac{0.257}{1.257}=0.204 \]</p>
+          <p>\( {}^{235}\mathrm{U} \) 缓发中子份额 \( \beta\approx 0.0065 \)。\( \rho=0.204\gg\beta \)，故<strong>瞬发超临界</strong>——这正是为什么必须用控制棒（强吸收硼 / 镉）将 \( k_{\text{eff}} \) 压到恰好 1.000（即 \( \rho=0 \)）才能稳态运行。正常运行时反应堆靠缓发中子的反馈把 \( \rho \) 维持在略大于 0、但严格小于 \( \beta \)。</p>
+          <p class="step"><strong>解 (c)</strong>：纯 \( {}^{235}\mathrm{U} \) 球 \( k_{\text{eff}}=k_\infty P_{\mathrm{NL}}=2.0\times 0.9=1.8 \)。80 代后中子数</p>
+          <p>\[ \frac{N_{80}}{N_0}=k^{80}=1.8^{80}=e^{80\ln 1.8}=e^{80\times 0.588}=e^{47.0}=2.5\times 10^{20} \]</p>
+          <p>时间：\( t=80\Lambda=80\times 10\,\mathrm{ns}=800\,\mathrm{ns}=0.8\,\mu\mathrm{s} \)。从单中子起步，0.8 微秒内即引发约 \( 2\times 10^{20} \) 次裂变（\( \sim 6\times 10^{12}\,\mathrm{J}\approx 1.5\,\mathrm{kt} \) TNT 当量），远快于燃料球机械膨胀解体（\( \sim \mu\mathrm{s} \)）的时间尺度——所以武器设计核心目标就是<strong>在解体前完成尽可能多代</strong>。临界质量裸 \( {}^{235}\mathrm{U} \) 约 \( 52\,\mathrm{kg} \)、\( {}^{239}\mathrm{Pu} \) 约 \( 10\,\mathrm{kg} \)。</p>
+          <p class="step"><strong>评注</strong>：反应堆燃料仅 3% 浓缩，\( k_\infty \) 即使无控制棒也只到 1.32，且水慢化剂在温度升高时密度下降 → 自动减少慢化 → \( k_{\text{eff}} \) 下降（<strong>负温度系数</strong>），是固有安全特性。武器则需 \( &gt;90\% \) 浓缩，结构、化学、保安都受严格管控。两者物理本质区别在 \( k_{\text{eff}} \) 与代时 \( \Lambda \)。</p>
+          <p><span class="ans">\( k_\infty=1.32 \)、\( k_{\text{eff}}=1.26 \)；\( \rho=0.204&gt;\beta \)（瞬发超临界，须用控制棒压到 \( \rho=0 \)）；纯 \( {}^{235}\mathrm{U} \) 球 80 代放大 \( 2.5\times 10^{20} \)、用时 \( 0.8\,\mu\mathrm{s} \)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「裂变释放能量，所以聚变也释放」——以偏概全。</strong>能否释放取决于<strong>方向</strong>：重核（\( A&gt;56 \)）裂变向 Fe 后退释放能量；轻核（\( A&lt;56 \)）聚变向 Fe 推进也释放。但中间区段（如 \( A\approx 56 \) 附近）既不能通过裂变也不能通过聚变释放能量——Fe-56 已是 \( B/A \) 曲线的峰，再往任一方向都「上坡」。<em>正记忆</em>：「重裂轻聚，都奔 Fe-56」。</li>
+        <li><strong>「聚变只要温度够高就行」——错。</strong>还需<strong>量子隧穿</strong>。即便太阳核心 \( kT\sim 1.3\,\mathrm{keV} \) 远低于 p–p 库仑势垒 \( \sim 600\,\mathrm{keV} \)（差 460 倍），仍能聚变，是因隧穿概率 \( \sim 10^{-4} \)（在 Gamow 峰处）。把这一过程套用经典力学必然预测聚变率 \( \sim 0 \)。地面托卡马克需要 \( T\gtrsim 10^8\,\mathrm{K} \)，并非因为「热到能跨过势垒」，而是因为隧穿概率 + Maxwell 尾的乘积在该温度下足够大。</li>
+        <li><strong>「只要堆里有 \( {}^{235}\mathrm{U} \) 就会爆炸」——错。</strong>链式反应需要 \( k\ge 1 \)，即每代裂变产生的中子足以补偿吸收 / 泄漏。<strong>反应堆燃料仅 3–5% 浓缩</strong>，水慢化剂 + 结构材料使 \( k_\infty \) 远低于武器所需，且反应堆有控制棒、负温度系数等多重反馈。<strong>武器需 &gt;90% 浓缩 + 快中子 + 紧凑几何</strong>。低浓铀在物理上不可能像炸弹那样爆炸（最坏情况是堆芯熔毁，如三里岛 / 福岛，但不是核爆）。</li>
+        <li><strong>「太阳稳定，所以 pp 聚变很快」——因果反了。</strong>恰恰相反：pp 链第一步 \( p+p\to d+e^++\nu_e \) 是<strong>弱相互作用</strong>（必须把质子转化为中子），截面 \( \sim 10^{-47}\,\mathrm{m^2} \)，比强相互作用聚变（如 D–T）小约 17 个数量级。太阳核心每个质子平均 \( \sim 5\times 10^9\,\mathrm{yr} \) 才发生一次聚变——这极慢的速率正是太阳<strong>稳定发光数十亿年</strong>的根本原因。若 pp 链像 D–T 那样快，太阳会在几百万年内燃尽。</li>
+        <li><strong>「重于 Fe 的元素由恒星聚变产生」——错。</strong>聚变到 Fe-56 是放热的终点；继续聚变（如 Fe+α→Ni）<strong>吸热</strong>，恒星不能这样产能。比 Fe 重的元素（Au、Pb、U 等）由<strong>中子俘获</strong>形成——s 过程（缓慢，在红巨星 He 燃烧壳层）和 r 过程（快速，在超新星核心坍缩或中子星合并中子风）。2017 年 GW170817 中子星合并事件直接观测到了 r 过程产生的重元素（Au、Pt 等）的特征光谱。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （Q 值与阈能）反应 \( {}^7\mathrm{Li}(p,n){}^7\mathrm{Be} \)。原子质量 \( M({}^1\mathrm{H})=1.007825\,\mathrm{u} \)、\( M({}^7\mathrm{Li})=7.016004\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)、\( M({}^7\mathrm{Be})=7.016929\,\mathrm{u} \)。求 \( Q \) 与实验系阈能。</summary>
+        <div class="hint">\( Q=[M({}^1\mathrm{H})+M({}^7\mathrm{Li})-m_n-M({}^7\mathrm{Be})]c^2 \)；\( T_{\text{thr}}=-Q(1+m_p/m_{Li}) \)。</div>
+        <div class="solution">
+          <p>\( Q=(1.007825+7.016004-1.008665-7.016929)\times 931.494 \)</p>
+          <p>\( =(8.023829-8.025594)\times 931.494=(-0.001765)(931.494)=-1.64\,\mathrm{MeV} \)。</p>
+          <p>\( T_{\text{thr}}=1.64(1+1/7)=1.64\times 1.143=1.88\,\mathrm{MeV} \)。该反应常用于加速器中子源——质子能量恰高于 \( 1.88\,\mathrm{MeV} \) 即可产生准单能中子。<span class="ans">\( Q=-1.64\,\mathrm{MeV} \)；\( T_{\text{thr}}=1.88\,\mathrm{MeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （D–D 聚变分支）D–D 反应有两个等概率分支：\( {}^2\mathrm{H}+{}^2\mathrm{H}\to{}^3\mathrm{He}+n \)（\( Q_1 \)）和 \( {}^2\mathrm{H}+{}^2\mathrm{H}\to{}^3\mathrm{H}+p \)（\( Q_2 \)）。已知 \( M({}^3\mathrm{He})=3.016029\,\mathrm{u} \)、其他见例 9.3。求两个 \( Q \) 值，并验证二者之和约为 \( 2\times 3.65\,\mathrm{MeV} \)。</summary>
+        <div class="hint">两反应前后总 \( Z \) 均守恒（\( 1+1=2+0 \) 与 \( 1+1=1+1 \)），可直接用原子质量相减。</div>
+        <div class="solution">
+          <p>\( Q_1=(2M_D-M_{He}-m_n)c^2=(2\times 2.014102-3.016029-1.008665)\times 931.494 \)</p>
+          <p>\( =(4.028204-4.024694)\times 931.494=(0.003510)(931.494)=3.27\,\mathrm{MeV} \)。</p>
+          <p>\( Q_2=(2M_D-M_T-M_H)c^2=(4.028204-3.016049-1.007825)\times 931.494 \)</p>
+          <p>\( =(4.028204-4.023874)\times 931.494=(0.004330)(931.494)=4.03\,\mathrm{MeV} \)。</p>
+          <p>二者平均 \( (3.27+4.03)/2=3.65\,\mathrm{MeV} \)，和 \( 7.3\,\mathrm{MeV}\approx 2\times 3.65 \) ✓。D–D 是「无中子分支」D–\( {}^3\mathrm{He} \) 的上游反应，但本身会产中子；纯无中子方案 \( p-{}^{11}\mathrm{B} \) 难度更大（要求 \( T\gtrsim 3\times 10^8\,\mathrm{K} \)）。<span class="ans">\( Q_1=3.27\,\mathrm{MeV} \)、\( Q_2=4.03\,\mathrm{MeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （截面与平均自由程）热中子在天然铀（密度 \( 19.1\,\mathrm{g/cm^3} \)，\( {}^{238}\mathrm{U} \) 占 99.27%，\( \sigma_a\approx 2.7\,\mathrm{b} \)）中的吸收平均自由程是多少？若改为慢化剂水（数密度 \( n_H=6.7\times 10^{22}\,\mathrm{cm^{-3}} \)，\( \sigma_a(H)\approx 0.33\,\mathrm{b} \)）？</summary>
+        <div class="hint">\( \ell=1/(n\sigma) \)；天然铀数密度 \( n= \rho N_A/M\approx 4.9\times 10^{22}\,\mathrm{cm^{-3}} \)。</div>
+        <div class="solution">
+          <p>天然铀 \( n=19.1\times 6.022\times 10^{23}/238=4.83\times 10^{22}\,\mathrm{cm^{-3}} \)。</p>
+          <p>\( \ell_U=1/(n\sigma)=1/(4.83\times 10^{22}\times 2.7\times 10^{-24})=1/0.130=7.7\,\mathrm{cm} \)。</p>
+          <p>水 \( \ell_{H_2O}=1/(6.7\times 10^{22}\times 0.33\times 10^{-24})=1/0.0221=45\,\mathrm{cm} \)。</p>
+          <p>水的吸收远弱（且慢化能力强），所以反应堆用轻水既作慢化剂又作冷却剂。但水的 \( \sigma_a \) 比重水 \( {}^2\,\mathrm{H} \)（\( \sigma_a\approx 5.2\times 10^{-4}\,\mathrm{b} \)）大 600 倍——这就是 CANDU 重水堆可用<strong>天然铀</strong>（不浓缩）的原因。<span class="ans">\( \ell_U\approx 7.7\,\mathrm{cm} \)、\( \ell_{H_2O}\approx 45\,\mathrm{cm} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （临界增殖）一个亚临界堆 \( k_{\text{eff}}=0.95 \)，初始由外源注入 \( N_0=10^6 \) 个中子。问经多少代后中子数降到 1？若代时 \( \Lambda=10^{-4}\,\mathrm{s} \)，对应多长时间？</summary>
+        <div class="hint">\( N_n=N_0 k^n \)，令 \( N_n=1 \)，\( n=\ln(1/N_0)/\ln k \)。</div>
+        <div class="solution">
+          <p>\( n=\ln(10^{-6})/\ln(0.95)=(-13.82)/(-0.0513)=269 \) 代。</p>
+          <p>时间 \( t=n\Lambda=269\times 10^{-4}=2.7\times 10^{-2}\,\mathrm{s}=27\,\mathrm{ms} \)。</p>
+          <p>倍周期 \( T_{1/2}=\Lambda\ln 2/\vert k-1\vert=10^{-4}\times 0.693/0.05=1.4\times 10^{-3}\,\mathrm{s} \)；269 代 \( \approx 19 \) 个倍周期，\( 2^{19}\approx 5\times 10^5 \)，与 \( N_0/N_f=10^6 \) 一致。这就是<strong>次临界源驱动的物理基础</strong>——加速器驱动次临界堆（ADS）用外中子源维持功率，关掉束流即停堆。<span class="ans">\( n\approx 269 \)、\( t\approx 27\,\mathrm{ms} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （每核子结合能验证）用下列数据验证 D–T 聚变 Q 值：\( B/A({}^2\mathrm{H})=1.112 \)、\( B/A({}^3\mathrm{H})=2.827 \)、\( B/A({}^4\mathrm{He})=7.074\,\mathrm{MeV/nucleon} \)。再用同一方法估算 \( 3\alpha\to{}^{12}\mathrm{C} \)（\( B/A({}^{12}\mathrm{C})=7.68\,\mathrm{MeV} \)）释放的能量。</summary>
+        <div class="hint">\( Q=\sum_{\text{产}}(B/A)_f A_f-\sum_{\text{反}}(B/A)_i A_i \)。</div>
+        <div class="solution">
+          <p>D–T：\( Q=7.074\times 4-1.112\times 2-2.827\times 3=28.30-2.224-8.481=17.59\,\mathrm{MeV} \) ✓（与例 9.3 完全一致）。</p>
+          <p>\( 3\alpha\to{}^{12}\mathrm{C} \)：\( Q=7.68\times 12-7.074\times 3\times 4=92.16-84.89=7.27\,\mathrm{MeV} \)。这一过程（三 α 反应，Salpeter 1952）是红巨星核心氦燃烧的主要通道，也是宇宙中碳元素的主要来源。Bethe 与 Salpeter 因此奠定了恒星核合成理论。注意 \( {}^8\mathrm{Be} \) 极不稳定（\( \tau\sim 10^{-16}\,\mathrm{s} \)），三 α 实际分两步 \( \alpha+\alpha\to{}^8\mathrm{Be} \)、\( {}^8\mathrm{Be}+\alpha\to{}^{12}\mathrm{C}^{*}\to{}^{12}\mathrm{C}+\gamma \)，后者通过 Hoyle 状态（\( {}^{12}\mathrm{C} \) 在 7.65 MeV 处的 0⁺ 共振）极大增强——这正是 Fred Hoyle 1954 年<strong>预测</strong>该共振态的著名 anthropic 论证。<span class="ans">\( Q_{DT}=17.59\,\mathrm{MeV} \)；\( Q_{3\alpha}\approx 7.27\,\mathrm{MeV} \)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真展示<strong>中子链式反应</strong> (neutron chain reaction) 与<strong>临界</strong> (criticality) 概念。上方为 \( 14\times 8=112 \) 个可裂变核的方阵。点击仿真区可发射一个起始中子（红点，自带运动轨迹）；中子撞击完整核时有概率引发<strong>裂变</strong>（橙色闪光），每次裂变释放 <strong>3</strong> 个新一代中子。增殖因数 \( k \) 决定每个新一代中子引发下一次裂变的概率——<strong>有效</strong>次级裂变数 = \( 3\times(k/3)=k \)。拖动滑块 \( k \)（0.3–1.6）观察：<strong>亚临界</strong> \( k&lt;1 \) 时链式迅速熄灭；<strong>临界</strong> \( k\approx 1 \) 时自持稳态；<strong>超临界</strong> \( k&gt;1 \) 时指数爆炸（直到燃料耗尽）。下方实时绘制<strong>瞬时中子数</strong> \( N(t) \) 与<strong>累计裂变数</strong>，可直观看到指数增长 / 衰减。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;
+
+          var params = { k: 1.00 };
+
+          var NCOLS = 14, NROWS = 8;
+          var gridX0 = 26, gridY0 = 32;
+          var gridW = 548, gridH = 192;
+          var cellW = gridW / NCOLS, cellH = gridH / NROWS;
+          var nR = 6;
+          var neutronSpeed = 120; // px/s
+
+          // plot region
+          var plotX0 = 50, plotY0 = 272, plotW = 530, plotH = 88;
+
+          function makeNuclei() {
+            var arr = [];
+            for (var r = 0; r < NROWS; r++) {
+              for (var c = 0; c < NCOLS; c++) {
+                arr.push({
+                  x: gridX0 + cellW * (c + 0.5),
+                  y: gridY0 + cellH * (r + 0.5),
+                  intact: true,
+                  flash: 0,
+                });
+              }
+            }
+            return arr;
+          }
+
+          function spawnInitial(s) {
+            // start one neutron entering from the left edge
+            s.neutrons.push({
+              x: -4, y: gridY0 + gridH / 2,
+              vx: neutronSpeed, vy: 0,
+              trail: [],
+            });
+          }
+
+          function initState() {
+            var s = {
+              t: 0,
+              nuclei: makeNuclei(),
+              neutrons: [],
+              fissions: 0,
+              generation: 0,
+              hist: [],
+              finished: false,
+              status: '运行中…  click to inject neutron',
+              kSnap: params.k,
+            };
+            spawnInitial(s);
+            return s;
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: initState,
+            step: function (dt, t, s) {
+              s.t += dt;
+              if (s.finished) return;
+              s.kSnap = params.k;
+
+              // decay flashes
+              for (var i = 0; i < s.nuclei.length; i++) {
+                if (s.nuclei[i].flash > 0) s.nuclei[i].flash = Math.max(0, s.nuclei[i].flash - dt);
+              }
+
+              // move neutrons, push trail
+              for (var j = 0; j < s.neutrons.length; j++) {
+                var n = s.neutrons[j];
+                n.trail.push({ x: n.x, y: n.y });
+                if (n.trail.length > 5) n.trail.shift();
+                n.x += n.vx * dt;
+                n.y += n.vy * dt;
+              }
+
+              // collisions
+              var spawned = [];
+              var keep = [];
+              for (var j = 0; j < s.neutrons.length; j++) {
+                var n = s.neutrons[j];
+                // out of canvas -> lost
+                if (n.x < -8 || n.x > W + 8 || n.y < -8 || n.y > H + 8) continue;
+                var hit = null;
+                for (var i = 0; i < s.nuclei.length; i++) {
+                  var nu = s.nuclei[i];
+                  if (!nu.intact) continue;
+                  var dx = n.x - nu.x, dy = n.y - nu.y;
+                  if (dx * dx + dy * dy < (nR + 2) * (nR + 2)) { hit = nu; break; }
+                }
+                if (hit) {
+                  // each neutron induces fission with prob k/3, so mean next-gen fissions per fission = k
+                  if (Math.random() < params.k / 3) {
+                    hit.intact = false;
+                    hit.flash = 0.45;
+                    s.fissions++;
+                    s.generation++;
+                    for (var m = 0; m < 3; m++) {
+                      var ang = (m / 3) * 2 * Math.PI + Math.random() * 0.7;
+                      spawned.push({
+                        x: hit.x, y: hit.y,
+                        vx: neutronSpeed * Math.cos(ang),
+                        vy: neutronSpeed * Math.sin(ang),
+                        trail: [],
+                      });
+                    }
+                  }
+                  // either way neutron is absorbed on collision
+                  continue;
+                }
+                keep.push(n);
+              }
+              // append spawned, cap to prevent runaway memory
+              for (var q = 0; q < spawned.length; q++) keep.push(spawned[q]);
+              if (keep.length > 600) keep = keep.slice(0, 600);
+              s.neutrons = keep;
+
+              // record history at ~20 Hz
+              var lastT = s.hist.length ? s.hist[s.hist.length - 1].t : -1;
+              if (s.t - lastT >= 0.05) {
+                s.hist.push({ t: s.t, n: s.neutrons.length, f: s.fissions });
+                if (s.hist.length > 800) s.hist.shift();
+              }
+
+              // termination
+              var intact = 0;
+              for (var i = 0; i < s.nuclei.length; i++) if (s.nuclei[i].intact) intact++;
+
+              if (intact === 0) {
+                s.finished = true;
+                s.status = '燃料耗尽 · fuel depleted';
+              } else if (s.neutrons.length === 0) {
+                s.finished = true;
+                if (params.k < 0.999) s.status = '亚临界 · 链式熄灭 (sub-critical)';
+                else if (params.k <= 1.001) s.status = '临界平衡 · 仅靠统计涨落终止';
+                else s.status = '链终止（无中子撞击完整核）';
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // title
+              PS.drawText(ctx,
+                '中子链式反应 · Neutron Chain Reaction   k = ' + params.k.toFixed(2) +
+                '   (' + (params.k < 0.999 ? '亚临界 sub-critical' :
+                  params.k <= 1.001 ? '临界 critical' : '超临界 super-critical') + ')',
+                W / 2, 14,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              // lattice panel
+              PS.drawText(ctx, '可裂变核阵 · fissile lattice   (intact ' +
+                s.nuclei.filter(function (n) { return n.intact; }).length + ' / ' + s.nuclei.length + ')',
+                gridX0 - 8, gridY0 - 12, { font: '11px system-ui', color: C.text });
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.strokeRect(gridX0 - 10, gridY0 - 6, gridW + 20, gridH + 12);
+              ctx.restore();
+
+              // nuclei
+              for (var i = 0; i < s.nuclei.length; i++) {
+                var nu = s.nuclei[i];
+                if (nu.intact) {
+                  PS.drawCircle(ctx, nu.x, nu.y, nR, { fill: C.primary });
+                } else if (nu.flash > 0) {
+                  var a = nu.flash / 0.45;
+                  PS.drawCircle(ctx, nu.x, nu.y, nR + 10 * (1 - a),
+                    { stroke: 'rgba(234,88,12,' + a.toFixed(2) + ')', lineWidth: 2 });
+                  PS.drawCircle(ctx, nu.x, nu.y, nR, { fill: 'rgba(234,88,12,' + (0.7 * a).toFixed(2) + ')' });
+                } else {
+                  PS.drawCircle(ctx, nu.x, nu.y, nR - 1, { stroke: C.grid, lineWidth: 1 });
+                }
+              }
+
+              // neutrons + trails
+              for (var j = 0; j < s.neutrons.length; j++) {
+                var n = s.neutrons[j];
+                if (n.trail.length > 1) {
+                  ctx.save();
+                  ctx.strokeStyle = 'rgba(220,38,38,0.55)';
+                  ctx.lineWidth = 1.4;
+                  ctx.beginPath();
+                  ctx.moveTo(n.trail[0].x, n.trail[0].y);
+                  for (var k = 1; k < n.trail.length; k++) ctx.lineTo(n.trail[k].x, n.trail[k].y);
+                  ctx.lineTo(n.x, n.y);
+                  ctx.stroke();
+                  ctx.restore();
+                }
+                PS.drawCircle(ctx, n.x, n.y, 2.4, { fill: C.accent });
+              }
+
+              // ===== N(t) plot =====
+              var intactCount = 0;
+              for (var i = 0; i < s.nuclei.length; i++) if (s.nuclei[i].intact) intactCount++;
+              var nMax = 200;
+              var tWin = 12;
+
+              function xP(tt) { return plotX0 + Math.min(1, tt / tWin) * plotW; }
+              function yP(nn) { return plotY0 + plotH * (1 - Math.min(1, nn / nMax)); }
+
+              // gridlines
+              var yT = [0, 50, 100, 150, 200];
+              for (var yi = 0; yi < yT.length; yi++) {
+                var yy = yP(yT[yi]);
+                ctx.save();
+                ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, String(yT[yi]), plotX0 - 5, yy + 3,
+                  { font: '10px system-ui', color: C.text, align: 'right' });
+              }
+              // axes
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0); ctx.lineTo(plotX0, plotY0 + plotH); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0 + plotH); ctx.lineTo(plotX0 + plotW, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '瞬时中子数 N(t)', plotX0 - 38, plotY0 + 4,
+                { font: '11px system-ui', color: C.text });
+              PS.drawText(ctx, 't (s)', plotX0 + plotW + 4, plotY0 + plotH + 4,
+                { font: '11px system-ui', color: C.text, align: 'left' });
+
+              // trace
+              if (s.hist.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = C.trace; ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (var j = 0; j < s.hist.length; j++) {
+                  var h = s.hist[j];
+                  var xp = xP(h.t), yp = yP(h.n);
+                  if (j === 0) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // readout
+              PS.drawText(ctx,
+                't = ' + s.t.toFixed(2) + ' s ,   瞬时中子 = ' + s.neutrons.length +
+                ' ,   累计裂变 = ' + s.fissions +
+                ' ,   完整核 = ' + intactCount + ' / ' + s.nuclei.length +
+                '   |   ' + s.status,
+                W / 2, H - 4, { font: '11px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          // click on canvas to inject an extra neutron (pointing toward center)
+          canvas.addEventListener('click', function (ev) {
+            var rect = canvas.getBoundingClientRect();
+            var x = (ev.clientX - rect.left) * (W / rect.width);
+            var y = (ev.clientY - rect.top) * (H / rect.height);
+            var cx = gridX0 + gridW / 2, cy = gridY0 + gridH / 2;
+            var ang = Math.atan2(cy - y, cx - x);
+            var st = sim.getState();
+            if (st && !st.finished) {
+              st.neutrons.push({
+                x: x, y: y,
+                vx: neutronSpeed * Math.cos(ang),
+                vy: neutronSpeed * Math.sin(ang),
+                trail: [],
+              });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'k', label: '增殖因数 k (multiplication factor)', min: 0.30, max: 1.60, step: 0.01, value: 1.00 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('k', function (v) { params.k = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>核反应</strong>满足电荷 \( Z \)、核子数 \( A \)、能量、动量四大守恒。<strong>Q 值</strong> \( Q=(\sum M_{\text{反}}-\sum M_{\text{产}})c^2 \)：\( Q&gt;0 \) 放热可自发，\( Q&lt;0 \) 吸热需阈能。</li>
+        <li><strong>阈能</strong>（吸热反应）\( T_{\text{thr}}=-Q(1+m_a/m_A) \)。多出的部分用于维持质心运动。</li>
+        <li><strong>截面</strong> \( \sigma \)（barn = \( 10^{-28}\,\mathrm{m^2} \)），平均自由程 \( \ell=1/(n\sigma) \)。</li>
+        <li><strong>核裂变</strong>：\( n+{}^{235}\mathrm{U}\to \) 两碎片 + \( 2\text{--}3\,n+200\,\mathrm{MeV} \)。能量来自 \( B/A \) 曲线（重核段下坡）。碎片 β 衰变至稳定产物。</li>
+        <li><strong>链式反应</strong>：增殖因数 \( k=N_{n+1}/N_n \)。\( k&lt;1 \) 亚临界 / \( k=1 \) 临界 / \( k&gt;1 \) 超临界。四因子公式 \( k_\infty=\eta f p\varepsilon \)，\( k_{\text{eff}}=k_\infty P_{\mathrm{NL}} \)。临界质量裸 U-235 \( \sim 52\,\mathrm{kg} \)、Pu-239 \( \sim 10\,\mathrm{kg} \)。</li>
+        <li><strong>反应堆控制</strong>靠<strong>缓发中子</strong>（\( \beta\approx 0.65\% \) for U-235）。\( 0&lt;\rho&lt;\beta \) 时响应时间由缓发中子决定（秒级，可控）；\( \rho&gt;\beta \) 瞬发临界（\( \mu\mathrm{s} \)，不可控 = 武器机理）。</li>
+        <li><strong>核聚变</strong>：D–T \( \to\alpha+n+17.6\,\mathrm{MeV} \)，\( T_n=14.1 \)、\( T_\alpha=3.5\,\mathrm{MeV} \)。每核子释放 \( 3.5\,\mathrm{MeV} \)，是裂变的 4 倍。</li>
+        <li><strong>库仑势垒</strong> \( V_C=Z_1 Z_2\cdot 1.44\,\mathrm{MeV\,fm}/R \)。粒子动能不足以经典越过，靠<strong>量子隧穿</strong> \( P=e^{-\sqrt{E_G/E}} \)，\( E_G=2\mu c^2(\pi\alpha Z_1 Z_2)^2 \)。</li>
+        <li><strong>Gamow 峰</strong> \( E_0=[(kT)^2 E_G/4]^{1/3} \)：Maxwell 尾 × 隧穿因子的乘积极大。太阳核心 \( kT=1.3\,\mathrm{keV} \)、\( E_0\approx 6\,\mathrm{keV} \)。</li>
+        <li><strong>pp 链</strong>：\( p+p\to d+e^++\nu_e \)（弱相互作用，慢步，平均 \( 5\times 10^9\,\mathrm{yr} \)/质子）→ 决定太阳缓慢稳定燃烧。CNO 循环在更高质量恒星占优。</li>
+        <li><strong>恒星核合成</strong>：H 燃烧（pp / CNO）→ He 燃烧（\( 3\alpha\to{}^{12}\mathrm{C} \)）→ α 阶梯至 \( {}^{56}\mathrm{Ni}\to{}^{56}\mathrm{Fe} \)；超 Fe 由中子俘获（s / r / p 过程）形成。</li>
+        <li><strong>统一视角</strong>：聚变（轻核向 Fe 推进）与裂变（重核向 Fe 后退）都沿 \( B/A \) 曲线下坡释放能量；Fe-56 是曲线峰，既不裂变也不聚变释放。</li>
+      </ul>
+      <div class="formula">\[ Q=\Bigl(\sum M_{\text{反}}-\sum M_{\text{产}}\Bigr)c^2,\qquad T_{\text{thr}}=-Q\Bigl(1+\frac{m_a}{m_A}\Bigr) \]</div>
+      <div class="formula">\[ k_\infty=\eta f p\varepsilon,\qquad k_{\text{eff}}=k_\infty P_{\mathrm{NL}},\qquad \rho=\frac{k_{\text{eff}}-1}{k_{\text{eff}}} \]</div>
+      <div class="formula">\[ V_C=\frac{Z_1 Z_2 e^2}{4\pi\varepsilon_0 R},\qquad P(E)=e^{-\sqrt{E_G/E}},\qquad E_G=2\mu c^2(\pi\alpha Z_1 Z_2)^2 \]</div>
+      <div class="formula">\[ E_0=\Bigl[\frac{(kT)^2 E_G}{4}\Bigr]^{1/3}\quad(\text{Gamow peak}),\qquad {}^2\mathrm{H}+{}^3\mathrm{H}\to{}^4\mathrm{He}+n+17.6\,\mathrm{MeV} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

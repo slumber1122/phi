@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 晶体结构与倒格子 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第1章 · 凝聚态物理 Condensed Matter</p>
+      <h1>晶体结构与倒格子 <span class="en-title">Crystal Structure &amp; Reciprocal Lattice</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用<strong>布拉伐格子</strong> (Bravais lattice) 描述晶体的<strong>平移对称性</strong> (translational symmetry)：所有格点位置 \(\vec{R}=n_1\vec{a}_1+n_2\vec{a}_2+n_3\vec{a}_3\)（\(n_i\in\mathbb{Z}\)）；解释为何三维只有 <strong>14 种布拉伐格子</strong>（分属 7 大晶系）。</li>
+        <li>区分<strong>原胞</strong> (primitive cell)、<strong>惯用单胞</strong> (conventional cell) 与 <strong>Wigner–Seitz 原胞</strong>；指出原胞只含<strong>一个</strong>格点，惯用单胞则按点阵对称性择优（BCC、FCC 惯用立方单胞分别含 2、4 个格点）。</li>
+        <li>用<strong>米勒指数</strong> \((hkl)\) 标记晶面：从晶面在三轴上的<strong>截距倒数</strong>（取互质整数）得到；并写出立方系的晶面间距 \(d_{hkl}=a/\sqrt{h^{2}+k^{2}+l^{2}}\)。</li>
+        <li>由实空间原矢 \(\{\vec{a}_i\}\) 构造<strong>倒格子</strong> (reciprocal lattice) 原矢 \(\{\vec{b}_i\}\)（满足 \(\vec{a}_i\cdot\vec{b}_j=2\pi\,\delta_{ij}\)）；解释倒格子生活在 <strong>\(\vec{k}\) 空间</strong>而非实空间；证明 BCC 的倒格子是 FCC，反之亦然。</li>
+        <li>用<strong>Wigner–Seitz 原胞构造法</strong>在倒格子中画出<strong>第一布里渊区</strong> (first Brillouin zone, BZ)；理解为何 BZ 是 X 射线衍射与电子能带的自然几何。</li>
+        <li>推导并应用 <strong>Bragg 定律</strong> \(2d\sin\theta=n\lambda\) 与 <strong>Laue 条件</strong> \(\Delta\vec{k}=\vec{G}\)；用<strong>结构因子</strong> \(S_{\vec{G}}=\sum_j f_j\,e^{i\vec{G}\cdot\vec{r}_j}\) 解释基元内原子干涉导致的<strong>系统消光</strong>（BCC：\(h+k+l\) 奇 → 消光；FCC：\(h,k,l\) 奇偶混合 → 消光）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 晶体与布拉伐格子 Crystals &amp; the Bravais Lattice</h3>
+      <p>理想晶体是原子在三维空间作<strong>周期性</strong> (periodic) 与<strong>长程有序</strong> (long-range order) 排列的固体。其几何骨架是<strong>布拉伐格子</strong> (Bravais lattice)：一组离散点的集合，满足从任一点看去<strong>周围环境完全相同</strong> (identical surroundings)。数学上定义为</p>
+      <div class="formula">\[ \boxed{\;\Lambda=\bigl\{\,\vec{R}=n_1\vec{a}_1+n_2\vec{a}_2+n_3\vec{a}_3\;\big|\;n_1,n_2,n_3\in\mathbb{Z}\,\bigr\}\;} \]</div>
+      <p>其中 \(\{\vec{a}_1,\vec{a}_2,\vec{a}_3\}\) 是三个线性无关的<strong>原矢</strong> (primitive vectors)，它们张出的平行六面体体积 \(V_c=|\vec{a}_1\cdot(\vec{a}_2\times\vec{a}_3)|\) 是<strong>原胞体积</strong>。<strong>关键性质</strong>：把整个晶体平移任意布拉伐格矢 \(\vec{R}\)，晶体保持不变——这就是<strong>平移对称性</strong>，是一切固体物理的出发点。</p>
+      <p>注意布拉伐格子只描述<strong>格点的几何分布</strong>，并不指明每个格点上放什么原子。若每个格点放一个原子 → 简单布拉伐格子（如 SC、BCC、FCC）；若放多个原子（<strong>基元</strong> basis）→ 复式格子（如金刚石、NaCl）。晶体结构 = 布拉伐格子 \(\otimes\) 基元：</p>
+      <div class="formula">\[ \text{Crystal}=\text{Bravais lattice}\;\otimes\;\text{Basis}. \]</div>
+      <div class="key-terms">Bravais lattice (布拉伐格子), primitive vectors \(\vec{a}_i\) (原矢), translational symmetry (平移对称性), basis (基元), crystal structure = lattice ⊗ basis</div>
+
+      <h3>2. 原胞、惯用单胞与 Wigner–Seitz 原胞 Primitive / Conventional / Wigner–Seitz Cells</h3>
+      <p>有多种方式把晶体划分成「一个单元」：</p>
+      <ul>
+        <li><strong>原胞 (primitive cell)</strong>：体积最小，含<strong>恰好一个</strong>格点。原矢张出的平行六面体是最常见的原胞，但形状不唯一。</li>
+        <li><strong>惯用单胞 (conventional cell)</strong>：按晶系的<strong>对称性</strong>（如立方对称）选取，体积较大。BCC、FCC 惯用单胞都是边长 \(a\) 的立方体，但分别含 2、4 个格点；带心（体心 I、面心 F）用以保留立方对称性。</li>
+        <li><strong>Wigner–Seitz 原胞</strong>：围绕一个格点，由该点到所有相邻格点连线的<strong>垂直平分面</strong>围成。它是<strong>唯一</strong>的（与原矢选取无关），且具有与布拉伐格子<strong>完全相同</strong>的点群对称性。</li>
+      </ul>
+      <p>例：SC 的 Wigner–Seitz 原胞就是边长 \(a\) 的立方体；FCC、BCC 的 Wigner–Seitz 原胞分别为<strong>截角八面体</strong> (truncated octahedron) 与<strong>菱形十二面体</strong> (rhombic dodecahedron)。</p>
+      <div class="key-terms">primitive cell (原胞), conventional cell (惯用单胞), Wigner–Seitz cell (维格纳–赛茨原胞), basis vectors of cell (单胞基矢)</div>
+
+      <h3>3. 七大晶系与 14 种布拉伐格子 Seven Crystal Systems &amp; 14 Bravais Lattices</h3>
+      <p>按<strong>点群对称性</strong>，三维布拉伐格子分 7 个<strong>晶系</strong> (crystal systems)；每个晶系可有若干<strong>带心方式</strong> (P 简单、C 底心、I 体心、F 面心、R 菱面体)。组合后<strong>总共 14 种</strong>独立的布拉伐格子（1850 年 Bravais 首先证明）：</p>
+      <div class="formula">\[ \begin{array}{l|l|c|l}\text{晶系 Crystal system} & \text{原矢关系} & \text{数目} & \text{布拉伐格子}\\ \hline
+      \text{三斜 Triclinic} & a\ne b\ne c,\;\alpha\ne\beta\ne\gamma & 1 & P\\
+      \text{单斜 Monoclinic} & a\ne b\ne c,\;\alpha=\gamma=90^{\circ}\ne\beta & 2 & P,\,C\\
+      \text{正交 Orthorhombic} & a\ne b\ne c,\;\alpha=\beta=\gamma=90^{\circ} & 4 & P,\,C,\,I,\,F\\
+      \text{四方 Tetragonal} & a=b\ne c,\;\alpha=\beta=\gamma=90^{\circ} & 2 & P,\,I\\
+      \text{三角 Trigonal (R)} & a=b=c,\;\alpha=\beta=\gamma\ne 90^{\circ} & 1 & R\\
+      \text{六角 Hexagonal} & a=b\ne c,\;\alpha=\beta=90^{\circ},\,\gamma=120^{\circ} & 1 & P\\
+      \text{立方 Cubic} & a=b=c,\;\alpha=\beta=\gamma=90^{\circ} & 3 & P\,(\text{SC}),\,I\,(\text{BCC}),\,F\,(\text{FCC})\\
+      \hline \multicolumn{2}{r|}{\text{合计 Total}} & \mathbf{14} &
+      \end{array} \]</div>
+      <p>本章重点研究立方系（SC/BCC/FCC）和六角系（HCP）。</p>
+      <div class="key-terms">crystal system (晶系), P/I/C/F/R centering (简单/体心/底心/面心/菱面心), cubic (立方), hexagonal (六角), 14 Bravais lattices (14 种布拉伐格子)</div>
+
+      <h3>4. 常见晶体结构 Common Crystal Structures</h3>
+      <p><strong>(a) 简单立方 SC</strong>：格点只在立方顶点。 rare in nature (α-Po is one of few examples). 每个惯用单胞含 \(8\times\tfrac18=1\) 个格点。</p>
+      <p><strong>(b) 体心立方 BCC</strong>：立方顶点 + 体心 \((\tfrac12,\tfrac12,\tfrac12)\)。例：Cr、Fe（α-Fe）、W、Na、K、Ba。每单胞含 \(1+1=2\) 个原子。最近邻数（配位数）\(z=8\)。</p>
+      <p><strong>(c) 面心立方 FCC</strong>：立方顶点 + 6 个面心 \((\tfrac12\tfrac12 0)\) 等。例：Cu、Ag、Au、Al、Ni、Pb、γ-Fe。每单胞含 \(1+3=4\) 个原子。配位数 \(z=12\)（同类最近邻中最多）。</p>
+      <p><strong>(d) 六角密堆 HCP</strong>：双层六角网格按 ABAB 堆垛，理想 \(c/a=\sqrt{8/3}\approx 1.633\)。例：Mg、Ti、Zn、Co。配位数 12，与 FCC 同为<strong>最密堆积</strong>（packing fraction \(\approx 0.7405\)）。</p>
+      <p><strong>(e) 金刚石结构 Diamond (C, Si, Ge)</strong>：两个 FCC 子格子沿体对角线平移 \((\tfrac14,\tfrac14,\tfrac14)\) 套构而成。每惯用单胞含 \(4+4=8\) 个同种原子；每个原子有 4 个最近邻（四面体配位 \(sp^{3}\)）。明显是非密堆积（PF \(\approx 0.34\)）。</p>
+      <p><strong>(f) NaCl 结构</strong>：两个 FCC 子格子（Na\(^+\) 与 Cl\(^-\)）沿体对角线平移 \((\tfrac12,\tfrac12,\tfrac12)\) 套构。每单胞含 4 个 Na\(^+\) + 4 个 Cl\(^-\)，配位数 \(6:6\)。</p>
+      <p><strong>(g) CsCl 结构</strong>：简单立方格子上放两种离子，Cl\(^-\) 在顶点、Cs\(^+\) 在体心（注意：它<strong>不是</strong> BCC，因为是<strong>不同</strong>原子！）。配位数 \(8:8\)。</p>
+      <div class="key-terms">SC/BCC/FCC (简单/体心/面心立方), HCP (六角密堆), diamond structure (金刚石结构), NaCl / CsCl structure, coordination number \(z\) (配位数), nearest neighbors (最近邻)</div>
+
+      <h3>5. 致密度与原胞体积 Packing Fraction</h3>
+      <p><strong>致密度</strong> (packing fraction, 也叫 atomic packing factor APF) 是原子（视为硬球）体积占单胞体积的比例。设原子半径为 \(r\)，最近邻原子球<strong>相切</strong>给出 \(r\) 与点阵常数 \(a\) 的几何关系：</p>
+      <div class="formula">\[ \text{APF}=\frac{N_{\text{原子}}\cdot\tfrac{4}{3}\pi r^{3}}{V_{\text{单胞}}},\qquad N_{\text{SC}}=1,\;N_{\text{BCC}}=2,\;N_{\text{FCC}}=4. \]</div>
+      <div class="formula">\[ \boxed{\;\text{APF}_{\text{SC}}=\dfrac{\pi}{6}\approx 0.524,\quad \text{APF}_{\text{BCC}}=\dfrac{\pi\sqrt{3}}{8}\approx 0.680,\quad \text{APF}_{\text{FCC}}=\dfrac{\pi}{3\sqrt{2}}\approx 0.740\;} \]</div>
+      <p>FCC 与 HCP 是三维<strong>最密堆积</strong> (Kepler 猜想，1611；Hales 1998 年证明)，APF \(\approx 0.7405\) 是上界。</p>
+      <div class="key-terms">packing fraction / APF (致密度), hard-sphere model (刚球模型), Kepler conjecture (开普勒猜想)</div>
+
+      <h3>6. 米勒指数 Miller Indices</h3>
+      <p>要<strong>无歧义</strong>地标记一个晶面族，取它<strong>不通过原点</strong>的代表面。该面与三个晶轴 \(\vec{a}_1,\vec{a}_2,\vec{a}_3\) 交于 \(a_1/h',a_2/k',a_3/l'\)（即<strong>截距</strong>为 \(a_i/h'\)）。<strong>米勒指数</strong> \((hkl)\) 定义为截距<strong>倒数</strong>的最小整数比：</p>
+      <div class="formula">\[ (h,k,l)=\text{互质整数化的}\Bigl(\frac{1}{\text{截距}_1/a_1},\,\frac{1}{\text{截距}_2/a_2},\,\frac{1}{\text{截距}_3/a_3}\Bigr). \]</div>
+      <p>例：面在三轴上截距 \((1,\tfrac12,\infty)\)（即与 c 轴平行）→ 倒数 \((1,2,0)\) → 米勒指数 \((1\,2\,0)\)。负截距在指数上画横线，如 \((1\,\bar{2}\,1)\) 表示 \(k=-2\)。<strong>晶面间距</strong> (interplanar spacing)：</p>
+      <div class="formula">\[ \boxed{\;\text{立方系：}\quad d_{hkl}=\frac{a}{\sqrt{h^{2}+k^{2}+l^{2}}}\;}\qquad\text{正交系：}\quad \frac{1}{d_{hkl}^{2}}=\frac{h^{2}}{a^{2}}+\frac{k^{2}}{b^{2}}+\frac{l^{2}}{c^{2}}. \]</div>
+      <p>对应同一 \((hkl)\) 的所有平行晶面（间距 \(d_{hkl}\)）组成一个<strong>晶面族</strong> \(\{hkl\}\)，相邻面的法向即倒格矢 \(\vec{G}_{hkl}=h\vec{b}_1+k\vec{b}_2+l\vec{b}_3\)。</p>
+      <div class="key-terms">Miller indices \((hkl)\) (米勒指数), intercept (截距), reciprocals (倒数), interplanar spacing \(d_{hkl}\) (晶面间距), plane family \(\{hkl\}\) (晶面族)</div>
+
+      <h3>7. 倒格子 The Reciprocal Lattice</h3>
+      <p>给定实空间原矢 \(\{\vec{a}_1,\vec{a}_2,\vec{a}_3\}\)，定义<strong>倒格子原矢</strong>：</p>
+      <div class="formula">\[ \boxed{\;\vec{b}_1=2\pi\,\frac{\vec{a}_2\times\vec{a}_3}{V_c},\quad \vec{b}_2=2\pi\,\frac{\vec{a}_3\times\vec{a}_1}{V_c},\quad \vec{b}_3=2\pi\,\frac{\vec{a}_1\times\vec{a}_2}{V_c},\quad V_c=\vec{a}_1\cdot(\vec{a}_2\times\vec{a}_3)\;} \]</div>
+      <p>它们满足<strong>正交关系</strong>：</p>
+      <div class="formula">\[ \vec{a}_i\cdot\vec{b}_j=2\pi\,\delta_{ij}\qquad(i,j=1,2,3). \]</div>
+      <p>所有倒格矢 \(\vec{G}=h\vec{b}_1+k\vec{b}_2+l\vec{b}_3\)（\(h,k,l\in\mathbb{Z}\)）构成倒格子。<strong>物理意义</strong>：</p>
+      <ul>
+        <li>倒格矢 <strong>方向</strong> = 实空间 \((hkl)\) 晶面族的法向；<strong>长度</strong> 满足 \(|\vec{G}_{hkl}|=2\pi/d_{hkl}\)。</li>
+        <li>倒格子生活在<strong>波矢空间</strong> (\(\vec{k}\)-space)，量纲 \([\mathrm{length}^{-1}]\)，与实空间<strong>不同</strong>的数学空间。</li>
+        <li>倒格子也是布拉伐格子，其倒格子回到原格子（差一个 \((2\pi)^{3}\) 因子，见例 1.3）。</li>
+        <li><strong>对偶性</strong>：SC 的倒格子是 SC（边长 \(2\pi/a\)）；BCC 的倒格子是 FCC；FCC 的倒格子是 BCC。</li>
+      </ul>
+      <div class="key-terms">reciprocal lattice (倒格子), reciprocal primitive vectors \(\vec{b}_i\) (倒格子原矢), orthogonality \(\vec{a}_i\cdot\vec{b}_j=2\pi\delta_{ij}\) (正交关系), reciprocal lattice vector \(\vec{G}\) (倒格矢), \(k\)-space (波矢空间)</div>
+
+      <h3>8. 第一布里渊区 The First Brillouin Zone</h3>
+      <p><strong>布里渊区</strong> (Brillouin zone) 就是倒格子上的 Wigner–Seitz 原胞。第一布里渊区 (1st BZ) 围绕原点 \(\vec{G}=0\)，由它到最近邻倒格点的<strong>垂直平分面</strong>围成。第二、三 … BZ 由次近邻等逐步围成。BZ 是固体物理的「原胞」，因为：</p>
+      <ul>
+        <li>X 射线衍射的<strong>反射条件</strong> \(\Delta\vec{k}=\vec{G}\) 把散射波波矢端点拉到 BZ 边界；</li>
+        <li>晶体中电子的<strong>能带</strong> \(E(\vec{k})\) 是 BZ 上的周期函数（详见第 3 章）；</li>
+        <li>BZ 的高对称点用专门记号：\(\Gamma=(0,0,0)\)、X、L、K、W、U 等。</li>
+      </ul>
+      <p>例：SC 的 1st BZ 是边长 \(2\pi/a\) 的立方体（\(-\pi/a\le k_i\le\pi/a\)）；FCC 的 1st BZ 是<strong>截角八面体</strong>（与 BCC 的 Wigner–Seitz 原胞形状相同，体现对偶性）；BCC 的 1st BZ 是<strong>菱形十二面体</strong>。</p>
+      <div class="key-terms">Brillouin zone (布里渊区), first BZ (第一布里渊区), \(\Gamma\) point (\(\Gamma\) 点), BZ boundary (布里渊区边界), truncated octahedron (截角八面体)</div>
+
+      <h3>9. X 射线衍射 X-Ray Diffraction (XRD)</h3>
+      <p>X 射线波长 \(\lambda\sim 1\,\text{Å}\)，与原子间距同量级，是探测晶体结构的理想探针。<strong>Bragg 定律</strong> (Bragg's law, 1913) 把衍射看作晶面族的<strong>镜面反射</strong>叠加：</p>
+      <div class="formula">\[ \boxed{\;2\,d_{hkl}\,\sin\theta=n\lambda\qquad(n=1,2,3,\dots)\;} \]</div>
+      <p>其中 \(d_{hkl}\) 是 \((hkl)\) 晶面间距，\(\theta\) 是入射束与晶面的<strong>夹角</strong>（不是与法向的夹角），\(n\) 是衍射级次。<strong>等价的 Laue 条件</strong>用波矢表示：散射波 \(\vec{k}'\) 与入射波 \(\vec{k}\) 之差等于某个倒格矢：</p>
+      <div class="formula">\[ \boxed{\;\Delta\vec{k}=\vec{k}'-\vec{k}=\vec{G}\;}\qquad(\text{弹性散射 }|\vec{k}'|=|\vec{k}|=2\pi/\lambda). \]</div>
+      <p>Bragg 与 Laue 是同一物理的两种描述（见推导 1.A）。</p>
+      <p><strong>结构因子</strong> (structure factor) 描述<strong>基元</strong>内多个原子散射波的干涉：</p>
+      <div class="formula">\[ \boxed{\;S_{\vec{G}}=\sum_{j=1}^{n_{\text{basis}}} f_j\,\exp\!\bigl(i\,\vec{G}\cdot\vec{r}_j\bigr)\;} \]</div>
+      <p>其中 \(\vec{r}_j\) 是基元内第 \(j\) 个原子相对单胞原点的位置，\(f_j\) 是该原子的<strong>原子形状因子</strong> (atomic form factor，依赖 \(\vec{G}\) 与原子种类)。衍射强度</p>
+      <div class="formula">\[ I_{\vec{G}}\propto |S_{\vec{G}}|^{2}. \]</div>
+      <p>若 \(S_{\vec{G}}=0\)，即使 Bragg 条件满足也<strong>不出现衍射峰</strong>——称为<strong>系统消光</strong> (systematic absence)。经典结论（例 1.5）：</p>
+      <div class="formula">\[ \text{BCC（同种原子）：}S=f\bigl[1+e^{i\pi(h+k+l)}\bigr]\;\Rightarrow\;\begin{cases}h+k+l\text{ 偶：}S=2f\\ h+k+l\text{ 奇：}S=0\end{cases} \]</div>
+      <div class="formula">\[ \text{FCC（同种原子）：}S=f\bigl[1+e^{i\pi(h+k)}+e^{i\pi(h+l)}+e^{i\pi(k+l)}\bigr]\;\Rightarrow\;\begin{cases}h,k,l\text{ 全同奇偶：}S=4f\\ \text{奇偶混合：}S=0\end{cases} \]</div>
+      <div class="key-terms">Bragg's law (布拉格定律), Bragg angle \(\theta\) (布拉格角), Laue condition (劳厄条件), structure factor \(S_{\vec{G}}\) (结构因子), atomic form factor \(f_j\) (原子形状因子), systematic absence (系统消光)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1.A — Bragg 定律 ⟺ Laue 条件 Equivalence of Bragg's Law and the Laue Condition</h3>
+      <p class="step"><strong>步骤 1（设置）：</strong>设 \((hkl)\) 晶面族相邻面间距 \(d\)，法向单位矢 \(\hat{n}\)。入射波 \(\vec{k}\)、散射波 \(\vec{k}'\)，弹性散射 \(|\vec{k}'|=|\vec{k}|=k=2\pi/\lambda\)。两相邻晶面上的两原子 A、B（B 在 A 下方一层，\(\vec{AB}=d\hat{n}\)）散射波的路程差为</p>
+      <div class="formula">\[ \Delta L=\vec{AB}\cdot\hat{k}-\vec{AB}\cdot\hat{k}'=d\hat{n}\cdot(\hat{k}-\hat{k}'). \]</div>
+      <p class="step"><strong>步骤 2（Bragg 角）：</strong>设入射束<strong>与晶面</strong>夹角 \(\theta\)（即 \(\hat{k}\cdot\hat{n}=-\sin\theta\)，因 \(\hat{k}\) 朝向晶面），反射束与晶面也夹 \(\theta\)（\(\hat{k}'\cdot\hat{n}=+\sin\theta\)）。则</p>
+      <div class="formula">\[ \Delta L=d\,[-\sin\theta-\sin\theta]=-2d\sin\theta. \]</div>
+      <p class="step">相长干涉条件 \(\Delta L=m\lambda\)（\(m\) 整数，取绝对值）：\(2d\sin\theta=n\lambda\)，即 <strong>Bragg 定律</strong>。✓</p>
+      <p class="step"><strong>步骤 3（Laue 条件）：</strong>波相干条件等价地用<strong>波矢</strong>写：两相邻面散射波相位差 \(\Delta\phi=(\vec{k}'-\vec{k})\cdot(d\hat{n})=\Delta\vec{k}\cdot\vec{AB}\)。相长干涉要求 \(\Delta\phi=2\pi n\)，即</p>
+      <div class="formula">\[ \Delta\vec{k}\cdot\hat{n}=\frac{2\pi n}{d}. \]</div>
+      <p class="step">但倒格矢 \(\vec{G}_{hkl}\) 沿 \(\hat{n}\) 方向、长度 \(2\pi/d\)；其 \(n\) 倍即 \(2\pi n/d\)。所以条件等价于</p>
+      <div class="formula">\[ \Delta\vec{k}=\vec{G}\qquad(\text{某个倒格矢}). \]</div>
+      <p class="step"><strong>步骤 4（两种等价描述统一）：</strong>把 Bragg 的「整数级次 \(n\)」视为高阶 \((nh,nk,nl)\) 反射的<strong>第一级</strong>，则 Bragg 与 Laue 描述一一对应。Laue 条件更深刻：它表明衍射峰<strong>就是倒格子的映像</strong>，测出衍射斑点的位置就能直接读出倒格子、从而反推实格子。</p>
+      <p class="step"><strong>步骤 5（Ewald 球构造）：</strong>把入射波矢 \(\vec{k}\) 的终点放在倒格子原点 \(\Gamma\)（起点在球心），以 \(\vec{k}\) 的长度为半径画球（<strong>Ewald 球</strong>）。球面<strong>碰到</strong>哪个倒格点 \(\vec{G}\)，就发生对应衍射（\(\vec{k}'=\vec{k}+\vec{G}\)）。旋转晶体或改变波长就是把不同倒格点带到球面上。</p>
+
+      <h3>推导 1.B — 立方系倒格子：SC⟷SC, BCC⟷FCC Reciprocal of Cubic Lattices</h3>
+      <p class="step"><strong>步骤 1（SC 的倒格子）：</strong>SC 原矢 \(\vec{a}_1=a\hat{x},\vec{a}_2=a\hat{y},\vec{a}_3=a\hat{z}\)，\(V_c=a^{3}\)。由公式 \(\vec{b}_1=2\pi(\vec{a}_2\times\vec{a}_3)/V_c=2\pi(a^{2}\hat{x})/a^{3}=(2\pi/a)\hat{x}\)，同理 \(\vec{b}_2=(2\pi/a)\hat{y}\)、\(\vec{b}_3=(2\pi/a)\hat{z}\)。即倒格子仍是边长 \(2\pi/a\) 的简单立方。✓</p>
+      <p class="step"><strong>步骤 2（BCC 的原矢）：</strong>BCC 惯用立方边长 \(a\)，体心位于 \((\tfrac12,\tfrac12,\tfrac12)\)。原矢选为（指向体心方向）：</p>
+      <div class="formula">\[ \vec{a}_1=\tfrac{a}{2}(-\hat{x}+\hat{y}+\hat{z}),\quad \vec{a}_2=\tfrac{a}{2}(\hat{x}-\hat{y}+\hat{z}),\quad \vec{a}_3=\tfrac{a}{2}(\hat{x}+\hat{y}-\hat{z}). \]</div>
+      <p class="step"><strong>步骤 3（BCC 原胞体积）：</strong>\(V_c=|\vec{a}_1\cdot(\vec{a}_2\times\vec{a}_3)|=\tfrac{a^{3}}{2}\)（恰为惯用立方体积的一半，因一个原胞只含 1 个原子而惯用立方含 2 个）。计算叉乘 \(\vec{a}_2\times\vec{a}_3=\tfrac{a^{2}}{4}[(1,-1,1)\times(1,1,-1)]=\tfrac{a^{2}}{4}(0,2,2)=\tfrac{a^{2}}{2}(0,1,1)\)。</p>
+      <p class="step"><strong>步骤 4（BCC 倒格子原矢）：</strong></p>
+      <div class="formula">\[ \vec{b}_1=\frac{2\pi}{a^{3}/2}\cdot\frac{a^{2}}{2}(0,1,1)=\frac{2\pi}{a}(0,1,1),\quad \vec{b}_2=\frac{2\pi}{a}(1,0,1),\quad \vec{b}_3=\frac{2\pi}{a}(1,1,0). \]</div>
+      <p class="step"><strong>步骤 5（识别为 FCC）：</strong>这正是惯用立方边长 \(4\pi/a\) 的 FCC 原矢：FCC 原矢为 \(\vec{b}_1^{(\text{FCC})}=\tfrac{b}{2}(0,1,1)\) 等。比较得 \(b=4\pi/a\)。<strong>结论：BCC 的倒格子是边长 \(4\pi/a\) 的 FCC</strong>。✓ 同理可证 FCC 的倒格子是边长 \(4\pi/a\) 的 BCC（对偶性）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 立方系的致密度 SC, BCC, FCC Packing Fractions</h4>
+        <p class="example-statement">把原子视为半径 \(r\) 的硬球，最近邻球<strong>相切</strong>。计算 (a) SC、(b) BCC、(c) FCC 的致密度 APF。已知三种结构的最近邻几何：SC 沿晶胞棱、BCC 沿体对角线、FCC 沿面对角线。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) SC：</strong>立方边长 \(a\)，相邻原子沿棱方向相切 → \(2r=a\)，即 \(r=a/2\)。每惯用单胞含 \(8\times\tfrac18=1\) 个原子。</p>
+          <div class="formula">\[ \text{APF}_{\text{SC}}=\frac{1\cdot\tfrac43\pi(a/2)^{3}}{a^{3}}=\frac{\pi}{6}\approx\mathbf{0.5236}. \]</div>
+          <p class="step"><strong>(b) BCC：</strong>立方顶点到体心的距离是体对角线之半 \(\sqrt{3}\,a/2\)。原子球沿此方向相切 → \(2r=\sqrt{3}\,a/2\)，即 \(r=\sqrt{3}\,a/4\)。每单胞含 2 个原子。</p>
+          <div class="formula">\[ \text{APF}_{\text{BCC}}=\frac{2\cdot\tfrac43\pi(\sqrt{3}\,a/4)^{3}}{a^{3}}=\frac{2\cdot\tfrac43\pi\cdot 3\sqrt{3}\,a^{3}/64}{a^{3}}=\frac{\pi\sqrt{3}}{8}\approx\mathbf{0.6802}. \]</div>
+          <p class="step"><strong>(c) FCC：</strong>面对角线 \(\sqrt{2}\,a\)，相邻面心原子与顶点原子相切 → \(2r=\sqrt{2}\,a/2\)，即 \(r=\sqrt{2}\,a/4=a/(2\sqrt{2})\)。每单胞含 4 个原子。</p>
+          <div class="formula">\[ \text{APF}_{\text{FCC}}=\frac{4\cdot\tfrac43\pi(a/(2\sqrt{2}))^{3}}{a^{3}}=\frac{4\cdot\tfrac43\pi\cdot a^{3}/(16\sqrt{2})}{a^{3}}=\frac{\pi}{3\sqrt{2}}=\frac{\pi\sqrt{2}}{6}\approx\mathbf{0.7405}. \]</div>
+          <p class="step"><strong>对照：</strong>SC 0.524 &lt; BCC 0.680 &lt; FCC 0.740。FCC（与 HCP）是三维最密堆积，Kepler 1611 猜想、Hales 1998 年证明 APF 上界为 \(\pi/(3\sqrt{2})\)。金属倾向于 BCC/FCC/HCP 而非 SC，正因为致密度更高、结合能更强。</p>
+          <p><span class="ans">答案：\(\text{APF}_{\text{SC}}=\pi/6\approx 0.524\)；\(\text{APF}_{\text{BCC}}=\pi\sqrt{3}/8\approx 0.680\)；\(\text{APF}_{\text{FCC}}=\pi/(3\sqrt{2})\approx 0.740\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 米勒指数与晶面间距 Miller Indices &amp; Plane Spacing</h4>
+        <p class="example-statement">(a) 一个晶面在立方晶轴 \(\hat{x},\hat{y},\hat{z}\)（以 \(a\) 为单位）上的截距为 \((1,\tfrac12,\tfrac13)\)。求米勒指数。(b) 取 Cu 晶体（FCC，\(a=3.615\,\text{Å}\)），求 \((111)\)、\((200)\)、\((220)\) 晶面族的间距 \(d_{hkl}\)。(c) 用 Cu \(K\alpha\) X 射线 \(\lambda=1.5418\,\text{Å}\) 照 Cu 单晶，求 \((111)\) 一级 Bragg 衍射角 \(\theta\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 求米勒指数：</strong>截距 \((1,\tfrac12,\tfrac13)\)（以 \(a\) 为单位）→ 取<strong>倒数</strong> \((1,2,3)\) → 已互质，米勒指数 \((hkl)=(1\,2\,3)\)。注意：截距为 \(\infty\)（即面与该轴平行）时倒数为 0，例如与 c 轴平行的面 \(l=0\)。</p>
+          <p class="step"><strong>(b) 晶面间距（立方系）：</strong>\(d_{hkl}=a/\sqrt{h^{2}+k^{2}+l^{2}}\)。</p>
+          <div class="formula">\[ d_{111}=\frac{3.615}{\sqrt{3}}=\mathbf{2.087\,\text{Å}},\quad d_{200}=\frac{3.615}{\sqrt{4}}=\frac{3.615}{2}=\mathbf{1.808\,\text{Å}},\quad d_{220}=\frac{3.615}{\sqrt{8}}=\mathbf{1.278\,\text{Å}}. \]</div>
+          <p class="step"><strong>(c) Bragg 角（一级 \(n=1\)）：</strong>由 \(2d\sin\theta=\lambda\) 解出 \(\sin\theta=\lambda/(2d)\)。</p>
+          <div class="formula">\[ \sin\theta_{111}=\frac{1.5418}{2\times 2.087}=\frac{1.5418}{4.174}=0.3693\;\Rightarrow\;\theta_{111}=\arcsin(0.3693)\approx\mathbf{21.67^{\circ}}. \]</div>
+          <p class="step">类似 \(\sin\theta_{200}=1.5418/(2\times 1.808)=0.4265\Rightarrow\theta_{200}\approx 25.25^{\circ}\)；\(\sin\theta_{220}=1.5418/(2\times 1.278)=0.6032\Rightarrow\theta_{220}\approx 37.10^{\circ}\)。<strong>注意</strong>：Cu 是 FCC，结构因子要求 \(h,k,l\) 全同奇偶才允许衍射；(111)、(200)、(220) 都满足（1,1,1 全奇；2,0,0 全偶；2,2,0 全偶），故都能观察到。</p>
+          <p><span class="ans">答案：(a) \((1\,2\,3)\)；(b) \(d_{111}=2.087\)、\(d_{200}=1.808\)、\(d_{220}=1.278\,\text{Å}\)；(c) \(\theta_{111}\approx 21.7^{\circ}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 构造 SC、BCC、FCC 的倒格子 Reciprocal of Cubic Lattices</h4>
+        <p class="example-statement">(a) 直接验证 SC 倒格子仍为 SC，边长 \(2\pi/a\)。(b) 用推导 1.B 的结果，写出 BCC（实 \(a\)）的倒格子惯用立方边长并指出它是什么布拉伐格子。(c) 验证 \(\vec{a}_i\cdot\vec{b}_j=2\pi\delta_{ij}\) 对 BCC 原矢成立。(d) 求 Si（金刚石，\(a=5.431\,\text{Å}\)）倒格子中 \((220)\) 倒格矢长度 \(|\vec{G}_{220}|\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) SC 倒格子：</strong>原矢 \(\vec{a}_1=a\hat{x},\vec{a}_2=a\hat{y},\vec{a}_3=a\hat{z}\)。\(V_c=a^{3}\)。\(\vec{b}_1=2\pi\vec{a}_2\times\vec{a}_3/V_c=2\pi a^{2}\hat{x}/a^{3}=(2\pi/a)\hat{x}\)，同理另两个。即倒格子是边长 \(2\pi/a\) 的 SC。✓</p>
+          <p class="step"><strong>(b) BCC 的倒格子：</strong>由推导 1.B，倒格子原矢 \(\vec{b}_1=(2\pi/a)(0,1,1)\)、\(\vec{b}_2=(2\pi/a)(1,0,1)\)、\(\vec{b}_3=(2\pi/a)(1,1,0)\)。设 \(b=4\pi/a\)，则这些正好是 FCC 的原矢 \(\tfrac{b}{2}(0,1,1)\) 等。即 BCC 的倒格子是<strong>惯用立方边长 \(b=4\pi/a\) 的 FCC</strong>。同理 FCC 的倒格子是边长 \(4\pi/a\) 的 BCC。</p>
+          <p class="step"><strong>(c) 正交关系验证：</strong>取 \(i=1,j=1\)：\(\vec{a}_1\cdot\vec{b}_1=\tfrac{a}{2}(-\hat{x}+\hat{y}+\hat{z})\cdot\tfrac{2\pi}{a}(0,1,1)=\tfrac{2\pi}{2}[(0)+(1)(1)+(1)(1)]\cdots\)，仔细：</p>
+          <div class="formula">\[ \vec{a}_1\cdot\vec{b}_1=\frac{a}{2}\cdot\frac{2\pi}{a}\bigl[(-1)(0)+(1)(1)+(1)(1)\bigr]=\pi\cdot(0+1+1)=2\pi\;\;\checkmark \]</div>
+          <p class="step">取 \(i=1,j=2\)：\(\vec{a}_1\cdot\vec{b}_2=\tfrac{2\pi}{2}[(-1)(1)+(1)(0)+(1)(1)]=\pi\cdot(-1+0+1)=0\;\checkmark\)。同理可验证所有 9 个组合：对角元 \(2\pi\)、非对角元 0。</p>
+          <p class="step"><strong>(d) Si (220) 倒格矢长度：</strong>金刚石 = FCC + 基元，倒格子与 FCC 相同（BCC，边长 \(4\pi/a\)）。\(|\vec{G}_{hkl}|=2\pi/d_{hkl}\)，立方 \(d_{hkl}=a/\sqrt{h^{2}+k^{2}+l^{2}}\)，故 \(|\vec{G}_{hkl}|=(2\pi/a)\sqrt{h^{2}+k^{2}+l^{2}}\)。代入 \(a=5.431\,\text{Å}=5.431\times 10^{-10}\,\mathrm{m}\)，\(h,k,l=2,2,0\)：</p>
+          <div class="formula">\[ |\vec{G}_{220}|=\frac{2\pi}{5.431\times 10^{-10}}\sqrt{8}=\frac{6.283}{5.431\times 10^{-10}}\times 2.828=3.273\times 10^{10}\,\mathrm{m^{-1}}. \]</div>
+          <p class="step">换算到常用 XRD 单位 \(\mathrm{nm^{-1}}\)：\(|\vec{G}_{220}|=32.73\,\mathrm{nm^{-1}}\)。对应晶面间距 \(d_{220}=2\pi/|\vec{G}|=5.431/\sqrt{8}=1.920\,\text{Å}\)。✓</p>
+          <p><span class="ans">答案：(a) SC 倒格子 = SC 边长 \(2\pi/a\) ✓；(b) BCC 倒格子 = FCC 边长 \(4\pi/a\)；(c) \(\vec{a}_i\cdot\vec{b}_j=2\pi\delta_{ij}\) ✓；(d) \(|\vec{G}_{220}|=3.27\times 10^{10}\,\mathrm{m^{-1}}\)，\(d_{220}=1.92\,\text{Å}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 Bragg 定律求点阵常数 Bragg's Law → Lattice Constant</h4>
+        <p class="example-statement">用 Cu \(K\alpha_1\) 辐射 \(\lambda=1.5406\,\text{Å}\) 对未知立方晶体做粉末衍射，测得<strong>第一个</strong>衍射峰出现在 \(2\theta=43.3^{\circ}\)（即 \(\theta=21.65^{\circ}\)）。化学分析表明这是 FCC 金属。(a) 求对应晶面族的 \(d\) 间距。(b) 推断 \((hkl)\) 与点阵常数 \(a\)。(c) 鉴定该金属（候选：Cu \(a=3.615\)、Al \(a=4.046\)、Au \(a=4.078\)、Pt \(a=3.924\,\text{Å}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 求 \(d\)：</strong>Bragg \(2d\sin\theta=\lambda\)（一级）：</p>
+          <div class="formula">\[ d=\frac{\lambda}{2\sin\theta}=\frac{1.5406}{2\sin 21.65^{\circ}}=\frac{1.5406}{2\times 0.3687}=\frac{1.5406}{0.7373}=\mathbf{2.089\,\text{Å}}. \]</div>
+          <p class="step"><strong>(b) 推断 \((hkl)\) 与 \(a\)：</strong>FCC 的<strong>允许</strong>反射 \((hkl)\) 必须全同奇偶。最低角度（最长 \(d\)）对应<strong>最小</strong> \(h^{2}+k^{2}+l^{2}\)。FCC 允许反射按 \(h^{2}+k^{2}+l^{2}\) 升序排列：</p>
+          <div class="formula">\[ (1\,1\,1)\to 3,\quad (2\,0\,0)\to 4,\quad (2\,2\,0)\to 8,\quad (3\,1\,1)\to 11,\quad (2\,2\,2)\to 12,\quad (4\,0\,0)\to 16,\dots \]</div>
+          <p class="step">最小 \(h^{2}+k^{2}+l^{2}=3\)，即 \((111)\)。由 \(d_{111}=a/\sqrt{3}\)：</p>
+          <div class="formula">\[ a=d_{111}\sqrt{3}=2.089\times 1.732=\mathbf{3.618\,\text{Å}}. \]</div>
+          <p class="step"><strong>(c) 鉴定：</strong>对照候选 FCC 金属的点阵常数：Cu \(a=3.615\)、Al \(4.046\)、Au \(4.078\)、Pt \(3.924\,\text{Å}\)。测得 \(a=3.618\,\text{Å}\) 与 Cu 的 \(3.615\,\text{Å}\) 仅差 \(0.08\%\) → 这是<strong>铜 (Copper)</strong>。</p>
+          <p class="step"><strong>验证：</strong>由 \(a=3.618\) 反推下一个允许衍射峰 \((200)\)：\(d_{200}=a/2=1.809\,\text{Å}\)，\(\sin\theta=1.5406/(2\times 1.809)=0.4259\)，\(2\theta=50.43^{\circ}\)。粉末衍射实测 Cu 的第二峰在 \(2\theta=50.43^{\circ}\)，完全吻合。这种方法（指标化 + 点阵常数 + 数据库比对）就是粉末 XRD 物相鉴定的核心。</p>
+          <p><span class="ans">答案：(a) \(d=2.089\,\text{Å}\)；(b) \((111)\)，\(a=3.618\,\text{Å}\)；(c) 该金属是 Cu（铜）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 BCC、FCC、金刚石的结构因子与系统消光 Structure Factors &amp; Systematic Absences</h4>
+        <p class="example-statement">(a) 推导 BCC（同种原子，惯用立方）的结构因子并指出消光规律。(b) 推导 FCC（同种原子）的结构因子与消光规律。(c) 把 (a)(b) 的结果用于金刚石结构（金刚石 = FCC + 双原子基元 \((0,0,0)\) 与 \((\tfrac14,\tfrac14,\tfrac14)\)），写出完整消光规律，并判断 (111)、(200)、(220)、(222) 哪些允许。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) BCC 结构因子：</strong>基元位置（在惯用立方内）\(\vec{r}_1=(0,0,0)\)、\(\vec{r}_2=(\tfrac12,\tfrac12,\tfrac12)\)，两原子同种 \(f_1=f_2=f\)。倒格矢 \(\vec{G}=(2\pi/a)(h\hat{x}+k\hat{y}+l\hat{z})\)。则</p>
+          <div class="formula">\[ S_{\text{BCC}}=f\bigl[e^{i\vec{G}\cdot(0,0,0)}+e^{i\vec{G}\cdot(\tfrac12,\tfrac12,\tfrac12)}\bigr]=f\bigl[1+e^{i\pi(h+k+l)}\bigr]. \]</div>
+          <p class="step">当 \(h+k+l\) 偶：\(e^{i\pi\cdot\text{偶}}=+1\)，\(S=2f\)；当 \(h+k+l\) 奇：\(e^{i\pi\cdot\text{奇}}=-1\)，\(S=0\)。<strong>BCC 消光规律</strong>：</p>
+          <div class="formula">\[ \boxed{\;\text{BCC：}h+k+l=\text{odd}\Rightarrow S=0\text{（消光）};\quad h+k+l=\text{even}\Rightarrow |S|^{2}=4f^{2}\;} \]</div>
+          <p>例：(100)、(111)、(300) 消光；(110)、(200)、(211) 允许。</p>
+          <p class="step"><strong>(b) FCC 结构因子：</strong>基元 \((0,0,0),(\tfrac12,\tfrac12,0),(\tfrac12,0,\tfrac12),(0,\tfrac12,\tfrac12)\)，同种 \(f\)：</p>
+          <div class="formula">\[ S_{\text{FCC}}=f\bigl[1+e^{i\pi(h+k)}+e^{i\pi(h+l)}+e^{i\pi(k+l)}\bigr]. \]</div>
+          <p class="step">分析 4 项相位：若 \(h,k,l\) 全偶或全奇，则每对和均为偶，\(e^{i\pi\cdot\text{偶}}=+1\)，\(S=4f\)；若奇偶混合，必有两项 \(+1\)、两项 \(-1\)，相互抵消 \(S=0\)。<strong>FCC 消光规律</strong>：</p>
+          <div class="formula">\[ \boxed{\;\text{FCC：}h,k,l\text{ 奇偶混合}\Rightarrow S=0\text{（消光）};\quad h,k,l\text{ 全偶或全奇}\Rightarrow |S|^{2}=16f^{2}\;} \]</div>
+          <p>例：(100)、(110)、(210) 消光；(111)、(200)、(220) 允许。</p>
+          <p class="step"><strong>(c) 金刚石 = FCC \(\otimes\) 双原子基元：</strong>金刚石可看作两个 FCC 子格子（同种碳）沿体对角线平移 \((\tfrac14,\tfrac14,\tfrac14)\) 套构。结构因子为 FCC 因子乘以基元相位因子：</p>
+          <div class="formula">\[ S_{\text{diamond}}=S_{\text{FCC}}\cdot\bigl[1+e^{i\,\vec{G}\cdot(\tfrac14,\tfrac14,\tfrac14)}\bigr]=S_{\text{FCC}}\cdot\bigl[1+e^{i\pi(h+k+l)/2}\bigr]. \]</div>
+          <p class="step">逐项分析：</p>
+          <ul>
+            <li>\(h,k,l\) 奇偶混合：\(S_{\text{FCC}}=0\) → <strong>消光</strong>（FCC 规则继承）。</li>
+            <li>\(h,k,l\) 全偶或全奇 + \(h+k+l=4n\)：\(e^{i\pi\cdot 2n}=+1\)，\(S=8f\)，\( |S|^{2}=64f^{2}\) → <strong>强允许</strong>。</li>
+            <li>\(h,k,l\) 全偶 + \(h+k+l=4n+2\)：\(e^{i\pi(2n+1)}=-1\)，\(S=4f\cdot(1-1)=0\) → <strong>消光（金刚石特有）</strong>。</li>
+            <li>\(h,k,l\) 全奇：\(h+k+l\) 必为奇，\(e^{i\pi\cdot\text{奇}/2}=\pm i\)，\(1\pm i\) 模 \(\sqrt{2}\)，\(|S|^{2}=16f^{2}\cdot 2=32f^{2}\) → <strong>允许（弱）</strong>。</li>
+          </ul>
+          <p class="step"><strong>判断四个反射：</strong></p>
+          <div class="formula">\[ \begin{array}{c|c|c|c|c}(hkl) & h,k,l\text{ 奇偶} & h+k+l & \text{规律} & \text{结果}\\\hline (111) & \text{全奇} & 3 & |S|^{2}=32f^{2} & \text{允许（弱）}\\ (200) & \text{全偶} & 2=4(0)+2 & \text{金刚石消光} & \text{禁止}\\ (220) & \text{全偶} & 4=4(1) & |S|^{2}=64f^{2} & \text{允许（强）}\\ (222) & \text{全偶} & 6=4(1)+2 & \text{金刚石消光} & \text{禁止}\end{array}\end{formula} \]</div>
+          <p class="step"><strong>物理意义：</strong>(200)、(222) 在 FCC 母格子上是允许的，但因金刚石基元里第二组原子的散射波与第一组正好反相抵消而消失——这是<strong>基元干涉</strong>，而非「这些面不存在」。<strong>实验验证</strong>：Si（金刚石）的粉末衍射图谱中确实观察不到 (200)、(222) 峰。</p>
+          <p><span class="ans">答案：(a) BCC：\(h+k+l\) 奇消光；(b) FCC：奇偶混合消光；(c) 金刚石：在 FCC 规则上额外禁止 \(h+k+l=4n+2\)（\(h,k,l\) 全偶）；(111) 允许（\(32f^{2}\)），(200) 禁，(220) 允许（\(64f^{2}\)），(222) 禁。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把 BCC/FCC 与「简单立方 + 基元」混为一谈。</strong>BCC 和 FCC 本身就是<strong>布拉伐格子</strong>（每个格点周围环境完全相同），其惯用立方单胞是<strong>为了保留立方对称性</strong>而取的——内部含 2 个或 4 个格点，但每个格点是等价的。而「简单立方 + 双原子基元」（如 CsCl）<strong>不是</strong> BCC 布拉伐格子：Cs\(^+\) 和 Cl\(^-\) 是不同原子，体心与顶点环境不同，真正的布拉伐格子仍是简单立方。判断时永远先问「格点是否等价」。</li>
+        <li><strong>米勒指数取<strong>截距</strong>而非截距倒数。</strong>米勒指数的定义是<strong>截距的倒数</strong>再化为互质整数。若晶面截 \(a_1\) 轴于 \(2a_1\)、\(a_2\) 轴于 \(\infty\)、\(a_3\) 轴于 \(\tfrac12 a_3\)，米勒指数是 \((\tfrac12,0,2)\to(1,0,4)\)，不是 \((2,\infty,\tfrac12)\)。许多同学直接把截距写成指数，结果全错。还要记住：面<strong>平行</strong>于某轴时该指数为 0；负截距在指数上画横线（如 \((\bar{1}\,2\,3)\)）。</li>
+        <li><strong>把倒格子当作「实空间的另一种格子」。</strong>倒格子生活在<strong>波矢空间</strong> (\(\vec{k}\)-space)，量纲是长度的倒数 (\(\mathrm{m^{-1}}\) 或 \(\text{Å}^{-1}\))，与实空间 (\(\mathrm{m}\)) 是<strong>不同的数学对象</strong>，不能在一张图上把它们画到一起比较距离。两者通过傅里叶变换相联系。一个有用的检验：若你的「倒格矢」与「实格矢」量纲相同，多半是单位或公式出错（缺了 \(2\pi\) 因子或除错了 \(V_c\)）。</li>
+        <li><strong>把 Bragg 公式中的 \(\theta\) 当作「入射束与法线的夹角」。</strong>Bragg 角 \(\theta\) 定义为入射束与<strong>晶面</strong>的夹角（即<strong>掠入角</strong>，等于反射束与晶面的夹角）。衍射实验中扫描的是<strong>入射方向与衍射方向之间的夹角 \(2\theta\)</strong>（粉末衍射仪的 \(2\theta\) 就是这个），不要把 \(2\theta\) 直接代入 Bragg 公式。入射束与<strong>晶面法线</strong>的夹角是 \(90^{\circ}-\theta\)。</li>
+        <li><strong>把系统消光误认为是「晶面不存在」。</strong>结构因子 \(S_{\vec{G}}=0\) 并不意味着 \((hkl)\) 晶面族不存在，而是<strong>基元内不同原子的散射波相位完全抵消</strong>。这些面在几何上完全存在（你仍然可以画出来并算 \(d_{hkl}\)），只是它们对 X 射线的衍射贡献为零。判断「面是否存在」用纯几何；判断「能否看到衍射峰」才用结构因子。<strong>消光规律</strong>是结构的指纹：从未知晶体的衍射峰缺失情况可反推它是 BCC、FCC 还是金刚石。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. NaCl 的致密度 Packing Fraction of NaCl</summary>
+        <div class="hint">NaCl 惯用立方边长 \(a=5.640\,\text{Å}\)，含 4 个 Na\(^+\) + 4 个 Cl\(^-\)。把两种离子视为不同半径的硬球：Na\(^+\) \(r_+=0.95\,\text{Å}\)、Cl\(^-\) \(r_-=1.81\,\text{Å}\)，沿晶胞棱 Na–Cl 相切。</div>
+        <div class="solution">
+          沿晶胞棱（长度 \(a\)）：从顶点 Cl\(^-\) 到相邻面心 Cl\(^-\) 距离 \(a/\sqrt{2}\)；但从顶点 Cl\(^-\)（角）到棱中点 Na\(^+\)（位于 \((\tfrac12,0,0)\)）的距离是 \(a/2\)，这就是 Na–Cl 最近邻距离 \(d_{\text{Na-Cl}}=r_++r_-=0.95+1.81=2.76\,\text{Å}\)。实测 \(a/2=5.640/2=2.820\,\text{Å}\)，与半径和仅差 \(2\%\)，证实 Na–Cl 沿棱相切近似成立。
+          <br>单胞中离子总体积：\(V_{\text{ions}}=4\cdot\tfrac43\pi r_+^{3}+4\cdot\tfrac43\pi r_-^{3}=\tfrac{16\pi}{3}(0.95^{3}+1.81^{3})\,\text{Å}^{3}=\tfrac{16\pi}{3}(0.857+5.930)=16.76\cdot 6.787=113.7\,\text{Å}^{3}\)。
+          <br>单胞体积 \(V_{\text{cell}}=a^{3}=5.640^{3}=179.4\,\text{Å}^{3}\)。
+          <br>APF \(=113.7/179.4=\mathbf{0.634}\)。
+          <br>对照：与 FCC 单组分（0.740）相比偏低，原因是大小不同的两种球无法最密堆积；但高于 BCC（0.680）只是表面巧合，几何完全不同。 <span class="ans">答：NaCl 的 APF \(\approx 0.634\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. BCC 铁的 \((110)\) 衍射 First Reflection of BCC Iron</summary>
+        <div class="hint">BCC 结构允许衍射要求 \(h+k+l\) 偶。Fe \(a=2.866\,\text{Å}\)，Mo \(K\alpha\) \(\lambda=0.7107\,\text{Å}\)。</div>
+        <div class="solution">
+          BCC 允许的 \((hkl)\) 按 \(h^{2}+k^{2}+l^{2}\) 升序：(110)→2, (200)→4, (211)→6, (220)→8, (310)→10, (222)→12…
+          <br>第一个（最低角度）衍射峰 = \((110)\)。
+          <br>\(d_{110}=a/\sqrt{2}=2.866/1.414=2.027\,\text{Å}\)。
+          <br>\(\sin\theta=\lambda/(2d)=0.7107/(2\times 2.027)=0.7107/4.054=0.1753\)。
+          <br>\(\theta=\arcsin(0.1753)=10.09^{\circ}\)，即 \(2\theta\approx 20.18^{\circ}\)。
+          <br>实测 Fe 的第一个衍射峰在 \(2\theta\approx 20.2^{\circ}\)（Mo 靶），完全吻合。
+          <br><strong>思考：</strong>若误用 SC 规则会预测 \((100)\) 是第一峰（\(d=2.866\)，\(2\theta\approx 14.3^{\circ}\)），但 BCC 中 \((100)\) 因 \(h+k+l=1\) 奇而<strong>消光</strong>——这就是结构因子消光的实验证据。 <span class="ans">答：(110) 在 \(2\theta\approx 20.2^{\circ}\)；\(d_{110}=2.03\,\text{Å}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 求 HCP 理想 \(c/a\) 比 Ideal \(c/a\) of HCP</summary>
+        <div class="hint">HCP 中层内最近邻 6 个原子按正六边形相切（边长 \(a=2r\)）；层间第二层原子放在第一层的「三角凹坑」上。理想情况下 \(c/a=\sqrt{8/3}\)。用几何推导。</div>
+        <div class="solution">
+          设底层 A 在 \(z=0\)，中层 B 在 \(z=c/2\)，顶层 A 在 \(z=c\)。底层中心原子 \((0,0,0)\)，周围 6 个底层原子距离 \(a\)。中层 B 原子位于底层三角凹坑上方，水平投影距底层中心 \(a/\sqrt{3}\)（正三角形重心到顶点的距离）。
+          <br>把底层中心原子、底层一个相邻原子、正上方的一个 B 原子连成三角形。两边长 \(a\)（底层中心到两个相邻原子），第三边也 \(a\)（B 到底层相邻原子也相切，最近邻），故构成<strong>正四面体</strong>，棱长 \(a\)。
+          <br>正四面体的高 \(h=\sqrt{2/3}\,a\)（标准结果：\(h=\sqrt{a^{2}-(a/\sqrt{3})^{2}}=\sqrt{2a^{2}/3}\)）。这就是底层到中层的距离，即 \(c/2\)。
+          <br>故 \(c=2h=2\sqrt{2/3}\,a\)，即 \(\boxed{c/a=2\sqrt{2/3}=\sqrt{8/3}\approx 1.633}\)。
+          <br>实测 Mg \(c/a=1.624\)、Zn \(1.856\)（偏离较大，因非球形 d 电子）、Co \(1.633\)（接近理想）。 <span class="ans">答：理想 \(c/a=\sqrt{8/3}\approx 1.633\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 倒格子回到原格子 Reciprocal of Reciprocal Lattice</summary>
+        <div class="hint">对任意布拉伐格子，证明其倒格子的倒格子回到原格子（差一个长度因子）。用 \(\vec{b}_i\) 构造 \(\vec{c}_i=2\pi(\vec{b}_j\times\vec{b}_k)/V_{b}\)，\(V_b=\vec{b}_1\cdot(\vec{b}_2\times\vec{b}_3)\)。</div>
+        <div class="solution">
+          由定义 \(\vec{b}_1=2\pi\vec{a}_2\times\vec{a}_3/V_c\) 等，先算 \(V_b\)：
+          <br>\(V_b=\vec{b}_1\cdot(\vec{b}_2\times\vec{b}_3)=(2\pi)^{3}(\vec{a}_2\times\vec{a}_3)\cdot[(\vec{a}_3\times\vec{a}_1)\times(\vec{a}_1\times\vec{a}_2)]/V_c^{3}\)。
+          <br>用矢量恒等式并简化：\((\vec{a}_3\times\vec{a}_1)\times(\vec{a}_1\times\vec{a}_2)=[\vec{a}_3\cdot(\vec{a}_1\times\vec{a}_2)]\vec{a}_1-[\vec{a}_1\cdot(\vec{a}_1\times\vec{a}_2)]\vec{a}_3=V_c\vec{a}_1\)。
+          <br>故 \(V_b=(2\pi)^{3}V_c^{2}/V_c^{3}=(2\pi)^{3}/V_c\)。
+          <br>倒格子的倒原矢 \(\vec{c}_1=2\pi(\vec{b}_2\times\vec{b}_3)/V_b=2\pi V_c\cdot(\vec{b}_2\times\vec{b}_3)/(2\pi)^{3}=V_c(\vec{b}_2\times\vec{b}_3)/(2\pi)^{2}\)。
+          <br>由 \(\vec{a}_1\cdot\vec{b}_1=2\pi\)、\(\vec{a}_1\cdot\vec{b}_2=\vec{a}_1\cdot\vec{b}_3=0\)，所以 \(\vec{a}_1\parallel(\vec{b}_2\times\vec{b}_3)\)。设 \(\vec{a}_1=\alpha(\vec{b}_2\times\vec{b}_3)\)，由 \(2\pi=\vec{a}_1\cdot\vec{b}_1=\alpha(\vec{b}_2\times\vec{b}_3)\cdot\vec{b}_1=\alpha V_b\)，得 \(\alpha=2\pi/V_b=V_c/(2\pi)^{2}\)。故 \(\vec{c}_1=\vec{a}_1\) ✓。
+          <br>结论：<strong>倒格子的倒格子 = 原格子</strong>（无任何额外因子）。这一自对偶性保证了实空间与倒空间是平权对偶的描述。 <span class="ans">答：倒格子的倒格子严格回到原格子（\(\vec{c}_i=\vec{a}_i\)）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. CsCl 与 BCC 的衍射差异 CsCl vs BCC Diffraction</summary>
+        <div class="hint">CsCl 结构：Cl\(^-\) 在立方顶点、Cs\(^+\) 在体心。基元含两个<strong>不同</strong>原子，原子形状因子 \(f_{\text{Cs}}\ne f_{\text{Cl}}\)。求 \(S_{hkl}\) 并讨论与同种 BCC 的差异。</div>
+        <div class="solution">
+          基元：\(\vec{r}_{\text{Cl}}=(0,0,0)\)（角）、\(\vec{r}_{\text{Cs}}=(\tfrac12,\tfrac12,\tfrac12)\)（体心）。
+          <br>\(S=f_{\text{Cl}}+f_{\text{Cs}}\,e^{i\pi(h+k+l)}\)。
+          <br>讨论：
+          <br>• \(h+k+l\) 偶：\(S=f_{\text{Cl}}+f_{\text{Cs}}\)，\(|S|^{2}=(f_{\text{Cl}}+f_{\text{Cs}})^{2}\)。
+          <br>• \(h+k+l\) 奇：\(S=f_{\text{Cl}}-f_{\text{Cs}}\)，\(|S|^{2}=(f_{\text{Cl}}-f_{\text{Cs}})^{2}\)。
+          <br>由于 \(f_{\text{Cs}}\ne f_{\text{Cl}}\)（Cs 有 55 个电子，Cl 有 18 个，\(f\) 差异巨大），\((f_{\text{Cl}}-f_{\text{Cs}})^{2}\ne 0\)，故 CsCl 的 \((100)\) 等反射<strong>仍然出现</strong>（只是较弱）。
+          <br>对照同种 BCC（如 Fe）：\(h+k+l\) 奇时 <strong>完全消光</strong>。
+          <br>实验：CsCl 粉末衍射确实观察到 \((100)\) 衍射峰（虽然强度约为 \((110)\) 的 10%）；Fe 则完全观察不到 \((100)\)。这直接证明了 CsCl <strong>不是</strong> BCC 布拉伐格子——它只是简单立方 + 双原子基元。结构因子的<strong>消光与否</strong>是判定真实布拉伐格子的实验利器。 <span class="ans">答：CsCl 中 \(S=f_{\text{Cl}}\pm f_{\text{Cs}}\) 都不为零，\((100)\) 弱峰出现，与同种 BCC 的完全消光形成鲜明对照。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>晶格单胞视图 — 3D Crystal Lattice Viewer.</strong> 用鼠标或滑块旋转立方单胞（自动旋转可关），切换结构 SC / BCC / FCC / 金刚石，并叠加一个 \((hkl)\) 晶面（红色半透明多边形）观察它如何切割单胞。<strong>右侧</strong>面板实时显示：原子数 / 单胞、配位数 \(z\)、致密度 APF、当前 \((hkl)\) 晶面间距 \(d_{hkl}\)（取 \(a=1\) 为单位）。<strong>观察要点：</strong>(1) SC 仅 6 个最近邻（沿 \(\pm x,\pm y,\pm z\)），APF 最低；(2) BCC 体心多一个原子，最近邻数升到 8；(3) FCC 顶点 + 6 面心，最近邻数 12（最密堆积）；(4) 金刚石比 FCC 多 4 个内部原子（绿色），APF 反而最低（共价键方向性 &gt; 致密度）。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="640" height="460"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          var STRUCTS = [
+            { name: 'SC 简立方',         en: 'Simple Cubic',          atoms: [[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1]], z: 6,  apf: 0.5236, apfStr: 'π/6' },
+            { name: 'BCC 体心立方',       en: 'Body-Centered Cubic',   atoms: [[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1],[0.5,0.5,0.5]], z: 8,  apf: 0.6802, apfStr: 'π√3/8' },
+            { name: 'FCC 面心立方',       en: 'Face-Centered Cubic',   atoms: [[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1],
+                                                                              [0.5,0.5,0],[0.5,0,0.5],[0,0.5,0.5],[0.5,0.5,1],[0.5,1,0.5],[1,0.5,0.5]], z: 12, apf: 0.7405, apfStr: 'π/(3√2)' },
+            { name: 'Diamond 金刚石',     en: 'Diamond (C, Si, Ge)',   atoms: [[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1],
+                                                                              [0.5,0.5,0],[0.5,0,0.5],[0,0.5,0.5],[0.5,0.5,1],[0.5,1,0.5],[1,0.5,0.5],
+                                                                              [0.25,0.25,0.25],[0.75,0.75,0.25],[0.75,0.25,0.75],[0.25,0.75,0.75]], z: 4, apf: 0.3401, apfStr: 'π√3/16' }
+          ];
+
+          var DEFAULTS = { struct: 2, h: 1, k: 1, l: 1, showPlane: true, autoRotate: true, az: 0.65, el: 0.42 };
+          var params = { struct: DEFAULTS.struct, h: DEFAULTS.h, k: DEFAULTS.k, l: DEFAULTS.l,
+                         showPlane: DEFAULTS.showPlane, autoRotate: DEFAULTS.autoRotate,
+                         az: DEFAULTS.az, el: DEFAULTS.el };
+
+          // 3D → 2D projection: rotate around z (az), then x (el); orthographic
+          function project(p, az, el, scale, cx, cy) {
+            var x = p[0] - 0.5, y = p[1] - 0.5, z = p[2] - 0.5;
+            var ca = Math.cos(az), sa = Math.sin(az);
+            var x1 = ca * x - sa * y;
+            var y1 = sa * x + ca * y;
+            var z1 = z;
+            var ce = Math.cos(el), se = Math.sin(el);
+            var y2 = ce * y1 - se * z1;
+            var z2 = se * y1 + ce * z1;
+            return { x: cx + scale * x1, y: cy - scale * y2, depth: z2 };
+          }
+
+          // 12 edges of unit cube [0,1]^3
+          var CUBE_V = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]];
+          var CUBE_E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+          // 12 edges with their varying axis, for plane-cube intersection
+          var CUBE_EDGES_AX = [
+            [[0,0,0],[1,0,0]], [[0,1,0],[1,1,0]], [[0,0,1],[1,0,1]], [[0,1,1],[1,1,1]],
+            [[0,0,0],[0,1,0]], [[1,0,0],[1,1,0]], [[0,0,1],[0,1,1]], [[1,0,1],[1,1,1]],
+            [[0,0,0],[0,0,1]], [[1,0,0],[1,0,1]], [[0,1,0],[0,1,1]], [[1,1,0],[1,1,1]]
+          ];
+
+          function drawCube(ctx, az, el, scale, cx, cy) {
+            var proj = CUBE_V.map(function (v) { return project(v, az, el, scale, cx, cy); });
+            // back edges (depth negative) fainter, front edges bolder
+            CUBE_E.forEach(function (e) {
+              var p0 = proj[e[0]], p1 = proj[e[1]];
+              var davg = (p0.depth + p1.depth) / 2;
+              ctx.save();
+              ctx.globalAlpha = davg < -0.05 ? 0.45 : 0.92;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = davg < -0.05 ? 1.0 : 1.7;
+              ctx.beginPath();
+              ctx.moveTo(p0.x, p0.y);
+              ctx.lineTo(p1.x, p1.y);
+              ctx.stroke();
+              ctx.restore();
+            });
+            // axis arrows at origin
+            var o = project([0,0,0], az, el, scale, cx, cy);
+            var ax = project([1.18,0,0], az, el, scale, cx, cy);
+            var ay = project([0,1.18,0], az, el, scale, cx, cy);
+            var azp = project([0,0,1.18], az, el, scale, cx, cy);
+            PS.drawArrow(ctx, o.x, o.y, ax.x, ax.y, PS.colors.accent, 'a');
+            PS.drawArrow(ctx, o.x, o.y, ay.x, ay.y, PS.colors.accent2, 'b');
+            PS.drawArrow(ctx, o.x, o.y, azp.x, azp.y, PS.colors.primary, 'c');
+          }
+
+          function drawAtoms(ctx, atoms, az, el, scale, cx, cy) {
+            var isDiamond = params.struct === 3;
+            var projAtoms = atoms.map(function (a, idx) {
+              var p = project(a, az, el, scale, cx, cy);
+              var interior = isDiamond && idx >= 14;
+              return { x: p.x, y: p.y, depth: p.depth, type: interior ? 1 : 0 };
+            });
+            projAtoms.sort(function (a, b) { return a.depth - b.depth; });
+            projAtoms.forEach(function (pa) {
+              var r = 17 - pa.depth * 3;
+              r = Math.max(7, r);
+              var fill = pa.type === 1 ? PS.colors.accent2 : PS.colors.primary;
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(pa.x, pa.y, r, 0, 2 * Math.PI);
+              ctx.fillStyle = fill;
+              ctx.globalAlpha = 0.85;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+              ctx.lineWidth = 1.3;
+              ctx.stroke();
+              // specular highlight
+              ctx.beginPath();
+              ctx.arc(pa.x - r * 0.32, pa.y - r * 0.32, r * 0.32, 0, 2 * Math.PI);
+              ctx.fillStyle = 'rgba(255,255,255,0.55)';
+              ctx.fill();
+              ctx.restore();
+            });
+          }
+
+          // Compute polygon where plane h*x+k*y+l*z = 1 intersects cube [0,1]^3
+          function planePolygon(h, k, l) {
+            if (h === 0 && k === 0 && l === 0) return [];
+            var pts = [];
+            CUBE_EDGES_AX.forEach(function (e) {
+              var s = e[0], en = e[1];
+              var f0 = h * s[0] + k * s[1] + l * s[2];
+              var f1 = h * en[0] + k * en[1] + l * en[2];
+              if (Math.abs(f1 - f0) < 1e-12) return;
+              var t = (1 - f0) / (f1 - f0);
+              if (t < -1e-9 || t > 1 + 1e-9) return;
+              t = Math.max(0, Math.min(1, t));
+              pts.push([s[0] + t * (en[0] - s[0]), s[1] + t * (en[1] - s[1]), s[2] + t * (en[2] - s[2])]);
+            });
+            if (pts.length < 3) return [];
+            // sort around centroid in the plane
+            var cx = 0, cy = 0, cz = 0;
+            pts.forEach(function (p) { cx += p[0]; cy += p[1]; cz += p[2]; });
+            cx /= pts.length; cy /= pts.length; cz /= pts.length;
+            // build two in-plane axes for angle sort
+            var n = [h, k, l];
+            var nlen = Math.hypot(h, k, l);
+            var ref = Math.abs(n[2]) < 0.9 ? [0, 0, 1] : [1, 0, 0];
+            // u = ref - (ref·n̂)n̂
+            var rd = (ref[0] * n[0] + ref[1] * n[1] + ref[2] * n[2]) / (nlen * nlen);
+            var u = [ref[0] - rd * n[0], ref[1] - rd * n[1], ref[2] - rd * n[2]];
+            var ulen = Math.hypot(u[0], u[1], u[2]) || 1;
+            u[0] /= ulen; u[1] /= ulen; u[2] /= ulen;
+            var v = [n[1] * u[2] - n[2] * u[1], n[2] * u[0] - n[0] * u[2], n[0] * u[1] - n[1] * u[0]];
+            pts.forEach(function (p) {
+              p._a = Math.atan2(
+                (p[0] - cx) * v[0] + (p[1] - cy) * v[1] + (p[2] - cz) * v[2],
+                (p[0] - cx) * u[0] + (p[1] - cy) * u[1] + (p[2] - cz) * u[2]
+              );
+            });
+            pts.sort(function (a, b) { return a._a - b._a; });
+            return pts;
+          }
+
+          function drawPlane(ctx, h, k, l, az, el, scale, cx, cy) {
+            var pts = planePolygon(h, k, l);
+            if (pts.length < 3) return;
+            var proj = pts.map(function (p) { return project(p, az, el, scale, cx, cy); });
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(proj[0].x, proj[0].y);
+            for (var i = 1; i < proj.length; i++) ctx.lineTo(proj[i].x, proj[i].y);
+            ctx.closePath();
+            ctx.fillStyle = PS.colors.accent;
+            ctx.globalAlpha = 0.32;
+            ctx.fill();
+            ctx.globalAlpha = 0.95;
+            ctx.strokeStyle = PS.colors.accent;
+            ctx.lineWidth = 2.4;
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) {
+              s.t += dt;
+              if (params.autoRotate) params.az += dt * 0.5;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var cx = W / 2 - 90, cy = H / 2 + 10;
+              var scale = 140;
+              var st = STRUCTS[params.struct];
+
+              drawCube(ctx, params.az, params.el, scale, cx, cy);
+              if (params.showPlane) drawPlane(ctx, params.h, params.k, params.l, params.az, params.el, scale, cx, cy);
+              drawAtoms(ctx, st.atoms, params.az, params.el, scale, cx, cy);
+
+              // header
+              ctx.save();
+              ctx.font = 'bold 15px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('晶格单胞视图 — ' + st.name, 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText(st.en, 14, 30);
+              var planeTxt = (params.h === 0 && params.k === 0 && params.l === 0)
+                ? '晶面 (000) 不定义'
+                : ('晶面 (' + params.h + ' ' + params.k + ' ' + params.l + ')  d = ' +
+                   (1 / Math.sqrt(params.h * params.h + params.k * params.k + params.l * params.l)).toFixed(4) + ' a');
+              ctx.fillText(planeTxt, 14, 48);
+              ctx.restore();
+
+              // right info panel
+              var panelX = W - 188, panelY = 70, panelW = 170;
+              ctx.save();
+              ctx.globalAlpha = 0.45;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(panelX - 8, panelY - 16, panelW + 16, 312);
+              ctx.restore();
+
+              function line(yy, label, val, valColor) {
+                ctx.save();
+                ctx.font = '11.5px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.text;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, panelX, yy);
+                ctx.font = 'bold 12px ui-monospace, Menlo, monospace';
+                ctx.fillStyle = valColor || PS.colors.text;
+                ctx.textAlign = 'right';
+                ctx.fillText(val, panelX + panelW - 4, yy);
+                ctx.restore();
+              }
+
+              ctx.save();
+              ctx.font = 'bold 12.5px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('物理量 Quantities', panelX, panelY);
+              ctx.restore();
+              var yy = panelY + 22;
+              line(yy, '结构', st.name.split(' ')[0]); yy += 19;
+              line(yy, '原子 / 单胞', String(st.atoms.length - 0)); yy += 19;
+              // atoms per cell: 8 corners × 1/8 = 1; BCC + 1 body = 2; FCC + 6 faces × 1/2 = 4; diamond + 4 fully inside = 8
+              var nCell = [1, 2, 4, 8][params.struct];
+              line(yy, '格点 / 单胞', String(nCell), PS.colors.accent2); yy += 19;
+              line(yy, '配位数 z', String(st.z), PS.colors.primary); yy += 19;
+              line(yy, '致密度 APF', st.apf.toFixed(4), PS.colors.accent); yy += 19;
+              line(yy, '  (公式)', st.apfStr, PS.colors.text); yy += 19;
+              var dCur = (params.h === 0 && params.k === 0 && params.l === 0) ? Infinity :
+                         (1 / Math.sqrt(params.h * params.h + params.k * params.k + params.l * params.l));
+              line(yy, 'd_hkl / a', isFinite(dCur) ? dCur.toFixed(4) : '∞', PS.colors.accent); yy += 19;
+              line(yy, '|G_hkl| · a/2π', isFinite(dCur) ? (1 / dCur).toFixed(3) : '0', PS.colors.accent); yy += 19;
+              line(yy, '布拉伐格子', ['SC', 'BCC (I)', 'FCC (F)', 'FCC + basis'][params.struct], PS.colors.primary); yy += 22;
+
+              // observations
+              ctx.save();
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('观察 Observe', panelX, yy);
+              ctx.restore();
+              yy += 16;
+              var msgs = {
+                0: ['SC 配位 z=6，致密度最低', '非密堆积，自然中极罕见'],
+                1: ['BCC：体心 + 顶点', 'z=8；Fe、W、Cr、Na'],
+                2: ['FCC：z=12 最密堆积', 'Cu、Al、Au、γ-Fe'],
+                3: ['金刚石：FCC + 4 内部', 'z=4 共价键，Si/Ge/C']
+              }[params.struct];
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('• ' + msgs[0], panelX, yy); yy += 14;
+              ctx.fillText('• ' + msgs[1], panelX, yy);
+              ctx.restore();
+
+              // bottom legend
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+              ctx.fillText('提示：拖动「方位角/仰角」可手动旋转；关闭「自动旋转」后生效。', 14, H - 8);
+              ctx.restore();
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'struct', label: '结构 Structure (0=SC,1=BCC,2=FCC,3=◆)', min: 0, max: 3, step: 1, value: DEFAULTS.struct },
+            { type: 'slider', key: 'h', label: 'Miller h', min: 0, max: 3, step: 1, value: DEFAULTS.h },
+            { type: 'slider', key: 'k', label: 'Miller k', min: 0, max: 3, step: 1, value: DEFAULTS.k },
+            { type: 'slider', key: 'l', label: 'Miller l', min: 0, max: 3, step: 1, value: DEFAULTS.l },
+            { type: 'toggle', key: 'showPlane', label: '显示晶面 Show plane', value: DEFAULTS.showPlane },
+            { type: 'toggle', key: 'autoRotate', label: '自动旋转 Auto-rotate', value: DEFAULTS.autoRotate },
+            { type: 'slider', key: 'az', label: '方位角 Azimuth (°)', min: 0, max: 360, step: 1, value: Math.round(DEFAULTS.az * 180 / Math.PI) },
+            { type: 'slider', key: 'el', label: '仰角 Elevation (°)', min: -10, max: 85, step: 1, value: Math.round(DEFAULTS.el * 180 / Math.PI) },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('struct', function (v) { params.struct = v; });
+          ctl.on('h', function (v) { params.h = v; });
+          ctl.on('k', function (v) { params.k = v; });
+          ctl.on('l', function (v) { params.l = v; });
+          ctl.on('showPlane', function (v) { params.showPlane = v; });
+          ctl.on('autoRotate', function (v) { params.autoRotate = v; });
+          ctl.on('az', function (v) { params.az = v * Math.PI / 180; });
+          ctl.on('el', function (v) { params.el = v * Math.PI / 180; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-1 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            // struct, h, k, l, az, el — six sliders in document order
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.struct);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.h);
+            if (sliders[2]) setSlider(sliders[2], DEFAULTS.k);
+            if (sliders[3]) setSlider(sliders[3], DEFAULTS.l);
+            if (sliders[4]) setSlider(sliders[4], Math.round(DEFAULTS.az * 180 / Math.PI));
+            if (sliders[5]) setSlider(sliders[5], Math.round(DEFAULTS.el * 180 / Math.PI));
+            var toggles = document.querySelectorAll('#controls-1 input[type=checkbox]');
+            if (toggles[0]) { toggles[0].checked = DEFAULTS.showPlane; toggles[0].dispatchEvent(new Event('change', { bubbles: true })); }
+            if (toggles[1]) { toggles[1].checked = DEFAULTS.autoRotate; toggles[1].dispatchEvent(new Event('change', { bubbles: true })); }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>布拉伐格子</strong>：所有格点 \(\vec{R}=n_1\vec{a}_1+n_2\vec{a}_2+n_3\vec{a}_3\)；平移任意 \(\vec{R}\) 晶体不变。<strong>三维共 14 种</strong>，分属 7 大晶系；晶系按点群对称性分类（立方系含 SC/BCC/FCC 三种）。</li>
+        <li><strong>原胞 vs 惯用单胞 vs Wigner–Seitz</strong>：原胞含一个格点、体积最小；惯用单胞按对称性择优（BCC/FCC 惯用立方分别含 2/4 个格点）；Wigner–Seitz 原胞由垂直平分面围成、唯一且与点阵同对称性。</li>
+        <li><strong>致密度</strong>：SC \(\pi/6\approx 0.524\)；BCC \(\pi\sqrt{3}/8\approx 0.680\)；FCC、HCP \(\pi/(3\sqrt{2})\approx 0.740\)（最密堆积上界）。</li>
+        <li><strong>米勒指数</strong> \((hkl)\) = 晶面在三轴上截距（以 \(a_i\) 为单位）<strong>倒数</strong>的互质整数。立方系晶面间距 \(d_{hkl}=a/\sqrt{h^{2}+k^{2}+l^{2}}\)。</li>
+        <li><strong>倒格子</strong>：\(\vec{b}_1=2\pi\vec{a}_2\times\vec{a}_3/V_c\) 等；满足 \(\vec{a}_i\cdot\vec{b}_j=2\pi\delta_{ij}\)。倒格矢 \(\vec{G}=h\vec{b}_1+k\vec{b}_2+l\vec{b}_3\) 垂直于 \((hkl)\) 面、长度 \(2\pi/d_{hkl}\)。SC 倒 SC，BCC 倒 FCC，FCC 倒 BCC。</li>
+        <li><strong>第一布里渊区</strong>：倒格子上的 Wigner–Seitz 原胞；X 射线衍射、能带、声子的自然几何。</li>
+        <li><strong>X 射线衍射</strong>：Bragg \(2d\sin\theta=n\lambda\) ⟺ Laue \(\Delta\vec{k}=\vec{G}\)。结构因子 \(S_{\vec{G}}=\sum_j f_j e^{i\vec{G}\cdot\vec{r}_j}\) 描述基元干涉，\(I\propto|S|^{2}\)。</li>
+        <li><strong>系统消光</strong>（同种原子，惯用立方）：BCC \(h+k+l\) 奇消光；FCC \(h,k,l\) 奇偶混合消光；金刚石额外要求 \(h+k+l\ne 4n+2\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\vec{R}=n_1\vec{a}_1+n_2\vec{a}_2+n_3\vec{a}_3,\qquad V_c=|\vec{a}_1\cdot(\vec{a}_2\times\vec{a}_3)|\;} \]</div>
+      <div class="formula">\[ \boxed{\;\vec{b}_1=2\pi\frac{\vec{a}_2\times\vec{a}_3}{V_c},\quad \vec{b}_2=2\pi\frac{\vec{a}_3\times\vec{a}_1}{V_c},\quad \vec{b}_3=2\pi\frac{\vec{a}_1\times\vec{a}_2}{V_c},\quad \vec{a}_i\cdot\vec{b}_j=2\pi\delta_{ij}\;} \]</div>
+      <div class="formula">\[ \boxed{\;d_{hkl}=\frac{a}{\sqrt{h^{2}+k^{2}+l^{2}}}\;(\text{cubic}),\qquad |\vec{G}_{hkl}|=\frac{2\pi}{d_{hkl}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;2\,d_{hkl}\sin\theta=n\lambda\quad(\text{Bragg})\;\;\Longleftrightarrow\;\;\Delta\vec{k}=\vec{G}\quad(\text{Laue})\;} \]</div>
+      <div class="formula">\[ \boxed{\;S_{\vec{G}}=\sum_{j}f_j\,e^{i\vec{G}\cdot\vec{r}_j},\qquad I_{\vec{G}}\propto |S_{\vec{G}}|^{2}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{BCC: }S=f[1+e^{i\pi(h+k+l)}];\quad \text{FCC: }S=f[1+e^{i\pi(h+k)}+e^{i\pi(h+l)}+e^{i\pi(k+l)}]\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

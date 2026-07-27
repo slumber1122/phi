@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 自由电子与能带 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第3章 · 凝聚态物理 Condensed Matter</p>
+      <h1>自由电子与能带 <span class="en-title">Free Electrons &amp; Energy Bands</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>第 2 章我们看到晶格振动 (lattice vibrations) 的量子化给出<strong>声子</strong> (phonons)，并解释了晶格热容的 Debye \(T^{3}\) 律。但固体的另一大类性质——电导、金属光泽、能带填充导致的「导体/半导体/绝缘体」分类——必须把<strong>电子</strong>本身作为量子客体处理。本章从两个极端图像出发：一是把价电子视作<strong>自由电子气</strong> (free-electron gas, Drude–Sommerfeld)，二是把电子视作<strong>周期势中的波</strong> (Bloch 电子)。两者结合给出能带论 (band theory)。学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述 <strong>Drude 模型</strong> (Drude model) 的基本假设与它的<strong>成功</strong>（Ohm 定律、Wiedemann–Franz 比例）与<strong>失败</strong>（电子热容过大、磁化率符号错）。</li>
+        <li>用 Fermi–Dirac 分布与<strong>自由电子气</strong>模型推出<strong>Fermi 能</strong> \(E_F\)、<strong>Fermi 波矢</strong> \(k_F\)、<strong>Fermi 速度</strong> \(v_F\)、<strong>Fermi 温度</strong> \(T_F\)，并数值估计典型金属 \(E_F\sim1\text{–}10\,\mathrm{eV}\)、\(T_F\sim10^{4}\text{–}10^{5}\,\mathrm{K}\)。</li>
+        <li>推导 3D <strong>态密度</strong> (density of states) \(g(E)\propto\sqrt{E}\)；证明只有 Fermi 面附近厚度 \(\sim k_BT\) 的电子对热容有贡献，给出 \(C_{\mathrm{el}}=\gamma T\)，且 \(\gamma\) 远小于经典值 \(3Nk_B/2\)。</li>
+        <li>从周期势中 Schrödinger 方程的平移对称性推导 <strong>Bloch 定理</strong>：\(\psi_{k}(x)=e^{ikx}u_{k}(x)\)，\(u_{k}\) 与晶格同期。</li>
+        <li>用 <strong>Kronig–Penney 模型</strong>推出色散关系 \(P\dfrac{\sin\kappa a}{\kappa a}+\cos\kappa a=\cos ka\)；论证 <strong>允许带</strong>与<strong>禁带</strong>出现在 Brillouin 区边界。</li>
+        <li>由 \(E(k)\) 曲率定义<strong>有效质量</strong> (effective mass) \(\displaystyle \frac{1}{m^{*}}=\frac{1}{\hbar^{2}}\frac{d^{2}E}{dk^{2}}\)；解释为何能带顶 \(m^{*}<0\) 自然引出<strong>空穴</strong> (hole) 概念。</li>
+        <li>用<strong>能带填充</strong>判断 Na 是导体、金刚石是绝缘体、Si 是半导体；陈述<strong>Fermi 面</strong> (Fermi surface) 的几何意义。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. Drude 模型——经典的自由电子气</h3>
+      <p>1900 年 Drude 把金属中的价电子视作<strong>经典理想气体</strong>：在原子核构成的「正电荷海」中自由飞行，仅在碰撞时被散射。三条核心假设：</p>
+      <ul>
+        <li><strong>自由飞行</strong>：相邻碰撞之间电子不受力（电场仅在碰撞间被忽略，或在「弛豫时间」近似下作为恒定漂移驱动）。</li>
+        <li><strong>瞬时碰撞</strong>：碰撞使电子随机化（丧失对前向速度的记忆），与离子碰撞后<strong>立即达到热平衡</strong>。</li>
+        <li><strong>弛豫时间</strong> (relaxation time) \(\tau\)：平均飞行时间；平均自由程 \(\ell=v_{\mathrm{th}}\tau\)。</li>
+      </ul>
+      <p>在恒定外加电场 \(\vec E\) 下，两次碰撞间电子获得漂移速度 \(\vec v_{d}=-e\vec E\tau/m_{e}\)，故电流密度 \(\vec j=-ne\vec v_{d}=ne^{2}\tau\vec E/m_{e}\)，给出 <strong>Drude 电导率</strong>：</p>
+      <div class="formula">\[ \boxed{\;\sigma=\frac{ne^{2}\tau}{m_{e}}\;}\qquad\text{(Drude, 1900)} \]</div>
+      <p>Drude 的<strong>三大成功</strong>：(i) 直接给出 Ohm 定律 \(\vec j=\sigma\vec E\)；(ii) 解释了电导与热导共享同一载流子，预言 <strong>Wiedemann–Franz 比例</strong> \(\kappa/(\sigma T)=\tfrac{3}{2}(k_{B}/e)^{2}\)（数值与实验同数量级）；(iii) 提供了 Hall 效应的初步图像。</p>
+      <p>但 Drude 也犯下<strong>严重错误</strong>：</p>
+      <ul>
+        <li><strong>电子热容</strong>按经典能均分给 \(C_{\mathrm{el}}=\tfrac{3}{2}Nk_{B}\)，室温下应与晶格相当。但实验上室温 \(C_{\mathrm{el}}\ll C_{\mathrm{latt}}\)，差约 \(100\) 倍。</li>
+        <li><strong>顺磁磁化率</strong> \(\chi\propto n/T\)（Curie 律），但碱金属几乎与温度无关，且数值小得多。</li>
+        <li><strong>Wiedemann–Franz 常数</strong>实验值为 \(2.45\times10^{-8}\,\mathrm{W\,\Omega\,K^{-2}}\)，比 Drude 的 \(1.24\times10^{-8}\,\mathrm{W\,\Omega\,K^{-2}}\) 大约两倍。</li>
+      </ul>
+      <p>这些失败的根源是同一处：经典气体中电子按 Boltzmann 分布占据所有能级，而实际金属中的电子遵守 <strong>Fermi–Dirac 统计</strong>，<strong>几乎所有电子都被深锁在 Fermi 海中</strong>，只有 Fermi 面附近 \(\sim k_BT\) 厚度的一层能参与热激发。这就是 Sommerfeld 1928 年的修正。</p>
+      <div class="key-terms">Drude model (Drude 模型), relaxation time \(\tau\) (弛豫时间), mean free path \(\ell\) (平均自由程), Drude conductivity \(\sigma=ne^{2}\tau/m_{e}\) (Drude 电导率), Wiedemann–Franz law (Wiedemann–Franz 定律)</div>
+
+      <h3>2. Sommerfeld 自由电子气——Fermi 海</h3>
+      <p>把 \(N\) 个价电子置于体积 \(V\) 中，电子间无相互作用（独立电子近似）。在周期性边界条件下，每个 \(k\) 态体积为 \((2\pi)^{3}/V\)；每个 \(k\) 态容纳 2 个电子（自旋上下）。\(T=0\) 时电子从最低能级开始填充至 Fermi 波矢 \(k_F\)（球对称）：</p>
+      <div class="formula">\[ N=2\cdot\frac{V}{(2\pi)^{3}}\cdot\frac{4\pi k_{F}^{3}}{3}\quad\Longrightarrow\quad \boxed{\;k_{F}=(3\pi^{2}n)^{1/3},\qquad n\equiv\frac{N}{V}\;} \]</div>
+      <p><strong>Fermi 能</strong> (Fermi energy) 是 Fermi 面上电子的动能：</p>
+      <div class="formula">\[ \boxed{\;E_{F}=\frac{\hbar^{2}k_{F}^{2}}{2m_{e}}=\frac{\hbar^{2}}{2m_{e}}(3\pi^{2}n)^{2/3}\;} \]</div>
+      <p>对应的<strong>Fermi 速度</strong> \(v_{F}=\hbar k_{F}/m_{e}\)、<strong>Fermi 温度</strong> \(T_{F}=E_{F}/k_{B}\)。典型值（详见例 3.1）：\(E_{F}(\mathrm{Na})\approx3.24\,\mathrm{eV}\)、\(T_{F}\approx3.8\times10^{4}\,\mathrm{K}\)、\(v_{F}\approx1.1\times10^{6}\,\mathrm{m/s}\)（约为光速的 \(1/300\)，<strong>极快</strong>！）；Cu 的 \(E_{F}\approx7.0\,\mathrm{eV}\)。</p>
+      <p>关键直觉：室温 \(k_BT/k_{B}T_{F}\sim0.01\)，所以 \(T=300\,\mathrm{K}\) 对 Fermi 海来说是「冰冷」的——99% 以上的电子被 Pauli 原理锁住，无法被热激发。这正是 Drude 经典图像失败的根源。</p>
+      <div class="key-terms">free-electron gas (自由电子气), Fermi wavevector \(k_F\) (Fermi 波矢), Fermi energy \(E_F\) (Fermi 能), Fermi velocity \(v_F\) (Fermi 速度), Fermi temperature \(T_F\) (Fermi 温度), Fermi sea (Fermi 海)</div>
+
+      <h3>3. Fermi–Dirac 分布与态密度</h3>
+      <p>有限温度下电子按 <strong>Fermi–Dirac 分布</strong>占据能量为 \(E\) 的态：</p>
+      <div class="formula">\[ f(E)=\frac{1}{e^{(E-\mu)/k_{B}T}+1},\qquad \mu\xrightarrow{T\to0}E_{F}. \]</div>
+      <p>\(T=0\) 时 \(f\) 是阶跃函数（\(E<E_F\) 占满、\(E>E_F\) 空）；\(T>0\) 时仅在 \(E\approx E_F\) 附近 \(\pm\mathrm{few}\,k_BT\) 范围内被「涂抹」软化。在 3D 自由电子气中，能量小于 \(E\) 的态数为 \(N(E)=V\cdot(2\cdot\tfrac{4\pi k^{3}}{3})/(2\pi)^{3}\)，其中 \(k=\sqrt{2mE}/\hbar\)。求导得<strong>态密度</strong> (density of states, per volume)：</p>
+      <div class="formula">\[ \boxed{\;g(E)=\frac{1}{V}\dv{N}{E}=\frac{(2m_{e})^{3/2}}{2\pi^{2}\hbar^{3}}\sqrt{E}\;\propto\;\sqrt{E}\;} \]</div>
+      <p>3D 自由电子气 \(g(E)\propto\sqrt{E}\) 是一条<strong>开口向右的抛物线</strong>。在 Fermi 能处估值：</p>
+      <div class="formula">\[ g(E_{F})=\frac{3n}{2E_{F}}\qquad\Big(\text{由 }N=\int_{0}^{E_F}\!g(E)\,dE=nV\text{ 反推}\Big). \]</div>
+      <p>这一关系无需具体 \(m_{e}\) 值即可估算热容系数。</p>
+      <div class="key-terms">Fermi–Dirac distribution (Fermi–Dirac 分布), chemical potential \(\mu\) (化学势), density of states \(g(E)\) (态密度), reduced energy \(E/E_F\) (约化能量)</div>
+
+      <h3>4. 电子热容——Pauli 锁定的胜利</h4>
+      <p>经典预言 \(C_{\mathrm{el}}^{\mathrm{Drude}}=\tfrac{3}{2}Nk_{B}\)。Sommerfeld 修正：只有 Fermi 面附近厚度 \(\sim k_BT\) 内的电子（数量分数 \(\sim T/T_{F}\)）能被热激发，每个吸收能量 \(\sim k_BT\)，故</p>
+      <div class="formula">\[ C_{\mathrm{el}}\sim Nk_{B}\cdot\frac{T}{T_{F}}\cdot 1\;\propto\;T. \]</div>
+      <p>严格推导（见推导节）给出电子<strong>线性热容</strong>：</p>
+      <div class="formula">\[ \boxed{\;C_{\mathrm{el}}=\gamma\,T,\qquad \gamma=\frac{\pi^{2}}{2}nk_{B}^{2}\frac{V}{E_{F}}=\frac{\pi^{2}}{3}k_{B}^{2}\,g(E_{F})\,V\;} \]</div>
+      <p>对 1 摩尔：\(\gamma_{\mathrm{mol}}=(\pi^{2}/2)R\cdot k_{B}/E_{F}\cdot N_{A}\cdot/\!/(N_{A})\) → 改写为 \(\gamma_{\mathrm{mol}}=\pi^{2}R^{2}/(2E_{F}\cdot N_{A}/N_{A})\)。简洁形式：\(\gamma_{\mathrm{mol}}=\tfrac{\pi^{2}}{2}R\cdot\dfrac{k_{B}T_{F,\,?}}{}\ \) —— 直接用 \(\gamma_{\mathrm{mol}}=\pi^{2}R^{2}k_{B}/(2E_{F}N_{A})\) 不直观。最常用形式：</p>
+      <div class="formula">\[ \gamma_{\mathrm{mol}}=\frac{\pi^{2}}{3}k_{B}^{2}g(E_{F})V_{\mathrm{mol}}=\frac{\pi^{2}}{2}\frac{R}{T_{F}}\cdot\frac{N_{A}k_{B}T_{F}}{E_F}\cdot\frac{1}{N_A} \]</div>
+      <p>数值上（Cu，例 3.3）：\(\gamma\approx0.50\,\mathrm{mJ\,mol^{-1}\,K^{-2}}\)，而实验值 \(\gamma_{\mathrm{exp}}=0.695\,\mathrm{mJ\,mol^{-1}\,K^{-2}}\)。差距来自<strong>电子–声子相互作用增强</strong>（增强因子 \(\lambda\approx0.14\)，使 \(m_{e}\to m^{*}=m_{e}(1+\lambda)\)）。在 \(T=300\,\mathrm{K}\)：\(C_{\mathrm{el}}=\gamma T\approx0.15\,\mathrm{J\,mol^{-1}\,K^{-1}}\)，远小于 Dulong–Petit 晶格热容 \(3R=24.9\,\mathrm{J\,mol^{-1}\,K^{-1}}\)——这正是 Drude 失败的根源。但在低温（\(T\lesssim\mathrm{几\,K}\)），晶格 \(T^{3}\) 项迅速衰减，电子 \(T\) 项占主导：这就是低温金属热容的「\(\gamma T+\beta T^{3}\)」双重律。</p>
+      <div class="key-terms">Sommerfeld model (Sommerfeld 模型), electronic specific heat \(C_{\mathrm{el}}=\gamma T\) (电子线性热容), Sommerfeld coefficient \(\gamma\) (Sommerfeld 系数), electron–phonon enhancement (电子–声子增强), low-T \(C=\gamma T+\beta T^{3}\) law (低温 \(\gamma T+\beta T^{3}\) 律)</div>
+
+      <h3>5. Bloch 定理——周期势中的电子波</h3>
+      <p>真实金属中电子并非完全自由：它们感受离子实的<strong>周期势</strong> \(V(\vec r+\vec R)=V(\vec r)\)（\(\vec R\) 为晶格矢量）。一维 Schrödinger 方程：</p>
+      <div class="formula">\[ \Big[-\frac{\hbar^{2}}{2m_{e}}\frac{d^{2}}{dx^{2}}+V(x)\Big]\psi(x)=E\,\psi(x),\qquad V(x+a)=V(x). \]</div>
+      <p>引入<strong>平移算符</strong> \(T_{a}\psi(x)\equiv\psi(x-a)\)。由于 \(V\) 周期，\(T_{a}\) 与 Hamilton 量对易 \([T_{a},\hat H]=0\)，故可同时取本征态：\(\hat H\psi=E\psi\) 与 \(T_{a}\psi=\lambda\psi\)。周期性边界条件（环上 \(N\) 个原子）要求 \(T_{a}^{N}=1\)，故 \(\lambda^{N}=1\Rightarrow\lambda=e^{ika}\)，\(k=2\pi n/(Na)\)。由此立刻得 <strong>Bloch 定理</strong> (Bloch's theorem, 1928)：</p>
+      <div class="formula">\[ \boxed{\;\psi_{k}(x)=e^{ikx}\,u_{k}(x),\qquad u_{k}(x+a)=u_{k}(x)\;} \]</div>
+      <p>即：周期势中的电子波是<strong>调幅平面波</strong>——平面波 \(e^{ikx}\) 乘以与晶格同周期的「包络」\(u_{k}(x)\)。这是 Bloch 电子最重要的特征：它在整个晶体中<strong>扩展</strong>（不像孤立原子那样局域），所以又称<strong>扩展态</strong> (extended states)。当势很弱（\(V\to0\))），\(u_{k}\to\mathrm{const}\)，回到自由电子；当势很强（紧束缚极限 tight-binding），\(u_{k}\) 收敛到孤立原子波函数。<strong>Bloch 定理保证周期势中的电子永不被散射</strong>（理想晶格中电导率无穷大），电阻完全来自破坏平移对称性的因素（声子、杂质、缺陷、边界）。</p>
+      <div class="key-terms">periodic potential (周期势), translation operator \(T_a\) (平移算符), Bloch's theorem (Bloch 定理), Bloch wave / extended state (Bloch 波 / 扩展态), Bloch function \(u_k(x)\) (Bloch 函数), tight-binding limit (紧束缚极限)</div>
+
+      <h3>6. Kronig–Penney 模型——能带的诞生</h3>
+      <p>Kronig–Penney (1931) 用一维「方齿」周期势（理想化为周期 \(\delta\) 函数列 \(V(x)=\dfrac{\hbar^{2}P}{m_{e}a}\sum_{n}\delta(x-na)\)）严格求解了 Bloch 电子的色散。设 \(\kappa=\sqrt{2m_{e}E}/\hbar\)（自由波数），在每个 \(\delta\) 处拼接波函数的连续性与导数跃变，给出<strong>色散关系</strong>：</p>
+      <div class="formula">\[ \boxed{\;P\,\frac{\sin(\kappa a)}{\kappa a}+\cos(\kappa a)=\cos(ka)\;} \]</div>
+      <p>其中 \(P\)（无量纲）度量势强度。分析：</p>
+      <ul>
+        <li><strong>右端 \(\cos(ka)\in[-1,+1]\)</strong>，故<strong>左端必须落在 \([-1,+1]\)</strong>。左端是 \(\kappa\)（即能量 \(E\)) 的函数；凡 \(|P\sin(\kappa a)/(\kappa a)+\cos(\kappa a)|>1\) 的能量区域<strong>无实 \(k\)</strong> 解 → <strong>禁带</strong> (forbidden gap)。</li>
+        <li><strong>禁带出现在 \(\kappa a=n\pi\)</strong>（即 \(\sin(\kappa a)=0\)，但 \(\sin(\kappa a)/(\kappa a)\) 在穿过零点时变号），恰好对应<strong> Brillouin 区边界</strong> \(ka=\pm n\pi\)。这是 Bragg 反射的量子版本：满足 \(2a=\) 整数个波长时，向前/向后波相长干涉形成驻波，能级劈裂成两个 → 产生<strong>禁带</strong>。</li>
+        <li><strong>\(P\to0\)</strong>：左端退化为 \(\cos(\kappa a)\)，要求 \(\kappa a=\pm ka+2n\pi\) → 自由电子抛物线 \(E=\hbar^{2}k^{2}/2m_{e}\)（折叠到约化区，无禁带，<strong>近自由电子</strong> nearly-free electron 极限）。</li>
+        <li><strong>\(P\to\infty\)</strong>：要求 \(\sin(\kappa a)/(\kappa a)\to0\)，即 \(\kappa a=n\pi\) 取离散值，能级收敛到孤立原子能级 \(E_{n}=\hbar^{2}(n\pi/a)^{2}/2m_{e}\)（<strong>紧束缚</strong> tight-binding 极限，带宽趋于零）。</li>
+      </ul>
+      <p>调节 \(P\) 从 \(0\to\infty\)，能看到能带从「无禁带的折叠抛物线」连续演变为「孤立原子能级」——这是固体物理学最经典的图像。本章仿真可视化此演化。</p>
+      <div class="key-terms">Kronig–Penney model (Kronig–Penney 模型), dimensionless potential strength \(P\) (无量纲势强度), allowed band (允许带), forbidden gap / band gap (禁带 / 带隙), Brillouin zone boundary (Brillouin 区边界), Bragg reflection of electrons (电子的 Bragg 反射), nearly-free electron (近自由电子), tight-binding (紧束缚)</div>
+
+      <h3>7. 有效质量与空穴</h3>
+      <p>在能带底附近，\(E(k)\) 可近似为抛物线 \(E(k)\approx E_{0}+\hbar^{2}(k-k_{0})^{2}/(2m^{*})\)，其中<strong>有效质量</strong> (effective mass)：</p>
+      <div class="formula">\[ \boxed{\;\frac{1}{m^{*}}=\frac{1}{\hbar^{2}}\frac{d^{2}E}{dk^{2}}\Big|_{k_{0}}\;} \]</div>
+      <p>即有效质量反比于 \(E(k)\) 曲率。<strong>曲率大 → \(m^{*}\) 小 → 电子「轻」、响应快</strong>；<strong>曲率小 → \(m^{*}\) 大 → 电子「重」</strong>。在 GaAs 中 \(m^{*}=0.067\,m_{e}\)（电子异常轻，迁移率高）；在重空穴带 \(m^{*}\sim0.5\,m_{e}\)。</p>
+      <p>更深刻的是：在能带<strong>顶</strong>，曲率为负，故 \(m^{*}<0\)。负质量的电子在电场中反向加速（与正质量电子在同向电场中相反）。<strong>把「负质量、负电荷」的电子等价为「正质量、正电荷」的准粒子</strong>，称为<strong>空穴</strong> (hole)：</p>
+      <div class="formula">\[ \text{空穴: }m_{h}^{*}=+|m^{*}|>0,\quad q_{h}=+e>0. \]</div>
+      <p>空穴是「Fermi 海中缺失的一个电子」的等效描述。本来 \(N-1\) 个电子的系统，等价于填满的 Fermi 海加一个正质量、正电荷的空穴。这一简化对半导体物理至关重要：p 型半导体的载流子就是价带顶的空穴。</p>
+      <div class="key-terms">effective mass \(m^{*}\) (有效质量), band curvature (能带曲率), negative effective mass (负有效质量), hole (空穴), light/heavy hole (轻/重空穴), \(m^{*}=0.067\,m_e\) in GaAs (GaAs 中轻电子)</div>
+
+      <h3>8. 导体、半导体、绝缘体——能带填充分类</h3>
+      <p>给定能带结构后，仅凭<strong>填充情况</strong>即可判定导电性：</p>
+      <ul>
+        <li><strong>导体 (conductor)</strong>：最高占据带<strong>部分填充</strong>（Fermi 能级落在允许带内）。加电场后 Fermi 面附近的电子可向相邻未占态漂移 → 电流。典型：Na（一个 \(3s\) 电子/原子，bcc 单胞含 2 原子 → 2 电子填最低带（容量 \(2N\)），半满）、Cu（一个 \(4s\) 电子/原子）。</li>
+        <li><strong>绝缘体 (insulator)</strong>：最高占据带<strong>完全填满</strong>，且与下一个空带之间有<strong>大带隙</strong> \(E_{g}\gg k_BT\)（典型 \(E_{g}\gtrsim3\,\mathrm{eV}\)）。电场无法把电子激发到空带 → 无电流。典型：金刚石 \(E_{g}=5.5\,\mathrm{eV}\)、\(\mathrm{SiO_{2}}\) \(E_{g}\approx8.9\,\mathrm{eV}\)。</li>
+        <li><strong>半导体 (semiconductor)</strong>：能带结构与绝缘体相同，但带隙<strong>较小</strong>（\(E_{g}\sim0.1\text{–}2\,\mathrm{eV}\)）。室温热激发可让少量电子跃过带隙进入导带，留下空穴 → 弱电流。典型：Si \(E_{g}=1.12\,\mathrm{eV}\)、Ge \(E_{g}=0.67\,\mathrm{eV}\)、GaAs \(E_{g}=1.42\,\mathrm{eV}\)。</li>
+      </ul>
+      <p>关键判定：<strong>带隙大小 × 填充是否半满</strong>。一个满带对电流<strong>无贡献</strong>——电场使所有电子整体平移 \(k\)，但满带中每移走一个 \(k\) 态的电子就有另一个填进来，净电流为零。这正是 Pauli 原理的体现。</p>
+      <div class="key-terms">conductor (导体), insulator (绝缘体), semiconductor (半导体), band filling (能带填充), full band contributes no current (满带不导电), band gap \(E_g\) (带隙)</div>
+
+      <h3>9. Fermi 面——动量空间的「等能面」</h3>
+      <p>\(T=0\) 时电子占据所有 \(|\vec k|\le k_{F}\) 的态；在 \(\vec k\) 空间中 \(|\vec k|=k_{F}\) 的曲面就是 <strong>Fermi 面</strong> (Fermi surface)。自由电子气 Fermi 面是球面；周期势中 Fermi 面被 Brillouin 区边界扭曲（可呈「脖子」、「口袋」等复杂形状）。Fermi 面的拓扑（形状、面积、是否存在 «<em>open orbits</em>»）决定了金属的<strong>各向异性输运</strong>：Hall 系数、磁阻、de Haas–van Alphen 振荡频率均直接来自 Fermi 面。<strong>只有 Fermi 面上的电子对直流电导有贡献</strong>——这是固体物理最重要的直觉之一。</p>
+      <div class="key-terms">Fermi surface (Fermi 面), Fermi sphere (Fermi 球), Brillouin zone (Brillouin 区), de Haas–van Alphen effect (de Haas–van Alphen 效应), open orbit (开放轨道)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从自由电子气到 \(C_{\mathrm{el}}=\gamma T\)</h2>
+      <p><strong>目标</strong>：从 Fermi–Dirac 分布与 3D 态密度 \(g(E)\propto\sqrt{E}\) 出发，严格推导 Sommerfeld 电子线性热容 \(C_{\mathrm{el}}=\gamma T\)，并解释 \(\gamma\) 比 Drude 经典值小 \(\sim T/T_{F}\) 倍的物理根源。</p>
+
+      <p><strong>第一步：Sommerfeld 展开</strong>。考虑积分 \(\displaystyle I(\mu,T)=\int_{0}^{\infty}\!\phi(E)\,f(E)\,dE\)，其中 \(\phi(E)\) 是任一关于能量光滑的函数（态密度、或能量×态密度），\(f(E)\) 是 Fermi–Dirac 分布。分部积分（注意 \(\dv{f}{E}\) 在 \(T\to0\) 极限收缩为 \(-\delta(E-\mu)\)，有限 \(T\) 下它在 \(E=\mu\) 附近呈宽度 \(\sim k_{B}T\) 的窄峰），给出标准展开：</p>
+      <div class="formula">\[ I(\mu,T)=\int_{0}^{\mu}\!\phi(E)\,dE+\frac{\pi^{2}}{6}(k_{B}T)^{2}\,\phi'(\mu)+O(T^{4}). \]</div>
+      <p>这就是 <strong>Sommerfeld 展开</strong> (Sommerfeld expansion)：\(T\) 越小，越接近 \(T=0\) 时的「积分到 \(\mu\)」值，修正 \(\propto T^{2}\)。所有低温度性质都从此展开出发。</p>
+
+      <p><strong>第二步：内能 \(U\)</strong>。每体积内能 \(u=U/V=\int_{0}^{\infty}\!E\,g(E)\,f(E)\,dE\)，对应 \(\phi(E)=E\,g(E)\)。对 3D 自由电子气 \(g(E)\propto\sqrt{E}\)，故 \(\phi(E)\propto E^{3/2}\)、\(\phi'(E)\propto E^{1/2}\)。代入展开：</p>
+      <div class="formula">\[ u(T)=\underbrace{\int_{0}^{E_F}\!E\,g(E)\,dE}_{u_{0}\ \text{(零点, 不贡献热容)}}+\frac{\pi^{2}}{6}(k_{B}T)^{2}\,\phi'(E_F)+\cdots \]</div>
+      <p>\(\phi'(E)=\dv{}{E}\big[E\,g(E)\big]=g(E)+E\,g'(E)\)。由 \(g\propto\sqrt{E}\) 知 \(E\,g'(E)=\tfrac{1}{2}g(E)\)，故 \(\phi'(E_F)=\tfrac{3}{2}g(E_F)\)。于是</p>
+      <div class="formula">\[ u(T)-u_{0}=\frac{\pi^{2}}{6}(k_{B}T)^{2}\cdot\frac{3}{2}g(E_F)=\frac{\pi^{2}}{4}(k_{B}T)^{2}g(E_F). \]</div>
+
+      <p><strong>第三步：\(\mu(T)\) 的漂移（关键修正）</strong>。<strong>注意</strong>：\(C_{\mathrm{el}}\) 是固定粒子数下的热容，但 Sommerfeld 展开把 \(u\) 表为 \((\mu,T)\) 的函数，而固定 \(n\) 下化学势 \(\mu=\mu(T)\) 随温度漂移！忽略这一点会得到错误系数。先求 \(\dv{\mu}{T}\)。把 \(n=\int_{0}^{\mu}g(E)\,dE+\tfrac{\pi^{2}}{6}(k_{B}T)^{2}g'(\mu)\) 对 \(T\) 求导，令 \(\dv{n}{T}=0\)：</p>
+      <div class="formula">\[ 0=g(\mu)\,\dv{\mu}{T}+\frac{\pi^{2}}{3}k_{B}^{2}T\,g'(\mu)\quad\Longrightarrow\quad \dv{\mu}{T}=-\frac{\pi^{2}}{3}k_{B}^{2}T\,\frac{g'(\mu)}{g(\mu)}. \]</div>
+      <p>对 \(g\propto\sqrt{E}\) 有 \(g'/g=1/(2E)\)，故 \(\dv{\mu}{T}=-(\pi^{2}/6)\,k_{B}^{2}T/E_F\)，积分得 \(\mu(T)=E_F-(\pi^{2}/12)(k_{B}T)^{2}/E_F+\cdots\)（化学势随 \(T\) 略降）。</p>
+
+      <p><strong>第四步：求 \(C_{\mathrm{el}}\) 与系数 \(\gamma\)</strong>。把 \(u(T)=\int_{0}^{\mu(T)}\!E\,g(E)\,dE+\tfrac{\pi^{2}}{6}(k_{B}T)^{2}\cdot\tfrac{3}{2}g(\mu)\) 在固定 \(n\) 下对 \(T\) 求导（链式法则）：</p>
+      <div class="formula">\[ C_{\mathrm{el}}=\dv{u}{T}\Big|_{n}=\underbrace{\mu\,g(\mu)\,\dv{\mu}{T}}_{\text{漂移项}}+\underbrace{\frac{\pi^{2}}{3}k_{B}^{2}T\cdot\frac{3}{2}g(\mu)}_{(\partial u/\partial T)_{\mu}}=\Big(\frac{\pi^{2}}{2}-\frac{\pi^{2}}{6}\Big)k_{B}^{2}T\,g(E_F)=\frac{\pi^{2}}{3}k_{B}^{2}T\,g(E_F), \]</div>
+      <p>其中第一项代入 \(\mu\,g(\mu)\approx E_F g(E_F)\) 与 \(\dv{\mu}{T}=-(\pi^{2}/6)k_{B}^{2}T/E_F\) 给出 \(-(\pi^{2}/6)k_{B}^{2}T\,g(E_F)\)。结论：</p>
+      <div class="formula">\[ \boxed{\;C_{\mathrm{el}}=\gamma_{V}\,T,\qquad \gamma_{V}=\frac{\pi^{2}}{3}k_{B}^{2}\,g(E_F)=\frac{\pi^{2}}{2}\frac{n\,k_{B}^{2}}{E_F}\;}\quad(\text{每体积；用 }g(E_F)=3n/(2E_F)\text{ 得第二形式}) \]</div>
+      <p><strong>每摩尔</strong>形式：乘以摩尔体积 \(V_{\mathrm{mol}}=M/\rho\)，并用 \(n\,V_{\mathrm{mol}}=Z\,N_{A}\)（\(Z\) 为每原子价电子数；对单价金属 \(Z=1\)）：</p>
+      <div class="formula">\[ \boxed{\;\gamma_{\mathrm{mol}}=\gamma_{V}\,V_{\mathrm{mol}}=\frac{\pi^{2}}{3}k_{B}^{2}\,g(E_F)\,V_{\mathrm{mol}}=\frac{\pi^{2}}{2}\frac{Z\,N_{A}\,k_{B}^{2}}{E_F}=\frac{\pi^{2}}{2}\frac{Z\,R\,k_{B}}{E_F}\;} \]</div>
+      <p>（最后一等式用 \(R=N_{A}k_{B}\)。）对 Cu（\(Z=1\)、\(E_F=7.00\,\mathrm{eV}=1.121\times10^{-18}\,\mathrm{J}\)）数值核对：</p>
+      <div class="formula">\[ \gamma_{\mathrm{mol}}=\frac{\pi^{2}(6.022\times10^{23})(1.381\times10^{-23})^{2}}{2(1.121\times10^{-18})}=\frac{9.870\times(6.022\times10^{23})(1.907\times10^{-46})}{2.242\times10^{-18}} \]</div>
+      <div class="formula">\[ =\frac{9.870\times1.148\times10^{-22}}{2.242\times10^{-18}}=\frac{1.133\times10^{-21}}{2.242\times10^{-18}}=5.05\times10^{-4}\,\mathrm{J\,mol^{-1}\,K^{-2}}=0.505\,\mathrm{mJ\,mol^{-1}\,K^{-2}}, \]</div>
+      <p>与例 3.3 用 \(g(E_F)\) 路径所得完全一致 ✓。<strong>关键收获</strong>：负的「漂移项」\(-(\pi^{2}/6)k_{B}^{2}T\,g(E_F)\) 把 \((\partial u/\partial T)_{\mu}\) 的系数从 \(\pi^{2}/2\) 降到 \(\pi^{2}/3\)。物理上，\(\mu\) 随 \(T\) 下降使部分能量变化以「化学势下移」而非「动能增加」的形式出现，减少了真正进入热容的部分。</p>
+
+      <p><strong>第五步：物理意义</strong>。</p>
+      <ul>
+        <li>\(C_{\mathrm{el}}\propto T\)（线性），而 Drude 经典给出常数 \(C_{\mathrm{el}}^{\mathrm{Drude}}=\tfrac{3}{2}Nk_{B}\)。比值 \(C_{\mathrm{el}}/C_{\mathrm{el}}^{\mathrm{Drude}}\sim T/T_{F}\)，室温下约 \(10^{-2}\)（详见例 3.3）。</li>
+        <li>\(\gamma\propto g(E_F)\propto 1/E_F\)：<strong>态密度越大、Fermi 能越低 → 电子热容越大</strong>。过渡金属（\(d\) 带靠近 \(E_F\)，\(g(E_F)\) 大）的 \(\gamma\) 比碱金属大几倍。</li>
+        <li>低温下电子 (\(\propto T\)) 与晶格 (\(\propto T^{3}\)) 共同给出 \(C=\gamma T+\beta T^{3}\)，是低温物理测 \(\gamma\) 与 \(\Theta_{D}\) 的标准拟合形式。</li>
+      </ul>
+      <p>整个推导只用到 \(g(E)\propto\sqrt{E}\)（3D 自由电子气几何）与 Fermi–Dirac 统计——这就是为何线性电子热容是「Fermi 海的指纹」：任何遵守 Fermi 统计的系统在低温都有 \(\propto T\) 的热容贡献。\(\square\)</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 金属钠的 Fermi 能、Fermi 速度与 Fermi 温度 Fermi energy, velocity, and temperature of sodium</h4>
+        <p class="example-statement">金属 Na 是 bcc 结构（晶格常数 \(a=4.29\,\text{\AA}\)），密度 \(\rho=971\,\mathrm{kg/m^{3}}\)，摩尔质量 \(M=22.99\,\mathrm{g/mol}\)。每个 Na 原子贡献一个 \(3s\) 价电子（\(Z=1\)）。把它视为自由电子气，求：<strong>(a)</strong> 电子数密度 \(n\)；<strong>(b)</strong> Fermi 波矢 \(k_F\)；<strong>(c)</strong> Fermi 能 \(E_F\)（eV）；<strong>(d)</strong> Fermi 速度 \(v_F\)；<strong>(e)</strong> Fermi 温度 \(T_F\)。常量：\(\hbar=1.055\times10^{-34}\,\mathrm{J\,s}\)，\(m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)，\(k_{B}=1.381\times10^{-23}\,\mathrm{J/K}\)，\(N_{A}=6.022\times10^{23}\,\mathrm{mol^{-1}}\)，\(1\,\mathrm{eV}=1.602\times10^{-19}\,\mathrm{J}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 电子数密度</strong>。\(Z=1\)，故 \(n=Z\cdot\rho N_{A}/M\)：</p>
+          <div class="formula">\[ n=\frac{1\times971\times6.022\times10^{23}}{22.99\times10^{-3}}=\frac{5.847\times10^{26}}{2.299\times10^{-2}}=2.54\times10^{28}\,\mathrm{m^{-3}}. \]</div>
+          <p class="step"><strong>(b) Fermi 波矢</strong>。\(k_F=(3\pi^{2}n)^{1/3}\)：</p>
+          <div class="formula">\[ 3\pi^{2}n=29.61\times2.54\times10^{28}=7.52\times10^{29}\,\mathrm{m^{-3}}, \]</div>
+          <div class="formula">\[ k_F=(7.52\times10^{29})^{1/3}=9.10\times10^{9}\,\mathrm{m^{-1}}\;(=0.910\,\text{\AA}^{-1}). \]</div>
+          <p class="step"><strong>(c) Fermi 能</strong>。\(E_F=\hbar^{2}k_{F}^{2}/(2m_{e})\)：</p>
+          <div class="formula">\[ E_F=\frac{(1.055\times10^{-34})^{2}(9.10\times10^{9})^{2}}{2(9.11\times10^{-31})}=\frac{(1.113\times10^{-68})(8.29\times10^{19})}{1.822\times10^{-30}}=\frac{9.23\times10^{-49}}{1.822\times10^{-30}}=5.07\times10^{-19}\,\mathrm{J} \]</div>
+          <div class="formula">\[ E_F=\frac{5.07\times10^{-19}}{1.602\times10^{-19}}=3.16\,\mathrm{eV}. \]</div>
+          <p><span class="ans">\(E_F\approx3.16\,\mathrm{eV}\)</span>（与标准参考值 \(3.24\,\mathrm{eV}\) 接近；差异来自 \(T=293\,\mathrm{K}\) 下的热膨胀使晶格常数略大）。</p>
+          <p class="step"><strong>(d) Fermi 速度</strong>。\(v_F=\hbar k_F/m_{e}\)：</p>
+          <div class="formula">\[ v_F=\frac{(1.055\times10^{-34})(9.10\times10^{9})}{9.11\times10^{-31}}=\frac{9.60\times10^{-25}}{9.11\times10^{-31}}=1.05\times10^{6}\,\mathrm{m/s}. \]</div>
+          <p><span class="ans">\(v_F\approx1.05\times10^{6}\,\mathrm{m/s}\)</span>（约为光速的 \(1/286\)——尽管金属整体「冷」，电子以惊人速度运动）。</p>
+          <p class="step"><strong>(e) Fermi 温度</strong>。\(T_F=E_F/k_{B}\)：</p>
+          <div class="formula">\[ T_F=\frac{5.07\times10^{-19}}{1.381\times10^{-23}}=3.67\times10^{4}\,\mathrm{K}. \]</div>
+          <p><span class="ans">\(T_F\approx3.67\times10^{4}\,\mathrm{K}=36700\,\mathrm{K}\)</span>——比太阳表面（5778 K）还高 6 倍。这正是为何室温（300 K）对 Na 的电子气是「冰冷」的：\(T/T_{F}=300/36700\approx0.008\)，只有最顶端 \(0.8\%\) 的电子能感受到温度。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 铜的 Fermi 能级处的态密度 Density of states at the Fermi level of copper</h4>
+        <p class="example-statement">金属 Cu（fcc，\(Z=1\)，\(4s^{1}\)），密度 \(\rho=8960\,\mathrm{kg/m^{3}}\)，摩尔质量 \(M=63.55\,\mathrm{g/mol}\)。已知自由电子气模型给出 \(E_F(\mathrm{Cu})=7.00\,\mathrm{eV}\)（参见练习 1）。求：<strong>(a)</strong> 电子数密度 \(n\)；<strong>(b)</strong> Fermi 能级处单位体积的态密度 \(g(E_F)\)（单位 \(\mathrm{J^{-1}\,m^{-3}}\)）；<strong>(c)</strong> 每原子每 eV 的态密度；<strong>(d)</strong> 每摩尔每 eV 的态密度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。</p>
+          <div class="formula">\[ n=\frac{1\times8960\times6.022\times10^{23}}{63.55\times10^{-3}}=\frac{5.396\times10^{27}}{6.355\times10^{-2}}=8.49\times10^{28}\,\mathrm{m^{-3}}. \]</div>
+          <p class="step"><strong>(b)</strong>。用简洁关系 \(g(E_F)=3n/(2E_F)\)（3D 自由电子气，含自旋）。先把 \(E_F\) 换为 J：</p>
+          <div class="formula">\[ E_F=7.00\times1.602\times10^{-19}=1.121\times10^{-18}\,\mathrm{J}, \]</div>
+          <div class="formula">\[ g(E_F)=\frac{3\times8.49\times10^{28}}{2\times1.121\times10^{-18}}=\frac{2.55\times10^{29}}{2.242\times10^{-18}}=1.14\times10^{47}\,\mathrm{J^{-1}\,m^{-3}}. \]</div>
+          <p><span class="ans">\(g(E_F)\approx1.14\times10^{47}\,\mathrm{J^{-1}\,m^{-3}}\)</span>。</p>
+          <p class="step"><strong>(c) 每原子每 eV</strong>。每原子所占体积 \(V_{\mathrm{atom}}=1/n=1.18\times10^{-29}\,\mathrm{m^{3}}\)；每 eV 转 J：\(1\,\mathrm{eV}=1.602\times10^{-19}\,\mathrm{J}\)。故</p>
+          <div class="formula">\[ g(E_F)\cdot V_{\mathrm{atom}}\cdot 1\,\mathrm{eV}=1.14\times10^{47}\times1.18\times10^{-29}\times1.602\times10^{-19}=0.216\,\mathrm{states/(eV\cdot atom)}. \]</div>
+          <p><span class="ans">\(g(E_F)\approx0.22\,\mathrm{states/(eV\cdot atom)}\)</span>——每原子在 Fermi 能处每 eV 大约只对应 0.2 个态。换言之 Fermi 能级附近 \(\sim5\,\mathrm{eV}\) 范围内容纳约 1 个电子/原子。</p>
+          <p class="step"><strong>(d) 每摩尔每 eV</strong>。摩尔体积 \(V_{\mathrm{mol}}=M/\rho=63.55\times10^{-3}/8960=7.09\times10^{-6}\,\mathrm{m^{3}/mol}\)；</p>
+          <div class="formula">\[ g(E_F)\cdot V_{\mathrm{mol}}\cdot 1\,\mathrm{eV}=1.14\times10^{47}\times7.09\times10^{-6}\times1.602\times10^{-19}=1.30\times10^{22}\,\mathrm{states/(eV\cdot mol)}. \]</div>
+          <p><span class="ans">\(\approx1.30\times10^{22}\,\mathrm{states/(eV\cdot mol)}\)</span>。这正是例 3.3 计算 \(\gamma\) 所需的 \(g(E_F)\) 量级。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 铜的电子热容——为何比晶格小 100 倍 Electronic specific heat of Cu, and why it is ~1% of the lattice</h4>
+        <p class="example-statement">用自由电子气数据 \(E_F(\mathrm{Cu})=7.00\,\mathrm{eV}\)、\(n=8.49\times10^{28}\,\mathrm{m^{-3}}\)、摩尔体积 \(V_{\mathrm{mol}}=7.09\times10^{-6}\,\mathrm{m^{3}/mol}\)，计算：<strong>(a)</strong> Sommerfeld 系数 \(\gamma_{\mathrm{mol}}\)（理论值，单位 \(\mathrm{mJ\,mol^{-1}\,K^{-2}}\)）；<strong>(b)</strong> 室温 \(T=300\,\mathrm{K}\) 时电子热容 \(C_{\mathrm{el}}\)；<strong>(c)</strong> 同温度下 Dulong–Petit 晶格热容 \(C_{\mathrm{latt}}=3R\)，求比值 \(C_{\mathrm{el}}/C_{\mathrm{latt}}\)；<strong>(d)</strong> 低温 \(T=4\,\mathrm{K}\) 时两者的比值（取 Cu 的 Debye 温度 \(\Theta_{D}=343\,\mathrm{K}\)，用 Debye \(T^{3}\) 律）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) Sommerfeld 系数</strong>。理论公式 \(\gamma_{\mathrm{mol}}=\dfrac{\pi^{2}}{3}k_{B}^{2}g(E_F)V_{\mathrm{mol}}\)。先用例 3.2 的 \(g(E_F)=1.14\times10^{47}\,\mathrm{J^{-1}\,m^{-3}}\)：</p>
+          <div class="formula">\[ \gamma_{\mathrm{mol}}=\frac{\pi^{2}}{3}(1.381\times10^{-23})^{2}(1.14\times10^{47})(7.09\times10^{-6}) \]</div>
+          <div class="formula">\[ =3.290\times(1.907\times10^{-46})\times1.14\times10^{47}\times7.09\times10^{-6} \]</div>
+          <div class="formula">\[ =3.290\times2.173\times10^{1}\times7.09\times10^{-6}=5.05\times10^{-4}\,\mathrm{J\,mol^{-1}\,K^{-2}}=0.505\,\mathrm{mJ\,mol^{-1}\,K^{-2}}. \]</div>
+          <p><span class="ans">\(\gamma_{\mathrm{mol}}^{\mathrm{theory}}\approx0.51\,\mathrm{mJ\,mol^{-1}\,K^{-2}}\)</span>。实验值 \(\gamma_{\mathrm{mol}}^{\mathrm{exp}}=0.695\,\mathrm{mJ\,mol^{-1}\,K^{-2}}\)，相差因子 \(1.38\)。这正是<strong>电子–声子质量增强</strong> \(m^{*}=m_{e}(1+\lambda)\)，\(\lambda_{\mathrm{Cu}}\approx0.14\)，理论增强 \(1+\lambda=1.14\)；剩余差异来自能带结构（Cu 的 \(d\) 带靠近 Fermi 能级）。</p>
+          <p class="step"><strong>(b) 室温 \(C_{\mathrm{el}}\)</strong>。</p>
+          <div class="formula">\[ C_{\mathrm{el}}(300\,\mathrm{K})=\gamma_{\mathrm{mol}}T=5.05\times10^{-4}\times300=0.152\,\mathrm{J\,mol^{-1}\,K^{-1}}. \]</div>
+          <p class="step"><strong>(c) 比值</strong>。\(C_{\mathrm{latt}}=3R=3\times8.314=24.94\,\mathrm{J\,mol^{-1}\,K^{-1}}\)。</p>
+          <div class="formula">\[ \frac{C_{\mathrm{el}}}{C_{\mathrm{latt}}}=\frac{0.152}{24.94}=6.08\times10^{-3}\approx0.6\%. \]</div>
+          <p><span class="ans">\(C_{\mathrm{el}}/C_{\mathrm{latt}}(300\,\mathrm{K})\approx0.6\%\)</span>——电子贡献可忽略不计。这与 Drude 预言的 \(C_{\mathrm{el}}/C_{\mathrm{latt}}=1/2\) 相比缩小约 \(80\) 倍。<strong>物理直觉</strong>：\(T/T_{F}=300/81200\approx0.004\)，只有 \(0.4\%\) 电子可被热激发。</p>
+          <p class="step"><strong>(d) 低温比较</strong>。Debye \(T^{3}\) 律：\(C_{\mathrm{latt}}=\beta T^{3}\)，\(\beta=(12\pi^{4}/5)R/\Theta_{D}^{3}\)。</p>
+          <div class="formula">\[ \beta=\frac{12\pi^{4}}{5}\cdot\frac{8.314}{(343)^{3}}=\frac{234.5\times8.314}{4.035\times10^{7}}=\frac{1949}{4.035\times10^{7}}=4.83\times10^{-5}\,\mathrm{J\,mol^{-1}\,K^{-4}}, \]</div>
+          <div class="formula">\[ C_{\mathrm{latt}}(4\,\mathrm{K})=4.83\times10^{-5}\times(4)^{3}=4.83\times10^{-5}\times64=3.09\times10^{-3}\,\mathrm{J\,mol^{-1}\,K^{-1}}, \]</div>
+          <div class="formula">\[ C_{\mathrm{el}}(4\,\mathrm{K})=5.05\times10^{-4}\times4=2.02\times10^{-3}\,\mathrm{J\,mol^{-1}\,K^{-1}}, \]</div>
+          <div class="formula">\[ \frac{C_{\mathrm{el}}}{C_{\mathrm{latt}}}(4\,\mathrm{K})=\frac{2.02\times10^{-3}}{3.09\times10^{-3}}=0.65\;\text{(电子已占 40\%+)}. \]</div>
+          <p><span class="ans">在 \(T=4\,\mathrm{K}\)，\(C_{\mathrm{el}}/C_{\mathrm{latt}}\approx0.65\)</span>，电子贡献已与晶格相当。令 \(\gamma T=\beta T^{3}\) 得交叠温度 \(T^{*}=\sqrt{\gamma/\beta}=\sqrt{5.05\times10^{-4}/4.83\times10^{-5}}=\sqrt{10.5}=3.24\,\mathrm{K}\)：低于 \(3.2\,\mathrm{K}\)，电子热容<strong>占主导</strong>。这是低温物理用 \(C=\gamma T+\beta T^{3}\) 双重拟合反推 \(\gamma\) 与 \(\Theta_{D}\) 的实验基础。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 为何 Na 是导体而金刚石是绝缘体？ Why Na is a conductor and diamond is an insulator</h4>
+        <p class="example-statement">用能带填充论证判断以下材料是导体、半导体还是绝缘体，并估算室温（\(T=300\,\mathrm{K}\)，\(k_{B}T=0.0259\,\mathrm{eV}\)）下本征载流子的热激发概率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 金属 Na</strong>。Na 是 bcc（每单胞 2 个原子），电子构型 \([\mathrm{Ne}]3s^{1}\)，即每原子贡献 1 个 \(3s\) 价电子。能带容纳电子数：每条由 \(N\) 个原子轨道形成的能带，可容 \(2N\) 个电子（自旋上、下）。Na 的 \(N\) 个 \(3s\) 轨道合并成一条 \(3s\) 能带（容量 \(2N\)），而总共只有 \(N\) 个价电子 → 该带<strong>半满</strong>，Fermi 能级<strong>落在带中央</strong>。施加电场时，Fermi 面附近大量空态（同带内 \(k\) 略大的态）可被占据 → 自由导电。<span class="ans">Na 是导体</span>。</p>
+          <p class="step"><strong>(b) 金刚石 C</strong>。金刚石中 C 原子 \(sp^{3}\) 杂化与 4 个最近邻形成共价键。两条由 \(2s\)、\(2p\) 杂化轨道分裂形成的能带（成键 \(\sigma\) 与反键 \(\sigma^{*}\)，各含 \(4N\) 个态/带）被<strong>显著带隙</strong>隔开。每 C 原子有 4 个价电子，总共 \(4N\) 个电子刚好<strong>填满较低（成键）带</strong>，反键带全空。带隙：</p>
+          <div class="formula">\[ E_{g}^{\mathrm{diamond}}=5.5\,\mathrm{eV}\gg k_{B}T=0.0259\,\mathrm{eV}. \]</div>
+          <p>热激发概率正比于 \(e^{-E_{g}/(2k_{B}T)}\)：</p>
+          <div class="formula">\[ e^{-E_{g}/2k_{B}T}=e^{-5.5/(2\times0.0259)}=e^{-106.2}=3.0\times10^{-47}. \]</div>
+          <p>每 mol 电子被激发数 \(\sim N_{A}\times3.0\times10^{-47}\approx2\times10^{-23}\)——远小于 1。<span class="ans">金刚石是优良绝缘体</span>（电阻率 \(\rho\sim10^{13}\,\Omega\,\mathrm{m}\)）。</p>
+          <p class="step"><strong>(c) 硅 Si</strong>。结构与金刚石同（\(sp^{3}\) 共价），但带隙显著较小：</p>
+          <div class="formula">\[ E_{g}^{\mathrm{Si}}=1.12\,\mathrm{eV},\qquad e^{-E_{g}/2k_{B}T}=e^{-1.12/0.0518}=e^{-21.6}=4.2\times10^{-10}. \]</div>
+          <p>每 mol 被激发电子数 \(N_{A}\times4.2\times10^{-10}=2.5\times10^{14}\,\mathrm{cm^{-3}}\)（本征 Si 室温载流子浓度 \(\sim1.5\times10^{10}\,\mathrm{cm^{-3}}\)，量级吻合；差异来自有效质量与精确跃迁矩阵元）。<span class="ans">Si 是半导体</span>。</p>
+          <p class="step"><strong>物理核验</strong>。判定准则归纳：<strong>(i)</strong> 价电子数使最高占据带<strong>部分填满 → 导体</strong>（碱金属、Cu、Al）；<strong>(ii)</strong> 最高占据带<strong>填满且带隙大（\(\gtrsim3\,\mathrm{eV}\)）→ 绝缘体</strong>（金刚石、\(\mathrm{SiO_{2}}\)）；<strong>(iii)</strong> 同 (ii) 但<strong>带隙小（\(\lesssim2\,\mathrm{eV}\)）→ 半导体</strong>（Si、Ge、GaAs）。注意二价金属如 Mg（\(3s^{2}\)）按朴素计数应填满 \(3s\) 带看似绝缘体，实际因 \(s\) 带与 \(p\) 带在能量上重叠，总带未满 → 仍是导体。这提示「能带填充 + 带隙大小」是必要条件，但需考虑<strong>带重叠</strong>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 由色散关系 \(E(k)\) 求有效质量 Effective mass from a tight-binding \(E(k)\)</h4>
+        <p class="example-statement">一维紧束缚模型给出最低能带的色散关系</p>
+        <div class="formula">\[ E(k)=E_{0}-A\cos(ka)+2B\cos(2ka), \]</div>
+        <p class="example-statement">其中 \(E_{0}=-1.20\,\mathrm{eV}\)、\(A=0.80\,\mathrm{eV}\)、\(B=0.05\,\mathrm{eV}\)、晶格常数 \(a=3.0\,\text{\AA}=3.0\times10^{-10}\,\mathrm{m}\)。求：<strong>(a)</strong> 带底（\(k=0\)）能量 \(E_{\min}\) 与有效质量 \(m^{*}(0)\)；<strong>(b)</strong> 带顶（\(k=\pi/a\)）能量 \(E_{\max}\) 与有效质量 \(m^{*}(\pi/a)\)；<strong>(c)</strong> 带宽 \(W=E_{\max}-E_{\min}\)；<strong>(d)</strong> 若该带被电子填到半满（Fermi 波矢 \(k_{F}=\pi/(2a)\)），求 Fermi 能级（相对于带底）与该处有效质量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>。先求曲率：\(\displaystyle\frac{d^{2}E}{dk^{2}}=\frac{d}{dk}[Aa\sin(ka)-4Ba\sin(2ka)]=Aa^{2}\cos(ka)-8Ba^{2}\cos(2ka)\)。</p>
+          <p class="step"><strong>(a) 带底 \(k=0\)</strong>。</p>
+          <div class="formula">\[ E(0)=E_{0}-A\cos0+2B\cos0=E_{0}-A+2B=-1.20-0.80+0.10=-1.90\,\mathrm{eV}, \]</div>
+          <div class="formula">\[ \frac{d^{2}E}{dk^{2}}\Big|_{0}=Aa^{2}-8Ba^{2}=(0.80-8\times0.05)\,\mathrm{eV}\cdot a^{2}=0.40\,\mathrm{eV}\cdot a^{2}, \]</div>
+          <div class="formula">\[ m^{*}(0)=\frac{\hbar^{2}}{(d^{2}E/dk^{2})\big|_{0}}=\frac{(1.055\times10^{-34})^{2}}{0.40\times(1.602\times10^{-19})\times(3.0\times10^{-10})^{2}}\,\mathrm{kg}. \]</div>
+          <p class="step">分母：\(0.40\times1.602\times10^{-19}\times9.0\times10^{-20}=5.77\times10^{-39}\,\mathrm{J\,m^{2}}\)。</p>
+          <div class="formula">\[ m^{*}(0)=\frac{1.113\times10^{-68}}{5.77\times10^{-39}}=1.93\times10^{-30}\,\mathrm{kg}=0.212\,m_{e}. \]</div>
+          <p><span class="ans">\(E_{\min}=-1.90\,\mathrm{eV}\)，\(m^{*}(0)=0.21\,m_{e}\)</span>（比自由电子轻 5 倍——「轻电子」意味着高迁移率）。</p>
+          <p class="step"><strong>(b) 带顶 \(k=\pi/a\)</strong>。</p>
+          <div class="formula">\[ E(\pi/a)=E_{0}-A\cos\pi+2B\cos(2\pi)=E_{0}+A+2B=-1.20+0.80+0.10=-0.30\,\mathrm{eV}, \]</div>
+          <div class="formula">\[ \frac{d^{2}E}{dk^{2}}\Big|_{\pi/a}=Aa^{2}\cos\pi-8Ba^{2}\cos(2\pi)=(-0.80-0.40)\,\mathrm{eV}\cdot a^{2}=-1.20\,\mathrm{eV}\cdot a^{2}, \]</div>
+          <div class="formula">\[ m^{*}(\pi/a)=\frac{\hbar^{2}}{-1.20\times1.602\times10^{-19}\times9.0\times10^{-20}}=\frac{1.113\times10^{-68}}{-1.73\times10^{-38}}=-6.44\times10^{-31}\,\mathrm{kg}=-0.71\,m_{e}. \]</div>
+          <p><span class="ans">\(E_{\max}=-0.30\,\mathrm{eV}\)，\(m^{*}(\pi/a)=-0.71\,m_{e}\)</span>——<strong>负有效质量</strong>！这正是带顶电子的标志。等价描述：把带顶附近「缺失的电子」视作<strong>空穴</strong>，质量 \(m_{h}^{*}=+0.71\,m_{e}\)、电荷 \(+e\)。</p>
+          <p class="step"><strong>(c) 带宽</strong>。</p>
+          <div class="formula">\[ W=E_{\max}-E_{\min}=(-0.30)-(-1.90)=1.60\,\mathrm{eV}. \]</div>
+          <p><span class="ans">\(W=1.60\,\mathrm{eV}\)</span>。带宽由 hopping 参数 \(A\) 主导（粗略 \(W\approx2A=1.60\,\mathrm{eV}\) ✓）。</p>
+          <p class="step"><strong>(d) 半满，Fermi 波矢 \(k_{F}=\pi/(2a)\)</strong>。</p>
+          <div class="formula">\[ E(\pi/2a)=E_{0}-A\cos(\pi/2)+2B\cos(\pi)=E_{0}+0-2B=-1.20-0.10=-1.30\,\mathrm{eV}, \]</div>
+          <p>相对于带底：\(E_{F}-E_{\min}=-1.30-(-1.90)=+0.60\,\mathrm{eV}\)（恰为带宽之半，因 \(B\) 很小时色散近似对称）。</p>
+          <div class="formula">\[ \frac{d^{2}E}{dk^{2}}\Big|_{\pi/2a}=Aa^{2}\cos(\pi/2)-8Ba^{2}\cos(\pi)=0-8B(-1)a^{2}=+8Ba^{2}=0.40\,\mathrm{eV}\cdot a^{2}, \]</div>
+          <div class="formula">\[ m^{*}(\pi/2a)=\frac{\hbar^{2}}{0.40\times1.602\times10^{-19}\times9.0\times10^{-20}}=\frac{1.113\times10^{-68}}{5.77\times10^{-39}}=1.93\times10^{-30}\,\mathrm{kg}=0.21\,m_{e}. \]</div>
+          <p><span class="ans">\(E_{F}-E_{\min}=0.60\,\mathrm{eV}\)，\(m^{*}(\pi/2a)=0.21\,m_{e}\)</span>。注：这里曲率与带底相同是 \(B\)-项的特殊对称所致，一般 Fermi 处曲率不同于带底。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：以为「所有电子」都参与导电与热容。</strong>恰恰相反——Pauli 不相容原理把 \(T=0\) 时所有 \(|\vec k|&lt;k_{F}\) 的电子<strong>深锁</strong>在 Fermi 海中，没有相邻空态可跃迁。<strong>只有 Fermi 面 \(\pm k_{B}T\) 厚度（或在外加电场下 \(\pm eE\tau/\hbar\) 偏移）的一层电子</strong>才对电导和热容有贡献。这就是为何 Drude 经典公式 \(C_{\mathrm{el}}=\tfrac{3}{2}Nk_{B}\) 高估约 \(T_{F}/T\sim100\) 倍。直觉准则：<strong>「活跃」电子分数 \(\sim T/T_{F}\)</strong>。</li>
+        <li><strong>误区 2：以为能带来自「原子能级的简单展宽」，与晶格周期性无关。</strong>能带的<strong>根本起源</strong>是<strong>周期势</strong>（平移对称性）+ Bloch 定理；<strong>禁带</strong>更具体地来自 Brillouin 区边界 \(k=\pm\pi/a\) 处的<strong>Bragg 反射</strong>（向前与向后波相干叠加形成驻波，能级劈裂）。没有周期性就没有能带（无序体系出现<strong>Anderson 局域化</strong>，电子态可局域化）。原子能级展宽是<strong>紧束缚图像</strong>下的近似描述（\(P\to\infty\) 极限），不是能带形成的必要条件。</li>
+        <li><strong>误区 3：把空穴当作「另一种基本粒子」。</strong>空穴不是新粒子，而是「<strong>几乎填满的能带中缺失的一个电子</strong>」的等价描述。原本 \(N-1\) 个电子（在 \(N\) 个态中）的系统，<strong>数学上</strong>完全等价于「填满的 Fermi 海 + 一个准粒子（空穴）」。空穴有<strong>正质量</strong>（\(m_{h}^{*}=+|m^{*}_{e}|>0\)）和<strong>正电荷</strong>（\(q_{h}=+e\)），因为它描述的是带顶<strong>负曲率</strong>（\(m^{*}_{e}<0\)）的电子的「缺失」。空穴的「运动」实际上是大量电子集体运动的<strong>等效结果</strong>，不是单个粒子的运动。</li>
+        <li><strong>误区 4：混淆「导体/绝缘体」与「能带数的多少」。</strong>材料是导体还是绝缘体<strong>不取决于带数</strong>，而取决于<strong>最高占据带的填充情况</strong>与<strong>带隙大小</strong>。Na 仅有一条半满的 \(3s\) 带 → 导体；Mg 有充满的 \(3s\) 带，但 \(3p\) 带与之重叠，合并后仍未满 → 仍是导体；金刚石有充满的成键带与全空的反键带，被 \(5.5\,\mathrm{eV}\) 大隙隔开 → 绝缘体。<strong>满带不导电</strong>（电场使所有电子整体平移，但无净电流，因每移走一个态就有另一个填进来）。</li>
+        <li><strong>误区 5：用自由电子质量 \(m_{e}\) 算 Drude 电导率 \(\sigma=ne^{2}\tau/m_{e}\) 后直接和实验比较。</strong>在金属中应使用<strong>有效质量</strong> \(m^{*}\)，且 \(\tau\) 强烈依赖温度（声子散射 \(\tau\propto T^{-1}\) 室温以上、杂质散射 \(\tau=\mathrm{const}\) 低温）。更严重的是 \(\tau\) 难以独立测量——通常从测得的 \(\sigma\) <strong>反推</strong> \(\tau\)，得到「Drude 阴豫时间」，再与估得 \(\ell=v_{F}\tau\) 比较。Cu 室温典型 \(\tau\sim10^{-14}\,\mathrm{s}\)、\(\ell\sim 40\,\mathrm{nm}\)（约几百个原子间距），数值合理；但绝不能拿 Drude 公式当作验证 \(m_{e}\) 的手段。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 铜 Cu 的 Fermi 能。Cu（\(Z=1\)，密度 \(\rho=8960\,\mathrm{kg/m^{3}}\)，摩尔质量 \(63.55\,\mathrm{g/mol}\)）视为自由电子气。求电子数密度 \(n\)、Fermi 波矢 \(k_{F}\)、Fermi 能 \(E_{F}\)（eV）、Fermi 速度 \(v_{F}\)、Fermi 温度 \(T_{F}\)。</summary>
+        <div class="hint">用 \(n=Z\rho N_{A}/M\)，\(k_{F}=(3\pi^{2}n)^{1/3}\)，\(E_{F}=\hbar^{2}k_{F}^{2}/2m_{e}\)，\(v_{F}=\hbar k_{F}/m_{e}\)，\(T_{F}=E_{F}/k_{B}\)。</div>
+        <div class="solution">
+          <p>\(n=8960\times6.022\times10^{23}/0.06355=8.49\times10^{28}\,\mathrm{m^{-3}}\)。</p>
+          <p>\(3\pi^{2}n=29.61\times8.49\times10^{28}=2.51\times10^{30}\,\mathrm{m^{-3}}\)；\(k_{F}=(2.51\times10^{30})^{1/3}=1.36\times10^{10}\,\mathrm{m^{-1}}=1.36\,\text{\AA}^{-1}\)。</p>
+          <p>\(E_{F}=(1.055\times10^{-34})^{2}(1.36\times10^{10})^{2}/(2\times9.11\times10^{-31})=1.121\times10^{-18}\,\mathrm{J}=7.00\,\mathrm{eV}\)。</p>
+          <p>\(v_{F}=(1.055\times10^{-34})(1.36\times10^{10})/(9.11\times10^{-31})=1.57\times10^{6}\,\mathrm{m/s}\)。</p>
+          <p>\(T_{F}=7.00\times1.602\times10^{-19}/1.381\times10^{-23}=8.12\times10^{4}\,\mathrm{K}\)。</p>
+          <p><span class="ans">\(n=8.49\times10^{28}\,\mathrm{m^{-3}}\)；\(k_{F}=1.36\times10^{10}\,\mathrm{m^{-1}}\)；\(E_{F}=7.00\,\mathrm{eV}\)；\(v_{F}=1.57\times10^{6}\,\mathrm{m/s}\)；\(T_{F}=8.12\times10^{4}\,\mathrm{K}\)</span>。这些是教科书标准值。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 电子热容与晶格的交叠温度。已知 Ag 的 \(\gamma_{\mathrm{mol}}^{\mathrm{exp}}=0.646\,\mathrm{mJ\,mol^{-1}\,K^{-2}}\)、\(\Theta_{D}(\mathrm{Ag})=225\,\mathrm{K}\)。求低温下电子热容与晶格热容相等时的温度 \(T^{*}\)（即 \(\gamma T=\beta T^{3}\)）。</summary>
+        <div class="hint">\(\beta=(12\pi^{4}/5)R/\Theta_{D}^{3}\)，令 \(\gamma T=\beta T^{3}\) 解 \(T^{*}=\sqrt{\gamma/\beta}\)。</div>
+        <div class="solution">
+          <p>\(\beta=234.5\times8.314/(225)^{3}=1950/1.139\times10^{7}=1.71\times10^{-4}\,\mathrm{J\,mol^{-1}\,K^{-4}}\)。</p>
+          <p>\(T^{*}=\sqrt{\gamma/\beta}=\sqrt{6.46\times10^{-4}/1.71\times10^{-4}}=\sqrt{3.78}=1.94\,\mathrm{K}\)。</p>
+          <p><span class="ans">\(T^{*}\approx1.94\,\mathrm{K}\)</span>。低于此温度，Ag 的热容以电子项为主。这与 Cu（\(T^{*}=3.2\,\mathrm{K}\)）的差异主要来自 Ag 的 \(\Theta_{D}\) 较低（晶格 \(T^{3}\) 项较「大」）。低温物理实验中常用此温度以下区间测量 \(\gamma\) 来推断 Fermi 面态密度。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 半满带的 Fermi 能级与等价空穴描述。一维紧束缚带 \(E(k)=-2A\cos(ka)\)（\(A=1.0\,\mathrm{eV}\)、\(a=2.5\,\text{\AA}\)），每原子贡献 0.5 个电子（即半满）。求：<strong>(a)</strong> Fermi 波矢 \(k_{F}\)；<strong>(b)</strong> Fermi 能级（相对带底）；<strong>(c)</strong> 带底有效质量；<strong>(d)</strong> 若把价带顶空穴视为载流子，求空穴质量 \(m_{h}^{*}\)。</summary>
+        <div class="hint">带底 \(k=0\)，带顶 \(k=\pi/a\)。半满意味着 \(k_{F}=\pi/(2a)\)。\(m^{*}=\hbar^{2}/(E''(k))\)。</div>
+        <div class="solution">
+          <p>(a) 半满：占据 \(0\le|k|\le k_{F}\)，总电子数 = 带 \(0\le|k|\le\pi/a\) 的容量的 \(1/2\)，故 \(k_{F}=\pi/(2a)=\pi/(5.0\,\text{\AA})=6.28\times10^{9}\,\mathrm{m^{-1}}\)。</p>
+          <p>(b) 带底 \(E(0)=-2A=-2.0\,\mathrm{eV}\)；Fermi 能级 \(E_{F}=E(k_{F})=-2A\cos(\pi/2)=0\)。相对带底：\(E_{F}-E_{\min}=0-(-2.0)=2.0\,\mathrm{eV}\)。</p>
+          <p>(c) \(E''(k)=d^{2}E/dk^{2}=2Aa^{2}\cos(ka)\)；\(E''(0)=2Aa^{2}=2\times1.0\times(2.5\times10^{-10})^{2}=1.25\times10^{-19}\,\mathrm{eV\,m^{2}}\)。</p>
+          <p>\(m^{*}(0)=\hbar^{2}/E''(0)=1.113\times10^{-68}/(1.25\times10^{-19}\times1.602\times10^{-19})=1.113\times10^{-68}/2.00\times10^{-38}=5.56\times10^{-31}\,\mathrm{kg}=0.61\,m_{e}\)。</p>
+          <p>(d) 带顶 \(k=\pi/a\)：\(E''(\pi/a)=-2Aa^{2}\)，故 \(m^{*}_{e}(\pi/a)=-0.61\,m_{e}\)。等价空穴质量 \(m_{h}^{*}=+0.61\,m_{e}\)。</p>
+          <p><span class="ans">\(k_{F}=\pi/(2a)\)；\(E_{F}-E_{\min}=2.0\,\mathrm{eV}\)；\(m^{*}(0)=0.61\,m_{e}\)；\(m_{h}^{*}=0.61\,m_{e}\)</span>。注：本题半满带电子可作为载流子（无需空穴图像），但若该带<strong>几乎填满</strong>（如半导体价带），用空穴描述更经济。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 由 Drude 公式估算 Cu 的弛豫时间与平均自由程。Cu 室温电导率 \(\sigma=5.96\times10^{7}\,\mathrm{(\Omega\,m)^{-1}}\)。用自由电子气 \(n=8.49\times10^{28}\,\mathrm{m^{-3}}\)、\(v_{F}=1.57\times10^{6}\,\mathrm{m/s}\)，估算 <strong>(a)</strong> 弛豫时间 \(\tau\)；<strong>(b)</strong> 平均自由程 \(\ell=v_{F}\tau\)；<strong>(c)</strong> \(\ell\) 是 Cu 最近邻距离（\(d=2.56\,\text{\AA}\)）的多少倍？</summary>
+        <div class="hint">\(\sigma=ne^{2}\tau/m_{e}\) 解 \(\tau=m_{e}\sigma/(ne^{2})\)，然后 \(\ell=v_{F}\tau\)。</div>
+        <div class="solution">
+          <p>(a) \(\tau=m_{e}\sigma/(ne^{2})=(9.11\times10^{-31})(5.96\times10^{7})/[(8.49\times10^{28})(1.602\times10^{-19})^{2}]\)。</p>
+          <p>分子：\(5.43\times10^{-23}\)；分母：\(8.49\times10^{28}\times2.566\times10^{-38}=2.18\times10^{-9}\)。</p>
+          <p>\(\tau=5.43\times10^{-23}/2.18\times10^{-9}=2.49\times10^{-14}\,\mathrm{s}\)。</p>
+          <p>(b) \(\ell=v_{F}\tau=(1.57\times10^{6})(2.49\times10^{-14})=3.91\times10^{-8}\,\mathrm{m}=39.1\,\mathrm{nm}\)。</p>
+          <p>(c) \(\ell/d=3.91\times10^{-8}/2.56\times10^{-10}=153\) 倍。</p>
+          <p><span class="ans">\(\tau\approx2.5\times10^{-14}\,\mathrm{s}\)；\(\ell\approx39\,\mathrm{nm}\)；约为最近邻距离的 \(153\) 倍</span>。这一「长」自由程表明电子在晶格中并非「撞原子」——它们绕过离子实，主要被声子（晶格振动）散射。在液氦温度（\(4\,\mathrm{K}\)）下，声子冻死，纯 Cu 的 \(\ell\) 可达毫米量级（\(\tau\sim\mathrm{ns}\)）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 用 Wiedemann–Franz 律估算热导率。Cu 室温电导率 \(\sigma=5.96\times10^{7}\,\mathrm{(\Omega\,m)^{-1}}\)。Lorenz 数（精确 Fermi–Dirac 值）\(L=\dfrac{\pi^{2}}{3}(k_{B}/e)^{2}=2.45\times10^{-8}\,\mathrm{W\,\Omega\,K^{-2}}\)。求 Cu 的电子热导率 \(\kappa\)（\(T=300\,\mathrm{K}\)）。</summary>
+        <div class="hint">Wiedemann–Franz：\(\kappa/(\sigma T)=L\)。</div>
+        <div class="solution">
+          <p>\(\kappa=L\sigma T=(2.45\times10^{-8})(5.96\times10^{7})(300)=1.460\times300=438\,\mathrm{W\,m^{-1}\,K^{-1}}\)。</p>
+          <p><span class="ans">\(\kappa\approx438\,\mathrm{W\,m^{-1}\,K^{-1}}\)</span>。Cu 实测热导率约 \(401\,\mathrm{W\,m^{-1}\,K^{-1}}\)，误差约 \(9\%\)（来自温度相关散射细节）。这就是 Wiedemann–Franz 律的威力：从电导率可推算电子热导率（前提是载流子相同且处于简并区）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：Kronig–Penney 能带 Energy Bands (Kronig–Penney)</h2>
+      <p class="sim-desc">本仿真求解理想化一维周期 \(\delta\)-函数势（Kronig–Penney 模型）下的 Bloch 电子色散关系 \(P\dfrac{\sin\kappa a}{\kappa a}+\cos\kappa a=\cos ka\)，并在<strong>约化 Brillouin 区</strong>方案下绘出 \(E(k)\)。横轴为 \(ka\in[-\pi,+\pi]\)，纵轴为能量 \(E\)（以 \(\hbar^{2}/(2ma^{2})\) 为单位）。<strong>允许带</strong>（蓝/绿曲线）与<strong>禁带</strong>（淡红色阴影）在 Brillouin 区边界 \(ka=\pm\pi\) 处显现——这是 Bragg 反射的能带论体现。<strong>调节势强度 \(P\)</strong>：\(P\to0\) 还原为自由电子抛物线（折叠后无禁带）；\(P\) 增大则禁带变宽、带宽变窄，趋近紧束缚极限。<strong>调节 Fermi 能级 \(E_F\)</strong>：红色虚线显示当前填充高度，可看到 \(E_F\) 落在带内（导体）还是落在禁带中（绝缘体/半导体）。点 <strong>↺ 重置</strong> 回到默认参数。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physics: Kronig–Penney with delta-comb potential ----
+          // Simulation units: a = 1, 2m/ℏ² = 1  →  κ² = E, z ≡ κa, E = z²/2
+          // Dispersion:  P sin(z)/z + cos(z) = cos(ka)
+          // For each z, compute f(z); if |f|≤1 → allowed, k = acos(f), E = z²/2.
+          var params = { P: 1.5, EF: 1.5 };
+
+          // Scan z, build bands (arrays of {k, E}); also track gaps.
+          var Z_MAX = 4.5 * Math.PI;
+          var N_Z = 900;
+          function computeBands(P) {
+            var bands = [];
+            var gaps = []; // {Emin, Emax}
+            var cur = null;
+            var lastAllowedZ = 0;
+            var inGap = false; var gapStart = 0;
+            for (var i = 0; i <= N_Z; i++) {
+              var z = (i / N_Z) * Z_MAX;
+              if (z < 0.04) z = 0.04;
+              var f = P * Math.sin(z) / z + Math.cos(z);
+              var af = Math.abs(f);
+              if (af <= 1.0) {
+                var kc = Math.acos(Math.max(-1, Math.min(1, f)));
+                var E = z * z / 2;
+                if (!cur) { cur = []; if (inGap) { gaps.push({ zmin: gapStart, zmax: z }); inGap = false; } }
+                cur.push({ k: kc, E: E });
+                lastAllowedZ = z;
+              } else {
+                if (cur) { bands.push(cur); cur = null; }
+                if (!inGap) { inGap = true; gapStart = lastAllowedZ; }
+              }
+            }
+            if (cur) bands.push(cur);
+            if (inGap) gaps.push({ zmin: gapStart, zmax: Z_MAX });
+            // Convert gap z-ranges to E-ranges
+            var eGaps = gaps.map(function (g) {
+              return { Emin: (g.zmin * g.zmin) / 2, Emax: (g.zmax * g.zmax) / 2 };
+            });
+            return { bands: bands, gaps: eGaps };
+          }
+
+          // Plot region
+          var PAD_L = 56, PAD_R = 24, PAD_T = 36, PAD_B = 56;
+          var PLOT_W = W - PAD_L - PAD_R;
+          var PLOT_H = H - PAD_T - PAD_B;
+          var E_VIEW = 22.0; // max energy displayed
+          function xK(k) { return PAD_L + ((k + Math.PI) / (2 * Math.PI)) * PLOT_W; }
+          function yE(E) { return PAD_T + PLOT_H - (E / E_VIEW) * PLOT_H; }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tick: 0 }; },
+            step: function (dt, t, s) { s.tick += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var res = computeBands(params.P);
+              var bands = res.bands;
+              var gaps = res.gaps;
+
+              // ----- Title -----
+              PS.drawText(ctx, 'Kronig–Penney 能带：P = ' + params.P.toFixed(2) +
+                '   |   E_F = ' + params.EF.toFixed(2) +
+                '   (ℏ²/2ma² = 1 单位)',
+                12, 22, { font: '13px system-ui, sans-serif', color: C.text });
+
+              // ----- Plot frame -----
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.3;
+              ctx.beginPath();
+              ctx.moveTo(PAD_L, PAD_T);
+              ctx.lineTo(PAD_L, PAD_T + PLOT_H);
+              ctx.lineTo(PAD_L + PLOT_W, PAD_T + PLOT_H);
+              ctx.stroke();
+
+              // vertical guide at k = 0
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.7;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              ctx.moveTo(xK(0), PAD_T); ctx.lineTo(xK(0), PAD_T + PLOT_H); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+
+              // ----- Shade forbidden gaps (full horizontal strips) -----
+              gaps.forEach(function (g, idx) {
+                if (g.Emin > E_VIEW) return;
+                var yLo = yE(Math.min(g.Emin, E_VIEW));
+                var yHi = yE(Math.min(g.Emax, E_VIEW));
+                ctx.fillStyle = C.accent; ctx.globalAlpha = 0.13;
+                ctx.fillRect(PAD_L, yHi, PLOT_W, yLo - yHi);
+                ctx.globalAlpha = 1;
+                // gap label
+                if (g.Emin < E_VIEW) {
+                  var yMid = (yLo + yHi) / 2;
+                  PS.drawText(ctx, '禁带 gap ' + (idx + 1) + '  (ΔE≈' +
+                    (g.Emax - g.Emin).toFixed(2) + ')',
+                    PAD_L + 8, yMid + 3,
+                    { font: '10px system-ui, sans-serif', color: C.accent });
+                }
+              });
+
+              // ----- Plot bands (both +k and −k branches) -----
+              var palette = [C.primary, C.accent2, C.trace, '#0891b2', '#ca8a04'];
+              bands.forEach(function (band, idx) {
+                var col = palette[idx % palette.length];
+                // +k branch
+                ctx.strokeStyle = col; ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                band.forEach(function (p, i) {
+                  var x = xK(p.k), y = yE(p.E);
+                  if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                // −k branch (mirror)
+                ctx.beginPath();
+                band.forEach(function (p, i) {
+                  var x = xK(-p.k), y = yE(p.E);
+                  if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                // band label at right edge of +k branch
+                if (band.length > 0) {
+                  var last = band[band.length - 1];
+                  PS.drawText(ctx, '带 ' + (idx + 1),
+                    xK(last.k) + 6, yE(last.E),
+                    { font: '10px system-ui, sans-serif', color: col });
+                }
+              });
+
+              // ----- Fermi level -----
+              if (params.EF > 0 && params.EF < E_VIEW) {
+                var yF = yE(params.EF);
+                ctx.strokeStyle = C.accent; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                ctx.moveTo(PAD_L, yF); ctx.lineTo(PAD_L + PLOT_W, yF); ctx.stroke();
+                ctx.setLineDash([]);
+                PS.drawText(ctx, 'E_F', PAD_L + PLOT_W - 24, yF - 5,
+                  { font: '12px system-ui, sans-serif', color: C.accent });
+                // classify material
+                var inGap = false; var insideBand = false;
+                gaps.forEach(function (g) {
+                  if (params.EF > g.Emin && params.EF < g.Emax) inGap = true;
+                });
+                bands.forEach(function (b) {
+                  var Es = b.map(function (p) { return p.E; });
+                  var emin = Math.min.apply(null, Es);
+                  var emax = Math.max.apply(null, Es);
+                  if (params.EF >= emin && params.EF <= emax) insideBand = true;
+                });
+                var label = inGap ? '绝缘/半导体 insulator/semiconductor' :
+                  (insideBand ? '导体 conductor' : '');
+                if (label) {
+                  PS.drawText(ctx, label, PAD_L + 8, yF - 6,
+                    { font: '11px system-ui, sans-serif', color: C.accent });
+                }
+              }
+
+              // ----- Axes ticks / labels -----
+              // x-axis: k = -π, -π/2, 0, π/2, π
+              var kTicks = [
+                { k: -Math.PI, label: '−π/a' },
+                { k: -Math.PI / 2, label: '−π/2a' },
+                { k: 0, label: '0' },
+                { k: Math.PI / 2, label: 'π/2a' },
+                { k: Math.PI, label: 'π/a' }
+              ];
+              ctx.fillStyle = C.text; ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              kTicks.forEach(function (t) {
+                var x = xK(t.k);
+                ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x, PAD_T + PLOT_H);
+                ctx.lineTo(x, PAD_T + PLOT_H + 4); ctx.stroke();
+                ctx.fillText(t.label, x, PAD_T + PLOT_H + 6);
+              });
+              PS.drawText(ctx, '波矢 k  (reduced zone)', PAD_L + PLOT_W / 2, H - 14,
+                { font: '12px system-ui, sans-serif', color: C.text, align: 'center' });
+              // y-axis ticks
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var e = 0; e <= E_VIEW; e += 4) {
+                var y = yE(e);
+                ctx.strokeStyle = C.grid; ctx.lineWidth = 0.6; ctx.globalAlpha = 0.5;
+                ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L + PLOT_W, y); ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.fillText(e.toFixed(0), PAD_L - 6, y);
+              }
+              ctx.save();
+              ctx.translate(14, PAD_T + PLOT_H / 2); ctx.rotate(-Math.PI / 2);
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText('能量 E  (ℏ²/2ma²)', 0, 0);
+              ctx.restore();
+
+              // ----- Footer readouts -----
+              var nBands = bands.length;
+              var gapTxt = gaps.slice(0, 3).map(function (g, i) {
+                return 'Δ' + (i + 1) + '≈' + (g.Emax - g.Emin).toFixed(2);
+              }).join('  ');
+              PS.drawText(ctx, '允许带数 = ' + nBands + '   |   主要禁带：' + gapTxt,
+                12, H - 14, { font: '11px system-ui, sans-serif', color: C.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'P', label: '势强度 P  (0=自由电子, 大=紧束缚)', min: 0.0, max: 6.0, step: 0.05, value: 1.5 },
+            { type: 'slider', key: 'EF', label: 'Fermi 能级 E_F', min: 0.0, max: 20.0, step: 0.1, value: 1.5 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('P', function (v) { params.P = v; });
+          ctl.on('EF', function (v) { params.EF = v; });
+          ctl.on('reset', function () {
+            // Restore default parameter values
+            params.P = 1.5; params.EF = 1.5;
+            // Reflect into slider DOM positions and value readouts
+            var sliders = document.querySelectorAll('#controls-3 input[type=range]');
+            var valSpans = document.querySelectorAll('#controls-3 .ctrl-value');
+            if (sliders[0]) { sliders[0].value = 1.5; }
+            if (sliders[1]) { sliders[1].value = 1.5; }
+            if (valSpans[0]) { valSpans[0].textContent = '1.50'; }
+            if (valSpans[1]) { valSpans[1].textContent = '1.50'; }
+            ctl.set('P', 1.5); ctl.set('EF', 1.5);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>把价电子视作量子自由电子气（Sommerfeld 模型），核心物理量是 Fermi 波矢 \(k_{F}\)、Fermi 能 \(E_{F}\)、Fermi 速度 \(v_{F}\)、Fermi 温度 \(T_{F}\)。Fermi 海中只有表面 \(\sim T/T_{F}\) 的电子参与热激发，给出<strong>线性电子热容</strong> \(C_{\mathrm{el}}=\gamma T\)，比 Drude 经典预言小约 \(T_{F}/T\) 倍。引入周期势后 Bloch 定理保证电子波扩展；Kronig–Penney 模型显示 Bragg 反射在 Brillouin 区边界产生<strong>禁带</strong>。能带填充情况决定导体（部分满）、绝缘体（满带 + 大隙）、半导体（满带 + 小隙）。有效质量 \(m^{*}\) 由 \(E(k)\) 曲率定义；能带顶负曲率引出<strong>空穴</strong>（正质量、正电荷）。</p>
+      <div class="formula">\[ \text{Drude 电导率: }\;\sigma=\frac{ne^{2}\tau}{m_{e}}\qquad(\text{成功: Ohm/WF；失败: }C_{\mathrm{el}},\chi) \]</div>
+      <div class="formula">\[ \text{Fermi 波矢与能: }\;k_{F}=(3\pi^{2}n)^{1/3},\quad E_{F}=\frac{\hbar^{2}}{2m_{e}}(3\pi^{2}n)^{2/3},\quad v_{F}=\frac{\hbar k_{F}}{m_{e}},\quad T_{F}=\frac{E_{F}}{k_{B}} \]</div>
+      <div class="formula">\[ \text{3D 态密度: }\;g(E)=\frac{(2m_{e})^{3/2}}{2\pi^{2}\hbar^{3}}\sqrt{E}\;\propto\;\sqrt{E},\qquad g(E_{F})=\frac{3n}{2E_{F}} \]</div>
+      <div class="formula">\[ \text{Sommerfeld 电子热容: }\;C_{\mathrm{el}}=\gamma T,\quad \gamma_{\mathrm{mol}}=\frac{\pi^{2}}{3}k_{B}^{2}g(E_{F})V_{\mathrm{mol}}=\frac{\pi^{2}k_{B}^{2}N_{A}}{2E_{F}}\quad(\mathrm{J\,mol^{-1}\,K^{-2}}) \]</div>
+      <div class="formula">\[ \text{Bloch 定理: }\;\psi_{k}(x)=e^{ikx}\,u_{k}(x),\quad u_{k}(x+a)=u_{k}(x) \]</div>
+      <div class="formula">\[ \text{Kronig–Penney: }\;P\,\frac{\sin(\kappa a)}{\kappa a}+\cos(\kappa a)=\cos(ka),\quad \kappa^{2}=\frac{2m_{e}E}{\hbar^{2}}\quad(|\text{LHS}|\le1\text{ 给出允许带}) \]</div>
+      <div class="formula">\[ \text{有效质量: }\;\frac{1}{m^{*}}=\frac{1}{\hbar^{2}}\frac{d^{2}E}{dk^{2}};\qquad \text{空穴: }m_{h}^{*}=+|m^{*}|,\ q_{h}=+e \]</div>
+      <div class="formula">\[ \text{分类: 部分填充}\to\text{导体；满带+}E_g\gtrsim3\,\mathrm{eV}\to\text{绝缘体；满带+}E_g\lesssim2\,\mathrm{eV}\to\text{半导体} \]</div>
+      <p><strong>核心收获</strong>：自由电子气 + 周期势 = 能带论。这一图像统一解释了金属光泽、电导、热容、Hall 效应、导体/绝缘体分类。下一章我们将把能带论应用到<strong>半导体</strong>（小带隙材料）：掺杂、p-n 结、晶体管原理——这是现代电子学的物理基础。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

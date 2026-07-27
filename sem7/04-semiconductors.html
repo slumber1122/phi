@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 半导体 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第4章 · 凝聚态物理 Condensed Matter</p>
+      <h1>半导体 <span class="en-title">Semiconductors</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够用量子统计 (Fermi-Dirac statistics) 与能带结构 (band structure) 解释本征半导体 (intrinsic semiconductor) 中载流子浓度 \( n=p \) 随温度的指数依赖 \( n\propto e^{-E_g/(2k_BT)} \)，并说明质量作用定律 \( np=n_i^{\,2} \)。</li>
+        <li>能够运用典型带隙数据 (Si \( E_g\approx 1.12\,\mathrm{eV} \)、Ge \( \approx 0.67\,\mathrm{eV} \)) 估算室温下本征载流子浓度 (intrinsic carrier concentration) \( n_i \)，并解释为何 \( n_i \) 远小于原子密度。</li>
+        <li>能够区分 n 型 (n-type, 施主掺杂) 与 p 型 (p-type, 受主掺杂) 半导体，计算非本征 (extrinsic) 多数载流子浓度，并定出费米能级 (Fermi level) 的位置。</li>
+        <li>能够分析 p-n 结 (p-n junction) 在平衡下的耗尽区 (depletion region)、内建电势 (built-in potential) \( V_{bi} \)，并导出肖克莱二极管方程 \( I=I_s\!\left(e^{eV/k_BT}-1\right) \)。</li>
+        <li>能够把上述原理应用于整流二极管 (rectifier diode)、发光二极管 (LED)、晶体管 (transistor) 与太阳能电池 (solar cell) 等器件。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 能带与带隙 Bands and the Band Gap</h3>
+      <p>在固体中，原子紧密堆垛使分立的原子能级展宽成<strong>能带</strong> (energy bands)。被电子填满的最高带称为<strong>价带</strong> (valence band, 能量上界记 \( E_v \))，其上方的未填充带称为<strong>导带</strong> (conduction band, 能量下界记 \( E_c \))。两者之间的能量禁区称为<strong>带隙</strong> (band gap)：</p>
+      <div class="formula">\[ E_g \;=\; E_c - E_v \]</div>
+      <p>绝缘体 (insulator) 的 \( E_g \gg 1\,\mathrm{eV} \)（如金刚石 \( \approx 5.5\,\mathrm{eV} \)），金属 (metal) 的导带半满、\( E_g=0 \)，而<strong>半导体</strong> (semiconductor) 的 \( E_g \) 适中——硅 (Si) \( \approx 1.12\,\mathrm{eV} \)、锗 (Ge) \( \approx 0.67\,\mathrm{eV} \)、砷化镓 (GaAs) \( \approx 1.42\,\mathrm{eV} \)。带隙「适中」意味着少量电子可被热激发跨过 \( E_g \)，从而参与导电——这正是半导体技术的物理根基。</p>
+
+      <h3>2. 本征半导体与载流子浓度 Intrinsic Semiconductor and Carrier Concentration</h3>
+      <p>不含杂质缺陷的纯净半导体称为<strong>本征半导体</strong>。在 \( T=0 \) 时价带全满、导带全空，不导电。当 \( T>0 \)，少量电子从价带热激发到导带，每激发一个电子就在价带留下一个<strong>空穴</strong> (hole)。电子 \( -e \) 与空穴 \( +e \) 都可作载流子，且浓度严格相等：</p>
+      <div class="formula">\[ n \;=\; p \;=\; n_i \]</div>
+      <p>利用导带/价带有效态密度 (effective density of states) \( N_c,\,N_v \) 与 Fermi-Dirac 分布在非简并条件下的玻尔兹曼近似 (non-degenerate, Boltzmann approximation)，可严格导出（见推导 A）：</p>
+      <div class="formula">\[ n \;=\; N_c\,\exp\!\left(-\frac{E_c-E_F}{k_BT}\right),\qquad p \;=\; N_v\,\exp\!\left(-\frac{E_F-E_v}{k_BT}\right) \]</div>
+      <p>对本征材料 \( E_F=E_i \)（本征费米能级，近带隙中央），于是：</p>
+      <div class="formula">\[ \boxed{\;n_i \;=\; \sqrt{N_c N_v}\;\exp\!\left(-\frac{E_g}{2k_BT}\right)\;} \]</div>
+      <p>室温 (300 K) 下 \( k_BT\approx 0.0259\,\mathrm{eV} \)，故 \( 2k_BT\approx 0.052\,\mathrm{eV}\ll E_g \)，指数项极小：对 Si 给出 \( n_i\approx 10^{10}\,\mathrm{cm^{-3}} \)，仅为原子密度（\( \sim 5\times 10^{22}\,\mathrm{cm^{-3}} \)）的 \( 10^{-12} \)。</p>
+
+      <h3>3. 质量作用定律 The Mass-Action Law</h3>
+      <p>把上面的 \( n \) 与 \( p \) 相乘，\( E_F \) 恰好消去：</p>
+      <div class="formula">\[ \boxed{\;n\,p \;=\; N_c N_v\,\exp\!\left(-\frac{E_g}{k_BT}\right) \;=\; n_i^{\,2}\;} \]</div>
+      <p>这就是<strong>质量作用定律</strong> (mass-action law)。它在<strong>热平衡</strong>下对任意掺杂都成立——掺杂改变 \( n \) 与 \( p \) 各自的值，但二者乘积恒为 \( n_i^{\,2} \)。这一约束是分析器件的「恒温不变量」。</p>
+
+      <h3>4. 掺杂：n 型与 p 型 Doping — n-type and p-type</h3>
+      <p>通过向晶格中替位式地引入少量杂质原子 (dopant) 即可极大改变载流子浓度：</p>
+      <ul>
+        <li><strong>n 型</strong> (n-type)：在 Si (4 价) 中加入 5 价施主 (donor，如 P、As、Sb)。多出的一个电子占据施主能级 \( E_D \)，其位于导带下方仅几 meV 处，室温下几乎全部<strong>电离</strong> (ionized)，电子进入导带。多数载流子 (majority carrier) 为电子：\( n\approx N_D \)（\( N_D \) 为施主浓度）。</li>
+        <li><strong>p 型</strong> (p-type)：加入 3 价受主 (acceptor，如 B、Al、Ga)。受主能级 \( E_A \) 位于价带上方几 meV，室温下从价带接受电子，等效于产生自由<strong>空穴</strong>。多数载流子为空穴：\( p\approx N_A \)。</li>
+      </ul>
+      <p>设 \( N_D\gg n_i \) 且无受主，则由 \( n\approx N_D \) 与质量作用定律 \( p=n_i^{\,2}/N_D\ll n \)。称 \( p \) 为少数载流子 (minority carrier)。</p>
+      <p>非本征电导率 (extrinsic conductivity) 由两种载流子贡献，各自以迁移率 (mobility) \( \mu_n,\,\mu_p \) 加权：</p>
+      <div class="formula">\[ \sigma \;=\; e\,(n\,\mu_n + p\,\mu_p),\qquad \rho=\frac{1}{\sigma} \]</div>
+      <p>对 Si，\( \mu_n\approx 1350\,\mathrm{cm^2/(V\cdot s)} \)、\( \mu_p\approx 480\,\mathrm{cm^2/(V\cdot s)} \)（300 K，低掺杂）。典型掺杂 \( N_D\sim 10^{16}\,\mathrm{cm^{-3}} \) 把电阻率从本征值 \( \sim 3\times 10^{5}\,\Omega\cdot\mathrm{cm} \) 一举压到 \( \sim 0.5\,\Omega\cdot\mathrm{cm} \) ——这是「半导体可被设计」的关键。</p>
+
+      <h3>5. 费米能级的位置 Fermi-Level Position</h3>
+      <p>掺杂的本质是<strong>移动费米能级</strong>。在本征材料中 \( E_F=E_i \)（带隙中央附近）。n 型材料里 \( E_F \) 从 \( E_i \) 上移靠近 \( E_c \)；p 型里下移靠近 \( E_v \)。以本征费米能级 \( E_i \) 为参考（取 \( n_i=N_c\,e^{-(E_c-E_i)/k_BT} \)），有：</p>
+      <div class="formula">\[ \boxed{\;E_F - E_i \;=\; k_BT\,\ln\!\frac{n}{n_i} \;=\; -\,k_BT\,\ln\!\frac{p}{n_i}\;} \]</div>
+      <p>n 型 \( n>N_D\!\Rightarrow\! E_F-E_i>0 \)；p 型 \( E_F-E_i<0 \)。重掺杂到 \( E_F \) 进入导带/价带时，材料进入<strong>简并</strong> (degenerate) 区域，玻尔兹曼近似失效。</p>
+
+      <h3>6. p-n 结 The p-n Junction</h3>
+      <p>把 p 型与 n 型紧贴形成结，多数载流子因浓度差向对方扩散：电子从 n 区涌入 p 区，与那里的空穴复合；空穴反向扩散。在结附近留下无法移动的电离施主 \( + \)（n 侧）与电离受主 \( - \)（p 侧），形成一个<strong>空间电荷区</strong>——即<strong>耗尽区</strong> (depletion region, 宽度典型 \( \sim 10^{-6}\,\mathrm{m} \)，载流子几乎被「耗尽」)。这电荷偶极层建立一<strong>内建电场</strong>，对应一<strong>内建电势差</strong> (built-in potential)：</p>
+      <div class="formula">\[ \boxed{\;V_{bi} \;=\; \frac{k_BT}{e}\,\ln\!\frac{N_A N_D}{n_i^{\,2}}\;} \]</div>
+      <p>典型 Si 结 \( V_{bi}\approx 0.6\text{–}0.9\,\mathrm{V} \)。能带图上对应导带在 n 区下沉、p 区抬升，差值恰为 \( eV_{bi} \) ——即<strong>能带弯曲</strong> (band bending)。</p>
+
+      <h3>7. 二极管方程 The Diode (Shockley) Equation</h3>
+      <p>加外偏压 \( V \)（p 端相对 n 端）后，结电势降变为 \( V_{bi}-V \)。正向偏置 (forward bias, \( V>0 \)) 削弱势垒，扩散主导，电流随 \( V \) 指数增长；反向偏置 (reverse bias, \( V<0 \)) 加大势垒，仅有微小饱和反向电流 \( I_s \)。理想结的 I-V 关系是<strong>肖克莱方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;I \;=\; I_s\!\left[\exp\!\left(\frac{eV}{k_BT}\right)-1\right]\;=\; I_s\!\left[\exp\!\left(\frac{V}{V_T}\right)-1\right],\qquad V_T\equiv\frac{k_BT}{e}\;} \]</div>
+      <p>其中 \( V_T\approx 25.85\,\mathrm{mV} \)（300 K），称<strong>热电压</strong> (thermal voltage)。在半对数坐标 \( \log I \) vs. \( V \) 上，正向支是一条直线，斜率每十倍电流对应 \( V_T\ln 10\approx 59.5\,\mathrm{mV} \) ——半导体工程师「每十倍 60 mV」的经验法则。</p>
+
+      <h3>8. 应用 Applications</h3>
+      <ul>
+        <li><strong>整流二极管</strong> (rectifier diode)：利用单向导电性把交流转换为直流——正向几乎短路、反向几乎开路。</li>
+        <li><strong>发光二极管</strong> (LED)：在<strong>直接带隙</strong>半导体（GaAs、GaN、InGaN）中正向偏置时，导带电子与价带空穴辐射复合，发射光子 \( \hbar\omega\approx E_g \)。选不同 \( E_g \) 即得不同颜色。</li>
+        <li><strong>太阳能电池</strong> (solar cell / photovoltaic cell)：入射光子 \( \hbar\omega>E_g \) 在结区激发电子-空穴对，内建电场将二者扫向相反电极，驱动外电路电流——光生伏特效应。</li>
+        <li><strong>晶体管</strong> (transistor)：双极结型晶体管 (BJT) 由两个背靠背 p-n 结构成（npn 或 pnp），用小电流调制大电流；场效应管 (MOSFET) 用栅极电压控制沟道电导。二者是数字电路的基本开关与放大单元。</li>
+      </ul>
+
+      <div class="key-terms">band gap \( E_g \) (带隙), valence band \( E_v \) (价带), conduction band \( E_c \) (导带), intrinsic semiconductor (本征半导体), intrinsic carrier concentration \( n_i \) (本征载流子浓度), hole (空穴), effective density of states \( N_c,N_v \) (有效态密度), Fermi level \( E_F \) (费米能级), mass-action law \( np=n_i^2 \) (质量作用定律), dopant / donor / acceptor (掺杂剂/施主/受主), n-type / p-type (n型/p型), majority / minority carrier (多数/少数载流子), mobility \( \mu_n,\mu_p \) (迁移率), extrinsic conductivity (非本征电导率), p-n junction (p-n结), depletion region (耗尽区), built-in potential \( V_{bi} \) (内建电势), band bending (能带弯曲), Shockley diode equation (肖克莱二极管方程), thermal voltage \( V_T \) (热电压), forward / reverse bias (正向/反向偏置), LED, solar cell, transistor</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由 Fermi-Dirac 分布导出 \( n \)、\( p \) 与质量作用定律</h3>
+      <p class="step"><strong>前提：</strong> 非简并半导体，\( E_F \) 位于带隙内且距 \( E_c,E_v \) 数个 \( k_BT \) 以上。此时 Fermi-Dirac 分布 \( f(E)=\bigl[e^{(E-E_F)/k_BT}+1\bigr]^{-1} \) 可用玻尔兹曼近似 \( f(E)\approx e^{-(E-E_F)/k_BT} \)。</p>
+      <p class="step"><strong>第一步（导带电子浓度）：</strong> 把导带近似为集中在 \( E_c \) 处、态密度 \( N_c \)（来源于 \( g(E)\propto\sqrt{E-E_c} \) 的积分，\( N_c=2(2\pi m_n^* k_BT/h^2)^{3/2} \)）。则</p>
+      <p>\[ n \;=\; \int_{E_c}^{\infty} g(E)\,f(E)\,dE \;\approx\; N_c\,\exp\!\left(-\frac{E_c-E_F}{k_BT}\right) \]</p>
+      <p class="step"><strong>第二步（价带空穴浓度）：</strong> 价带空穴占比为 \( 1-f(E)\approx e^{-(E_F-E)/k_BT} \)，同理：</p>
+      <p>\[ p \;\approx\; N_v\,\exp\!\left(-\frac{E_F-E_v}{k_BT}\right) \]</p>
+      <p class="step"><strong>第三步（质量作用定律）：</strong> 两式相乘，\( E_F \) 消去：</p>
+      <div class="formula">\[ n\,p \;=\; N_c N_v\,\exp\!\left(-\frac{E_c-E_v}{k_BT}\right) \;=\; N_c N_v\,\exp\!\left(-\frac{E_g}{k_BT}\right) \;\equiv\; n_i^{\,2} \]</div>
+      <p class="step"><strong>第四步（本征值）：</strong> 对本征材料 \( n=p \)，故 \( n_i=\sqrt{N_c N_v}\,e^{-E_g/(2k_BT)} \)。可见 \( E_g \) 每增加 \( 2k_BT \)，\( n_i \) 减小 \( e \) 倍——带隙的微小差异带来 \( n_i \) 的天壤之别。</p>
+
+      <h3>B. 内建电势 \( V_{bi} \) 的推导</h3>
+      <p class="step"><strong>平衡条件：</strong> 平衡时整块样品费米能级 \( E_F \) 水平一致（否则电子会沿能级差流动）。在远离结的中性 n 区，\( E_c-E_F=k_BT\ln(N_c/N_D) \)；在 p 区，\( E_c-E_F=E_g-k_BT\ln(N_v/N_A) \)。</p>
+      <p class="step"><strong>第一步（导带在两边的能量差）：</strong> 这两个 \( E_c-E_F \) 之差就是导带在 p 区比 n 区高出多少：</p>
+      <div class="formula">\[ \Delta E_c \;=\; (E_c-E_F)_p - (E_c-E_F)_n \;=\; E_g - k_BT\ln\!\frac{N_v}{N_A} - k_BT\ln\!\frac{N_c}{N_D} \]</div>
+      <p class="step"><strong>第二步（化简）：</strong> 合并对数项，并代入 \( n_i^{\,2}=N_c N_v e^{-E_g/k_BT} \)：</p>
+      <p>\[ \Delta E_c \;=\; E_g - k_BT\ln\!\frac{N_c N_v}{N_A N_D} \;=\; k_BT\ln\!\frac{N_A N_D}{n_i^{\,2}} \]</p>
+      <p class="step"><strong>第三步（转为电势）：</strong> 能量差 \( \Delta E_c=eV_{bi} \)，所以：</p>
+      <div class="formula">\[ \boxed{\;V_{bi} \;=\; \frac{k_BT}{e}\,\ln\!\frac{N_A N_D}{n_i^{\,2}}\;} \]</div>
+
+      <h3>C. 肖克莱方程的「细致平衡」推导（概要）</h3>
+      <p>平衡时，结两端电子从 n 到 p 的扩散流恰好被 p 到 n 的漂移流抵消（细致平衡 detailed balance）。加偏压 \( V \) 后，势垒从 \( V_{bi} \) 变为 \( V_{bi}-V \)，于是「越过势垒」的电子流正比于 \( \exp[-e(V_{bi}-V)/k_BT] \)。减去平衡时已经存在的反向流（正比于 \( e^{-eV_{bi}/k_BT} \)），净电流为：</p>
+      <div class="formula">\[ I \;\propto\; e^{-eV_{bi}/k_BT}\!\left(e^{eV/k_BT}-1\right) \;\equiv\; I_s\!\left(e^{eV/k_BT}-1\right) \]</div>
+      <p>比例系数即饱和电流 \( I_s \)，正比于 \( n_i^2 \) 与结面积，且随 \( T \) 强烈变化。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 室温下硅的本征载流子浓度与电阻率</h4>
+        <p class="example-statement">已知 Si 的 \( E_g=1.12\,\mathrm{eV} \)，\( N_c=2.8\times 10^{19}\,\mathrm{cm^{-3}} \)，\( N_v=1.04\times 10^{19}\,\mathrm{cm^{-3}} \)（均 300 K），电子/空穴迁移率 \( \mu_n=1350\,\mathrm{cm^2/(V\cdot s)} \)、\( \mu_p=480\,\mathrm{cm^2/(V\cdot s)} \)。求 300 K 下：(a) 本征载流子浓度 \( n_i \)；(b) 本征电阻率 \( \rho \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 取 \( k_B=8.617\times 10^{-5}\,\mathrm{eV/K} \)，则 \( k_BT=0.02585\,\mathrm{eV} \)，\( 2k_BT=0.05170\,\mathrm{eV} \)。</p>
+          <p>\[ \sqrt{N_c N_v}=\sqrt{(2.8\times 10^{19})(1.04\times 10^{19})}=\sqrt{2.912\times 10^{38}}=1.71\times 10^{19}\,\mathrm{cm^{-3}} \]</p>
+          <p>\[ -\frac{E_g}{2k_BT}=-\frac{1.12}{0.05170}=-21.66,\qquad e^{-21.66}=3.93\times 10^{-10} \]</p>
+          <p>\[ n_i=(1.71\times 10^{19})(3.93\times 10^{-10})=6.7\times 10^{9}\,\mathrm{cm^{-3}} \]</p>
+          <p class="step">计及 \( E_g \) 与 \( m^* \) 的微弱温度依赖，工程上取 \( n_i(300\,\mathrm{K})\approx 1.0\times 10^{10}\,\mathrm{cm^{-3}} \)。与 Si 原子密度 \( 5\times 10^{22}\,\mathrm{cm^{-3}} \) 相比，仅 \( 10^{-12} \) 的原子贡献载流子。</p>
+          <p class="step"><strong>解 (b)：</strong> 本征材料 \( n=p=n_i \)：</p>
+          <p>\[ \sigma=e\,n_i(\mu_n+\mu_p)=(1.602\times 10^{-19})(1.0\times 10^{10})(1350+480)\,\mathrm{(\Omega\,cm)^{-1}} \]</p>
+          <p>\[ \sigma=(1.602\times 10^{-9})(1830)=2.93\times 10^{-6}\,\mathrm{(\Omega\,cm)^{-1}} \]</p>
+          <p>\[ \rho=\frac{1}{\sigma}=3.4\times 10^{5}\,\Omega\cdot\mathrm{cm} \]</p>
+          <p><span class="ans">\( n_i\approx 1.0\times 10^{10}\,\mathrm{cm^{-3}} \)（公式 \( 6.7\times 10^{9} \)）；\( \rho\approx 3.4\times 10^{5}\,\Omega\cdot\mathrm{cm} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 n 型 Si 的载流子浓度、电导率与费米能级</h4>
+        <p class="example-statement">Si 中掺磷 \( N_D=1.0\times 10^{16}\,\mathrm{cm^{-3}} \)，无受主，\( T=300\,\mathrm{K} \)，完全电离。取 \( n_i=1.0\times 10^{10}\,\mathrm{cm^{-3}} \)。求：(a) 电子与空穴浓度 \( n,p \)；(b) 电导率 \( \sigma \) 与电阻率 \( \rho \)；(c) 费米能级相对本征费米能级 \( E_F-E_i \) 与相对导带底 \( E_c-E_F \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 电荷中性 \( n\approx N_D=1.0\times 10^{16}\,\mathrm{cm^{-3}} \)（因 \( N_D\gg n_i \)）。质量作用：</p>
+          <p>\[ p=\frac{n_i^{\,2}}{n}=\frac{(1.0\times 10^{10})^2}{1.0\times 10^{16}}=1.0\times 10^{4}\,\mathrm{cm^{-3}}\ll n \]</p>
+          <p class="step"><strong>解 (b)：</strong> 空穴贡献可略，电导率：</p>
+          <p>\[ \sigma\approx e\,N_D\,\mu_n=(1.602\times 10^{-19})(1.0\times 10^{16})(1350)=2.16\,\mathrm{(\Omega\,cm)^{-1}} \]</p>
+          <p>\[ \rho=\frac{1}{\sigma}=0.46\,\Omega\cdot\mathrm{cm} \]</p>
+          <p class="step">与例 4.1 的本征值 \( 3.4\times 10^{5}\,\Omega\cdot\mathrm{cm} \) 相比，电阻率降低 \( 7\times 10^{5} \) 倍——仅仅是 \( 10^{-6} \) 浓度的杂质就达到如此效果。</p>
+          <p class="step"><strong>解 (c)：</strong> 以本征费米能级为参考：</p>
+          <p>\[ E_F-E_i=k_BT\ln\!\frac{n}{n_i}=0.02585\,\ln\!\frac{10^{16}}{10^{10}}=0.02585\,\ln(10^{6}) \]</p>
+          <p>\[ E_F-E_i=0.02585\times 6\times 2.303=0.357\,\mathrm{eV}\;(\text{高于 }E_i) \]</p>
+          <p>相对导带底：</p>
+          <p>\[ E_c-E_F=k_BT\ln\!\frac{N_c}{N_D}=0.02585\,\ln\!\frac{2.8\times 10^{19}}{10^{16}}=0.02585\times\ln(2800)=0.02585\times 7.937=0.205\,\mathrm{eV} \]</p>
+          <p><span class="ans">\( n=1.0\times 10^{16}\,\mathrm{cm^{-3}} \)、\( p=1.0\times 10^{4}\,\mathrm{cm^{-3}} \)；\( \sigma=2.16\,\mathrm{(\Omega\,cm)^{-1}} \)、\( \rho=0.46\,\Omega\cdot\mathrm{cm} \)；\( E_F-E_i=+0.357\,\mathrm{eV} \)、\( E_c-E_F=0.205\,\mathrm{eV} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 p-n 结的内建电势</h4>
+        <p class="example-statement">Si p-n 结，p 区 \( N_A=1.0\times 10^{17}\,\mathrm{cm^{-3}} \)，n 区 \( N_D=1.0\times 10^{16}\,\mathrm{cm^{-3}} \)，\( T=300\,\mathrm{K} \)，\( n_i=1.0\times 10^{10}\,\mathrm{cm^{-3}} \)。求内建电势 \( V_{bi} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 由推导 B：</p>
+          <p>\[ V_{bi}=\frac{k_BT}{e}\,\ln\!\frac{N_A N_D}{n_i^{\,2}}=V_T\,\ln\!\frac{N_A N_D}{n_i^{\,2}},\qquad V_T=0.02585\,\mathrm{V} \]</p>
+          <p>\[ \frac{N_A N_D}{n_i^{\,2}}=\frac{(10^{17})(10^{16})}{(10^{10})^2}=\frac{10^{33}}{10^{20}}=10^{13} \]</p>
+          <p>\[ V_{bi}=0.02585\,\ln(10^{13})=0.02585\times 13\times\ln 10=0.02585\times 13\times 2.303 \]</p>
+          <p>\[ V_{bi}=0.02585\times 29.94=0.774\,\mathrm{V} \]</p>
+          <p class="step"><strong>合理性检验：</strong> \( V_{bi}=0.774\,\mathrm{V}<E_g/e=1.12\,\mathrm{V} \) ✓（否则将违背 \( E_c \) 在 p 区不能下沉到 \( E_v \) 以下这一物理限制）。</p>
+          <p><span class="ans">\( V_{bi}\approx 0.77\,\mathrm{V} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 二极管在给定正偏电压下的电流</h4>
+        <p class="example-statement">一 Si 二极管的反向饱和电流 \( I_s=1.0\times 10^{-11}\,\mathrm{A} \)（10 pA），\( T=300\,\mathrm{K} \)。求：(a) \( V=+0.55\,\mathrm{V} \)（正偏）时的电流；(b) \( V=-2.0\,\mathrm{V} \)（反偏）时的电流。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \( V_T=k_BT/e=0.02585\,\mathrm{V} \)。</p>
+          <p class="step"><strong>(a) 正偏：</strong> \( eV/k_BT=V/V_T=0.55/0.02585=21.28 \)。</p>
+          <p>\[ e^{21.28}=1.74\times 10^{9}\;\Rightarrow\; I=I_s\!\left(e^{21.28}-1\right)\approx (1.0\times 10^{-11})(1.74\times 10^{9}) \]</p>
+          <p>\[ I=1.74\times 10^{-2}\,\mathrm{A}=17.4\,\mathrm{mA} \]</p>
+          <p class="step"><strong>(b) 反偏：</strong> \( V/V_T=-2.0/0.02585=-77.4 \)。</p>
+          <p>\[ e^{-77.4}\approx 1.1\times 10^{-34}\approx 0 \;\Rightarrow\; I=I_s(0-1)=-I_s=-1.0\times 10^{-11}\,\mathrm{A} \]</p>
+          <p class="step"><strong>评论：</strong> 反向电流饱和在 \( -I_s \)（仅 10 pA），正向却在区区 0.55 V 下达到 17 mA——电流比达 \( 1.7\times 10^{9} \)。这就是二极管作为「电子单向阀」的本质。</p>
+          <p><span class="ans">\( I(+0.55\,\mathrm{V})\approx 17.4\,\mathrm{mA} \)；\( I(-2.0\,\mathrm{V})\approx -10\,\mathrm{pA}=-I_s \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 n 型与 p 型的费米能级对比</h4>
+        <p class="example-statement">Si 在 300 K 下分别做成 n 型（\( N_D=10^{16}\,\mathrm{cm^{-3}} \)）与 p 型（\( N_A=10^{16}\,\mathrm{cm^{-3}} \)）。取 \( n_i=1.0\times 10^{10}\,\mathrm{cm^{-3}} \)，\( E_g=1.12\,\mathrm{eV} \)，\( E_i \) 近似在带隙中央。求两种情况下 \( E_F \) 相对 \( E_i \) 的位置。</p>
+        <div class="example-solution">
+          <p class="step"><strong>n 型：</strong></p>
+          <p>\[ E_F-E_i=k_BT\ln\frac{N_D}{n_i}=0.02585\,\ln\frac{10^{16}}{10^{10}}=0.02585\times 13.82=+0.357\,\mathrm{eV} \]</p>
+          <p>即 \( E_F \) 在 \( E_i \) 上方 0.357 eV，朝导带方向移动。距导带底 \( E_c-E_F=E_g/2-0.357=0.560-0.357=0.203\,\mathrm{eV} \)（与例 4.2 一致 ✓）。</p>
+          <p class="step"><strong>p 型：</strong></p>
+          <p>\[ E_F-E_i=-k_BT\ln\frac{N_A}{n_i}=-0.02585\,\ln\frac{10^{16}}{10^{10}}=-0.357\,\mathrm{eV} \]</p>
+          <p>即 \( E_F \) 在 \( E_i \) 下方 0.357 eV，朝价带方向移动。距价带顶 \( E_F-E_v=E_g/2-0.357=0.203\,\mathrm{eV} \)。</p>
+          <p class="step"><strong>对称性：</strong> 对相同浓度的 n/p 掺杂，\( E_F \) 相对 \( E_i \) 对称地上下移动——这正是质量作用定律的几何体现。</p>
+          <p><span class="ans">n 型 \( E_F-E_i=+0.357\,\mathrm{eV} \)；p 型 \( E_F-E_i=-0.357\,\mathrm{eV} \)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「本征载流子在低温下仍存在」——错。</strong> \( n_i\propto e^{-E_g/(2k_BT)} \) 是指数依赖。把 Si 从 300 K 冷到 200 K，\( n_i \) 下降约 \( 10^{5} \) 倍；液氮温度（77 K）下几乎为零。这就是「载流子冻结」 (carrier freeze-out)。</li>
+        <li><strong>「掺杂只是把额外电子/空穴塞进能带，与 \( E_F \) 无关」——错。</strong> 掺杂<strong>本质上就是移动费米能级</strong>：n 型把 \( E_F \) 推向 \( E_c \)，p 型推向 \( E_v \)。离开 \( E_F \) 的位置谈「n 型」是没有意义的。</li>
+        <li><strong>「二极管反向一点也能导电」——错。</strong> 理想二极管反向电流<strong>饱和</strong>在 \( -I_s \)（pA 量级），与反偏大小几乎无关（直到击穿）。它只在正偏时指数导通，「单向阀」一词即源于此。</li>
+        <li><strong>「掺杂后 \( np\ne n_i^2 \)」——错。</strong> 只要处于<strong>热平衡</strong>，质量作用定律 \( np=n_i^2 \) 总成立。n 型 \( n \) 大则 \( p \) 必小，乘积恒定。<em>非平衡</em>情形（如光照、正向注入）才会偏离 \( n_i^2 \)。</li>
+        <li><strong>「电子与空穴对电导贡献相同」——错。</strong> 同浓度下电子的迁移率通常高于空穴（Si 中 \( \mu_n/\mu_p\approx 2.8 \)）。设计 CMOS 电路时 p 沟道管要做得比 n 沟道管更宽以补偿这一差距。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （载流子冻结）估算 Si 在 \( T=200\,\mathrm{K} \) 时的本征载流子浓度 \( n_i \)，并与 300 K 比较。取 \( E_g=1.12\,\mathrm{eV} \)，\( N_c(300)=2.8\times 10^{19}\,\mathrm{cm^{-3}} \)，\( N_v(300)=1.04\times 10^{19}\,\mathrm{cm^{-3}} \)，并设 \( N_{c,v}\propto T^{3/2} \)。</summary>
+        <div class="hint">用 \( n_i(T)=\sqrt{N_c N_v}\,e^{-E_g/(2k_BT)} \)，\( N_{c,v}(T)=N_{c,v}(300)\,(T/300)^{3/2} \)。先算 \( \sqrt{N_c N_v}(200) \)，再算指数项。</div>
+        <div class="solution">
+          <p>\( \sqrt{N_c N_v}(200)=\sqrt{N_c N_v}(300)\,(200/300)^{3/2}=(1.71\times 10^{19})(0.544)=9.3\times 10^{18}\,\mathrm{cm^{-3}} \)。</p>
+          <p>\( e^{-E_g/(2k_BT)}=e^{-1.12/(2\times 8.617\times 10^{-5}\times 200)}=e^{-32.49}=7.8\times 10^{-15} \)。</p>
+          <p>\( n_i(200)=9.3\times 10^{18}\times 7.8\times 10^{-15}=7.2\times 10^{4}\,\mathrm{cm^{-3}} \)。</p>
+          <p>比值 \( n_i(300)/n_i(200)\approx 6.7\times 10^{9}/7.2\times 10^{4}\approx 9\times 10^{4} \)，即降低约 \( 10^{5} \) 倍。<span class="ans">\( n_i(200\,\mathrm{K})\approx 7\times 10^{4}\,\mathrm{cm^{-3}} \)（比 300 K 低约 5 个数量级）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. Si 中掺磷 \( N_D=5.0\times 10^{16}\,\mathrm{cm^{-3}} \)，完全电离，\( T=300\,\mathrm{K} \)，\( \mu_n=1000\,\mathrm{cm^2/(V\cdot s)} \)（该掺杂下经散射修正），\( n_i=1.0\times 10^{10}\,\mathrm{cm^{-3}} \)。求 \( n \)、\( p \) 与电阻率 \( \rho \)。</summary>
+        <div class="hint">\( n\approx N_D \)；\( p=n_i^2/n \)；\( \rho\approx 1/(eN_D\mu_n) \)。</div>
+        <div class="solution">
+          <p>\( n\approx N_D=5.0\times 10^{16}\,\mathrm{cm^{-3}} \)；\( p=n_i^2/n=(10^{10})^2/(5\times 10^{16})=2.0\times 10^{3}\,\mathrm{cm^{-3}} \)。</p>
+          <p>\( \sigma\approx eN_D\mu_n=(1.602\times 10^{-19})(5.0\times 10^{16})(1000)=8.01\,\mathrm{(\Omega\,cm)^{-1}} \)。</p>
+          <p><span class="ans">\( n=5.0\times 10^{16}\,\mathrm{cm^{-3}} \)、\( p=2.0\times 10^{3}\,\mathrm{cm^{-3}} \)；\( \rho\approx 0.125\,\Omega\cdot\mathrm{cm} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. Si 二极管 \( I_s=5.0\,\mathrm{pA} \)（300 K）。要在正偏下得到 \( I=2.0\,\mathrm{mA} \)，需多大正偏电压 \( V \)？</summary>
+        <div class="hint">由 \( I=I_s(e^{V/V_T}-1) \) 反解：\( V=V_T\ln(I/I_s+1) \)，\( V_T=0.02585\,\mathrm{V} \)。</div>
+        <div class="solution">
+          <p>\( V=0.02585\,\ln\!\left(\dfrac{2.0\times 10^{-3}}{5.0\times 10^{-12}}+1\right)=0.02585\,\ln(4.0\times 10^{8}) \)。</p>
+          <p>\( \ln(4.0\times 10^{8})=\ln 4+8\ln 10=1.386+18.42=19.81 \)。</p>
+          <p>\( V=0.02585\times 19.81=0.512\,\mathrm{V} \)。<span class="ans">\( V\approx 0.51\,\mathrm{V} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Si p-n 结 300 K，\( N_A=1.0\times 10^{18}\,\mathrm{cm^{-3}} \)、\( N_D=1.0\times 10^{15}\,\mathrm{cm^{-3}} \)、\( n_i=1.0\times 10^{10}\,\mathrm{cm^{-3}} \)。求 \( V_{bi} \)。若温度升到 400 K（粗略估算 \( n_i(400)\approx 5\times 10^{12}\,\mathrm{cm^{-3}} \)），\( V_{bi} \) 变为多少？</summary>
+        <div class="hint">\( V_{bi}=V_T\ln(N_A N_D/n_i^2) \)；注意 \( V_T \) 与 \( n_i \) 都随 \( T \) 变。</div>
+        <div class="solution">
+          <p>300 K：\( V_{bi}=0.02585\,\ln(10^{18}\cdot 10^{15}/10^{20})=0.02585\,\ln(10^{13})=0.02585\times 29.94=0.774\,\mathrm{V} \)。</p>
+          <p>400 K：\( V_T=8.617\times 10^{-5}\times 400=0.0345\,\mathrm{V} \)；\( N_A N_D/n_i^2=10^{33}/(5\times 10^{12})^2=10^{33}/(2.5\times 10^{25})=4.0\times 10^{7} \)。</p>
+          <p>\( V_{bi}=0.0345\,\ln(4.0\times 10^{7})=0.0345\times 17.5=0.604\,\mathrm{V} \)。</p>
+          <p><span class="ans">\( V_{bi}(300\,\mathrm{K})\approx 0.77\,\mathrm{V} \)；\( V_{bi}(400\,\mathrm{K})\approx 0.60\,\mathrm{V} \)（升温使 \( V_{bi} \) 下降）。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真展示二极管 (Shockley) I-V 特性。主图采用<strong>半对数坐标</strong>（横轴 \( V \)、纵轴 \( \log_{10}|I| \)）：反向支平直地压在 \( I_s \)、正向支是一条直线，斜率由温度决定（300 K 下约「每十倍 60 mV」）。一条扫描点沿曲线滑动，让你看到 \( V \) 增加时电流如何在某一阈值附近指数飙升。底部小图显示该温度对应的 p-n 结平衡能带（导带 \( E_c \)、价带 \( E_v \)、费米能级 \( E_F \)、内建电势 \( V_{bi} \)）。滑动 <strong>T</strong>（温度）或 <strong>\( \log I_s \)</strong>（饱和电流的量级）即可观察整条曲线与能带如何同步变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          /* ---------- Physical constants ---------- */
+          var KB = 8.617333262e-5;   // eV/K  (k_B in eV per K)
+          var EG = 1.12;             // Si bandgap (eV)
+          var NC300 = 2.8e19;        // cm^-3 (effective DOS at 300 K)
+          var NV300 = 1.04e19;       // cm^-3
+          var NA = 1e17, ND = 1e17;  // fixed symmetric doping for band diagram
+
+          /* ---------- Parameters ---------- */
+          var DEFAULTS = { T: 300, logIs: -11 };   // I_s = 10^logIs amperes
+          var params = Object.assign({}, DEFAULTS);
+
+          function Is()  { return Math.pow(10, params.logIs); }
+          function VT()  { return KB * params.T; }                 // kT/e in volts
+          function niAt(T) {
+            var r = T / 300;
+            var Nc = NC300 * Math.pow(r, 1.5);
+            var Nv = NV300 * Math.pow(r, 1.5);
+            return Math.sqrt(Nc * Nv) * Math.exp(-EG / (2 * KB * T));
+          }
+          function VbiAt(T) {
+            var ni = niAt(T);
+            var arg = (NA * ND) / (ni * ni);
+            if (arg < 1) return 0;
+            return (KB * T) * Math.log(arg);                       // volts
+          }
+          function Idiode(V) {
+            var a = V / VT();
+            if (a > 60) a = 60;          // overflow guard (e^60 ~ 1.14e26)
+            if (a < -60) a = -60;
+            return Is() * (Math.exp(a) - 1);
+          }
+          function log10AbsI(V) {
+            var I = Idiode(V);
+            var a = Math.abs(I);
+            if (a < 1e-30) a = 1e-30;
+            return Math.log10(a);
+          }
+
+          /* ---------- Layout ---------- */
+          var padL = 64, padR = 18;
+          var mainL = padL, mainR = W - padR;
+          var mainT = 36,  mainB = 230;
+          var mainW = mainR - mainL, mainH = mainB - mainT;
+
+          var bandTitleY = 248;
+          var bandL = padL, bandR = W - padR;
+          var bandT = 262,  bandB = 350;
+          var bandW = bandR - bandL, bandH = bandB - bandT;
+
+          var readY = 366;
+
+          var Vmin = -0.25, Vmax = 0.80;
+
+          function yMin() { return params.logIs - 1; }
+          function yMax() { return params.logIs + 12; }
+          function xV(V)   { return mainL + (V - Vmin) / (Vmax - Vmin) * mainW; }
+          function yLog(logI) {
+            var ym = yMin(), yx = yMax();
+            var f = (logI - ym) / (yx - ym);
+            if (f < 0) f = 0; else if (f > 1) f = 1;
+            return mainB - f * mainH;
+          }
+
+          function formatCurrent(I) {
+            var a = Math.abs(I);
+            if (a >= 1)   return I.toExponential(2) + ' A';
+            if (a >= 1e-3) return (I * 1e3).toFixed(2) + ' mA';
+            if (a >= 1e-6) return (I * 1e6).toFixed(2) + ' μA';
+            if (a >= 1e-9) return (I * 1e9).toFixed(2) + ' nA';
+            if (a >= 1e-12) return (I * 1e12).toFixed(2) + ' pA';
+            return I.toExponential(1) + ' A';
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () {
+              return { t: 0, Vc: Vmin };
+            },
+            step: function (dt, t, s) {
+              s.t += dt;
+              var period = 5.0;                              // seconds per sweep
+              var phase = (s.t % period) / period;
+              s.Vc = Vmin + phase * (Vmax - Vmin);
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var T = params.T;
+              var VTv = VT();
+              var Isv = Is();
+
+              /* ===== Title ===== */
+              PS.drawText(ctx,
+                '二极管 I-V 特性 · Diode I-V  (Si,  T = ' + T.toFixed(0) + ' K,  ' +
+                'I_s = 10^' + params.logIs + ' A)',
+                W / 2, 14,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              /* ===== Plot frame ===== */
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.strokeRect(mainL, mainT, mainW, mainH);
+              ctx.restore();
+
+              /* ===== Decade gridlines + y labels ===== */
+              ctx.save();
+              ctx.font = '10px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              var dStart = Math.ceil(yMin());
+              var dEnd   = Math.floor(yMax());
+              for (var d = dStart; d <= dEnd; d++) {
+                var yy = yLog(d);
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(mainL, yy); ctx.lineTo(mainL + mainW, yy); ctx.stroke();
+                ctx.globalAlpha = 1;
+                var lbl;
+                if      (d <= -12) lbl = (Math.pow(10, d) * 1e12).toExponential(0) + ' pA';
+                else if (d === -9) lbl = '1 nA';
+                else if (d === -6) lbl = '1 μA';
+                else if (d === -3) lbl = '1 mA';
+                else if (d === 0)  lbl = '1 A';
+                else if (d > 0)    lbl = '10^' + d + ' A';
+                else               lbl = '10^' + d;
+                ctx.fillText(lbl, mainL - 5, yy);
+              }
+              ctx.restore();
+
+              /* ===== x ticks ===== */
+              ctx.save();
+              ctx.font = '10px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var vv = -0.2; vv <= 0.8 + 1e-9; vv += 0.2) {
+                var xx = xV(vv);
+                ctx.fillText(vv.toFixed(1), xx, mainB + 4);
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(xx, mainT); ctx.lineTo(xx, mainB); ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+              ctx.restore();
+
+              /* ===== axis labels ===== */
+              PS.drawText(ctx, 'V (V)', mainL + mainW, mainB + 30,
+                { font: 'bold 11px system-ui', color: C.text, align: 'right' });
+              ctx.save();
+              ctx.translate(16, mainT + mainH / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.font = 'bold 11px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText('|I|  (A,  log scale)', 0, 0);
+              ctx.restore();
+
+              /* ===== V=0 line ===== */
+              var x0line = xV(0);
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.2; ctx.setLineDash([4, 3]);
+              ctx.beginPath(); ctx.moveTo(x0line, mainT); ctx.lineTo(x0line, mainB); ctx.stroke();
+              ctx.setLineDash([]); ctx.restore();
+
+              /* ===== |I_s| reference ===== */
+              var yIs = yLog(params.logIs);
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 1.2; ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(mainL, yIs); ctx.lineTo(mainL + mainW, yIs); ctx.stroke();
+              ctx.setLineDash([]); ctx.restore();
+              PS.drawText(ctx, 'I_s', mainL + mainW - 4, yIs - 6,
+                { font: 'bold 10px system-ui', color: C.accent, align: 'right' });
+
+              /* ===== region labels ===== */
+              PS.drawText(ctx, '反向 Reverse', xV(-0.12), mainT + 12,
+                { font: '10px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, '正向 Forward', xV(0.62), mainT + 12,
+                { font: '10px system-ui', color: C.text, align: 'center' });
+
+              /* ===== the I-V curve ===== */
+              ctx.save();
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var started = false;
+              var Npts = 480;
+              for (var k = 0; k <= Npts; k++) {
+                var V = Vmin + (k / Npts) * (Vmax - Vmin);
+                var logI = log10AbsI(V);
+                var px = xV(V), py = yLog(logI);
+                if (!started) { ctx.moveTo(px, py); started = true; }
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              /* ===== slope triangle: mV per decade ===== */
+              var mVPerDec = 1000 * VTv * Math.LN10;             // V_T ln10 in mV
+              var Va = 0.30, Vb = Va + mVPerDec / 1000;
+              var yVa = yLog(log10AbsI(Va));
+              var yVb = yLog(log10AbsI(Vb));
+              var xVa = xV(Va), xVbx = xV(Vb);
+              ctx.save();
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 1.2; ctx.setLineDash([4, 3]);
+              ctx.beginPath();
+              ctx.moveTo(xVa, yVa); ctx.lineTo(xVbx, yVa); ctx.lineTo(xVbx, yVb);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              PS.drawText(ctx, mVPerDec.toFixed(0) + ' mV / 十倍 decade',
+                xVbx + 4, (yVa + yVb) / 2,
+                { font: 'bold 10px system-ui', color: C.accent2 });
+              ctx.restore();
+
+              /* ===== sweeping cursor ===== */
+              var Vc = s.Vc, Ic = Idiode(Vc), logIc = log10AbsI(Vc);
+              var xc = xV(Vc), yc = yLog(logIc);
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.globalAlpha = 0.6; ctx.lineWidth = 1;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(xc, mainT); ctx.lineTo(xc, mainB); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(mainL, yc); ctx.lineTo(xc, yc); ctx.stroke();
+              ctx.setLineDash([]); ctx.globalAlpha = 1;
+              ctx.restore();
+              PS.drawCircle(ctx, xc, yc, 5, { fill: C.trace, stroke: C.bg, lineWidth: 2 });
+
+              /* ============ BAND BENDING (bottom strip) ============ */
+              var Vbi = VbiAt(T);
+              PS.drawText(ctx,
+                'p-n 结平衡能带 Equilibrium bands   (V_bi = ' + Vbi.toFixed(3) + ' V)',
+                W / 2, bandTitleY,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1; ctx.globalAlpha = 0.5;
+              ctx.strokeRect(bandL, bandT, bandW, bandH);
+              ctx.restore();
+
+              // Energies relative to E_F = 0 (use T-dependent N_c, N_v)
+              var rT = T / 300;
+              var NcT = NC300 * Math.pow(rT, 1.5);
+              var NvT = NV300 * Math.pow(rT, 1.5);
+              var Ec_p = EG - KB * T * Math.log(NvT / NA);    // eV
+              var Ec_n = KB * T * Math.log(NcT / ND);          // eV
+              var Ev_p = Ec_p - EG;
+              var Ev_n = Ec_n - EG;
+              var Emax = Math.max(Ec_p, Ec_n) + 0.25;
+              var Emin = Math.min(Ev_p, Ev_n) - 0.25;
+              function Ey(E) {
+                return bandT + bandH - (E - Emin) / (Emax - Emin) * bandH;
+              }
+
+              var depL = bandL + 0.38 * bandW;
+              var depR = bandL + 0.62 * bandW;
+              function EcAt(x) {
+                if (x <= depL) return Ec_p;
+                if (x >= depR) return Ec_n;
+                var f = (x - depL) / (depR - depL);
+                return Ec_p + (Ec_n - Ec_p) * f;
+              }
+
+              // shaded depletion region
+              ctx.save();
+              ctx.fillStyle = C.grid; ctx.globalAlpha = 0.25;
+              ctx.fillRect(depL, bandT, depR - depL, bandH);
+              ctx.restore();
+
+              // E_F horizontal dashed
+              var yF = Ey(0);
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 1.3; ctx.setLineDash([5, 3]);
+              ctx.beginPath(); ctx.moveTo(bandL + 4, yF); ctx.lineTo(bandR - 4, yF); ctx.stroke();
+              ctx.setLineDash([]); ctx.restore();
+              PS.drawText(ctx, 'E_F', bandR - 6, yF - 5,
+                { font: 'bold 10px system-ui', color: C.trace, align: 'right' });
+
+              // E_c (conduction band edge) — solid
+              ctx.save();
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              for (var k2 = 0; k2 <= 200; k2++) {
+                var xb = bandL + (k2 / 200) * bandW;
+                var yb = Ey(EcAt(xb));
+                if (k2 === 0) ctx.moveTo(xb, yb); else ctx.lineTo(xb, yb);
+              }
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E_c', bandL + 6, Ey(Ec_p) - 4,
+                { font: 'bold 10px system-ui', color: C.primary });
+
+              // E_v (valence band edge) — solid
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              for (var k3 = 0; k3 <= 200; k3++) {
+                var xb2 = bandL + (k3 / 200) * bandW;
+                var yb2 = Ey(EcAt(xb2) - EG);
+                if (k3 === 0) ctx.moveTo(xb2, yb2); else ctx.lineTo(xb2, yb2);
+              }
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E_v', bandL + 6, Ey(Ev_p) + 12,
+                { font: 'bold 10px system-ui', color: C.accent });
+
+              // region labels
+              PS.drawText(ctx, 'p 型 p-type', bandL + 0.18 * bandW, bandB - 6,
+                { font: '10px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, 'n 型 n-type', bandL + 0.82 * bandW, bandB - 6,
+                { font: '10px system-ui', color: C.text, align: 'center' });
+
+              // V_bi arrow (in the depletion region)
+              ctx.save();
+              var xmid = (depL + depR) / 2;
+              var yTop = Ey(Ec_p) - 6;
+              var yBot = Ey(Ec_n) + 6;
+              PS.drawArrow(ctx, xmid + 18, yBot, xmid + 18, yTop, C.accent2, 'V_bi');
+              ctx.restore();
+
+              // a few carriers: holes (open circles) on p-side valence band top,
+              // electrons (filled) on n-side conduction band bottom
+              ctx.save();
+              for (var hi = 0; hi < 4; hi++) {
+                var xh = bandL + 0.06 * bandW + hi * 0.07 * bandW;
+                PS.drawCircle(ctx, xh, Ey(Ev_p) - 4, 2.6, { stroke: C.accent, lineWidth: 1.5 });
+              }
+              for (var ei = 0; ei < 4; ei++) {
+                var xe = bandL + 0.72 * bandW + ei * 0.07 * bandW;
+                PS.drawCircle(ctx, xe, Ey(Ec_n) + 4, 2.6, { fill: C.primary });
+              }
+              ctx.restore();
+
+              /* ===== readouts ===== */
+              PS.drawText(ctx,
+                '扫描点 Cursor:  V = ' + Vc.toFixed(3) + ' V,   ' +
+                'I = ' + formatCurrent(Ic) + '     ' +
+                '|  V_T = kT/e = ' + (VTv * 1000).toFixed(2) + ' mV,   ' +
+                'n_i = ' + niAt(T).toExponential(2) + ' cm⁻³',
+                mainL, readY, { font: '11px system-ui', color: C.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'T',     label: '温度 T (K)',           min: 150, max: 450, step: 5,  value: DEFAULTS.T },
+            { type: 'slider', key: 'logIs', label: 'log₁₀(I_s / A)',       min: -15, max: -6,  step: 1,  value: DEFAULTS.logIs },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('T',     function (v) { params.T = v; });
+          ctl.on('logIs', function (v) { params.logIs = v; });
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            var container = document.getElementById('controls-4');
+            var sliders = container.querySelectorAll('input[type=range]');
+            var valSpans = container.querySelectorAll('.ctrl-value');
+            var keys = ['T', 'logIs'];
+            var steps = [5, 1];
+            keys.forEach(function (k, idx) {
+              sliders[idx].value = DEFAULTS[k];
+              ctl.set(k, DEFAULTS[k]);
+              var dec = Math.max(0, -Math.floor(Math.log10(steps[idx]) + 1e-9));
+              valSpans[idx].textContent = Number(DEFAULTS[k]).toFixed(dec);
+            });
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>半导体的核心是带隙 \( E_g \)。本征载流子浓度 \( n_i=\sqrt{N_cN_v}\,e^{-E_g/(2k_BT)} \) 随温度强烈（指数）变化；Si 在 300 K 下 \( n_i\approx 10^{10}\,\mathrm{cm^{-3}} \)。</li>
+        <li>热平衡下质量作用定律 \( np=n_i^{\,2} \) 恒成立（任意掺杂）。</li>
+        <li>掺杂（施主→n 型，受主→p 型）极大改变载流子浓度（\( n\approx N_D \) 或 \( p\approx N_A \)）并把费米能级推向相应能带：\( E_F-E_i=k_BT\ln(n/n_i) \)。</li>
+        <li>电导率 \( \sigma=e(n\mu_n+p\mu_p) \)；典型掺杂把 Si 的电阻率从 \( \sim 10^5\,\Omega\cdot\mathrm{cm} \) 降到 \( \sim 1\,\Omega\cdot\mathrm{cm} \)。</li>
+        <li>p-n 结：扩散-漂移平衡形成耗尽区与内建电势 \( V_{bi}=V_T\ln(N_AN_D/n_i^{\,2}) \)；外加偏压得肖克莱方程 \( I=I_s(e^{V/V_T}-1) \)。</li>
+        <li>热电压 \( V_T=k_BT/e\approx 25.85\,\mathrm{mV} \)（300 K），正向半对数斜率约「每十倍电流 60 mV」。</li>
+        <li>器件应用：整流、LED（\( \hbar\omega\approx E_g \)）、太阳能电池（光生伏特）、晶体管（放大/开关）。</li>
+      </ul>
+      <div class="formula">\[ n_i=\sqrt{N_cN_v}\,e^{-E_g/(2k_BT)},\quad np=n_i^{\,2},\quad E_F-E_i=k_BT\ln\frac{n}{n_i} \]</div>
+      <div class="formula">\[ \sigma=e(n\mu_n+p\mu_p),\quad V_{bi}=V_T\ln\frac{N_AN_D}{n_i^{\,2}},\quad I=I_s\!\left(e^{V/V_T}-1\right),\quad V_T=\frac{k_BT}{e} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

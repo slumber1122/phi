@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 核结构 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第7章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>核结构 <span class="en-title">Nuclear Structure</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够描述核子 (nucleon) —— 质子 (proton) 与中子 (neutron) —— 的基本性质（电荷、质量、自旋 \( 1/2 \)、磁矩），并区分同位素 (isotopes, 同 \( Z \))、同量异位素 (isobars, 同 \( A \))、同中子异位素 (isotones, 同 \( N \))。</li>
+        <li>能够用经验公式 \( R=R_0 A^{1/3} \)（\( R_0\approx 1.2\,\mathrm{fm} \)）计算任意核的半径，并由此导出近常数核密度 \( \rho_0\approx 0.16\,\mathrm{nucleons/fm^3}\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \)。</li>
+        <li>能够由质谱数据 (atomic masses) 计算核结合能 \( B=(Z M_{^1\mathrm{H}}+N m_n-M_{\text{atom}})c^2 \) 与每核子结合能 \( B/A \)，并指出 \( B/A \) 在 \( ^{56}\mathrm{Fe} \)（约 \( 8.8\,\mathrm{MeV} \)）达到峰值。</li>
+        <li>能够写出半经验质量公式 (SEMF, Weizsäcker liquid-drop formula) 的五项（体积、表面、Coulomb、不对称、对偶），解释每项的物理来源，并用它预测核的结合能。</li>
+        <li>能够阐述幻数 (magic numbers 2, 8, 20, 28, 50, 82, 126) 的实验证据，并说明它如何由核壳层模型 (shell model) 加上强自旋-轨道相互作用 (strong spin-orbit) 自然给出。</li>
+        <li>能够描述强核力 (strong nuclear force) 的特征 —— 短程、吸引、与电荷无关、饱和 —— 并定性说明 π 介子交换 (Yukawa) 如何给出力的作用范围。</li>
+        <li>能够应用能量-质量守恒计算衰变与反应的 Q 值 (Q-value)，并由动量守恒导出两体衰变的动能分配。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 核子与同位素 Nucleons and Isotopes</h3>
+      <p>原子核由两类<strong>核子</strong>组成：<strong>质子</strong> \( p \)（电荷 \( +e \)，质量 \( m_p=938.272\,\mathrm{MeV}/c^2=1.6726\times 10^{-27}\,\mathrm{kg} \)）与<strong>中子</strong> \( n \)（电中性，质量 \( m_n=939.565\,\mathrm{MeV}/c^2 \)，比质子重 \( 1.293\,\mathrm{MeV}/c^2 \)）。两者自旋均为 \( 1/2 \)，都是 Fermi 子。一个核记为 \( ^{A}_{Z}\mathrm{X}_N \)，其中 \( A=Z+N \) 为<strong>质量数</strong> (mass number)，\( Z \) 为<strong>原子序数</strong> (atomic number, 即质子数)，\( N \) 为中子数。</p>
+      <p>同一元素（固定 \( Z \)）可有不同 \( N \) 的核——称<strong>同位素</strong> (isotopes)。如碳的两种稳定同位素 \( ^{12}_{\ 6}\mathrm{C}_6 \) 与 \( ^{13}_{\ 6}\mathrm{C}_7 \)。同 \( A \) 不同 \( Z \) 的核称<strong>同量异位素</strong> (isobars)；同 \( N \) 不同 \( Z \) 的称<strong>同中子异位素</strong> (isotones)。</p>
+      <p>一个方便的质量单位是<strong>原子质量单位</strong> \( \mathrm{u} \)，定义为 \( ^{12}\mathrm{C} \) 质量的十二分之一：</p>
+      <div class="formula">\[ 1\,\mathrm{u} \;=\; 931.494\,\mathrm{MeV}/c^2 \;=\; 1.66054\times 10^{-27}\,\mathrm{kg} \]</div>
+      <p>于是 \( m_p=1.007276\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)、\( m(^1\mathrm{H}\text{ atom})=1.007825\,\mathrm{u} \)（含一个电子）。在用<strong>原子质量</strong>计算时，电子质量自动抵消（中性原子有 \( Z \) 个电子），这是工程上最常用的约定。</p>
+
+      <h3>2. 核尺寸与核密度 Nuclear Size and Density</h3>
+      <p>高能电子散射实验（Hofstadter, 1950s）测出核近似为半径正比于 \( A^{1/3} \) 的均匀带电球：</p>
+      <div class="formula">\[ \boxed{\;R \;=\; R_0\,A^{1/3},\qquad R_0\approx 1.2\,\mathrm{fm}\;} \]</div>
+      <p>其中 \( 1\,\mathrm{fm}=10^{-15}\,\mathrm{m} \)（费米 fermi）。这一关系蕴含一个深刻的事实：核体积 \( V=\tfrac{4}{3}\pi R^3=\tfrac{4}{3}\pi R_0^3 A \) <strong>正比于 \( A \)</strong>，故<strong>核密度近似为常数</strong>：</p>
+      <div class="formula">\[ \rho_0 \;=\; \frac{A\,m_N}{\tfrac{4}{3}\pi R_0^3 A} \;=\; \frac{m_N}{\tfrac{4}{3}\pi R_0^3} \;\approx\; \frac{1.66\times 10^{-27}}{\tfrac{4}{3}\pi(1.2\times 10^{-15})^3} \;\approx\; 2.3\times 10^{17}\,\mathrm{kg/m^3} \]</div>
+      <p>即每核子占据体积 \( \tfrac{4}{3}\pi R_0^3\approx 7.2\,\mathrm{fm^3} \)，对应数密度约 \( 0.14\text{–}0.16\,\mathrm{nucleons/fm^3} \)。这与<strong>不可压缩液体</strong>惊人相似——这正是液滴模型 (liquid-drop model) 的物理动机。注意 \( 2.3\times 10^{17}\,\mathrm{kg/m^3} \) 比水稠密 \( 2.3\times 10^{14} \) 倍：一块硬币大小的核物质重达约 6 亿吨。</p>
+
+      <h3>3. 结合能与质量亏损 Binding Energy and Mass Defect</h3>
+      <p>实验测得<strong>任何核的质量都小于其组成核子的质量之和</strong>。这一差额称<strong>质量亏损</strong> (mass defect)：</p>
+      <div class="formula">\[ \Delta m \;=\; Z\,m_p + N\,m_n \;-\; M_{\text{nucleus}} \;>\; 0 \]</div>
+      <p>由 Einstein 质能关系，与之等价的能量即<strong>结合能</strong> (binding energy)：</p>
+      <div class="formula">\[ \boxed{\;B(A,Z) \;=\; \bigl[\,Z\,m_p + N\,m_n - M_{\text{nucleus}}(A,Z)\,\bigr]\,c^2 \;>\; 0\;} \]</div>
+      <p>用原子质量 \( M_{\text{atom}} \)（更便于查表）时，电子质量自动抵消：</p>
+      <div class="formula">\[ B \;=\; \bigl[\,Z\,M(^1\mathrm{H}) + N\,m_n - M_{\text{atom}}(A,Z)\,\bigr]\,c^2 \]</div>
+      <p>\( B \) 是「把所有核子拆散所需能量」，亦等于自由核子结合成核时<strong>释放</strong>的能量。一个常用的对比量是<strong>每核子结合能</strong> \( B/A \)——平均每个核子的「紧度」。</p>
+
+      <h3>4. B/A 曲线与稳定性谷 The B/A Curve and the Valley of Stability</h3>
+      <p>把所有稳定核的 \( B/A \) 对 \( A \) 作图，得到核物理最具启发性的曲线（见仿真）。它有三个关键特征：</p>
+      <ul>
+        <li><strong>轻核端</strong>：\( B/A \) 陡升，但在 \( ^4\mathrm{He} \)（\( B/A\approx 7.07\,\mathrm{MeV} \)）出现显著的「α 粒子异常高峰」——这是对偶 (pairing) 与壳层效应的体现。</li>
+        <li><strong>中段峰值</strong>：在 \( A\approx 56 \)（\( ^{56}\mathrm{Fe} \)），\( B/A\approx 8.79\,\mathrm{MeV/nucleon} \) 达到全局最大值。(\( ^{62}\mathrm{Ni} \) 略高，\( B/A\approx 8.794\,\mathrm{MeV} \)，但 \( ^{56}\mathrm{Fe} \) 因天文上的 α 过程而远为丰富。)</li>
+        <li><strong>重核端</strong>：超过 \( A\approx 60 \) 后 \( B/A \) 缓慢下降，到 \( ^{238}\mathrm{U} \) 时 \( B/A\approx 7.57\,\mathrm{MeV} \)。原因是核越大，Coulomb 排斥（正比于 \( Z^2 \)）越严重。</li>
+      </ul>
+      <p>这一形状直接蕴含两条产能路径：</p>
+      <ul>
+        <li><strong>核聚变</strong> (fusion)：\( A<56 \) 的轻核合并向 Fe 推进，每核子释放能量（太阳与氢弹的能源）。</li>
+        <li><strong>核裂变</strong> (fission)：\( A>56 \) 的重核分裂向 Fe 推进，同样释放能量（反应堆与原子弹的能源）。</li>
+      </ul>
+      <p>所有稳定核在 \( (N,Z) \) 平面上构成一条带——<strong>稳定性谷</strong> (valley of stability)。轻核近似 \( N\approx Z \)；重核因 Coulomb 排斥偏向 \( N>Z \)（如 \( ^{208}\mathrm{Pb} \): \( N/Z=126/82\approx 1.54 \)）。</p>
+
+      <h3>5. 半经验质量公式 The Semi-Empirical Mass Formula (SEMF)</h3>
+      <p>把核视为「带电液滴」并加入量子修正，Weizsäcker 1935 给出<strong>半经验质量公式</strong> (SEMF, also liquid-drop model)：</p>
+      <div class="formula">\[ \boxed{\;B(A,Z) \;=\; \underbrace{a_V A}_{\text{体积}} \;-\; \underbrace{a_S A^{2/3}}_{\text{表面}} \;-\; \underbrace{a_C\dfrac{Z(Z-1)}{A^{1/3}}}_{\text{Coulomb}} \;-\; \underbrace{a_A\dfrac{(A-2Z)^2}{A}}_{\text{不对称}} \;+\; \underbrace{\delta(A,Z)}_{\text{对偶}}\;} \]</div>
+      <p>各项物理含义：</p>
+      <ul>
+        <li><strong>体积项</strong> \( +a_V A \)：每个内部核子都被周围核子饱和地吸引，结合能与核子数成正比。\( a_V\approx 15.75\,\mathrm{MeV} \)。</li>
+        <li><strong>表面项</strong> \( -a_S A^{2/3} \)：表面核子缺少一侧邻居，束缚较弱，扣减正比于表面积 \( \propto R^2\propto A^{2/3} \)。\( a_S\approx 17.8\,\mathrm{MeV} \)。</li>
+        <li><strong>Coulomb 项</strong> \( -a_C Z(Z-1)/A^{1/3} \)：质子对的静电排斥，半径典 « 1 fm 内的 \( Z(Z-1)/2 \) 对，能量正比于 \( Z^2/R\propto Z^2/A^{1/3} \)。\( a_C\approx 0.711\,\mathrm{MeV} \)。</li>
+        <li><strong>不对称项</strong> \( -a_A(A-2Z)^2/A \)：核内 Fermi 能级被质子、中子分别占据；偏离 \( N=Z \) 时 Fermi 能升高，能量代价 \( \propto(N-Z)^2/A \)。\( a_A\approx 23.7\,\mathrm{MeV} \)。</li>
+        <li><strong>对偶项</strong> \( \delta(A,Z) \)：自旋-1/2 核子倾向于成对（同自旋相反），故偶-偶核 (even-even) 比奇-A 核更稳，奇-奇核最不稳：</li>
+      </ul>
+      <div class="formula">\[ \delta(A,Z) \;=\; \begin{cases} +a_P\,A^{-1/2} & Z\text{ 偶},\;N\text{ 偶} \\[2pt] 0 & A\text{ 奇} \\[2pt] -a_P\,A^{-1/2} & Z\text{ 奇},\;N\text{ 奇} \end{cases},\qquad a_P\approx 11.2\,\mathrm{MeV} \]</div>
+      <p>SEMF 对 \( A\gtrsim 20 \) 的核精度达 \( \sim 1\% \)；它无法解释轻核的 \( \alpha \) 粒子异常或幻数壳层效应——这些需要<strong>壳层模型</strong>。</p>
+
+      <h3>6. 核壳层模型与幻数 The Nuclear Shell Model &amp; the Magic Numbers</h3>
+      <p>实验上有几个「幻数」特别稳定：<strong>2, 8, 20, 28, 50, 82, 126</strong>。当 \( Z \) 或 \( N \) 等于这些值时，核表现出异常稳定性（更多稳定同位素、异常高的第一激发态、低的中子俘获截面）。例子：\( ^4_2\mathrm{He}_2 \)（双幻）、\( ^{16}_8\mathrm{O}_8 \)（双幻）、\( ^{40}_{20}\mathrm{Ca}_{20} \)（双幻）、\( ^{208}_{82}\mathrm{Pb}_{126} \)（最重的稳定双幻核）。</p>
+      <p>类比原子壳层，可假设每个核子在其余核子产生的<strong>平均势场</strong>（常用 Woods-Saxon 势）中独立运动。但用纯中心势（三维谐振子或方势阱）只得到幻数 2, 8, 20, 40, 70, 112 ——<strong>在 20 之后全错</strong>。1949 年，M. Goeppert-Mayer 与 J. H. D. Jensen 独立指出：核子还受到一个<strong>非常强的自旋-轨道耦合</strong> \( V_{ls}(r)\,\vec{l}\cdot\vec{s} \)，使 \( j=l+\tfrac{1}{2} \) 与 \( j=l-\tfrac{1}{2} \) 的子壳大幅劈裂（劈裂量 \( \propto(2l+1) \)，重核可达几 MeV）。这一项重新排列能级后，恰好给出幻数 <strong>2, 8, 20, 28, 50, 82, 126</strong>。两人因此获 1963 年诺贝尔物理学奖。</p>
+      <p>幻数对应的核子填满主壳层；额外核子必须跨过一个大能隙进入下一壳，结合能骤降——这是「幻」稳定性的量子起源。</p>
+
+      <h3>7. 强相互作用与 Yukawa 介子交换 The Strong Interaction &amp; Meson Exchange</h3>
+      <p>核子间的<strong>强核力</strong> (strong nuclear force) 是宇宙四种基本力中最强的一种（在核尺度上比 Coulomb 力大 \( \sim 100 \) 倍）。其主要特征：</p>
+      <ul>
+        <li><strong>短程</strong> (short-range)：力程约 \( 1\text{–}3\,\mathrm{fm} \)，超过 \( 3\,\mathrm{fm} \) 迅速消失（与 Coulomb 力的 \( 1/r^2 \) 长程截然不同）。</li>
+        <li><strong>强吸引</strong>：典型核子-核子势阱深 \( \sim 40\,\mathrm{MeV} \)，平衡间距 \( \sim 0.9\,\mathrm{fm} \)；更近时出现硬芯排斥。</li>
+        <li><strong>与电荷无关</strong> (charge-independent)：\( pp \)、\( nn \)、\( pn \)（同自旋-同位旋态）的强力几乎相同——这是<strong>同位旋对称</strong> (isospin symmetry) 的实验依据。</li>
+        <li><strong>饱和性</strong> (saturation)：每个核子只与有限个近邻强作用，这正解释了核密度近似常数（与化学键的饱和性类似）。</li>
+      </ul>
+      <p>1935 年，<strong>汤川秀树</strong> (Hideki Yukawa) 提出：强力由一个质量为 \( m \) 的<strong>虚介子</strong>交换传递。由能量-时间不确定关系 \( \Delta E\,\Delta t\sim\hbar \)，虚粒子存在时间 \( \Delta t\sim\hbar/(mc^2) \)，最远传播距离即<strong>力程</strong>：</p>
+      <div class="formula">\[ R_{\text{range}} \;\sim\; \frac{\hbar}{m c} \]</div>
+      <p>代入力程 \( \sim 1.5\,\mathrm{fm} \)，反推介子质量 \( m\sim\hbar/(cR)\approx 130\,\mathrm{MeV}/c^2 \)。1947 年发现的<strong>π 介子</strong> (pion, \( m_{\pi^\pm}=139.6\,\mathrm{MeV}/c^2 \)、\( m_{\pi^0}=135.0\,\mathrm{MeV}/c^2 \)) 完美吻合。汤川因此获 1949 年诺贝尔物理学奖。注意现代量子色动力学 (QCD) 把核力归结为夸克间胶子交换的<strong>剩余相互作用</strong> (residual strong force)，类比分子间力是电磁力的剩余——π 介子交换是其低能有效理论。</p>
+
+      <div class="key-terms">nucleon (核子), proton \( p \) (质子), neutron \( n \) (中子), atomic number \( Z \) (原子序数), mass number \( A \) (质量数), neutron number \( N \) (中子数), isotope / isobar / isotone (同位素/同量异位素/同中子异位素), atomic mass unit \( \mathrm{u} \) (原子质量单位), fermi \( \mathrm{fm} \) (费米), nuclear radius \( R=R_0 A^{1/3} \) (核半径), nuclear density \( \rho_0 \) (核密度), mass defect \( \Delta m \) (质量亏损), binding energy \( B \) (结合能), binding energy per nucleon \( B/A \) (每核子结合能), valley of stability (稳定性谷), fusion / fission (聚变/裂变), liquid-drop model (液滴模型), semi-empirical mass formula SEMF (半经验质量公式), volume / surface / Coulomb / asymmetry / pairing term (体积/表面/Coulomb/不对称/对偶项), magic numbers (幻数), shell model (壳层模型), spin-orbit coupling (自旋-轨道耦合), strong nuclear force (强核力), meson exchange / pion \( \pi \) (介子交换/π介子), Yukawa potential (汤川势), saturation (饱和性), isospin (同位旋), Q-value (Q值)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由 \( R\propto A^{1/3} \) 导出常数核密度</h3>
+      <p class="step"><strong>前提：</strong> 实验测得核为半径 \( R=R_0 A^{1/3} \) 的近似均匀球，所有核子质量近似为 \( m_N\approx m_p\approx m_n\approx 1.66\times 10^{-27}\,\mathrm{kg} \)。</p>
+      <p class="step"><strong>第一步（核体积）：</strong></p>
+      <p>\[ V \;=\; \frac{4}{3}\pi R^3 \;=\; \frac{4}{3}\pi R_0^3\,A \]</p>
+      <p class="step"><strong>第二步（核总质量）：</strong> \( M\approx A\,m_N \)。</p>
+      <p class="step"><strong>第三步（密度）：</strong></p>
+      <div class="formula">\[ \rho_0 \;=\; \frac{M}{V} \;=\; \frac{A\,m_N}{\tfrac{4}{3}\pi R_0^3\,A} \;=\; \frac{m_N}{\tfrac{4}{3}\pi R_0^3} \]</p>
+      <p class="step"><strong>结论：</strong> \( A \) 完全消去！密度<strong>与核子数无关</strong>，是普适常数。代入 \( R_0=1.2\,\mathrm{fm}=1.2\times 10^{-15}\,\mathrm{m} \)：</p>
+      <p>\[ \rho_0 \;=\; \frac{1.66\times 10^{-27}}{\tfrac{4}{3}\pi(1.2\times 10^{-15})^3} \;=\; \frac{1.66\times 10^{-27}}{7.24\times 10^{-45}} \;\approx\; 2.3\times 10^{17}\,\mathrm{kg/m^3} \]</p>
+      <p>这正是<strong>物质「不可压缩」</strong>的体现——与液体的密度无关性同构，是液滴模型的物理依据。</p>
+
+      <h3>B. SEMF 各项的标度论证</h3>
+      <p class="step"><strong>体积项：</strong> 强力短程且饱和，每个内部核子的环境相同，结合能正比于核子数 \( A \)。</p>
+      <p class="step"><strong>表面项：</strong> 表面核子少一侧邻居，少贡献 \( \sim \)（表面核子数）\( \times \)（每核子弹性能）\( \propto \)（表面积）\( \propto R^2\propto A^{2/3} \)。</p>
+      <p class="step"><strong>Coulomb 项：</strong> 把质子均匀球（总电荷 \( Ze \)、半径 \( R \)）拆开所需能量即静电自能：</p>
+      <p>\[ U_C \;=\; \frac{3}{5}\,\frac{(Ze)^2}{4\pi\varepsilon_0 R} \;=\; \frac{3}{5}\,\frac{e^2}{4\pi\varepsilon_0 R_0}\,\frac{Z^2}{A^{1/3}} \]</p>
+      <p>代入 \( e^2/(4\pi\varepsilon_0)=1.44\,\mathrm{MeV\cdot fm} \)、\( R_0=1.2\,\mathrm{fm} \)：\( \tfrac{3}{5}\cdot 1.44/1.2\approx 0.72\,\mathrm{MeV} \)，与拟合值 \( a_C=0.711\,\mathrm{MeV} \) 高度一致。用 \( Z(Z-1) \) 替换 \( Z^2 \) 是因为每个质子不与自身相互作用，对轻核更准。</p>
+      <p class="step"><strong>不对称项：</strong> 由 Fermi 气体模型，质子与中子各自填满 Fermi 球。偏离 \( N=Z \) 时 Fermi 动能升高，二阶小量展开给 \( \propto(N-Z)^2/A \)（详见量子力学教材）。</p>
+      <p class="step"><strong>对偶项：</strong> 来自核子-核子相互作用的 pairing 关联：自旋相反的核子对能量更低。该项依赖奇偶性，量级 \( \sim 12/\sqrt{A}\,\mathrm{MeV} \)。</p>
+
+      <h3>C. 最稳定同量异位素（稳定性谷中央）</h3>
+      <p>对给定 \( A \)，求 \( B(A,Z) \) 对 \( Z \) 的极大（等价于质量极小）。忽略对偶项，令 \( \partial B/\partial Z=0 \)：</p>
+      <p>\[ \frac{\partial B}{\partial Z} \;=\; -\,\frac{2 a_C Z}{A^{1/3}} \;+\; \frac{4 a_A(A-2Z)}{A} \;=\; 0 \]</p>
+      <p>解出最优 \( Z \)：</p>
+      <div class="formula">\[ \boxed{\;Z^*(A) \;\approx\; \frac{A}{2 + \dfrac{a_C}{2 a_A}\,A^{2/3}} \;\approx\; \frac{A}{1.98 + 0.015\,A^{2/3}}\;} \]</div>
+      <p>对 \( A=56 \)：\( Z^*\approx 25.6\to 26 \)（\( ^{56}\mathrm{Fe} \) ✓）；对 \( A=208 \)：\( Z^*\approx 83 \)（实际 \( ^{208}\mathrm{Pb} \) 是 \( Z=82 \) 双幻更稳，是壳效应的修正）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 \( ^{197}\mathrm{Au} \) 的核半径、体积与密度</h4>
+        <p class="example-statement">取 \( R_0=1.2\,\mathrm{fm} \)。求金核 \( ^{197}\mathrm{Au} \) 的半径、体积与密度，并验证核密度近似为常数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 第一步，半径：</p>
+          <p>\[ R = R_0 A^{1/3} = 1.2\times 197^{1/3}\,\mathrm{fm} \]</p>
+          <p>\[ 5^3=125,\;6^3=216\;\Rightarrow\;197^{1/3}\approx 5.82\;\Rightarrow\; R\approx 1.2\times 5.82 = 6.98\,\mathrm{fm}\approx 7.0\,\mathrm{fm} \]</p>
+          <p class="step">第二步，体积：</p>
+          <p>\[ V = \frac{4}{3}\pi R^3 = \frac{4}{3}\pi(6.98)^3 \;\mathrm{fm^3} = \frac{4}{3}\pi(340.1) \approx 1426\,\mathrm{fm^3} \]</p>
+          <p class="step">第三步，质量：\( M\approx 197\,\mathrm{u}=197\times 1.66054\times 10^{-27}=3.27\times 10^{-25}\,\mathrm{kg} \)。</p>
+          <p class="step">第四步，密度：\( V=1426\,\mathrm{fm^3}=1426\times 10^{-45}\,\mathrm{m^3}=1.426\times 10^{-42}\,\mathrm{m^3} \)。</p>
+          <p>\[ \rho = \frac{M}{V} = \frac{3.27\times 10^{-25}}{1.426\times 10^{-42}} \approx 2.29\times 10^{17}\,\mathrm{kg/m^3} \]</p>
+          <p class="step"><strong>合理性检验：</strong> 此值与普适核密度 \( \rho_0\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \) 一致——即使用 \( ^4\mathrm{He} \)（\( A=4 \)）算也会得到几乎相同的数。这正是「核物质不可压缩」的含义。</p>
+          <p><span class="ans">\( R\approx 6.98\,\mathrm{fm} \)、\( V\approx 1.43\times 10^3\,\mathrm{fm^3} \)、\( \rho\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \)（与 \( \rho_0 \) 一致）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 \( ^{56}\mathrm{Fe} \) 的结合能与每核子结合能</h4>
+        <p class="example-statement">已知 \( M(^1\mathrm{H}\text{ atom})=1.007825\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)、\( M(^{56}\mathrm{Fe}\text{ atom})=55.9349375\,\mathrm{u} \)。求 \( ^{56}\mathrm{Fe} \) 的结合能 \( B \) 与 \( B/A \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> \( Z=26 \)、\( N=30 \)。用原子质量（电子自动抵消）：</p>
+          <p>\[ Z\,M(^1\mathrm{H}) = 26\times 1.007825 = 26.20345\,\mathrm{u} \]</p>
+          <p>\[ N\,m_n = 30\times 1.008665 = 30.25995\,\mathrm{u} \]</p>
+          <p>\[ \sum = 56.46340\,\mathrm{u} \]</p>
+          <p class="step">质量亏损：</p>
+          <p>\[ \Delta m = 56.46340 - 55.93494 = 0.52847\,\mathrm{u} \]</p>
+          <p class="step">结合能（\( 1\,\mathrm{u}\times c^2=931.494\,\mathrm{MeV} \)）：</p>
+          <p>\[ B = 0.52847\times 931.494 = 492.26\,\mathrm{MeV} \]</p>
+          <p>\[ B/A = \frac{492.26}{56} = 8.790\,\mathrm{MeV/nucleon} \]</p>
+          <p class="step"><strong>对比：</strong> 这是 \( B/A \) 曲线的全局峰值（\( ^{62}\mathrm{Ni} \) 略高，\( 8.794\,\mathrm{MeV} \)）。相比之下，\( ^4\mathrm{He} \) 的 \( B/A=7.07\,\mathrm{MeV} \)、\( ^{238}\mathrm{U} \) 的 \( B/A=7.57\,\mathrm{MeV} \)——两端都比 Fe 低约 \( 1\,\mathrm{MeV/nucleon} \)。这就是为什么轻核聚变、重核裂变都释放能量。</p>
+          <p><span class="ans">\( B\approx 492.3\,\mathrm{MeV} \)、\( B/A\approx 8.79\,\mathrm{MeV/nucleon} \)（曲线峰值）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 用 SEMF 预测 \( ^{56}\mathrm{Fe} \) 的结合能</h4>
+        <p class="example-statement">取 \( a_V=15.75 \)、\( a_S=17.8 \)、\( a_C=0.711 \)、\( a_A=23.7 \)、\( a_P=11.18\,\mathrm{MeV} \)。用 SEMF 预测 \( ^{56}\mathrm{Fe} \)（\( Z=26, N=30 \)）的 \( B \)，并与例 7.2 的实测值比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 各项分别计算：</p>
+          <p>\[ \text{体积}\quad a_V A = 15.75\times 56 = 882.0\,\mathrm{MeV} \]</p>
+          <p>\[ \text{表面}\quad a_S A^{2/3} = 17.8\times 56^{2/3} \] </p>
+          <p>\( 56^{1/3}\approx 3.826\;\Rightarrow\;56^{2/3}\approx 14.64 \)，故此项 \( =17.8\times 14.64=260.5\,\mathrm{MeV} \)。</p>
+          <p>\[ \text{Coulomb}\quad a_C\,\frac{Z(Z-1)}{A^{1/3}} = 0.711\times\frac{26\times 25}{3.826} = \frac{462.2}{3.826} = 120.8\,\mathrm{MeV} \]</p>
+          <p>\[ \text{不对称}\quad a_A\,\frac{(A-2Z)^2}{A} = 23.7\times\frac{(56-52)^2}{56} = 23.7\times\frac{16}{56} = 6.77\,\mathrm{MeV} \]</p>
+          <p class="step"><strong>对偶项：</strong> \( Z=26 \)（偶）、\( N=30 \)（偶）→ 偶-偶核：</p>
+          <p>\[ \delta = +\,\frac{a_P}{\sqrt{A}} = +\,\frac{11.18}{\sqrt{56}} = +\,\frac{11.18}{7.483} = +1.49\,\mathrm{MeV} \]</p>
+          <p class="step"><strong>总结合能：</strong></p>
+          <p>\[ B_{\text{SEMF}} = 882.0 - 260.5 - 120.8 - 6.77 + 1.49 = 495.4\,\mathrm{MeV} \]</p>
+          <p>\[ B/A = 495.4/56 = 8.85\,\mathrm{MeV/nucleon} \]</p>
+          <p class="step"><strong>误差：</strong> 实测 \( B=492.3\,\mathrm{MeV} \)，预测偏高 \( 3.1\,\mathrm{MeV} \)，即 \( +0.6\% \)。SEMF 在此精度内可用，但完全无法解释 \( ^4\mathrm{He} \) 的 \( B/A=7.07\,\mathrm{MeV} \)（SEMF 预测仅 \( 5.71\,\mathrm{MeV} \)，差 \( 19\% \)）——轻核的壳层与 α 关联效应远超液滴描述。</p>
+          <p><span class="ans">\( B_{\text{SEMF}}\approx 495.4\,\mathrm{MeV} \)、\( B/A\approx 8.85\,\mathrm{MeV} \)；实测 \( 492.3\,\mathrm{MeV} \)，误差 \( +0.6\% \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 幻数 \( Z=50 \)：锡的「同位素丰度」异常</h4>
+        <p class="example-statement">锡 (Sn, \( Z=50 \)) 共有 <strong>10</strong> 种稳定同位素（\( A=112, 114, 115, 116, 117, 118, 119, 120, 122, 124 \)），是所有元素中稳定同位素最多的。比较：邻元素 In (\( Z=49 \)) 与 Sb (\( Z=51 \)) 各只有 2 种稳定同位素。用壳层模型解释之。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解释：</strong> \( Z=50 \) 是<strong>幻数</strong>。质子填满 1\( g_{9/2} \)（含 10 个粒子）后，下一个主壳层要跨过一个大能隙——此能隙来自强自旋-轨道相互作用，把 1\( g_{9/2} \)（\( j=l+\tfrac{1}{2} \)）大幅压低。结果：</p>
+          <ul>
+            <li>对 \( Z=50 \)：第 50 个质子处于满壳，结合能异常高；无论中子数怎么变（\( N=62\text{–}74 \) 范围），\( Z=50 \) 这层都「稳定地填满」，因而允许很宽的稳定同位素带。</li>
+            <li>对 \( Z=51 \) (Sb)：第 51 个质子必须进入下一个壳，结合能骤降，容易通过 \( \beta^+ \) 或电子俘获回到 \( Z=50 \)（Sn）。故 Sb 同位素少且多具放射性。</li>
+            <li>对 \( Z=49 \) (In)：第 49 个质子「差一个」填满，倾向于通过 \( \beta^- \) 衰变到 \( Z=50 \)，故稳定同位素也少。</li>
+          </ul>
+          <p class="step"><strong>幻核的其它签名：</strong> 类似的丰度暴增出现在 \( N=50 \)（如 \( ^{88}\mathrm{Sr} \)）、\( N=82 \)（如 \( ^{138}\mathrm{Ba} \)）、\( N=126 \)（如 \( ^{208}\mathrm{Pb} \)）；中子分离能 \( S_n \) 在幻数处出现陡降（移除一个中子所需能量从 \( 8\,\mathrm{MeV} \) 跌到 \( 4\,\mathrm{MeV} \)）；双幻核 \( ^{208}\mathrm{Pb} \) 的第一激发态高达 \( 2.6\,\mathrm{MeV} \)（普通核仅 \( \sim 100\,\mathrm{keV} \)）。</p>
+          <p class="step"><strong>更深的细节：</strong> \( ^{100}\mathrm{Sn} \)（\( Z=N=50 \) 双幻）虽因远离稳定性谷而具放射性（\( t_{1/2}\approx 1\,\mathrm{s} \)），但其束缚能与对偶修正仍是同类核中最大的——幻数效应依然存在。</p>
+          <p><span class="ans">幻数 \( Z=50 \) 处的大能隙使 Sn 拥有 10 种稳定同位素（同位素计数暴增是壳闭合的直接证据）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 \( ^{210}\mathrm{Po} \) α 衰变的 Q 值与 α 粒子动能</h4>
+        <p class="example-statement">\( ^{210}\mathrm{Po} \) 经 α 衰变到 \( ^{206}\mathrm{Pb} \)：\( ^{210}_{\ 84}\mathrm{Po}\rightarrow ^{206}_{\ 82}\mathrm{Pb}+^4_2\mathrm{He} \)。已知 \( M(^{210}\mathrm{Po})=209.98287\,\mathrm{u} \)、\( M(^{206}\mathrm{Pb})=205.97447\,\mathrm{u} \)、\( M(^4\mathrm{He})=4.00260\,\mathrm{u} \)。求：(a) Q 值；(b) α 粒子动能 \( T_\alpha \)（忽略电子质量修正）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong> 用原子质量（电子自动抵消：左侧 84 e，右侧 82+2=84 e）：</p>
+          <p>\[ Q = \bigl[M(^{210}\mathrm{Po})-M(^{206}\mathrm{Pb})-M(^4\mathrm{He})\bigr]\,c^2 \]</p>
+          <p>\[ = (209.98287 - 205.97447 - 4.00260)\,\mathrm{u}\times c^2 \]</p>
+          <p>\[ = 0.00580\,\mathrm{u}\times 931.494\,\mathrm{MeV/u} = 5.40\,\mathrm{MeV} \]</p>
+          <p class="step"><strong>解 (b)：</strong> 两体衰变，动量守恒：\( \vec{p}_\alpha+\vec{p}_{\mathrm{Pb}}=0\;\Rightarrow\;p_\alpha=p_{\mathrm{Pb}}\equiv p \)。非相对论下 \( T=p^2/(2m) \)，故：</p>
+          <p>\[ T_\alpha = \frac{p^2}{2m_\alpha},\qquad T_{\mathrm{Pb}} = \frac{p^2}{2m_{\mathrm{Pb}}},\qquad \frac{T_\alpha}{T_{\mathrm{Pb}}}=\frac{m_{\mathrm{Pb}}}{m_\alpha}\approx\frac{206}{4} \]</p>
+          <p>\[ T_\alpha + T_{\mathrm{Pb}} = Q \;\Rightarrow\; T_\alpha = Q\cdot\frac{m_{\mathrm{Pb}}}{m_\alpha + m_{\mathrm{Pb}}} = 5.40\times\frac{206}{210} \]</p>
+          <p>\[ T_\alpha = 5.40\times 0.9810 = 5.30\,\mathrm{MeV} \]</p>
+          <p>子核反冲动能 \( T_{\mathrm{Pb}}=Q-T_\alpha=5.40-5.30=0.10\,\mathrm{MeV} \)。</p>
+          <p class="step"><strong>合理性检验：</strong> 实测 \( ^{210}\mathrm{Po} \) α 动能 \( T_\alpha=5.304\,\mathrm{MeV} \)，与计算值完美吻合。\( Q>0 \) 是衰变能量允许的判据——这正是质谱数据预测衰变是否可能的关键工具。</p>
+          <p><span class="ans">\( Q\approx 5.40\,\mathrm{MeV} \)、\( T_\alpha\approx 5.30\,\mathrm{MeV} \)（子核反冲 \( \approx 0.10\,\mathrm{MeV} \)）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「核越重，密度越大」——错。</strong> 因为 \( R\propto A^{1/3} \)，体积 \( V\propto A \)，故 \( \rho=M/V\propto A/A=\text{const} \)。<em>所有核的密度都几乎相同</em>（\( \sim 2.3\times 10^{17}\,\mathrm{kg/m^3} \)），从 \( ^4\mathrm{He} \) 到 \( ^{238}\mathrm{U} \) 都一样。这是<strong>核力饱和性</strong>的直接体现。</li>
+        <li><strong>「\( B/A \) 在最重核处最大」——错。</strong> \( B/A \) 的<strong>峰值在 \( ^{56}\mathrm{Fe} \)（\( \sim 8.8\,\mathrm{MeV} \)）</strong>。重核因 Coulomb 排斥累积（\( \propto Z^2/A^{1/3} \)）使 \( B/A \) 反而下降；这是为何重核裂变、轻核聚变都能释放能量——都在向 Fe-56 方向「下坡」。</li>
+        <li><strong>「半经验质量公式是从基本原理推出的」——错。</strong> SEMF 是<strong>唯象</strong> (phenomenological) 公式：液滴图像给形式，拟合稳定核数据定系数（\( a_V, a_S, \ldots \)）。它不能解释 \( \alpha \) 粒子异常、不能给幻数——这些需要量子壳层模型。不要把它当基本理论。</li>
+        <li><strong>「幻数 2, 8, 20, 28, 50, 82, 126 来自纯中心势」——错。</strong> 三维谐振子或方势阱只给 2, 8, 20, 40, 70, 112。<strong>必须</strong>引入一个极强的自旋-轨道相互作用 \( V_{ls}\vec{l}\cdot\vec{s} \)，把 \( j=l\pm\tfrac{1}{2} \) 子壳劈裂开，才能得到 28, 50, 82, 126 这几个高幻数。这是 Goeppert-Mayer 与 Jensen 的关键洞见。</li>
+        <li><strong>「结合能为负值意味着核被束缚」——记号混了。</strong> 核物理中 \( B \) <em>定义为正</em>：\( B=(\sum m_{\text{nucleons}}-M_{\text{nucleus}})c^2>0 \)，\( B \) 越大核越紧。这与原子物理中「能量越低越紧」（负能）的惯例正好相反。核内核子的实际单粒子能量确是负的（束缚态），但<strong>结合能</strong>是释放出来的正能量。</li>
+        <li><strong>「\( Q>0 \) 就一定能衰变」——只对能量而言正确。</strong> 能量守恒只要求 \( Q>0 \)；但实际衰变还受角动量、宇称守恒乃至<strong>动力学势垒</strong>限制。如 \( ^{238}\mathrm{U} \) α 衰变 \( Q=4.27\,\mathrm{MeV}>0 \)，但因 Coulomb 势垒，\( t_{1/2}=4.5\times 10^9 \) 年——能量允许不代表快。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 求 \( ^{63}\mathrm{Cu} \)（\( Z=29 \)）的核半径、体积与密度。取 \( R_0=1.2\,\mathrm{fm} \)。检验密度是否接近 \( \rho_0 \)。</summary>
+        <div class="hint">用 \( R=R_0 A^{1/3} \)、\( V=\tfrac{4}{3}\pi R^3 \)、\( \rho\approx A\,\mathrm{u}/V \)。注意 \( 1\,\mathrm{fm^3}=10^{-45}\,\mathrm{m^3} \)。</div>
+        <div class="solution">
+          <p>\( 63^{1/3}\approx 3.979 \)（因 \( 4^3=64 \)）。</p>
+          <p>\( R=1.2\times 3.979=4.77\,\mathrm{fm} \)。</p>
+          <p>\( V=\tfrac{4}{3}\pi(4.77)^3=\tfrac{4}{3}\pi(108.5)=454.6\,\mathrm{fm^3} \)。</p>
+          <p>\( M=63\,\mathrm{u}=63\times 1.66054\times 10^{-27}=1.046\times 10^{-25}\,\mathrm{kg} \)；\( V=4.546\times 10^{-43}\,\mathrm{m^3} \)。</p>
+          <p>\( \rho=M/V=1.046\times 10^{-25}/4.546\times 10^{-43}=2.30\times 10^{17}\,\mathrm{kg/m^3} \)。<span class="ans">与 \( \rho_0\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \) 一致 ✓。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. \( ^4\mathrm{He} \) 原子质量 \( M=4.002603\,\mathrm{u} \)、\( M(^1\mathrm{H})=1.007825\,\mathrm{u} \)、\( m_n=1.008665\,\mathrm{u} \)。求 \( ^4\mathrm{He} \) 的结合能 \( B \) 与 \( B/A \)。</summary>
+        <div class="hint">\( B=[2 M(^1\mathrm{H})+2 m_n - M(^4\mathrm{He})]\,c^2 \)；\( 1\,\mathrm{u}c^2=931.494\,\mathrm{MeV} \)。</div>
+        <div class="solution">
+          <p>\( \Delta m = 2(1.007825)+2(1.008665)-4.002603 = 2.015650+2.017330-4.002603 = 0.030377\,\mathrm{u} \)。</p>
+          <p>\( B=0.030377\times 931.494 = 28.30\,\mathrm{MeV} \)。</p>
+          <p>\( B/A=28.30/4 = 7.07\,\mathrm{MeV/nucleon} \)。</p>
+          <p><span class="ans">\( B\approx 28.30\,\mathrm{MeV} \)、\( B/A\approx 7.07\,\mathrm{MeV} \)。这是 α 粒子的「异常高」\( B/A \)，远超 SEMF 预测（\( 5.71\,\mathrm{MeV} \)）——量子壳层效应所致。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 用 SEMF 估计 \( ^{120}\mathrm{Sn} \)（\( Z=50, N=70 \)，偶-偶核）的总结合能与 \( B/A \)。实测 \( M(^{120}\mathrm{Sn})=119.902197\,\mathrm{u} \)，比较之。</summary>
+        <div class="hint">\( B=a_V A-a_S A^{2/3}-a_C Z(Z-1)/A^{1/3}-a_A(A-2Z)^2/A+a_P/\sqrt{A} \)。系数同例 7.3。</div>
+        <div class="solution">
+          <p>\( a_V A=15.75\times 120=1890.0 \)。</p>
+          <p>\( 120^{1/3}\approx 4.932 \)、\( 120^{2/3}\approx 24.33 \)；\( a_S A^{2/3}=17.8\times 24.33=433.0 \)。</p>
+          <p>\( a_C Z(Z-1)/A^{1/3}=0.711\times 50\times 49/4.932=1741.95/4.932=353.1 \)。</p>
+          <p>\( a_A(A-2Z)^2/A=23.7\times(120-100)^2/120=23.7\times 400/120=79.0 \)。</p>
+          <p>\( \delta=+11.18/\sqrt{120}=+11.18/10.95=+1.02 \)。</p>
+          <p>\( B_{\text{SEMF}}=1890.0-433.0-353.1-79.0+1.02=1025.9\,\mathrm{MeV} \)；\( B/A=8.55\,\mathrm{MeV} \)。</p>
+          <p>实测：\( B=[50(1.007825)+70(1.008665)-119.902197]\times 931.494=[50.3913+70.6066-119.9022]\times 931.494=1.0957\times 931.494=1020.7\,\mathrm{MeV} \)，\( B/A=8.51\,\mathrm{MeV} \)。</p>
+          <p><span class="ans">SEMF 预测 \( B\approx 1026\,\mathrm{MeV} \)（\( B/A\approx 8.55 \)）；实测 \( 1021\,\mathrm{MeV} \)（\( B/A\approx 8.51 \)），误差 \( +0.5\% \)。SEMF 略高估——它捕捉不到 \( Z=50 \) 处壳闭合的微细修正。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. \( ^{238}\mathrm{U} \)（\( Z=92 \)）经 α 衰变到 \( ^{234}\mathrm{Th} \)（\( Z=90 \)）。已知 \( M(^{238}\mathrm{U})=238.050786\,\mathrm{u} \)、\( M(^{234}\mathrm{Th})=234.043601\,\mathrm{u} \)、\( M(^4\mathrm{He})=4.002603\,\mathrm{u} \)。求 Q 值与 α 粒子动能 \( T_\alpha \)。</summary>
+        <div class="hint">\( Q=[M_{\text{U}}-M_{\text{Th}}-M_{\text{He}}]c^2 \)；\( T_\alpha=Q\cdot M_{\text{Th}}/(M_{\text{Th}}+M_\alpha) \)。</div>
+        <div class="solution">
+          <p>\( Q=(238.050786-234.043601-4.002603)\,\mathrm{u}\times c^2 = 0.004582\,\mathrm{u}\times 931.494 = 4.27\,\mathrm{MeV} \)。</p>
+          <p>\( T_\alpha=Q\cdot\dfrac{234}{234+4}=4.27\times\dfrac{234}{238}=4.27\times 0.9832=4.20\,\mathrm{MeV} \)。</p>
+          <p><span class="ans">\( Q\approx 4.27\,\mathrm{MeV} \)、\( T_\alpha\approx 4.20\,\mathrm{MeV} \)（实测吻合）。虽然 \( Q>0 \)，但 Coulomb 势垒使 \( ^{238}\mathrm{U} \) 半衰期长达 \( 4.5\times 10^9 \) 年。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真绘制<strong>每核子结合能 \( B/A \)</strong> 随<strong>质量数 \( A \)</strong> 的曲线。蓝色实线为经验值（由实测原子质量插值），红色虚线为<strong>半经验质量公式 (SEMF, Weizsäcker)</strong> 的预测（沿稳定性谷取 \( Z^*(A) \)）。曲线在 \( A=56 \)（\( ^{56}\mathrm{Fe} \)，\( B/A\approx 8.79\,\mathrm{MeV} \)）达到峰值，左右两侧均下降：左侧（绿底）为<strong>聚变区</strong>——轻核合并向 Fe 推进释放能量；右侧（橙底）为<strong>裂变区</strong>——重核分裂同样释放能量。绿色小点标出几个幻核（\( ^4\mathrm{He} \)、\( ^{16}\mathrm{O} \)、\( ^{40}\mathrm{Ca} \)、\( ^{56}\mathrm{Ni} \)、\( ^{100}\mathrm{Sn} \)、\( ^{208}\mathrm{Pb} \)）。拖动 <strong>A</strong> 滑块即可读取任意核的实测与 SEMF 预测 \( B/A \)，以及向 Fe-56 方向「下坡」时每核子可释放的能量。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          /* ---------- SEMF coefficients (MeV) ---------- */
+          var aV = 15.75, aS = 17.8, aC = 0.711, aA = 23.7, aP = 11.18;
+
+          /* Stability-line Z*(A) */
+          function Zstab(A) {
+            return Math.max(1, Math.round(A / (1.97 + 0.015 * Math.pow(A, 2 / 3))));
+          }
+
+          function B_SEMF(A, Z) {
+            if (A < 1) return 0;
+            var vol = aV * A;
+            var surf = aS * Math.pow(A, 2 / 3);
+            var coul = aC * Z * (Z - 1) / Math.pow(A, 1 / 3);
+            var asym = aA * (A - 2 * Z) * (A - 2 * Z) / A;
+            var delta = 0;
+            var eZ = (Z % 2 === 0), eN = ((A - Z) % 2 === 0);
+            if (eZ && eN) delta = +aP / Math.sqrt(A);
+            else if (!eZ && !eN) delta = -aP / Math.sqrt(A);
+            return vol - surf - coul - asym + delta;
+          }
+
+          /* ---------- Empirical B/A data (subset of stable / beta-stable nuclei) ---------- */
+          var empData = [
+            [2, 1.112], [3, 2.827], [4, 7.074], [6, 5.33], [7, 5.61], [9, 6.46],
+            [12, 7.68], [14, 7.476], [16, 7.98], [19, 7.78], [20, 8.03],
+            [23, 7.96], [24, 8.26], [27, 8.33], [28, 8.45], [31, 8.48],
+            [32, 8.49], [35, 8.52], [40, 8.55], [44, 8.51], [48, 8.67],
+            [52, 8.76], [54, 8.74], [56, 8.79], [58, 8.79], [59, 8.76],
+            [63, 8.75], [64, 8.74], [66, 8.74], [69, 8.71], [70, 8.71],
+            [74, 8.71], [79, 8.74], [84, 8.72], [89, 8.74], [90, 8.71],
+            [93, 8.69], [98, 8.65], [100, 8.65], [104, 8.66], [107, 8.55],
+            [112, 8.58], [114, 8.59], [118, 8.51], [120, 8.51], [124, 8.45],
+            [127, 8.45], [130, 8.43], [132, 8.41], [133, 8.41], [137, 8.41],
+            [138, 8.40], [139, 8.39], [140, 8.39], [141, 8.34], [144, 8.34],
+            [147, 8.31], [148, 8.31], [152, 8.26], [157, 8.21], [159, 8.21],
+            [162, 8.20], [165, 8.17], [168, 8.18], [169, 8.18], [174, 8.18],
+            [175, 8.18], [178, 8.17], [180, 8.16], [181, 8.16], [184, 8.00],
+            [186, 8.02], [187, 8.02], [189, 8.01], [192, 8.00], [193, 7.99],
+            [195, 7.92], [197, 7.91], [200, 7.91], [202, 7.86], [204, 7.86],
+            [207, 7.87], [208, 7.87], [232, 7.61], [235, 7.59], [238, 7.57]
+          ];
+
+          function BA_emp(A) {
+            if (A <= empData[0][0]) return empData[0][1];
+            if (A >= empData[empData.length - 1][0]) return empData[empData.length - 1][1];
+            for (var i = 0; i < empData.length - 1; i++) {
+              var A1 = empData[i][0], BA1 = empData[i][1];
+              var A2 = empData[i + 1][0], BA2 = empData[i + 1][1];
+              if (A >= A1 && A <= A2) {
+                var t = (A - A1) / (A2 - A1);
+                return BA1 + t * (BA2 - BA1);
+              }
+            }
+            return empData[empData.length - 1][1];
+          }
+
+          /* ---------- Layout ---------- */
+          var Amin = 0, Amax = 250;
+          var BAmin = 0, BAmax = 9.5;
+          var padL = 50, padR = 18, padT = 36, padB = 78;
+          var plotL = padL, plotR = W - padR;
+          var plotT = padT, plotB = H - padB;
+          var plotW = plotR - plotL, plotH = plotB - plotT;
+
+          function xA(A) { return plotL + (A - Amin) / (Amax - Amin) * plotW; }
+          function yBA(BA) {
+            var f = (BA - BAmin) / (BAmax - BAmin);
+            if (f < 0) f = 0; else if (f > 1) f = 1;
+            return plotB - f * plotH;
+          }
+
+          /* ---------- Magic nuclei markers ---------- */
+          var magicNuclei = [
+            { A: 4, label: 'He' }, { A: 16, label: 'O' }, { A: 40, label: 'Ca' },
+            { A: 56, label: 'Ni' }, { A: 100, label: 'Sn' }, { A: 208, label: 'Pb' }
+          ];
+
+          /* ---------- Default parameters ---------- */
+          var DEFAULTS = { A: 56, showSEMF: true, showMagic: true };
+          var params = Object.assign({}, DEFAULTS);
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              /* ===== Title ===== */
+              PS.drawText(ctx,
+                '每核子结合能 B/A vs 质量数 A · Binding Energy per Nucleon',
+                W / 2, 14,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+
+              /* ===== Shaded regions: fusion (light) & fission (heavy) ===== */
+              ctx.save();
+              ctx.fillStyle = C.accent2; ctx.globalAlpha = 0.10;
+              ctx.fillRect(xA(4), plotT, xA(56) - xA(4), plotH);
+              ctx.restore();
+              ctx.save();
+              ctx.fillStyle = C.accent; ctx.globalAlpha = 0.10;
+              ctx.fillRect(xA(56), plotT, xA(238) - xA(56), plotH);
+              ctx.restore();
+
+              /* region labels */
+              PS.drawText(ctx, '聚变区 Fusion (light)',
+                (xA(4) + xA(56)) / 2, plotT + 12,
+                { font: 'bold 10px system-ui', color: C.accent2, align: 'center' });
+              PS.drawText(ctx, '裂变区 Fission (heavy)',
+                (xA(56) + xA(238)) / 2, plotT + 12,
+                { font: 'bold 10px system-ui', color: C.accent, align: 'center' });
+
+              /* ===== Plot frame ===== */
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.strokeRect(plotL, plotT, plotW, plotH);
+              ctx.restore();
+
+              /* ===== Horizontal grid lines (integer B/A) + labels ===== */
+              ctx.save();
+              ctx.font = '10px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var ba = 1; ba <= 9; ba++) {
+                var yy = yBA(ba);
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(plotL, yy); ctx.lineTo(plotL + plotW, yy); ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.fillText(ba.toFixed(0), plotL - 5, yy);
+              }
+              ctx.restore();
+
+              /* ===== Vertical grid lines at A = 50, 100, 150, 200 ===== */
+              ctx.save();
+              ctx.font = '10px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              for (var aa = 50; aa <= 200; aa += 50) {
+                var xx = xA(aa);
+                ctx.fillText(aa.toFixed(0), xx, plotB + 4);
+                ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(xx, plotT); ctx.lineTo(xx, plotB); ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+              ctx.restore();
+
+              /* ===== Axis labels ===== */
+              PS.drawText(ctx, 'A (质量数 mass number)',
+                plotL + plotW, plotB + 38,
+                { font: 'bold 11px system-ui', color: C.text, align: 'right' });
+              ctx.save();
+              ctx.translate(14, plotT + plotH / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.font = 'bold 11px system-ui'; ctx.fillStyle = C.text;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText('B/A (MeV / 核子 nucleon)', 0, 0);
+              ctx.restore();
+
+              /* ===== SEMF overlay (dashed) ===== */
+              if (params.showSEMF) {
+                ctx.save();
+                ctx.strokeStyle = C.accent; ctx.lineWidth = 1.6; ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                var started = false;
+                for (var A = 12; A <= 238; A += 1) {
+                  var Z = Zstab(A);
+                  var BA = B_SEMF(A, Z) / A;
+                  if (BA < 5 || BA > 9.5) { started = false; continue; }
+                  var px = xA(A), py = yBA(BA);
+                  if (!started) { ctx.moveTo(px, py); started = true; }
+                  else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.restore();
+                PS.drawText(ctx, '--  SEMF (Weizsäcker) 预测',
+                  plotL + 8, plotT + plotH - 14,
+                  { font: '10px system-ui', color: C.accent });
+              }
+
+              /* ===== Empirical curve (solid) ===== */
+              ctx.save();
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              var Npts = 240;
+              for (var k = 0; k <= Npts; k++) {
+                var A = 2 + (k / Npts) * (238 - 2);
+                var BA = BA_emp(A);
+                var px = xA(A), py = yBA(BA);
+                if (k === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '—   实测经验曲线 Empirical',
+                plotL + 8, plotT + plotH - 28,
+                { font: '10px system-ui', color: C.primary });
+
+              /* ===== Fe-56 peak marker ===== */
+              var xFe = xA(56), yFe = yBA(8.79);
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.globalAlpha = 0.45; ctx.lineWidth = 1;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(xFe, plotT); ctx.lineTo(xFe, plotB); ctx.stroke();
+              ctx.setLineDash([]); ctx.globalAlpha = 1;
+              ctx.restore();
+              PS.drawCircle(ctx, xFe, yFe, 5.5,
+                { fill: C.trace, stroke: C.bg, lineWidth: 2 });
+              PS.drawText(ctx,
+                '⁵⁶Fe 峰值 peak\nB/A ≈ 8.79 MeV',
+                xFe + 8, yFe - 14,
+                { font: 'bold 10px system-ui', color: C.trace, align: 'left' });
+
+              /* ===== Magic-nuclei markers ===== */
+              if (params.showMagic) {
+                magicNuclei.forEach(function (nuc) {
+                  var xx = xA(nuc.A);
+                  var yy = yBA(BA_emp(nuc.A));
+                  PS.drawCircle(ctx, xx, yy, 4,
+                    { fill: C.accent2, stroke: C.bg, lineWidth: 1.5 });
+                  PS.drawText(ctx, nuc.label, xx, yy - 8,
+                    { font: '9px system-ui', color: C.accent2, align: 'center' });
+                });
+              }
+
+              /* ===== Cursor (slider-controlled A) ===== */
+              var Ac = params.A;
+              var Aint = Math.round(Ac);
+              var xc = xA(Ac);
+              var Zc = Zstab(Aint);
+              var BAe = BA_emp(Ac);
+              var BAs = B_SEMF(Aint, Zc) / Aint;
+              var yE = yBA(BAe);
+              var yS = yBA(BAs);
+
+              ctx.save();
+              ctx.strokeStyle = C.text; ctx.globalAlpha = 0.35; ctx.lineWidth = 1;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(xc, plotT); ctx.lineTo(xc, plotB); ctx.stroke();
+              ctx.setLineDash([]); ctx.globalAlpha = 1;
+              ctx.restore();
+
+              PS.drawCircle(ctx, xc, yE, 5.5,
+                { fill: C.primary, stroke: C.bg, lineWidth: 2 });
+              if (params.showSEMF && BAs >= 5 && BAs <= 9.5) {
+                PS.drawCircle(ctx, xc, yS, 4,
+                  { fill: C.accent, stroke: C.bg, lineWidth: 2 });
+              }
+
+              /* ===== Readouts at bottom ===== */
+              var yRead = plotB + 22;
+              PS.drawText(ctx,
+                'A = ' + Aint +
+                '   →   Z*(A) = ' + Zc +
+                '     实测 empirical B/A = ' + BAe.toFixed(2) + ' MeV' +
+                '     SEMF B/A = ' + BAs.toFixed(2) + ' MeV',
+                plotL, yRead,
+                { font: '11px system-ui', color: C.text });
+
+              var dBA = BAe - 8.79;
+              var absD = Math.abs(dBA);
+              var msg;
+              if (Math.abs(Ac - 56) < 1) {
+                msg = '已在 B/A 峰值（Fe-56）at the peak — 无能量可释放';
+              } else {
+                var dir = (Ac < 56) ? '聚变 fusion' : '裂变 fission';
+                msg = '向 Fe-56 方向（' + dir + '）每核子可释放 ≈ ' + absD.toFixed(2) + ' MeV';
+              }
+              PS.drawText(ctx, msg, plotL, yRead + 18,
+                { font: '10px system-ui', color: C.text });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'A',         label: '质量数 A',           min: 2, max: 238, step: 1,    value: DEFAULTS.A },
+            { type: 'toggle', key: 'showSEMF',  label: '显示 SEMF 预测',     value: DEFAULTS.showSEMF },
+            { type: 'toggle', key: 'showMagic', label: '标记幻核 magic nuclei', value: DEFAULTS.showMagic },
+            { type: 'button', key: 'reset',     label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('A',         function (v) { params.A = v; });
+          ctl.on('showSEMF',  function (v) { params.showSEMF = v; });
+          ctl.on('showMagic', function (v) { params.showMagic = v; });
+          ctl.on('reset', function () {
+            Object.assign(params, DEFAULTS);
+            var container = document.getElementById('controls-7');
+            var slider = container.querySelector('input[type=range]');
+            var valSpan = container.querySelectorAll('.ctrl-value')[0];
+            var cbs = container.querySelectorAll('input[type=checkbox]');
+            slider.value = DEFAULTS.A;
+            ctl.set('A', DEFAULTS.A);
+            valSpan.textContent = DEFAULTS.A.toFixed(0);
+            cbs[0].checked = DEFAULTS.showSEMF;
+            cbs[1].checked = DEFAULTS.showMagic;
+            ctl.set('showSEMF', DEFAULTS.showSEMF);
+            ctl.set('showMagic', DEFAULTS.showMagic);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>核子（质子 + 中子）组成原子核；同位素同 \( Z \) 不同 \( N \)；原子质量单位 \( 1\,\mathrm{u}=931.494\,\mathrm{MeV}/c^2 \)。</li>
+        <li>核半径 \( R=R_0 A^{1/3} \)、\( R_0\approx 1.2\,\mathrm{fm} \)，故核密度近似普适常数 \( \rho_0\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \)（核力饱和的证据）。</li>
+        <li>结合能 \( B=[Z M(^1\mathrm{H})+N m_n-M_{\text{atom}}]c^2>0 \)；\( B/A \) 在 \( ^{56}\mathrm{Fe} \) 取峰值 \( \approx 8.8\,\mathrm{MeV/nucleon} \)，是聚变与裂变释放能量的根源。</li>
+        <li>半经验质量公式 \( B=a_V A-a_S A^{2/3}-a_C Z(Z-1)/A^{1/3}-a_A(A-2Z)^2/A+\delta \)；五项分别源自体积、表面、Coulomb、不对称、对偶；适用于 \( A\gtrsim 20 \)，精度约 1%。</li>
+        <li>幻数 2, 8, 20, 28, 50, 82, 126 来自核壳层模型加上强自旋-轨道耦合；双幻核（如 \( ^4\mathrm{He} \)、\( ^{16}\mathrm{O} \)、\( ^{40}\mathrm{Ca} \)、\( ^{208}\mathrm{Pb} \)）异常稳定。</li>
+        <li>强核力短程、强吸引、电荷无关、饱和；Yukawa 用 π 介子交换解释力程 \( R\sim\hbar/(m_\pi c)\approx 1.4\,\mathrm{fm} \)。</li>
+        <li>Q 值 \( Q=[\sum M_{\text{initial}}-\sum M_{\text{final}}]c^2 \)；\( Q>0 \) 是反应放能的判据，两体衰变中 \( T_\alpha=Q\cdot m_{\text{daughter}}/(m_\alpha+m_{\text{daughter}}) \)。</li>
+      </ul>
+      <div class="formula">\[ R=R_0 A^{1/3}\;(R_0\approx 1.2\,\mathrm{fm}),\qquad \rho_0\approx\frac{m_N}{\tfrac{4}{3}\pi R_0^3}\approx 2.3\times 10^{17}\,\mathrm{kg/m^3} \]</div>
+      <div class="formula">\[ B=\bigl[Z M(^1\mathrm{H})+N m_n-M_{\text{atom}}\bigr]c^2,\qquad 1\,\mathrm{u}c^2=931.494\,\mathrm{MeV} \]</div>
+      <div class="formula">\[ B_{\text{SEMF}}=a_V A-a_S A^{2/3}-a_C\frac{Z(Z-1)}{A^{1/3}}-a_A\frac{(A-2Z)^2}{A}+\delta,\quad \delta=\begin{cases}+a_P A^{-1/2}& ee\\ 0& \text{odd }A\\ -a_P A^{-1/2}& oo\end{cases} \]</div>
+      <div class="formula">\[ Z^*(A)\approx\frac{A}{1.98+0.015\,A^{2/3}},\qquad Q=\bigl[\textstyle\sum M_i-\sum M_f\bigr]c^2,\qquad T_\alpha=Q\cdot\frac{m_{\text{daughter}}}{m_\alpha+m_{\text{daughter}}} \]</div>
+      <div class="formula">\[ \text{magic numbers}=\{2,\,8,\,20,\,28,\,50,\,82,\,126\},\qquad R_{\text{Yukawa}}\sim\frac{\hbar}{m_\pi c}\approx 1.4\,\mathrm{fm} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

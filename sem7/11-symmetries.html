@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 对称性与守恒律 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第11章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>对称性与守恒律 <span class="en-title">Symmetries &amp; Conservation Laws</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够阐述 <strong>Noether 定理</strong> (Noether's theorem)：每一种连续对称性对应一个守恒流与守恒荷——时间平移→能量、空间平移→动量、旋转→角动量、全局 U(1) 相位→电荷；并能写出无穷小变换下守恒流的显式。</li>
+        <li>能够解释<strong>规范原理</strong> (gauge principle)：把全局相位对称性局域化必然引入规范玻色子 (gauge boson)；并说明 \( U(1)_{\mathrm{EM}} \) 给出光子、\( SU(2)_L\times U(1)_Y \) 给出 \( W^\pm, Z^0, \gamma \)、\( SU(3)_c \) 给出 8 个胶子——「对称性决定相互作用」。</li>
+        <li>能够定义三种离散对称性——<strong>宇称 P</strong> (parity, 镜像反演)、<strong>电荷共轭 C</strong> (charge conjugation, 粒子↔反粒子)、<strong>时间反演 T</strong> (time reversal)；并能计算粒子–反粒子系统的内禀宇称 \( P=(-1)^{L+1} \) 与 C 宇称 \( C=(-1)^L \)。</li>
+        <li>能够阐述 <strong>CPT 定理</strong> (CPT theorem)：Lorentz 不变的局域厄米量子场论必在 CPT 联合变换下不变，并由此推出粒子与反粒子的质量、寿命、磁矩严格相等（反号）——CPT <em>从不</em>被破坏。</li>
+        <li>能够判断何种相互作用破坏何种对称性：强与电磁相互作用守恒 \( C, P, T \) 与 \( CP \)；<strong>弱相互作用</strong> <em>最大地</em>破坏 \( C \) 与 \( P \)、<em>轻微</em>破坏 \( CP \)（\( K \) 与 \( B \) 介子系统证据）；并说明 CP 破坏是 Sakharov 重子生成三条件之一。</li>
+        <li>能够对给定的反应或衰变检验守恒量——电荷 \( Q \)、<strong>重子数</strong> \( B \)、<strong>轻子数</strong> \( L=L_e+L_\mu+L_\tau \)（及单味 \( L_e, L_\mu, L_\tau \)）、色荷与（近似）同位旋 \( I \)——并据此判定容许 (allowed) 或禁戒 (forbidden)。</li>
+        <li>能够阐述<strong>自发对称破缺</strong> (spontaneous symmetry breaking, SSB) 与 <strong>Higgs 机制</strong> (Higgs mechanism)：标量势取「墨西哥帽」形式 \( V(\phi)=-\mu^2|\phi|^2+\lambda|\phi|^4 \) 时真空期望值 \( v\approx 246\,\mathrm{GeV} \) 非零，使 \( W^\pm, Z^0 \) 获得质量而 \( \gamma \) 仍无质量，并预言残留的 Higgs 玻色子 \( m_H\approx 125\,\mathrm{GeV} \)（2012 年 LHC 发现）。</li>
+        <li>能够应用<strong>选择定则</strong> (selection rules)——宇称、C 宇称、同位旋、角动量——禁戒特定衰变并预估分支比上限。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. Noether 定理与连续对称性 Noether's Theorem and Continuous Symmetries</h3>
+      <p><strong>Noether 定理</strong>（Emmy Noether, 1918）是理论物理最优美的结果之一：<em>作用量在下的每一种连续对称性，必对应一个守恒流与一个守恒荷</em>。设场 \( \phi_a(x) \) 在无穷小变换 \( \phi_a\to\phi_a+\epsilon\,\delta\phi_a \)（\( \epsilon \) 为常数参量）下作用量不变，则存在一个四维矢量流 \( j^\mu \) 满足连续性方程</p>
+      <div class="formula">\[ \boxed{\;\partial_\mu j^\mu \;=\; 0\;},\qquad Q\;=\;\int j^0\,d^3x,\qquad \dv{Q}{t}=0 \]</div>
+      <p>对应关系总览：</p>
+      <ul>
+        <li><strong>时间平移</strong>不变 \( t\to t+\epsilon \) → <strong>能量</strong>守恒 \( E \)；</li>
+        <li><strong>空间平移</strong>不变 \( \vec{x}\to\vec{x}+\vec{\epsilon} \) → <strong>动量</strong>守恒 \( \vec{p} \)；</li>
+        <li><strong>旋转</strong>不变 \( SO(3) \) → <strong>角动量</strong>守恒 \( \vec{J} \)；</li>
+        <li><strong>全局 U(1)</strong> 相位 \( \psi\to e^{i\alpha}\psi \)（\( \alpha \) 与时空无关）→ <strong>电荷</strong>守恒 \( Q \)；</li>
+        <li><strong>近似 SU(2) 同位旋</strong>（强相互作用）→ 同位旋 \( I \) 守恒（精度约 1%）。</li>
+      </ul>
+      <p>对称性不仅是「美化」，它<strong>结构性地</strong>决定了理论允许的形式：一旦写下对称群，拉格朗日量的可能项就被严格限制，所有可观测的荷都是相应生成元的本征值。</p>
+
+      <h3>2. 规范对称性作为基本力的起源 Gauge Symmetries as the Origin of Forces</h3>
+      <p>把<strong>全局</strong>对称性升级为<strong>局域</strong>（依赖于时空的）对称性，即 <strong>规范变换</strong> (gauge transformation)：\( \psi(x)\to e^{i q\alpha(x)}\psi(x) \)。此时自由场的拉格朗日量 \( \bar{\psi}i\gamma^\mu\partial_\mu\psi \) 中，偏导 \( \partial_\mu \) 会产生不可抵消的 \( \partial_\mu\alpha \) 项而破坏不变性。为挽救不变性，<em>必须</em>引入一个新场 \( A_\mu \)，按 \( A_\mu\to A_\mu-\partial_\mu\alpha \) 变换，并把导数换成<strong>协变导数</strong> (covariant derivative)</p>
+      <div class="formula">\[ D_\mu \;=\; \partial_\mu \;+\; i q A_\mu \]</div>
+      <p>于是 \( D_\mu\psi\to e^{i q\alpha(x)}D_\mu\psi \)，与 \( \psi \) 同步变换，拉格朗日量恢复不变。新场 \( A_\mu \) 就是<strong>光子</strong>——它「被迫」存在，纯粹出于规范不变性的要求。杨振宁与 Mills（1954）将此原理推广到非阿贝尔群，给出</p>
+      <ul>
+        <li>\( U(1)_{\mathrm{EM}} \)：1 个规范玻色子——光子 \( \gamma \)（无质量，长程）；</li>
+        <li>\( SU(2)_L\times U(1)_Y \)（电弱）：4 个玻色子 \( W^1,W^2,W^3,B \)，经 Higgs 机制后物理态为 \( W^\pm, Z^0, \gamma \)；</li>
+        <li>\( SU(3)_c \)（色）：\( 3^2-1=8 \) 个胶子 \( g \)（无质量，但色荷自相互作用使其禁闭）。</li>
+      </ul>
+      <p>这是粒子物理标准模型 (Standard Model, SM) 的核心信条——<strong>「对称性决定相互作用」</strong> (symmetry dictates interaction)：一旦选定规范群，力的传递者及其耦合方式就被唯一决定。</p>
+
+      <h3>3. 离散对称性 P、C、T Discrete Symmetries</h3>
+      <p>除连续对称性外，粒子物理还有三个分立（\( \mathbb{Z}_2 \)）对称性。</p>
+      <p><strong>宇称 P</strong> (parity)：空间反演 \( \vec{x}\to-\vec{x} \)。它把<strong>极矢量</strong> (polar vector) 反号（\( \vec{r}\to-\vec{r} \)、\( \vec{p}\to-\vec{p} \)），而<strong>轴矢量</strong> (axial vector / pseudovector) 不变号（\( \vec{L}=\vec{r}\times\vec{p}\to+\vec{L} \)）。<strong>赝标量</strong> (pseudoscalar) 如 \( \vec{S}\cdot\vec{p} \)（螺旋度 helicity）在 P 下反号。粒子可有<strong>内禀宇称</strong> \( \eta_P=\pm 1 \)：费米子–反费米子对的宇称为</p>
+      <div class="formula">\[ \eta_P \;=\; (-1)^{L+1}\qquad\text{（费米子–反费米子，轨道角动量 }L\text{）} \]</div>
+      <p>因此 \( ^1S_0 \) 正反费米子态（如电子偶素仲态 \( e^+e^- \)）宇称为 \( -1 \)。<strong>光子</strong>的内禀宇称为 \( -1 \)（它由矢量流 \( J^\mu \) 耦合，故 \( J^{\mu\nu}F_{\mu\nu} \) 在 P 下反号）。</p>
+      <p><strong>电荷共轭 C</strong> (charge conjugation)：把粒子换成其反粒子，\( Q\to -Q \)、\( B\to -B \)、\( L\to -L \)。<strong>光子</strong>是自身的反粒子但 C 本征值为 \( -1 \)（电磁流在 C 下反号，\( A_\mu\to -A_\mu \)）。中性介子（如 \( \pi^0, \eta, \rho^0 \)）可是 C 的本征态：例如 \( \pi^0 \) 的 \( J^{PC}=0^{-+} \)（C = +1）；\( \rho^0 \) 的 \( J^{PC}=1^{--} \)（C = −1）。</p>
+      <p><strong>时间反演 T</strong> (time reversal)：\( t\to -t \)，动量与自旋都反号。等价地把反应的「电影」倒带。若正反应与逆反应的跃迁概率由细致平衡 (detailed balance) 关联，则 T 守恒。</p>
+
+      <h3>4. CPT 定理 The CPT Theorem</h3>
+      <p>任何满足 (i) <strong>Lorentz 协变性</strong>、(ii) <strong>局域性</strong>（场的微扰满足因果）、(iii) <strong>厄米哈密顿量</strong>（幺正演化、概率守恒）的量子场论，必在<strong>三联合变换 CPT</strong> 下不变（Pauli–Lüders–Schwinger 定理，1955）。其物理推论极为犀利：</p>
+      <ul>
+        <li>粒子与反粒子的<strong>质量严格相等</strong>：\( m_{\bar{p}}=m_p \)；</li>
+        <li><strong>寿命严格相等</strong>：\( \tau_{\mu^+}=\tau_{\mu^-} \)；</li>
+        <li>电荷反号、磁矩反号：\( \mu_{\bar{p}}=-\mu_p \)；</li>
+        <li>反应与 CPT 共轭反应的截面严格相等。</li>
+      </ul>
+      <p>实验下限极严：</p>
+      <div class="formula">\[ \frac{|m_{e^+}-m_{e^-}|}{m_e}<8\times 10^{-9},\quad \frac{|m_p-m_{\bar p}|}{m_p}<10^{-10},\quad \frac{|q_p+q_{\bar p}|}{e}<10^{-9} \]</div>
+      <p><strong>CPT 从未被实验破坏过</strong>。任何观测到的 CPT 破坏都意味着上述三大前提之一（通常是 Lorentz 协变性或局域性）的崩塌——这是新物理的「圣杯」搜索方向之一。</p>
+
+      <h3>5. 弱相互作用中的 C、P、CP 破坏 C, P, and CP Violation in the Weak Interaction</h3>
+      <p>1956 年李政道与杨振宁指出：<em>当时的实验并未检验弱相互作用中的宇称守恒</em>。次年吴健雄 (Chien-Shiung Wu) 用 \( {}^{60}\mathrm{Co} \) 在低温强磁场中极化的实验给出决定性证据——衰变电子<strong>优先沿与核自旋相反的方向飞出</strong>：</p>
+      <div class="formula">\[ {}^{27}\mathrm{Co}^{60}(J^P=5^+)\;\to\;{}^{28}\mathrm{Ni}^{60*}(J^P=4^+)\;+\;e^-\;+\;\bar{\nu}_e \]</div>
+      <p>测量到的不对称度 \( A\approx -0.4 \)（而非 0）证明 P <em>最大地</em>被破坏。中微子本身是「手征」的：\( \nu \) 永远左旋 (helicity \( -1/2 \))，\( \bar{\nu} \) 永远右旋——这等价于 C 也最大地被破坏（C 把左旋 \( \nu \) 变成左旋 \( \bar{\nu} \)，而后者在自然界中不存在）。V−A 结构由 Feynman 与 Gell-Mann（1958）形式化。</p>
+      <p>CP：在大多数弱过程中近似守恒，但 1964 年 Cronin、Fitch 及合作者在 Brookhaven 发现 \( K_L \)（CP 本征值近似为 \( -1 \)）竟以分支比</p>
+      <div class="formula">\[ \mathrm{BR}(K_L\to\pi^+\pi^-)\;=\;(1.967\pm 0.010)\times 10^{-3} \]</div>
+      <p>衰变到 \( \pi^+\pi^- \)（CP = \( +1 \)）。这是<strong>CP 破坏</strong> (CP violation) 的首次观测，Cronin 与 Fitch 因此获 1980 年诺贝尔奖。在标准模型中 CP 破坏源于 <strong>CKM 矩阵</strong> (Cabibbo–Kobayashi–Maskawa) 中唯一不可去除的复相因子</p>
+      <div class="formula">\[ V_{\mathrm{CKM}}\;=\;\begin{pmatrix} V_{ud}&V_{us}&V_{ub}\\\\ V_{cd}&V_{cs}&V_{cb}\\\\ V_{td}&V_{ts}&V_{tb}\end{pmatrix},\qquad \delta_{13}\;\approx\;1.20\,\mathrm{rad}\;(\approx 68.8^\circ) \]</div>
+      <p>用 <strong>Jarlskog 不变量</strong> (Jarlskog invariant) 定量：</p>
+      <div class="formula">\[ J \;=\; \mathrm{Im}(V_{us}V_{cb}V_{ub}^*V_{cs}^*) \;\approx\; 3.05\times 10^{-5} \]</div>
+      <p>\( J\ne 0 \) 即 CP 破坏。2001 年 BaBar 与 Belle 合作组在 \( B^0 \)–\( \bar B^0 \) 系统中也观测到 CP 破坏（如 \( B^0\to J/\psi\,K_S \)），并精确符合 CKM 图像。在 \( B \) 介子系统 CP 破坏效应比 \( K \) 大很多（量级 \( \mathcal{O}(1) \)），是当前精密味道物理 (flavor physics) 的核心课题。</p>
+      <p><strong>Sakharov 三条件</strong>（1967）：为解释宇宙为何存在物质–反物质不对称，必须满足 (i) 重子数破坏过程、(ii) C 与 CP 破坏、(iii) 偏离热平衡。宇宙学观测 \( \eta\equiv(n_B-n_{\bar B})/n_\gamma\approx 6\times 10^{-10} \)，但标准模型的 CP 破坏（由 \( J \) 量度）<em>太小</em>，约差 10 个数量级——这强烈暗示存在超出标准模型 (BSM) 的 CP 破坏源（如轻子生成 leptogenesis、强 CP 问题的 axion 等）。</p>
+
+      <h3>6. 守恒量子数 Conserved Quantum Numbers</h3>
+      <p>每个粒子带有以下「标签」，在所有已知相互作用中（除非特别说明）严格守恒：</p>
+      <ul>
+        <li><strong>电荷</strong> \( Q \)（单位 \( e=1.602\times 10^{-19}\,\mathrm{C} \)）：精确守恒，对应 \( U(1)_{\mathrm{EM}} \) 规范对称。实验下限 \( \tau_p(e^+\to\cdots)/\tau_p>10^{33} \) 年。</li>
+        <li><strong>重子数</strong> \( B \)：定义 \( B(\text{夸克})=1/3 \)，\( B(\text{反夸克})=-1/3 \)，故核子 \( B=1 \)、介子 \( B=0 \)。在标准模型中守恒（经典层面），但<strong>电弱规范反常</strong>在量子层面允许 \( B+L \) 破坏（'t Hooft 1976，但概率 \( \sim e^{-4\pi/\alpha_W}\propto 10^{-160} \) 可忽略）。质子衰变实验给出 \( \tau_p>1.6\times 10^{34} \) 年（Super-K, \( p\to e^+\pi^0 \) 通道）。</li>
+        <li><strong>轻子数</strong> \( L=L_e+L_\mu+L_\tau \)：\( L(e^-)=+1 \)、\( L(\nu_e)=+1 \)、反粒子为 \(-1\)。标准模型（无中微子质量）中三味各自守恒。但中微子振荡 (neutrino oscillations, 1998 Super-K 首次确证) <em>违反单味轻子数</em> \( L_e,L_\mu,L_\tau \)（\( \nu_e\leftrightarrow\nu_\mu \)），但<strong>总</strong> \( L \) 仍守恒（Dirac 中微子图像）。若中微子为 <strong>Majorana 粒子</strong>（粒子=反粒子），则 \( L \) 也被破坏——<strong>跷跷板机制</strong> (seesaw mechanism) 预言此情形，并自然解释 \( m_\nu\ll m_e \)；无中微子双 β 衰变 (neutrinoless double-beta decay, \( 0\nu\beta\beta \)) 是关键实验。</li>
+        <li><strong>色荷</strong> (color)：\( SU(3)_c \) 规范对称，3 色 + 3 反色。<strong>色禁闭</strong> (color confinement) 使物理态（强子）必为色单态（颜色中性），从未观测到自由夸克或胶子。</li>
+        <li><strong>同位旋</strong> \( I \)（近似）：Heisenberg（1932）将质子与中子视为「核子」\( N \) 的两个态——一个 \( I=1/2 \) 的 SU(2) 二重态：\( p\,(I_3=+\tfrac12) \)、\( n\,(I_3=-\tfrac12) \)。强相互作用近似与电荷无关（\( m_u\approx m_d \)），故 \( I \) 在强过程中守恒，精度约 1%。电磁与弱相互作用<strong>破坏</strong>同位旋（\( m_n-m_p\approx 1.293\,\mathrm{MeV} \)）。</li>
+      </ul>
+
+      <h3>7. 自发对称破缺与 Higgs 机制 Spontaneous Symmetry Breaking &amp; the Higgs Mechanism</h3>
+      <p>当<strong>拉格朗日量</strong>具有某种对称性而<strong>真空</strong>（基态）不具有时，称为<strong>自发对称破缺</strong> (SSB)。最简单的例子：复标量场势</p>
+      <div class="formula">\[ V(\phi)\;=\;-\mu^2\,\phi^\dagger\phi\;+\;\lambda\,(\phi^\dagger\phi)^2,\qquad \mu^2>0,\;\lambda>0 \]</div>
+      <p>即「墨西哥帽」(Mexican-hat) 势——注意质量项系数为<strong>负</strong>。极小值不在 \( \phi=0 \)，而在圆 \( |\phi|=v/\sqrt{2} \) 上，其中</p>
+      <div class="formula">\[ v \;=\; \frac{\mu}{\sqrt{\lambda}} \;\approx\; 246\,\mathrm{GeV} \]</div>
+      <p>真空「选择」了圆上某一点（一个方向），从而破坏了 \( U(1) \) 对称。<strong>Goldstone 定理</strong>（1961）：连续<strong>全局</strong>对称的自发破缺必伴随出现一个无质量玻色子（Goldstone 玻色子）。但若被破坏的是<strong>局域规范</strong>对称，则 Goldstone 玻色子被规范玻色子「吃掉」成为其纵向极化态，规范玻色子获得质量——这就是 <strong>Higgs 机制</strong> (Anderson 1962; Brout–Englert, Higgs, Guralnik–Hagen–Kibble 1964)。在标准模型中：</p>
+      <div class="formula">\[ m_W=\frac{gv}{2}\approx 80.4\,\mathrm{GeV},\qquad m_Z=\frac{m_W}{\cos\theta_W}\approx 91.2\,\mathrm{GeV},\qquad m_\gamma=0 \]</div>
+      <p>（\( \theta_W \) 为 Weinberg 弱混合角，\( \sin^2\theta_W\approx 0.231 \)。）残留的一个实标量激发——Higgs 玻色子 \( H \)——的质量由势的曲率决定：\( m_H=\sqrt{2\lambda}\,v\approx 125\,\mathrm{GeV} \)，2012 年 7 月 4 日 LHC 的 ATLAS 与 CMS 合作组宣布其发现（Englert 与 Higgs 次年获诺贝尔奖）。</p>
+      <p>注意：<strong>规范对称性严格说并未「真正」破缺</strong>（Elitzur 定理：局域规范对称不能在物理态上被破坏），但<strong>固定规范</strong>后用「破缺」语言描述物理最为方便，是粒子物理学的标准叙事。</p>
+
+      <h3>8. 选择定则 Selection Rules</h3>
+      <p>对称性直接给出过程的<strong>选择定则</strong>：初末态在对称群下属于不等价表示时过程禁戒。常用规则：</p>
+      <ul>
+        <li><strong>角动量</strong>：\( \Delta J \) 必须可由放出的粒子的自旋与轨道角动量耦合而成。如 \( J=0\to J=0 \) 的两光子衰变受 <strong>Yang 定理</strong>禁止（两自旋 1 无质量粒子不能合成 \( J=1 \)）。</li>
+        <li><strong>宇称</strong>：强、EM 守恒 \( P \)。如 \( \eta(0^{-+})\to\pi^+\pi^- \)（末态 \( J=0 \) 时 \( P=+1 \)）被宇称禁戒（弱分支比 \( <1.3\times 10^{-5} \)）。</li>
+        <li><strong>C 宇称</strong>：\( \pi^0(0^{-+}, C=+1)\to\gamma\gamma \) 容许（两光子 \( C=(-1)^2=+1 \)）；\( \pi^0\to\gamma\gamma\gamma \) 禁戒（\( C=-1 \)）。</li>
+        <li><strong>同位旋</strong>：强相互作用守恒 \( I \)。如 \( \pi^-p\to K^0\Lambda^0 \)（\( I:1/2\oplus 1/2 \to 1/2\oplus 1/2 \) 中容许通道），而 \( pp\to pp\pi^0 \) 中 \( I \) 自动匹配。</li>
+      </ul>
+
+      <div class="key-terms">Noether's theorem (诺特定理), conserved current \( j^\mu \) (守恒流), gauge symmetry (规范对称性), gauge boson (规范玻色子), covariant derivative \( D_\mu \) (协变导数), gauge principle (规范原理), Standard Model SM (标准模型), parity P (宇称), charge conjugation C (电荷共轭), time reversal T (时间反演), polar vector (极矢量), axial vector / pseudovector (轴矢量/赝矢量), pseudoscalar (赝标量), intrinsic parity \( \eta_P \) (内禀宇称), helicity (螺旋度), CPT theorem (CPT 定理), CKM matrix (CKM 矩阵), Jarlskog invariant \( J \) (Jarlskog 不变量), CP violation (CP 破坏), Sakharov conditions (Sakharov 条件), baryogenesis (重子生成), leptogenesis (轻子生成), baryon number \( B \) (重子数), lepton number \( L \) (轻子数), flavor \( L_e, L_\mu, L_\tau \) (味轻子数), neutrino oscillation (中微子振荡), Majorana neutrino (Majorana 中微子), seesaw mechanism (跷跷板机制), \( 0\nu\beta\beta \) decay (无中微子双 β 衰变), color confinement (色禁闭), isospin \( I \) (同位旋), spontaneous symmetry breaking SSB (自发对称破缺), Mexican-hat potential (墨西哥帽势), Goldstone boson (Goldstone 玻色子), Higgs mechanism (Higgs 机制), vacuum expectation value \( v \) (真空期望值), Higgs boson \( H \) (Higgs 玻色子), Weinberg angle \( \theta_W \) (Weinberg 角), selection rule (选择定则), Yang's theorem (Yang 定理)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由全局 \( U(1) \) 对称导出守恒流（Noether 定理的标准范例）</h3>
+      <p class="step"><strong>拉氏量</strong>：考虑一个复标量场</p>
+      <div class="formula">\[ \mathcal{L} \;=\; \partial_\mu\phi^*\,\partial^\mu\phi \;-\; m^2\,\phi^*\phi \]</div>
+      <p class="step"><strong>第一步（验证对称性）</strong>：在全局相位变换 \( \phi\to e^{i\alpha}\phi,\;\phi^*\to e^{-i\alpha}\phi^* \)（\( \alpha \) 为常数）下，\( \phi^*\phi\to\phi^*\phi \)、\( \partial_\mu\phi^*\partial^\mu\phi\to\partial_\mu\phi^*\partial^\mu\phi \)，故 \( \mathcal{L}\to\mathcal{L} \) 不变。✓</p>
+      <p class="step"><strong>第二步（无穷小变换）</strong>：取 \( \alpha \) 无穷小，\( e^{\pm i\alpha}\approx 1\pm i\alpha \)，故</p>
+      <div class="formula">\[ \delta\phi \;=\; +i\alpha\,\phi,\qquad \delta\phi^* \;=\; -i\alpha\,\phi^* \]</div>
+      <p class="step"><strong>第三步（用 Euler–Lagrange 恒等式）</strong>：场量的变分引起的拉氏量变分可写为</p>
+      <div class="formula">\[ \delta\mathcal{L} \;=\; \Bigl(\frac{\partial\mathcal{L}}{\partial\phi}-\partial_\mu\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi)}\Bigr)\delta\phi \;+\; \partial_\mu\Bigl(\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi)}\,\delta\phi\Bigr) \;+\; (\phi\leftrightarrow\phi^*) \]</div>
+      <p>由 Euler–Lagrange 方程，第一个括号项为零。又因 \( \delta\mathcal{L}=0 \)（对称性），故</p>
+      <div class="formula">\[ \partial_\mu\Bigl[\underbrace{\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi)}\,\delta\phi\;+\;\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi^*)}\,\delta\phi^*}_{\equiv\,\alpha\, j^\mu}\Bigr]=0 \]</div>
+      <p class="step"><strong>第四步（提出流）</strong>：代入 \( \partial\mathcal{L}/\partial(\partial_\mu\phi)=\partial^\mu\phi^* \)、\( \partial\mathcal{L}/\partial(\partial_\mu\phi^*)=\partial^\mu\phi \) 与 \( \delta\phi=i\alpha\phi,\;\delta\phi^*=-i\alpha\phi^* \)：</p>
+      <div class="formula">\[ \boxed{\; j^\mu \;=\; i\bigl(\phi^*\,\partial^\mu\phi \;-\; \phi\,\partial^\mu\phi^*\bigr),\qquad \partial_\mu j^\mu=0 \;} \]</div>
+      <p class="step"><strong>第五步（守恒荷）</strong>：定义 \( Q=\int j^0\,d^3x=i\int(\phi^*\,\dot\phi-\phi\,\dot\phi^*)\,d^3x \)。利用等时对易关系可证</p>
+      <div class="formula">\[ [\,Q,\,\phi(x)\,] \;=\; -\,\phi(x) \]</div>
+      <p>即 \( Q \) 是 \( U(1) \) 的生成元：作用在 \( \phi \) 上把它降一个电荷单位。这就是<strong>电荷守恒的群论根源</strong>——它是 Noether 定理的一个具体实例。</p>
+
+      <h3>B. 「墨西哥帽」势极小值与 Higgs 玻色子质量</h3>
+      <p class="step"><strong>势</strong>：\( V(\phi)=-\mu^2\phi^\dagger\phi+\lambda(\phi^\dagger\phi)^2 \)，其中 \( \mu^2,\lambda>0 \)。定义 \( \rho\equiv\phi^\dagger\phi=|\phi|^2\ge 0 \)，则 \( V(\rho)=-\mu^2\rho+\lambda\rho^2 \)。</p>
+      <p class="step"><strong>第一步（求极值）</strong>：</p>
+      <div class="formula">\[ \dv{V}{\rho} \;=\; -\mu^2 \;+\; 2\lambda\rho \;=\; 0 \;\Rightarrow\; \rho_0 \;=\; \frac{\mu^2}{2\lambda} \;=\; \frac{v^2}{2},\qquad v\equiv\frac{\mu}{\sqrt\lambda} \]</div>
+      <p>二阶导 \( d^2V/d\rho^2=2\lambda>0 \)，确为极小。\( V(\rho_0)=-\mu^4/(4\lambda) \)（真空能量密度）。</p>
+      <p class="step"><strong>第二步（参数化涨落）</strong>：把真空方向选在实轴（「单元规范」unitary gauge）：</p>
+      <div class="formula">\[ \phi(x) \;=\; \frac{1}{\sqrt{2}}\bigl(v+h(x)+i\eta(x)\bigr) \]</div>
+      <p>其中 \( h(x) \) 为径向（Higgs）涨落，\( \eta(x) \) 为相位（Goldstone）涨落。</p>
+      <p class="step"><strong>第三步（展开到二次项）</strong>：</p>
+      <div class="formula">\[ \phi^\dagger\phi \;=\; \tfrac{1}{2}\bigl[(v+h)^2+\eta^2\bigr] \;=\; \tfrac{v^2}{2}+vh+\tfrac{1}{2}(h^2+\eta^2) \]</div>
+      <p>代入 \( V \) 并展开到 \( h,\eta \) 的二次项：</p>
+      <div class="formula">\[ V \;=\; V_0 \;+\; \underbrace{\lambda v^2\, h^2}_{\tfrac{1}{2}m_H^2 h^2\,\Rightarrow\, m_H^2=2\lambda v^2} \;+\; \underbrace{0\cdot\eta^2}_{m_\eta^2=0\text{ (Goldstone)}} \;+\;\mathcal{O}(h^3,h^2\eta,\ldots) \]</div>
+      <p class="step"><strong>第四步（结果）</strong>：</p>
+      <div class="formula">\[ \boxed{\; m_H^2 \;=\; 2\lambda v^2 \;=\; 2\mu^2\;}\qquad m_\eta^2\;=\;0 \]</div>
+      <p>径向模式获得质量（Higgs，\( m_H\approx 125\,\mathrm{GeV} \) ⇒ \( \lambda\approx 0.13 \)），切向模式无质量（Goldstone 玻色子，在规范理论中被 \( W^\pm, Z^0 \) 吃掉）。代入 \( v=246\,\mathrm{GeV} \)、\( m_H=125\,\mathrm{GeV} \) 反推 \( \lambda=m_H^2/(2v^2)=125^2/(2\times 246^2)\approx 0.129 \)，\( \mu=m_H/\sqrt 2\approx 88\,\mathrm{GeV} \)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 对 \( \rho^0\to\pi^+\pi^- \) 检验 C、P、T 不变性</h4>
+        <p class="example-statement">强衰变 \( \rho^0\to\pi^+\pi^- \) 的分支比接近 100%。已知 \( \rho^0 \) 的 \( J^{PC}=1^{--} \)，质量 \( m_{\rho^0}=775.3\,\mathrm{MeV} \)，宽度 \( \Gamma=149\,\mathrm{MeV} \)。检验 C、P 是否守恒（强相互作用应同时守恒二者）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>末态两pi 介子自旋均为 0，故总角动量完全来自轨道角动量 \( L \)：\( J=L \)。要 \( J=1 \)，必须 \( L=1 \)（P 波）。</p>
+          <p class="step"><strong>宇称</strong>：\( \pi^\pm \) 的内禀宇称均为 \( -1 \)。两粒子系统的宇称</p>
+          <p>\[ P(\pi^+\pi^-) \;=\; P(\pi^+)\cdot P(\pi^-)\cdot(-1)^L \;=\; (-1)(-1)(-1)^1 \;=\; -1 \]</p>
+          <p>与 \( P(\rho^0)=-1 \) 一致。✓ P 守恒。</p>
+          <p class="step"><strong>C 宇称</strong>：\( \pi^+ \) 与 \( \pi^- \) 互为反粒子，C 交换它们。对于处在 \( L \) 的粒子–反粒子对，\( C=(-1)^L \)：</p>
+          <p>\[ C(\pi^+\pi^-) \;=\; (-1)^L \;=\; (-1)^1 \;=\; -1 \]</p>
+          <p>与 \( C(\rho^0)=-1 \) 一致。✓ C 守恒。</p>
+          <p class="step"><strong>T</strong>：强相互作用 T 不变性良好成立（\( T \) 破坏实验下限极严）。</p>
+          <p>三个分立对称性全部守恒，与「强相互作用在极高精度上守恒 \( C, P, T \)」一致。</p>
+          <p><span class="ans">C、P 均守恒（\( L=1 \) 的 P 波两pi 末态 \( J^{PC}=1^{--} \) 与 \( \rho^0 \) 严格匹配）；该衰变容许。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 用守恒律判定反应容许/禁戒</h4>
+        <p class="example-statement">用守恒律（电荷 \( Q \)、重子数 \( B \)、轻子数 \( L_e, L_\mu \)）判定下列反应或衰变是容许还是禁戒，并指出破坏的量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) \( \pi^-+p\to K^0+\Lambda^0 \)（奇异伴随产生 associated production）</strong></p>
+          <p>查表：\( \pi^-(Q=-1,B=0) \)、\( p(+1,1) \)、\( K^0(0,0,S=+1) \)、\( \Lambda^0(0,1,S=-1) \)。</p>
+          <p>\( Q:\;-1+1=0+0 \Rightarrow 0=0 \) ✓</p>
+          <p>\( B:\;0+1=0+1 \Rightarrow 1=1 \) ✓</p>
+          <p>\( L_e=L_\mu=0 \) 两边均成立 ✓</p>
+          <p>奇异数 \( S:\;0+0=+1+(-1)=0 \) ✓（强相互作用守恒奇异数）。</p>
+          <p>能量：\( m_i=139.6+938.3=1077.9\,\mathrm{MeV} \)；\( m_f=497.6+1115.7=1613.3\,\mathrm{MeV} \)。\( Q\text{-value}=-535.4\,\mathrm{MeV}<0 \)，故需入射 \( \pi^- \) 动能 \( \ge \) 阈能 \( T_{\pi,\mathrm{thr}}\approx 768\,\mathrm{MeV} \)（详见练习 11.2）。</p>
+          <p><span class="ans">(a) <strong>容许</strong>（所有内部量子数守恒，需足够高的入射动能）。</span></p>
+
+          <p class="step"><strong>(b) \( p+p\to p+\pi^+ \)</strong></p>
+          <p>\( Q:\;1+1=1+1 \Rightarrow 2=2 \) ✓</p>
+          <p>\( B:\;1+1=1+0 \Rightarrow 2\ne 1 \) ✗</p>
+          <p><span class="ans">(b) <strong>禁戒</strong>（重子数不守恒：\( \Delta B=-1 \)）。即使在 GUT 中也极罕见（\( \tau_p>10^{34} \) 年）。</span></p>
+
+          <p class="step"><strong>(c) \( \mu^-\to e^-+\gamma \)</strong></p>
+          <p>\( Q:\;-1=-1+0 \) ✓；\( B:\;0=0 \) ✓</p>
+          <p>\( L_e:\;0 \ne 1+0=1 \) ✗；\( L_\mu:\;1\ne 0+0=0 \) ✗</p>
+          <p>破坏<strong>带电轻子味</strong> (charged-lepton flavor violation, CLFV)。MEG 实验最新上限 \( \mathrm{BR}(\mu^+\to e^+\gamma)<4.2\times 10^{-13} \)（2016）。</p>
+          <p><span class="ans">(c) <strong>禁戒</strong>（\( L_e \) 与 \( L_\mu \) 同时破坏）。标准模型（含中微子混合）预测分支比 \( \sim 10^{-54} \)，几乎不可观测；任何观测即新物理。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 识别 \( K^0 \) 系统中的 CP 破坏</h4>
+        <p class="example-statement">中性 \( K \) 介子系统由 \( K^0(d\bar s) \) 与 \( \bar K^0(\bar d s) \) 组成。CP 把二者互相变换（取约定 \( CP|K^0\rangle=|\bar K^0\rangle \)）。定义 CP 本征态 \( K_1=(K^0+\bar K^0)/\sqrt 2 \)（\( CP=+1 \)）与 \( K_2=(K^0-\bar K^0)/\sqrt 2 \)（\( CP=-1 \)）。实验测得长寿命态 \( K_L\approx K_2 \) 主要衰变为 \( \pi^+\pi^-\pi^0 \)（CP = −1），但有少量衰变为 \( \pi^+\pi^- \)（CP = +1）：</p>
+        <div class="formula">\[ \eta_{+-}\;\equiv\;\frac{A(K_L\to\pi^+\pi^-)}{A(K_S\to\pi^+\pi^-)}\;=\;|\eta_{+-}|\,e^{i\phi_{+-}} \;=\;(2.232\pm 0.011)\times 10^{-3}\cdot e^{i(43.52^\circ\pm 0.05^\circ)} \]</div>
+        <p class="example-statement">证明此衰变即 CP 破坏，并估算参数 \( \epsilon_K\equiv\mathrm{Im}(\eta_{+-}) \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\( K_L \) 几乎是 \( CP=-1 \) 本征态；\( \pi^+\pi^- \) 在 \( L=0 \)（\( J=0 \)，匹配 \( K \) 的自旋 0）时 \( CP=(-1)^L=+1 \)。CP = −1 → CP = +1，CP <em>不守恒</em>。</p>
+          <p class="step">复参数 \( \eta_{+-} \) 的虚部给出 CP 破坏的「间接」部分（\( \epsilon_K \)）：\( \eta_{+-}\approx\epsilon_K+\epsilon'_K \)，其中 \( \epsilon'_K \) 来自直接衰变振幅的 CP 破坏（NA48/KTeV 测得 \( \epsilon'/\epsilon=(1.68\pm 0.20)\times 10^{-3} \)，证实存在「直接」CP 破坏）。</p>
+          <p class="step">由 \( |\eta_{+-}|=2.232\times 10^{-3} \)、\( \phi_{+-}=43.52^\circ \)：</p>
+          <p>\[ \mathrm{Re}(\eta_{+-})=|\eta_{+-}|\cos\phi=2.232\times 10^{-3}\times\cos 43.52^\circ=2.232\times 0.7245=1.618\times 10^{-3} \]</p>
+          <p>\[ \mathrm{Im}(\eta_{+-})=|\eta_{+-}|\sin\phi=2.232\times 10^{-3}\times\sin 43.52^\circ=2.232\times 0.6892=1.538\times 10^{-3} \]</p>
+          <p><span class="ans">CP 破坏幅度 \( |\eta_{+-}|\approx 2.23\times 10^{-3} \)；\( \mathrm{Im}(\eta_{+-})\approx 1.54\times 10^{-3} \)。CP 守恒时此比应为 0，故 \( K_L\to\pi^+\pi^- \) 是 CP 破坏的直接证据（Cronin–Fitch 1964）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 同位旋预测 \( \pi N \) 散射截面比（9 : 1 : 2）</h4>
+        <p class="example-statement">在 \( \Delta(1232) \) 共振峰（\( I=3/2, J^P=3/2^+ \)）附近，\( \pi N \) 散射由 \( I=3/2 \) 道主导。利用 Clebsch–Gordan 系数预测三个过程的截面比：\( \sigma(\pi^+ p\to\pi^+ p):\sigma(\pi^- p\to\pi^- p):\sigma(\pi^- p\to\pi^0 n) \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>同位旋合成 \( I=1\otimes 1/2=3/2\oplus 1/2 \)。用 CG 系数（约定 Condon–Shortley）展开初态：</p>
+          <div class="formula">\[ |\pi^+p\rangle \;=\; |\tfrac{3}{2},+\tfrac{3}{2}\rangle\qquad(\text{系数 }1) \]</div>
+          <div class="formula">\[ |\pi^-p\rangle \;=\; \sqrt{\tfrac{1}{3}}\,|\tfrac{3}{2},-\tfrac{1}{2}\rangle \;-\; \sqrt{\tfrac{2}{3}}\,|\tfrac{1}{2},-\tfrac{1}{2}\rangle \]</div>
+          <div class="formula">\[ |\pi^0 n\rangle \;=\; \sqrt{\tfrac{2}{3}}\,|\tfrac{3}{2},-\tfrac{1}{2}\rangle \;+\; \sqrt{\tfrac{1}{3}}\,|\tfrac{1}{2},-\tfrac{1}{2}\rangle \]</div>
+          <p class="step">共振峰处 \( I=1/2 \) 道可忽略，跃迁矩阵元 \( \langle 3/2|T|3/2\rangle=A_{3/2} \)，其余为零。</p>
+          <p class="step"><strong>振幅</strong>：</p>
+          <p>\( \pi^+ p\to\pi^+ p \)：\( \mathcal{M}_1=\langle\tfrac{3}{2},+\tfrac{3}{2}|T|\tfrac{3}{2},+\tfrac{3}{2}\rangle=A_{3/2} \)。</p>
+          <p>\( \pi^- p\to\pi^- p \)：\( \mathcal{M}_2=\bigl(\sqrt{1/3}\bigr)^2 A_{3/2}=\tfrac{1}{3}A_{3/2} \)。</p>
+          <p>\( \pi^- p\to\pi^0 n \)：\( \mathcal{M}_3=\sqrt{1/3}\cdot\sqrt{2/3}\, A_{3/2}=\tfrac{\sqrt 2}{3}A_{3/2} \)。</p>
+          <p class="step"><strong>截面</strong>（\( \sigma\propto|\mathcal{M}|^2 \)）：</p>
+          <p>\[ \sigma_1:\sigma_2:\sigma_3 \;=\; 1:\tfrac{1}{9}:\tfrac{2}{9} \;=\; 9:1:2 \]</p>
+          <p><span class="ans">截面比 \( \boxed{\;\sigma(\pi^+ p\to\pi^+ p):\sigma(\pi^- p\to\pi^- p):\sigma(\pi^- p\to\pi^0 n)=9:1:2\;} \)，与实验在 \( \Delta(1232) \) 峰处测量高度吻合，是同位旋对称性的经典证据。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 用选择定则禁戒 \( \eta\to\pi^+\pi^- \)</h4>
+        <p class="example-statement">\( \eta \) 介子 \( J^{PC}=0^{-+} \)、\( I=0 \)、质量 \( m_\eta=547.9\,\mathrm{MeV} \)。说明为何 \( \eta\to\pi^+\pi^- \) 在强与电磁相互作用下被禁戒，并预估分支比上限。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\( \eta \) 自旋 \( J=0 \)，故末态 \( \pi^+\pi^- \) 必 \( L=0 \)（S 波）以匹配 \( J=0 \)。</p>
+          <p class="step"><strong>宇称检验</strong>：\( \pi^\pm \) 内禀宇称 \( -1 \)，故</p>
+          <p>\[ P(\pi^+\pi^-)\;=\;(-1)\cdot(-1)\cdot(-1)^L \;=\; (+1)(-1)^0 \;=\; +1\quad(L=0) \]</p>
+          <p>而 \( P(\eta)=-1 \)。\( +1\ne -1 \)，<strong>宇称不守恒</strong>。强与电磁相互作用严格守恒宇称，故此衰变在二者下<strong>禁戒</strong>。</p>
+          <p class="step"><strong>C 宇称检验</strong>：\( \eta \) 的 \( C=+1 \)。\( \pi^+\pi^- \) 在 \( L=0 \) 的 \( C=(-1)^L=+1 \)。<strong>C 守恒</strong>，故非 C 选择定则禁戒，而是 P（进而 CP）禁戒。</p>
+          <p class="step"><strong>同位旋</strong>：\( \eta \) 的 \( I=0 \)；\( \pi^+\pi^- \) 可耦合成 \( I=0,1,2 \)（\( \pi^+\pi^- \) 非全同粒子，无 Bose 限制）。故同位旋容许 \( I=0\to I=0 \) 通道——同位旋不禁戒此衰变。</p>
+          <p class="step"><strong>弱相互作用</strong>虽可破坏 P（容许此衰变），但振幅被 \( G_F \) 压低，分支比预期极小。实验上限：</p>
+          <p>\[ \mathrm{BR}(\eta\to\pi^+\pi^-) \;<\; 1.3\times 10^{-5}\quad(\text{CP 破坏搜索}) \]</p>
+          <p><span class="ans">\( \eta\to\pi^+\pi^- \) 被<strong>宇称（CP）选择定则</strong>禁戒；实验上限 \( &lt;1.3\times 10^{-5} \)，与 CP 守恒到 \( 10^{-3} \) 量级一致。是检验 CP 破坏的关键通道之一。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「所有相互作用都破坏宇称」——错。</strong> 只有<strong>弱相互作用</strong>破坏宇称（且破坏最大，V−A 结构）；强、电磁、引力相互作用都<strong>守恒</strong>宇称到极高精度。例如 \( \rho^0\to\pi^+\pi^- \)（强衰变）的宇称分析必须给出 P 守恒（见例 11.1）。不要见到衰变就以为 P 被破坏。</li>
+        <li><strong>「弱相互作用完全破坏 CP」——错。</strong> 大多数弱过程其实近似守恒 CP；只有由 CKM 复相因子 \( \delta_{13}\approx 68^\circ \) 贡献的微小振幅破坏 CP，典型量级 \( |\eta_{+-}|\sim 2\times 10^{-3} \)。CP 破坏虽小但物理意义重大（Sakharov 条件）。不要混淆「P 最大破坏」与「CP 最大破坏」。</li>
+        <li><strong>「CPT 在某些特殊环境下会被破坏」——错。</strong> CPT 是<strong>定理</strong>（基于 Lorentz 协变性 + 局域性 + 幺正性），不是经验规律。任何实验至今未发现 CPT 破坏（精度 \( 10^{-18} \)）。若 CPT 被破坏，则上述三前提之一必崩塌——这通常意味着新物理（如 Lorentz 破坏、非局域场论），而不仅是「参数微调」。</li>
+        <li><strong>「重子数与轻子数是绝对守恒」——半对半错。</strong> 重子数 \( B \) 在标准模型经典层面守恒，但 (i) 量子电弱反常允许 \( B+L \) 破坏（瞬时子效应，概率 \( \sim 10^{-160} \)）；(ii) 大统一理论（GUT）明确预言质子衰变 \( p\to e^+\pi^0 \)，\( \tau_p\sim 10^{31}\text{–}10^{36} \) 年（实验已排除最小 SU(5) 的 \( 10^{31} \) 预测，下限 \( >1.6\times 10^{34} \) 年）。轻子数：中微子振荡破坏单味 \( L_e, L_\mu, L_\tau \)，总 \( L \) 是否守恒取决于中微子是 Dirac 还是 Majorana。<strong>注意</strong>跷跷板机制 + Majorana 中微子会破坏总 \( L \)。</li>
+        <li><strong>「自发对称破缺意味着对称性消失了」——错。</strong> <em>拉格朗日量</em>仍具有完整对称性；只有<em>真空</em>（基态）选择了某个特定方向，故不显对称。Ward 恒等式（对称性的直接推论）仍然成立，关联不同过程振幅。对<strong>规范</strong>对称性，Elitzur 定理更强：局域规范对称在物理态上根本无法被破坏——所谓「电弱对称破缺」只是固定规范后方便的描述语言，并非真的物理破坏。</li>
+        <li><strong>「同位旋是精确对称性」——错。</strong> 同位旋只是<strong>近似</strong>对称（来自 \( m_u\approx m_d \)），被电磁相互作用与夸克质量差（\( m_d-m_u\approx 2.5\,\mathrm{MeV} \)）破坏，精度约 1%。\( m_n-m_p=1.293\,\mathrm{MeV} \) 即同位旋破坏的直接体现。不要把同位旋当严格守恒量使用——它只在强相互作用主导的过程中（如 \( \pi N \) 散射的 \( \Delta \) 共振）近似有效。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 用守恒律判定 \( p+\bar p\to\pi^++\pi^-+\pi^0 \) 是否容许，并计算 Q 值（质心系静止湮灭）。已知 \( m_p=938.272 \)、\( m_{\pi^\pm}=139.570 \)、\( m_{\pi^0}=134.977\,\mathrm{MeV} \)。</summary>
+        <div class="hint">检验 \( Q, B, L_e, L_\mu \)；Q 值 \( =(\sum m_i-\sum m_f)c^2 \)。注意 \( \bar p \) 的所有内部量子数都反号。</div>
+        <div class="solution">
+          <p>\( Q:\;(+1)+(-1)=0=+\!1+(-1)+0 \) ✓</p>
+          <p>\( B:\;1+(-1)=0=0+0+0 \) ✓</p>
+          <p>\( L_e=L_\mu=0 \) ✓</p>
+          <p>\( Q\text{-value}=(m_p+m_{\bar p}-m_{\pi^+}-m_{\pi^-}-m_{\pi^0})c^2 \)</p>
+          <p>\( =2(938.272)-2(139.570)-134.977 \)</p>
+          <p>\( =1876.544-279.140-134.977=1462.43\,\mathrm{MeV} \)。</p>
+          <p><span class="ans">所有内部量子数守恒，Q 值 \( +1462\,\mathrm{MeV} \)（释放为末态动能），过程<strong>容许</strong>。这正是反质子湮灭实验中产生多 pion 的典型通道。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 求伴随产生 \( \pi^-+p\to K^0+\Lambda^0 \) 的入射 \( \pi^- \) 实验室阈动能。已知 \( m_{\pi^-}=139.570 \)、\( m_p=938.272 \)、\( m_{K^0}=497.6 \)、\( m_{\Lambda}=1115.7\,\mathrm{MeV} \)。靶质子静止。</summary>
+        <div class="hint">用不变质量 \( s=m_a^2+m_b^2+2m_b E_a^{\mathrm{lab}} \)；阈值处末态在质心系静止，\( s_{\mathrm{thr}}=(m_c+m_d)^2 \)。</div>
+        <div class="solution">
+          <p>\( s_{\mathrm{thr}}=(m_K+m_\Lambda)^2=(497.6+1115.7)^2=(1613.3)^2 \)</p>
+          <p>\( =(1600+13.3)^2=2{,}560{,}000+42{,}560+176.9=2{,}602{,}737\,\mathrm{MeV}^2 \)。</p>
+          <p>\( E_{\pi,\mathrm{thr}}^{\mathrm{lab}}=\dfrac{s_{\mathrm{thr}}-m_\pi^2-m_p^2}{2m_p} \)。</p>
+          <p>\( m_\pi^2=139.570^2\approx 19{,}480 \)；\( m_p^2=938.272^2\approx 880{,}354 \)。</p>
+          <p>\( E_{\pi,\mathrm{thr}}=(2{,}602{,}737-19{,}480-880{,}354)/(2\times 938.272)=1{,}702{,}903/1876.544\approx 907.7\,\mathrm{MeV} \)。</p>
+          <p>\( T_{\pi,\mathrm{thr}}=E-m_\pi=907.7-139.6=768.1\,\mathrm{MeV} \)。</p>
+          <p><span class="ans">阈动能 \( T_{\pi,\mathrm{thr}}\approx 768\,\mathrm{MeV} \)（实验室系）。低于此能量过程动能学禁戒，即使内部量子数守恒也无法发生。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 用选择定则说明 \( \pi^0\to\gamma \)（单光子衰变）为何被禁戒，而 \( \pi^0\to\gamma\gamma \) 容许。\( \pi^0 \) 的 \( J^{PC}=0^{-+} \)。</summary>
+        <div class="hint">从动量守恒（静心衰变到单粒子）与 C 宇称两方面分析。光子的 \( C=-1 \)。</div>
+        <div class="solution">
+          <p><strong>动量守恒</strong>：\( \pi^0 \) 在静止系衰变。若末态只有一个光子，动量 \( \vec p_\gamma\ne 0 \)，违反 \( \vec p_i=0 \)。✗ <strong>动能学禁戒</strong>。</p>
+          <p><strong>对 \( \pi^0\to\gamma\gamma \)</strong>：两个光子可背对背发射，\( \vec p_1+\vec p_2=0 \) ✓。</p>
+          <p><strong>C 宇称</strong>：\( C(\pi^0)=+1 \)；每个光子 \( C(\gamma)=-1 \)，两光子态 \( C=(-1)^2=+1 \)。\( C \) 守恒 ✓。</p>
+          <p><strong>宇称</strong>：两光子背靠背同螺旋度构成 \( J=0 \) 态，由反常轴矢量流 \( \epsilon_{\mu\nu\rho\sigma}F^{\mu\nu}F^{\rho\sigma} \)（赝标量）耦合，\( P=-1 \) 匹配 \( \pi^0 \)。✓</p>
+          <p><span class="ans">\( \pi^0\to\gamma \) 动能学禁戒（单光子无法同时满足能动量守恒）；\( \pi^0\to\gamma\gamma \) 容许（\( J^{PC} \) 全部匹配），分支比 \( \approx 98.8\% \)，寿命 \( \tau=8.4\times 10^{-17}\,\mathrm{s} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 已知 \( |V_{ud}|=0.974 \)、\( |V_{us}|=0.225 \)、\( |V_{ub}|=0.0037 \)、\( |V_{cd}|=0.225 \)、\( |V_{cs}|=0.974 \)、\( |V_{cb}|=0.041 \)、\( |V_{td}|=0.0088 \)、\( |V_{ts}|=0.041 \)、\( |V_{tb}|=0.999 \)。CKM 幺正条件 \( V_{ud}V_{ub}^*+V_{cd}V_{cb}^*+V_{td}V_{tb}^*=0 \) 在复平面上定义「幺正三角形」(unitarity triangle)。用 Jarlskog 不变量 \( J\approx 3.05\times 10^{-5} \) 估算三角形面积，并说明其与 CP 破坏的关系。</summary>
+        <div class="hint">幺正三角形面积 \( A=\tfrac{1}{2}|J| \)。\( J=0 \) ⇔ 所有相因子可去除（无 CP 破坏）。</div>
+        <div class="solution">
+          <p>三个顶点的边长：</p>
+          <p>\( |V_{ud}V_{ub}^*|=0.974\times 0.0037\approx 3.60\times 10^{-3} \)</p>
+          <p>\( |V_{cd}V_{cb}^*|=0.225\times 0.041\approx 9.23\times 10^{-3} \) </p>
+          <p>\( |V_{td}V_{tb}^*|=0.0088\times 0.999\approx 8.79\times 10^{-3} \)</p>
+          <p>三者构成非退化三角形（边长接近），其面积</p>
+          <p>\( A_{\triangle}=\tfrac{1}{2}J=\tfrac{1}{2}\times 3.05\times 10^{-5}=1.53\times 10^{-5} \)。</p>
+          <p>若 CKM 矩阵全实（\( \delta_{13}=0 \)），则三矢量共线、三角形退化为零面积，\( J=0 \)，CP 严格守恒。<strong>面积非零即 CP 破坏</strong>。</p>
+          <p><span class="ans">幺正三角形面积 \( A\approx 1.5\times 10^{-5} \)。CP 破坏的大小由 \( J \) 唯一参数化（在标准模型内）；该面积定量给出 CP 破坏幅度。宇宙学所需 CP 破坏比此大约 \( 10^{10} \) 倍 → 强烈暗示存在 BSM 源。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真为<strong>反应守恒律检验器</strong> (Reaction Conservation-Law Checker)。从菜单（滑块）中选择 10 个预设反应/衰变之一，仿真立即<strong>逐项计算</strong>初态与末态的电荷 \( Q \)、重子数 \( B \)、电子轻子数 \( L_e \)、缪子轻子数 \( L_\mu \)，以及 Q 值（动能学）。每个守恒量右侧给出 <strong>✓</strong>（绿色，守恒）或 <strong>✗</strong>（红色，破坏）。底部以大字判定整条反应 <strong>ALLOWED 容许</strong> 或 <strong>FORBIDDEN 禁戒</strong>，并列出破坏的具体量。强衰变（如 \( \pi^-p\to K^0\Lambda^0 \)）满足所有内部量子数但可能需入射阈动能（Q&lt;0 标注但非禁戒）；质子衰变 \( p\to e^+\pi^0 \) 与 CLFV \( \mu^-\to e^-\gamma \) 因 \( B \) 或 \( L_e, L_\mu \) 破坏而禁戒。点击「重置」回到第 1 个反应。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+
+          /* Particle database: Q, B, Le, Lm, mass(MeV), display label */
+          var PARTICLES = {
+            'p':     { Q:+1, B:+1, Le:0,  Lm:0,  m:938.272, lab:'p'    },
+            'n':     { Q: 0, B:+1, Le:0,  Lm:0,  m:939.565, lab:'n'    },
+            'pbar':  { Q:-1, B:-1, Le:0,  Lm:0,  m:938.272, lab:'p̄'   },
+            'e-':    { Q:-1, B:0,  Le:+1, Lm:0,  m:0.511,   lab:'e⁻'   },
+            'e+':    { Q:+1, B:0,  Le:-1, Lm:0,  m:0.511,   lab:'e⁺'   },
+            'nue':   { Q: 0, B:0,  Le:+1, Lm:0,  m:0,       lab:'νₑ'   },
+            'nueb':  { Q: 0, B:0,  Le:-1, Lm:0,  m:0,       lab:'ν̄ₑ'  },
+            'mu-':   { Q:-1, B:0,  Le:0,  Lm:+1, m:105.658, lab:'μ⁻'   },
+            'mu+':   { Q:+1, B:0,  Le:0,  Lm:-1, m:105.658, lab:'μ⁺'   },
+            'numu':  { Q: 0, B:0,  Le:0,  Lm:+1, m:0,       lab:'νμ'  },
+            'numub': { Q: 0, B:0,  Le:0,  Lm:-1, m:0,       lab:'ν̄μ' },
+            'pi0':   { Q: 0, B:0,  Le:0,  Lm:0,  m:134.977, lab:'π⁰'   },
+            'pi+':   { Q:+1, B:0,  Le:0,  Lm:0,  m:139.570, lab:'π⁺'   },
+            'pi-':   { Q:-1, B:0,  Le:0,  Lm:0,  m:139.570, lab:'π⁻'   },
+            'gamma': { Q: 0, B:0,  Le:0,  Lm:0,  m:0,       lab:'γ'    },
+            'K0':    { Q: 0, B:0,  Le:0,  Lm:0,  m:497.6,   lab:'K⁰'   },
+            'Lam0':  { Q: 0, B:+1, Le:0,  Lm:0,  m:1115.7,  lab:'Λ⁰'   }
+          };
+
+          /* Preset reactions (lhs -> rhs). Index 0..9 */
+          var REACTIONS = [
+            { name:'p + p → p + p + π⁰      (强相互作用 strong)',
+              lhs:['p','p'],    rhs:['p','p','pi0']    },
+            { name:'p + p → p + π⁺         (B 不守恒)',
+              lhs:['p','p'],    rhs:['p','pi+']        },
+            { name:'π⁻ + p → K⁰ + Λ⁰       (奇异伴随产生 assoc.)',
+              lhs:['pi-','p'],  rhs:['K0','Lam0']      },
+            { name:'n → p + e⁻ + ν̄ₑ         (β⁻ 衰变)',
+              lhs:['n'],        rhs:['p','e-','nueb']  },
+            { name:'π⁺ → μ⁺ + νμ            (π 衰变)',
+              lhs:['pi+'],      rhs:['mu+','numu']     },
+            { name:'μ⁻ → e⁻ + γ             (CLFV, 禁戒 forbidden)',
+              lhs:['mu-'],      rhs:['e-','gamma']     },
+            { name:'p → e⁺ + π⁰             (B 破坏, 质子衰变)',
+              lhs:['p'],        rhs:['e+','pi0']       },
+            { name:'π⁰ → γ + γ              (电磁衰变 EM)',
+              lhs:['pi0'],      rhs:['gamma','gamma']  },
+            { name:'e⁻ + p → n + νₑ          (反 β 俘获 inverse β)',
+              lhs:['e-','p'],   rhs:['n','nue']        },
+            { name:'p + p̄ → γ + γ           (湮灭 annihilation)',
+              lhs:['p','pbar'], rhs:['gamma','gamma']  }
+          ];
+
+          function totals(list) {
+            var t = { Q:0, B:0, Le:0, Lm:0, m:0 };
+            for (var i = 0; i < list.length; i++) {
+              var p = PARTICLES[list[i]];
+              t.Q += p.Q; t.B += p.B; t.Le += p.Le; t.Lm += p.Lm; t.m += p.m;
+            }
+            return t;
+          }
+
+          function fmtNum(v) {
+            if (v === 0) return '0';
+            var s = (v > 0 ? '+' : '') + v;
+            return s;
+          }
+
+          function drawParticleSet(ctx, list, x0, y, width, C) {
+            var n = list.length;
+            var slot = width / n;
+            for (var i = 0; i < n; i++) {
+              var cx = x0 + (i + 0.5) * slot;
+              // soft pulse to draw the eye
+              PS.drawCircle(ctx, cx, y, 17,
+                { fill: C.bg, stroke: C.primary, lineWidth: 2 });
+              PS.drawText(ctx, PARTICLES[list[i]].lab, cx, y + 4,
+                { font: 'bold 14px system-ui, sans-serif', color: C.text, align: 'center' });
+              if (i < n - 1) {
+                PS.drawText(ctx, '+', cx + slot / 2, y + 5,
+                  { font: 'bold 16px system-ui', color: C.axis, align: 'center' });
+              }
+            }
+          }
+
+          var params = { idx: 0 };
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var r = REACTIONS[params.idx];
+              var ti = totals(r.lhs), tf = totals(r.rhs);
+              var Qval = ti.m - tf.m;            // MeV
+              var isDecay = (r.lhs.length === 1);
+
+              var checks = [
+                { name:'电荷 Q',     i: ti.Q,  f: tf.Q  },
+                { name:'重子数 B',   i: ti.B,  f: tf.B  },
+                { name:'L_e',        i: ti.Le, f: tf.Le },
+                { name:'L_μ',        i: ti.Lm, f: tf.Lm }
+              ];
+              var allOk = true, reasons = [];
+              for (var k = 0; k < checks.length; k++) {
+                checks[k].ok = (checks[k].i === checks[k].f);
+                if (!checks[k].ok) { allOk = false; reasons.push(checks[k].name); }
+              }
+              /* energy: for a 1→N decay require Q >= 0; for 2→N just flag if extremely off */
+              var energyOk = !isDecay || (Qval >= 0);
+              if (!energyOk) reasons.push('Q<0 (动能学禁戒)');
+
+              /* ===== Title ===== */
+              PS.drawText(ctx, '反应守恒律检验器 · Reaction Conservation-Law Checker',
+                W / 2, 18,
+                { font: 'bold 14px system-ui', color: C.text, align: 'center' });
+
+              /* ===== Selected reaction name ===== */
+              PS.drawText(ctx, r.name, W / 2, 42,
+                { font: '12px system-ui', color: C.trace, align: 'center' });
+
+              /* ===== Reaction equation (particles as circles) ===== */
+              var eqY = 90;
+              drawParticleSet(ctx, r.lhs, 20, eqY, W * 0.42, C);
+              /* arrow */
+              var ax = W * 0.50;
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.fillStyle = C.axis; ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(ax - 22, eqY); ctx.lineTo(ax + 22, eqY); ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(ax + 22, eqY);
+              ctx.lineTo(ax + 14, eqY - 6);
+              ctx.lineTo(ax + 14, eqY + 6);
+              ctx.closePath(); ctx.fill();
+              ctx.restore();
+              drawParticleSet(ctx, r.rhs, W * 0.56, eqY, W * 0.42, C);
+
+              /* ===== Conservation table ===== */
+              var cols = ['电荷 Q', '重子 B', 'L_e', 'L_μ', 'Q值 (MeV)'];
+              var tableX = 40, tableY = 145;
+              var colW = (W - 80) / 5, rowH = 34;
+              var headY = tableY;
+              var initY = tableY + rowH;
+              var finY  = tableY + 2 * rowH;
+              var statY = tableY + 3 * rowH;
+
+              /* Header strip */
+              ctx.save();
+              ctx.fillStyle = C.grid; ctx.globalAlpha = 0.35;
+              ctx.fillRect(tableX, headY - 22, 5 * colW, 22);
+              ctx.restore();
+              for (var c = 0; c < 5; c++) {
+                PS.drawText(ctx, cols[c], tableX + c * colW + colW / 2, headY - 7,
+                  { font: 'bold 12px system-ui', color: C.text, align: 'center' });
+              }
+
+              /* Row labels */
+              PS.drawText(ctx, '初态 Initial', tableX + 6, initY + 4,
+                { font: '11px system-ui', color: C.axis });
+              PS.drawText(ctx, '终态 Final',   tableX + 6, finY + 4,
+                { font: '11px system-ui', color: C.axis });
+
+              /* Initial row */
+              var initData = [ti.Q, ti.B, ti.Le, ti.Lm, ti.m.toFixed(1)];
+              for (c = 0; c < 5; c++) {
+                PS.drawText(ctx, fmtNum(initData[c]),
+                  tableX + c * colW + colW / 2, initY + 4,
+                  { font: '13px system-ui', color: C.text, align: 'center' });
+              }
+              /* Final row */
+              var finData = [tf.Q, tf.B, tf.Le, tf.Lm, tf.m.toFixed(1)];
+              for (c = 0; c < 5; c++) {
+                PS.drawText(ctx, fmtNum(finData[c]),
+                  tableX + c * colW + colW / 2, finY + 4,
+                  { font: '13px system-ui', color: C.text, align: 'center' });
+              }
+
+              /* Status row with colored cells */
+              var okRow = [checks[0].ok, checks[1].ok, checks[2].ok, checks[3].ok, energyOk];
+              for (c = 0; c < 5; c++) {
+                var ok = okRow[c];
+                var col = ok ? C.accent2 : C.accent;
+                ctx.save();
+                ctx.fillStyle = col; ctx.globalAlpha = 0.18;
+                ctx.fillRect(tableX + c * colW + 3, statY - 12, colW - 6, 24);
+                ctx.restore();
+                PS.drawText(ctx, ok ? '✓' : '✗',
+                  tableX + c * colW + colW / 2, statY + 4,
+                  { font: 'bold 20px system-ui', color: col, align: 'center' });
+              }
+
+              /* Table border */
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.strokeRect(tableX, headY - 22, 5 * colW, 3 * rowH + 22);
+              ctx.restore();
+
+              /* Q-value annotation */
+              var qSign = Qval >= 0 ? '放热 exothermic' : '需动能 endothermic';
+              PS.drawText(ctx,
+                'Q = ' + Qval.toFixed(1) + ' MeV   (' + qSign +
+                  (isDecay ? '; 衰变需 Q ≥ 0' : '; 2→N 散射, 阈上即可') + ')',
+                W / 2, statY + 28,
+                { font: '11px system-ui', color: C.axis, align: 'center' });
+
+              /* ===== Verdict ===== */
+              var allowed = allOk && energyOk;
+              var verdict = allowed ? '✓ ALLOWED  容许' : '✗ FORBIDDEN  禁戒';
+              var vColor = allowed ? C.accent2 : C.accent;
+              /* gentle pulse */
+              var pulse = 0.82 + 0.18 * (0.5 + 0.5 * Math.sin(s.t * 2.4));
+              ctx.save();
+              ctx.globalAlpha = pulse;
+              PS.drawText(ctx, verdict, W / 2, H - 46,
+                { font: 'bold 30px system-ui', color: vColor, align: 'center' });
+              ctx.restore();
+
+              /* Reason */
+              var reasonTxt = allowed
+                ? '所有内部量子数守恒 / All internal quantum numbers conserved'
+                : '破坏: ' + reasons.join(' · ') + '  violated';
+              PS.drawText(ctx, reasonTxt, W / 2, H - 18,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+            }
+          });
+
+          /* Controls: slider 1..10 selects reaction; reset returns to 1 */
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'idx', label: '反应 Reaction',
+              min: 1, max: REACTIONS.length, step: 1, value: 1 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('idx', function (v) {
+            params.idx = Math.max(0, Math.min(REACTIONS.length - 1, Math.round(v) - 1));
+          });
+          ctl.on('reset', function () {
+            params.idx = 0;
+            var range = document.querySelector('#controls-11 input[type="range"]');
+            if (range) range.value = 1;
+            var vSpan = document.querySelector('#controls-11 .ctrl-slider .ctrl-value');
+            if (vSpan) vSpan.textContent = '1';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>对称性是现代物理学的组织原理：<strong>连续对称性 → Noether 定理 → 守恒律</strong>；<strong>局域规范对称性 → 基本力</strong>；<strong>分立对称性 \( C, P, T \) → CPT 定理</strong>。掌握这一框架，便能从对称性出发预言哪些过程容许、哪些禁戒、力的传递者是什么、粒子质量从何而来。</p>
+      <ul>
+        <li><strong>Noether 定理</strong>：\( \delta S=0 \)（连续对称） \( \Leftrightarrow \partial_\mu j^\mu=0 \)，\( Q=\int j^0 d^3x \)。</li>
+        <li><strong>规范群 → 力</strong>：\( U(1)_{\mathrm{EM}}\Rightarrow\gamma \)；\( SU(2)_L\times U(1)_Y\Rightarrow W^\pm, Z^0, \gamma \)；\( SU(3)_c\Rightarrow 8g \)。</li>
+        <li><strong>分立对称性本征值</strong>：费米子–反费米子 \( P=(-1)^{L+1} \)、\( C=(-1)^L \)；光子 \( C=-1 \)、\( P=-1 \)。</li>
+        <li><strong>CPT 定理</strong>：\( m_p=m_{\bar p},\;\tau_p=\tau_{\bar p},\;\mu_{\bar p}=-\mu_p \)（严格）。</li>
+        <li><strong>CP 破坏</strong>：\( |\eta_{+-}|\approx 2.23\times 10^{-3} \)、\( J_{\mathrm{CKM}}\approx 3.05\times 10^{-5} \)；标准模型 CP 破坏不足以解释宇宙物质–反物质不对称（\( \eta\approx 6\times 10^{-10} \)）。</li>
+        <li><strong>守恒量子数</strong>：\( Q \)（精确）、\( B \)（\( >10^{34} \) 年）、\( L \)（中微子振荡破坏单味；Majorana 时破坏总 \( L \)）、色（禁闭）、\( I \)（~1%）。</li>
+        <li><strong>Higgs 机制</strong>：\( V=-\mu^2|\phi|^2+\lambda|\phi|^4 \)、\( v=\mu/\sqrt\lambda\approx 246\,\mathrm{GeV} \)、\( m_W=gv/2\approx 80.4\,\mathrm{GeV} \)、\( m_H=\sqrt{2\lambda}v\approx 125\,\mathrm{GeV} \)。</li>
+        <li><strong>选择定则</strong>：\( \eta\to\pi\pi \)（CP 禁戒）、\( \pi^0\to\gamma\gamma \)（容许）、\( \pi^0\to\gamma \)（动能学禁戒）、\( \pi N \) 散射 9:1:2。</li>
+      </ul>
+      <p>一句话：<em>对称性不仅美，它就是物理本身——拉格朗日量允许的形式、相互作用的规范玻色子、守恒的量子数、粒子的质量，无一不源自对称性。</em></p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

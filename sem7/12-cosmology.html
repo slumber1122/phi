@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 粒子天体物理与宇宙学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第12章 · 核与粒子物理 Nuclear &amp; Particle Physics</p>
+      <h1>粒子天体物理与宇宙学 <span class="en-title">Particle Astrophysics &amp; Cosmology</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够按时间顺序叙述宇宙的热历史 (thermal history)：暴胀 (inflation) → 重子生成 (baryogenesis) → 太初核合成 (Big-Bang nucleosynthesis, BBN, 产生 \( Y_{^4\mathrm{He}}\approx 25\% \)) → 复合 (recombination, \( z\approx 1100 \)) → 微波背景辐射 (cosmic microwave background, CMB, \( T_0=2.7255\,\mathrm{K} \))，并说明每个里程碑对应的温度与年龄。</li>
+        <li>能够应用哈勃定律 (Hubble's law) \( v=H_0 d \)（\( H_0\approx 70\,\mathrm{km/s/Mpc} \)）由星系红移求其距离，并区分宇宙学红移 (cosmological redshift, \( 1+z=1/a \)) 与普通多普勒效应。</li>
+        <li>能够写出标度因子 (scale factor) \( a(t) \) 与弗里德曼方程 (Friedmann equation) \( H^2=(8\pi G/3)\rho-kc^2/a^2 \) 的物理意义（定性），由此导出临界密度 \( \rho_c=3H^2/8\pi G \) 与密度参数 \( \Omega_i=\rho_i/\rho_c \)。</li>
+        <li>能够列举暗物质 (dark matter) 的三类观测证据 —— 旋转曲线 (rotation curves) 偏离开普勒律、引力透镜 (gravitational lensing, 如 Bullet Cluster)、结构形成 (structure formation) —— 并说明主要候选者：WIMPs (weakly interacting massive particles) 与 axions (轴子)。</li>
+        <li>能够解释暗能量 (dark energy) / 宇宙学常数 \( \Lambda \) 如何驱动加速膨胀（Perlmutter–Riess–Schmidt 1998），并写出标准 \( \Lambda\mathrm{CDM} \) 模型的能量预算：\( \Omega_m\approx 0.31 \)、\( \Omega_\Lambda\approx 0.69 \)、\( \Omega_r\approx 9\times 10^{-5} \)、\( \Omega_{\text{tot}}\approx 1 \)（平坦）。</li>
+        <li>能够说明粒子物理与宇宙学的桥梁：中微子质量与 \( \Sigma m_\nu \) 宇宙学限制、Sakharov 重子生成三条件、热遗留 WIMP 的「WIMP miracle」。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 大爆炸与宇宙热史 The Big Bang and Thermal History</h3>
+      <p>现代宇宙学建立在<strong>宇宙学原理</strong> (cosmological principle) 之上：在大尺度（\( \gtrsim 100\,\mathrm{Mpc} \)）上宇宙是均匀各向同性的。广义相对论加此原理给出 <strong>FRW 度规</strong> (Friedmann–Robertson–Walker metric)，其特征是<strong>标度因子</strong> \( a(t) \)（归一化 \( a(\text{today})=1 \)）。当 \( a(t) \) 随时间增大时，宇宙在「膨胀」——但这并不是宇宙「在某个外部空间里膨胀」，而是空间本身在拉伸，星系彼此远离。</p>
+      <p>倒推时间，\( a(t)\to 0 \) 时物质密度 \( \rho\propto a^{-3} \)、辐射温度 \( T\propto a^{-1} \) 均趋于无穷。这一奇点称为<strong>大爆炸</strong> (Big Bang, \( t=0 \))。宇宙随后经历一系列「相变」，由高温逐步冷却。下表是关键里程碑（时间 \( t \)、温度 \( T \)、事件）：</p>
+      <div class="formula">\[
+        \begin{array}{c|c|l}
+        t & T & \text{事件 Event}\\\hline
+        \sim 10^{-36}\,\mathrm{s} & \sim 10^{28}\,\mathrm{K} & \text{暴胀 inflation（指数膨胀 } \sim e^{60}\text{）}\\
+        \sim 10^{-6}\,\mathrm{s} & \sim 10^{13}\,\mathrm{K} & \text{夸克–强子相变 QCD transition}\\
+        \sim 1\,\mathrm{s} & \sim 1\,\mathrm{MeV} & \text{中微子退耦 }\nu\text{ decoupling；} e^+e^-\text{ 湮灭}\\
+        \sim 10^{-6}\!\!-\!100\,\mathrm{s} & \sim 0.1\,\mathrm{MeV} & \text{太初核合成 BBN}\\
+        \sim 38\,\mathrm{kyr} & \sim 10^4\,\mathrm{K} & \text{物质–辐射相等 matter–radiation equality}\\
+        \sim 380\,\mathrm{kyr} & \sim 3000\,\mathrm{K} & \text{复合 recombination（光子退耦 → CMB）}\\
+        \sim 200\,\mathrm{Myr} & \sim 60\,\mathrm{K} & \text{第一代恒星 first stars（再电离 reionization）}\\
+        \sim 9\,\mathrm{Gyr} & \sim 6\,\mathrm{K} & \text{暗能量主导 dark-energy domination}\\
+        \sim 13.8\,\mathrm{Gyr} & 2.7255\,\mathrm{K} & \text{今日 today}
+        \end{array}
+      \]</div>
+      <p><strong>(i) 暴胀 (inflation)</strong>：极早期 (\( t\lesssim 10^{-36}\,\mathrm{s} \)) 宇宙经历一段加速膨胀，尺度放大 \( \sim e^{60}\sim 10^{26} \) 倍。它一举解决三大疑难：平坦性 (flatness, \( \Omega\approx 1 \))、视界 (horizon, 解释 CMB 高度各向同性)、磁单极 (monopole, 稀释至不可观测)。暴胀的量子涨落还被拉伸成宏观密度涨落，成为后续所有结构（恒星、星系）的「种子」。</p>
+      <p><strong>(ii) 重子生成 (baryogenesis)</strong>：标准模型预言大爆炸产生等量物质与反物质，它们应在 \( t\sim 10^{-6}\,\mathrm{s} \) 前全部湮灭为光子，<em>不留任何重子</em>。但今天宇宙中每有 \( \sim 10^9 \) 个 CMB 光子就对应 \( \sim 1 \) 个重子（净重子数 \( n_B/n_\gamma\approx 6\times 10^{-10} \)），而反重子几乎没有。这一微小但非零的物质–反物质不对称由 Sakharov (1967) 三条件产生（详见第 6 节）。</p>
+      <p><strong>(iii) 太初核合成 (Big-Bang nucleosynthesis, BBN)</strong>：\( t\sim 1\!-\!1000\,\mathrm{s} \)、\( T\sim 0.1\,\mathrm{MeV} \) 时质子与中子聚变形成轻核（D, \( ^3\mathrm{He} \), \( ^4\mathrm{He} \), \( ^7\mathrm{Li} \)）。BBN 的最大成就：精确预测宇宙中氢氦质量比 \( X:Y\approx 3:1 \)，即 <strong>\( ^4\mathrm{He} \) 质量分数 \( Y_p\approx 0.25 \)</strong>——与在全宇宙各处的 HII 区、贫金属星测量值高度吻合（见例 12.4）。氘 \( ^2\mathrm{H}/^1\mathrm{H}\approx 2.5\times 10^{-5} \) 也是重子密度的灵敏「计」。</p>
+      <p><strong>(iv) 复合与 CMB (recombination &amp; CMB)</strong>：温度降至 \( T\sim 3000\,\mathrm{K} \)（\( t\sim 380\,\mathrm{kyr} \)）后，电子终于能与质子结合成中性氢（此前光子被自由电子 Thomson 散射，宇宙不透明）。中性宇宙对光子透明，CMB 光子从此「自由传播」至今，温度随 \( a^{-1} \) 红移冷却到 \( T_0=2.7255\,\mathrm{K} \)，峰值波长 \( \lambda_{\max}\approx 1.06\,\mathrm{mm} \)（微波段）。CMB 强度分布极接近 2.7 K 黑体谱（COBE 1990, \( \Delta T/T\sim 10^{-5} \)），各向异性 \( \sim 10^{-5} \) 中的声学峰 (acoustic peaks, WMAP/Planck) 给出了 \( \Omega_m, \Omega_\Lambda, \Omega_b, H_0 \) 等宇宙学参数的精密测量值。</p>
+
+      <h3>2. 膨胀的宇宙 The Expanding Universe</h3>
+      <p>1929 年 Hubble 发现遥远星系的谱线<strong>红移</strong> (redshift) \( z \) 与其距离 \( d \) 大致成正比。把红移解释为宇宙膨胀引起的退行速度，即得<strong>哈勃定律</strong>：</p>
+      <div class="formula">\[ \boxed{\;v=H_0\,d\;}\qquad H_0\approx 70\,\mathrm{km/s/Mpc} \]</div>
+      <p>其中 \( H_0\equiv \dot a/a\big|_{\text{today}} \) 是今天的<strong>哈勃常数</strong> (Hubble constant)。常用无量纲量 \( h \) 表示：\( H_0=100\,h\,\mathrm{km/s/Mpc} \)，\( h\approx 0.7 \)。<strong>哈勃张力</strong> (Hubble tension)：Planck 卫星从 CMB 推断 \( H_0=67.4\pm 0.5 \)，而 Riess 等用局域造父变星–Ia 超新星距离阶梯测得 \( H_0=73.0\pm 1.0 \)，两者相差 \( \sim 5\sigma \)，是当今宇宙学最大悬案之一。</p>
+      <p>红移 \( z \) 的精确定义与标度因子相关：</p>
+      <div class="formula">\[ 1+z\equiv\frac{\lambda_{\text{obs}}}{\lambda_{\text{em}}}=\frac{a(t_{\text{obs}})}{a(t_{\text{em}})}=\frac{1}{a(t_{\text{em}})} \]</div>
+      <p>注意：宇宙学红移<strong>并非</strong>多普勒效应。光子波长是被膨胀的空间本身「拉伸」的，不是光源在某个静止空间中运动产生的频率移动。对小红移（\( z\ll 1 \)），\( v\approx cz \) 是良好近似，可与哈勃定律联用（例 12.1）。</p>
+      <p>由于 \( T\propto 1/a \)，过去任何时代的 CMB 温度为：</p>
+      <div class="formula">\[ T(z)=T_0(1+z),\qquad T_0=2.7255\,\mathrm{K} \]</div>
+
+      <h3>3. 弗里德曼方程与临界密度 Friedmann Equation &amp; Critical Density</h3>
+      <p>由 FRW 度规与爱因斯坦方程可得决定 \( a(t) \) 演化的<strong>弗里德曼方程</strong>：</p>
+      <div class="formula">\[ H^2\equiv\Big(\frac{\dot a}{a}\Big)^2=\frac{8\pi G}{3}\rho-\frac{kc^2}{a^2}+\frac{\Lambda c^2}{3} \]</div>
+      <p>其中 \( \rho \) 是总能量密度（物质 + 辐射），\( k\in\{+1,0,-1\} \) 是空间曲率（闭 / 平 / 开），\( \Lambda \) 是<strong>宇宙学常数</strong> (cosmological constant)。把含 \( \Lambda \) 的项等效为一种能量 \( \rho_\Lambda=\Lambda c^2/(8\pi G) \)，则总密度 \( \rho_{\text{tot}}=\rho+\rho_\Lambda \)。</p>
+      <p>定义<strong>临界密度</strong>为使宇宙恰为平坦 (\( k=0 \)) 的密度：</p>
+      <div class="formula">\[ \rho_c=\frac{3H^2}{8\pi G},\qquad \rho_c(t_0)\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3}\approx 5.5\,\mathrm{protons/m^3} \]</div>
+      <p>各成分的<strong>密度参数</strong>：</p>
+      <div class="formula">\[ \Omega_i\equiv\frac{\rho_i}{\rho_c},\qquad \Omega_{\text{tot}}=\sum_i\Omega_i=\Omega_m+\Omega_r+\Omega_\Lambda+\Omega_k \]</div>
+      <p>Planck 2018 测得：\( \Omega_b\approx 0.049 \)（重子）、\( \Omega_c\approx 0.265 \)（冷暗物质）、\( \Omega_m=\Omega_b+\Omega_c\approx 0.315 \)、\( \Omega_\Lambda\approx 0.685 \)、\( \Omega_r\approx 9.15\times 10^{-5} \)、\( \Omega_k\approx 0 \)。所以 <strong>\( \Omega_{\text{tot}}\approx 1.00\pm 0.02 \)</strong>——宇宙是<strong>平坦</strong>的（与暴胀预言一致）。</p>
+
+      <h3>4. 暗物质 Dark Matter</h3>
+      <p>多种独立观测都指向宇宙中有大量<strong>不发光、几乎不与电磁波相互作用</strong>的物质——<strong>暗物质</strong> (dark matter, DM)。</p>
+      <ul>
+        <li><strong>星系旋转曲线 (rotation curves)</strong>：测量旋涡星系（如本星系群中的 M33、NGC 3198）中性氢 21 cm 发射在远紫外盘外的轨道速度 \( v(r) \)，发现 \( v \) 在远远超出可见恒星盘的地方<strong>仍保持平坦</strong>，并不遵循可见质量预期的开普勒衰减 \( v\propto r^{-1/2} \)（例 12.3、仿真）。这要求每个星系被一个延展的<strong>暗物质晕</strong> (dark-matter halo) 包裹。</li>
+        <li><strong>引力透镜 (gravitational lensing)</strong>：背景星系的光被前景星系团质量弯曲。在著名的 <strong>Bullet Cluster (1E 0657–558)</strong> 中，X 射线发射的普通热气体（占重子主体）在两团相撞后因气体压力互相减速、停在中间；而引力透镜测得的质量中心却在两侧——与无碰撞暗物质晕完全一致。这是暗物质存在最直接的证据。</li>
+        <li><strong>结构形成 (structure formation)</strong>：宇宙早期 (\( z\sim 1000 \)) 的密度涨落仅 \( \delta\rho/\rho\sim 10^{-5} \)，若无暗物质（其从辐射退耦更早、能更早开始引力坍缩），引力增长时间不足，无法解释今日观测到的星系、星系团大尺度结构。</li>
+        <li><strong>BBN + CMB 的重子密度</strong>：BBN 给出 \( \Omega_b h^2\approx 0.0224 \)，即 \( \Omega_b\approx 0.049 \)；但总物质 \( \Omega_m\approx 0.315 \)。差额 \( \Omega_c\approx 0.265 \) 即暗物质，约为重子的 \( 5\!-\!6 \) 倍。</li>
+      </ul>
+      <p><strong>暗物质候选者</strong>：标准模型中无合适粒子（中微子质量太小、是「热」暗物质，会抹掉小尺度结构）。主流候选：</p>
+      <ul>
+        <li><strong>WIMPs</strong> (weakly interacting massive particles)：质量 \( \sim \mathrm{GeV}\!-\!\mathrm{TeV} \)、相互作用截面 ~弱相互作用尺度。令人惊叹的是，具有弱尺度截面与质量的粒子在早期宇宙热平衡中遗留的密度恰好给出 \( \Omega_\mathrm{DM}\sim 0.2 \)——称 <strong>「WIMP miracle」</strong>。直接探测实验（XENONnT, PandaX, LZ）通过核反冲搜寻；间接探测（Fermi LAT）搜寻湮灭产生的 γ。</li>
+        <li><strong>轴子 axions</strong>：为解决强 CP 问题（QCD 中 \( \bar\theta \) 何以近零）由 Peccei–Quinn 机制引入，质量 \( \mu\mathrm{eV}\!-\!\mathrm{meV} \)，是极佳冷暗物质候选。ADMX、CAST 等实验搜寻其与磁场耦合产生的微波光子。</li>
+      </ul>
+
+      <h3>5. 暗能量与加速膨胀 Dark Energy &amp; Accelerated Expansion</h3>
+      <p>1998 年 Perlmutter、Riess、Schmidt 三组用 Ia 超新星作「标准烛光」发现：高红移 (\( z\gtrsim 0.5 \)) 超新星比 \( v=H_0 d \) 预期的<em>更暗</em>——即它们离我们更远，宇宙在 \( z\sim 0.5 \) 之后开始<strong>加速</strong>膨胀（三人获 2011 诺贝尔物理学奖）。加速要求弗里德曼方程中存在一种具有<strong>负压强</strong> \( p<-\rho c^2/3 \) 的成分，统称<strong>暗能量</strong> (dark energy)。最简单的实现就是爱因斯坦当年的宇宙学常数 \( \Lambda \)（等价地，真空能），其状态方程 \( p=-\rho c^2 \)。</p>
+      <p>加速膨胀的判据可写为：</p>
+      <div class="formula">\[ \frac{\ddot a}{a}=-\frac{4\pi G}{3}\Big(\rho+\frac{3p}{c^2}\Big)+\frac{\Lambda c^2}{3}\;>\;0\;\Longleftrightarrow\;\rho+3p/c^2<\rho_\Lambda \]</div>
+      <p>今日 \( \Omega_\Lambda\approx 0.69>\Omega_m\approx 0.31 \)，暗能量主导，宇宙正加速膨胀，并将在未来趋于 de Sitter 指数膨胀。注意 \( \rho_\Lambda \) 极小：\( \rho_\Lambda c^2\approx 5.6\times 10^{-10}\,\mathrm{J/m^3}\approx 3.5\,\mathrm{GeV/m^3} \)——远低于任何实验室真空——但因其不随膨胀稀释，它最终主宰了整个宇宙的演化。</p>
+
+      <h3>6. 粒子物理 ↔ 宇宙学的桥梁 Particle Physics ↔ Cosmology</h3>
+      <p>极早期宇宙是天然的「超高能粒子加速器」（最高能标远超 LHC 的 14 TeV），故粒子物理与宇宙学深度交织：</p>
+      <ul>
+        <li><strong>中微子质量 (neutrino masses)</strong>：宇宙学中微子背景 (CνB) 在 \( T\sim 1.95\,\mathrm{K} \) 至今弥漫宇宙，数密度 \( n_\nu\approx 336\,\mathrm{cm^{-3}} \)（三味合计）。中微子质量影响结构形成（抑制小尺度功率），Planck + BAO 给出 <strong>\( \Sigma m_\nu\lesssim 0.12\,\mathrm{eV} \)</strong>，远紧于实验室直接称重（KATRIN \( m_{\bar\nu_e}\lesssim 0.8\,\mathrm{eV} \)）。</li>
+        <li><strong>重子生成 (baryogenesis)</strong>：Sakharov (1967) 三条件——(i) 重子数 B 不守恒、(ii) C 与 CP 破坏、(iii) 偏离热平衡——必须同时满足才能从对称起点产生净 \( n_B \)。标准模型电弱相变满足这三者但 CP 破坏量级太小（差 \( \sim 10^{10} \)）；可能需要新物理（如 leptogenesis 轻子生成）。</li>
+        <li><strong>WIMP 热遗留 (thermal relic)</strong>：质量 \( m_\chi \)、湮灭截面 \( \langle\sigma v\rangle \) 的稳定粒子在早期宇宙热平衡中产生；宇宙冷却后湮灭率 \( \Gamma=n\langle\sigma v\rangle \) 跌破膨胀率 \( H \)，剩余密度「冻结」 (freeze-out)：</li>
+      </ul>
+      <div class="formula">\[ \Omega_\chi h^2\approx\frac{3\times 10^{-27}\,\mathrm{cm^3/s}}{\langle\sigma v\rangle} \]</div>
+      <p>若 \( \langle\sigma v\rangle\sim 10^{-26}\,\mathrm{cm^3/s} \)（即弱相互作用尺度），自然给出 \( \Omega_\chi h^2\approx 0.12 \)——这正是「WIMP miracle」。</p>
+
+      <div class="key-terms">scale factor \( a(t) \) (标度因子), Hubble's law \( v=H_0 d \) (哈勃定律), Hubble constant \( H_0\approx 70\,\mathrm{km/s/Mpc} \) (哈勃常数), Hubble tension (哈勃张力), redshift \( 1+z=1/a \) (宇宙学红移), cosmological principle (宇宙学原理), FRW metric (FRW 度规), Big Bang (大爆炸), inflation (暴胀), baryogenesis (重子生成), Sakharov conditions (Sakharov 三条件), Big-Bang nucleosynthesis BBN (太初核合成), helium mass fraction \( Y_p\approx 0.25 \) (氦质量分数), recombination \( z\approx 1100 \) (复合), cosmic microwave background CMB \( T_0=2.7255\,\mathrm{K} \) (微波背景辐射), Friedmann equation (弗里德曼方程), critical density \( \rho_c=3H^2/8\pi G \) (临界密度), density parameter \( \Omega_i \) (密度参数), dark matter (暗物质), rotation curve (旋转曲线), gravitational lensing (引力透镜), Bullet Cluster (子弹星系团), WIMP (弱相互作用大质量粒子), WIMP miracle (WIMP 奇迹), axion (轴子), dark energy (暗能量), cosmological constant \( \Lambda \) (宇宙学常数), ΛCDM model (ΛCDM 模型), thermal relic (热遗留), freeze-out (冻结), cosmic neutrino background CνB (宇宙学中微子背景)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由能量守恒导出弗里德曼方程（牛顿形式）与临界密度</h3>
+      <p class="step"><strong>设定</strong>：考虑一个均匀各向同性宇宙中，原点处一观察者。在半径 \( R(t) \) 处取一质量为 \( m \) 的试验粒子（代表一个星系），它处在总质量 \( M=(4\pi/3)\rho R^3 \) 的物质球的引力下（Birkhoff 定理保证外层球壳引力相消）。这是<strong>牛顿的「宇宙学」图像</strong>，对均匀宇宙而言给出与广义相对论相同的结果（压力可略时）。</p>
+      <p class="step"><strong>第一步（能量守恒）</strong>：试验粒子的总机械能：</p>
+      <p>\[ E=\frac{1}{2}m\dot R^2-\frac{GMm}{R}\quad(E\text{ 为常数}) \]</p>
+      <p class="step"><strong>第二步（引入标度因子）</strong>：令 \( R(t)=a(t)R_0 \)（共动坐标 \( R_0 \) 不随时间变化），则 \( \dot R=R_0\dot a \)。代入并除以 \( \frac{1}{2}mR_0^2a^2 \)：</p>
+      <p>\[ \frac{\dot a^2}{a^2}=\frac{2GM}{R_0^3 a^3}-\frac{|E|}{\tfrac{1}{2}mR_0^2 a^2}\;\cdot\mathrm{sgn}(E) \]</p>
+      <p class="step"><strong>第三步（识别密度）</strong>：因 \( M=(4\pi/3)\rho R^3=(4\pi/3)\rho R_0^3 a^3 \)，故 \( 2GM/(R_0^3 a^3)=(8\pi G/3)\rho \)。再定义曲率参数 \( k\equiv 2E/(mc^2R_0^2) \)（取值 \( +1,0,-1 \)，对应 \( E>0,=0,<0 \)）：</p>
+      <div class="formula">\[ \boxed{\;H^2=\Big(\frac{\dot a}{a}\Big)^2=\frac{8\pi G}{3}\rho-\frac{kc^2}{a^2}\;}\qquad(\text{不含 }\Lambda) \]</div>
+      <p>加上宇宙学常数只需在右边补 \( +\Lambda c^2/3 \)。这便是弗里德曼方程。</p>
+      <p class="step"><strong>第四步（临界密度）</strong>：定义临界密度为方程给出 \( k=0 \)（平坦）时的密度：</p>
+      <p>\[ H^2=\frac{8\pi G}{3}\rho_c\;\Rightarrow\;\boxed{\;\rho_c=\frac{3H^2}{8\pi G}\;} \]</p>
+      <p class="step"><strong>数值核验</strong>（\( H_0=70\,\mathrm{km/s/Mpc}=2.27\times 10^{-18}\,\mathrm{s^{-1}} \)）：</p>
+      <p>\[ \rho_c=\frac{3(2.27\times 10^{-18})^2}{8\pi(6.674\times 10^{-11})}=\frac{1.55\times 10^{-35}}{1.677\times 10^{-9}}=9.2\times 10^{-27}\,\mathrm{kg/m^3} \]</p>
+      <p>约每立方米 5.5 个质子的质量——宇宙惊人的空旷！</p>
+
+      <h3>B. 由中子–质子比导出 BBN 的 \( ^4\mathrm{He} \) 质量分数 \( Y_p\approx 0.25 \)</h3>
+      <p class="step"><strong>设定</strong>：当 \( T\gtrsim 1\,\mathrm{MeV} \)（\( t\lesssim 1\,\mathrm{s} \)）时，弱相互作用 \( n+\nu_e\leftrightarrow p+e^- \)、\( n+e^+\leftrightarrow p+\bar\nu_e \) 维持中子与质子在热平衡。它们的数密度比服从 Boltzmann 分布：</p>
+      <p>\[ \frac{n_n}{n_p}=\exp\!\Big(-\frac{\Delta m\,c^2}{kT}\Big),\qquad \Delta m=m_n-m_p=1.293\,\mathrm{MeV}/c^2 \]</p>
+      <p class="step"><strong>第一步（弱退耦温度）</strong>：随宇宙冷却，弱作用速率 \( \Gamma\sim G_F^2 T^5 \) 跌破膨胀率 \( H\sim T^2/M_{\mathrm{Pl}} \)，弱反应「冻结」。详细计算给出冻结温度 \( T_f\approx 0.8\,\mathrm{MeV} \)，对应</p>
+      <p>\[ \Big(\frac{n_n}{n_p}\Big)_f\approx\exp\!\Big(-\frac{1.293}{0.8}\Big)\approx\exp(-1.62)\approx 0.20 \]</p>
+      <p class="step"><strong>第二步（自由衰变修正）</strong>：冻结后中子作为自由粒子衰变（\( n\to p e^-\bar\nu_e \)，\( \tau_n=880\,\mathrm{s} \))，直到太初核合成开始（\( t_{\mathrm{BBN}}\sim 200\,\mathrm{s} \), 「氘瓶颈 deuterium bottleneck」开启）。修正因子：</p>
+      <p>\[ \Big(\frac{n_n}{n_p}\Big)_{\mathrm{BBN}}\approx 0.20\,e^{-200/880}\approx 0.20\times 0.797\approx 0.16\approx\frac{1}{7} \]</p>
+      <p>（精细 BBN 网络计算给出公认的 \( 1/7 \)，此处简化推导与其吻合。）</p>
+      <p class="step"><strong>第三步（几乎全部中子进入 \( ^4\mathrm{He} \)）</strong>：\( ^4\mathrm{He} \) 的每核子结合能 \( \sim 7\,\mathrm{MeV} \)，远大于 D (\( 1.1\,\mathrm{MeV} \))、\( ^3\mathrm{He} \) (\( 2.6\))、\( ^7\mathrm{Li} \) (\( 5.6 \))，所以一旦氘瓶颈打开，几乎所有可得到的中子都形成 \( ^4\mathrm{He} \)。设 \( q\equiv(n_n/n_p)_{\mathrm{BBN}}=1/7 \)，每 \( 1+q \) 个核子中，中子数 \( =q/(1+q) \)、质子数 \( =1/(1+q) \)。每形成 1 个 \( ^4\mathrm{He} \) 需 2 个中子，故 \( ^4\mathrm{He} \) 核数 \( =\tfrac{1}{2}\,q/(1+q) \)，质量 \( =4\times\tfrac{1}{2}\,q/(1+q)=2q/(1+q) \)。</p>
+      <p class="step"><strong>第四步（质量分数）</strong>：</p>
+      <div class="formula">\[ \boxed{\;Y_p\equiv\frac{m_{^4\mathrm{He}}}{m_{\text{总}}}=\frac{2q}{1+q}\;} \]</div>
+      <p>代入 \( q=1/7 \)：</p>
+      <p>\[ Y_p=\frac{2/7}{8/7}=\frac{2}{8}=0.25 \]</p>
+      <p class="step"><strong>评注</strong>：观测（贫金属 HII 区氦线、行星状星云）给出 \( Y_p=0.245\pm 0.003 \)，与理论预测高度一致。BBN 还正确预言 \( ^2\mathrm{H}/^1\mathrm{H}\approx 2.5\times 10^{-5} \)、\( ^3\mathrm{He}/^1\mathrm{H}\approx 1.0\times 10^{-5} \)、\( ^7\mathrm{Li}/^1\mathrm{H}\approx 5\times 10^{-10} \)（\( ^7\mathrm{Li} \) 的「宇宙学锂疑难」是少量但持续存在的偏差，可能由新星或原子核物理修正解释）。</p>
+
+      <h3>C. 宇宙学红移与 CMB 温度随 \( z \) 的关系</h3>
+      <p class="step"><strong>设定</strong>：FRW 度规下，径向光路满足 \( ds^2=0 \)：\( c\,dt=a(t)\,dr \)。考虑在 \( t_e \)（标度因子 \( a_e \)）发出、\( t_0 \)（\( a_0=1 \)）收到的两个波峰，相隔 \( \delta t_e \) 与 \( \delta t_0 \)。两波峰传播同样的共动距离 \( \Delta r \)：</p>
+      <p>\[ \Delta r=\int_{t_e}^{t_0}\frac{c\,dt}{a(t)}=\int_{t_e+\delta t_e}^{t_0+\delta t_0}\frac{c\,dt}{a(t)} \]</p>
+      <p class="step"><strong>化简</strong>：两式相减并取一阶：</p>
+      <p>\[ 0=\frac{\delta t_0}{a_0}-\frac{\delta t_e}{a_e}\;\Rightarrow\;\frac{\delta t_0}{\delta t_e}=\frac{a_0}{a_e}=\frac{1}{a_e} \]</p>
+      <p>光子周期（因而波长）以同样比例拉伸：</p>
+      <div class="formula">\[ \boxed{\;\frac{\lambda_{\text{obs}}}{\lambda_{\text{em}}}=\frac{a_0}{a_e}=\frac{1}{a_e}=1+z\;} \]</div>
+      <p class="step"><strong>黑体温度</strong>：辐射气体的能量密度 \( \rho_\gamma\propto T^4 \)，又 \( \rho_\gamma\propto a^{-4} \)（光子数稀释 \( a^{-3} \) 加每个光子能量红移 \( a^{-1} \)）。故 \( T^4\propto a^{-4}\)，即 \( T\propto 1/a \)：</p>
+      <div class="formula">\[ \boxed{\;T(z)=T_0(1+z)\;},\qquad T_0=2.7255\,\mathrm{K} \]</div>
+      <p>代入 \( z_{\mathrm{rec}}\approx 1100 \)：\( T_{\mathrm{rec}}=2.7255\times 1101\approx 3000\,\mathrm{K} \)，正与氢的电离温度（\( kT\sim 0.26\,\mathrm{eV} \)，加上 13.6 eV 束缚能的 Saha 方程给出的复合温度）吻合。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 哈勃定律：由红移求星系距离</h4>
+        <p class="example-statement">一旋涡星系光谱中 H\( \alpha \) 线（实验室波长 \( \lambda_0=656.28\,\mathrm{nm} \)）测得观测波长 \( \lambda=662.84\,\mathrm{nm} \)。取 \( H_0=70\,\mathrm{km/s/Mpc} \)、\( c=3.0\times 10^5\,\mathrm{km/s} \)。求：(a) 红移 \( z \)；(b) 退行速度 \( v \)；(c) 距离 \( d \)（Mpc 与百万光年 Mly）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：红移定义 \( 1+z=\lambda/\lambda_0 \)：</p>
+          <p>\[ z=\frac{\lambda-\lambda_0}{\lambda_0}=\frac{662.84-656.28}{656.28}=\frac{6.56}{656.28}=0.00999\approx 0.0100 \]</p>
+          <p class="step"><strong>解 (b)</strong>：\( z\ll 1 \)，故 \( v\approx cz \)（宇宙学红移在小 \( z \) 下的非相对论近似）：</p>
+          <p>\[ v\approx cz=(3.0\times 10^5\,\mathrm{km/s})(0.0100)=3.00\times 10^3\,\mathrm{km/s}=3000\,\mathrm{km/s} \]</p>
+          <p class="step"><strong>解 (c)</strong>：哈勃定律 \( d=v/H_0 \)：</p>
+          <p>\[ d=\frac{3000\,\mathrm{km/s}}{70\,\mathrm{km/s/Mpc}}=42.9\,\mathrm{Mpc} \]</p>
+          <p>换算：\( 1\,\mathrm{Mpc}=3.262\,\mathrm{Mly} \)，故 \( d=42.9\times 3.262=140\,\mathrm{Mly} \)。</p>
+          <p class="step"><strong>评注</strong>：(i) \( z=0.01 \) 对应约 1.4 亿光年——典型的「近邻」星系（如室女团约 16 Mpc、后发团约 100 Mpc）。(ii) 本例忽略相对论修正与宇宙学模型依赖；对 \( z\gtrsim 0.1 \)，须用完整 \( \Lambda\mathrm{CDM} \) 距离–红移关系。(iii) 哈勃常数不确定度（67–73）会给 \( d \) 带来 \( \sim \pm 5\% \) 系统误差，远大于本例的随机误差。</p>
+          <p><span class="ans">\( z=0.0100 \)；\( v\approx 3000\,\mathrm{km/s} \)；\( d\approx 42.9\,\mathrm{Mpc}\approx 140\,\mathrm{Mly} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 CMB 温度的红移依赖：复合时代有多热？</h4>
+        <p class="example-statement">已知今日 \( T_0=2.7255\,\mathrm{K} \)。求：(a) 复合时代（\( z_{\mathrm{rec}}=1090 \)）的 CMB 温度 \( T_{\mathrm{rec}} \) 与对应光子峰值波长 \( \lambda_{\max} \)（Wien 位移律 \( \lambda_{\max}T=2.898\times 10^{-3}\,\mathrm{m\,K} \)）；(b) 红移 \( z=6 \) 处类星体看到的 CMB 温度与对应能量 \( kT \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：\( T(z)=T_0(1+z) \)，</p>
+          <p>\[ T_{\mathrm{rec}}=2.7255\times(1+1090)=2.7255\times 1091=2974\,\mathrm{K}\approx 3000\,\mathrm{K} \]</p>
+          <p>对应峰值波长（Wien 律）：</p>
+          <p>\[ \lambda_{\max,\mathrm{rec}}=\frac{2.898\times 10^{-3}}{2974}=9.74\times 10^{-7}\,\mathrm{m}=974\,\mathrm{nm} \]</p>
+          <p>接近近红外——复合时代的「微波」背景其实是近红外光，且总能量密度 \( \propto T^4 \) 比今日高 \( (1+1090)^4\approx 1.4\times 10^{12} \) 倍。在复合前更高温下宇宙对可见光是真正不透明的「火球」。</p>
+          <p class="step"><strong>解 (b)</strong>：\( z=6 \) 处：</p>
+          <p>\[ T(z=6)=2.7255\times 7=19.08\,\mathrm{K} \]</p>
+          <p>\[ kT=(8.617\times 10^{-5}\,\mathrm{eV/K})(19.08)=1.64\times 10^{-3}\,\mathrm{eV}=1.64\,\mathrm{meV} \]</p>
+          <p class="step"><strong>评注</strong>：(i) 高红移处 CMB 温度更高这一预言已被直接验证：在 \( z=2.34 \) 类星体吸收线系统中测得 \( T=5.08\!-\!6.08\,\mathrm{K} \)（与 \( T_0(1+2.34)=9.1\,\mathrm{K} \) 大致相符；精细偏差反映宇宙加热）。（ii）CMB 是高度各向同性的（\( \Delta T/T\sim 10^{-5} \)），不同方向温度几乎相同——但它们在复合时代彼此并不在因果视界内（<em>视界疑难</em>），暴胀的指数膨胀解决之。</p>
+          <p><span class="ans">\( T_{\mathrm{rec}}\approx 3000\,\mathrm{K} \)，\( \lambda_{\max,\mathrm{rec}}\approx 974\,\mathrm{nm} \)；\( T(z=6)=19.1\,\mathrm{K} \)，\( kT=1.64\,\mathrm{meV} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 平坦旋转曲线：可见物质的开普勒衰减 vs 观测平坦——暗物质存在的质量</h4>
+        <p class="example-statement">银河系类星系：太阳到星系中心 \( R_0=8.0\,\mathrm{kpc} \)，实测本地圆周速度 \( v_0=220\,\mathrm{km/s} \)（且在 \( r\gtrsim R_0 \) 处曲线平坦）。假设所有可见物质（恒星 + 冷气体）的质量 \( M_{\mathrm{vis}}=6.0\times 10^{10}\,M_\odot \) 集中在 \( r\le R_0 \)。求：(a) 仅由可见物质预测的 \( v_{\mathrm{Kep}}(R_0) \) 与 \( v_{\mathrm{Kep}}(2R_0) \)；(b) 在 \( 2R_0=16\,\mathrm{kpc} \) 处观测到的 \( 220\,\mathrm{km/s} \) 所要求的暗物质质量 \( M_{\mathrm{DM}}(<16\,\mathrm{kpc}) \)；(c) \( M_{\mathrm{DM}}/M_{\mathrm{vis}} \)。常数：\( G=6.674\times 10^{-11}\,\mathrm{N\,m^2/kg^2} \)，\( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)，\( 1\,\mathrm{kpc}=3.086\times 10^{19}\,\mathrm{m} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>设定</strong>：圆周运动满足 \( v^2/r=GM(<r)/r^2 \)，即 \( v(r)=\sqrt{GM(<r)/r} \)。若所有质量集中在 \( r<R_0 \) 内，则对 \( r\ge R_0 \) 有 \( M(<r)=M_{\mathrm{vis}} \)（恒定），故 \( v\propto r^{-1/2} \)（开普勒衰减）。</p>
+          <p class="step"><strong>解 (a)</strong>：\( M_{\mathrm{vis}}=6.0\times 10^{10}\times 1.989\times 10^{30}=1.193\times 10^{41}\,\mathrm{kg} \)。</p>
+          <p>\[ v_{\mathrm{Kep}}(R_0)=\sqrt{\frac{GM_{\mathrm{vis}}}{R_0}}=\sqrt{\frac{(6.674\times 10^{-11})(1.193\times 10^{41})}{8.0\times 3.086\times 10^{19}}} \]</p>
+          <p>\[ =\sqrt{\frac{7.961\times 10^{30}}{2.469\times 10^{20}}}=\sqrt{3.224\times 10^{10}}=1.797\times 10^5\,\mathrm{m/s}=180\,\mathrm{km/s} \]</p>
+          <p>\[ v_{\mathrm{Kep}}(2R_0)=\frac{v_{\mathrm{Kep}}(R_0)}{\sqrt{2}}=\frac{180}{1.414}=127\,\mathrm{km/s} \]</p>
+          <p class="step"><strong>对比实测</strong>：观测在两处都给 \( v\approx 220\,\mathrm{km/s} \)。在 \( 2R_0 \)，开普勒预测 \( 127\,\mathrm{km/s} \) 与观测 \( 220\,\mathrm{km/s} \) 相差近一倍。</p>
+          <p class="step"><strong>解 (b)</strong>：由 \( v_{\mathrm{obs}}^2=G[M_{\mathrm{vis}}+M_{\mathrm{DM}}]/(2R_0) \)，移项：</p>
+          <p>\[ M_{\mathrm{DM}}(<2R_0)=\frac{v_{\mathrm{obs}}^2\cdot 2R_0}{G}-M_{\mathrm{vis}} \]</p>
+          <p>\[ \frac{v_{\mathrm{obs}}^2\cdot 2R_0}{G}=\frac{(2.20\times 10^5)^2(16\times 3.086\times 10^{19})}{6.674\times 10^{-11}}=\frac{(4.84\times 10^{10})(4.938\times 10^{20})}{6.674\times 10^{-11}} \]</p>
+          <p>\[ =\frac{2.390\times 10^{31}}{6.674\times 10^{-11}}=3.581\times 10^{41}\,\mathrm{kg}=1.80\times 10^{11}\,M_\odot \]</p>
+          <p>\[ M_{\mathrm{DM}}=1.80\times 10^{11}-6.0\times 10^{10}=1.20\times 10^{11}\,M_\odot \]</p>
+          <p class="step"><strong>解 (c)</strong>：</p>
+          <p>\[ \frac{M_{\mathrm{DM}}}{M_{\mathrm{vis}}}=\frac{1.20}{0.60}=2.0 \]</p>
+          <p>即在 \( 16\,\mathrm{kpc} \) 内暗物质质量是可见物质的 2 倍。若推到 \( 200\,\mathrm{kpc} \)（晕的边缘），暗物质质量可达 \( 10^{12}\,M_\odot \)，约为可见物质的 \( 20 \) 倍——这与引力透镜测得的星系晕质量相符。</p>
+          <p class="step"><strong>评注</strong>：本例显示暗物质并非「修补数据」的小修正，而是主导星系引力势的主体。它不发光、几乎不与电磁波作用（否则会被探测到），但其引力效应（旋转曲线、引力透镜、 Bullet Cluster 中与气体的分离）是毋庸置疑的。</p>
+          <p><span class="ans">\( v_{\mathrm{Kep}}(R_0)=180\,\mathrm{km/s} \)、\( v_{\mathrm{Kep}}(2R_0)=127\,\mathrm{km/s} \)；\( M_{\mathrm{DM}}(<16\,\mathrm{kpc})=1.2\times 10^{11}\,M_\odot \)；\( M_{\mathrm{DM}}/M_{\mathrm{vis}}\approx 2 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 BBN 氦质量分数：从 \( n/p \) 比到 \( Y_p\approx 0.25 \)</h4>
+        <p class="example-statement">详细 BBN 网络计算给出在核合成开始时（\( t_{\mathrm{BBN}}\approx 200\,\mathrm{s} \)）中子–质子比 \( (n_n/n_p)_{\mathrm{BBN}}=1/7 \)。假设几乎所有中子最终进入 \( ^4\mathrm{He} \)（其他轻核丰度可略）。求：(a) 氦质量分数 \( Y_p \)；(b) 按数密度计，\( ^4\mathrm{He} \) 与 \( ^1\mathrm{H} \) 的数密度比 \( n_{^4\mathrm{He}}/n_{^1\mathrm{H}} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：设 \( q\equiv n_n/n_p=1/7 \)。每 \( N_{\mathrm{tot}}=n+p \) 个核子中，中子数 \( n=qN_{\mathrm{tot}}/(1+q) \)，质子数 \( p=N_{\mathrm{tot}}/(1+q) \)。每形成 1 个 \( ^4\mathrm{He} \) 用 2 个中子 + 2 个质子；中子数有限，可形成 \( ^4\mathrm{He} \) 数为 \( n/2=qN_{\mathrm{tot}}/[2(1+q)] \)，其质量为 \( 4\times n/2=2qN_{\mathrm{tot}}/(1+q) \)。氦质量分数：</p>
+          <p>\[ Y_p=\frac{2qN_{\mathrm{tot}}/(1+q)}{N_{\mathrm{tot}}}=\frac{2q}{1+q}=\frac{2\times\tfrac{1}{7}}{1+\tfrac{1}{7}}=\frac{2/7}{8/7}=\frac{2}{8}=0.250 \]</p>
+          <p class="step"><strong>解 (b)</strong>：剩余质子（未进入 \( ^4\mathrm{He} \)）数为 \( p-2\times(n_{^4\mathrm{He}}\text{ 核数})=N_{\mathrm{tot}}/(1+q)-qN_{\mathrm{tot}}/(1+q)=(1-q)N_{\mathrm{tot}}/(1+q) \)，每个是一个 \( ^1\mathrm{H} \)。\( ^4\mathrm{He} \) 核数为 \( qN_{\mathrm{tot}}/[2(1+q)] \)。数密度比：</p>
+          <p>\[ \frac{n_{^4\mathrm{He}}}{n_{^1\mathrm{H}}}=\frac{q/[2(1+q)]}{(1-q)/(1+q)}=\frac{q}{2(1-q)}=\frac{1/7}{2(6/7)}=\frac{1}{12}\approx 0.083 \]</p>
+          <p class="step"><strong>评注</strong>：(i) 即每 12 个氢原子对应 1 个氦原子，但氦原子重 4 倍，所以<strong>按质量</strong>氦占 \( 4/(4+12)=1/4 \)。氦虽然数量少，质量却占四分之一！(ii) 实测 \( Y_p=0.245\pm 0.003 \)（贫金属 HII 区）与 \( 0.25 \) 几乎完美吻合，是 BBN 的最大胜利。(iii) \( Y_p \) 对重子密度 \( \Omega_b h^2 \) 与膨胀率 \( N_{\mathrm{eff}} \)（有效中微子种类）都敏感，故可用于限制新物理。</p>
+          <p><span class="ans">\( Y_p=0.25 \)；\( n_{^4\mathrm{He}}/n_{^1\mathrm{H}}=1/12\approx 0.083 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 临界密度与能量预算</h4>
+        <p class="example-statement">取 \( H_0=70\,\mathrm{km/s/Mpc} \)。求：(a) 临界密度 \( \rho_c \)（\( \mathrm{kg/m^3} \)）与每立方米质子数；(b) 给定 \( \Omega_m=0.315 \)、\( \Omega_\Lambda=0.685 \)、\( \Omega_b=0.049 \)，求今日宇宙平均重子数密度 \( n_b \)、物质密度 \( \rho_m \)、暗能量密度 \( \rho_\Lambda \)；(c) 暗能量对应的能量密度 \( \rho_\Lambda c^2 \)（\( \mathrm{J/m^3} \) 与 \( \mathrm{GeV/m^3} \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：先把 \( H_0 \) 化为 SI：</p>
+          <p>\[ H_0=\frac{70\times 10^3\,\mathrm{m/s}}{3.086\times 10^{22}\,\mathrm{m}}=2.268\times 10^{-18}\,\mathrm{s^{-1}} \]</p>
+          <p>\[ \rho_c=\frac{3H_0^2}{8\pi G}=\frac{3(2.268\times 10^{-18})^2}{8\pi(6.674\times 10^{-11})}=\frac{1.543\times 10^{-35}}{1.677\times 10^{-9}}=9.20\times 10^{-27}\,\mathrm{kg/m^3} \]</p>
+          <p>等效质子数（\( m_p=1.673\times 10^{-27}\,\mathrm{kg} \)）：</p>
+          <p>\[ \rho_c/m_p=9.20\times 10^{-27}/1.673\times 10^{-27}=5.5\,\mathrm{protons/m^3} \]</p>
+          <p>——宇宙惊人的空旷（对比：实验室「超高真空」\( \sim 10^{10}\,\mathrm{molecules/m^3} \)，仍比宇宙密集 \( 10^9 \) 倍）。</p>
+          <p class="step"><strong>解 (b)</strong>：</p>
+          <p>\[ \rho_m=\Omega_m\rho_c=0.315\times 9.20\times 10^{-27}=2.90\times 10^{-27}\,\mathrm{kg/m^3} \]</p>
+          <p>\[ \rho_\Lambda=\Omega_\Lambda\rho_c=0.685\times 9.20\times 10^{-27}=6.30\times 10^{-27}\,\mathrm{kg/m^3} \]</p>
+          <p>\[ n_b=\frac{\Omega_b\rho_c}{m_p}=\frac{0.049\times 9.20\times 10^{-27}}{1.673\times 10^{-27}}=0.27\,\mathrm{m^{-3}} \]</p>
+          <p>——平均每立方米只有 0.27 个重子（约每 4 立方米 1 个氢原子）。</p>
+          <p class="step"><strong>解 (c)</strong>：</p>
+          <p>\[ \rho_\Lambda c^2=(6.30\times 10^{-27})(2.998\times 10^8)^2=5.66\times 10^{-10}\,\mathrm{J/m^3} \]</p>
+          <p>\[ =\frac{5.66\times 10^{-10}}{1.602\times 10^{-10}}=3.53\,\mathrm{GeV/m^3} \]</p>
+          <p>——仅每立方米约 3.5 GeV，远低于任何实验室真空能，但总量主导宇宙演化。</p>
+          <p class="step"><strong>评注</strong>：物质密度 \( \rho_m\propto a^{-3} \)（稀释），辐射 \( \rho_r\propto a^{-4} \)（稀释 + 红移），暗能量 \( \rho_\Lambda=\mathrm{const} \)。早期辐射主导（\( z\gtrsim 3400 \)），中期物质主导（\( 3400\gtrsim z\gtrsim 0.4 \)），近期暗能量主导（\( z\lesssim 0.4 \)，加速膨胀）。今日 \( \Omega_\Lambda/\Omega_m\approx 2.2 \)——我们恰处在物质–暗能量转折之后不久。</p>
+          <p><span class="ans">\( \rho_c=9.2\times 10^{-27}\,\mathrm{kg/m^3}\approx 5.5\,m_p/\mathrm{m^3} \)；\( \rho_m=2.9\times 10^{-27} \)，\( \rho_\Lambda=6.3\times 10^{-27}\,\mathrm{kg/m^3} \)，\( n_b=0.27\,\mathrm{m^{-3}} \)；\( \rho_\Lambda c^2=5.7\times 10^{-10}\,\mathrm{J/m^3}\approx 3.5\,\mathrm{GeV/m^3} \)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「红移就是普通多普勒效应」——错。</strong>宇宙学红移 \( 1+z=1/a(t_{\mathrm{em}}) \) 是<strong>空间本身膨胀</strong>拉伸光子波长的结果，<em>不是</em>光源在某个「外部静止空间」里运动产生的。多普勒公式 \( v=cz \) 仅在 \( z\ll 1 \) 时是良好近似；对 \( z\gtrsim 0.1 \)，退行速度概念失去明确意义（远方星系的「速度」可超过 \( c \)，但这不违反相对论，因为不是物体在空间中运动）。</li>
+        <li><strong>「暗物质就是普通的不发光物质（冷气体、行星、黑洞）」——错。</strong>BBN 精确给出 \( \Omega_b h^2\approx 0.0224 \)，即重子只占 \( \sim 5\% \)；而总物质 \( \Omega_m\approx 31\% \)。差额 \( \sim 26\% \) 必须是非重子的。MACHO 巡天（用微引力透镜搜寻暗致密天体）也排除它占主导。Bullet Cluster 中 X 射线气体（重子主体）与引力中心分离更是直接证据。<strong>暗物质通过引力作用，几乎不参与电磁或强相互作用</strong>——光线直接穿过。</li>
+        <li><strong>「CMB 各处温度相同是理所当然」——并非如此，这是「视界疑难」。</strong>复合时代不同方向的 CMB 源区彼此相距甚远，远超它们之间的因果视界（\( ct_{\mathrm{rec}}\ll \) 它们的共动距离），却惊人地达到同一温度（差异仅 \( 10^{-5} \)）。在没有暴胀的标准热大爆炸中这是无法解释的「初始条件精调」。<strong>暴胀</strong>在极早期让整个可观测宇宙源自一个因果连通的小区域，从而自然给出各向同性。</li>
+        <li><strong>「\( \Omega_{\mathrm{tot}} \) 必须严格等于 1」——观测允许少许偏差，但暴胀预言它极接近 1。</strong>Planck 给出 \( |\Omega_k|&lt;0.001 \)。任何显著偏离 1 在暴胀后会被快速「驱回」1（平坦性疑难的逆向逻辑）。故 \( \Omega_{\mathrm{tot}}\approx 1 \) 本身是暴胀的关键验证。但要注意 \( \Omega_{\mathrm{tot}}=1 \) <em>不</em>意味着物质密度等于临界密度——而是 \( \Omega_m+\Omega_\Lambda+\Omega_r\approx 1 \)，今日暗能量 \( \Omega_\Lambda\approx 0.69 \) 贡献最大。</li>
+        <li><strong>「\( H_0 \) 已精确知道」——错，存在哈勃张力。</strong>早期宇宙方法（Planck CMB + ΛCDM）给 \( H_0=67.4\pm 0.5 \)；局域距离阶梯（Riess 等，造父变星 + Ia 超新星）给 \( H_0=73.0\pm 1.0 \)。两者相差 \( \sim 5\sigma \)，可能暗示 ΛCDM 之外的新物理（如额外相对论性中微子种类、早期暗能量、修改引力等）。用 70 km/s/Mpc 是教学常用折衷值。</li>
+        <li><strong>「宇宙学常数 \( \Lambda \) 与量子场论的真空能是一回事」——量级灾难。</strong>朴素量子场论估算真空能密度 \( \sim M_{\mathrm{Pl}}^4\sim 10^{112}\,\mathrm{eV^4} \)，而观测 \( \rho_\Lambda\sim (2\,\mathrm{meV})^4\sim 10^{-12}\,\mathrm{eV^4} \)——差 \( 10^{120} \) 倍！这是物理学史上最坏的理论预测，称「宇宙学常数问题」，是新物理的最大线索之一。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （哈勃定律）后发星系团的红移 \( z=0.023 \)。取 \( H_0=70\,\mathrm{km/s/Mpc} \)、\( c=3.0\times 10^5\,\mathrm{km/s} \)。求退行速度与距离（Mpc 与 Mly）。此距离对应光行时间多少年？</summary>
+        <div class="hint">小红移下 \( v\approx cz \)；\( d=v/H_0 \)；\( 1\,\mathrm{Mpc}=3.262\,\mathrm{Mly} \)。</div>
+        <div class="solution">
+          <p>\( v\approx cz=(3.0\times 10^5)(0.023)=6900\,\mathrm{km/s} \)。</p>
+          <p>\( d=6900/70=98.6\,\mathrm{Mpc}=98.6\times 3.262=322\,\mathrm{Mly} \)。</p>
+          <p>光行时间近似 \( t\approx d/c=98.6\,\mathrm{Mpc}/c \)。\( 1\,\mathrm{Mpc}=3.086\times 10^{19}\,\mathrm{m} \)，故 \( d=3.043\times 10^{21}\,\mathrm{m} \)，\( t=d/c=3.043\times 10^{21}/3.0\times 10^8=1.014\times 10^{13}\,\mathrm{s}=3.22\times 10^5\,\mathrm{yr}=322\,\mathrm{Myr} \)（与 322 Mly 一致，因为 1 ly = 1 光年）。<span class="ans">\( v\approx 6900\,\mathrm{km/s} \)；\( d\approx 98.6\,\mathrm{Mpc}\approx 322\,\mathrm{Mly} \)；光行时间 \( \approx 322 \) 百万年。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （CMB 温度的红移依赖）一红移 \( z=6.0 \) 的类星体。它「看到」的 CMB 温度是多少？对应 CMB 光子峰值波长 \( \lambda_{\max} \)（Wien 律 \( \lambda_{\max}T=2.898\times 10^{-3}\,\mathrm{m\,K} \)）？为什么高红移处分子冷却效率会显著改变？</summary>
+        <div class="hint">\( T(z)=T_0(1+z) \)，\( T_0=2.7255\,\mathrm{K} \)。</div>
+        <div class="solution">
+          <p>\( T(z=6)=2.7255\times 7=19.1\,\mathrm{K} \)。</p>
+          <p>\( \lambda_{\max}=2.898\times 10^{-3}/19.1=1.52\times 10^{-4}\,\mathrm{m}=152\,\mu\mathrm{m} \)（远红外）。</p>
+          <p>高红移 CMB 温度更高意味着分子（如 H₂、CO）的转动能级被更频繁地热激发，冷却效率 \( \Lambda(T) \) 上升——这影响第一代恒星形成的温度与 Jeans 质量。<span class="ans">\( T=19.1\,\mathrm{K} \)，\( \lambda_{\max}=152\,\mu\mathrm{m} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （由轨道速度求星系内部总质量）仙女座星系 (M31) 中心 \( 30\,\mathrm{kpc} \) 处实测轨道速度 \( v=250\,\mathrm{km/s} \)（曲线平坦）。求该半径以内的总质量 \( M(&lt;30\,\mathrm{kpc}) \)（以 \( M_\odot \) 为单位），并估算暗物质占比（设可见质量 \( M_{\mathrm{vis}}=1.5\times 10^{11}\,M_\odot \)）。</summary>
+        <div class="hint">\( v^2 r=GM \)，即 \( M=v^2 r/G \)。</div>
+        <div class="solution">
+          <p>\( M=\dfrac{v^2 r}{G}=\dfrac{(2.50\times 10^5)^2(30\times 3.086\times 10^{19})}{6.674\times 10^{-11}} \)。</p>
+          <p>\( =\dfrac{(6.25\times 10^{10})(9.258\times 10^{20})}{6.674\times 10^{-11}}=\dfrac{5.786\times 10^{31}}{6.674\times 10^{-11}}=8.67\times 10^{41}\,\mathrm{kg}=4.36\times 10^{11}\,M_\odot \)。</p>
+          <p>\( M_{\mathrm{DM}}=M-M_{\mathrm{vis}}=4.36-1.5=2.86\times 10^{11}\,M_\odot \)。占比 \( =2.86/4.36=66\% \)。<span class="ans">\( M(&lt;30\,\mathrm{kpc})\approx 4.4\times 10^{11}\,M_\odot \)；暗物质占 \( \approx 66\% \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （复合红移）若取复合发生的温度 \( T_{\mathrm{rec}}\approx 3000\,\mathrm{K} \)（氢电离的 Saha 方程阈值）与今日 \( T_0=2.7255\,\mathrm{K} \)，求复合红移 \( z_{\mathrm{rec}} \)。若考虑暗能量不存在、宇宙始终物质主导，宇宙年龄 \( t_0 \) 应为多少？与实际 \( 13.8\,\mathrm{Gyr} \) 比较。</summary>
+        <div class="hint">\( 1+z=T_{\mathrm{rec}}/T_0 \)；物质主导平坦宇宙年龄 \( t_0=2/(3H_0) \)。</div>
+        <div class="solution">
+          <p>\( 1+z_{\mathrm{rec}}=3000/2.7255=1101 \)，故 \( z_{\mathrm{rec}}\approx 1100 \)。</p>
+          <p>纯物质主导平坦宇宙 \( t_0=2/(3H_0)=2/(3\times 2.268\times 10^{-18})=2.94\times 10^{17}\,\mathrm{s}=9.32\,\mathrm{Gyr} \)。</p>
+          <p>实际 \( t_0=13.8\,\mathrm{Gyr} \) 比此值大——暗能量加速膨胀「拉伸」了后期时间，使宇宙比纯减速膨胀模型更老。<span class="ans">\( z_{\mathrm{rec}}\approx 1100 \)；纯物质模型 \( t_0\approx 9.3\,\mathrm{Gyr} \)，实际 \( 13.8\,\mathrm{Gyr} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （密度参数比较）银河系盘本地恒星质量密度约 \( \rho_\star\sim 0.05\,M_\odot/\mathrm{pc^3} \)。换算为 \( \mathrm{kg/m^3} \)，与临界密度 \( \rho_c=9.2\times 10^{-27}\,\mathrm{kg/m^3} \) 比较（即求 \( \Omega_\star^{\text{本地}} \)）。这「密度参数远大于 1」是否矛盾？为什么？</summary>
+        <div class="hint">\( 1\,\mathrm{pc}=3.086\times 10^{16}\,\mathrm{m} \)，\( 1\,\mathrm{pc^3}=2.938\times 10^{49}\,\mathrm{m^3} \)；\( \Omega=\rho/\rho_c \)。</div>
+        <div class="solution">
+          <p>\( \rho_\star=0.05\times 1.989\times 10^{30}/(3.086\times 10^{16})^3=9.95\times 10^{28}/2.938\times 10^{49}=3.38\times 10^{-21}\,\mathrm{kg/m^3} \)。</p>
+          <p>\( \Omega_\star^{\text{本地}}=3.38\times 10^{-21}/9.2\times 10^{-27}=3.7\times 10^5 \)。</p>
+          <p><strong>不矛盾</strong>：\( \Omega \) 用<strong>临界密度</strong>作分母，临界密度是<strong>宇宙平均</strong>密度尺度。星系内部是引力束缚的过密区域，远高于宇宙平均；只有把整个宇宙（含巨洞）取平均才得到 \( \Omega_m\approx 0.31 \)。类比：海水的密度不等于地球平均密度。<span class="ans">\( \rho_\star\approx 3.4\times 10^{-21}\,\mathrm{kg/m^3} \)；\( \Omega_\star^{\text{本地}}\approx 3.7\times 10^5\gg 1 \)，不矛盾。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真绘制旋涡星系的<strong>旋转曲线</strong> (rotation curve) \( v(r) \)：<span style="color:var(--sim-accent);">红色虚线</span>是仅由可见物质（恒星盘 + 核球，近似集中在 \( R_0=8\,\mathrm{kpc} \) 内）给出的<strong>开普勒衰减</strong> \( v_{\mathrm{vis}}\propto 1/\sqrt{r} \)；<span style="color:var(--sim-accent2);">绿色点线</span>是暗物质晕（伪等温 profile）的贡献；<span style="color:var(--sim-trace);">紫色实线</span>是两者平方相加（观测到的总速度）。<strong>调整可见质量 \( M_{\mathrm{vis}} \)</strong>（\( 10^{10}M_\odot \)）与<strong>暗物质晕渐近速度 \( v_\infty \)</strong>（km/s）、<strong>晕核半径 \( a \)</strong>（kpc），观察：可见物质单独给出陡然下降的开普勒尾，而加上晕后总曲线变平——正是 Vera Rubin 等实测的「平坦旋转曲线」。灰色散点为典型旋涡星系观测数据。点击 <strong>↺ 重置</strong> 恢复默认参数。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+
+          // physical constants
+          var G = 6.674e-11;          // N m^2 / kg^2
+          var Msun = 1.989e30;        // kg
+          var kpc = 3.086e19;         // m
+          var R0 = 8.0;               // kpc (solar circle)
+
+          // slider parameters
+          var params = {
+            Mvis: 6.0,      // visible mass inside R0, in 10^10 Msun
+            vHalo: 200,     // asymptotic halo circular speed, km/s
+            haloA: 5.0,     // pseudo-isothermal halo core radius, kpc
+          };
+
+          // visible (Keplerian) contribution: for r <= R0 rising linearly
+          // (rigid disk approximation, peaking at R0); for r > R0, v = sqrt(G M_vis / r).
+          function vVis(r) {
+            if (r < 0.05) return 0;
+            var Mkg = params.Mvis * 1e10 * Msun;
+            if (r <= R0) {
+              var peak = Math.sqrt(G * Mkg / (R0 * kpc));   // m/s
+              return peak * (r / R0) / 1000;                 // km/s
+            }
+            return Math.sqrt(G * Mkg / (r * kpc)) / 1000;    // km/s
+          }
+
+          // dark-matter halo: pseudo-isothermal profile
+          //   v_h^2(r) = 4 pi G rho0 a^2 [1 - (a/r) atan(r/a)]
+          //   asymptotes to vHalo^2 at large r, ~ linear (r/a)^2/3 near 0.
+          // We parameterize directly by (vHalo, haloA) for clarity.
+          function vHalo(r) {
+            if (r < 0.05) return 0;
+            var x = r / params.haloA;
+            var f = 1 - Math.atan(x) / x;        // in [0,1)
+            return params.vHalo * Math.sqrt(Math.max(0, f));
+          }
+
+          function vTotal(r) {
+            var vv = vVis(r), vh = vHalo(r);
+            return Math.sqrt(vv * vv + vh * vh);
+          }
+
+          // ----- layout -----
+          var plotX0 = 58, plotY0 = 50, plotW = 522, plotH = 296;
+          var rMax = 30, vMax = 350;
+          function xP(r) { return plotX0 + (r / rMax) * plotW; }
+          function yP(v) { return plotY0 + plotH * (1 - v / vMax); }
+
+          // synthetic "observed" data points (typical spiral-galaxy rotation curve)
+          var obs = [
+            { r: 2,  v: 165 }, { r: 4,  v: 205 }, { r: 6,  v: 218 },
+            { r: 8,  v: 220 }, { r: 10, v: 222 }, { r: 12, v: 218 },
+            { r: 15, v: 225 }, { r: 18, v: 220 }, { r: 22, v: 215 },
+            { r: 26, v: 218 }, { r: 30, v: 210 }
+          ];
+
+          function drawCurve(ctx, fn, color, dash, lw) {
+            ctx.save();
+            ctx.strokeStyle = color; ctx.lineWidth = lw || 2.0;
+            if (dash) ctx.setLineDash(dash);
+            ctx.beginPath();
+            var first = true;
+            for (var r = 0.1; r <= rMax + 0.01; r += 0.2) {
+              var v = fn(r);
+              if (v > vMax) v = vMax;
+              var xx = xP(r), yy = yP(v);
+              if (first) { ctx.moveTo(xx, yy); first = false; } else ctx.lineTo(xx, yy);
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0, blink: 0 }; },
+            step: function (dt, t, s) {
+              s.t += dt;
+              s.blink = (s.blink + dt) % 2.0;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ----- title -----
+              PS.drawText(ctx,
+                '星系旋转曲线 · Galaxy Rotation Curve   v(r) vs r',
+                W / 2, 16,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx,
+                'M_vis = ' + params.Mvis.toFixed(1) + ' ×10¹⁰ M☉ (在 R₀=8 kpc 内)   |   ' +
+                '暗物质晕 v∞ = ' + params.vHalo.toFixed(0) + ' km/s,  a = ' + params.haloA.toFixed(1) + ' kpc',
+                W / 2, 35,
+                { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ----- grid + ticks -----
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.55;
+              for (var v = 0; v <= vMax; v += 50) {
+                var yy = yP(v);
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+                PS.drawText(ctx, String(v), plotX0 - 6, yy + 4,
+                  { font: '10px system-ui', color: C.text, align: 'right' });
+              }
+              for (var rr = 0; rr <= rMax; rr += 5) {
+                var xx = xP(rr);
+                ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+                PS.drawText(ctx, String(rr), xx, plotY0 + plotH + 14,
+                  { font: '10px system-ui', color: C.text, align: 'center' });
+              }
+              ctx.restore();
+
+              // ----- axes -----
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0); ctx.lineTo(plotX0, plotY0 + plotH); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0 + plotH); ctx.lineTo(plotX0 + plotW, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '半径 r (kpc)', plotX0 + plotW / 2, plotY0 + plotH + 32,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              ctx.save();
+              ctx.translate(16, plotY0 + plotH / 2); ctx.rotate(-Math.PI / 2);
+              PS.drawText(ctx, '轨道速度 v (km/s)', 0, 0,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              ctx.restore();
+
+              // ----- R0 marker (solar circle) -----
+              var x0 = xP(R0);
+              ctx.save();
+              ctx.strokeStyle = C.text; ctx.lineWidth = 1; ctx.globalAlpha = 0.45;
+              ctx.setLineDash([4, 3]);
+              ctx.beginPath(); ctx.moveTo(x0, plotY0); ctx.lineTo(x0, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'R₀=8 kpc (太阳)', x0 + 4, plotY0 + 12,
+                { font: '10px system-ui', color: C.text });
+
+              // ----- curves: Keplerian (vis), halo, total -----
+              drawCurve(ctx, vVis, C.accent, [7, 4], 1.8);     // red dashed
+              drawCurve(ctx, vHalo, C.accent2, [2, 3], 1.6);   // green dotted
+              drawCurve(ctx, vTotal, C.trace, null, 2.4);      // purple solid
+
+              // ----- observed data points -----
+              for (var i = 0; i < obs.length; i++) {
+                var d = obs[i];
+                PS.drawCircle(ctx, xP(d.r), yP(d.v), 3.4, {
+                  fill: 'rgba(120,120,120,0.85)', stroke: C.text, lineWidth: 0.8
+                });
+              }
+
+              // ----- readout at r = 2 R0 = 16 kpc -----
+              var rTest = 16;
+              var vK = vVis(rTest), vT = vTotal(rTest), vH = vHalo(rTest);
+              PS.drawText(ctx,
+                '在 r = 16 kpc:  v_可见(开普勒) = ' + vK.toFixed(0) +
+                ' km/s,  v_总(观测) = ' + vT.toFixed(0) +
+                ' km/s,  v_晕 = ' + vH.toFixed(0) + ' km/s',
+                W / 2, H - 22,
+                { font: '11px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx,
+                '→ 若无暗物质，速度应开普勒衰减；实测平坦 ⇒ 需暗物质晕',
+                W / 2, H - 6,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+
+              // ----- legend -----
+              var lx = plotX0 + plotW - 196, ly = plotY0 + 12;
+              ctx.save();
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 1.8; ctx.setLineDash([6, 3]);
+              ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 26, ly); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '可见 (开普勒)', lx + 30, ly + 4,
+                { font: '10px system-ui', color: C.text });
+              ctx.save();
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 1.6; ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(lx, ly + 16); ctx.lineTo(lx + 26, ly + 16); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '暗物质晕', lx + 30, ly + 20,
+                { font: '10px system-ui', color: C.text });
+              ctx.save();
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 2.4;
+              ctx.beginPath(); ctx.moveTo(lx, ly + 32); ctx.lineTo(lx + 26, ly + 32); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '总 v(r) = 观测', lx + 30, ly + 36,
+                { font: '10px system-ui', color: C.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'Mvis',  label: '可见质量 M_vis (×10¹⁰ M☉)', min: 1, max: 15, step: 0.5, value: 6.0 },
+            { type: 'slider', key: 'vHalo', label: '晕渐近速度 v∞ (km/s)',        min: 0, max: 300, step: 10, value: 200 },
+            { type: 'slider', key: 'haloA', label: '晕核半径 a (kpc)',            min: 1, max: 12, step: 0.5, value: 5.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Mvis',  function (v) { params.Mvis = v; });
+          ctl.on('vHalo', function (v) { params.vHalo = v; });
+          ctl.on('haloA', function (v) { params.haloA = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>宇宙在膨胀（标度因子 \( a(t) \) 增大），倒推到大爆炸 \( t=0 \)。热历史：暴胀（\( \sim 10^{-36}\,\mathrm{s} \)）→ 重子生成 → BBN（\( 1\!-\!1000\,\mathrm{s} \)，\( Y_p\approx 0.25 \)）→ 复合（\( z\approx 1100 \)，\( T\approx 3000\,\mathrm{K} \)）→ CMB 自由传播至今（\( T_0=2.7255\,\mathrm{K} \)）。</li>
+        <li>哈勃定律 \( v=H_0 d \)，\( H_0\approx 70\,\mathrm{km/s/Mpc} \)（存在 \( 67 \) vs \( 73 \) 的哈勃张力）。宇宙学红移 \( 1+z=1/a \)（非多普勒）；\( T(z)=T_0(1+z) \)。</li>
+        <li>弗里德曼方程 \( H^2=(8\pi G/3)\rho-kc^2/a^2+\Lambda c^2/3 \)；临界密度 \( \rho_c=3H^2/8\pi G\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3} \)（约 5.5 质子/m³）。密度参数 \( \Omega_i=\rho_i/\rho_c \)。</li>
+        <li>暗物质证据：平坦旋转曲线、引力透镜（Bullet Cluster）、结构形成；\( \Omega_c\approx 0.265 \)（约为重子的 5–6 倍）。候选：WIMPs（弱尺度热遗留 → WIMP miracle）、axions。</li>
+        <li>暗能量 \( \Omega_\Lambda\approx 0.685 \)（驱动 \( z\lesssim 0.4 \) 起的加速膨胀，Perlmutter–Riess–Schmidt 1998）。最简单形式是宇宙学常数 \( \Lambda \)（\( p=-\rho c^2 \)）。</li>
+        <li>标准 \( \Lambda\mathrm{CDM} \) 模型：\( \Omega_m\approx 0.31 \)、\( \Omega_\Lambda\approx 0.69 \)、\( \Omega_r\approx 9\times 10^{-5} \)、\( \Omega_{\mathrm{tot}}\approx 1 \)（平坦）。仅 6 个参数精确拟合 CMB 声学峰与大尺度结构。</li>
+        <li>粒子物理 ↔ 宇宙学：中微子 \( \Sigma m_\nu\lesssim 0.12\,\mathrm{eV} \)；Sakharov 三条件（B 破坏、CP 破坏、偏离平衡）解释重子生成；WIMP 热遗留 \( \Omega_\chi h^2\approx 3\times 10^{-27}/\langle\sigma v\rangle \)。</li>
+      </ul>
+      <div class="formula">\[ v=H_0 d,\quad 1+z=\frac{1}{a(t_{\mathrm{em}})},\quad T(z)=T_0(1+z),\quad T_0=2.7255\,\mathrm{K} \]</div>
+      <div class="formula">\[ H^2=\frac{8\pi G}{3}\rho-\frac{kc^2}{a^2}+\frac{\Lambda c^2}{3},\qquad \rho_c=\frac{3H^2}{8\pi G},\qquad \Omega_i=\frac{\rho_i}{\rho_c} \]</div>
+      <div class="formula">\[ v(r)=\sqrt{\frac{GM(<r)}{r}}\;\;\stackrel{\text{所有质量集中}}{\longrightarrow}\;\;v\propto r^{-1/2}\;\;(\text{Keplerian});\quad v_{\text{flat}}\Rightarrow M(<r)\propto r \]</div>
+      <div class="formula">\[ Y_p=\frac{2(n_n/n_p)}{1+(n_n/n_p)}\approx 0.25,\qquad \Omega_\chi h^2\approx\frac{3\times 10^{-27}\,\mathrm{cm^3/s}}{\langle\sigma v\rangle} \]</div>
+      <div class="formula">\[ \Omega_b\approx 0.049,\;\Omega_c\approx 0.265,\;\Omega_m\approx 0.315,\;\Omega_\Lambda\approx 0.685,\;\Omega_r\approx 9\times 10^{-5},\;\Omega_{\mathrm{tot}}\approx 1.00 \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

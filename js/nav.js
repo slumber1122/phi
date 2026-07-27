@@ -167,6 +167,27 @@
         ]},
       ],
     },
+    {
+      name: '第七学期 · 凝聚态 + 核与粒子物理 Condensed Matter + Nuclear/Particle',
+      parts: [
+        { name: '凝聚态物理 Condensed Matter', items: [
+          { url: 'sem7/01-crystals.html', title: '晶体结构与倒格子', en: 'Crystals & Reciprocal Lattice' },
+          { url: 'sem7/02-phonons.html', title: '晶格振动与声子', en: 'Lattice Vibrations & Phonons' },
+          { url: 'sem7/03-bands.html', title: '自由电子与能带', en: 'Free Electrons & Energy Bands' },
+          { url: 'sem7/04-semiconductors.html', title: '半导体', en: 'Semiconductors' },
+          { url: 'sem7/05-superconductivity.html', title: '超导电性', en: 'Superconductivity' },
+          { url: 'sem7/06-magnetism.html', title: '固体磁性', en: 'Magnetism in Solids' },
+        ]},
+        { name: '核与粒子物理 Nuclear & Particle Physics', items: [
+          { url: 'sem7/07-nuclear-structure.html', title: '核结构', en: 'Nuclear Structure' },
+          { url: 'sem7/08-radioactivity.html', title: '放射性与核衰变', en: 'Radioactivity & Decay' },
+          { url: 'sem7/09-reactions-fission.html', title: '核反应·裂变·聚变', en: 'Reactions, Fission & Fusion' },
+          { url: 'sem7/10-standard-model.html', title: '粒子物理与标准模型', en: 'Standard Model' },
+          { url: 'sem7/11-symmetries.html', title: '对称性与守恒律', en: 'Symmetries & Conservation' },
+          { url: 'sem7/12-cosmology.html', title: '粒子天体物理与宇宙学', en: 'Particle Astro & Cosmology' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }

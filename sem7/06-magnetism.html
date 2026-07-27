@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 固体磁性 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第七学期 · 第6章 · 凝聚态物理 Condensed Matter</p>
+      <h1>固体磁性 <span class="en-title">Magnetism in Solids</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>前几章我们关注电子的「电荷」自由度——电导、能带、半导体。本章回到电子的另一个内禀自由度：<strong>自旋</strong> (spin) 与之相连的<strong>磁矩</strong> (magnetic moment)。不同强度的相互作用在不同温度区间会给出迥异的宏观行为：抗磁 (diamagnetism)、顺磁 (paramagnetism)、铁磁 (ferromagnetism)、反铁磁 (antiferromagnetism)、亚铁磁 (ferrimagnetism)。学完本章后，你将能够：</p>
+      <ul>
+        <li>用 <strong>\(\vec B,\vec H,\vec M\)</strong> 与<strong>磁化率</strong> \(\chi\)（susceptibility）描述固体的线性磁响应，并按 \(\chi\) 的<strong>符号与大小</strong>把固体分成抗磁、顺磁、铁磁三大类。</li>
+        <li>从原子的 Lenz 原子图像解释<strong>抗磁性</strong>：外场感生反向磁矩，故 \(\chi_{\mathrm{dia}}&lt;0\)、量级 \(\sim\!10^{-5}\)、与温度几乎无关。</li>
+        <li>从局域磁矩的统计力学（<strong>Langevin 函数 / Brillouin 函数</strong>）严格推导<strong>Curie 律</strong> \(\chi=C/T\)；用<strong>有效磁矩</strong> \(\mu_{\mathrm{eff}}=g\sqrt{J(J+1)}\,\mu_{B}\) 写出 Curie 常数 \(C\)。</li>
+        <li>阐明<strong>铁磁性</strong>起源于量子<strong>交换作用</strong>（exchange interaction）而非磁偶极–偶极作用；理解<strong>居里温度</strong> \(T_{C}\)、自发磁化 \(M_{s}\)、<strong>磁畴</strong> (domains) 与<strong>磁滞回线</strong>（hysteresis loop）的成因。</li>
+        <li>在 \(T&gt;T_{C}\) 区使用 <strong>Curie–Weiss 律</strong> \(\chi=C/(T-\theta)\)，识别 Weiss 温度 \(\theta\approx T_{C}\)。</li>
+        <li>从<strong>磁滞回线</strong>读取<strong>剩磁</strong> \(M_{r}\)（remanence）、<strong>矫顽力</strong> \(H_{c}\)（coercivity）、饱和磁化 \(M_{s}\) 与<strong>每周期能量损耗</strong>（hysteresis loss）。</li>
+        <li>用<strong>Ising 模型</strong>与<strong>Weiss 平均场</strong>（mean-field）方法导出 \(T_{C}\) 与自发磁化曲线；简要区分反铁磁与亚铁磁。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 磁响应的统一描述——\(\vec B,\vec H,\vec M\) 与磁化率 \(\chi\)</h3>
+      <p>置于外磁场中的介质会被<strong>磁化</strong>（magnetized）：单位体积内的总磁矩称为<strong>磁化强度</strong> \(\vec M\)（magnetization，单位 \(\mathrm{A/m}\)）。在 <strong>SI 单位制</strong>下，磁感应强度 \(\vec B\)（tesla）、磁场强度 \(\vec H\)（A/m）与 \(\vec M\) 满足</p>
+      <div class="formula">\[ \boxed{\;\vec B=\mu_{0}(\vec H+\vec M)\;},\qquad \mu_{0}=4\pi\times10^{-7}\,\mathrm{T\,m/A}. \]</div>
+      <p>对线性、各向同性介质，\(\vec M\) 与 \(\vec H\) 成正比，定义<strong>磁化率</strong> \(\chi\)（dimensionless）与<strong>相对磁导率</strong> \(\mu_{r}\)：</p>
+      <div class="formula">\[ \vec M=\chi\vec H,\qquad \mu_{r}=1+\chi,\qquad \vec B=\mu_{0}\mu_{r}\vec H. \]</div>
+      <p>按 \(\chi\) 的符号与大小即可分类：</p>
+      <ul>
+        <li><strong>抗磁 (diamagnetic)</strong>：\(\chi&lt;0\)，\(|\chi|\sim10^{-6}\text{–}10^{-5}\)，几乎与温度无关。例：Bi、Cu、Au、水、绝大多数有机物。</li>
+        <li><strong>顺磁 (paramagnetic)</strong>：\(\chi&gt;0\)，\(|\chi|\sim10^{-5}\text{–}10^{-3}\)，随温度按 Curie 律 \(\chi\propto1/T\) 下降。例：Al、Pt、MnSO₄、含未满 \(d/f\) 壳层的稀土与过渡族离子盐。</li>
+        <li><strong>铁磁 (ferromagnetic)</strong>：\(\chi\gg0\) 且强烈依赖于外加场与历史，存在自发磁化。例：Fe、Co、Ni、Gd（\(T&lt;T_{C}\)）。在 \(T&gt;T_{C}\) 时退化为顺磁。</li>
+      </ul>
+      <p>更细分还有反铁磁 (\(\chi&gt;0\) 但小，反平行子晶格) 与亚铁磁 (子晶格反平行但磁矩不等)。本章统一用 SI；cgs 制中 \(\vec B=\vec H+4\pi\vec M\)，量级相差 \(4\pi\)。</p>
+      <div class="key-terms">magnetic induction \(\vec B\) (磁感应强度), magnetic field \(\vec H\) (磁场强度), magnetization \(\vec M\) (磁化强度), magnetic susceptibility \(\chi\) (磁化率), relative permeability \(\mu_r\) (相对磁导率)</div>
+
+      <h3>2. 抗磁性——Lenz 定律的原子版本</h3>
+      <p>任何电子轨道在外加 \(\vec B\) 变化时都会感生一个<strong>反抗</strong>该变化的电流（Lenz 定律），相当于在原子尺度产生反向磁矩。Langevin 经典处理：电子轨道角动量 \(\vec L\) 在外场中做拉莫尔进动 (Larmor precession)，进动频率 \(\omega_{L}=eB/(2m_{e})\)。这等价于一个附加环电流，产生<strong>反向</strong>磁矩 \(\Delta\mu_{z}=-e^{2}B\langle\rho^{2}\rangle/(4m_{e})\)，其中 \(\langle\rho^{2}\rangle=\langle x^{2}+y^{2}\rangle\) 是电子到外加场轴距离平方的平均。对每原子含 \(Z\) 个电子：</p>
+      <div class="formula">\[ \boxed{\;\chi_{\mathrm{dia}}=-\frac{\mu_{0}Ze^{2}}{6m_{e}}\,\langle r^{2}\rangle\,n\;}\qquad(n=\text{原子数密度}), \]</div>
+      <p>其中 \(\langle r^{2}\rangle=\langle x^{2}+y^{2}+z^{2}\rangle\) 用了球对称电子云。注意 \(\chi_{\mathrm{dia}}\) <strong>与温度无关</strong>、与外加场无关（线性近似下），且为<strong>负</strong>。这是<strong>所有物质都共有</strong>的弱抗磁响应；只是顺磁或铁磁介质中正的贡献远大，掩盖了它。</p>
+      <p>典型数值（Cu，例见练习 2）：\(\chi_{\mathrm{dia}}\approx-9.7\times10^{-6}\)。超导体展现<strong>完全抗磁性</strong>（Meissner 效应，\(\chi=-1\)），这是抗磁的极端情况。</p>
+      <div class="key-terms">diamagnetism (抗磁性), Lenz law at atomic scale (原子尺度 Lenz 定律), Larmor precession \(\omega_L\) (拉莫尔进动), Meissner effect (Meissner 效应)</div>
+
+      <h3>3. 顺磁性——局域磁矩与 Curie 律</h3>
+      <p>若原子/离子含有<strong>未满的电子壳层</strong>（如过渡族 \(3d\)、稀土 \(4f\)），就有<strong>永久内禀磁矩</strong> \(\vec\mu\)（来自电子自旋与轨道角动量）：</p>
+      <div class="formula">\[ \vec\mu=-g\,\mu_{B}\,\frac{\vec J}{\hbar},\qquad \mu_{B}\equiv\frac{e\hbar}{2m_{e}}=9.274\times10^{-24}\,\mathrm{A\,m^{2}},\qquad g\simeq2\;\text{(自旋为主)}. \]</div>
+      <p>在外场中，每个磁矩的能量 \(U=-\vec\mu\cdot\vec B=-\mu B\cos\theta\) 倾向沿场排列（降低自由能）；但热运动 \(\sim k_{B}T\) 倾向打乱排列。两者竞争决定宏观磁化。统计力学给出 \(\langle\mu_{z}\rangle=\mu\,L(\alpha)\)，其中 \(\alpha\equiv\mu B/(k_{B}T)\)，<strong>Langevin 函数</strong>（经典极限 \(J\to\infty\)）：</p>
+      <div class="formula">\[ L(\alpha)=\coth\alpha-\frac{1}{\alpha}. \]</div>
+      <p>量子处理给出 <strong>Brillouin 函数</strong>（适用于角动量 \(J\) 的系统）：</p>
+      <div class="formula">\[ \boxed{\;M=N\,g\mu_{B}J\,B_{J}(\alpha),\qquad B_{J}(\alpha)=\frac{2J+1}{2J}\coth\!\Big(\!\frac{2J+1}{2J}\alpha\Big)-\frac{1}{2J}\coth\!\Big(\!\frac{\alpha}{2J}\Big),\;\alpha=\frac{g\mu_{B}JB}{k_{B}T}\;} \]</div>
+      <p>高温弱场下 \(\alpha\ll1\)，展开 \(B_{J}(\alpha)\approx(J+1)\alpha/(3J)\)（详见推导节）。代入 \(B\approx\mu_{0}H\)（弱磁性物质中感生部分可忽略），得到线性磁化与 <strong>Curie 律</strong>：</p>
+      <div class="formula">\[ \boxed{\;\chi=\frac{M}{H}=\frac{C}{T},\qquad C=\frac{N\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}}=\frac{N\mu_{0}g^{2}\mu_{B}^{2}J(J+1)}{3k_{B}}\;}\qquad\text{(Curie 律)}, \]</div>
+      <p>其中 \(\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{J(J+1)}\) 是<strong>有效磁矩</strong>。在自旋被晶场淬灭（\(L\approx0\)）的过渡族离子中用<strong>纯自旋公式</strong> \(\mu_{\mathrm{eff}}=2\sqrt{S(S+1)}\,\mu_{B}\)；在稀土 \(4f\) 中轨道未淬灭，用完整 Landé 因子 \(g_{J}\) 与 \(J\)。常见值（\(\mu_{B}\) 单位）：\(\mu_{\mathrm{eff}}(\mathrm{Mn^{2+}},S\!=\!5/2)=5.92\)、\(\mu_{\mathrm{eff}}(\mathrm{Fe^{3+}},S\!=\!5/2)=5.92\)、\(\mu_{\mathrm{eff}}(\mathrm{Fe^{2+}},S\!=\!2)=4.90\)、\(\mu_{\mathrm{eff}}(\mathrm{Cu^{2+}},S\!=\!1/2)=1.73\)、\(\mu_{\mathrm{eff}}(\mathrm{Gd^{3+}},S\!=\!J\!=\!7/2)=7.94\)。</p>
+      <div class="key-terms">permanent moment \(\vec\mu\) (永久磁矩), Bohr magneton \(\mu_B\) (玻尔磁子), Langevin function \(L(\alpha)\) (Langevin 函数), Brillouin function \(B_J(\alpha)\) (Brillouin 函数), Curie law \(\chi=C/T\) (Curie 律), effective moment \(\mu_{\mathrm{eff}}\) (有效磁矩), spin-only formula \(\mu_{\mathrm{eff}}=2\sqrt{S(S+1)}\mu_B\) (纯自旋公式)</div>
+
+      <h3>4. 铁磁性——交换作用、磁畴与磁滞回线</h3>
+      <p>铁磁体在某个临界温度 \(T_{C}\) 以下展现<strong>自发磁化</strong>：即使外场 \(H=0\)，磁矩仍同向排列，\(M\neq0\)。这不是磁偶极–偶极作用的结果——磁偶极作用 \(\mu_{0}\mu^{2}/(4\pi r^{3})\) 仅约 \(k_{B}\) 几开尔文量级，远不足以解释 Fe 的 \(T_{C}=1043\,\mathrm{K}\)。真正的起源是<strong>交换作用</strong> (exchange interaction)，一种源自波函数反对称性的<strong>量子效应</strong>，与库仑斥力的交换项有关。Heisenberg 哈密顿量：</p>
+      <div class="formula">\[ \boxed{\;\hat H_{\mathrm{ex}}=-2J_{\mathrm{ex}}\sum_{\langle ij\rangle}\hat{\vec S}_{i}\cdot\hat{\vec S}_{j}\;} \]</div>
+      <p>其中 \(J_{\mathrm{ex}}&gt;0\) 倾向自旋平行（铁磁），\(J_{\mathrm{ex}}&lt;0\) 倾向反平行（反铁磁）。每对最近邻 \(\langle ij\rangle\) 计一次。这一项的能量量级为 \(\sim\!10\text{–}100\,\mathrm{meV}\)，对应 \(T_{C}\sim10^{3}\,\mathrm{K}\)，量级完全吻合。</p>
+      <p>尽管如此，宏观铁磁样品在零外场下 \(M\approx0\)——这是因为系统通过形成<strong>磁畴</strong>（Weiss domains）来降低<strong>静磁能</strong>（magnetostatic energy）：相邻畴内磁化方向不同，整体近似抵消样品产生的杂散场（stray field）。畴之间的窄过渡区称<strong>畴壁</strong>（domain wall，Bloch 壁厚约几百个原子间距）。施加外场时畴壁移动、磁矩转向，导致 \(M\) 增大；反向时由于<strong>缺陷钉扎</strong>出现不可逆，于是有<strong>磁滞</strong>（hysteresis）。</p>
+      <p>典型的 <strong>\(M\)-\(H\) 磁滞回线</strong>（hysteresis loop）展示以下特征：</p>
+      <ul>
+        <li><strong>饱和磁化</strong> \(M_{s}\)：所有畴平行后的最大磁化。</li>
+        <li><strong>剩磁</strong> \(M_{r}\)（remanence）：撤去外场后保留的磁化（\(H=0\) 处的 \(M\)）。</li>
+        <li><strong>矫顽力</strong> \(H_{c}\)（coercivity）：使 \(M\) 降为零所需的反向场大小。</li>
+        <li><strong>每周期能量损耗</strong> \(W_{h}=\oint H\,dB\)：单位体积每周期耗散为热，约 \(\approx4H_{c}B_{r}\)（矩形近似）。</li>
+      </ul>
+      <div class="formula">\[ W_{h}=\oint H\,dB\;\;[\mathrm{J/m^{3}}\,\text{每周期}],\qquad W_{h}\approx4H_{c}B_{r}\;\text{(矩形近似)}. \]</div>
+      <p>按 \(H_{c}\) 大小可分<strong>软磁</strong>（\(H_{c}\lesssim10^{2}\,\mathrm{A/m}\)，变压器钢、坡莫合金，要求窄回线、低损耗）与<strong>硬磁</strong>（\(H_{c}\gtrsim10^{5}\,\mathrm{A/m}\)，NdFeB、钐钴，永磁体，要求宽回线、高 \(M_{r}\)）。</p>
+      <div class="key-terms">spontaneous magnetization \(M_s\) (自发磁化), Curie temperature \(T_C\) (居里温度), exchange interaction \(J_{\mathrm{ex}}\) (交换作用), Heisenberg Hamiltonian (Heisenberg 哈密顿量), Weiss domain (Weiss 磁畴), domain wall (畴壁), magnetostatic energy (静磁能), hysteresis loop (磁滞回线), remanence \(M_r\) (剩磁), coercivity \(H_c\) (矫顽力), hysteresis loss \(W_h\) (磁滞损耗), soft/hard magnet (软/硬磁)</div>
+
+      <h3>5. Curie–Weiss 律——铁磁体在 \(T&gt;T_{C}\) 的行为</h3>
+      <p>温度高于 \(T_{C}\) 时铁磁序被破坏，自发磁化消失，磁矩重新独立涨落——但<strong>并非完全自由</strong>：交换作用残余表现为相邻自旋的弱关联。Weiss 引入「分子场」\(\vec H_{E}=\lambda\vec M\) 修正外场，使每个磁矩感受到有效场 \(\vec H_{\mathrm{eff}}=\vec H+\lambda\vec M\)。代回 Curie 律 \(M=C H_{\mathrm{eff}}/T\)：</p>
+      <div class="formula">\[ M=\frac{C}{T}(H+\lambda M)\quad\Longrightarrow\quad \boxed{\;\chi=\frac{C}{T-\theta}\;},\qquad \theta\equiv\lambda C. \]</div>
+      <p>这就是 <strong>Curie–Weiss 律</strong>。对铁磁体 \(\theta\approx T_{C}&gt;0\)；对反铁磁体 \(\theta&lt;0\)。在 \(T\to\theta^{+}\) 时 \(\chi\to\infty\)，对应自发对称破缺。详见推导节。</p>
+      <div class="key-terms">Weiss mean field \(H_E=\lambda M\) (Weiss 分子场), Curie–Weiss law \(\chi=C/(T-\theta)\) (Curie–Weiss 律), Weiss temperature \(\theta\) (Weiss 温度)</div>
+
+      <h3>6. 反铁磁性与亚铁磁性（简述）</h3>
+      <p>当交换作用 \(J_{\mathrm{ex}}&lt;0\) 时，最近邻倾向<strong>反平行</strong>。<strong>反铁磁体</strong>（antiferromagnet）：两套子晶格磁矩<strong>等大反向</strong>，净磁化 \(M=0\)。Néel 温度 \(T_{N}\) 以上恢复顺磁（遵循 Curie–Weiss 律但 \(\theta&lt;0\)）。典型：MnO（\(T_{N}=122\,\mathrm{K}\)）、NiO、\(\alpha\)-Fe₂O₃。</p>
+      <p><strong>亚铁磁体</strong>（ferrimagnet）：两子晶格磁矩反平行但<strong>不等大</strong>，故净 \(M\neq0\)，宏观类似铁磁但 \(M_{s}\) 较小。代表：磁铁矿 \(\mathrm{Fe_{3}O_{4}}\)、各种尖晶石型铁氧体（ferrite，\(\mathrm{MnZn}\)、\(\mathrm{NiZn}\) 铁氧体）。它们既具高电阻（涡流损耗小），又有可观自发磁化，故广泛用于高频变压器、磁记录、微波器件。</p>
+      <div class="key-terms">antiferromagnetism (反铁磁性), Néel temperature \(T_N\) (Néel 温度), ferrimagnetism (亚铁磁性), sublattice (子晶格), ferrite (铁氧体)</div>
+
+      <h3>7. Ising 模型与 Weiss 平均场（简述）</h3>
+      <p>最简单的磁性模型是 <strong>Ising 模型</strong>：每个格点上的自旋只能取 \(\sigma_{i}=\pm1\)（一维标量），哈密顿量</p>
+      <div class="formula">\[ \boxed{\;\hat H_{\mathrm{Ising}}=-J\sum_{\langle ij\rangle}\sigma_{i}\sigma_{j}-h\sum_{i}\sigma_{i},\qquad h\equiv g\mu_{B}B\;} \]</div>
+      <p>1D Ising 模型无相变（\(T_{C}=0\)，Ising 1925）；2D 模型有精确解（Onsager 1944，\(k_{B}T_{C}/J=2/\ln(1+\sqrt{2})\approx2.269\)）；3D 无精确解，但数值 \(k_{B}T_{C}/J\approx4.51\)（简立方）。</p>
+      <p><strong>Weiss 平均场</strong>（mean-field）近似：把每个自旋感受到的邻居作用换成<strong>均匀平均场</strong>，令 \(m\equiv\langle\sigma_{i}\rangle\)。能量修正 \(-J z m\sigma_{i}\)（\(z=\)配位数），自洽方程：</p>
+      <div class="formula">\[ \boxed{\;m=\tanh\!\Big(\frac{Jzm+h}{k_{B}T}\Big)\;} \]</div>
+      <p>线性化（小 \(m\)）：\(m\approx(Jzm+h)/(k_{B}T)\)，解出磁化率 \(\chi\propto m/h=1/(k_{B}T-Jz)\)。这正是 Curie–Weiss 形式，给出 <strong>平均场居里温度</strong></p>
+      <div class="formula">\[ \boxed{\;k_{B}T_{C}^{\mathrm{MF}}=Jz\;}\qquad\text{(Ising, }\sigma=\pm1\text{, 平均场)}. \]</div>
+      <p>对 Heisenberg 模型（量子矢量自旋）：\(k_{B}T_{C}^{\mathrm{MF}}=\tfrac{2}{3}J_{\mathrm{ex}}\,z\,S(S+1)\)。平均场<strong>高估</strong>了 \(T_{C}\)（忽略了涨落），但给出了正确的定性结构与 Curie–Weiss 形式。</p>
+      <div class="key-terms">Ising model (Ising 模型), order parameter \(m=\langle\sigma\rangle\) (序参量), self-consistency equation (自洽方程), Weiss mean-field theory (Weiss 平均场理论), coordination number \(z\) (配位数), Onsager solution (Onsager 精确解)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从 Brillouin 函数到 Curie 律与 Curie–Weiss 律</h2>
+      <p><strong>目标</strong>：从局域磁矩在磁场中的统计力学出发，严格推导 (i) 顺磁体的 Curie 律 \(\chi=C/T\)；(ii) 引入 Weiss 分子场后的 Curie–Weiss 律 \(\chi=C/(T-\theta)\)；并指出平均场临界温度 \(T_{C}=\theta\) 的含义。</p>
+
+      <p><strong>第一步：单个磁矩的配分函数</strong>。考虑一个磁矩 \(\vec\mu=-g\mu_{B}\vec J/\hbar\)，量值为 \(\mu=g\mu_{B}J\)。在外加磁场 \(B\) 中（取 \(\vec B\) 沿 \(z\) 轴），能量本征值为</p>
+      <div class="formula">\[ U_{m_{J}}=-\vec\mu\cdot\vec B=g\mu_{B}B\,m_{J},\qquad m_{J}=-J,-J+1,\ldots,+J. \]</div>
+      <p>配分函数（\(2J+1\) 个离散取向）：</p>
+      <div class="formula">\[ Z=\sum_{m_{J}=-J}^{+J}\exp\!\Big(-\frac{g\mu_{B}B\,m_{J}}{k_{B}T}\Big)=\sum_{m_{J}=-J}^{+J}e^{-\alpha\,m_{J}/J},\qquad \alpha\equiv\frac{g\mu_{B}JB}{k_{B}T}=\frac{\mu B}{k_{B}T}. \]</div>
+      <p>这是有限等比级数。利用 \(\sum_{m=-J}^{J}x^{m}=x^{-J}(1-x^{2J+1})/(1-x)\) 与 \(x=e^{-\alpha/J}\)，仔细化简得到 \(\ln Z\)。沿 \(z\) 方向的平均磁矩：</p>
+      <div class="formula">\[ \langle\mu_{z}\rangle=k_{B}T\,\frac{\partial\ln Z}{\partial B}=\mu\,B_{J}(\alpha), \]</div>
+      <p>其中 <strong>Brillouin 函数</strong>：</p>
+      <div class="formula">\[ \boxed{\;B_{J}(\alpha)=\frac{2J+1}{2J}\coth\!\Big(\frac{2J+1}{2J}\alpha\Big)-\frac{1}{2J}\coth\!\Big(\frac{\alpha}{2J}\Big)\;} \]</div>
+      <p>极限核验：\(J=\tfrac{1}{2}\) 时 \(B_{1/2}(\alpha)=\tanh\alpha\)（自旋 1/2 的两态系统）；\(J\to\infty\) 时回到经典 Langevin 函数 \(L(\alpha)=\coth\alpha-1/\alpha\)。</p>
+
+      <p><strong>第二步：高温展开</strong>。在通常实验室条件（\(B\sim1\,\mathrm{T}\)、\(T\sim300\,\mathrm{K}\)）下 \(\alpha=g\mu_{B}JB/(k_{B}T)\sim10^{-2}\ll1\)。展开 \(\coth x=1/x+x/3-x^{3}/45+\cdots\)：</p>
+      <div class="formula">\[ B_{J}(\alpha)=\frac{J+1}{3J}\,\alpha-\frac{(J+1)(2J^{2}+2J+1)}{90J^{3}}\,\alpha^{3}+O(\alpha^{5}). \]</div>
+      <p>保留线性项：</p>
+      <div class="formula">\[ \langle\mu_{z}\rangle=\mu\cdot\frac{J+1}{3J}\alpha=\frac{g\mu_{B}\sqrt{J(J+1)}\cdot g\mu_{B}\sqrt{J(J+1)}}{3k_{B}T}\,B=\frac{\mu_{\mathrm{eff}}^{2}}{3k_{B}T}\,B, \]</div>
+      <p>其中 \(\boxed{\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{J(J+1)}}\)。<strong>注意</strong>：\(\mu=g\mu_{B}J\)（饱和时刻的最大磁矩）不同于 \(\mu_{\mathrm{eff}}\)（热平均的有效磁矩），后者用 \(J(J+1)\) 而非 \(J^{2}\)。这是顺磁文献常混淆之处。</p>
+
+      <p><strong>第三步：每体积磁化与 Curie 常数</strong>。设单位体积内有 \(N\) 个独立磁矩，则 \(M=N\langle\mu_{z}\rangle=N\mu_{\mathrm{eff}}^{2}B/(3k_{B}T)\)。弱磁性介质中 \(B\approx\mu_{0}H\)（感生部分 \(\mu_{0}M\ll\mu_{0}H\)），故：</p>
+      <div class="formula">\[ \boxed{\;\chi=\frac{M}{H}=\frac{N\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}}\cdot\frac{1}{T}\equiv\frac{C}{T}\;}\qquad\text{(Curie 律, 1895)}. \]</div>
+      <p><strong>每摩尔</strong> Curie 常数：用 \(N=N_{A}\)，</p>
+      <div class="formula">\[ C_{\mathrm{mol}}=\frac{N_{A}\mu_{0}g^{2}\mu_{B}^{2}J(J+1)}{3k_{B}}=\frac{N_{A}\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}}\quad[\mathrm{m^{3}\,K/mol}]. \]</div>
+      <p>对 \(g=2,J=S=1/2\) 的纯自旋 1/2 系统，\(\mu_{\mathrm{eff}}=\sqrt{3}\,\mu_{B}=2.78\times10^{-24}\,\mathrm{A\,m^{2}}\)，\(C_{\mathrm{mol}}=1.57\times10^{-6}\,\mathrm{m^{3}\,K/mol}\)。</p>
+
+      <p><strong>第四步：Weiss 分子场与 Curie–Weiss 律</strong>。现假设相邻磁矩通过交换作用彼此「看见」一个有效场。形式上把这写成 <strong>Weiss 分子场</strong> \(H_{E}=\lambda M\)（\(\lambda\) 待定），则每个磁矩感受到的<strong>局部有效场</strong>：</p>
+      <div class="formula">\[ H_{\mathrm{eff}}=H+H_{E}=H+\lambda M. \]</div>
+      <p>把 Curie 律中的 \(H\) 换成 \(H_{\mathrm{eff}}\)：</p>
+      <div class="formula">\[ M=\frac{C}{T}(H+\lambda M)\quad\Longrightarrow\quad M\Big(1-\frac{\lambda C}{T}\Big)=\frac{C}{T}H. \]</div>
+      <p>解出：</p>
+      <div class="formula">\[ \boxed{\;\chi=\frac{M}{H}=\frac{C}{T-\theta}\;},\qquad \theta\equiv\lambda C. \]</div>
+      <p>对铁磁体 (\(\lambda&gt;0\))：\(\theta&gt;0\)，记 \(\theta=T_{C}\)。当 \(T\to T_{C}^{+}\) 时 \(\chi\to\infty\)，意味着任意小的外场即可诱发巨大磁化——这正是自发对称破缺的标志，体系进入有序铁磁相。对反铁磁 (\(\lambda&lt;0\)，子晶格反平行)：\(\theta&lt;0\)，记 \(|\theta|\) 与 Néel 温度相关。在 \(T\gg|\theta|\) 时 Curie–Weiss 还原为 Curie 律。</p>
+
+      <p><strong>第五步：物理意义</strong>。</p>
+      <ul>
+        <li>Curie 律 \(\chi=C/T\) 仅对<strong>非相互作用</strong>磁矩成立——温度越低，热扰动越弱，给定场下磁矩越易排列，故 \(\chi\) 增大。</li>
+        <li>Curie–Weiss 修正反映了<strong>交换作用的有效符号</strong>：\(\theta&gt;0\)（铁磁倾向）或 \(\theta&lt;0\)（反铁磁倾向）。</li>
+        <li>实验上作 \(1/\chi\) 对 \(T\) 的图：直线斜率 \(1/C\)、横轴截距 \(\theta\)，是判定磁性类型的标准作图法。</li>
+        <li>Weiss 平均场<strong>忽略了自旋涨落</strong>，因此高估了 \(T_{C}\)。对 3D Heisenberg 模型，平均场 \(T_{C}^{\mathrm{MF}}\) 比实际约大 30–50%（重标度因子与配位数、晶格结构有关）。\(\square\)</li>
+      </ul>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 Gd³⁺ 离子（\(S=J=7/2\)）的有效磁矩与 Curie 律顺磁磁化率 Effective moment and Curie-law susceptibility of Gd³⁺</h4>
+        <p class="example-statement">稀土离子 \(\mathrm{Gd^{3+}}\) 的电子构型为 \([Xe]4f^{7}\)，所有 7 个 \(4f\) 电子自旋平行（Hund 规则），轨道角动量 \(L=0\)，故 \(S=J=7/2\)，Landé 因子 \(g_{J}=2\)。常量：\(\mu_{B}=9.274\times10^{-24}\,\mathrm{A\,m^{2}}\)，\(k_{B}=1.381\times10^{-23}\,\mathrm{J/K}\)，\(N_{A}=6.022\times10^{23}\,\mathrm{mol^{-1}}\)，\(\mu_{0}=4\pi\times10^{-7}=1.2566\times10^{-6}\,\mathrm{T\,m/A}\)。求：<strong>(a)</strong> 有效磁矩 \(\mu_{\mathrm{eff}}\)（用 \(\mu_{B}\) 与 SI 单位）；<strong>(b)</strong> 摩尔 Curie 常数 \(C_{\mathrm{mol}}\)（SI）；<strong>(c)</strong> 在 \(T=300\,\mathrm{K}\) 时的摩尔磁化率 \(\chi_{\mathrm{mol}}\)；<strong>(d)</strong> 在盐 \(\mathrm{Gd_{2}(SO_{4})_{3}\cdot8H_{2}O}\)（摩尔质量 \(M=746.8\,\mathrm{g/mol}\)、密度 \(\rho=2.20\,\mathrm{g/cm^{3}}\)）中的体积磁化率 \(\chi_{\mathrm{vol}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 有效磁矩</strong>。\(\mu_{\mathrm{eff}}=g_{J}\mu_{B}\sqrt{J(J+1)}=2\mu_{B}\sqrt{\tfrac{7}{2}\cdot\tfrac{9}{2}}=\mu_{B}\sqrt{63}\)。</p>
+          <div class="formula">\[ \mu_{\mathrm{eff}}=7.937\,\mu_{B}=7.937\times9.274\times10^{-24}=7.36\times10^{-23}\,\mathrm{A\,m^{2}}. \]</div>
+          <p class="step"><strong>(b) 摩尔 Curie 常数</strong>。\(C_{\mathrm{mol}}=N_{A}\mu_{0}\mu_{\mathrm{eff}}^{2}/(3k_{B})\)：</p>
+          <div class="formula">\[ \mu_{\mathrm{eff}}^{2}=(7.36\times10^{-23})^{2}=5.42\times10^{-45}\,\mathrm{A^{2}\,m^{4}}, \]</div>
+          <div class="formula">\[ C_{\mathrm{mol}}=\frac{(6.022\times10^{23})(1.2566\times10^{-6})(5.42\times10^{-45})}{3(1.381\times10^{-23})}=\frac{4.10\times10^{-27}}{4.143\times10^{-23}}=9.90\times10^{-5}\,\mathrm{m^{3}\,K/mol}. \]</div>
+          <p class="step"><strong>(c) \(T=300\,\mathrm{K}\) 时的摩尔磁化率</strong>。\(\chi_{\mathrm{mol}}=C_{\mathrm{mol}}/T\)：</p>
+          <div class="formula">\[ \chi_{\mathrm{mol}}(300\,\mathrm{K})=\frac{9.90\times10^{-5}}{300}=3.30\times10^{-7}\,\mathrm{m^{3}/mol}. \]</div>
+          <p><span class="ans">\(\chi_{\mathrm{mol}}\approx3.30\times10^{-7}\,\mathrm{m^{3}/mol}\)</span>（换算到 cgs：除以 \(4\pi\times10^{-6}\) 得 \(0.0262\,\mathrm{cm^{3}/mol}\)，与文献值 \(0.026\text{–}0.033\,\mathrm{cm^{3}/mol}\) 完全吻合）。</p>
+          <p class="step"><strong>(d) 体积磁化率</strong>。每摩尔盐含 2 个 Gd³⁺，故 Gd³⁺ 离子的体积数密度为：</p>
+          <div class="formula">\[ n_{\mathrm{ion}}=2\cdot\frac{\rho N_{A}}{M}=2\cdot\frac{2200\times6.022\times10^{23}}{0.7468}=3.55\times10^{27}\,\mathrm{m^{-3}}, \]</div>
+          <div class="formula">\[ \chi_{\mathrm{vol}}=\frac{n_{\mathrm{ion}}\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}T}=\frac{C_{\mathrm{mol}}}{T}\cdot\frac{2\rho}{M} = 3.30\times10^{-7}\times\frac{2\times2200}{0.7468}\times\frac{1}{1} = 1.95\times10^{-3}. \]</div>
+          <p><span class="ans">\(\chi_{\mathrm{vol}}\approx1.95\times10^{-3}\)</span>——比典型顺磁大一个量级（Gd³⁺ 有 7 个未配对电子，是已知最强的顺磁离子之一，故被用作 MRI 造影剂）。注意：\(\chi_{\mathrm{vol}}\ll1\)，仍属弱磁性，故 \(B\approx\mu_{0}H\) 的近似有效。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 铁的饱和磁化——从每原子玻尔磁子数出发 Saturation magnetization of iron from the Bohr-magneton moment per atom</h4>
+        <p class="example-statement">室温 \(\alpha\)-Fe 是 bcc 结构（晶格常数 \(a=2.866\,\text{\AA}\)），中子衍射与磁测量给出每个 Fe 原子的平均内禀磁矩为 \(2.22\,\mu_{B}\)。求：<strong>(a)</strong> Fe 原子数密度 \(n\)；<strong>(b)</strong> 饱和磁化 \(M_{s}\)；<strong>(c)</strong> 对应的饱和磁感应 \(B_{s}=\mu_{0}M_{s}\)；<strong>(d)</strong> 比较 Drude 经典图像（\(T=300\,\mathrm{K}\)，每个电子按能量均分贡献 \(1\,\mu_{B}\)）预言的 \(\chi\) 与实际铁磁 \(\chi\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。bcc 每单胞含 2 个原子：</p>
+          <div class="formula">\[ n=\frac{2}{a^{3}}=\frac{2}{(2.866\times10^{-10})^{3}}=\frac{2}{2.356\times10^{-29}}=8.49\times10^{28}\,\mathrm{m^{-3}}. \]</div>
+          <p class="step"><strong>(b) 饱和磁化</strong>。每个原子贡献 \(2.22\,\mu_{B}\)，所有原子磁矩同向排列：</p>
+          <div class="formula">\[ M_{s}=n\cdot2.22\mu_{B}=8.49\times10^{28}\times2.22\times9.274\times10^{-24} \]</div>
+          <div class="formula">\[ =8.49\times10^{28}\times2.06\times10^{-23}=1.75\times10^{6}\,\mathrm{A/m}. \]</div>
+          <p><span class="ans">\(M_{s}\approx1.73\times10^{6}\,\mathrm{A/m}\)</span>（与文献值 \(M_{s}(\mathrm{Fe},300\,\mathrm{K})=1.73\times10^{6}\,\mathrm{A/m}\) 完全吻合；温度升至 \(T_{C}=1043\,\mathrm{K}\) 时 \(M_{s}\to0\)）。</p>
+          <p class="step"><strong>(c) 饱和磁感应</strong>。</p>
+          <div class="formula">\[ B_{s}=\mu_{0}M_{s}=(1.2566\times10^{-6})(1.73\times10^{6})=2.18\,\mathrm{T}. \]</div>
+          <p><span class="ans">\(B_{s}\approx2.18\,\mathrm{T}\)</span>——这就是为什么铁是制作电磁铁与变压器磁芯的首选材料（饱和磁感应高）。</p>
+          <p class="step"><strong>(d) 与经典图像对比</strong>。Drude 经典图像把每个传导电子视为具 \(1\mu_{B}\) 自由磁矩，Curie 律给出</p>
+          <div class="formula">\[ \chi_{\mathrm{Drude}}=\frac{n_{e}\mu_{0}\mu_{B}^{2}}{3k_{B}T}=\frac{(8.49\times10^{28})(1.2566\times10^{-6})(9.274\times10^{-24})^{2}}{3(1.381\times10^{-23})(300)}\approx1.0\times10^{-4}. \]</div>
+          <p>而实际铁在 \(T&lt;T_{C}\) 时磁化率可高达 \(\chi\sim10^{3}\text{–}10^{5}\)（取决于历史与外场），比 Drude 预言大 <strong>7–9 个数量级</strong>。<span class="ans">这一巨大差异正是铁磁序（交换作用 + 磁畴协同）的体现，必须用量子交换作用才能解释</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 读懂磁滞回线——剩磁、矫顽力与每周期能量损耗 Reading a hysteresis loop: remanence, coercivity, energy loss</h4>
+        <p class="example-statement">某变压器用软磁钢样品在 \(T=300\,\mathrm{K}\) 下测得磁滞回线参数：饱和磁感应 \(B_{s}=1.60\,\mathrm{T}\)，剩磁感应 \(B_{r}=1.20\,\mathrm{T}\)（即 \(H=0\) 处的 \(B\)），矫顽力 \(H_{c}=80\,\mathrm{A/m}\)。设样品在 \(f=60\,\mathrm{Hz}\) 交流磁场中循环磁化，磁芯总质量 \(m_{\mathrm{core}}=10\,\mathrm{kg}\)、铁的密度 \(\rho=7870\,\mathrm{kg/m^{3}}\)。求：<strong>(a)</strong> 剩磁磁化 \(M_{r}\)；<strong>(b)</strong> 用矩形近似估算每周期每单位体积的能量损耗 \(W_{h}\)；<strong>(c)</strong> 总磁芯的稳态磁滞功耗 \(P\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。在 \(H=0\) 处，\(B=\mu_{0}(H+M)=\mu_{0}M\)，故</p>
+          <div class="formula">\[ M_{r}=\frac{B_{r}}{\mu_{0}}=\frac{1.20}{1.2566\times10^{-6}}=9.55\times10^{5}\,\mathrm{A/m}. \]</div>
+          <p><span class="ans">\(M_{r}\approx9.55\times10^{5}\,\mathrm{A/m}\)</span>（约为饱和 \(M_{s}=B_{s}/\mu_{0}=1.27\times10^{6}\,\mathrm{A/m}\) 的 75%——剩磁比 \(M_{r}/M_{s}\approx0.75\)，属于较「方」的回线，对软磁略偏大）。</p>
+          <p class="step"><strong>(b) 每周期能量密度损耗</strong>。理论上 \(W_{h}=\oint H\,dB\) 即 \(B\)-\(H\) 回线所围面积。矩形近似 \(W_{h}\approx4H_{c}B_{r}\)：</p>
+          <div class="formula">\[ W_{h}\approx4H_{c}B_{r}=4\times80\times1.20=384\,\mathrm{J/m^{3}}\,\text{每周期}. \]</div>
+          <p><span class="ans">\(W_{h}\approx384\,\mathrm{J/m^{3}}\)</span>。</p>
+          <p class="step"><strong>(c) 总功耗</strong>。磁芯体积 \(V=m_{\mathrm{core}}/\rho=10/7870=1.27\times10^{-3}\,\mathrm{m^{3}}\)。每秒循环 \(f=60\) 次：</p>
+          <div class="formula">\[ P=f\,W_{h}\,V=60\times384\times1.27\times10^{-3}=29.3\,\mathrm{W}. \]</div>
+          <p><span class="ans">稳态磁滞损耗 \(P\approx29\,\mathrm{W}\)</span>，即每千克约 \(2.9\,\mathrm{W/kg}\)。这是变压器设计必须考虑的「铁损」之一（另一项是涡流损耗）。改用 \(H_{c}\approx10\,\mathrm{A/m}\) 的高质量硅钢可把功耗降到原来的 \(1/8\)；这也是为什么变压器磁芯要采用<strong>软磁</strong>材料（窄回线、低 \(H_{c}\)）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 用平均场理论从 \(T_{C}\) 反推铁的交换常数 Mean-field estimate of the exchange constant of iron from its Curie temperature</h4>
+        <p class="example-statement">铁的居里温度 \(T_{C}^{\mathrm{Fe}}=1043\,\mathrm{K}\)，bcc 结构配位数 \(z=8\)。例 6.2 给出每原子磁矩 \(2.22\,\mu_{B}\)，可近似取有效自旋 \(S\) 满足 \(g\sqrt{S(S+1)}\mu_{B}=2.22\mu_{B}\)，即 \(S(S+1)=(2.22/2)^{2}=1.232\)，\(S\approx0.97\approx1\)。用 <strong>Heisenberg 平均场</strong>公式 \(k_{B}T_{C}^{\mathrm{MF}}=\tfrac{2}{3}J_{\mathrm{ex}}\,z\,S(S+1)\)（哈密顿量 \(\hat H_{\mathrm{ex}}=-2J_{\mathrm{ex}}\sum_{\langle ij\rangle}\hat{\vec S}_{i}\cdot\hat{\vec S}_{j}\)）估算：<strong>(a)</strong> 交换常数 \(J_{\mathrm{ex}}\)（J 与 meV）；<strong>(b)</strong> 与最近邻磁偶极相互作用能 \(U_{\mathrm{dip}}=\mu_{0}\mu^{2}/(4\pi r^{3})\)（\(r=a\sqrt{3}/2\) 为 bcc 最近邻距离）对比，验证「铁磁不是偶极作用」。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。取 \(S=1\)（\(S(S+1)=2\)），解出</p>
+          <div class="formula">\[ J_{\mathrm{ex}}=\frac{3k_{B}T_{C}}{2zS(S+1)}=\frac{3(1.381\times10^{-23})(1043)}{2(8)(2)}=\frac{4.32\times10^{-20}}{32}=1.35\times10^{-21}\,\mathrm{J}. \]</div>
+          <p>换算为 meV：\(J_{\mathrm{ex}}=1.35\times10^{-21}/1.602\times10^{-19}=8.4\times10^{-3}\,\mathrm{eV}=8.4\,\mathrm{meV}\)。等效温度 \(J_{\mathrm{ex}}/k_{B}=97.8\,\mathrm{K}\)。</p>
+          <p><span class="ans">\(J_{\mathrm{ex}}\approx1.35\times10^{-21}\,\mathrm{J}=8.4\,\mathrm{meV}\)</span>（与第一性原理计算的 \(\sim\!10\text{–}20\,\mathrm{meV}\) 同量级）。</p>
+          <p class="step"><strong>(b) 与偶极相互作用对比</strong>。最近邻距离 \(r=a\sqrt{3}/2=2.866\times10^{-10}\times0.866=2.48\times10^{-10}\,\mathrm{m}\)。每原子磁矩 \(\mu=2.22\mu_{B}=2.06\times10^{-23}\,\mathrm{A\,m^{2}}\)。偶极能：</p>
+          <div class="formula">\[ U_{\mathrm{dip}}=\frac{\mu_{0}\mu^{2}}{4\pi r^{3}}=\frac{(10^{-7})(2.06\times10^{-23})^{2}}{(2.48\times10^{-10})^{3}}=\frac{4.24\times10^{-53}}{1.53\times10^{-29}}=2.8\times10^{-24}\,\mathrm{J}=1.7\times10^{-5}\,\mathrm{eV}. \]</div>
+          <p>对应温度 \(U_{\mathrm{dip}}/k_{B}=0.20\,\mathrm{K}\)。</p>
+          <div class="formula">\[ \frac{J_{\mathrm{ex}}}{U_{\mathrm{dip}}}=\frac{1.35\times10^{-21}}{2.8\times10^{-24}}\approx480. \]</div>
+          <p><span class="ans">交换作用比偶极–偶极作用强约 \(480\) 倍</span>。偶极作用仅能解释 \(T_{C}\sim0.2\,\mathrm{K}\) 的「铁磁」——比实际低 4 个数量级。<strong>结论：铁磁性必须来自量子交换作用，不能由经典磁偶极作用解释</strong>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 由实验 Curie 常数反推每离子的有效磁矩 Effective moment per ion from a measured Curie constant</h4>
+        <p class="example-statement">某过渡族离子盐（每摩尔含 1 摩尔磁性离子）实验测得 Curie–Weiss 律 \(\chi_{\mathrm{mol}}=C_{\mathrm{mol}}/(T-\theta)\)，其中 \(C_{\mathrm{mol}}=1.57\times10^{-5}\,\mathrm{m^{3}\,K/mol}\)，\(\theta=-2\,\mathrm{K}\)（接近零，几乎纯顺磁）。<strong>(a)</strong> 求每离子的有效磁矩 \(\mu_{\mathrm{eff}}\)（\(\mu_{B}\)）；<strong>(b)</strong> 推测该离子的 \(S\) 与可能的化学身份；<strong>(c)</strong> 在 \(T=300\,\mathrm{K}\) 时的 \(\chi_{\mathrm{mol}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>。由 \(C_{\mathrm{mol}}=N_{A}\mu_{0}\mu_{\mathrm{eff}}^{2}/(3k_{B})\) 反解：</p>
+          <div class="formula">\[ \mu_{\mathrm{eff}}=\sqrt{\frac{3k_{B}C_{\mathrm{mol}}}{N_{A}\mu_{0}}}=\sqrt{\frac{3(1.381\times10^{-23})(1.57\times10^{-5})}{(6.022\times10^{23})(1.2566\times10^{-6})}} \]</div>
+          <div class="formula">\[ =\sqrt{\frac{6.51\times10^{-28}}{7.57\times10^{17}}}=\sqrt{8.60\times10^{-46}}=2.93\times10^{-23}\,\mathrm{A\,m^{2}}. \]</div>
+          <p>换算为 \(\mu_{B}\)：\(\mu_{\mathrm{eff}}=2.93\times10^{-23}/9.274\times10^{-24}=3.16\,\mu_{B}\)。</p>
+          <p><span class="ans">\(\mu_{\mathrm{eff}}\approx3.16\,\mu_{B}\)</span>。</p>
+          <p class="step"><strong>(b) 推测 \(S\)</strong>。设纯自旋（\(g=2\)）：\(\mu_{\mathrm{eff}}=2\sqrt{S(S+1)}\,\mu_{B}\)，故</p>
+          <div class="formula">\[ S(S+1)=\Big(\frac{3.16}{2}\Big)^{2}=2.50\Rightarrow S\approx1.40\;\text{（介于 1 与 3/2 之间）}. \]</div>
+          <p>取 \(S=3/2\)：理论 \(\mu_{\mathrm{eff}}=2\sqrt{15/4}\mu_{B}=\sqrt{15}\,\mu_{B}=3.87\,\mu_{B}\)（偏大）；取 \(S=1\)：\(\mu_{\mathrm{eff}}=\sqrt{8}\,\mu_{B}=2.83\,\mu_{B}\)（偏小）。实际值 \(3.16\,\mu_{B}\) 介于二者之间，<strong>暗示轨道角动量未完全淬灭</strong>（\(g&gt;2\) 的有效贡献）或为混合价态。<span class="ans">化学上可能是 \(\mathrm{Cr^{2+}}\)（\(3d^{4},S=1\)，理论 4.90，相差大）或 \(\mathrm{Co^{2+}}\)（\(3d^{7},S=3/2\) 加轨道贡献，文献 \(\mu_{\mathrm{eff}}\approx4.8\)）；最有可能是<strong>低自旋</strong>\(\mathrm{Fe^{2+}}\) 或多核簇合物，需结合 EPR 与结构数据</strong>。这一类反推是固体磁化学鉴定离子的标准方法。</p>
+          <p class="step"><strong>(c) 300 K 磁化率</strong>。</p>
+          <div class="formula">\[ \chi_{\mathrm{mol}}(300\,\mathrm{K})=\frac{1.57\times10^{-5}}{300-(-2)}=\frac{1.57\times10^{-5}}{302}=5.20\times10^{-8}\,\mathrm{m^{3}/mol}. \]</div>
+          <p><span class="ans">\(\chi_{\mathrm{mol}}\approx5.2\times10^{-8}\,\mathrm{m^{3}/mol}\)</span>。在 cgs 下为 \(5.20\times10^{-8}/4\pi\times10^{-6}=4.13\times10^{-3}\,\mathrm{cm^{3}/mol}=4130\times10^{-6}\,\mathrm{cm^{3}/mol}\)，典型弱顺磁盐的量级。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：以为铁磁性是磁偶极–偶极相互作用的结果。</strong>大错特错——经典磁偶极相互作用 \(\mu_{0}\mu^{2}/(4\pi r^{3})\) 在原子尺度仅 \(\sim\!10^{-4}\,\mathrm{meV}\)（对应温度 \(\sim\!1\,\mathrm{K}\)），比解释 \(T_{C}=1043\,\mathrm{K}\) 所需弱 <strong>\(10^{3}\)</strong> 倍。铁磁性的真正起源是<strong>量子交换作用</strong>（Heisenberg 哈密顿量），源自电子波函数反对称性带来的库仑交换项。偶极作用仅决定磁畴的宏观形态（静磁能最小化），而非磁矩的同向排列本身。</li>
+        <li><strong>误区 2：以为磁畴使宏观样品的磁场增大。</strong>恰恰相反——磁畴的存在<strong>降低</strong>了样品外的杂散场（stray field），从而降低<strong>静磁能</strong> \(\tfrac{1}{2}\mu_{0}\int H_{\mathrm{demag}}^{2}\,dV\)。一个未分畴的样品像一个巨大磁铁，静磁能很高；分成正反交替的畴后外部场近似抵消，总能量降低。这也是为什么未磁化的铁块对外不显磁性：<strong>宏观 \(M=0\) 但局部 \(M=M_{s}\)</strong>，畴间随机取向抵消。</li>
+        <li><strong>误区 3：把磁滞回线当作 \(M(H)\) 的「函数」。</strong>磁滞意味着 \(M\) 取决于<strong>历史</strong>（previous history），不仅是当前的 \(H\)。同一 \(H\) 值可以对应多个不同的 \(M\)（取决于从正向饱和接近、从反向接近、还是初次磁化）。技术上，\(M(H)\) 是多值映射，必须沿<strong>回线</strong>（loop）来描述。这也是为何用 \(\chi=\mathrm{d}M/\mathrm{d}H\) 时必须说明「初始磁化率」「可逆磁化率」「差分磁化率」等概念。</li>
+        <li><strong>误区 4：在铁磁体的 \(T&gt;T_{C}\) 区直接套用 Curie 律 \(\chi=C/T\)。</strong>Curie 律只对<strong>完全无相互作用</strong>的磁矩成立。铁磁体在 \(T&gt;T_{C}\) 时磁矩虽已无序，但<strong>短程交换关联仍存在</strong>，故应使用 <strong>Curie–Weiss 律</strong> \(\chi=C/(T-\theta)\)，\(\theta\approx T_{C}&gt;0\)。在 \(T\to\theta^{+}\) 时 \(\chi\) 发散——这是临界涨落的标志。同理，反铁磁体在 \(T&gt;T_{N}\) 用 \(\chi=C/(T-\theta)\) 但 \(\theta&lt;0\)。判定磁性类型最直接的方法是作 \(1/\chi\) 对 \(T\) 图：直线斜率 \(1/C\)，截距 \(-\theta\)。</li>
+        <li><strong>误区 5：混淆 \(\mu\)（饱和磁矩）与 \(\mu_{\mathrm{eff}}\)（有效磁矩），或混淆 SI 与 cgs 单位。</strong>在量子统计中：饱和时刻磁矩 \(\mu=g\mu_{B}J\)（最大投影），而热平均对应的有效磁矩 \(\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{J(J+1)}\)（用 \(J(J+1)\) 而非 \(J^{2}\)）。例如 \(J=1/2\)：\(\mu=g\mu_{B}/2\)，但 \(\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{3/4}=0.866\,g\mu_{B}\)。同时注意 SI 与 cgs 数值差 \(4\pi\)：\(\chi^{\mathrm{SI}}=4\pi\,\chi^{\mathrm{cgs}}\)（在 cgs 中 \(\vec B=\vec H+4\pi\vec M\)，故 \(\chi^{\mathrm{cgs}}\) 与 \(\chi^{\mathrm{SI}}\) 同为无量纲但数值不同）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 自旋 1/2 系统的 Curie 常数与室温磁化率。考虑 \(N=10^{27}\,\mathrm{m^{-3}}\) 个独立的 \(S=1/2\) 离子（\(g=2\)）。（a）求 \(\mu_{\mathrm{eff}}\)；（b）每体积 Curie 常数 \(C\)；（c）\(T=300\,\mathrm{K}\) 时的 \(\chi\)。</summary>
+        <div class="hint">用 \(\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{S(S+1)}\)，\(C=N\mu_{0}\mu_{\mathrm{eff}}^{2}/(3k_{B})\)，\(\chi=C/T\)。</div>
+        <div class="solution">
+          <p>(a) \(\mu_{\mathrm{eff}}=2\mu_{B}\sqrt{\tfrac{1}{2}\cdot\tfrac{3}{2}}=\sqrt{3}\mu_{B}=1.61\times10^{-23}\,\mathrm{A\,m^{2}}\)。</p>
+          <p>(b) \(C=\dfrac{(10^{27})(1.2566\times10^{-6})(1.61\times10^{-23})^{2}}{3(1.381\times10^{-23})}=\dfrac{(10^{27})(3.26\times10^{-52})}{4.14\times10^{-23}}=\dfrac{3.26\times10^{-25}}{4.14\times10^{-23}}=7.87\times10^{-3}\,\mathrm{K}\)（无量纲 \(\times\) K）。</p>
+          <p>(c) \(\chi=C/T=7.87\times10^{-3}/300=2.62\times10^{-5}\)。</p>
+          <p><span class="ans">\(\mu_{\mathrm{eff}}=1.73\,\mu_{B}\)；\(C\approx7.9\times10^{-3}\,\mathrm{K}\)；\(\chi(300\,\mathrm{K})\approx2.6\times10^{-5}\)</span>。这是典型顺磁盐的量级。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. Cu 的抗磁磁化率（Langevin 公式）。Cu 的原子数密度 \(n=8.49\times10^{28}\,\mathrm{m^{-3}}\)、\(Z=29\)、估计 \(\sqrt{\langle r^{2}\rangle}=1.0\,\text{\AA}=1.0\times10^{-10}\,\mathrm{m}\)（外层电子云半径）。求 \(\chi_{\mathrm{dia}}\)，并与文献值 \(-9.7\times10^{-6}\) 比较。</summary>
+        <div class="hint">用 \(\chi_{\mathrm{dia}}=-\mu_{0}Ze^{2}n\langle r^{2}\rangle/(6m_{e})\)。</div>
+        <div class="solution">
+          <p>\(\langle r^{2}\rangle=(1.0\times10^{-10})^{2}=1.0\times10^{-20}\,\mathrm{m^{2}}\)。</p>
+          <p>\(\chi_{\mathrm{dia}}=-\dfrac{(1.2566\times10^{-6})(29)(1.602\times10^{-19})^{2}(8.49\times10^{28})(1.0\times10^{-20})}{6(9.11\times10^{-31})}\)。</p>
+          <p>分子：\((1.2566\times10^{-6})(29)(2.566\times10^{-38})(8.49\times10^{28})(1.0\times10^{-20})=8.0\times10^{-34}\)。</p>
+          <p>分母：\(5.47\times10^{-30}\)。</p>
+          <p>\(\chi_{\mathrm{dia}}=-8.0\times10^{-34}/5.47\times10^{-30}=-1.46\times10^{-5}\)。</p>
+          <p><span class="ans">\(\chi_{\mathrm{dia}}\approx-1.5\times10^{-5}\)</span>。与文献值 \(-9.7\times10^{-6}\) 同数量级（差异来自 \(\langle r^{2}\rangle\) 的粗略估计；真实电子云径向分布需用量子力学计算）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 由 \(1/\chi\)-\(T\) 图判定磁性类型。一未知材料在 \(T=200,300,400,500,600\,\mathrm{K}\) 测得摩尔磁化率（SI）分别为 \(1.20\times10^{-7},8.40\times10^{-8},6.30\times10^{-8},5.04\times10^{-8},4.20\times10^{-8}\,\mathrm{m^{3}/mol}\)。<strong>(a)</strong> 作 \(1/\chi\) 对 \(T\) 的线性拟合，求 Curie 常数 \(C_{\mathrm{mol}}\) 与 Weiss 温度 \(\theta\)；<strong>(b)</strong> 判定是顺磁、铁磁还是反铁磁；<strong>(c)</strong> 估算 \(T_{C}\) 或 \(T_{N}\)。</summary>
+        <div class="hint">Curie–Weiss：\(\chi=C/(T-\theta)\)，故 \(1/\chi=T/C-\theta/C\)。线性拟合 \(1/\chi=aT+b\)，则 \(a=1/C\)、\(b=-\theta/C\)。</div>
+        <div class="solution">
+          <p>(a) 各点 \(1/\chi\)：\(8.33\times10^{6},1.19\times10^{7},1.59\times10^{7},1.98\times10^{7},2.38\times10^{7}\,\mathrm{mol/m^{3}}\)。对 \(T\) 几乎完全线性：斜率 \(a=\Delta(1/\chi)/\Delta T=(2.38-0.83)\times10^{7}/(600-200)=3.88\times10^{4}\,\mathrm{mol/(m^{3}\,K)}\)。故 \(C_{\mathrm{mol}}=1/a=2.58\times10^{-5}\,\mathrm{m^{3}\,K/mol}\)。</p>
+          <p>截距 \(b=1/\chi(0)=1/\chi(T)-aT\)。取 \(T=300\) 点：\(b=1.19\times10^{7}-3.88\times10^{4}\times300=1.19\times10^{7}-1.16\times10^{7}=2.6\times10^{5}\)。</p>
+          <p>\(\theta=-b/a=-2.6\times10^{5}/3.88\times10^{4}=-6.7\,\mathrm{K}\)。</p>
+          <p>(b) \(\theta\) 接近 0 但为负——若 \(|\theta|\ll T\) 范围内可视为<strong>纯顺磁</strong>（Curie 律足够）。若坚持 Curie–Weiss 拟合：弱反铁磁倾向。</p>
+          <p>(c) 若为反铁磁，则 \(T_{N}\sim|\theta|\approx7\,\mathrm{K}\)（实际 Néel 温度通常比 \(|\theta|\) 略小）。</p>
+          <p><span class="ans">\(C_{\mathrm{mol}}\approx2.58\times10^{-5}\,\mathrm{m^{3}\,K/mol}\)；\(\theta\approx-7\,\mathrm{K}\)；弱反铁磁或近纯顺磁</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 平均场 \(T_{C}\) 对比真实 \(T_{C}\)。简单立方 Ising 模型（\(z=6\)）精确数值给出 \(k_{B}T_{C}/J\approx4.51\)。平均场近似给出 \(k_{B}T_{C}^{\mathrm{MF}}/J=z=6\)。求平均场对真实值的百分比高估。</summary>
+        <div class="hint">直接比较 \(T_{C}^{\mathrm{MF}}/T_{C}^{\mathrm{exact}}\)。</div>
+        <div class="solution">
+          <p>比值 \(T_{C}^{\mathrm{MF}}/T_{C}^{\mathrm{exact}}=6/4.51=1.33\)。</p>
+          <p>百分比高估：\((1.33-1)\times100\%=33\%\)。</p>
+          <p><span class="ans">平均场高估约 \(33\%\)</span>。这是 3D Ising 的典型量级；对 2D Ising（精确 \(k_{B}T_{C}/J\approx2.269\)），平均场给出 \(T_{C}^{\mathrm{MF}}/J=z=4\)，高估 \(76\%\)——涨落维度越低越显著。这正是平均场在低维失效的经典例证。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 反铁磁体的有序磁矩排列。MnO（\(T_{N}=122\,\mathrm{K}\)）有 NaCl 型结构：Mn²⁺ 子晶格按「下一层反向」交替排列。每 Mn²⁺ 离子的有效磁矩 \(\mu_{\mathrm{eff}}=5.92\,\mu_{B}\)（\(S=5/2,g=2\)）。（a）求有序态下每离子饱和磁矩（用 \(\mu_{B}\)）；（b）若 MnO 密度 \(\rho=5370\,\mathrm{kg/m^{3}}\)、摩尔质量 \(M=70.94\,\mathrm{g/mol}\)，估算每子晶格的饱和磁化 \(M_{s}^{\mathrm{sub}}\)；（c）为什么净 \(M=0\)？</summary>
+        <div class="hint">饱和磁矩 \(\mu_{\mathrm{sat}}=g\mu_{B}S=2\mu_{B}\cdot(5/2)=5\mu_{B}\)；两子晶格等大反向 → 净零。</div>
+        <div class="solution">
+          <p>(a) 有序态下饱和磁矩取最大投影：\(\mu_{\mathrm{sat}}=g\mu_{B}S=2\mu_{B}\times5/2=5\mu_{B}=4.64\times10^{-23}\,\mathrm{A\,m^{2}}\)。注意与有效磁矩 \(5.92\,\mu_{B}\)（用 \(\sqrt{S(S+1)}\)）不同。</p>
+          <p>(b) 每 MnO 含 1 个 Mn²⁺，故 Mn²⁺ 数密度 \(n=\rho N_{A}/M=5370\times6.022\times10^{23}/0.07094=4.56\times10^{28}\,\mathrm{m^{-3}}\)。每子晶格各占一半：\(n_{\mathrm{sub}}=2.28\times10^{28}\,\mathrm{m^{-3}}\)。</p>
+          <p>\(M_{s}^{\mathrm{sub}}=n_{\mathrm{sub}}\cdot\mu_{\mathrm{sat}}=2.28\times10^{28}\times4.64\times10^{-23}=1.06\times10^{6}\,\mathrm{A/m}\)。</p>
+          <p>(c) 两子晶格磁矩等大反向：\(\vec M_{\mathrm{tot}}=\vec M_{A}+\vec M_{B}=M_{s}^{\mathrm{sub}}\hat z-M_{s}^{\mathrm{sub}}\hat z=0\)。</p>
+          <p><span class="ans">\(\mu_{\mathrm{sat}}=5\,\mu_{B}\)；\(M_{s}^{\mathrm{sub}}\approx1.1\times10^{6}\,\mathrm{A/m}\)；净 \(M=0\)</span>（反铁磁特征）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：铁磁磁滞回线 Ferromagnetic Hysteresis Loop</h2>
+      <p class="sim-desc">本仿真绘制铁磁体的 <strong>\(M\)-\(H\) 磁滞回线</strong>：横轴为外加磁场 \(H\)（归一化），纵轴为磁化强度 \(M\)（归一化），扫描场以三角波形式缓慢振荡。可观察到回线在 \(\pm H\) 两端达到<strong>饱和</strong>（\(M\to\pm M_{s}\)）、在 \(H=0\) 处保留<strong>剩磁</strong> \(\pm M_{r}\)、在 \(H=\mp H_{c}\) 处穿过 \(M=0\)——矫顽点。<strong>调节饱和磁化 \(M_{s}\)</strong>：上下饱和平台上限随之改变。<strong>调节矫顽力 \(H_{c}\)</strong>：回线宽度变化（\(H_{c}=0\) 时回线退化为单一曲线 = 无磁滞）。<strong>调节饱和陡度 \(H_{a}\)</strong>（小→回线方、剩磁比高；大→回线圆、剩磁比低）。当前扫描方向、剩磁 \(M_{r}\)、矫顽点 \(\pm H_{c}\)、回线面积（每周期能耗 \(\propto\) 面积）均实时标注。点 <strong>↺ 重置</strong> 回到默认参数。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Phenomenological hysteresis model ----
+          //   Upper branch (sweeping H DOWN):  M(H) = Ms * tanh((H + Hc)/Ha)
+          //   Lower branch (sweeping H UP):    M(H) = Ms * tanh((H - Hc)/Ha)
+          // Properties:
+          //   • Saturates at  ±Ms            for |H| → ∞
+          //   • Crosses M=0  at H = ±Hc       (coercivity)
+          //   • At H = 0      gives M = ±Mr   (remanence), Mr = Ms * tanh(Hc/Ha)
+          var params = { Ms: 1.00, Hc: 0.45, Ha: 0.30 };
+          var Hmax = 2.5;        // sweep range in normalized H units
+          var sweepRate = 0.90;  // H-units per second
+
+          // Plot geometry
+          var PAD_L = 56, PAD_R = 28, PAD_T = 56, PAD_B = 56;
+          var PLOT_W = W - PAD_L - PAD_R;
+          var PLOT_H = H - PAD_T - PAD_B;
+          var M_VIEW = 1.55;    // y-axis range ±M_VIEW
+          function xH(h) { return PAD_L + ((h + Hmax) / (2 * Hmax)) * PLOT_W; }
+          function yM(m) { return PAD_T + PLOT_H - ((m + M_VIEW) / (2 * M_VIEW)) * PLOT_H; }
+
+          function magnetization(H, dir) {
+            // dir = +1 sweeping UP → lower branch;  dir = -1 sweeping DOWN → upper branch
+            var arg = (dir > 0) ? (H - params.Hc) / params.Ha : (H + params.Hc) / params.Ha;
+            return params.Ms * Math.tanh(arg);
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              // Start saturated negative, sweeping up — first sweep is already on the loop.
+              return {
+                H: -Hmax,
+                M: -params.Ms,
+                dir: +1,
+                trail: [],
+                lastFullLoop: [],
+              };
+            },
+            step: function (dt, t, s) {
+              // Advance H as a triangle wave.
+              s.H += s.dir * sweepRate * dt;
+              if (s.H > Hmax) {
+                s.H = Hmax; s.dir = -1;
+                // A full loop has just been completed (from +Hmax down... up to +Hmax).
+                if (s.trail.length) s.lastFullLoop = s.trail.slice();
+                s.trail = [];
+              }
+              if (s.H < -Hmax) { s.H = -Hmax; s.dir = +1; }
+              s.M = magnetization(s.H, s.dir);
+              s.trail.push({ H: s.H, M: s.M });
+              if (s.trail.length > 6000) s.trail.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var Mr = params.Ms * Math.tanh(params.Hc / Math.max(0.05, params.Ha));
+
+              // ----- Title + readouts -----
+              PS.drawText(ctx, '铁磁磁滞回线 Hysteresis Loop  (M vs H, normalized)',
+                14, 22, { font: '14px system-ui, sans-serif', color: C.text });
+              var sq = Math.tanh(params.Hc / Math.max(0.05, params.Ha));
+              PS.drawText(ctx,
+                'Ms = ' + params.Ms.toFixed(2) +
+                '   Hc = ' + params.Hc.toFixed(2) +
+                '   Ha = ' + params.Ha.toFixed(2) +
+                '   Mr/Ms = ' + sq.toFixed(2) +
+                '   loop area ∝ ' + (4 * params.Hc * Mr).toFixed(2),
+                14, 40, { font: '11px system-ui, sans-serif', color: C.text });
+
+              // ----- Frame -----
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.3;
+              ctx.beginPath();
+              ctx.moveTo(PAD_L, PAD_T);
+              ctx.lineTo(PAD_L, PAD_T + PLOT_H);
+              ctx.lineTo(PAD_L + PLOT_W, PAD_T + PLOT_H);
+              ctx.stroke();
+
+              // Saturation guide lines (dashed)
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.globalAlpha = 0.55;
+              ctx.beginPath();
+              ctx.moveTo(PAD_L, yM(params.Ms)); ctx.lineTo(PAD_L + PLOT_W, yM(params.Ms));
+              ctx.moveTo(PAD_L, yM(-params.Ms)); ctx.lineTo(PAD_L + PLOT_W, yM(-params.Ms));
+              ctx.stroke();
+              ctx.setLineDash([]); ctx.globalAlpha = 1;
+              PS.drawText(ctx, '+Ms', PAD_L + PLOT_W - 6, yM(params.Ms) - 4,
+                { font: '11px system-ui, sans-serif', color: C.grid, align: 'right' });
+              PS.drawText(ctx, '−Ms', PAD_L + PLOT_W - 6, yM(-params.Ms) + 12,
+                { font: '11px system-ui, sans-serif', color: C.grid, align: 'right' });
+
+              // Zero axes (light)
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 0.9; ctx.globalAlpha = 0.7;
+              ctx.beginPath();
+              ctx.moveTo(xH(0), PAD_T); ctx.lineTo(xH(0), PAD_T + PLOT_H);
+              ctx.moveTo(PAD_L, yM(0)); ctx.lineTo(PAD_L + PLOT_W, yM(0));
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+
+              // ----- Draw previous full loop (faint) -----
+              function drawPath(pts, color, width, alpha) {
+                if (!pts || pts.length < 2) return;
+                ctx.strokeStyle = color; ctx.lineWidth = width; ctx.globalAlpha = alpha;
+                ctx.beginPath();
+                for (var i = 0; i < pts.length; i++) {
+                  var x = xH(pts[i].H), y = yM(pts[i].M);
+                  if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+              drawPath(s.lastFullLoop, C.trace, 2.0, 0.45);
+              drawPath(s.trail, C.primary, 2.6, 1.0);
+
+              // ----- Mr markers on M axis (both ±Mr) -----
+              PS.drawCircle(ctx, xH(0), yM(Mr), 4, { fill: C.accent2 });
+              PS.drawCircle(ctx, xH(0), yM(-Mr), 4, { fill: C.accent2 });
+              PS.drawText(ctx, '+Mr', xH(0) + 8, yM(Mr) - 2,
+                { font: '11px system-ui, sans-serif', color: C.accent2 });
+              PS.drawText(ctx, '−Mr', xH(0) + 8, yM(-Mr) + 12,
+                { font: '11px system-ui, sans-serif', color: C.accent2 });
+
+              // ----- Hc markers on H axis (both ±Hc) -----
+              PS.drawCircle(ctx, xH(params.Hc), yM(0), 4, { fill: C.accent2 });
+              PS.drawCircle(ctx, xH(-params.Hc), yM(0), 4, { fill: C.accent2 });
+              PS.drawText(ctx, '+Hc', xH(params.Hc) + 2, yM(0) + 14,
+                { font: '11px system-ui, sans-serif', color: C.accent2 });
+              PS.drawText(ctx, '−Hc', xH(-params.Hc) + 2, yM(0) + 14,
+                { font: '11px system-ui, sans-serif', color: C.accent2 });
+
+              // ----- Current point -----
+              PS.drawCircle(ctx, xH(s.H), yM(s.M), 6, { fill: C.accent, stroke: '#fff', lineWidth: 1.5 });
+
+              // Direction indicator
+              var arrow = s.dir > 0 ? '→ 扫场向上 sweeping H up (lower branch)' : '← 扫场向下 sweeping H down (upper branch)';
+              PS.drawText(ctx, arrow, PAD_L + PLOT_W - 8, PAD_T + 14,
+                { font: '11px system-ui, sans-serif', color: C.accent, align: 'right' });
+
+              // ----- Axis ticks -----
+              ctx.fillStyle = C.text; ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              var hTicks = [-2, -1, 0, 1, 2];
+              hTicks.forEach(function (h) {
+                var x = xH(h);
+                ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x, PAD_T + PLOT_H); ctx.lineTo(x, PAD_T + PLOT_H + 4); ctx.stroke();
+                ctx.fillText(h.toFixed(0), x, PAD_T + PLOT_H + 6);
+              });
+              PS.drawText(ctx, '外加磁场 H  (normalized)', PAD_L + PLOT_W / 2, H - 14,
+                { font: '12px system-ui, sans-serif', color: C.text, align: 'center' });
+
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              var mTicks = [-1, -0.5, 0, 0.5, 1];
+              mTicks.forEach(function (m) {
+                var y = yM(m);
+                ctx.strokeStyle = C.grid; ctx.lineWidth = 0.6; ctx.globalAlpha = 0.4;
+                ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L + PLOT_W, y); ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.fillText(m.toFixed(1), PAD_L - 6, y);
+              });
+              ctx.save();
+              ctx.translate(14, PAD_T + PLOT_H / 2); ctx.rotate(-Math.PI / 2);
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText('磁化 M  (normalized)', 0, 0);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'Ms', label: '饱和磁化 Ms', min: 0.30, max: 1.40, step: 0.01, value: 1.00 },
+            { type: 'slider', key: 'Hc', label: '矫顽力 Hc  (0 → 无磁滞)', min: 0.00, max: 1.00, step: 0.01, value: 0.45 },
+            { type: 'slider', key: 'Ha', label: '饱和陡度 Ha  (小→方回线)', min: 0.10, max: 0.80, step: 0.01, value: 0.30 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Ms', function (v) { params.Ms = v; });
+          ctl.on('Hc', function (v) { params.Hc = v; });
+          ctl.on('Ha', function (v) { params.Ha = v; });
+          ctl.on('reset', function () {
+            params.Ms = 1.00; params.Hc = 0.45; params.Ha = 0.30;
+            var sliders = document.querySelectorAll('#controls-6 input[type=range]');
+            var valSpans = document.querySelectorAll('#controls-6 .ctrl-value');
+            if (sliders[0]) { sliders[0].value = 1.00; }
+            if (sliders[1]) { sliders[1].value = 0.45; }
+            if (sliders[2]) { sliders[2].value = 0.30; }
+            if (valSpans[0]) { valSpans[0].textContent = '1.00'; }
+            if (valSpans[1]) { valSpans[1].textContent = '0.45'; }
+            if (valSpans[2]) { valSpans[2].textContent = '0.30'; }
+            ctl.set('Ms', 1.00); ctl.set('Hc', 0.45); ctl.set('Ha', 0.30);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>固体的磁响应由磁化率 \(\chi=M/H\) 的符号、大小及温度依赖性分类。<strong>抗磁性</strong>（所有物质都有）源自外场感生的反向拉莫尔电流，\(\chi&lt;0\)、与温度几乎无关。<strong>顺磁性</strong>来自未满壳层的永久磁矩在温度与外场竞争下的统计排列，遵循 <strong>Curie 律 \(\chi=C/T\)</strong>；Curie 常数直接给出有效磁矩 \(\mu_{\mathrm{eff}}\)。<strong>铁磁性</strong>起源于量子<strong>交换作用</strong>（而非偶极作用，后者弱 \(\sim10^{3}\) 倍），在 \(T&lt;T_{C}\) 给出自发磁化；磁畴的形成降低了样品的静磁能，磁滞回线反映了畴壁运动的不可逆性。\(T&gt;T_{C}\) 时遵循 <strong>Curie–Weiss 律 \(\chi=C/(T-\theta)\)</strong>，\(\theta\approx T_{C}\)。Ising/Heisenberg 模型配以 Weiss 平均场给出了相变温度的近似估计，但忽略了涨落，故高估 \(T_{C}\)。</p>
+      <div class="formula">\[ \text{SI 磁性基本关系: }\;\vec B=\mu_{0}(\vec H+\vec M),\quad \vec M=\chi\vec H,\quad \mu_{r}=1+\chi \]</div>
+      <div class="formula">\[ \text{抗磁 (Langevin): }\;\chi_{\mathrm{dia}}=-\frac{\mu_{0}Ze^{2}}{6m_{e}}\,\langle r^{2}\rangle\,n \quad(&lt;0,\;\text{与 }T\text{ 无关}) \]</div>
+      <div class="formula">\[ \text{有效磁矩: }\;\mu_{\mathrm{eff}}=g\mu_{B}\sqrt{J(J+1)},\qquad \mu_{B}=\frac{e\hbar}{2m_{e}}=9.274\times10^{-24}\,\mathrm{A\,m^{2}} \]</div>
+      <div class="formula">\[ \text{Brillouin 函数: }\;M=Ng\mu_{B}J\,B_{J}(\alpha),\;\alpha=\frac{g\mu_{B}JB}{k_{B}T};\quad \alpha\ll1:\;B_{J}\approx\frac{J+1}{3J}\alpha \]</div>
+      <div class="formula">\[ \text{Curie 律: }\;\chi=\frac{C}{T},\qquad C=\frac{N\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}},\qquad C_{\mathrm{mol}}=\frac{N_{A}\mu_{0}\mu_{\mathrm{eff}}^{2}}{3k_{B}}\;\;[\mathrm{m^{3}\,K/mol}] \]</div>
+      <div class="formula">\[ \text{Curie–Weiss 律 (}T&gt;T_{C}\text{): }\;\chi=\frac{C}{T-\theta},\quad \theta\approx T_{C}\;(铁磁),\quad \theta&lt;0\;(反铁磁) \]</div>
+      <div class="formula">\[ \text{Heisenberg 交换: }\;\hat H=-2J_{\mathrm{ex}}\sum_{\langle ij\rangle}\hat{\vec S}_{i}\cdot\hat{\vec S}_{j},\qquad k_{B}T_{C}^{\mathrm{MF}}=\frac{2}{3}J_{\mathrm{ex}}\,z\,S(S+1) \]</div>
+      <div class="formula">\[ \text{磁滞回线: }W_{h}=\oint H\,dB\approx4H_{c}B_{r}\;\;[\mathrm{J/m^{3}}],\quad B_{r}=\mu_{0}M_{r} \]</div>
+      <div class="formula">\[ \text{Ising 平均场: }m=\tanh\!\Big(\frac{Jzm+h}{k_{B}T}\Big),\qquad k_{B}T_{C}^{\mathrm{MF}}=Jz \]</div>
+      <p><strong>核心收获</strong>：磁性是凝聚态中相互作用多样性的最佳展现场所——同一类电子，在不同的量子力学安排（独立、弱耦合交换、强耦合交换）下，给出抗磁、顺磁、铁磁三种迥异行为。交换作用是凝聚态物理中最纯粹的「量子效应转宏观现象」案例之一。下一章我们将转向<strong>超导电性</strong>——另一种宏观量子现象，那里电子通过声子介导配对，给出零电阻与 Meissner 效应。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
