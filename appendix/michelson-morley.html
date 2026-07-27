@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 G · 迈克尔逊–莫雷实验 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 G · Appendix G · 物理学最著名的零结果 The Most Famous Null Result</p>
+      <h1>迈克尔逊–莫雷实验 <span class="en-title">The Michelson–Morley Experiment</span></h1>
+    </header>
+
+    <p class="lead">19 世纪末，物理学家相信光在一种弥漫宇宙的介质——<strong>光以太 (luminiferous ether)</strong>——中传播，以太定义了光的"静止参考系"。地球绕日以约 \(30\,\unit{km/s}\) 穿行其中，理应感到一股"以太风"，使地面测得的光速随方向而变。1887 年迈克尔逊 (Albert Michelson) 与莫雷 (Edward Morley) 用一台浮在水银上的精密干涉仪去捕捉这股风——却什么也没找到：<strong>条纹移动远小于预言，近乎为零</strong>。这个"零结果"摧毁了简单的以太图像，为爱因斯坦 1905 年的狭义相对论铺平了道路。The 1887 Michelson–Morley experiment failed to detect the expected ether wind — the most famous null result in physics, and a pillar on which special relativity was built.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>说明<strong>光以太</strong>假说与"以太风"为何预言光速有方向依赖。</li>
+        <li>讲清迈克尔逊干涉仪测以太风的原理：两垂直臂的<strong>往返时差</strong> → 旋转装置时的<strong>条纹移动</strong>。</li>
+        <li>推导 \(t_{\parallel}\)、\(t_{\perp}\) 与条纹移动量 \(\Delta N=\dfrac{2L}{\lambda}\!\left(\dfrac{v}{c}\right)^{2}\)，并算出 1887 实验预言的 \(\sim0.4\) 条纹。</li>
+        <li>描述 1887 装置的<strong>做法</strong>：水银池上浮沙岩石板、多次反射把有效光程放大到 \(\sim11\,\unit{m}\)、缓慢旋转观察。</li>
+        <li>解释零结果如何引出洛伦兹–菲茨杰拉德收缩、洛伦兹变换，直至爱因斯坦狭义相对论（光速不变 + 相对性原理）。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心物理 Core Physics</h2>
+
+      <h3>1. 以太假说与"以太风"</h3>
+      <p>若光是以太中的波动，麦克斯韦方程组便在<strong>以太静止系</strong>成立，光相对以太以 \(c\) 传播。地球以速度 \(v\approx30\,\unit{km/s}\)（公转）穿越以太，地面的观测者就像在风中行走：光"顺/逆以太风"传播的往返时间会不同。这正是迈克尔逊干涉仪要测的方向依赖。</p>
+
+      <h3>2. 迈克尔逊干涉仪的两臂时差</h3>
+      <p>一束光被半透半反镜（分束器）分成两路，分别沿<strong>平行</strong>与<strong>垂直</strong>于以太风的两臂往返，再会合产生干涉条纹。</p>
+      <p><strong>平行臂</strong>（顺着风去、逆着风回）：相对仪器，光速为 \(c-v\)（去）与 \(c+v\)（回），</p>
+      <div class="formula">\[ t_{\parallel}=\frac{L}{c-v}+\frac{L}{c+v}=\frac{2L}{c}\,\frac{1}{1-v^{2}/c^{2}} \]</div>
+      <p><strong>垂直臂</strong>（光须斜瞄以追踪被风吹移的镜子，有效横向速度 \(\sqrt{c^{2}-v^{2}}\)），</p>
+      <div class="formula">\[ t_{\perp}=\frac{2L}{\sqrt{c^{2}-v^{2}}}=\frac{2L}{c}\,\frac{1}{\sqrt{1-v^{2}/c^{2}}} \]</div>
+      <p>取 \(v\ll c\) 展开（\(1/(1-x)\approx1+x\)，\(1/\sqrt{1-x}\approx1+x/2\)），两路<strong>时间差</strong></p>
+      <div class="formula">\[ t_{\parallel}-t_{\perp}\approx\frac{L}{c}\,\frac{v^{2}}{c^{2}} \]</div>
+      <p>把整个仪器旋转 \(90^{\circ}\)，两臂角色对调，时差变号；条纹随之移动</p>
+      <div class="formula">\[ \Delta N=\frac{2L}{\lambda}\left(\frac{v}{c}\right)^{2} \]</div>
+      <p>这是迈克尔逊预言的"应观测到的条纹移动量"。代入 1887 实验的 \(L\approx11\,\unit{m}\)（多次反射放大的有效光程）、\(\lambda\approx550\,\unit{nm}\)、\(v=30\,\unit{km/s}\)：</p>
+      <div class="formula">\[ \Delta N=\frac{2(11)}{5.5\times10^{-7}}\left(\frac{3.0\times10^{4}}{3.0\times10^{8}}\right)^{2}=(4.0\times10^{7})(1.0\times10^{-8})\approx0.40\;\text{条纹} \]</div>
+      <p>—— 明显可测（肉眼通过望远镜即可数清的量级）。</p>
+
+      <div class="key-terms">luminiferous ether (光以太), ether wind (以太风), interferometer (干涉仪), beamsplitter (分束器), fringe shift (条纹移动), null result (零结果), Lorentz–FitzGerald contraction (洛伦兹–菲茨杰拉德收缩), special relativity (狭义相对论)</div>
+    </section>
+
+    <!-- ============================================================= HISTORY -->
+    <section class="core-concepts">
+      <h2>🕰️ 历史与做法 History &amp; Method</h2>
+
+      <h3>1881 迈克尔逊首试（波茨坦）</h3>
+      <p>迈克尔逊在柏林/波茨坦搭建了第一台以太风干涉仪（有效光程约 \(1.2\,\unit{m}\)），测得的条纹移动远小于预言（近乎零）。但仪器灵敏度不足，且洛伦兹 (1886) 指出他在分析中<strong>忽略了垂直臂的修正</strong>（把灵敏度低估了约 2 倍），结论存疑。于是有了 1887 年与莫雷的决定性重做。</p>
+
+      <h3>1887 迈克尔逊–莫雷（克利夫兰）—— 怎么做的</h3>
+      <ul>
+        <li><strong>多次反射放大光程：</strong>光在每臂的镜子间来回反射，把臂长放大到约 \(11\,\unit{m}\) 有效光程（基座却只有约 \(1.5\,\unit{m}\)），以放大条纹移动。</li>
+        <li><strong>水银池浮沙岩石板：</strong>整套光学件装在一块大<strong>沙岩 (sandstone) 石板</strong>上，石板浮在<strong>水银 (mercury) 池</strong>上——这是最关键、也最具戏剧性的一步：使石板可以<strong>几乎无摩擦、无振动地缓慢转动</strong>，而振动会把比头发丝还细的条纹移动完全淹没。</li>
+        <li><strong>缓慢旋转 + 显微观测：</strong>每约 6 分钟转一圈，通过望远镜/显微镜数条纹。任何以太风都会使条纹随装置朝向而周期性移动。</li>
+        <li><strong>结果：</strong>观测到的振幅<strong>不到预言的 1/8</strong>，约 \(<0.01\!\sim\!0.02\) 条纹——<strong>本质上为零</strong>。以太风没有被探测到。</li>
+      </ul>
+      <div class="note"><strong>最著名的零结果。</strong>实验的"否定"反而意义最大：它证伪了"静止以太 + 速度简单相加"的图像。但以太并未立刻被放弃——洛伦兹等人用<strong>洛伦兹–菲茨杰拉德收缩</strong>（1892：沿运动方向的物体恰好按 \(\sqrt{1-v^{2}/c^{2}}\) 收缩，正好抵消预言的条纹移动）来自圆其说，并于 1904 年发展出洛伦兹变换。1905 年爱因斯坦提出<strong>狭义相对论</strong>，以"相对性原理 + 光速不变"为公设，让以太变得<strong>多余</strong>而被彻底剔除。</div>
+
+      <h3>现代复测 Modern Replications</h3>
+      <p>20 世纪以来用激光、光学谐振腔与低温共振器反复改进，光速各向同性已被确认到 \(\sim10^{-17}\) 量级（如现代 Michelson–Morley 型实验）。零结果越来越"零"。</p>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation：条纹移动与"收缩抵消"</h2>
+      <p class="step"><strong>条纹移动公式。</strong>由 \(t_{\parallel}\)、\(t_{\perp}\) 之差 \(\delta t\approx(L/c)(v/c)^{2}\)。旋转 \(90^{\circ}\) 后两臂对调，时差由 \(+\delta t\) 变为 \(-\delta t\)，总变化 \(2\delta t\)，对应光程差变化 \(c\cdot2\delta t\)，除以波长得条纹移动 \(\Delta N=2c\,\delta t/\lambda=(2L/\lambda)(v/c)^{2}\)。</p>
+      <p class="step"><strong>数值。</strong>\(L=11\,\unit{m}\)，\(\lambda=5.5\times10^{-7}\,\unit{m}\)，\(v/c=10^{-4}\)：\(\Delta N=(2\cdot11/5.5\times10^{-7})\times10^{-8}\approx0.40\)。</p>
+      <p class="step"><strong>洛伦兹–菲茨杰拉德收缩的抵消。</strong>若平行臂按因子 \(\sqrt{1-v^{2}/c^{2}}\) 收缩，则 \(t_{\parallel}\) 变为 \((2L/c)\big/\sqrt{1-v^{2}/c^{2}}=t_{\perp}\)，两臂时差<strong>恰被消去</strong>，条纹不再移动——与零结果一致。这正是相对论中"运动方向长度收缩"的物理同源。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1　预言的条纹移动量</h4>
+        <p class="example-statement">1887 实验 \(L=11\,\unit{m}\)、\(\lambda=550\,\unit{nm}\)、\(v=30\,\unit{km/s}\)。求旋转时预言的条纹移动 \(\Delta N\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\Delta N=\dfrac{2L}{\lambda}(v/c)^{2}=\dfrac{2(11)}{5.50\times10^{-7}}\!\left(\dfrac{3.0\times10^{4}}{3.0\times10^{8}}\right)^{2}\)。</p>
+          <p class="step">\(\dfrac{2L}{\lambda}=\dfrac{22}{5.50\times10^{-7}}=4.0\times10^{7}\)；\((v/c)^{2}=(10^{-4})^{2}=1.0\times10^{-8}\)。</p>
+          <p class="step">\(\Delta N=(4.0\times10^{7})(1.0\times10^{-8})=0.40\)。</p>
+          <p><span class="ans">\(\Delta N\approx0.40\) 条纹——明显可测，但实测接近零。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2　要看到 1 条纹移动需要多长光程</h4>
+        <p class="example-statement">若想在 \(v=30\,\unit{km/s}\)、\(\lambda=550\,\unit{nm}\) 下使 \(\Delta N=1\)（便于肉眼观测），有效光程 \(L\) 需多长？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(\Delta N=(2L/\lambda)(v/c)^{2}\Rightarrow L=\dfrac{\Delta N\,\lambda}{2(v/c)^{2}}=\dfrac{1\times5.5\times10^{-7}}{2\times10^{-8}}=\dfrac{5.5\times10^{-7}}{2.0\times10^{-8}}=27.5\,\unit{m}\)。</p>
+          <p><span class="ans">\(L\approx28\,\unit{m}\)（约为 1887 实际 \(11\,\unit{m}\) 的 2.5 倍——这正是他们靠多次反射拼命放大光程的原因）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3　两臂的时间差有多大</h4>
+        <p class="example-statement">对 \(L=11\,\unit{m}\)、\(v=30\,\unit{km/s}\)，求 \(t_{\parallel}-t_{\perp}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\delta t\approx\dfrac{L}{c}(v/c)^{2}=\dfrac{11}{3.0\times10^{8}}\times10^{-8}=\dfrac{11\times10^{-8}}{3.0\times10^{8}}=3.7\times10^{-16}\,\unit{s}\)。</p>
+          <p><span class="ans">\(\delta t\approx4\times10^{-16}\,\unit{s}\)——比光振动周期 (\(\sim10^{-15}\,\unit{s}\)) 还短，却对应 0.4 条纹；可见这是何等精细的测量。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"迈克尔逊–莫雷实验测了光速。"<br>纠正：它<strong>没有测 \(c\) 的数值</strong>，而是测 \(c\) 是否<strong>随方向变化</strong>（各向异性）——通过干涉条纹的移动来探测。</li>
+        <li><strong>误区：</strong>"这个实验一举证明了光速不变。"<br>纠正：它给以太风设了一个<strong>上界</strong>、证伪了简单以太模型；"光速不变"是爱因斯坦 1905 年作为<strong>公设</strong>提出的，MM 是其最强经验支柱之一，但不是直接"证明"。</li>
+        <li><strong>误区：</strong>"零结果一出，以太就被立刻抛弃。"<br>纠正：以太又存留了近 20 年；洛伦兹等人用收缩假说和变换方程苦苦维持它，直到相对论使其成为多余。</li>
+        <li><strong>误区：</strong>"单个实验推翻了一个理论。"<br>纠正：是以太图像的<strong>一系列</strong>困难（MM、光行差、菲索流水实验…）累积，加上电磁学与力学的张力，才促成相对论。</li>
+        <li><strong>误区：</strong>"1881 和 1887 是同一个实验。"<br>纠正：1881 是灵敏度不足的首试（且分析有漏洞）；1887 与莫雷用更长的有效光程、水银浮台做了决定性版本。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 若地球公转速度未知，但测得 \(\Delta N<0.01\)（\(L=11\,\unit{m},\lambda=550\,\unit{nm}\)），给出 \(v/c\) 的上界。</summary>
+        <div class="hint">由 \(\Delta N=(2L/\lambda)(v/c)^{2}<0.01\) 反解。</div>
+        <div class="solution">\((v/c)^{2}<\dfrac{0.01\,\lambda}{2L}=\dfrac{0.01\times5.5\times10^{-7}}{22}=2.5\times10^{-10}\)；\(v/c<1.6\times10^{-5}\)，即 \(v\lesssim5\,\unit{km/s}\)（远小于地球公转 30 km/s）。<span class="ans">\(v/c\lesssim1.6\times10^{-5}\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 把有效光程加倍（\(L\to2L\)），条纹移动如何变？要看到条纹移动减半应如何改 \(v\)？</summary>
+        <div class="solution">\(\Delta N\propto L\)，故加倍；\(\Delta N\propto v^{2}\)，减半需 \(v\to v/\sqrt{2}\)。<span class="ans">\(\Delta N\) 加倍；\(v\) 减为 \(1/\sqrt{2}\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. （概念）为什么仪器必须能平滑转动？为何要浮在水银上？</summary>
+        <div class="solution">要观测的是<strong>装置朝向</strong>变化时条纹的相对移动（\(\sim0.4\) 条纹，极小）；任何振动/抖动都会把这么细的移动完全淹没。水银池使沉重的沙岩石板近乎无摩擦地缓慢平稳转动，把振动降到最低。<span class="ans">为压低振动、平稳转动以分辨 \(\sim0.4\) 条纹的微小移动。</span></div>
+      </details>
+      <details class="problem">
+        <summary>4. （概念）洛伦兹–菲茨杰拉德收缩为何能"恰好"抵消条纹移动？这与相对论有何关系？</summary>
+        <div class="solution">平行臂按 \(\sqrt{1-v^{2}/c^{2}}\) 收缩，使 \(t_{\parallel}=t_{\perp}\)，时差归零、条纹不动。相对论中"运动方向长度收缩"是同一效应的协调一致表述，且与时间膨胀、光速不变共同构成自洽体系。<span class="ans">收缩使两臂时差恰为零；这正是相对论长度收缩的同源。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">迈克尔逊干涉仪俯视图：光源→分束器→两垂直臂（镜 M₁/M₂）→会合→望远镜看条纹。左侧固定箭头是"以太风"。勾选 <strong>ether（以太理论）</strong>：转动装置时条纹按 \(\cos2\theta\) 摆动，幅度正比预言的 \(\Delta N=(2L/\lambda)(v/c)^{2}\)；取消勾选即 <strong>relativity（相对论）</strong>：光速各向同性，<strong>条纹不动</strong>——重现 1887 的零结果。<em>条纹位移为可见已放大显示。</em></p>
+      <div class="sim-container">
+        <canvas id="sim-mm" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-mm"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-mm');
+        var W = canvas.width, H = canvas.height;
+        var CX = 200, CY = 180, ARM = 116;          // interferometer centre + arm length (px)
+        var C_LIGHT = 3.0e8, L_PHYS = 11, LAMBDA = 550e-9;
+
+        var params = { theta: 0, v: 30, ether: true, auto: true };
+
+        function peakShift() {                        // predicted fringe shift ΔN (fringes)
+          var f = (params.v * 1000) / C_LIGHT;
+          return (2 * L_PHYS / LAMBDA) * f * f;
+        }
+        function fringeOffset() {                     // current offset, in fringe units
+          return params.ether ? peakShift() * Math.cos(2 * params.theta * Math.PI / 180) : 0;
+        }
+        function rot(x, y, a) {                       // rotate local pt by angle a (deg)
+          var r = a * Math.PI / 180, cs = Math.cos(r), sn = Math.sin(r);
+          return [CX + x * cs - y * sn, CY + x * sn + y * cs];
+        }
+
+        var sim = PS.createSim(canvas, {
+          state: function () { params.theta = 0; return {}; },
+          step: function (dt) {
+            if (params.auto) { params.theta = (params.theta + 0.6) % 360; }
+          },
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            var th = params.theta;
+            // ether-wind arrow (fixed, lab frame)
+            PS.drawText(ctx, '以太风 ether wind (lab)', 60, 24, { font: '10px monospace', color: C.text });
+            PS.drawArrow(ctx, 60, 40, 170, 40, C.trace);
+            // interferometer (rotates with theta)
+            var src = rot(-ARM, 0, th), m2 = rot(ARM, 0, th), m1 = rot(0, -ARM, th), det = rot(0, ARM, th);
+            // beam paths
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = C.accent;                 // parallel arm (source->BS->M2->BS)
+            line(ctx, src, [CX, CY]); line(ctx, [CX, CY], m2);
+            ctx.strokeStyle = C.accent2;                // perpendicular arm
+            line(ctx, [CX, CY], m1);
+            ctx.strokeStyle = C.axis;                   // recombined -> detector
+            line(ctx, [CX, CY], det);
+            // beamsplitter (diagonal)
+            var b1 = rot(-14, -14, th), b2 = rot(14, 14, th);
+            ctx.strokeStyle = C.text; ctx.lineWidth = 3; line(ctx, b1, b2);
+            // source + mirrors + detector
+            ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 9;
+            PS.drawCircle(ctx, src[0], src[1], 5, { fill: C.accent }); ctx.restore();
+            mirror(ctx, m2, th); mirror(ctx, m1, th + 90);
+            PS.drawText(ctx, 'M₂', m2[0] + 10, m2[1] + 4, { font: '10px monospace', color: C.text });
+            PS.drawText(ctx, 'M₁', m1[0] - 16, m1[1] - 4, { font: '10px monospace', color: C.text });
+            PS.drawText(ctx, '源', src[0] - 18, src[1] + 4, { font: '10px monospace', color: C.text });
+            // detector / telescope view (right window)
+            var WX = 432, WY = 70, WW = 196, WH = 220;
+            ctx.strokeStyle = C.text; ctx.lineWidth = 1.5;
+            ctx.strokeRect(WX, WY, WW, WH);
+            PS.drawText(ctx, '望远镜条纹 telescope fringes', WX, WY - 6, { font: '10px monospace', color: C.text });
+            // vertical fringes, shifted by amplified offset
+            var off = fringeOffset() * 60;              // amplified (px per fringe)
+            var mid = WY + WH / 2, gap = 14;
+            ctx.fillStyle = C.accent;
+            for (var n = -7; n <= 7; n++) {
+              var xx = WX + WW / 2 + n * gap + off;
+              if (xx > WX + 3 && xx < WX + WW - 3) ctx.fillRect(xx - 1.5, WY + 8, 3, WH - 16);
+            }
+            // centre tick (reference)
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+            ctx.beginPath(); ctx.moveTo(WX + WW / 2, WY); ctx.lineTo(WX + WW / 2, WY + WH); ctx.stroke(); ctx.setLineDash([]);
+            // readout
+            var info = (params.ether ? '以太 ether 理论' : '相对论 relativity') +
+                       '   |   θ = ' + Math.round(params.theta) + '°' +
+                       '   |   v = ' + params.v + ' km/s' +
+                       '   |   预言 ΔN = ' + peakShift().toFixed(3) + ' 条纹' +
+                       (params.ether ? '' : '   |   预期：不动（零结果）');
+            PS.drawText(ctx, info, 6, H - 8, { font: '11px monospace', color: C.text });
+          },
+        });
+        function line(ctx, a, b) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+        function mirror(ctx, p, ang) {                 // small mirror bar perpendicular to beam
+          var a = rot(8, -10, ang), b = rot(8, 10, ang);
+          ctx.strokeStyle = ctx.fillStyle = PS.colors.text; ctx.lineWidth = 3;
+          line(ctx, a, b);
+        }
+
+        var ctl = PS.makeControls(document.getElementById('controls-mm'), [
+          { type: 'toggle', key: 'ether', label: '以太 ether（关 = 相对论 relativity）', value: true },
+          { type: 'toggle', key: 'auto',  label: '自动旋转 auto-rotate', value: true },
+          { type: 'slider', key: 'theta', label: '装置朝向 θ (°)', min: 0, max: 360, step: 1, value: 0 },
+          { type: 'slider', key: 'v',     label: '以太风速 v (km/s)', min: 0, max: 60, step: 1, value: 30 },
+          { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+        ]);
+        ctl.on('ether', function (v) { params.ether = v; });
+        ctl.on('auto',  function (v) { params.auto = v; });
+        ctl.on('theta', function (v) { if (!params.auto) params.theta = v; });
+        ctl.on('v',     function (v) { params.v = v; });
+        ctl.on('reset', function () { params.theta = 0; sim.reset(); });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>以太假说预言：地面应感到 \(\sim30\,\unit{km/s}\) 的以太风，光速有方向依赖。</li>
+        <li>迈克尔逊干涉仪把两垂直臂的往返时差转化为条纹移动：\(\Delta N=(2L/\lambda)(v/c)^{2}\)；1887 预言 \(\sim0.4\) 条纹。</li>
+        <li>1887 装置：水银池浮沙岩石板（消振 + 平稳旋转）、多次反射放大光程至 \(\sim11\,\unit{m}\)。</li>
+        <li>实测 \(<0.01\) 条纹——<strong>零结果</strong>，证伪简单以太；引出洛伦兹收缩，1905 爱因斯坦以光速不变 + 相对性原理建立狭义相对论。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;t_{\parallel}=\frac{2L}{c}\frac{1}{1-v^{2}/c^{2}},\quad t_{\perp}=\frac{2L}{c}\frac{1}{\sqrt{1-v^{2}/c^{2}}},\quad \Delta N=\frac{2L}{\lambda}\!\left(\frac{v}{c}\right)^{2}\;\xrightarrow{\;1887\;}\;\approx0\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

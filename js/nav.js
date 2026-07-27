@@ -220,6 +220,7 @@
           { url: 'appendix/electron-gun.html', title: '电子枪（实验装置）', en: 'The Electron Gun', ref: true },
           { url: 'appendix/double-slit.html', title: '双缝干涉的历史', en: 'The Double-Slit: A History', ref: true },
           { url: 'appendix/stern-gerlach.html', title: 'Stern–Gerlach 实验', en: 'Stern–Gerlach Experiment', ref: true },
+          { url: 'appendix/michelson-morley.html', title: '迈克尔逊–莫雷实验', en: 'Michelson–Morley Experiment', ref: true },
         ]},
       ],
     },
