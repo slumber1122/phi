@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 H · 光子的产生 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+  <style>
+    .mech-table { width:100%; border-collapse:collapse; margin:1.1rem 0 1.6rem; font-size:0.9rem; font-family:var(--font-body); }
+    .mech-table th, .mech-table td { padding:0.5rem 0.6rem; text-align:left; border-bottom:1px solid var(--border); vertical-align:top; }
+    .mech-table thead th { background:var(--paper-elev); color:var(--ink); font-family:var(--font-display); font-weight:600; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.03em; border-bottom:2px solid var(--indigo); }
+    .mech-table td:first-child { font-weight:600; color:var(--indigo-deep); white-space:nowrap; }
+    [data-theme="dark"] .mech-table td:first-child { color:var(--indigo); }
+    .mech-table tr:hover td { background:var(--paper-sunk); }
+    .mech-table .tag { font-family:var(--font-mono); font-size:0.8rem; color:var(--amber-deep); }
+  </style>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 H · Appendix H · 电磁辐射的来源 Origins of EM Radiation</p>
+      <h1>光子的产生 <span class="en-title">How Photons Are Produced</span></h1>
+    </header>
+
+    <p class="lead">"光子是怎么产生的？"答案只有一句话：<strong>带电系统释放能量时，就以电磁辐射的形式带走，每一份量子化的辐射就是一个光子。</strong>它有两种等价描述——经典图像里"加速的电荷会辐射"，量子图像里"系统从高能态跃迁到低能态，放出光子 \(h\nu=\Delta E\)"。本附录把各种产生机制列成一张表，并用一个光谱选择器直观展示：<strong>能量从哪里来，决定了光谱长什么样</strong>。A photon is emitted whenever a charged system releases energy; the energy source (thermal, a level transition, acceleration, annihilation…) determines the spectrum.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>掌握产生光子的统一判据：加速电荷辐射（经典）/ \(\Delta E=h\nu\) 跃迁（量子）。</li>
+        <li>区分<strong>连续谱</strong>（热辐射、轫致、同步）与<strong>分立谱</strong>（原子线状谱、核 γ、湮没单能峰）的物理根源。</li>
+        <li>由 \(E=h\nu=hc/\lambda\) 在光子能量与波长间换算（如 \(1240\,\unit{nm\cdot eV}/\lambda\)）。</li>
+        <li>说明常见机制：黑体辐射、原子跃迁、激光、轫致辐射、同步辐射、切伦科夫、湮没、核 γ。</li>
+        <li>理解"做一个光子"的不同层级：普通光源（多光子）→ 衰减法 → heralded 单光子源（SPDC）。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心物理 Core Physics</h2>
+      <p>无论哪种机制，光子的能量都由释放它的过程决定：</p>
+      <div class="formula">\[ E_\gamma = h\nu = \frac{hc}{\lambda},\qquad hc = 1240\,\unit{nm\cdot eV} \]</div>
+      <p>对量子跃迁，光子能量恰为两能级之差：</p>
+      <div class="formula">\[ h\nu = E_2 - E_1 \]</div>
+      <p>对经典加速辐射，单个电荷的辐射功率由<strong>拉莫尔公式</strong> \(P=\dfrac{q^{2}a^{2}}{6\pi\varepsilon_0 c^{2}}\) 给出（\(a\) 为加速度）——加速越剧烈，辐射越强；这类过程给出<strong>连续谱</strong>。</p>
+      <div class="note"><strong>连续 vs 分立，根源在于"能级是否分立"。</strong>原子/原子核的内部能级是量子化的，跃迁给出<strong>特定能量</strong>的光子 → 分立谱线；而热运动、电子被核减速、相对论电子在磁场中回旋等过程涉及<strong>连续可变</strong>的能量释放 → 连续谱。记住这一条，下面的表就一目了然。</div>
+      <div class="key-terms">photon (光子), spectral line (谱线), continuous spectrum (连续谱), blackbody (黑体), transition (跃迁), spontaneous/stimulated emission (自发/受激辐射), bremsstrahlung (轫致辐射), synchrotron (同步辐射), annihilation (湮没)</div>
+    </section>
+
+    <!-- ============================================================= TABLE -->
+    <section class="core-concepts">
+      <h2>📋 产生机制总表 Mechanisms at a Glance</h2>
+      <table class="mech-table">
+        <caption style="caption-side:top;text-align:left;color:var(--ink-soft);font-size:0.85rem;padding:0.3rem 0 0.5rem;">表 H.1 光子的主要产生机制 / Main mechanisms of photon production</caption>
+        <thead>
+          <tr>
+            <th>机制 Mechanism</th>
+            <th>能量来源 Energy source</th>
+            <th>谱型 Spectrum</th>
+            <th>例子 Example</th>
+            <th>光子能量 Energy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>热辐射 / 黑体</td><td>热运动（温度 \(T\)）</td><td>连续（Planck 分布）</td><td>太阳、白炽灯丝</td><td class="tag">IR–可见–UV</td></tr>
+          <tr><td>原子跃迁</td><td>电子能级差 \(\Delta E\)</td><td>分立谱线</td><td>霓虹灯、钠灯、H 巴耳末系</td><td class="tag">eV（可见–UV）</td></tr>
+          <tr><td>受激辐射 → 激光</td><td>粒子数反转 + 光腔</td><td>极窄单色、相干</td><td>激光器</td><td class="tag">eV（单色）</td></tr>
+          <tr><td>分子振动/转动</td><td>分子能级差</td><td>分立（红外/微波）</td><td>红外热像、星际分子</td><td class="tag">meV（IR/μW）</td></tr>
+          <tr><td>轫致辐射</td><td>电子被核库仑场减速</td><td>连续（至截止 \(eV\)）</td><td>X 光管、CT</td><td class="tag">keV（X 射线）</td></tr>
+          <tr><td>同步辐射</td><td>相对论电子磁场回旋</td><td>宽带连续</td><td>同步光源、超新星遗迹</td><td class="tag">eV–MeV</td></tr>
+          <tr><td>切伦科夫辐射</td><td>粒子超介质中光速</td><td>可见锥形</td><td>反应堆水池蓝光</td><td class="tag">可见</td></tr>
+          <tr><td>湮没</td><td>质能等价 \(m_ec^{2}\)</td><td>单能峰</td><td>\(e^{+}e^{-}\to2\gamma\)、PET</td><td class="tag">511 keV（γ）</td></tr>
+          <tr><td>核 γ 跃迁</td><td>核能级差</td><td>分立 γ 线</td><td>\(^{60}\mathrm{Co}\) 的 1.17/1.33 MeV</td><td class="tag">MeV（γ）</td></tr>
+          <tr><td>粒子衰变</td><td>质能</td><td>单能/分立 γ</td><td>\(\pi^{0}\to2\gamma\)</td><td class="tag">MeV（γ）</td></tr>
+          <tr><td>化学发光 / 荧光</td><td>化学反应留激发态</td><td>分立（分子/原子）</td><td>萤火虫、荧光棒、日光灯</td><td class="tag">可见</td></tr>
+          <tr><td>参量下转换 SPDC</td><td>一个泵浦光子劈裂</td><td>两相关低能光子</td><td>单光子源（见双缝附录）</td><td class="tag">eV</td></tr>
+          <tr><td>真空涨落（exotic）</td><td>量子真空</td><td>光子对</td><td>动态卡西米、霍金辐射</td><td class="tag">—</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================= LASER -->
+    <section class="core-concepts">
+      <h2>🔴 激光是怎么产生的 How a Laser Is Made</h2>
+      <p>激光 (laser = Light Amplification by Stimulated Emission of Radiation) 仍是机制 ③（受激辐射），但它需要一套<strong>工程装置</strong>把"自发随机发光"变成"相干放大"。三要素：</p>
+      <ol>
+        <li><strong>增益介质 (gain medium)</strong>：具有合适能级的原子/分子/离子或固体——如 Nd:YAG 晶体、He-Ne 气体、半导体 p-n 结、CO₂ 气体、Ti:蓝宝石。</li>
+        <li><strong>泵浦 (pump)</strong>：把电子抽到上能级的能量源——闪光灯、气体放电、电流注入（二极管）、或另一束激光（DPSS 二极管泵浦固态）。</li>
+        <li><strong>光学谐振腔 (optical cavity)</strong>：两面相对的镜（一全反、一部分透射 = 输出镜），光在其中往返穿过增益介质，每次受激辐射放大；增益超过损耗即起振。</li>
+      </ol>
+      <div class="note"><strong>粒子数反转 (population inversion)。</strong>常态下低能级粒子更多（玻尔兹曼分布）。泵浦必须把更多粒子抬到上能级、并让下能级迅速排空（常用三能级 / 四能级方案），形成"反转"。一旦反转，一个路过光子就能诱发一串<strong>完全相同</strong>的光子（同频率、相位、方向、偏振）→ 雪崩放大 → 输出<strong>相干、单色、定向</strong>的光束（连续或脉冲，最短可达飞秒级，靠锁模 mode-locking）。</div>
+
+      <h3>UV 紫外激光怎么造</h3>
+      <p>紫外光子能量更高（\(\sim3\!\sim\!10\,\unit{eV}\)），要直接产生 UV 激光，"上-下能级差"必须落在 UV 区。两条主流路线：</p>
+
+      <p><strong>A. 直接 UV 增益介质</strong></p>
+      <ul>
+        <li><strong>准分子激光 (excimer)</strong>：稀有气体（Ar、Kr、Xe）+ 卤素（F、Cl）。基态下不结合，但<strong>放电激发后形成短暂结合的"准分子"</strong>，它退激发就释放一个 UV 光子。典型：ArF 193 nm、KrF 248 nm、XeCl 308 nm、F₂ 157 nm。用途：LASIK 近视手术（193 nm 光子直接打断角膜分子键、几乎无热损伤）与<strong>半导体光刻</strong>（193 nm ArF 浸没式光刻定义了多数现代芯片的线宽）。</li>
+        <li><strong>氮气激光 (N₂)</strong>：337 nm，结构简单、脉冲工作。</li>
+        <li><strong>UV 半导体二极管</strong>：GaN 基，365–405 nm，用于 UV 固化、检测（小型化、电注入）。</li>
+      </ul>
+
+      <p><strong>B. 非线性频率转换（倍频 / 和频）</strong>：用一块<strong>非线性晶体</strong>（BBO、LBO、KDP、CLBO）把 IR/可见激光的频率"翻倍 / 三倍"。一束 Nd:YAG 的 1064 nm 红外光经级联倍频可得绿光与 UV：</p>
+      <div class="formula">\[ \underbrace{1064\,\unit{nm}}_{\text{Nd:YAG (IR)}} \;\to\; \underbrace{532\,\unit{nm}}_{\text{倍频 SHG (绿)}} \;\to\; \underbrace{355\,\unit{nm}}_{\text{三倍频 THG (UV)}} \;\to\; \underbrace{266\,\unit{nm}}_{\text{四倍频 FHG (深 UV)}} \]</div>
+      <p>很多"UV 固态激光器"就是这么做的：二极管泵浦 Nd:YAG / YVO₄ + 级联非线性晶体。连常见的<strong>"绿激光笔"也是 DPSS</strong>——1064 nm 经倍频得到 532 nm，并非直接发绿光的二极管。</p>
+
+      <p><strong>C. 深紫外 / 极紫外 (DUV / EUV) —— 芯片制造的极致</strong></p>
+      <p>最先进的芯片（5 nm、3 nm 节点）用 <strong>EUV 13.5 nm</strong> 光刻：用高功率 CO₂ 激光每秒数万次轰击下落的<strong>锡 (Sn) 液滴</strong>，形成锡等离子体辐射 13.5 nm 的 EUV，再用一套极其复杂的反射镜收集成像。EUV 光刻机是目前人类最精密的制造设备之一——光子能量高达 \(\sim92\,\unit{eV}\)。</p>
+
+      <table class="mech-table">
+        <caption style="caption-side:top;text-align:left;color:var(--ink-soft);font-size:0.85rem;padding:0.3rem 0 0.5rem;">表 H.2 常见 UV / 深紫外激光 / Common UV &amp; DUV lasers</caption>
+        <thead><tr><th>类型 Type</th><th>介质 / 机制 Medium</th><th>波长 λ</th><th>典型用途 Use</th></tr></thead>
+        <tbody>
+          <tr><td>准分子 excimer</td><td>ArF 放电</td><td class="tag">193 nm</td><td>LASIK、芯片光刻</td></tr>
+          <tr><td>准分子 excimer</td><td>KrF 放电</td><td class="tag">248 nm</td><td>工业微加工</td></tr>
+          <tr><td>氮气 N₂</td><td>N₂ 气体放电</td><td class="tag">337 nm</td><td>教学、泵浦染料激光</td></tr>
+          <tr><td>三倍频 THG</td><td>Nd:YAG + BBO</td><td class="tag">355 nm</td><td>精密加工、荧光激发</td></tr>
+          <tr><td>四倍频 FHG</td><td>Nd:YAG + BBO</td><td class="tag">266 nm</td><td>深紫外、拉曼光谱</td></tr>
+          <tr><td>UV 二极管</td><td>GaN 半导体</td><td class="tag">365–405 nm</td><td>UV 固化、检测</td></tr>
+          <tr><td>EUV</td><td>锡等离子体</td><td class="tag">13.5 nm</td><td>先进芯片光刻</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>把激光和"光子产生"连起来：</strong>无论哪种激光，发光那一步仍是<strong>原子/分子的受激跃迁</strong>（\(h\nu=E_2-E_1\)）。UV 激光的"紫外"要么来自更大的能级差（准分子），要么靠非线性晶体把频率翻倍——本质上都是在提高单个光子的能量 \(h\nu\)。</div>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <p class="step"><strong>跃迁 → 谱线。</strong>氢原子能级 \(E_n=-13.6\,\unit{eV}/n^{2}\)。巴耳末系（\(n\to2\)）第一条 \(n=3\to2\)：</p>
+      <div class="formula">\[ \Delta E=13.6\!\left(\frac{1}{2^{2}}-\frac{1}{3^{2}}\right)=13.6\!\left(\frac{1}{4}-\frac{1}{9}\right)=13.6\times0.1389=1.89\,\unit{eV} \]</div>
+      <p class="step">\(\lambda=hc/\Delta E=1240/1.89=656\,\unit{nm}\)（红色 Hα）。能级分立 → 谱线分立。</p>
+      <p class="step"><strong>黑体峰值随温度移动（维恩）。</strong>按能量计的 Planck 谱 \(B(E)\propto E^{3}/(e^{E/kT}-1)\) 在 \(E_{\text{peak}}\approx2.82\,kT\) 处取极大。\(T\) 升高 → 峰向高能（短波）移动：\(T=3000\,\unit{K}\)（红巨星/灯泡）峰在红外，\(T=5800\,\unit{K}\)（太阳）峰在近红外/可见边缘，\(T=10000\,\unit{K}\)（蓝白星）峰移到蓝/紫外——这正是恒星颜色的由来。</p>
+      <p class="step"><strong>轫致辐射截止。</strong>X 光管中电子被电压 \(V\) 加速，最多把全部动能 \(eV\) 交给一个光子，故连续谱有硬截止 \(E_{\max}=eV\)；\(V=30\,\unit{kV}\Rightarrow E_{\max}=30\,\unit{keV}\)。</p>
+      <p class="step"><strong>湮没单能峰。</strong>正负电子对静止湮没：\(e^{+}e^{-}\to2\gamma\)，能量守恒给每个光子 \(E_\gamma=m_ec^{2}=511\,\unit{keV}\)——一个尖锐的单能峰（PET 成像就靠它）。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1　钠黄光的能量</h4>
+        <p class="example-statement">钠灯 D 线 \(\lambda=589\,\unit{nm}\)。求光子能量（eV 与 J）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(E=hc/\lambda=1240/589=2.10\,\unit{eV}\)。</p>
+          <p class="step">\(E=2.10\times1.602\times10^{-19}=3.37\times10^{-19}\,\unit{J}\)。</p>
+          <p><span class="ans">\(2.10\,\unit{eV}\)（\(3.37\times10^{-19}\,\unit{J}\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2　黑体峰位（太阳）</h4>
+        <p class="example-statement">太阳 \(T\approx5800\,\unit{K}\)。按维恩波长定律 \(\lambda_{\max}T=2.898\times10^{-3}\,\unit{m\,K}\)，求峰值波长与对应能量。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\lambda_{\max}=2.898\times10^{-3}/5800=5.00\times10^{-7}\,\unit{m}=500\,\unit{nm}\)（绿/可见）。</p>
+          <p class="step">\(E=1240/500=2.48\,\unit{eV}\)。</p>
+          <p><span class="ans">\(\lambda_{\max}\approx500\,\unit{nm}\)，\(E\approx2.5\,\unit{eV}\)——恰在可见光带（太阳光谱在此最丰）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3　X 光管的最短波长</h4>
+        <p class="example-statement">X 光管 \(V=50\,\unit{kV}\)。求轫致谱的最短波长（截止）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>截止 \(E_{\max}=eV=50\,\unit{keV}\)；\(\lambda_{\min}=hc/E=1240/(5.0\times10^{4})=0.0248\,\unit{nm}=0.248\,\unit{Å}\)。</p>
+          <p><span class="ans">\(\lambda_{\min}\approx0.025\,\unit{nm}\)（硬 X 射线）——电压越高，X 射线越"硬"。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"光子只是可见光。"<br>纠正：光子跨越整个电磁谱——从射电、微波、红外、可见、紫外、X 到 γ，区别只是能量 \(h\nu\)。可见光只是其中很窄一段（约 \(1.6\!\sim\!3.3\,\unit{eV}\)）。</li>
+        <li><strong>误区：</strong>"激光是用别的方法造光子。"<br>纠正：激光仍是<strong>受激跃迁</strong>（原子退激发），只是受入射光子诱导、产生同相光子；能量来源仍是能级差。</li>
+        <li><strong>误区：</strong>"连续谱和分立谱是测量误差。"<br>纠正：连续 vs 分立源自物理本身——前者来自连续可变的能量释放（加速、热），后者来自量子化能级的跃迁。</li>
+        <li><strong>误区：</strong>"湮没是凭空产生能量。"<br>纠正：能量来自粒子的<strong>静质量</strong>（\(E=mc^{2}\)），质能守恒；\(511\,\unit{keV}\) 恰为电子静能。</li>
+        <li><strong>误区：</strong>"单个光子有颜色。"<br>纠正：颜色是大量光子的统计/感知；单个光子只有确定的能量（频率），"颜色"是大脑对该能量的诠释。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 调频广播 \(f=100\,\unit{MHz}\)，求光子能量。它为什么不像可见光那样显得"颗粒化"？</summary>
+        <div class="hint">\(E=hf\)；与室温 \(kT\) 比较。</div>
+        <div class="solution">\(E=hf=(4.14\times10^{-15})(10^{8})=4.14\times10^{-7}\,\unit{eV}\)，远小于室温 \(kT\approx0.026\,\unit{eV}\)，故量子性被热涨落淹没，表现为经典波。<span class="ans">\(\sim4\times10^{-7}\,\unit{eV}\)；量子能 \(\ll kT\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 黑体温度从 \(3000\,\unit{K}\) 升到 \(6000\,\unit{K}\)，峰值波长如何变？峰值光子能量如何变？</summary>
+        <div class="solution">维恩 \(\lambda_{\max}\propto1/T\)，温度翻倍 → 峰值波长减半；能量 \(E\propto T\)，翻倍。<span class="ans">\(\lambda_{\max}\) 减半，\(E_{\text{peak}}\) 加倍（峰蓝移）。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. 一个动能为 \(2\,\unit{MeV}\) 的正电子与静止电子湮没，产生的 γ 光子能量上限是多少？</summary>
+        <div class="solution">能量守恒：总能量 \(=2m_ec^{2}+K=2(511)+2000=3022\,\unit{keV}\)，分给两个光子；单光子上限（对头撞时一个光子拿走几乎全部）约 \(3022\,\unit{keV}\)，下限（两光子均分）约 \(1511\,\unit{keV}\)。静止湮没则为对称的 \(511\,\unit{keV}\)。<span class="ans">单光子能量在 \(\sim1.5\!\sim\!3.0\,\unit{MeV}\) 间（视动量分布）。</span></div>
+      </details>
+      <details class="problem">
+        <summary>4. （概念）为什么把普通光"极度衰减"不算严格单光子源，而 SPDC 算？</summary>
+        <div class="solution">衰减只是降低热光的<strong>平均</strong>光子数，但热光是混杂光（光子成团到达），无法保证"一次一个"；SPDC 探测到其中一个下转换光子即"宣告"另一个必定存在，且可测反聚束 \(g^{(2)}(0)<1/2\) 严格证明单光子。<span class="ans">衰减=统计平均；SPDC=可宣告、反聚束。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation：光谱选择器</h2>
+      <p class="sim-desc">横轴是光子能量（对数，跨红外 → 可见 → 紫外 → X → γ），纵轴是相对强度。拖动 <strong>mechanism</strong> 选择产生机制，看它的<strong>谱型</strong>：黑体=连续包（拖 <strong>T</strong> 看峰蓝移）、原子谱线=分立尖峰、轫致=连续带硬截止、同步=宽带、湮没=511 keV 单能峰、激光=单色峰。灰色带是<strong>可见光</strong>。</p>
+      <div class="sim-container">
+        <canvas id="sim-pp" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-pp"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-pp');
+        var W = canvas.width, H = canvas.height;
+        var padL = 56, padR = 14, padT = 22, padB = 42;
+        var plotW = W - padL - padR, plotH = H - padT - padB;
+        var LEMIN = -1, LEMAX = 6.3;            // log10(E/eV): 0.1 eV .. ~2 MeV
+        var C_EV = 1240;                         // hc in nm·eV
+        var kB = 8.617e-5;                        // eV/K
+
+        var params = { mech: 1, T: 5800 };
+
+        function xOf(E) { return padL + (Math.log10(E) - LEMIN) / (LEMAX - LEMIN) * plotW; }
+        function EofX(x) { return Math.pow(10, LEMIN + (x - padL) / plotW * (LEMAX - LEMIN)); }
+
+        // ---- spectrum models (return normalized intensity 0..1) ----
+        function bbRaw(E) { var kT = kB * params.T; var x = E / kT; return (x < 1e-3) ? E * E / kT : E * E * E / (Math.exp(x) - 1); }
+        function bremsRaw(E) { var Emax = 30000; return (E > 50 && E < Emax) ? (Emax - E) : 0; }
+        function synchRaw(E) { var Ec = 1000; return Math.pow(E, 1 / 3) * Math.exp(-E / Ec); }
+        function normMax(f, lo, hi, n) { var m = 0; for (var i = 0; i < n; i++) { var E = Math.pow(10, Math.log10(lo) + i / (n - 1) * (Math.log10(hi) - Math.log10(lo))); var v = f(E); if (v > m) m = v; } return m || 1; }
+        var BALMER = [
+          { E: 1.89, h: 1.00, t: 'Hα 656' },
+          { E: 2.55, h: 0.62, t: 'Hβ 486' },
+          { E: 2.86, h: 0.42, t: 'Hγ 434' },
+          { E: 3.02, h: 0.30, t: 'Hδ 410' },
+          { E: 3.40, h: 0.20, t: '极限' }
+        ];
+
+        var MECH = [
+          null,
+          { name: '① 黑体辐射 Blackbody  (T=' , note: '连续谱；峰随 T 蓝移 (Planck)', kind: 'cont', f: bbRaw, lo: 0.05, hi: 50 },
+          { name: '② 原子谱线 H 巴耳末系', note: '分立谱线 ΔE=hν (能级量子化)', kind: 'lines', lines: BALMER },
+          { name: '③ 轫致辐射 Bremsstrahlung', note: '连续带硬截止 E_max=eV (X 射线)', kind: 'cont', f: bremsRaw, lo: 50, hi: 32000 },
+          { name: '④ 同步辐射 Synchrotron', note: '宽带连续 (相对论电子磁场回旋)', kind: 'cont', f: synchRaw, lo: 0.5, hi: 1e5 },
+          { name: '⑤ 湮没 γ  e⁺e⁻→2γ', note: '511 keV 单能峰 = m_e c²', kind: 'lines', lines: [{ E: 511000, h: 1, t: '511 keV' }] },
+          { name: '⑥ 单色 / 激光 Laser', note: '极窄单色峰 (受激辐射)', kind: 'lines', lines: [{ E: 2.33, h: 1, t: '532 nm' }] },
+        ];
+
+        var sim = PS.createSim(canvas, {
+          state: function () { return {}; },
+          step: function () {},
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            // visible band shading (1.65 .. 3.26 eV)
+            ctx.fillStyle = 'rgba(120,105,70,0.10)';
+            ctx.fillRect(xOf(1.65), padT, xOf(3.26) - xOf(1.65), plotH);
+            // axis box
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+            ctx.strokeRect(padL, padT, plotW, plotH);
+            // x ticks (decades)
+            ctx.fillStyle = C.text; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+            var labs = { '-1': '0.1 eV\nIR', '0': '1 eV', '1': '10 eV\nUV', '2': '100 eV', '3': '1 keV\nX', '4': '10 keV', '5': '100 keV', '6': '1 MeV\nγ' };
+            for (var k = -1; k <= 6; k++) {
+              var xx = xOf(Math.pow(10, k));
+              ctx.strokeStyle = C.grid; ctx.beginPath(); ctx.moveTo(xx, padT); ctx.lineTo(xx, padT + plotH); ctx.stroke();
+              var lab = labs[String(k)] || '';
+              lab.split('\n').forEach(function (s, j) { ctx.fillText(s, xx, padT + plotH + 12 + j * 11); });
+            }
+            ctx.textAlign = 'left'; ctx.fillText('光子能量 photon energy  →', padL, H - 4);
+            // visible label
+            ctx.fillStyle = C.text; ctx.textAlign = 'center';
+            ctx.fillText('可见光 visible', (xOf(1.65) + xOf(3.26)) / 2, padT + 10);
+
+            var m = MECH[params.mech];
+            ctx.fillStyle = ctx.strokeStyle = C.accent; ctx.lineWidth = 2;
+            if (m.kind === 'cont') {
+              var M = normMax(m.f, m.lo, m.hi, 400);
+              ctx.beginPath();
+              var started = false;
+              for (var xp = padL; xp <= padL + plotW; xp += 1) {
+                var E = EofX(xp); var v = m.f(E) / M;
+                if (v < 0) v = 0; if (v > 1) v = 1;
+                var yp = padT + plotH - v * plotH;
+                if (!started) { ctx.moveTo(xp, padT + plotH); ctx.lineTo(xp, yp); started = true; }
+                else ctx.lineTo(xp, yp);
+              }
+              ctx.lineTo(padL + plotW, padT + plotH); ctx.closePath();
+              ctx.globalAlpha = 0.35; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke();
+            } else {
+              m.lines.forEach(function (ln) {
+                var xp = xOf(ln.E);
+                var yp = padT + plotH - ln.h * plotH * 0.92;
+                ctx.strokeStyle = C.accent; ctx.lineWidth = 2.5;
+                ctx.beginPath(); ctx.moveTo(xp, padT + plotH); ctx.lineTo(xp, yp); ctx.stroke();
+                ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(xp, yp, 3, 0, 7); ctx.fill();
+                ctx.fillStyle = C.text; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+                ctx.fillText(ln.t, xp, yp - 6);
+              });
+            }
+            // readout
+            var title = (params.mech === 1) ? ('① 黑体辐射 Blackbody  (T=' + params.T + ' K)' ) : m.name;
+            PS.drawText(ctx, title, padL, 14, { font: '600 12px monospace', color: C.accent });
+            PS.drawText(ctx, m.note, padL, H - 18, { font: '11px monospace', color: C.text });
+          },
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-pp'), [
+          { type: 'slider', key: 'mech', label: '产生机制 mechanism (1–6)', min: 1, max: 6, step: 1, value: 1 },
+          { type: 'slider', key: 'T', label: '黑体温度 T (K) [仅机制①]', min: 3000, max: 12000, step: 100, value: 5800 },
+        ]);
+        ctl.on('mech', function (v) { params.mech = v; });
+        ctl.on('T', function (v) { params.T = v; });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>产生光子的统一判据：加速电荷辐射（经典）/ \(\Delta E=h\nu\) 跃迁（量子）。</li>
+        <li><strong>连续谱</strong>（热辐射、轫致、同步）来自连续可变的能量释放；<strong>分立谱</strong>（原子线、核 γ、湮没单能峰）来自量子化能级的跃迁。</li>
+        <li>光子能量 \(E=hc/\lambda=1240/\lambda_{\text{nm}}\,\unit{eV}\)；可见光仅 \(1.6\!\sim\!3.3\,\unit{eV}\) 一小段。</li>
+        <li>"做一个光子"：普通光源（多）→ 衰减（统计）→ SPDC heralded（严格单光子）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;E_\gamma=h\nu=\frac{hc}{\lambda},\quad h\nu=E_2-E_1,\quad P_{\text{rad}}=\frac{q^{2}a^{2}}{6\pi\varepsilon_0 c^{2}}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

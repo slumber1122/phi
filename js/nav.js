@@ -221,6 +221,7 @@
           { url: 'appendix/double-slit.html', title: '双缝干涉的历史', en: 'The Double-Slit: A History', ref: true },
           { url: 'appendix/stern-gerlach.html', title: 'Stern–Gerlach 实验', en: 'Stern–Gerlach Experiment', ref: true },
           { url: 'appendix/michelson-morley.html', title: '迈克尔逊–莫雷实验', en: 'Michelson–Morley Experiment', ref: true },
+          { url: 'appendix/photon-production.html', title: '光子的产生', en: 'How Photons Are Produced', ref: true },
         ]},
       ],
     },
