@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 F · Stern–Gerlach 实验 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 F · Appendix F · 量子角动量的直接证据 Direct Evidence of Quantized Angular Momentum</p>
+      <h1>Stern–Gerlach 实验 <span class="en-title">The Stern–Gerlach Experiment</span></h1>
+    </header>
+
+    <p class="lead">1922 年，斯特恩 (Otto Stern) 与格拉赫 (Walther Gerlach) 让一束银原子穿过一个<strong>极不均匀</strong>的磁场，打在玻璃板上。经典物理预言应是一<strong>连续的弥散带</strong>（因为原子磁矩在空间取向随机）；他们却看到<strong>两道分立的斑</strong>——这是"空间量子化 (space quantization)"第一次被直接看见，也成了电子自旋 (spin) 存在的铁证。本附录讲清它的装置、物理、历史与"串接 SG"所揭示的量子测量图像。The 1922 Stern–Gerlach experiment split a beam of silver atoms in an inhomogeneous magnetic field into discrete spots — direct evidence that angular momentum projection is quantized.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>说明 SG 装置：原子炉 → 准直缝 → <strong>刃形磁极的不均匀磁场</strong> → 探测板，并解释为何磁场必须<strong>不均匀</strong>。</li>
+        <li>推导磁偶极在梯度场中的力 \(F_z=\mu_z\,\partial B/\partial z\) 与偏折量。</li>
+        <li>由 \(J_z=m_j\hbar\) 解释为什么分成 \(2j+1\) 束；对银（自旋 1/2）得到两束。</li>
+        <li>讲清 1922 实验的<strong>做法与历史</strong>：刃形磁极、约 \(10^{2}\,\unit{T/m}\) 梯度、\(\sim0.1\,\unit{mm}\) 分裂、与自旋发现(1925)的关系。</li>
+        <li>用串接 SG 说明<strong>不相容可观察量</strong>（\([S_z,S_x]=i\hbar S_y\)）与测量塌缩。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心物理 Core Physics</h2>
+
+      <h3>1. 磁偶极在不均匀场中受力</h3>
+      <p>磁偶极矩 \(\vec\mu\) 在磁场 \(\vec B\) 中的势能为 \(U=-\vec\mu\cdot\vec B\)，故受力 \(\vec F=\nabla(\vec\mu\cdot\vec B)\)。若磁场主要沿 \(z\) 且只在 \(z\) 方向有梯度，则</p>
+      <div class="formula">\[ F_z=\mu_z\,\frac{\partial B}{\partial z} \]</div>
+      <p><strong>关键：必须是"不均匀"场。</strong>均匀磁场 (\(\partial B/\partial z=0\)) 对磁偶极只有力矩 \(\vec\tau=\vec\mu\times\vec B\)（使它进动），<strong>不产生净力、不分束</strong>。斯特恩与格拉赫因此把上磁极磨成<strong>刃形 (knife-edge)</strong>，造成极强的 \(z\) 向梯度。</p>
+
+      <h3>2. 角动量投影是量子化的</h3>
+      <p>原子磁矩源于其角动量 \(\vec J\)：\(\vec\mu=-g\,\dfrac{e}{2m_e}\vec J\)（\(g\) 为朗德 g 因子）。量子力学限定角动量的 \(z\) 分量只能取分立值</p>
+      <div class="formula">\[ J_z=m_j\hbar,\qquad m_j=-j,\,-j{+}1,\,\dots,\,j \quad\Rightarrow\quad \text{共 }2j{+}1\text{ 个取值} \]</div>
+      <p>于是 \(\mu_z\) 也只有 \(2j+1\) 个分立值，原子束被偏折成 \(2j+1\) 束——而非经典的连续带。对银原子：满壳层抵消，唯剩<strong>一个 5s 价电子</strong>，总角动量即其自旋 \(j=s=1/2\)，\(m_s=\pm\tfrac12\)，故<strong>分成两束</strong>。</p>
+      <div class="formula">\[ \mu_z=-g_s\,\mu_B\,m_s,\qquad g_s\approx 2,\quad \mu_B=\frac{e\hbar}{2m_e}=9.274\times10^{-24}\,\unit{J/T} \]</div>
+
+      <div class="note"><strong>为什么选银？</strong>银原子在蒸气中是电中性、无净电荷（不会被洛伦兹力偏折干扰），且恰好是有效的"纯自旋 1/2"体系：内层电子角动量两两抵消，唯一的价电子处于 \(s\) 轨道（轨道角动量 \(l=0\)），所以原子磁矩几乎完全来自该电子的<strong>自旋</strong>。1922 年他们尚不知"自旋"，把结果归因于轨道角动量的空间量子化（旧量子论）；直到 1925 年乌伦贝克–古德斯密特提出电子自旋，两束的真正来源才被认清。</div>
+      <div class="key-terms">magnetic moment (磁矩 \(\mu\)), inhomogeneous field (不均匀磁场), knife-edge pole (刃形磁极), space quantization (空间量子化), spin (自旋), Bohr magneton (玻尔磁子 \(\mu_B\)), g-factor (g 因子), incompatible observables (不相容可观察量)</div>
+    </section>
+
+    <!-- ============================================================= HISTORY -->
+    <section class="core-concepts">
+      <h2>🕰️ 历史与做法 History &amp; Method</h2>
+      <h3>1922 年他们具体怎么做的</h3>
+      <ul>
+        <li><strong>原子源：</strong>在真空中把银加热蒸发（约 \(1000\,\unit{^\circ C}\) 的银炉），产生银原子束；热运动速度约 \(v\sim500\,\unit{m/s}\)。</li>
+        <li><strong>准直：</strong>用两道狭缝把束流准直到很小发散角，得到一束细而平行的原子流。</li>
+        <li><strong>刃形磁极：</strong>电磁铁上极磨成<strong>刀刃状</strong>、下极平，在数厘米的气隙里造出 \(z\) 向梯度约 \(\partial B/\partial z\sim10^{2}\,\unit{T/m}\) 的强不均匀场（这是最难、最关键的一步）。</li>
+        <li><strong>探测：</strong>原子打在一块玻璃板上凝结成银膜。银膜极薄、肉眼几不可见——历史轶事是他们对板做显影（如遇硫/呼吸水汽凝结）才看到痕迹。</li>
+        <li><strong>结果：</strong>沿磁场梯度方向上出现<strong>两道分立的银斑</strong>，而非一条连续带；分裂量约 \(0.1\,\unit{mm}\) 量级。</li>
+      </ul>
+      <p><strong>偏折有多大（量级估算）：</strong>\(F_z\sim\mu_B\,(\partial B/\partial z)\sim(9.3\times10^{-24})(10^{2})\approx9\times10^{-22}\,\unit{N}\)；银原子质量 \(M\approx1.8\times10^{-25}\,\unit{kg}\)，加速度 \(a=F/M\sim5\times10^{3}\,\unit{m/s^{2}}\)；在 \(L\sim3.5\,\unit{cm}\) 磁区内飞行 \(t=L/v\sim7\times10^{-5}\,\unit{s}\)，偏折 \(\tfrac12 at^{2}\sim10^{-5}\,\unit{m}\)，再经磁场后的自由漂移被放大到 \(\sim0.1\,\unit{mm}\)。这就是为什么需要<strong>强梯度+长路径+高真空+精密对中</strong>。</p>
+
+      <h3>串接 Stern–Gerlach（量子测量的教科书）</h3>
+      <p>把几台 SG 串起来，就把量子测量讲透了（参见 Sakurai）：</p>
+      <ol>
+        <li>\(\mathrm{SG}_z\) 把束分成 \(|+z\rangle\) 与 \(|{-z}\rangle\)。挡住 \(|{-z}\rangle\)，得到一束<strong>纯 \(|+z\rangle\)</strong>。</li>
+        <li>把它送入 \(\mathrm{SG}_x\)：\(S_z\) 本征态不是 \(S_x\) 本征态（\(|+z\rangle=\tfrac{1}{\sqrt2}(|+x\rangle+|{-x}\rangle)\)），于是<strong>又分成两束 \(|{\pm}x\rangle\)，各 50%</strong>。</li>
+        <li>取 \(|+x\rangle\) 再送入 \(\mathrm{SG}_z\)：这次 \(|+z\rangle\) 与 \(|{-z}\rangle\) <strong>又各 50%</strong>——测 \(S_x\) 已<strong>破坏</strong>了原来" \(S_z\) 确定"的信息。</li>
+      </ol>
+      <p>这正是<strong>不相容可观察量</strong>的体现：\([S_z,S_x]=i\hbar S_y\ne0\)，\(S_z\) 与 \(S_x\) 不能同时有确定值；测量其一必使另一变得不确定。</p>
+
+      <h3>现代变体 Modern Variants</h3>
+      <ul>
+        <li><strong>氢原子 SG：</strong>直接显示电子（及核）自旋 1/2。</li>
+        <li><strong>中子 SG：</strong>用磁梯度偏折中子束，测中子磁矩/自旋。</li>
+        <li><strong>原子干涉型 SG / Stern–Gerlach 干涉仪：</strong>分束后再合并，演示自旋相干与"which-path"。</li>
+        <li><strong>单原子/囚禁原子：</strong>在现代冷原子实验里对单个原子做等效的 SG 测量与相干操控。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <p class="step"><strong>力与偏折。</strong>原子以速度 \(v\) 沿 \(x\) 飞行，在长度 \(L\) 的磁区内受恒力 \(F_z=\mu_z G\)（\(G=\partial B/\partial z\)）。磁区内用时 \(t=L/v\)，出射时获得横向速度 \(v_z=at=F_z t/M\) 与横向位移 \(z_1=\tfrac12 at^{2}\)。出磁区后自由漂移距离 \(D\)，再加位移 \(z_2=v_z(D/v)\)。总偏折</p>
+      <div class="formula">\[ z_{\text{tot}}=\frac{\mu_z G}{M}\!\left(\frac{L}{v}\right)\!\left(\frac{D}{v}\right)+\frac12\frac{\mu_z G}{M}\!\left(\frac{L}{v}\right)^{2}\;\propto\;\mu_z \]</div>
+      <p>故两束（\(\mu_z=\pm\mu_B\)）在板上分开 \(2z_{\text{tot}}\)。<strong>\(j\) 越大，束越多：</strong>因 \(\mu_z\) 取 \(2j+1\) 个值，束数 \(=2j+1\)。</p>
+      <p class="step"><strong>串接概率。</strong>由 \(|+z\rangle=\tfrac{1}{\sqrt2}(|+x\rangle+|{-x}\rangle)\)，得 \(|\langle +x|+z\rangle|^{2}=1/2\)，故 \(\mathrm{SG}_x\) 后两束各半。再把 \(|+x\rangle=\tfrac{1}{\sqrt2}(|+z\rangle+|{-z}\rangle)\) 送回 \(\mathrm{SG}_z\)，\(P(+z)=|\langle +z|+x\rangle|^{2}=1/2\)。测量 \(S_x\) 后 \(S_z\) 的确定信息被抹除。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1　银原子束的偏折量级</h4>
+        <p class="example-statement">取 \(\partial B/\partial z=100\,\unit{T/m}\)，\(v=500\,\unit{m/s}\)，磁区长 \(L=3.5\,\unit{cm}\)，磁区内偏折是多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(F_z\approx\mu_B G=(9.274\times10^{-24})(100)=9.27\times10^{-22}\,\unit{N}\)。</p>
+          <p class="step">\(M_{\text{Ag}}=108\,\unit{u}=108\times1.66\times10^{-27}=1.79\times10^{-25}\,\unit{kg}\)；\(a=F/M=9.27\times10^{-22}/1.79\times10^{-25}=5.18\times10^{3}\,\unit{m/s^{2}}\)。</p>
+          <p class="step">\(t=L/v=0.035/500=7.0\times10^{-5}\,\unit{s}\)；\(z_1=\tfrac12 at^{2}=\tfrac12(5.18\times10^{3})(7.0\times10^{-5})^{2}=1.27\times10^{-5}\,\unit{m}\)。</p>
+          <p><span class="ans">磁区内偏折约 \(1.3\times10^{-2}\,\unit{mm}\)；经后续自由漂移放大到 \(\sim0.1\,\unit{mm}\)（与实验一致）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2　不同自旋分几束</h4>
+        <p class="example-statement">分别对 \(s=1/2\)（银/电子）、\(s=1\)、\(s=3/2\) 的原子束，SG 分成几束？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>束数 \(=2s+1\)。</p>
+          <p class="step">\(s=1/2\Rightarrow2\) 束；\(s=1\Rightarrow3\) 束；\(s=3/2\Rightarrow4\) 束。</p>
+          <p><span class="ans">2、3、4 束（见下方仿真把自旋滑块拨到 1 或 3/2 即可看到）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3　串接 SG 的概率</h4>
+        <p class="example-statement">由 \(\mathrm{SG}_z\) 选出 \(|+z\rangle\) 束，依次过 \(\mathrm{SG}_x\)、再过 \(\mathrm{SG}_z\)。求最后得到 \(|+z\rangle\) 的概率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(|+z\rangle=\tfrac{1}{\sqrt2}(|+x\rangle+|{-x}\rangle)\)，故过 \(\mathrm{SG}_x\) 得 \(|+x\rangle\) 概率 \(P_1=|\langle +x|+z\rangle|^{2}=1/2\)。</p>
+          <p class="step">取 \(|+x\rangle\) 再过 \(\mathrm{SG}_z\)：\(|+x\rangle=\tfrac{1}{\sqrt2}(|+z\rangle+|{-z}\rangle)\)，得 \(|+z\rangle\) 概率 \(P_2=|\langle +z|+x\rangle|^{2}=1/2\)。</p>
+          <p class="step">条件总概率 \(P=P_1\cdot P_2=(1/2)(1/2)=1/4\)。</p>
+          <p><span class="ans">\(P(+z\to+x\to+z)=1/4\)。测了 \(S_x\) 后，\(S_z\) 的"上"不再是确定，而是重新 50/50。</span></p>
+      </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"任意磁场都能让原子束分叉。"<br>纠正：必须<strong>不均匀</strong>。均匀场只给力矩（进动），不给净力，<strong>不分束</strong>——这正是要刃形磁极的原因。</li>
+        <li><strong>误区：</strong>"磁场把原子磁矩'对齐'了，所以分两束。"<br>纠正：原子进入时是各 \(m_s\) 叠加（或统计混合）；不均匀场不是"对齐"它，而是按 \(\mu_z\) <strong>测量/筛选</strong>，把它投影到 \(S_z\) 本征态上。</li>
+        <li><strong>误区：</strong>"银的两束来自轨道角动量。"<br>纠正：银价电子在 \(s\) 轨道（\(l=0\)），轨道角动量为零；两束来自电子<strong>自旋</strong>（1922 年时尚未知自旋，故曾误读）。</li>
+        <li><strong>误区：</strong>"测了 \(S_z\) 后还能同时知道 \(S_x\)。"<br>纠正：\([S_z,S_x]\ne0\)，二者不相容；测 \(S_x\) 必使 \(S_z\) 变不确定（串接 SG 即证）。</li>
+        <li><strong>误区：</strong>"SG 测的是自旋方向（向上/向下）。"<br>纠正：它测的是自旋在<strong>所选磁场轴</strong>上的<strong>投影分量</strong>（\(\pm\hbar/2\)），并非一个经典的小箭头方向。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 若把梯度加倍（\(G\to2G\)），两束在板上的间距如何变？</summary>
+        <div class="hint">\(z_{\text{tot}}\propto G\)。</div>
+        <div class="solution">间距正比于 \(G\)，故加倍。<span class="ans">间距变为 2 倍。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 一个 \(s=2\) 的原子束过 SG，分几束？相邻两束对应的 \(\mu_z\) 差是多少（用 \(g\mu_B\) 表示）？</summary>
+        <div class="solution">束数 \(2s+1=5\)。\(m_s=-2,-1,0,1,2\)，相邻 \(m\) 差 1，故 \(\Delta\mu_z=g\mu_B\)。<span class="ans">5 束；相邻差 \(g\mu_B\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. 由 \(|{-z}\rangle\) 出发依次过 \(\mathrm{SG}_x\)、\(\mathrm{SG}_z\)，求最后得 \(|+z\rangle\) 的概率。</summary>
+        <div class="solution">\(|{-z}\rangle=\tfrac{1}{\sqrt2}(|+x\rangle-|{-x}\rangle)\)，得 \(|+x\rangle\) 概率 \(1/2\)；再 \(|+x\rangle\to\mathrm{SG}_z\) 得 \(|+z\rangle\) 概率 \(1/2\)。<span class="ans">\(1/4\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>4. （概念）为什么斯特恩–格拉赫最初用银而不是钠蒸气直接做？（提示：电荷、价电子结构）</summary>
+        <div class="solution">银原子整体电中性（避免洛伦兹力干扰），且恰好是有效纯自旋 1/2（满壳层+一个 5s 价电子，\(l=0\)）；钠虽有类似价电子，但银更易蒸镀成可见银膜便于探测。<span class="ans">电中性 + 有效纯自旋 1/2 + 易探测。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">银原子束从炉中射出、准直后穿过<strong>刃形磁极</strong>的不均匀磁场（向上场强增大），按 \(\mu_z\) 偏折、打在探测板上。<strong>自旋 s</strong> 决定束数 \(2s{+}1\)；<strong>梯度 G</strong> 决定偏折大小。勾选/取消 <strong>quantum</strong> 开关：开=量子分立（\(2s{+}1\) 道斑），关=经典连续弥散带——对比即见"空间量子化"。</p>
+      <div class="sim-container">
+        <canvas id="sim-sg" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-sg"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-sg');
+        var W = canvas.width, H = canvas.height, AXIS = H / 2;
+        var OVEN = 28, COLL = 96, X1 = 150, X2 = 410, PLATE = 588;
+        var NB = 52, ZR = 134;                       // histogram range half-width (px)
+        var hist = new Array(NB).fill(0);
+
+        var params = { s: 0.5, G: 1.0, quantum: true, speed: 6 };
+
+        function nBeams() { return Math.round(2 * params.s + 1); }      // 2,3,4
+        function step() { return 50 * params.G; }                        // px per unit m
+        function span() { return ((nBeams() - 1) / 2) * step(); }        // max |offset|
+
+        // landing offset for a fresh atom
+        function drawOffset() {
+          if (params.quantum) {
+            var i = Math.floor(Math.random() * nBeams());                // 0..nB-1
+            return (i - (nBeams() - 1) / 2) * step();                    // centered discrete
+          }
+          return (Math.random() * 2 - 1) * span();                       // continuous smear
+        }
+
+        var active = [];
+        function emit(k) {
+          for (var i = 0; i < k; i++) active.push({ u: 0, off: drawOffset() });
+        }
+        function u1() { return (X1 - OVEN) / (PLATE - OVEN); }
+        function xAt(u) { return OVEN + u * (PLATE - OVEN); }
+        function zAt(u, off) {
+          var t = (u - u1()) / (1 - u1());
+          if (t < 0) t = 0;
+          return AXIS + off * t * t;                                     // parabolic deflection
+        }
+        function binIndex(z) {
+          var f = (z - (AXIS - ZR)) / (2 * ZR);
+          return Math.max(0, Math.min(NB - 1, Math.floor(f * NB)));
+        }
+
+        var sim = PS.createSim(canvas, {
+          state: function () { active = []; hist = new Array(NB).fill(0); return {}; },
+          step: function (dt) {
+            var du = (0.10 + 0.045 * params.speed);
+            for (var i = active.length - 1; i >= 0; i--) {
+              active[i].u += du;
+              if (active[i].u >= 1) { hist[binIndex(AXIS + active[i].off)]++; active.splice(i, 1); }
+            }
+            emit(Math.max(1, Math.round(params.speed)));
+            if (active.length > 80) active.splice(0, active.length - 80);
+          },
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+
+            // magnet poles: knife-edge top, flat bottom
+            ctx.fillStyle = C.axis; ctx.strokeStyle = C.text; ctx.lineWidth = 1.5;
+            ctx.beginPath();                                   // top trapezoid (knife)
+            ctx.moveTo(X1 - 8, AXIS - 86); ctx.lineTo(X2 + 8, AXIS - 86);
+            ctx.lineTo(X2 - 26, AXIS - 50); ctx.lineTo(X1 + 26, AXIS - 50); ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            ctx.fillRect(X1 - 8, AXIS + 50, (X2 - X1) + 16, 34); // bottom pole
+            // gradient hint arrows (field stronger near the knife, up)
+            ctx.strokeStyle = C.trace; ctx.lineWidth = 1.4;
+            for (var gx = X1 + 22; gx < X2 - 10; gx += 36) {
+              var len = 10 + (gx - X1) * 0.10;
+              PS.drawArrow(ctx, gx, AXIS + 30, gx, AXIS + 30 - len, C.trace);
+            }
+            PS.drawText(ctx, 'N (刃形 knife-edge)', X1 + 6, AXIS - 92, { font: '10px monospace', color: C.text });
+            PS.drawText(ctx, 'S', X1 + 6, AXIS + 92, { font: '10px monospace', color: C.text });
+
+            // oven + collimator
+            ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 10;
+            PS.drawCircle(ctx, OVEN, AXIS, 6, { fill: C.accent }); ctx.restore();
+            ctx.fillStyle = C.text;
+            ctx.fillRect(COLL - 3, AXIS - 16, 6, 10); ctx.fillRect(COLL - 3, AXIS + 6, 6, 10);
+            PS.drawText(ctx, '炉 oven', OVEN, AXIS + 24, { font: '10px monospace', color: C.text, align: 'center' });
+
+            // plate
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(PLATE, 16); ctx.lineTo(PLATE, H - 16); ctx.stroke();
+
+            // histogram (accumulated landings) — bars extend left from the plate
+            var mx = 0; for (var b = 0; b < NB; b++) if (hist[b] > mx) mx = hist[b];
+            var barMax = 150;
+            ctx.fillStyle = C.accent;
+            for (var b2 = 0; b2 < NB; b2++) {
+              var zz = (AXIS - ZR) + (b2 + 0.5) * (2 * ZR / NB);
+              var len = mx > 0 ? (hist[b2] / mx) * barMax : 0;
+              ctx.fillRect(PLATE - len, zz - 2, len, 3);
+            }
+
+            // active atoms along their trajectories
+            ctx.fillStyle = C.accent;
+            for (var i2 = 0; i2 < active.length; i2++) {
+              var p = active[i2];
+              PS.drawCircle(ctx, xAt(p.u), zAt(p.u, p.off), 2, { fill: C.accent });
+            }
+
+            // readout
+            var info = (params.quantum ? '量子 quantum' : '经典 classical') +
+                       '   |   s = ' + params.s.toFixed(1) +
+                       '   →  ' + nBeams() + ' 束 beams' +
+                       '   |   梯度 G = ' + params.G.toFixed(1) +
+                       '   |   原子计数 ' + hist.reduce(function (a, c) { return a + c; }, 0);
+            PS.drawText(ctx, info, 6, 14, { font: '11px monospace', color: C.text });
+          },
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-sg'), [
+          { type: 'slider', key: 's',     label: '自旋 s (→ 2s+1 束)', min: 0.5, max: 1.5, step: 0.5, value: 0.5 },
+          { type: 'slider', key: 'G',     label: '梯度 G', min: 0.4, max: 1.6, step: 0.1, value: 1.0 },
+          { type: 'slider', key: 'speed', label: '发射速度 rate', min: 1, max: 12, step: 1, value: 6 },
+          { type: 'toggle', key: 'quantum', label: '量子 quantum（关 = 经典 classical）', value: true },
+          { type: 'button', key: 'reset', label: '↺ 清屏 Reset' },
+        ]);
+        ctl.on('s',     function (v) { params.s = v; });
+        ctl.on('G',     function (v) { params.G = v; });
+        ctl.on('speed', function (v) { params.speed = v; });
+        ctl.on('quantum', function (v) { params.quantum = v; });
+        ctl.on('reset', function () { active = []; hist = new Array(NB).fill(0); sim.reset(); });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>SG 让原子束过<strong>不均匀磁场</strong>，按 \(\mu_z\) 偏折，分成 \(2j+1\) 束——直接证明角动量投影量子化。</li>
+        <li>力 \(F_z=\mu_z\,\partial B/\partial z\)；偏折 \(\propto\mu_z\)；银（自旋 1/2）分成两束。</li>
+        <li>1922 实验用刃形磁极、\(\sim10^{2}\,\unit{T/m}\) 梯度、玻璃板凝银，看到分立两斑（\(\sim0.1\,\unit{mm}\)）；后由电子自旋(1925)给出真正解释。</li>
+        <li>串接 SG 揭示不相容可观察量 \([S_z,S_x]\ne0\) 与测量塌缩。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;F_z=\mu_z\frac{\partial B}{\partial z},\quad J_z=m_j\hbar,\quad \#\text{束}=2j+1,\quad [S_z,S_x]=i\hbar S_y\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

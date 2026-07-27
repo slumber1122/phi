@@ -45,13 +45,6 @@
           { url: 'advanced/19-chaos.html', title: '非线性动力学与混沌', en: 'Nonlinear Dynamics & Chaos' },
           { url: 'advanced/20-numerical.html', title: '物理中的数值方法', en: 'Numerical Methods' },
         ]},
-        { name: '附录 Appendix', items: [
-          { url: 'appendix/formulas.html', title: '公式速查表', en: 'Formula Sheets', ref: true },
-          { url: 'appendix/math-review.html', title: '数学回顾', en: 'Math Review', ref: true },
-          { url: 'appendix/constants.html', title: '物理常数与单位', en: 'Constants & Units', ref: true },
-          { url: 'appendix/electron-gun.html', title: '电子枪（实验装置）', en: 'The Electron Gun', ref: true },
-          { url: 'appendix/double-slit.html', title: '双缝干涉的历史', en: 'The Double-Slit: A History', ref: true },
-        ]},
       ],
     },
     {
@@ -217,6 +210,19 @@
         ]},
       ],
     },
+    {
+      name: '附录 Appendix',
+      parts: [
+        { name: '', items: [
+          { url: 'appendix/formulas.html', title: '公式速查表', en: 'Formula Sheets', ref: true },
+          { url: 'appendix/math-review.html', title: '数学回顾', en: 'Math Review', ref: true },
+          { url: 'appendix/constants.html', title: '物理常数与单位', en: 'Constants & Units', ref: true },
+          { url: 'appendix/electron-gun.html', title: '电子枪（实验装置）', en: 'The Electron Gun', ref: true },
+          { url: 'appendix/double-slit.html', title: '双缝干涉的历史', en: 'The Double-Slit: A History', ref: true },
+          { url: 'appendix/stern-gerlach.html', title: 'Stern–Gerlach 实验', en: 'Stern–Gerlach Experiment', ref: true },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }
@@ -274,8 +280,10 @@
       group.appendChild(sum);
 
       sem.parts.forEach(function (part) {
-        var ph = document.createElement('div'); ph.className = 'sidebar-part'; ph.textContent = part.name;
-        group.appendChild(ph);
+        if (part.name) {
+          var ph = document.createElement('div'); ph.className = 'sidebar-part'; ph.textContent = part.name;
+          group.appendChild(ph);
+        }
         part.items.forEach(function (it) {
           var a = document.createElement('a');
           a.className = 'sidebar-link' + (lastSeg(it.url) === cur ? ' active' : '') + (it.ref ? ' is-ref' : '');
