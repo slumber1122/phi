@@ -129,6 +129,99 @@
       <div class="note"><strong>把激光和"光子产生"连起来：</strong>无论哪种激光，发光那一步仍是<strong>原子/分子的受激跃迁</strong>（\(h\nu=E_2-E_1\)）。UV 激光的"紫外"要么来自更大的能级差（准分子），要么靠非线性晶体把频率翻倍——本质上都是在提高单个光子的能量 \(h\nu\)。</div>
     </section>
 
+    <!-- ============================================================= BEAM VISIBILITY -->
+    <section class="simulation">
+      <h2>🎛️ 为什么激光是一条可见的直线 Why the Beam Looks Like a Visible Line</h2>
+      <p>这里其实叠着两层物理，常被混为一谈：</p>
+      <p><strong>① 又细又直 = 相干 + 准直 (collimation)。</strong>受激辐射让光子同相、同向；谐振腔只放大沿轴往返的光、偏轴的逸出被淘汰。于是输出是一束几乎平行的窄光柱，发散角达衍射极限：</p>
+      <div class="formula">\[ \theta \approx \frac{\lambda}{D},\qquad \lambda=532\,\unit{nm},\;D\sim1\,\unit{mm}\;\Rightarrow\;\theta\sim0.2\,\unit{mrad} \]</div>
+      <p>即<strong>走 10 米只散开约 2 毫米</strong>——所以看起来是一条笔直、几乎不变粗的细线（手电筒无相干、光源大，发散快成锥）。"直"则因均匀空气中光沿直线传播。</p>
+      <p><strong>② 能"看见"这条线 = 空气微粒的散射 (scattering)。</strong>关键而反直觉：在<strong>完全干净的空气或真空中，你根本看不到光束本身</strong>，只能看到它打在墙上的那个<strong>点</strong>。你之所以看见一条"线"，是空气里的灰尘、气溶胶、水汽把光散射向四面八方，其中一小部分进入你眼睛：</p>
+      <ul>
+        <li>室内主要是<strong>米氏散射 (Mie)</strong>——来自与波长同量级的灰尘颗粒，散射强、对颜色不太挑；</li>
+        <li>纯净空气分子给极弱的<strong>瑞利散射 (Rayleigh，\(\propto1/\lambda^{4}\))</strong>——这也是天空蓝、以及绿/蓝激光比红激光显得更亮的原因。</li>
+      </ul>
+      <p>沿光柱每个微粒都朝你眼睛送一点光，<strong>大脑把这些发光点连成一条连续直线</strong>。所以：空气越脏/越潮，或在光路里吹一口烟、雾，线立刻变亮变清晰（舞台烟雾机的原理）；干净空气里几乎看不见（实验室只能靠光阑卡 beam card 看光走到哪）。<strong>尽头的亮点</strong>是光打在粗糙表面被<strong>漫反射 (diffuse reflection)</strong> 到各方向，谁都看得见。<strong>切勿直视</strong>——发散极小使整束被晶状体聚焦成视网膜上一个极小的高强光斑。</p>
+      <p class="sim-desc">仿真：拖 <strong>含尘量 dust</strong> 看光柱从"干净空气只见终点亮点"到"整条清晰可见"；拖 <strong>发散放大 divergence ×</strong>（默认 1 = 真实，几乎是一条线）放大后可见它其实是一个极窄的锥。</p>
+      <div class="sim-container">
+        <canvas id="sim-beam" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-beam"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-beam');
+        var W = canvas.width, H = canvas.height, AXIS = 200, LASER_X = 46, WALL_X = 600;
+        var params = { dust: 0.5, div: 1 };
+        // fixed scatter positions (deterministic → no flicker across frames)
+        var beamSc = [], airD = [];
+        for (var i = 0; i < 90; i++) beamSc.push({ f: i / 89, r: Math.random() * 2 - 1 });
+        for (var j = 0; j < 140; j++) airD.push({ x: Math.random() * W, y: 30 + Math.random() * (H - 60) });
+        function hw(x) { return 0.5 + (x - LASER_X) * params.div * 0.0003; }
+        var flow = 0;
+        var sim = PS.createSim(canvas, {
+          state: function () { flow = 0; return {}; },
+          step: function (dt) { flow = (flow + dt * 0.5) % 1; },
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            // ambient dust (off-beam), count scales with dust
+            ctx.fillStyle = C.axis;
+            var nAir = Math.round(params.dust * 140);
+            for (var a = 0; a < nAir; a++) { ctx.globalAlpha = 0.18; ctx.fillRect(airD[a].x, airD[a].y, 1.5, 1.5); }
+            ctx.globalAlpha = 1;
+            // beam strip — its visibility comes from scattering, so alpha ~ dust
+            ctx.fillStyle = C.accent; ctx.globalAlpha = 0.03 + params.dust * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(LASER_X, AXIS - hw(LASER_X));
+            ctx.lineTo(WALL_X, AXIS - hw(WALL_X));
+            ctx.lineTo(WALL_X, AXIS + hw(WALL_X));
+            ctx.lineTo(LASER_X, AXIS + hw(LASER_X));
+            ctx.closePath(); ctx.fill();
+            // scatter glow points along the beam
+            var nSc = Math.round(params.dust * 90);
+            for (var s = 0; s < nSc; s++) {
+              var sx = LASER_X + 8 + beamSc[s].f * (WALL_X - LASER_X - 16);
+              var sy = AXIS + beamSc[s].r * hw(sx);
+              ctx.save(); ctx.globalAlpha = 0.4 + params.dust * 0.5; ctx.shadowColor = C.accent; ctx.shadowBlur = 6;
+              PS.drawCircle(ctx, sx, sy, 1.6, { fill: C.accent }); ctx.restore();
+            }
+            ctx.globalAlpha = 1;
+            // flowing photons (direction cue)
+            ctx.fillStyle = C.accent;
+            for (var p = 0; p < 5; p++) {
+              var fx = LASER_X + ((flow + p / 5) % 1) * (WALL_X - LASER_X);
+              ctx.globalAlpha = params.dust > 0.05 ? 0.9 : 0.35;
+              PS.drawCircle(ctx, fx, AXIS, 1.8, { fill: C.accent });
+            }
+            ctx.globalAlpha = 1;
+            // laser body
+            ctx.fillStyle = C.text; ctx.fillRect(LASER_X - 24, AXIS - 9, 22, 18);
+            ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 8; PS.drawCircle(ctx, LASER_X - 2, AXIS, 3, { fill: C.accent }); ctx.restore();
+            PS.drawText(ctx, '激光 laser', LASER_X - 13, AXIS + 26, { font: '10px monospace', color: C.text, align: 'center' });
+            // wall + endpoint dot (diffuse reflection — always visible)
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(WALL_X, 30); ctx.lineTo(WALL_X, H - 30); ctx.stroke();
+            ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 14; PS.drawCircle(ctx, WALL_X, AXIS, 6, { fill: C.accent }); ctx.restore();
+            PS.drawText(ctx, '漫反射点 dot', WALL_X - 4, AXIS + 22, { font: '10px monospace', color: C.text, align: 'center' });
+            // readout
+            var note = params.dust < 0.08 ? '干净空气：只见终点亮点，束本身几乎不可见' :
+                       params.dust > 0.7 ? '多尘 / 烟雾：整条光柱清晰可见' : '部分可见';
+            var info = '含尘量 dust = ' + params.dust.toFixed(2) + '   |   发散放大 ×' + params.div +
+                       ' (真实 θ≈0.2 mrad)   |   ' + note;
+            PS.drawText(ctx, info, 6, 14, { font: '11px monospace', color: C.text });
+          }
+        });
+        var ctl = PS.makeControls(document.getElementById('controls-beam'), [
+          { type: 'slider', key: 'dust', label: '空气含尘量 dust (散射源)', min: 0, max: 1, step: 0.02, value: 0.5 },
+          { type: 'slider', key: 'div', label: '发散角放大 divergence × (1=真实)', min: 1, max: 300, step: 1, value: 1 },
+        ]);
+        ctl.on('dust', function (v) { params.dust = v; });
+        ctl.on('div', function (v) { params.div = v; });
+      });
+      </script>
+    </section>
+
     <!-- ============================================================= DERIVATION -->
     <section class="derivation">
       <h2>🔭 推导 Derivation</h2>
