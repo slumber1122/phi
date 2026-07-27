@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 散射理论 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第4章 · 量子力学 II Quantum Mechanics II</p>
+      <h1>散射理论 <span class="en-title">Scattering Theory</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>散射实验是探测微观相互作用最直接的手段——从卢瑟福 (Rutherford) 揭示原子核、到现代中子与电子散射测定材料结构、再到 LHC 的高能碰撞，几乎所有的微观信息都藏 在<strong>微分截面</strong> \( \mathrm{d}\sigma/\mathrm{d}\Omega \) 里。本章回答三个核心问题：(i) 入射粒子被势场 \( V(\vec r) \) 散射后角分布如何？(ii) 总截面多大？(iii) 这与势的<strong>形状</strong>和<strong>强度</strong>如何联系？学完本章后，你应当能够：</p>
+      <ul>
+        <li>写出散射的渐近边界条件 (asymptotic boundary condition) \(\psi\to e^{ikz}+f(\theta)\,e^{ikr}/r\)，定义<strong>散射振幅</strong> (scattering amplitude) \( f(\theta) \) 与<strong>微分散射截面</strong> (differential cross section) \(\mathrm{d}\sigma/\mathrm{d}\Omega=|f(\theta)|^{2}\)。</li>
+        <li>推导并运用<strong>分波法</strong> (partial-wave analysis)：把 \(f(\theta)\) 展开为角动量通道 \( \ell=0,1,2,\dots \) 之和，引入<strong>相移</strong> (phase shift) \( \delta_{\ell} \)，并得到 \( \sigma_{\text{tot}}=(4\pi/k^{2})\sum_{\ell}(2\ell+1)\sin^{2}\delta_{\ell} \)。</li>
+        <li>对弱势场使用<strong>玻恩近似</strong> (Born approximation)：\( f(\theta)\propto\int V(\vec r)\,e^{-i\vec q\cdot\vec r}\,\mathrm{d}^{3}r \)——散射振幅是势的傅里叶变换。</li>
+        <li>陈述并运用<strong>光学定理</strong> (optical theorem) \( \sigma_{\text{tot}}=(4\pi/k)\,\mathrm{Im}\,f(0) \)，理解总截面为何由<strong>前向</strong>振幅的虚部决定。</li>
+        <li>处理库仑 (Coulomb) 长程势这种特殊情形，导出 <strong>Rutherford 公式</strong> \( \mathrm{d}\sigma/\mathrm{d}\Omega\propto 1/\sin^{4}(\theta/2) \)。</li>
+        <li>分析低能极限下的 <strong>s 波主导</strong>与<strong>散射长度</strong> (scattering length) \( a_{s} \)，应用到热中子散射（\( \sigma\to 4\pi a_{s}^{2} \)）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 散射的设置：渐近边界条件</h3>
+      <p>考虑一个能量 \( E=\hbar^{2}k^{2}/(2m)>0 \) 的自由粒子，从 \( z=-\infty \) 沿 \( +z \) 方向入射，碰到一个局域势 \( V(r) \)（满足 \( rV(r)\to 0 \) 当 \( r\to\infty \)，短程势）。在远场 \( r\to\infty \)，薛定谔方程的解渐进地分解为一束<strong>平面入射波</strong>加一束<strong>球面出射散射波</strong>：</p>
+      <div class="formula">\[ \psi(\vec r)\;\xrightarrow{\;r\to\infty\;}\;\underbrace{e^{ikz}}_{\text{入射平面波}}\;+\;\underbrace{f(\theta,\phi)\,\frac{e^{ikr}}{r}}_{\text{出射散射波}} \]</div>
+      <p>这里 \( f(\theta,\phi) \) 称为<strong>散射振幅</strong>，量纲为长度。它一般是<strong>复数</strong>——其模的平方给出角分布，其前向虚部则决定总截面（光学定理）。</p>
+      <div class="key-terms">plane wave (平面波), spherical outgoing wave (出射球面波), asymptotic form (渐近形式), scattering amplitude \( f(\theta) \) (散射振幅)</div>
+
+      <h3>2. 微分截面与总截面</h3>
+      <p>单位时间被散射到 \( (\theta,\phi) \) 方向单位立体角的粒子数 \( \mathrm{d}\dot N/\mathrm{d}\Omega \)，除以入射通量 \( j_{\text{inc}} \)，定义为<strong>微分散射截面</strong>：</p>
+      <div class="formula">\[ \boxed{\;\frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}\;=\;|f(\theta,\phi)|^{2}\;} \]</div>
+      <p>对全空间积分给出<strong>总截面</strong>：</p>
+      <div class="formula">\[ \sigma_{\text{tot}}\;=\;\int\!\frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}\,\mathrm{d}\Omega\;=\;\int_{0}^{2\pi}\!\!\mathrm{d}\phi\int_{0}^{\pi}\!|f(\theta)|^{2}\sin\theta\,\mathrm{d}\theta \]</div>
+      <p>对于中心势 \( V(r) \)，问题具有绕入射轴的方位角对称性，\( f=f(\theta) \)，于是 \( \sigma_{\text{tot}}=2\pi\int_{0}^{\pi}|f(\theta)|^{2}\sin\theta\,\mathrm{d}\theta \)。截面单位为面积：核物理常用 fm² 或靶恩 (barn, \( 1\,\mathrm{b}=10^{-28}\,\mathrm{m^{2}}=100\,\mathrm{fm^{2}} \))。</p>
+      <div class="key-terms">differential cross section (微分散射截面), total cross section (总截面), solid angle \( \mathrm{d}\Omega \) (立体角), barn (靶恩)</div>
+
+      <h3>3. 分波法 Partial-Wave Analysis</h3>
+      <p>对中心势，把入射平面波按角动量本征态展开（用球贝塞尔函数 \( j_{\ell} \) 与球谐函数 \( Y_{\ell m} \)）：\( e^{ikz}=\sum_{\ell=0}^{\infty}(2\ell+1)i^{\ell}j_{\ell}(kr)P_{\ell}(\cos\theta) \)。势的作用只影响每个 \( \ell \) 通道的径向波函数，等价于在远场产生一个<strong>相移</strong> \( \delta_{\ell} \)。把渐近形式相减，就得到分波展开：</p>
+      <div class="formula">\[ \boxed{\;f(\theta)\;=\;\frac{1}{k}\sum_{\ell=0}^{\infty}(2\ell+1)\,e^{i\delta_{\ell}}\sin\delta_{\ell}\,P_{\ell}(\cos\theta)\;=\;\frac{1}{2ik}\sum_{\ell}(2\ell+1)(e^{2i\delta_{\ell}}-1)\,P_{\ell}(\cos\theta)\;} \]</div>
+      <p>相移 \( \delta_{\ell} \) 完全由势 \( V(r) \) 决定：吸引势 \( V<0 \) 把波函数「拉向核」，给出 \( \delta_{\ell}>0 \)；排斥势则 \( \delta_{\ell}<0 \)。利用球谐函数的正交性 \( \int P_{\ell}P_{\ell'}\,\mathrm{d}\Omega=4\pi\delta_{\ell\ell'}/(2\ell+1) \)，总截面化为各项贡献之和：</p>
+      <div class="formula">\[ \boxed{\;\sigma_{\text{tot}}\;=\;\frac{4\pi}{k^{2}}\sum_{\ell=0}^{\infty}(2\ell+1)\,\sin^{2}\delta_{\ell}\;} \]</div>
+      <p>直观含义：每一角动量通道对总截面贡献一份 \( (4\pi/k^{2})(2\ell+1)\sin^{2}\delta_{\ell} \)。如果某 \( \delta_{\ell} \) 接近 \( \pi/2 \)（共振），该通道贡献达极大值 \( (4\pi/k^{2})(2\ell+1) \)——<strong>分波共振峰</strong>。<strong>有效作用通道数</strong>大致为 \( \ell\lesssim kb \)（\( b \) 为势力程），所以低能时只有 s 波（\( \ell=0 \)）有贡献，高能时多通道并存，前向峰变得非常窄而高。</p>
+      <div class="key-terms">partial wave (分波), phase shift \( \delta_{\ell} \) (相移), spherical Bessel functions (球贝塞尔函数), Legendre polynomial \( P_{\ell} \) (勒让德多项式), S-matrix element \( S_{\ell}=e^{2i\delta_{\ell}} \)</div>
+
+      <h3>4. 玻恩近似 Born Approximation</h3>
+      <p>当势<strong>弱</strong>（\( V_{0}\ll\hbar^{2}/(ma^{2}) \)，\( a \) 为势力程）或粒子能量<strong>高</strong>时，可把势视为对自由传播的微扰。一级玻恩近似给出散射振幅正比于势的<strong>三维傅里叶变换</strong>：</p>
+      <div class="formula">\[ \boxed{\;f_{B}(\theta)\;=\;-\frac{m}{2\pi\hbar^{2}}\int V(\vec r)\,e^{-i\vec q\cdot\vec r}\,\mathrm{d}^{3}r\;} \]</div>
+      <p>其中<strong>动量转移</strong> \( \vec q=\vec k_{f}-\vec k_{i} \)，弹性散射下 \( |\vec k_{i}|=|\vec k_{f}|=k \)，所以</p>
+      <div class="formula">\[ q\;=\;|\vec q|\;=\;2k\sin\frac{\theta}{2} \]</div>
+      <p>对球对称势，角向积分给出 \( 4\pi\sin(qr)/(qr) \) 因子：</p>
+      <div class="formula">\[ f_{B}(\theta)\;=\;-\frac{2m}{\hbar^{2}}\cdot\frac{1}{q}\int_{0}^{\infty}r\,V(r)\sin(qr)\,\mathrm{d}r \]</div>
+      <p>关键物理：<strong>散射振幅是势的傅里叶变换</strong>。不同的角度 \( \theta \) 探测不同的 \( q \)：小角（\( q\to 0 \)）看势的「总体大小」；大角（\( q \) 大）看势的「细节结构」。这正是 X 射线衍射、电子显微镜与中子散射测定原子结构的理论基础。</p>
+      <div class="key-terms">Born approximation (玻恩近似), momentum transfer \( \vec q \) (动量转移), Fourier transform of potential (势的傅里叶变换)</div>
+
+      <h3>5. 光学定理 Optical Theorem</h3>
+      <p>由分波展开 \( f(0)=\frac{1}{k}\sum(2\ell+1)e^{i\delta_{\ell}}\sin\delta_{\ell} \)（用 \( P_{\ell}(1)=1 \)），取虚部：</p>
+      <div class="formula">\[ \mathrm{Im}\,f(0)\;=\;\frac{1}{k}\sum_{\ell}(2\ell+1)\sin^{2}\delta_{\ell} \]</div>
+      <p>对比总截面公式立即得到<strong>光学定理</strong>：</p>
+      <div class="formula">\[ \boxed{\;\sigma_{\text{tot}}\;=\;\frac{4\pi}{k}\,\mathrm{Im}\,f(0)\;} \]</div>
+      <p>物理上，这是<strong>概率守恒</strong> (unitarity) 的直接推论：散射削弱了入射向前波（前向干涉相消，称为<strong>阴影</strong> (shadow))，被「遮挡」的概率必须等于散射到所有方向的总概率。注意：一级玻恩近似的 \( f_{B} \) 对实势<strong>是实数</strong>，故 \( \mathrm{Im}\,f_{B}(0)=0 \)，给出 \( \sigma_{\text{tot}}=0 \)——这是玻恩近似破坏幺正性的明显标志，必须到二阶玻恩才能修复。</p>
+      <div class="key-terms">optical theorem (光学定理), unitarity (幺正性/概率守恒), forward amplitude (前向振幅)</div>
+
+      <h3>6. 应用一：卢瑟福散射 Rutherford (Coulomb) Scattering</h3>
+      <p>对纯库仑势 \( V(r)=Z_{1}Z_{2}e^{2}/(4\pi\varepsilon_{0}r) \)，玻恩近似的积分在 \( q\to 0 \) 处对数发散（库仑场长程）。完整处理需用抛物坐标系 (parabolic coordinates) 的严格解，结果给出历史上著名的<strong>卢瑟福公式</strong>：</p>
+      <div class="formula">\[ \boxed{\;\frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}\;=\;\left(\frac{Z_{1}Z_{2}e^{2}}{16\pi\varepsilon_{0}E}\right)^{\!2}\frac{1}{\sin^{4}(\theta/2)}\;} \]</div>
+      <p>（\( E=\frac{1}{2}mv^{2} \) 为入射动能。）<strong>量子计算恰与经典力学结果完全相同</strong>——这是 \( 1/r \) 势的著名巧合。注意：库仑总截面 \( \int\mathrm{d}\sigma/\mathrm{d}\Omega\,\mathrm{d}\Omega \) 在小角处<strong>发散</strong>（红外发散），对应库仑场作用距离无穷远，本节公式的「分波 / 光学定理」框架需要修正（库仑相移是连续的，且 \( \delta_{\ell}\to -\eta\ln\ell \)，\( \eta=Z_{1}Z_{2}e^{2}/(4\pi\varepsilon_{0}\hbar v) \) 为 Sommerfeld 参数）。</p>
+
+      <h3>7. 应用二：低能散射与散射长度</h3>
+      <p>当入射波数 \( k\to 0 \)，只有 \( \ell=0 \)（s 波）的相移显著（其他通道有 \( \delta_{\ell}\propto k^{2\ell+1} \) 的抑制）。把 \( \delta_{0} \) 在 \( k=0 \) 附近展开：</p>
+      <div class="formula">\[ k\cot\delta_{0}\;=\;-\frac{1}{a_{s}}+\frac{1}{2}r_{0}k^{2}+\mathcal{O}(k^{4}) \]</div>
+      <p>其中 \( a_{s} \) 称为<strong>散射长度</strong> (scattering length)，\( r_{0} \) 为<strong>有效力程</strong> (effective range)。在 \( k\to 0 \) 极限下 \( \delta_{0}\to -ka_{s} \)，且</p>
+      <div class="formula">\[ f(\theta)\xrightarrow{k\to 0}-a_{s}\quad(\text{各向同性}),\qquad \sigma_{\text{tot}}\xrightarrow{k\to 0}4\pi a_{s}^{2} \]</div>
+      <p>物理图像：\( |a_{s}| \) 是势「等效硬球半径」；符号则告诉我们势是吸引还是排斥主导。若系统在阈值附近存在一个弱束缚态（如 \( ^{1}S_{0} \) 核力），\( a_{s} \) 会变得<strong>极大</strong>（远大于势力程）——这正是中子-质子散射长度 \( a_{np}\approx -23.7\,\mathrm{fm} \) 远大于核力作用力程 \( \sim 1\!-\!2\,\mathrm{fm} \) 的原因，它指示了氘核的弱束缚态存在。</p>
+      <div class="key-terms">s-wave dominance (s 波主导), scattering length \( a_{s} \) (散射长度), effective range \( r_{0} \) (有效力程), bound state (束缚态)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从渐近形式到分波展开</h3>
+      <p>把入射平面波用分波展开（这是经典恒等式）：</p>
+      <div class="formula">\[ e^{ikz}=\sum_{\ell=0}^{\infty}(2\ell+1)i^{\ell}j_{\ell}(kr)P_{\ell}(\cos\theta) \]</div>
+      <p>对自由粒子，径向波函数 \( j_{\ell}(kr) \) 的远场形式为 \( j_{\ell}(kr)\to\sin(kr-\ell\pi/2)/(kr) \)。势 \( V(r) \) 不改变角向结构，但每个通道的径向解在远场变成相移过的形式：</p>
+      <div class="formula">\[ R_{\ell}(r)\;\propto\;\frac{\sin(kr-\ell\pi/2+\delta_{\ell})}{kr}\;=\;\frac{1}{2ikr}\!\left[e^{i(kr-\ell\pi/2+\delta_{\ell})}-e^{-i(kr-\ell\pi/2+\delta_{\ell})}\right]\sin\!\text{(振幅校正)} \]</div>
+      <p>把含相移的径向波减去自由径向波（这正是散射波部分），整理后总波函数写为 \( e^{ikz}+f(\theta)e^{ikr}/r \)，其中</p>
+      <div class="formula">\[ f(\theta)=\frac{1}{2ik}\sum_{\ell}(2\ell+1)(e^{2i\delta_{\ell}}-1)P_{\ell}(\cos\theta)=\frac{1}{k}\sum_{\ell}(2\ell+1)e^{i\delta_{\ell}}\sin\delta_{\ell}\,P_{\ell}(\cos\theta) \]</div>
+      <p>定义 \( S_{\ell}=e^{2i\delta_{\ell}} \)（\( S \)-矩阵的对角元），则 \( f=(2ik)^{-1}\sum(2\ell+1)(S_{\ell}-1)P_{\ell} \)。对于非弹性过程，\( |S_{\ell}|<1 \)，此时 \( S_{\ell}-1 \) 不再纯相位，但分波框架仍然成立。</p>
+
+      <h3>推导 B：光学定理</h3>
+      <p>在 \( \theta=0 \) 处 \( P_{\ell}(1)=1 \)，所以</p>
+      <div class="formula">\[ f(0)=\frac{1}{k}\sum_{\ell}(2\ell+1)\,\big(\underbrace{\cos\delta_{\ell}\sin\delta_{\ell}}_{\frac{1}{2}\sin 2\delta_{\ell}}+i\underbrace{\sin^{2}\delta_{\ell}}_{\text{虚部}}\big) \]</div>
+      <p>取虚部并乘以 \( 4\pi/k \)：</p>
+      <div class="formula">\[ \frac{4\pi}{k}\,\mathrm{Im}\,f(0)=\frac{4\pi}{k^{2}}\sum_{\ell}(2\ell+1)\sin^{2}\delta_{\ell}=\sigma_{\text{tot}}\quad\checkmark \]</div>
+      <p>更深刻地，光学定理可由<strong>波场在前向的相消干涉</strong>直接论证：散射球面波 \( f(0)e^{ikr}/r \) 与入射平面波 \( e^{ikz} \) 在 \( z\to+\infty \) 方向的干涉，会在前向「挖去」一部分概率通量；这部分恰等于散射到其它所有方向的通量总和。这是量子力学概率守恒的几何体现。</p>
+
+      <h3>推导 C：玻恩近似的傅里叶变换</h3>
+      <p>从 Lippmann–Schwinger 积分方程 \( \psi^{(+)}=\psi_{0}+\int G_{0}^{(+)}V\psi^{(+)} \)（\( G_{0}^{(+)}=-2m e^{ik|\vec r-\vec r'|}/(4\pi\hbar^{2}|\vec r-\vec r'|) \)）出发，把 \( \psi^{(+)}\approx\psi_{0}=e^{ikz} \) 代入并取 \( r\to\infty \)：</p>
+      <div class="formula">\[ f(\theta)\approx-\frac{m}{2\pi\hbar^{2}}\int V(\vec r')\,e^{-i(\vec k_{f}-\vec k_{i})\cdot\vec r'}\,\mathrm{d}^{3}r' \]</div>
+      <p>这正是势的傅里叶变换在动量转移 \( \vec q \) 处取值。两件关键事实由此显然：(i) <strong>玻恩振幅是实势的实函数</strong>（\( V \) 实时 \( f_{B} \) 实），故 \( \mathrm{Im}\,f_{B}(0)=0 \)——玻恩近似破坏光学定理；(ii) <strong>角分布直接给出势的动量谱</strong>：测量 \( \mathrm{d}\sigma/\mathrm{d}\Omega \) 等价于做势的傅里叶分析。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 玻恩近似：电子被屏蔽库仑（汤川）势散射</h4>
+        <p class="example-statement">一束能量 \( E=100\,\mathrm{eV} \) 的电子被一个中性原子的屏蔽势散射，势用汤川 (Yukawa) 形式近似：\( V(r)=V_{0}\,e^{-\mu r}/r \)，其中 \( V_{0}=10\,\mathrm{eV\cdot\AA} \)，\( \mu=1.0\,\mathrm{\AA^{-1}} \)（屏蔽长度 \( 1/\mu=1\,\mathrm{\AA} \)）。取 \( \hbar^{2}/(2m_{e})=3.81\,\mathrm{eV\cdot\AA^{2}} \)。用一级玻恩近似求 \( f(0) \)、\( f(90^{\circ}) \)、对应 \( \mathrm{d}\sigma/\mathrm{d}\Omega \)，以及总截面 \( \sigma_{\text{tot}} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对汤川势 \( V(r)=V_{0}e^{-\mu r}/r \)，先用 \( \int_{0}^{\infty}e^{-\mu r}\sin(qr)\,\mathrm{d}r=\dfrac{q}{\mu^{2}+q^{2}} \)：</p>
+          <div class="formula">\[ f_{B}(\theta)=-\frac{2m}{\hbar^{2}}\cdot\frac{1}{q}\cdot V_{0}\cdot\frac{q}{\mu^{2}+q^{2}}=-\frac{2m V_{0}/\hbar^{2}}{\mu^{2}+q^{2}}=-\frac{V_{0}/(\hbar^{2}/2m)}{\mu^{2}+4k^{2}\sin^{2}(\theta/2)} \]</div>
+          <p class="step">先算波数：\( k^{2}=E/(\hbar^{2}/2m)=100/3.81=26.25\,\mathrm{\AA^{-2}} \)，故 \( k=5.12\,\mathrm{\AA^{-1}} \)。</p>
+          <p class="step">分子系数：\( V_{0}/(\hbar^{2}/2m)=10/3.81=2.625\,\mathrm{\AA} \)。</p>
+          <p class="step">前向 \( \theta=0 \)：\( q^{2}=0 \)，故</p>
+          <p class="step">\( f_{B}(0)=-2.625/(1+0)=-2.625\,\mathrm{\AA} \)，\( \mathrm{d}\sigma/\mathrm{d}\Omega(0)=|f_{B}(0)|^{2}=6.89\,\mathrm{\AA^{2}} \)。</p>
+          <p class="step">\( \theta=90^{\circ} \)：\( q^{2}=4k^{2}\sin^{2}45^{\circ}=2k^{2}=52.50\,\mathrm{\AA^{-2}} \)，\( \mu^{2}+q^{2}=1+52.50=53.50\,\mathrm{\AA^{-2}} \)。</p>
+          <p class="step">\( f_{B}(90^{\circ})=-2.625/53.50=-0.0491\,\mathrm{\AA} \)，\( \mathrm{d}\sigma/\mathrm{d}\Omega(90^{\circ})=2.41\times 10^{-3}\,\mathrm{\AA^{2}} \)。</p>
+          <p class="step">前后向比：\( 6.89/0.00241\approx 2860 \)——高度前向峰化！这正是高能电子衍射的本质：动量转移小（小角）时，几乎不分辨势的细节；大角处则需要波函数有快速振荡，玻恩因子 \( 1/q^{4} \) 强烈压低。</p>
+          <p class="step">总截面（解析积分 \( \sigma_{\text{tot}}=2\pi\int_{0}^{\pi}|f_{B}|^{2}\sin\theta\,\mathrm{d}\theta \)，用 \( u=\sin^{2}(\theta/2) \) 换元）：</p>
+          <div class="formula">\[ \sigma_{\text{tot}}=\frac{4\pi V_{0}^{2}}{(\hbar^{2}/2m)^{2}\,\mu^{2}(\mu^{2}+4k^{2})}=\frac{4\pi\cdot 100}{3.81^{2}\cdot 1\cdot 105.0}=\frac{1257}{1524}=0.82\,\mathrm{\AA^{2}} \]</div>
+          <p class="step"><strong>一致性检查（光学定理）：</strong>注意 \( f_{B}(0)=-2.625\,\mathrm{\AA} \) 是<strong>实数</strong>，\( \mathrm{Im}\,f_{B}(0)=0 \)，故光学定理给出 \( \sigma_{\text{tot}}=0 \)，与 \( 0.82\,\mathrm{\AA^{2}} \) 矛盾——玻恩近似在 \( \mathcal{O}(V) \) 阶破坏幺正性。要满足光学定理必须到二阶玻恩（\( \mathrm{Im}\,f \) 在 \( \mathcal{O}(V^{2}) \) 才出现）。</p>
+          <p><span class="ans">\( f_{B}(0)=-2.63\,\mathrm{\AA} \)、\( f_{B}(90^{\circ})=-4.9\times 10^{-2}\,\mathrm{\AA} \)；\( \mathrm{d}\sigma/\mathrm{d}\Omega(0)=6.89\,\mathrm{\AA^{2}} \)、\( \mathrm{d}\sigma/\mathrm{d}\Omega(90^{\circ})=2.4\times 10^{-3}\,\mathrm{\AA^{2}} \)；\( \sigma_{\text{tot}}\approx 0.82\,\mathrm{\AA^{2}} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 卢瑟福散射：\( \alpha \) 粒子被金核散射</h4>
+        <p class="example-statement">1909 年 Geiger–Marsden 实验用 \( E_{\alpha}=5.5\,\mathrm{MeV} \) 的 \( \alpha \) 粒子（\( Z_{1}=2 \)）轰击金箔（\( Z_{2}=79 \)）。取 \( e^{2}/(4\pi\varepsilon_{0})=1.44\,\mathrm{MeV\cdot fm} \)。求在 \( \theta=60^{\circ} \)、\( 90^{\circ} \)、\( 150^{\circ} \) 处的微分截面，验证量子公式恰给出经典 Rutherford 结果。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>Rutherford 公式：</p>
+          <div class="formula">\[ \frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}=\left(\frac{Z_{1}Z_{2}e^{2}}{16\pi\varepsilon_{0}E}\right)^{\!2}\frac{1}{\sin^{4}(\theta/2)}=\left(\frac{Z_{1}Z_{2}\cdot 1.44}{4E}\right)^{\!2}\frac{1}{\sin^{4}(\theta/2)}\;\;[\mathrm{fm^{2}/sr}] \]</div>
+          <p class="step">前置系数 \( C=\big(2\cdot 79\cdot 1.44/(4\cdot 5.5)\big)^{2}=(227.5/22)^{2}=(10.34)^{2}=106.9\,\mathrm{fm^{2}/sr} \)。</p>
+          <p class="step">\( \theta=60^{\circ} \)：\( \sin^{4}(30^{\circ})=(1/2)^{4}=1/16=0.0625 \)。</p>
+          <p class="step">\( \mathrm{d}\sigma/\mathrm{d}\Omega(60^{\circ})=106.9/0.0625=1710\,\mathrm{fm^{2}/sr}=17.1\,\mathrm{b/sr} \)。</p>
+          <p class="step">\( \theta=90^{\circ} \)：\( \sin^{4}(45^{\circ})=(\sqrt{2}/2)^{4}=1/4=0.25 \)。</p>
+          <p class="step">\( \mathrm{d}\sigma/\mathrm{d}\Omega(90^{\circ})=106.9/0.25=428\,\mathrm{fm^{2}/sr}=4.28\,\mathrm{b/sr} \)。</p>
+          <p class="step">\( \theta=150^{\circ} \)：\( \sin^{4}(75^{\circ})=0.871 \)。</p>
+          <p class="step">\( \mathrm{d}\sigma/\mathrm{d}\Omega(150^{\circ})=106.9/0.871=122.7\,\mathrm{fm^{2}/sr}=1.23\,\mathrm{b/sr} \)。</p>
+          <p class="step"><strong>物理检验：</strong>(i) 大角散射截面虽小但绝不为零——这正是 Rutherford 推断原子有一个「致密带正电的核」的关键证据（先前 Thomson 葡萄干布丁模型预言大角散射截面几乎为零）。(ii) \( \mathrm{d}\sigma/\mathrm{d}\Omega\propto 1/E^{2} \)，能量越高散射越弱。(iii) 小角处截面发散（\( \theta\to 0 \) 时 \( \mathrm{d}\sigma/\mathrm{d}\Omega\to\infty \)），总截面发散——库仑场长程，普通光学定理需修正（库仑相移 \( \eta\propto 1/v \)，\( \delta_{\ell}\to -\eta\ln\ell \)）。</p>
+          <p class="step"><strong>玻恩验证：</strong>用例 4.1 同样的 Born 公式取 \( V(r)=Z_{1}Z_{2}e^{2}/(4\pi\varepsilon_{0}r) \)（即 \( \mu\to 0 \)，\( V_{0}\to Z_{1}Z_{2}e^{2}/(4\pi\varepsilon_{0}) \)），并把 \( q=2k\sin(\theta/2) \) 代入：</p>
+          <div class="formula">\[ f_{B}=-\frac{2m}{\hbar^{2}}\cdot\frac{Z_{1}Z_{2}e^{2}/(4\pi\varepsilon_{0})}{4k^{2}\sin^{2}(\theta/2)} \]</div>
+          <p class="step">用 \( E=\hbar^{2}k^{2}/(2m) \) 消去 \( k \) 给出 \( f_{B}=-\dfrac{Z_{1}Z_{2}e^{2}}{16\pi\varepsilon_{0}E\sin^{2}(\theta/2)} \)，故 \( \mathrm{d}\sigma/\mathrm{d}\Omega=|f_{B}|^{2} \) 与 Rutherford 公式<strong>完全相同</strong>——这是 \( 1/r \) 势的著名巧合（对其它势，Born 与严格解并不一致）。</p>
+          <p><span class="ans">\( \mathrm{d}\sigma/\mathrm{d}\Omega(60^{\circ})\approx 17.1\,\mathrm{b/sr} \)、\( \mathrm{d}\sigma/\mathrm{d}\Omega(90^{\circ})\approx 4.28\,\mathrm{b/sr} \)、\( \mathrm{d}\sigma/\mathrm{d}\Omega(150^{\circ})\approx 1.23\,\mathrm{b/sr} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 分波相移：硬球散射</h4>
+        <p class="example-statement">把一个核（\( R=5\,\mathrm{fm} \)）简化为不可穿透的硬球：\( V(r)=\infty \) for \( r<R \)，\( V=0 \) otherwise。一束能量 \( E_{n}=0.10\,\mathrm{MeV} \) 的中子（\( m_{n}c^{2}=939.6\,\mathrm{MeV} \)，\( \hbar c=197.3\,\mathrm{MeV\cdot fm} \)）入射。求 \( \ell=0,1 \) 的相移，并计算总截面，与低能极限 \( 4\pi R^{2} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>波数：\( k=\sqrt{2m_{n}E}/\hbar=\sqrt{2m_{n}c^{2}\cdot E}/(\hbar c)=\sqrt{2\cdot 939.6\cdot 0.10}/197.3=\sqrt{187.9}/197.3=13.71/197.3=0.0695\,\mathrm{fm^{-1}} \)。</p>
+          <p class="step">无量纲参数 \( kR=0.0695\cdot 5=0.347 \)（小但不为零，主要 s 波）。</p>
+          <p class="step">硬球边界条件 \( u_{\ell}(R)=0 \)。一般径向解 \( u_{\ell}\propto j_{\ell}(kr)\cos\delta_{\ell}-n_{\ell}(kr)\sin\delta_{\ell} \)，代入 \( r=R \) 得 \( \tan\delta_{\ell}=j_{\ell}(kR)/n_{\ell}(kR) \)。</p>
+          <p class="step">\( \ell=0 \)：\( j_{0}(x)=\sin x/x \)，\( n_{0}(x)=-\cos x/x \)。</p>
+          <p class="step">\( \tan\delta_{0}=\sin(0.347)/(-\cos(0.347))=-\tan(0.347) \)，故 \( \delta_{0}=-0.347\,\mathrm{rad}=-19.9^{\circ} \)（负号是排斥势的标志）。</p>
+          <p class="step">\( \sin^{2}\delta_{0}=\sin^{2}(0.347)=0.1160 \)。</p>
+          <p class="step">\( \ell=1 \)：\( j_{1}(x)=\sin x/x^{2}-\cos x/x \)，\( n_{1}(x)=-\cos x/x^{2}-\sin x/x \)。代入 \( x=0.347 \)（\( \sin x=0.341 \)，\( \cos x=0.940 \)）：</p>
+          <p class="step">\( j_{1}=0.341/0.120-0.940/0.347=2.84-2.71=+0.13 \)，</p>
+          <p class="step">\( n_{1}=-0.940/0.120-0.341/0.347=-7.83-0.98=-8.81 \)，</p>
+          <p class="step">\( \tan\delta_{1}=0.13/(-8.81)=-0.0148 \)，\( \delta_{1}\approx -0.0148\,\mathrm{rad}=-0.85^{\circ} \)（小一个数量级——s 波主导）。</p>
+          <p class="step">\( \sin^{2}\delta_{1}\approx(0.0148)^{2}=2.19\times 10^{-4} \)。</p>
+          <p class="step">分波总截面：</p>
+          <div class="formula">\[ \sigma_{\text{tot}}=\frac{4\pi}{k^{2}}\!\left[(2\cdot 0+1)\sin^{2}\delta_{0}+(2\cdot 1+1)\sin^{2}\delta_{1}\right]=\frac{4\pi}{(0.0695)^{2}}\!\left[0.1160+3\cdot 2.19\times 10^{-4}\right] \]</div>
+          <p class="step">\( 4\pi/k^{2}=4\pi/0.00483=2602\,\mathrm{fm^{2}} \)，括号内 \( =0.1160+0.00066=0.1167 \)。</p>
+          <p class="step">\( \sigma_{\text{tot}}=2602\cdot 0.1167=303.7\,\mathrm{fm^{2}}\approx 3.04\,\mathrm{b} \)。</p>
+          <p class="step"><strong>低能极限：</strong>当 \( kR\to 0 \)，\( \delta_{0}\to -kR \)，\( \sin^{2}\delta_{0}\to(kR)^{2} \)，故 \( \sigma\to(4\pi/k^{2})(kR)^{2}=4\pi R^{2}=4\pi\cdot 25=314\,\mathrm{fm^{2}}=3.14\,\mathrm{b} \)。本题 \( \sigma=3.04\,\mathrm{b} \) 与之相差约 \( 3\% \)（来自 \( (kR)^{2} \) 修正）。</p>
+          <p class="step"><strong>对比经典硬球：</strong>经典几何截面 \( \pi R^{2}=78.5\,\mathrm{fm^{2}} \)；量子低能极限是它的 \( 4 \) 倍！这是<strong>波动性</strong>带来的增强（衍射效应），随着 \( kR \) 增大，\( \sigma \) 在 \( 2\pi R^{2} \) 附近振荡（高能极限），与经典值仍不同。</p>
+          <p><span class="ans">\( \delta_{0}=-0.347\,\mathrm{rad} \)、\( \delta_{1}=-0.0148\,\mathrm{rad} \)；\( \sigma_{\text{tot}}\approx 304\,\mathrm{fm^{2}}\approx 3.04\,\mathrm{b} \)，与 \( 4\pi R^{2}=314\,\mathrm{fm^{2}} \) 接近（差 \( 3\% \)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 光学定理的数值验证（纯 s 波情形）</h4>
+        <p class="example-statement">继续例 4.3 的 s 波相移 \( \delta_{0}=-0.347\,\mathrm{rad} \)、\( k=0.0695\,\mathrm{fm^{-1}} \)。计算 \( f(0) \)（含实部与虚部），用光学定理 \( \sigma_{\text{tot}}=(4\pi/k)\,\mathrm{Im}\,f(0) \) 验证它与分波结果一致。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>纯 s 波散射，\( f(\theta) \) 与 \( \theta \) 无关（各向同性）：</p>
+          <div class="formula">\[ f(\theta)=\frac{1}{k}e^{i\delta_{0}}\sin\delta_{0}=\frac{1}{k}\big(\cos\delta_{0}\sin\delta_{0}+i\sin^{2}\delta_{0}\big) \]</div>
+          <p class="step">\( \delta_{0}=-0.347 \)：\( \sin\delta_{0}=-0.341 \)、\( \cos\delta_{0}=0.940 \)。</p>
+          <p class="step">实部：\( \mathrm{Re}\,f=\cos\delta_{0}\sin\delta_{0}/k=0.940\cdot(-0.341)/0.0695=-0.320/0.0695=-4.61\,\mathrm{fm} \)。</p>
+          <p class="step">虚部：\( \mathrm{Im}\,f=\sin^{2}\delta_{0}/k=0.1160/0.0695=1.67\,\mathrm{fm} \)。</p>
+          <p class="step">所以 \( f(0)=-4.61+1.67\,i\;\mathrm{fm} \)，\( |f|^{2}=4.61^{2}+1.67^{2}=21.25+2.79=24.04\,\mathrm{fm^{2}} \)。</p>
+          <p class="step">光学定理预测：</p>
+          <div class="formula">\[ \sigma_{\text{tot}}=\frac{4\pi}{k}\,\mathrm{Im}\,f(0)=\frac{4\pi}{0.0695}\cdot 1.67=180.8\cdot 1.67=302\,\mathrm{fm^{2}} \]</div>
+          <p class="step">分波公式给出 \( \sigma_{\text{tot}}=4\pi\sin^{2}\delta_{0}/k^{2}=4\pi\cdot 0.1160/0.00483=302\,\mathrm{fm^{2}} \)。两者完全一致 ✓。</p>
+          <p class="step"><strong>额外自洽性：</strong>各向同性分布 \( \mathrm{d}\sigma/\mathrm{d}\Omega=|f|^{2}=24.04\,\mathrm{fm^{2}} \)，对全立体角积分 \( \sigma=4\pi\cdot 24.04=302\,\mathrm{fm^{2}} \)，同样一致 ✓。</p>
+          <p class="step"><strong>关键观察：</strong>\( f(0) \) 含非零虚部（\( +1.67\,\mathrm{fm} \)）正是概率守恒的体现。对比例 4.1 的玻恩结果（\( f_{B}(0) \) 是纯实数），可看出<strong>实势的严格解</strong>必须含虚部，而一级玻恩丢失了它。</p>
+          <p><span class="ans">\( f(0)=-4.61+1.67\,i\;\mathrm{fm} \)；\( \sigma_{\text{tot}}^{\text{光学}}=\sigma_{\text{tot}}^{\text{分波}}\approx 302\,\mathrm{fm^{2}}\approx 3.02\,\mathrm{b} \)，光学定理验证成立。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 散射长度：热中子在 \( ^{12}\mathrm{C} \) 上的散射</h4>
+        <p class="example-statement">热中子（\( E_{n}=k_{B}T\approx 0.025\,\mathrm{eV} \)）在石墨（碳-12）上的自由原子散射长度实验测量值为 \( a_{s}=6.65\,\mathrm{fm} \)。求低能极限的总截面，并与实验值 \( \sigma_{\text{free}}\approx 5.55\,\mathrm{b} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先验证 s 波主导。热中子波数：</p>
+          <p class="step">\( k=\sqrt{2m_{n}E}/\hbar=\sqrt{2\cdot 939.6\cdot(2.5\times 10^{-8})}/197.3=\sqrt{4.70\times 10^{-5}}/197.3=6.86\times 10^{-3}/197.3=3.48\times 10^{-5}\,\mathrm{fm^{-1}} \)。</p>
+          <p class="step">\( kR=3.48\times 10^{-5}\cdot 5\approx 1.7\times 10^{-4}\ll 1 \)，所以 s 波完全主导，\( f\to -a_{s} \)、\( \sigma\to 4\pi a_{s}^{2} \)。</p>
+          <p class="step">直接代入：</p>
+          <div class="formula">\[ \sigma_{\text{tot}}=4\pi a_{s}^{2}=4\pi(6.65\,\mathrm{fm})^{2}=4\pi\cdot 44.2\,\mathrm{fm^{2}}=555.6\,\mathrm{fm^{2}} \]</div>
+          <p class="step">换算单位：\( 1\,\mathrm{barn}=100\,\mathrm{fm^{2}} \)，故 \( \sigma=5.56\,\mathrm{b} \)。</p>
+          <p class="step">实验值 \( \sigma_{\text{free}}(^{12}\mathrm{C})\approx 5.55\,\mathrm{b} \)，与计算完全一致 ✓。</p>
+          <p class="step"><strong>符号与物理：</strong>\( a_{s}>0 \) 表示 \( ^{12}\mathrm{C} \) 的核势<strong>整体</strong>像排斥硬球（虽然有吸引部分，但硬核占优）。对比：自由质子的相干散射长度 \( a_{p}\approx -3.74\,\mathrm{fm} \) 是<strong>负</strong>的，对应吸引主导。中子-质子 \( ^{1}S_{0} \) 通道的 \( a_{np}\approx -23.7\,\mathrm{fm} \) 数值极大（绝对值远超核力作用力程 \( 1\!-\!2\,\mathrm{fm} \)），暗示附近存在一个弱束缚态——这正是氘核 (deuteron) 的存在迹象（虽在 \( ^{3}S_{1} \) 通道而非 \( ^{1}S_{0} \)，但物理机制相同）。</p>
+          <p class="step"><strong>注意（束缚修正）：</strong>对分子中的氢（如水、有机物），氢原子的<strong>束缚</strong>散射长度 \( b_{\mathrm{H}}^{\text{bound}}\approx -2.83\,\mathrm{fm}\cdot(1+m_{n}/M_{\mathrm{H}})\approx -2.83\cdot 2=-5.66\,\mathrm{fm} \)（原子核与电子反冲耦合给出「质量增强」因子 \( 1+m_{n}/M\approx 2 \)）。这就是为什么中子散射文献中常区分「free」与「bound」散射长度——它们可差一个因子 2。</p>
+          <p><span class="ans">\( \sigma_{\text{tot}}=4\pi a_{s}^{2}\approx 556\,\mathrm{fm^{2}}=5.56\,\mathrm{b} \)，与实测 \( 5.55\,\mathrm{b} \) 高度一致。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把一级玻恩当成精确解。</strong>玻恩近似仅在势弱（\( V_{0}\ll\hbar^{2}/(ma^{2}) \)）或能量高时可靠；对强作用（如核力 \( V_{0}\sim 50\,\mathrm{MeV} \)、原子尺度势 \( \sim\mathrm{keV} \)）通常会失败。一个明显的诊断信号：玻恩近似下 \( f_{B} \) 对实势<strong>是实数</strong>，\( \mathrm{Im}\,f_{B}(0)=0 \)，按光学定理得 \( \sigma_{\text{tot}}=0 \)——明显矛盾。要满足概率守恒，必须用分波法精确求解相移，或进到二阶玻恩（\( \mathrm{Im}\,f \) 在 \( \mathcal{O}(V^{2}) \) 才出现）。</li>
+        <li><strong>把库仑散射当作「普通短程势」处理。</strong>库仑势 \( V\propto 1/r \) 是<strong>长程</strong>势：分波相移之和 \( \sum(2\ell+1)\sin^{2}\delta_{\ell} \) 不收敛，总截面红外发散（小角处 \( \mathrm{d}\sigma/\mathrm{d}\Omega\propto 1/\sin^{4}(\theta/2)\to\infty \)）。严格的库仑散射需用抛物坐标系求解，相移取连续形式 \( \delta_{\ell}=-\eta\ln\ell+\sigma_{\ell}^{C} \)。Born 公式对纯库仑给出「正确」的角分布只是著名的巧合；一般的<strong>屏蔽库仑</strong>（汤川势）才是玻恩近似的合法用例。</li>
+        <li><strong>误以为 \( f(\theta) \) 是实数。</strong>散射振幅是<strong>复数</strong>：\( f=\mathrm{Re}\,f+i\,\mathrm{Im}\,f \)。微分截面只看到 \( |f|^{2}=\mathrm{Re}^{2}+\mathrm{Im}^{2} \)，但<strong>前向虚部</strong>单独决定了总截面（光学定理）。许多重要物理（吸收、共振）只藏在虚部里，测 \( \mathrm{d}\sigma/\mathrm{d}\Omega \) 看不到全貌。</li>
+        <li><strong>混淆弹性总截面 \( \sigma_{\text{el}} \) 与总截面 \( \sigma_{\text{tot}} \)。</strong>若势是实厄米的（纯弹性），\( \sigma_{\text{tot}}=\sigma_{\text{el}} \)。但若存在非弹性通道（吸收、激发、碎裂），则 \( \sigma_{\text{tot}}=\sigma_{\text{el}}+\sigma_{\text{inel}} \)，而光学定理给出的是<strong>总</strong>截面。复势 \( V=V_{R}-iW/2 \)（光学模型）中，正 \( W \) 表示吸收，这时 \( |S_{\ell}|<1 \)，\( \sigma_{\text{el}}\ne\sigma_{\text{tot}} \)。</li>
+        <li><strong>把散射长度的符号当作「吸引/排斥」的直接指标。</strong>\( a_{s}>0 \) 通常意味着势在阈值附近是「净排斥硬球」型；\( a_{s}<0 \) 表示吸引尾部主导——但<strong>临界点</strong>是 \( a_{s}\to\pm\infty \)，对应势刚好支持一个零能束缚态。在临界点附近，\( a_{s} \) 可正可负且数值极大（远超力程），不能简单按符号判断。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 高斯势的玻恩近似：\( V(r)=V_{0}\exp(-r^{2}/(2a^{2})) \)，\( V_{0}=5\,\mathrm{eV} \)、\( a=1.0\,\mathrm{\AA} \)、电子 \( E=50\,\mathrm{eV} \)、\( \hbar^{2}/2m_{e}=3.81\,\mathrm{eV\cdot\AA^{2}} \)。求 \( f_{B}(0) \) 与 \( \mathrm{d}\sigma/\mathrm{d}\Omega(30^{\circ}) \)。</summary>
+        <div class="hint">三维高斯傅里叶变换：\( \int e^{-r^{2}/(2a^{2})}e^{-i\vec q\cdot\vec r}\,\mathrm{d}^{3}r=(2\pi)^{3/2}a^{3}\exp(-a^{2}q^{2}/2) \)；\( q=2k\sin(\theta/2) \)。</div>
+        <div class="solution">
+          <p>\( f_{B}(\theta)=-\dfrac{m}{2\pi\hbar^{2}}\,V_{0}\,(2\pi)^{3/2}a^{3}\,e^{-a^{2}q^{2}/2}=-\dfrac{V_{0}a^{3}\sqrt{2\pi}}{2(\hbar^{2}/2m)}\,e^{-a^{2}q^{2}/2} \)。</p>
+          <p>代入 \( V_{0}=5 \)、\( a=1 \)、\( \hbar^{2}/2m=3.81 \)：前置系数 \( =-\dfrac{5\cdot\sqrt{2\pi}}{2\cdot 3.81}=-\dfrac{5\cdot 2.507}{7.62}=-1.646\,\mathrm{\AA} \)。</p>
+          <p>\( k^{2}=50/3.81=13.12 \)、\( k=3.62\,\mathrm{\AA^{-1}} \)。</p>
+          <p>前向 \( q=0 \)：\( f_{B}(0)=-1.646\,\mathrm{\AA} \)；\( \mathrm{d}\sigma/\mathrm{d}\Omega(0)=2.71\,\mathrm{\AA^{2}} \)。</p>
+          <p>\( \theta=30^{\circ} \)：\( q^{2}=4\cdot 13.12\cdot\sin^{2}(15^{\circ})=4\cdot 13.12\cdot 0.0670=3.517\,\mathrm{\AA^{-2}} \)；\( a^{2}q^{2}/2=1.759 \)；\( e^{-1.759}=0.172 \)。</p>
+          <p>\( f_{B}(30^{\circ})=-1.646\cdot 0.172=-0.283\,\mathrm{\AA} \)；\( \mathrm{d}\sigma/\mathrm{d}\Omega(30^{\circ})=0.080\,\mathrm{\AA^{2}} \)。</p>
+          <p><span class="ans">\( f_{B}(0)\approx -1.65\,\mathrm{\AA} \)；\( \mathrm{d}\sigma/\mathrm{d}\Omega(30^{\circ})\approx 0.080\,\mathrm{\AA^{2}} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 卢瑟福散射：\( E_{\alpha}=7.7\,\mathrm{MeV} \)（Rutherford 实验原始能量）的 \( \alpha \) 粒子（\( Z_{1}=2 \)）打金靶（\( Z_{2}=79 \)）。求 \( \theta=60^{\circ} \) 处的 \( \mathrm{d}\sigma/\mathrm{d}\Omega \)（单位 barn/sr）。</summary>
+        <div class="hint">\( \mathrm{d}\sigma/\mathrm{d}\Omega=(Z_{1}Z_{2}\cdot 1.44/(4E))^{2}/\sin^{4}(\theta/2) \)。</div>
+        <div class="solution">
+          <p>前置系数 \( C=(2\cdot 79\cdot 1.44/(4\cdot 7.7))^{2}=(227.5/30.8)^{2}=(7.386)^{2}=54.55\,\mathrm{fm^{2}/sr} \)。</p>
+          <p>\( \sin^{4}(30^{\circ})=1/16 \)，故 \( \mathrm{d}\sigma/\mathrm{d}\Omega=54.55\cdot 16=873\,\mathrm{fm^{2}/sr}=8.73\,\mathrm{b/sr} \)。</p>
+          <p>对比 \( E=5.5\,\mathrm{MeV} \) 时（例 4.2）的同角度结果 \( 17.1\,\mathrm{b/sr} \)：能量增加到 \( 7.7/5.5=1.4 \) 倍，截面按 \( 1/E^{2} \) 减小到 \( 1/1.96\approx 51\% \)，与 \( 8.73/17.1=0.51 \) 一致 ✓。</p>
+          <p><span class="ans">\( \mathrm{d}\sigma/\mathrm{d}\Omega(60^{\circ})\approx 8.73\,\mathrm{b/sr} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 硬球低能极限：对一半径 \( R=1.0\,\mathrm{fm} \) 的「小硬球」，求低能极限 \( \sigma_{\text{tot}} \)。与经典几何截面 \( \pi R^{2} \) 比较，比值是多少？</summary>
+        <div class="hint">\( kR\to 0 \) 时 \( \sigma\to 4\pi R^{2} \)（仅 s 波）。</div>
+        <div class="solution">
+          <p>\( \sigma=4\pi R^{2}=4\pi(1.0)^{2}=12.57\,\mathrm{fm^{2}}=0.126\,\mathrm{b} \)。</p>
+          <p>经典几何截面 \( \pi R^{2}=3.14\,\mathrm{fm^{2}} \)。</p>
+          <p>比值 \( 4\pi R^{2}/\pi R^{2}=4 \)：量子低能截面是经典的 <strong>4 倍</strong>。这是 s 波球对称性的结果——经典粒子必须「撞到」球（截面 \( \pi R^{2} \)），但量子 s 波即使碰撞参数很大（远远错过球），也有非零的相干散射概率。高能极限（\( kR\gg 1 \)）下 \( \sigma\to 2\pi R^{2} \)，是经典的 <strong>2</strong> 倍（前向衍射峰贡献）。</p>
+          <p><span class="ans">\( \sigma\approx 12.6\,\mathrm{fm^{2}}=0.126\,\mathrm{b} \)，是经典 \( \pi R^{2} \) 的 4 倍。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 光学定理自洽：某纯 s 波散射系统测得 \( \delta_{0}=0.50\,\mathrm{rad} \)、\( k=0.40\,\mathrm{fm^{-1}} \)。求 \( f(0) \)（含实、虚部），分别用分波公式与光学定理计算 \( \sigma_{\text{tot}} \)，验证两者一致。</summary>
+        <div class="hint">\( f=\dfrac{1}{k}(\cos\delta_{0}\sin\delta_{0}+i\sin^{2}\delta_{0}) \)；\( \sigma_{\text{tot}}^{\text{分波}}=\dfrac{4\pi}{k^{2}}\sin^{2}\delta_{0} \)；\( \sigma_{\text{tot}}^{\text{光学}}=\dfrac{4\pi}{k}\mathrm{Im}\,f(0) \)。</div>
+        <div class="solution">
+          <p>\( \sin(0.50)=0.479 \)、\( \cos(0.50)=0.878 \)。</p>
+          <p>\( \mathrm{Re}\,f=0.878\cdot 0.479/0.40=1.051\,\mathrm{fm} \)；\( \mathrm{Im}\,f=0.479^{2}/0.40=0.229/0.40=0.574\,\mathrm{fm} \)。</p>
+          <p>\( f(0)=1.05+0.57\,i\;\mathrm{fm} \)。</p>
+          <p>分波：\( \sigma=\dfrac{4\pi}{0.16}\cdot 0.229=78.54\cdot 0.229=18.0\,\mathrm{fm^{2}} \)。</p>
+          <p>光学：\( \sigma=\dfrac{4\pi}{0.40}\cdot 0.574=31.42\cdot 0.574=18.0\,\mathrm{fm^{2}} \)。</p>
+          <p>两者完全一致 ✓。注意本题 \( \delta_{0}>0 \)（吸引势），所以 \( \mathrm{Re}\,f>0 \)，与硬球（\( \delta_{0}<0 \)）符号相反。</p>
+          <p><span class="ans">\( f(0)=1.05+0.57\,i\;\mathrm{fm} \)；\( \sigma_{\text{tot}}\approx 18.0\,\mathrm{fm^{2}} \)（两法一致）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 中子散射长度：自由 \( ^{1}\mathrm{H} \) 的相干散射长度 \( a_{s}=-3.74\,\mathrm{fm} \)。求低能极限 \( \sigma_{\text{coh}} \)，并解释为什么 \( ^{1}\mathrm{H} \) 的实测总散射截面 \( \sigma_{\text{tot}}\approx 20.4\,\mathrm{b} \) 远大于此值。</summary>
+        <div class="hint">\( \sigma=4\pi a_{s}^{2} \)。提示：质子有自旋 \( 1/2 \)，与中子（自旋 \( 1/2 \)）耦合后有三重态 \( ^{3}S_{1} \) 与单态 \( ^{1}S_{0} \) 两个散射长度。</div>
+        <div class="solution">
+          <p>相干截面：\( \sigma_{\text{coh}}=4\pi(3.74)^{2}=4\pi\cdot 14.0=175.5\,\mathrm{fm^{2}}=1.76\,\mathrm{b} \)。</p>
+          <p>但实测远大于此值，原因是<strong>自旋非相干</strong>：中子-质子系统总自旋 \( S=1 \)（三重态）与 \( S=0 \)（单态）有不同的散射长度（\( a_{+}\approx +5.42\,\mathrm{fm} \)、\( a_{-}\approx -23.7\,\mathrm{fm} \)），统计权重 \( (2S+1)/(2s_{n}+1)(2s_{p}+1) \) 给出三重态 \( 3/4 \)、单态 \( 1/4 \)。</p>
+          <p>自旋平均截面：\( \sigma_{\text{tot}}=\dfrac{3}{4}\cdot 4\pi a_{+}^{2}+\dfrac{1}{4}\cdot 4\pi a_{-}^{2}=\dfrac{3}{4}\cdot 4\pi(5.42)^{2}+\dfrac{1}{4}\cdot 4\pi(23.7)^{2} \)。</p>
+          <p>\( =3\pi\cdot 29.4+\pi\cdot 561.7=277+1764=2041\,\mathrm{fm^{2}}=20.4\,\mathrm{b} \) ✓。</p>
+          <p>另外，所谓「相干散射长度」\( a_{s}=-3.74\,\mathrm{fm} \) 实际上是 \( a_{\text{coh}}=\frac{1}{4}(3a_{+}+a_{-})=\frac{1}{4}(3\cdot 5.42-23.7)=\frac{1}{4}(-7.44)=-1.86\,\mathrm{fm} \) ... 实际自由质子的 \( a_{\text{coh}}\approx -3.74\,\mathrm{fm} \) 是「束缚」值，已含 \( 1+m_{n}/M \) 因子；细节见 Wilson (2008)。<strong>关键定性结论</strong>：单态散射长度 \( a_{-} \) 数值极大（\( -23.7\,\mathrm{fm} \)），暗示存在近阈值束缚态（氘核的镜像——氘核存在于三重态 \( ^{3}S_{1} \)，但单态几乎形成束缚态）。</p>
+          <p><span class="ans">\( \sigma_{\text{coh}}\approx 1.76\,\mathrm{b} \)；总截面大是因为两个自旋通道的散射长度差异极大，加权后 \( \sigma_{\text{tot}}\approx 20.4\,\mathrm{b} \)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 角散射图样 Angular Scattering Pattern</h2>
+      <p class="sim-desc">一束平面波从左方入射，碰到位于红色标记处的<strong>汤川型散射势</strong> \( V(r)=V_{0}e^{-\mu r}/r \)。仿真用<strong>一级玻恩近似</strong> \( f_{B}(\theta)=-V_{0}/(\mu^{2}+4k^{2}\sin^{2}(\theta/2)) \)（自然单位 \( \hbar^{2}/2m=1 \)）实时计算微分截面，并绘制极坐标图（红填充曲线，径向长度正比于归一化的 \( \mathrm{d}\sigma/\mathrm{d}\Omega \)）。调节滑块感受参数依赖：(i) 增大 \( k \)（提高能量）→ 主峰<strong>急剧前向收缩</strong>；(ii) 增大 \( V_{0} \)（增强势）→ 整体截面变大；(iii) 减小 \( \mu \)（增长力程，趋于库仑极限）→ 后向散射增强。HUD 显示前向振幅 \( f(0) \)、数值积分的总截面、与前后向比 \( R=\mathrm{d}\sigma(0)/\mathrm{d}\sigma(180^{\circ}) \)。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          // dimensionless Born: ℏ²/(2m) = 1, so f_B(θ) = -V0/(μ² + 4k² sin²(θ/2))
+          var params = { k: 2.0, V0: 1.5, mu: 1.0 };
+
+          // scatterer location on canvas (beam enters from left, exits right)
+          var CX = 230, CY = H / 2;
+
+          function bornF(theta) {
+            var q2 = 4 * params.k * params.k * Math.sin(theta / 2) * Math.sin(theta / 2);
+            return -params.V0 / (params.mu * params.mu + q2);
+          }
+          function dsigma(theta) {
+            var f = bornF(theta);
+            return f * f;
+          }
+          // numerical total cross section: 2π ∫₀^π |f|² sinθ dθ
+          function sigmaTot() {
+            var N = 360, sum = 0;
+            for (var i = 0; i < N; i++) {
+              var th = (i + 0.5) * Math.PI / N;
+              sum += dsigma(th) * Math.sin(th);
+            }
+            return 2 * Math.PI * (Math.PI / N) * sum;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tBeam: 0 }; },
+            step: function (dt, t, s) { s.tBeam += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // ----- layout / scales -----
+              var RMAX = 165;                  // max polar radius in px
+              var peak = dsigma(0);            // forward peak (largest)
+              var scale = RMAX / peak;
+
+              // ----- incoming beam: parallel rays from left edge -----
+              var beamYs = [-110, -70, -35, 0, 35, 70, 110];
+              ctx.save();
+              ctx.strokeStyle = PS.colors.trace;
+              ctx.globalAlpha = 0.75;
+              ctx.lineWidth = 1.5;
+              // animated phase to give "motion" feel
+              var phase = (s.tBeam * 90) % 30;
+              beamYs.forEach(function (dy) {
+                var y = CY + dy;
+                // dashed incoming rays ending at the scatterer disk edge
+                ctx.setLineDash([6, 6]);
+                ctx.lineDashOffset = -phase;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                // rays terminate at a small impact circle around scatterer
+                var xEnd = CX - 6 - Math.abs(dy) * 0.04; // slight convergence
+                ctx.lineTo(xEnd, y);
+                ctx.stroke();
+              });
+              ctx.setLineDash([]);
+              ctx.restore();
+
+              // beam label
+              PS.drawText(ctx, '入射束 incoming beam →', 14, CY - 130,
+                { font: '12px system-ui, sans-serif', color: PS.colors.trace });
+
+              // ----- polar plot of dσ/dΩ(θ) -----
+              // forward direction (+x). Curve symmetric about beam axis.
+              ctx.save();
+              ctx.beginPath();
+              // upper half (θ_s ∈ [0, π])
+              for (var i = 0; i <= 180; i++) {
+                var sa = i * Math.PI / 180;          // scattering angle 0..π
+                var r = dsigma(sa) * scale;
+                var x = CX + r * Math.cos(sa);
+                var y = CY - r * Math.sin(sa);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              }
+              // lower half (mirror)
+              for (var j = 180; j >= 0; j--) {
+                var sa2 = j * Math.PI / 180;
+                var r2 = dsigma(sa2) * scale;
+                var x2 = CX + r2 * Math.cos(sa2);
+                var y2 = CY + r2 * Math.sin(sa2);
+                ctx.lineTo(x2, y2);
+              }
+              ctx.closePath();
+              ctx.globalAlpha = 0.30;
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              ctx.restore();
+
+              // ----- reference rings (angular grid) -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([3, 5]);
+              [RMAX * 0.25, RMAX * 0.5, RMAX * 0.75, RMAX].forEach(function (r) {
+                ctx.beginPath();
+                ctx.arc(CX, CY, r, 0, Math.PI * 2);
+                ctx.stroke();
+              });
+              ctx.setLineDash([]);
+              // angular spokes at 0, 30, 60, 90, 120, 150 deg
+              ctx.globalAlpha = 0.4;
+              [0, 30, 60, 90, 120, 150].forEach(function (deg) {
+                var rad = deg * Math.PI / 180;
+                ctx.beginPath();
+                ctx.moveTo(CX, CY);
+                ctx.lineTo(CX + RMAX * Math.cos(rad), CY - RMAX * Math.sin(rad));
+                ctx.moveTo(CX, CY);
+                ctx.lineTo(CX + RMAX * Math.cos(rad), CY + RMAX * Math.sin(rad));
+                ctx.stroke();
+              });
+              ctx.restore();
+
+              // angle labels
+              ctx.save();
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              [[0, '0°'], [30, '30°'], [60, '60°'], [90, '90°'], [120, '120°'], [150, '150°']].forEach(function (p) {
+                var rad = p[0] * Math.PI / 180;
+                ctx.fillText(p[1], CX + (RMAX + 14) * Math.cos(rad), CY - (RMAX + 14) * Math.sin(rad));
+                ctx.fillText(p[1], CX + (RMAX + 14) * Math.cos(rad), CY + (RMAX + 14) * Math.sin(rad));
+              });
+              ctx.restore();
+
+              // ----- outgoing scattered rays at sampled angles (length ∝ |f|) -----
+              ctx.save();
+              var angles = [10, 25, 45, 70, 100, 130];
+              angles.forEach(function (deg) {
+                var rad = deg * Math.PI / 180;
+                var f = Math.sqrt(dsigma(rad));
+                var fmax = Math.sqrt(peak);
+                var len = (f / fmax) * 95 + 6;
+                // upper and lower symmetric
+                [1, -1].forEach(function (sgn) {
+                  var x2 = CX + len * Math.cos(rad);
+                  var y2 = CY + sgn * len * Math.sin(rad);
+                  PS.drawArrow(ctx, CX, CY, x2, y2, PS.colors.accent2);
+                });
+              });
+              ctx.restore();
+
+              // ----- the scatterer itself -----
+              PS.drawCircle(ctx, CX, CY, 8, {
+                fill: PS.colors.primary, stroke: PS.colors.text, lineWidth: 1.5,
+              });
+              PS.drawText(ctx, 'V(r)', CX, CY, {
+                font: 'bold 10px system-ui', color: '#ffffff',
+                align: 'center', baseline: 'middle',
+              });
+
+              // ----- HUD -----
+              var st = sigmaTot();
+              var dback = dsigma(Math.PI);
+              var ratio = peak / Math.max(dback, 1e-12);
+
+              ctx.save();
+              ctx.globalAlpha = 0.94;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(W - 232, 10, 222, 132);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(W - 232, 10, 222, 132);
+              ctx.restore();
+
+              var hudX = W - 224, hudY = 30;
+              PS.drawText(ctx, 'Born 近似 (ℏ²/2m = 1)', hudX, hudY, {
+                font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'k       = ' + params.k.toFixed(2), hudX, hudY + 20,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'V₀      = ' + params.V0.toFixed(2), hudX, hudY + 36,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'μ       = ' + params.mu.toFixed(2), hudX, hudY + 52,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'f(0)    = ' + bornF(0).toFixed(3), hudX, hudY + 70,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'σ_tot   = ' + st.toFixed(3), hudX, hudY + 86,
+                { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '前/后向 = ' + ratio.toExponential(2), hudX, hudY + 104,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              var regime;
+              var xkR = params.k / Math.max(params.mu, 0.01);  // k/μ ~ kR_effective
+              if (xkR > 3)      regime = '高能：前向强烈峰化 (forward peak)';
+              else if (xkR > 1) regime = '中能：分布非各向同性';
+              else              regime = '低能：近各向同性 (s 波主导)';
+              PS.drawText(ctx, regime, hudX, hudY + 122,
+                { font: 'bold 11px system-ui', color: PS.colors.accent });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'k',  label: '波数 k (能量)',   min: 0.3, max: 5.0, step: 0.05, value: 2.0 },
+            { type: 'slider', key: 'V0', label: '势强度 V₀',       min: 0.1, max: 3.0, step: 0.05, value: 1.5 },
+            { type: 'slider', key: 'mu', label: '倒数力程 μ (1/范围)', min: 0.20, max: 2.5, step: 0.05, value: 1.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('k',  function (v) { params.k = v; });
+          ctl.on('V0', function (v) { params.V0 = v; });
+          ctl.on('mu', function (v) { params.mu = v; });
+          ctl.on('reset', function () {
+            params.k = 2.0; ctl.set('k', 2.0);
+            params.V0 = 1.5; ctl.set('V0', 1.5);
+            params.mu = 1.0; ctl.set('mu', 1.0);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>散射理论把「势的形状」与「角分布」用散射振幅 \( f(\theta) \) 联系起来：<strong>微分截面 = \( |f|^{2} \)</strong>。<strong>分波法</strong>把 \( f \) 展开为各角动量通道之和，由相移 \( \delta_{\ell} \) 编码势的影响；<strong>玻恩近似</strong>则把 \( f \) 表为势的傅里叶变换。两者由<strong>光学定理</strong>统一：总截面由前向振幅的虚部决定。库仑散射是长程势的特殊情形，给出 Rutherford 经典公式；低能极限下 s 波主导，截面趋于 \( 4\pi a_{s}^{2} \)，由<strong>散射长度</strong> \( a_{s} \) 单独决定。</p>
+      <ul>
+        <li>渐近形式：\( \psi\to e^{ikz}+f(\theta)\,e^{ikr}/r \)；\( \mathrm{d}\sigma/\mathrm{d}\Omega=|f(\theta)|^{2} \)。</li>
+        <li>分波：\( f(\theta)=\frac{1}{k}\sum_{\ell}(2\ell+1)e^{i\delta_{\ell}}\sin\delta_{\ell}\,P_{\ell}(\cos\theta) \)。</li>
+        <li>总截面：\( \sigma_{\text{tot}}=\frac{4\pi}{k^{2}}\sum_{\ell}(2\ell+1)\sin^{2}\delta_{\ell} \)。</li>
+        <li>玻恩近似：\( f_{B}(\theta)=-\frac{m}{2\pi\hbar^{2}}\int V(\vec r)\,e^{-i\vec q\cdot\vec r}\,\mathrm{d}^{3}r \)，\( q=2k\sin(\theta/2) \)。</li>
+        <li>光学定理：\( \sigma_{\text{tot}}=\frac{4\pi}{k}\,\mathrm{Im}\,f(0) \)。</li>
+        <li>Rutherford：\( \mathrm{d}\sigma/\mathrm{d}\Omega=\left(Z_{1}Z_{2}e^{2}/(16\pi\varepsilon_{0}E)\right)^{2}/\sin^{4}(\theta/2) \)（与经典相同）。</li>
+        <li>低能：\( \delta_{0}\to -ka_{s} \)、\( f\to -a_{s} \)、\( \sigma\to 4\pi a_{s}^{2} \)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}=|f(\theta)|^{2},\quad f(\theta)=\frac{1}{k}\sum_{\ell}(2\ell+1)e^{i\delta_{\ell}}\sin\delta_{\ell}\,P_{\ell}(\cos\theta),\quad \sigma_{\text{tot}}=\frac{4\pi}{k^{2}}\sum_{\ell}(2\ell+1)\sin^{2}\delta_{\ell}=\frac{4\pi}{k}\,\mathrm{Im}\,f(0)\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;f_{B}(\theta)=-\frac{m}{2\pi\hbar^{2}}\int V(\vec r)\,e^{-i\vec q\cdot\vec r}\,\mathrm{d}^{3}r,\quad q=2k\sin\frac{\theta}{2};\qquad k\cot\delta_{0}=-\frac{1}{a_{s}}+\frac{r_{0}k^{2}}{2},\quad \sigma_{k\to 0}=4\pi a_{s}^{2}\;} \]
+      </div>
+      <p><strong>核心收获</strong>：散射是探测微观结构的「显微镜」——测量角分布就是势的傅里叶分析；测量总截面（即使不分辨角度）也由光学定理被前向振幅锁定。分波与玻恩是互补的两把工具：低能用前者（少数相移即可），高能用后者（积分一次给出整个角分布）。库仑与共振是两类需要特别留意的特殊情形。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 麦克斯韦方程（协变与能量） — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第8章 · 电动力学 Electrodynamics</p>
+      <h1>麦克斯韦方程（协变与能量） <span class="en-title">Maxwell's Equations (Covariant) &amp; Field Energy</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>写出<strong>麦克斯韦方程组的微分形式</strong> (Maxwell's equations in differential form)：\(\nabla\!\cdot\!\vec{E}=\rho/\varepsilon_{0}\)、\(\nabla\!\cdot\!\vec{B}=0\)、\(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)、\(\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\)，并说明各项物理意义（高斯定律、磁单极不存在、法拉第定律、安培–麦克斯韦定律含<strong>位移电流</strong> (displacement current)）。</li>
+        <li>引入<strong>电磁势</strong> (electromagnetic potentials)：标量势 \(\phi\) 与矢量势 \(\vec{A}\)，满足 \(\vec{B}=\nabla\times\vec{A}\)、\(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\)；理解<strong>规范自由度</strong> (gauge freedom) \(\vec{A}\to\vec{A}+\nabla\chi\)、\(\phi\to\phi-\partial\chi/\partial t\) 不改变 \(\vec{E},\vec{B}\)。</li>
+        <li>掌握两种常用<strong>规范固定</strong> (gauge fixing)：库仑规范 \(\nabla\!\cdot\!\vec{A}=0\)（瞬时库仑作用，适用于静电/非相对论问题）；<strong>洛伦兹规范</strong> (Lorenz gauge) \(\partial_{\mu}A^{\mu}=0\) 即 \((1/c^{2})\partial\phi/\partial t+\nabla\!\cdot\!\vec{A}=0\)——使 \(\phi,\vec{A}\) 的<strong>波方程</strong>具有洛伦兹协变形式。</li>
+        <li>定义<strong>电磁场能量密度</strong> \(u=\tfrac12\varepsilon_{0}E^{2}+B^{2}/(2\mu_{0})\) 与<strong>坡印亭矢量</strong> (Poynting vector) \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\)；从麦克斯韦方程组推导<strong>坡印亭定理</strong> \(\partial u/\partial t+\nabla\!\cdot\!\vec{S}=-\vec{J}\!\cdot\!\vec{E}\)，即场的能量守恒。</li>
+        <li>写出<strong>麦克斯韦应力张量</strong> \(T_{ij}=\varepsilon_{0}(E_{i}E_{j}-\tfrac12\delta_{ij}E^{2})+(1/\mu_{0})(B_{i}B_{j}-\tfrac12\delta_{ij}B^{2})\)；用它求场作用于物质的<strong>力密度</strong>与<strong>动量通量</strong>；计算<strong>辐射压</strong> (radiation pressure) \(P=I/c\)（吸收）或 \(2I/c\)（反射）。</li>
+        <li>理解电磁场的<strong>协变形式</strong>：四维势 \(A^{\mu}=(\phi/c,\vec{A})\)、<strong>场强张量</strong> \(F^{\mu\nu}=\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu}\)（反对称，分量编码 \(\vec{E},\vec{B}\)）；麦克斯韦方程组凝缩为 \(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) 与 \(\partial_{[\lambda}F_{\mu\nu]}=0\)（完整张量处理见第 10 章）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 麦克斯韦方程组（微分形式）Maxwell's Equations, Differential Form</h3>
+      <p>把电场 \(\vec{E}(\vec{r},t)\)、磁场 \(\vec{B}(\vec{r},t)\)、电荷密度 \(\rho(\vec{r},t)\) 与电流密度 \(\vec{J}(\vec{r},t)\) 联系起来的四个方程——<strong>经典电动力学的全部内容</strong>（SI 单位制）：</p>
+      <div class="formula">\[ \boxed{\;\;\nabla\!\cdot\!\vec{E}=\frac{\rho}{\varepsilon_{0}}\;\;}\quad\text{(Gauss 电场 / Gauss's law for E)} \]</div>
+      <div class="formula">\[ \boxed{\;\;\nabla\!\cdot\!\vec{B}=0\;\;}\quad\text{(Gauss 磁场 / no magnetic monopoles)} \]</div>
+      <div class="formula">\[ \boxed{\;\;\nabla\times\vec{E}=-\,\frac{\partial\vec{B}}{\partial t}\;\;}\quad\text{(Faraday 电磁感应 / Faraday's law)} \]</div>
+      <div class="formula">\[ \boxed{\;\;\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\frac{\partial\vec{E}}{\partial t}\;\;}\quad\text{(Ampère–Maxwell, 含位移电流)} \]</div>
+      <p><strong>各项含义</strong>：</p>
+      <ul>
+        <li>(1) <strong>电荷是电场的源</strong>：电场线发自正电荷、终于负电荷；由 \(\rho\) 决定 \(\vec{E}\) 的散度。</li>
+        <li>(2) <strong>磁单极不存在</strong>：磁场线无起点无终点，必须闭合或延伸至无穷；\(\vec{B}\) 散度为零（迄今实验上仍未发现磁单极子）。</li>
+        <li>(3) <strong>变化的磁场产生涡旋电场</strong>：这是发电机与变压器原理。涡旋 \(\vec{E}\) 围绕 \(-\partial\vec{B}/\partial t\) 旋转（注意负号——楞次定律 (Lenz's law) 的体现）。</li>
+        <li>(4) <strong>电流与变化的电场共同产生涡旋磁场</strong>。第二项 \(\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\) 是麦克斯韦添加的<strong>位移电流</strong> (displacement current)，它使时变电场也能感生磁场，从而允许电磁波的存在。</li>
+      </ul>
+      <p>这四个方程加上<strong>洛伦兹力定律</strong> \(\vec{F}=q(\vec{E}+\vec{v}\times\vec{B})\) 构成经典电动力学；麦克斯韦的位移电流项预言了电磁波速 \(c=1/\sqrt{\mu_{0}\varepsilon_{0}}\approx 2.998\times 10^{8}\,\mathrm{m/s}\)，与光速一致——历史上首次揭示光的电磁本质。</p>
+      <div class="key-terms">Maxwell's equations (麦克斯韦方程组), Gauss's law (高斯定律), Faraday's law (法拉第定律), Ampère–Maxwell law (安培–麦克斯韦定律), displacement current \(\varepsilon_{0}\partial\vec{E}/\partial t\) (位移电流), Lenz's law (楞次定律)</div>
+
+      <h3>2. 电磁势与规范自由度 Electromagnetic Potentials &amp; Gauge Freedom</h3>
+      <p>两个齐次方程 (2)、(3) 提示势函数的存在：由 \(\nabla\!\cdot\!\vec{B}=0\) 可写 \(\vec{B}=\nabla\times\vec{A}\)（任意散度为零的场可表为另一场的旋度）；代入 Faraday 定律：\(\nabla\times(\vec{E}+\partial\vec{A}/\partial t)=0\)，故 \(\vec{E}+\partial\vec{A}/\partial t=-\nabla\phi\)（任意旋度为零的场可表为标量场的梯度）。即：</p>
+      <div class="formula">\[ \boxed{\;\;\vec{B}=\nabla\times\vec{A},\qquad \vec{E}=-\nabla\phi-\frac{\partial\vec{A}}{\partial t}.\;\;} \]</div>
+      <p>这里 \(\phi(\vec{r},t)\) 是<strong>标量势</strong> (scalar potential)，\(\vec{A}(\vec{r},t)\) 是<strong>矢量势</strong> (vector potential)。<strong>规范自由度</strong>：对任意标量函数 \(\chi(\vec{r},t)\)，做替换</p>
+      <div class="formula">\[ \vec{A}\to\vec{A}'=\vec{A}+\nabla\chi,\qquad \phi\to\phi'=\phi-\frac{\partial\chi}{\partial t}, \]</div>
+      <p>则 \(\vec{B}'=\nabla\times(\vec{A}+\nabla\chi)=\nabla\times\vec{A}=\vec{B}\)，\(\vec{E}'=-\nabla(\phi-\partial\chi/\partial t)-\partial(\vec{A}+\nabla\chi)/\partial t=\vec{E}\)。所以 \((\phi,\vec{A})\) 与 \((\phi',\vec{A}')\) 描述同一物理——这是<strong>规范不变性</strong> (gauge invariance)。利用这一自由度可选最方便的规范。</p>
+      <p><strong>库仑规范</strong> (Coulomb gauge) \(\nabla\!\cdot\!\vec{A}=0\)：使 \(\vec{A}\) 横向（纯涡旋）。此时 \(\phi\) 满足瞬时泊松方程 \(\nabla^{2}\phi=-\rho/\varepsilon_{0}\)，解为 \(\phi(\vec{r},t)=\frac{1}{4\pi\varepsilon_{0}}\int\frac{\rho(\vec{r}',t)}{|\vec{r}-\vec{r}'|}\,\mathrm{d}^{3}r'\)（<strong>瞬时</strong>库仑作用，看似违反相对论，但 \(\vec{A}\) 的横向部分会补偿，物理 \(\vec{E}\) 仍因果正常）。适用于原子物理、量子化学（辐射规范 (radiation gauge)）。</p>
+      <p><strong>洛伦兹规范</strong> (Lorenz gauge)：</p>
+      <div class="formula">\[ \boxed{\;\;\frac{1}{c^{2}}\frac{\partial\phi}{\partial t}+\nabla\!\cdot\!\vec{A}=0\;\;\Longleftrightarrow\;\;\partial_{\mu}A^{\mu}=0\;\;} \]</div>
+      <p>（此处 \(A^{\mu}=(\phi/c,\vec{A})\) 为四维势；详见第 6 节。）代入麦克斯韦方程组后，\(\phi\) 和 \(\vec{A}\) 各自满足<strong>推迟波动方程</strong> (retarded wave equation)：</p>
+      <div class="formula">\[ \Box\,\phi=-\frac{\rho}{\varepsilon_{0}},\qquad \Box\,\vec{A}=-\mu_{0}\vec{J},\qquad \Box\equiv\nabla^{2}-\frac{1}{c^{2}}\frac{\partial^{2}}{\partial t^{2}}\;\;\text{(达朗贝尔算子 / d'Alembertian)}. \]</div>
+      <p>这两个方程具有<strong>明显的洛伦兹协变性</strong>（\(\Box\) 是洛伦兹标量算子，\((\phi/c,\vec{A})\) 与 \((c\rho,\vec{J})\) 同为四矢量）。其推迟解 \(\phi(\vec{r},t)=\frac{1}{4\pi\varepsilon_{0}}\int\frac{\rho(\vec{r}',t-r/c)}{|\vec{r}-\vec{r}'|}\mathrm{d}^{3}r'\) 自然给出因果传播——场以光速 \(c\) 传来。注意：「Lorenz 规范」以丹麦物理学家 <strong>L. Lorenz</strong> 命名，勿与「Lorentz 变换」的 H. Lorentz 混淆。</p>
+      <div class="key-terms">scalar potential \(\phi\) (标量势), vector potential \(\vec{A}\) (矢量势), gauge transformation \(\chi\) (规范变换), gauge invariance (规范不变性), Coulomb gauge \(\nabla\!\cdot\!\vec{A}=0\) (库仑规范), Lorenz gauge \(\partial_{\mu}A^{\mu}=0\) (洛伦兹规范), d'Alembertian \(\Box\) (达朗贝尔算子)</div>
+
+      <h3>3. 电磁场能量密度与坡印亭矢量 Field Energy Density &amp; Poynting Vector</h3>
+      <p>静电场与静磁场分别储存能量，体密度为 \(\tfrac12\varepsilon_{0}E^{2}\) 与 \(B^{2}/(2\mu_{0})\)。动态情形仍成立（实验与理论均验证），故：</p>
+      <div class="formula">\[ \boxed{\;\;u(\vec{r},t)=\frac{1}{2}\varepsilon_{0}E^{2}+\frac{1}{2\mu_{0}}B^{2}\;\;\lbrack\mathrm{J/m^{3}}\rbrack\;\;} \]</div>
+      <p><strong>能流密度</strong>（单位时间通过单位横截面的电磁能量）由<strong>坡印亭矢量</strong>给出：</p>
+      <div class="formula">\[ \boxed{\;\;\vec{S}(\vec{r},t)=\frac{1}{\mu_{0}}\vec{E}\times\vec{B}\;\;\lbrack\mathrm{W/m^{2}}\rbrack\;\;} \]</div>
+      <p>对平面电磁波（真空，\(\vec{E}\perp\vec{B}\perp\hat{k}\)，\(B=E/c\)）：\(u=\varepsilon_{0}E^{2}\)（电场磁场各贡献一半），\(\vec{S}=c\,u\,\hat{k}\)（能流以光速沿传播方向），符合「电磁波携带能量以光速传播」。</p>
+
+      <h4>坡印亭定理（能量守恒）Poynting's Theorem</h4>
+      <p>由麦克斯韦方程组可严格推出：</p>
+      <div class="formula">\[ \boxed{\;\;\frac{\partial u}{\partial t}+\nabla\!\cdot\!\vec{S}=-\,\vec{J}\!\cdot\!\vec{E}\;\;} \]</div>
+      <p>这是电磁场的<strong>局域能量守恒</strong>：左边第一项是场能密度增长率；第二项是 \(\vec{S}\) 的散度（净流出）；右边 \(\vec{J}\!\cdot\!\vec{E}\) 是场对电流做功的功率密度（焦耳热，或机械功率转移给电荷）。负号意味着：当场把能量交给电流（\(\vec{J}\!\cdot\!\vec{E}>0\)）时，要么场能减少，要么有净能流流入该区域。<strong>关键观念</strong>：能量储存在<strong>场</strong>中（不是导线里），通过场的坡印亭矢量传输——见例 8.2 与仿真。</p>
+      <div class="key-terms">energy density \(u\) (能量密度), Poynting vector \(\vec{S}=(\vec{E}\times\vec{B})/\mu_{0}\) (坡印亭矢量), Poynting's theorem (坡印亭定理), Joule heating \(\vec{J}\!\cdot\!\vec{E}\) (焦耳热)</div>
+
+      <h3>4. 麦克斯韦应力张量 Maxwell Stress Tensor</h3>
+      <p>电磁场不仅携带能量，还携带<strong>动量</strong>。把场对电荷分布的总力写成穿过包围面的通量形式，便得到<strong>麦克斯韦应力张量</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;T_{ij}=\varepsilon_{0}\!\Bigl(E_{i}E_{j}-\tfrac12\delta_{ij}E^{2}\Bigr)+\frac{1}{\mu_{0}}\!\Bigl(B_{i}B_{j}-\tfrac12\delta_{ij}B^{2}\Bigr)\;\;} \]</div>
+      <p>作用在体积 \(V\) 内电荷物质上的总力（电磁力）等于流过表面 \(\partial V\) 的动量通量：</p>
+      <div class="formula">\[ \vec{F}=\int_{V}\!\bigl(\rho\vec{E}+\vec{J}\times\vec{B}\bigr)\mathrm{d}^{3}r=\oint_{\partial V}\!\vec{T}\!\cdot\!\mathrm{d}\vec{a}-\varepsilon_{0}\mu_{0}\frac{\mathrm{d}}{\mathrm{d}t}\!\int_{V}\vec{S}\,\mathrm{d}^{3}r, \]</div>
+      <p>其中 \(\vec{T}\!\cdot\!\mathrm{d}\vec{a}\) 分量为 \(T_{ij}\,\mathrm{d}a_{j}\)。第二项是场动量 \(\vec{p}_{\text{field}}=\varepsilon_{0}\mu_{0}\!\int\!\vec{S}\,\mathrm{d}^{3}r=\int\!\vec{g}\,\mathrm{d}^{3}r\) 的变化率，\(\vec{g}=\varepsilon_{0}\mu_{0}\vec{S}=\vec{S}/c^{2}\) 是<strong>场动量密度</strong>。对静态场（场动量不随时间变化），力的计算简化为面积分。</p>
+      <p>对垂直于 \(x\) 方向的单位面，\(T_{xx}\) 给出<strong>沿 x 方向的应力</strong>（拉力为正、压力为负）。例：平行板电容器中只有 \(E_{x}\)，则 \(T_{xx}=\tfrac12\varepsilon_{0}E^{2}-\tfrac12\varepsilon_{0}E^{2}\cdot 0=\tfrac12\varepsilon_{0}E^{2}\)... 实际上 \(T_{xx}=\varepsilon_{0}(E_{x}^{2}-\tfrac12 E^{2})=\tfrac12\varepsilon_{0}E^{2}\)、\(T_{yy}=T_{zz}=-\tfrac12\varepsilon_{0}E^{2}\)。沿场方向是<strong>拉应力</strong>（场线互相「拉」）、垂直场方向是<strong>压应力</strong>（场线互相「排开」）——这是法拉第「场线张力与侧向压力」图像的精确数学。</p>
+      <div class="key-terms">Maxwell stress tensor \(T_{ij}\) (麦克斯韦应力张量), field momentum density \(\vec{g}=\vec{S}/c^{2}\) (场动量密度), tension along field lines (场线方向拉应力), pressure perpendicular (垂直方向压应力)</div>
+
+      <h3>5. 辐射压 Radiation Pressure</h3>
+      <p>电磁波照射在表面上会施加压力。完全吸收表面：波把动量 \(p=U/c\) 传给物体（\(U\) 是吸收的能量）；完全反射表面：动量改变 \(2p\)。故辐射压（压力 = 动量通量）：</p>
+      <div class="formula">\[ P_{\text{abs}}=\frac{I}{c}=\langle u\rangle,\qquad P_{\text{refl}}=\frac{2I}{c}=2\langle u\rangle, \]</div>
+      <p>其中 \(I=\langle|\vec{S}|\rangle\) 是<strong>波强度</strong> (intensity)。这也直接由应力张量得到：波是横场 \(E\perp B\)，对波传播方向 \(\hat{k}\) 计算 \(T_{kk}=-u\)（负号即压力）。\(\hat{k}\) 方向输入动量的速率就是 \(u c=I\)。太阳光在地球处的强度 \(I_{\odot}\approx 1361\,\mathrm{W/m^{2}}\)，对反射镜的辐射压 \(P\approx 9.1\,\mu\mathrm{Pa}\)——微小但工程上重要（太阳帆、彗尾远离太阳的原因之一）。</p>
+
+      <h3>6. 协变形式预览（详见第 10 章）Covariant Form — Preview (Full Treatment in Ch. 10)</h3>
+      <p>定义<strong>四维势</strong> \(A^{\mu}=(\phi/c,\,\vec{A})\) 与<strong>四维电流</strong> \(J^{\mu}=(c\rho,\,\vec{J})\)，二者均为洛伦兹四矢量（在洛伦兹变换下混合分量）。\(\vec{E}\) 与 \(\vec{B}\) 不再独立，而合并为<strong>电磁场强张量</strong> (electromagnetic field-strength tensor)：</p>
+      <div class="formula">\[ F^{\mu\nu}=\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu}\;\;\text{(反对称)},\qquad F^{\mu\nu}=\begin{pmatrix} 0 & -E_{x}/c & -E_{y}/c & -E_{z}/c\\ E_{x}/c & 0 & -B_{z} & B_{y}\\ E_{y}/c & B_{z} & 0 & -B_{x}\\ E_{z}/c & -B_{y} & B_{x} & 0 \end{pmatrix}. \]</div>
+      <p>四个麦克斯韦方程在洛伦兹规范下凝缩为两个张量方程：</p>
+      <div class="formula">\[ \boxed{\;\;\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\;\;}\qquad\text{(含源，等价于 Gauss 电场 + Ampère–Maxwell)} \]</div>
+      <div class="formula">\[ \boxed{\;\;\partial_{\lambda}F_{\mu\nu}+\partial_{\mu}F_{\nu\lambda}+\partial_{\nu}F_{\lambda\mu}=0\;\;\Leftrightarrow\;\;\partial_{\mu}\widetilde{F}^{\mu\nu}=0\;\;}\quad\text{(齐次，等价于 Gauss 磁场 + Faraday)} \]</div>
+      <p>其中 \(\widetilde{F}^{\mu\nu}=\tfrac12\epsilon^{\mu\nu\rho\sigma}F_{\rho\sigma}\) 是<strong>对偶张量</strong> (dual tensor)。<strong>洛伦兹协变性</strong>立即可见：左、右两边都是洛伦兹张量，方程形式在任意惯性系下不变；\(\vec{E},\vec{B}\) 在不同惯性系下互相混合（部分 \(E\) 变 \(B\)、反之亦然），但 \(F^{\mu\nu}\) 与方程形式不变。完整处理（洛伦兹变换下场的具体变换、Liénard–Wiechert 势、相对论性运动电荷的辐射）见第 10 章。</p>
+      <div class="key-terms">four-potential \(A^{\mu}\) (四维势), four-current \(J^{\mu}\) (四维电流), field-strength tensor \(F^{\mu\nu}\) (场强张量), dual tensor \(\widetilde{F}^{\mu\nu}\) (对偶张量), Lorentz covariance (洛伦兹协变性), \(\vec{E},\vec{B}\) mix under boosts (E、B 在不同惯性系下混合)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 8.A — 洛伦兹规范下的推迟波动方程 Wave Equations in the Lorenz Gauge</h3>
+      <p class="step"><strong>步骤 1（齐次麦克斯韦引入势）：</strong>由 \(\nabla\!\cdot\!\vec{B}=0\) 取 \(\vec{B}=\nabla\times\vec{A}\)。代入 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)：\(\nabla\times(\vec{E}+\partial\vec{A}/\partial t)=0\)，取 \(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\)。</p>
+      <p class="step"><strong>步骤 2（代入 Gauss 定律）：</strong>\(\nabla\!\cdot\!\vec{E}=\rho/\varepsilon_{0}\Rightarrow -\nabla^{2}\phi-\partial(\nabla\!\cdot\!\vec{A})/\partial t=\rho/\varepsilon_{0}\)，即</p>
+      <div class="formula">\[ \nabla^{2}\phi+\frac{\partial}{\partial t}(\nabla\!\cdot\!\vec{A})=-\frac{\rho}{\varepsilon_{0}}.\qquad(\star) \]</div>
+      <p class="step"><strong>步骤 3（代入 Ampère–Maxwell）：</strong>\(\nabla\times\vec{B}=\nabla(\nabla\!\cdot\!\vec{A})-\nabla^{2}\vec{A}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t=\mu_{0}\vec{J}-(1/c^{2})(\nabla(\partial\phi/\partial t)+\partial^{2}\vec{A}/\partial t^{2})\)（用了 \(c^{2}=1/(\mu_{0}\varepsilon_{0})\)），整理：</p>
+      <div class="formula">\[ \Bigl(\nabla^{2}-\frac{1}{c^{2}}\frac{\partial^{2}}{\partial t^{2}}\Bigr)\vec{A}-\nabla\!\Bigl(\nabla\!\cdot\!\vec{A}+\frac{1}{c^{2}}\frac{\partial\phi}{\partial t}\Bigr)=-\mu_{0}\vec{J}.\qquad(\star\star) \]</div>
+      <p class="step"><strong>步骤 4（强加 Lorenz 规范）：</strong>令括号项 \(\nabla\!\cdot\!\vec{A}+(1/c^{2})\partial\phi/\partial t=0\)，则 \((\star\star)\) 直接化为 \(\Box\vec{A}=-\mu_{0}\vec{J}\)；而 \((\star)\) 化为 \(\nabla^{2}\phi+(1/c^{2})\partial^{2}\phi/\partial t^{2}=-\rho/\varepsilon_{0}\)... 但注意 \(\Box=\nabla^{2}-(1/c^{2})\partial^{2}/\partial t^{2}\)，所以实际上 \(\Box\phi=-\rho/\varepsilon_{0}\)。</p>
+      <p class="step"><strong>步骤 5（自洽性检查）：</strong>两个波方程是否互相兼容、Lorenz 规范能否始终维持？对 \(\Box\phi=-\rho/\varepsilon_{0}\) 取 \((1/c^{2})\partial/\partial t\)，对 \(\Box\vec{A}=-\mu_{0}\vec{J}\) 取 \(\nabla\!\cdot\!{}\)，相加：\(\Box\bigl[(1/c^{2})\partial\phi/\partial t+\nabla\!\cdot\!\vec{A}\bigr]=-\rho/(\varepsilon_{0}c^{2})-\mu_{0}\nabla\!\cdot\!\vec{J}=-\mu_{0}\bigl(\partial\rho/\partial t+\nabla\!\cdot\!\vec{J}\bigr)=0\)（用<strong>电荷守恒</strong>连续性方程 \(\partial\rho/\partial t+\nabla\!\cdot\!\vec{J}=0\)）。所以 Lorenz 条件 \(\partial_{\mu}A^{\mu}\) 满足齐次波方程——只要初始时刻 \(\partial_{\mu}A^{\mu}=0\) 且其时间导数为零，则永远为零。<strong>规范自洽</strong> ✓。</p>
+      <p class="step"><strong>步骤 6（推迟解）：</strong>由格林函数法，\(\Box\phi=-\rho/\varepsilon_{0}\) 的因果（推迟）解为</p>
+      <div class="formula">\[ \phi(\vec{r},t)=\frac{1}{4\pi\varepsilon_{0}}\!\int\!\frac{\rho(\vec{r}',\,t-|\vec{r}-\vec{r}'|/c)}{|\vec{r}-\vec{r}'|}\,\mathrm{d}^{3}r',\qquad \vec{A}(\vec{r},t)=\frac{\mu_{0}}{4\pi}\!\int\!\frac{\vec{J}(\vec{r}',\,t-|\vec{r}-\vec{r}'|/c)}{|\vec{r}-\vec{r}'|}\,\mathrm{d}^{3}r'. \]</div>
+      <p>当前时刻 \(t\) 在 \(\vec{r}\) 处的势由<strong>推迟时刻</strong> \(t_{r}=t-|\vec{r}-\vec{r}'|/c\) 的源决定——信息以光速传来。这就是「推迟势」 (retarded potentials)，是辐射问题的出发点（第 9 章）。</p>
+
+      <h3>推导 8.B — 坡印亭定理 Poynting's Theorem</h3>
+      <p class="step"><strong>步骤 1（出发点）：</strong>用 Ampère–Maxwell 解出 \(\vec{J}\)：\(\vec{J}=(1/\mu_{0})\nabla\times\vec{B}-\varepsilon_{0}\partial\vec{E}/\partial t\)。计算场对电荷做功功率密度：</p>
+      <div class="formula">\[ \vec{J}\!\cdot\!\vec{E}=\frac{1}{\mu_{0}}(\nabla\times\vec{B})\!\cdot\!\vec{E}-\frac{\varepsilon_{0}}{2}\frac{\partial E^{2}}{\partial t}. \]</div>
+      <p class="step"><strong>步骤 2（矢量恒等式）：</strong>\(\nabla\!\cdot\!(\vec{E}\times\vec{B})=(\nabla\times\vec{E})\!\cdot\!\vec{B}-(\nabla\times\vec{B})\!\cdot\!\vec{E}\)，所以 \((\nabla\times\vec{B})\!\cdot\!\vec{E}=(\nabla\times\vec{E})\!\cdot\!\vec{B}-\nabla\!\cdot\!(\vec{E}\times\vec{B})\)。</p>
+      <p class="step"><strong>步骤 3（用 Faraday）：</strong>\(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)，故 \((\nabla\times\vec{E})\!\cdot\!\vec{B}=-(\partial\vec{B}/\partial t)\!\cdot\!\vec{B}=-\tfrac12\partial B^{2}/\partial t\)。代回：</p>
+      <div class="formula">\[ \vec{J}\!\cdot\!\vec{E}=\frac{1}{\mu_{0}}\Bigl[-\frac12\frac{\partial B^{2}}{\partial t}-\nabla\!\cdot\!(\vec{E}\times\vec{B})\Bigr]-\frac{\varepsilon_{0}}{2}\frac{\partial E^{2}}{\partial t}=-\frac{\partial}{\partial t}\!\Bigl[\frac12\varepsilon_{0}E^{2}+\frac{1}{2\mu_{0}}B^{2}\Bigr]-\nabla\!\cdot\!\Bigl[\frac{1}{\mu_{0}}\vec{E}\times\vec{B}\Bigr]. \]</div>
+      <p class="step"><strong>步骤 4（识别）：</strong>方括号内即 \(u\) 与 \(\vec{S}\)，故</p>
+      <div class="formula">\[ \boxed{\;\;\frac{\partial u}{\partial t}+\nabla\!\cdot\!\vec{S}=-\,\vec{J}\!\cdot\!\vec{E}.\;\;} \]</div>
+      <p class="step"><strong>步骤 5（积分形式）：</strong>对任意体积 \(V\) 积分，用高斯定理：</p>
+      <div class="formula">\[ \frac{\mathrm{d}}{\mathrm{d}t}\!\int_{V}u\,\mathrm{d}^{3}r+\oint_{\partial V}\vec{S}\!\cdot\!\mathrm{d}\vec{a}=-\int_{V}\vec{J}\!\cdot\!\vec{E}\,\mathrm{d}^{3}r. \]</div>
+      <p>解读：体积 \(V\) 内场能的增长率 + 流出表面的能流 = 负的场对电荷做功功率。后者把能量交给电流（焦耳热、机械功等）。能量既不能凭空产生也不能凭空消失——只是在场与物质间流动，而流动通道是<strong>场中的坡印亭矢量</strong>。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 平面电磁波的能量密度与强度 Energy Density &amp; Intensity of a Plane Wave</h4>
+        <p class="example-statement">真空中一束线偏振电磁波，电场 \(\vec{E}=E_{0}\cos(kz-\omega t)\,\hat{x}\)，振幅 \(E_{0}=100\,\mathrm{V/m}\)。（a）求峰值与平均能量密度 \(\langle u\rangle\)；（b）求平均强度 \(\langle S\rangle\)（单位时间垂直通过单位面积的能流）；（c）估算 1 m² 表面正对太阳（\(I_{\odot}=1361\,\mathrm{W/m^{2}}\)）所对应的 \(E_{0}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>由 \(B=E/c\)（平面波关系），电场磁场贡献的能量密度相等：</p>
+          <div class="formula">\[ u_{\text{peak}}=\frac12\varepsilon_{0}E_{0}^{2}+\frac{1}{2\mu_{0}}\Bigl(\frac{E_{0}}{c}\Bigr)^{2}=\frac12\varepsilon_{0}E_{0}^{2}+\frac12\varepsilon_{0}E_{0}^{2}=\varepsilon_{0}E_{0}^{2}. \]</div>
+          <p>代入 \(E_{0}=100\,\mathrm{V/m}\)、\(\varepsilon_{0}=8.854\times 10^{-12}\,\mathrm{F/m}\)：</p>
+          <div class="formula">\[ u_{\text{peak}}=8.854\times 10^{-12}\times 10^{4}=8.85\times 10^{-8}\,\mathrm{J/m^{3}}. \]</div>
+          <p>取时间平均（\(\langle\cos^{2}\rangle=1/2\)）：\(\langle u\rangle=u_{\text{peak}}/2=\mathbf{4.43\times 10^{-8}\,\mathrm{J/m^{3}}}\)。</p>
+          <p class="step"><strong>解（b）：</strong>\(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}=(E_{0}^{2}/\mu_{0}c)\cos^{2}(kz-\omega t)\,\hat{z}=\varepsilon_{0}c\,E_{0}^{2}\cos^{2}(kz-\omega t)\,\hat{z}\)。</p>
+          <div class="formula">\[ \langle S\rangle=\frac12\varepsilon_{0}c\,E_{0}^{2}=\frac12(8.854\times 10^{-12})(2.998\times 10^{8})(10^{4})=\mathbf{13.3\,\mathrm{W/m^{2}}}. \]</div>
+          <p class="step"><strong>解（c）：</strong>由 \(I=\tfrac12\varepsilon_{0}c E_{0}^{2}\) 反解：\(E_{0}=\sqrt{2I/(\varepsilon_{0}c)}=\sqrt{2\times 1361/(8.854\times 10^{-12}\times 2.998\times 10^{8})}=\sqrt{2722/2.654\times 10^{-3}}=\sqrt{1.026\times 10^{6}}\approx\mathbf{1.01\times 10^{3}\,\mathrm{V/m}}\)。</p>
+          <p><span class="ans">答案：(a) \(\langle u\rangle=4.43\times 10^{-8}\,\mathrm{J/m^{3}}\)；(b) \(\langle S\rangle=13.3\,\mathrm{W/m^{2}}\)；(c) 太阳光 \(E_{0}\approx 1.0\times 10^{3}\,\mathrm{V/m}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 充电电容器的能量流入——能从「侧面」来 Energy Flow into a Charging Capacitor</h4>
+        <p class="example-statement">圆形平行板电容器，极板半径 \(R=5.0\,\mathrm{cm}\)、间距 \(d=1.0\,\mathrm{mm}\)、电容 \(C=\varepsilon_{0}\pi R^{2}/d\approx 69.5\,\mathrm{pF}\)。正在充电，某时刻电压 \(V=1000\,\mathrm{V}\)、\(\mathrm{d}V/\mathrm{d}t=1.0\times 10^{9}\,\mathrm{V/s}\)（即 \(I=C\,\mathrm{d}V/\mathrm{d}t\approx 69.5\,\mathrm{mA}\)）。（a）求极板间瞬时 \(E\) 与 \(\mathrm{d}E/\mathrm{d}t\)；（b）由 Ampère–Maxwell 求极板边缘 \(r=R\) 处的感生磁场 \(B_{\varphi}\)；（c）求边缘处的坡印亭矢量大小与方向；（d）验证单位时间内通过圆柱侧面流入的电磁能量恰好等于场能增长率 \(\mathrm{d}U/\mathrm{d}t\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>\(E=V/d=1000/10^{-3}=1.0\times 10^{6}\,\mathrm{V/m}\)；\(\mathrm{d}E/\mathrm{d}t=(\mathrm{d}V/\mathrm{d}t)/d=10^{9}/10^{-3}=1.0\times 10^{12}\,\mathrm{V\,m^{-1}\,s^{-1}}\)。</p>
+          <p class="step"><strong>解（b）：</strong>在极板间取半径 \(r\) 的圆回路（被平坦面切割，无传导电流穿过），Ampère–Maxwell 给出 \(B_{\varphi}\cdot 2\pi r=\mu_{0}\varepsilon_{0}(\mathrm{d}E/\mathrm{d}t)\pi r^{2}\)，故</p>
+          <div class="formula">\[ B_{\varphi}(r)=\frac12\mu_{0}\varepsilon_{0}r\,\frac{\mathrm{d}E}{\mathrm{d}t}=\frac{r}{2c^{2}}\frac{\mathrm{d}E}{\mathrm{d}t}. \]</div>
+          <p>在边缘 \(r=R=0.050\,\mathrm{m}\)：</p>
+          <div class="formula">\[ B_{\varphi}(R)=\frac{0.050}{2(2.998\times 10^{8})^{2}}\times 10^{12}=\frac{0.050\times 10^{12}}{1.797\times 10^{17}}=2.78\times 10^{-7}\,\mathrm{T}\approx 0.28\,\mu\mathrm{T}. \]</div>
+          <p class="step"><strong>解（c）：</strong>\(\vec{E}\) 垂直极板（设 \(-\hat{y}\)），\(\vec{B}\) 沿方位角环绕中心轴：在右边缘 \(\vec{B}=+B_{\varphi}\hat{z}\)（指出页面）、左边缘 \(-B_{\varphi}\hat{z}\)（指入页面）。</p>
+          <div class="formula">\[ \vec{S}=\frac{1}{\mu_{0}}\vec{E}\times\vec{B}\;\Rightarrow\;|\vec{S}|=\frac{E\,B_{\varphi}}{\mu_{0}}=\frac{(10^{6})(2.78\times 10^{-7})}{4\pi\times 10^{-7}}=\frac{0.278}{1.257\times 10^{-6}}=2.21\times 10^{5}\,\mathrm{W/m^{2}}. \]</div>
+          <p>方向：右边缘 \((-\hat{y})\times(+\hat{z})=-\hat{x}\)（向左，指向中心）；左边缘 \((-\hat{y})\times(-\hat{z})=+\hat{x}\)（向右，指向中心）。<strong>两侧的 \(\vec{S}\) 都指向电容器内部</strong>——能量从极板间的圆柱<strong>侧面</strong>流入，不是沿导线传来！</p>
+          <p class="step"><strong>解（d）：</strong>圆柱侧面面积 \(A_{\text{侧}}=2\pi R\,d=2\pi(0.050)(10^{-3})=3.14\times 10^{-4}\,\mathrm{m^{2}}\)。流入功率：</p>
+          <div class="formula">\[ P_{\text{in}}=|\vec{S}|\cdot A_{\text{侧}}=(2.21\times 10^{5})(3.14\times 10^{-4})=69.4\,\mathrm{W}. \]</div>
+          <p>另一方面，场能 \(U=\tfrac12\varepsilon_{0}E^{2}\cdot\pi R^{2}d\)，故</p>
+          <div class="formula">\[ \frac{\mathrm{d}U}{\mathrm{d}t}=\varepsilon_{0}E\frac{\mathrm{d}E}{\mathrm{d}t}\cdot\pi R^{2}d=(8.854\times 10^{-12})(10^{6})(10^{12})\pi(0.050)^{2}(10^{-3})=69.5\,\mathrm{W}. \]</div>
+          <p>\(P_{\text{in}}=69.4\,\mathrm{W}\approx\mathrm{d}U/\mathrm{d}t=69.5\,\mathrm{W}\) ✓（小数末位误差来自 \(c\) 取 3 位有效数字）。这是坡印亭定理的<strong>定量验证</strong>：充入电容器的能量经场的坡印亭矢量从侧面流入，导线 merely 提供电荷与电流的「源」，并非能量的物理通道。</p>
+          <p><span class="ans">答案：(a) \(E=1.0\,\mathrm{MV/m}\)，\(\mathrm{d}E/\mathrm{d}t=10^{12}\,\mathrm{V\,m^{-1}\,s^{-1}}\)；(b) \(B_{\varphi}(R)=0.28\,\mu\mathrm{T}\)；(c) \(|\vec{S}|=2.21\times 10^{5}\,\mathrm{W/m^{2}}\)，径向向内；(d) \(P_{\text{in}}=69.4\,\mathrm{W}=\mathrm{d}U/\mathrm{d}t\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 麦克斯韦应力张量求平行板间的吸引力 Maxwell Stress Tensor — Force Between Capacitor Plates</h4>
+        <p class="example-statement">平行板电容器（极板面积 \(A=100\,\mathrm{cm^{2}}=10^{-2}\,\mathrm{m^{2}}\)），极板间匀强电场 \(E=3.0\times 10^{6}\,\mathrm{V/m}\)（接近空气击穿），磁场 \(B=0\)。（a）用麦克斯韦应力张量求正极板单位面积所受的力（即「电场压力」）；（b）求正极板所受总吸引力；（c）与「\(F=\tfrac12 Q E\)」的方法对比（\(Q\) 是单极板电荷，\(E\) 是极板间总场）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>取 \(x\) 轴垂直极板、电场沿 \(+\hat{x}\)。则在极板间 \(E_{x}=E\)、其他分量为零，应力张量</p>
+          <div class="formula">\[ T_{xx}=\varepsilon_{0}\Bigl(E_{x}^{2}-\tfrac12 E^{2}\Bigr)=\tfrac12\varepsilon_{0}E^{2},\quad T_{yy}=T_{zz}=-\tfrac12\varepsilon_{0}E^{2}. \]</div>
+          <p>取一闭合面：紧贴正极板右侧（在极板内部 \(E=0\)），伸出小柱体跨过极板到极板间场区。极板内部场为零，故 \(T_{xx}=0\)；场区一侧 \(T_{xx}=\tfrac12\varepsilon_{0}E^{2}\)。力的 \(x\) 分量（指向场区，即对正极板来说是「吸引」向负极板）：</p>
+          <div class="formula">\[ \frac{F_{x}}{A}=T_{xx}\bigl|_{\text{场区}}-0=\tfrac12\varepsilon_{0}E^{2}=\tfrac12(8.854\times 10^{-12})(3.0\times 10^{6})^{2}=\frac{8.854\times 9.0}{2}\times 10^{0}=\mathbf{39.8\,\mathrm{Pa}\;\text{(N/m}^{2}\text{)}}. \]</div>
+          <p>正号表示沿 \(+\hat{x}\)（指向场区）——正极板被吸向负极板。</p>
+          <p class="step"><strong>解（b）：</strong>\(F=P\cdot A=39.8\times 10^{-2}=\mathbf{0.398\,\mathrm{N}}\)。约 40 克重的吸引力，可被实验直接测量。</p>
+          <p class="step"><strong>解（c）：</strong>经典方法：单极板电荷面密度 \(\sigma=Q/A=\varepsilon_{0}E\)（由边界条件 \(E=\sigma/\varepsilon_{0}\)）。但极板受到的力来自「另一极板的电场」，而不是总场 \(E\)——另一极板产生的场是 \(E/2\)（每一极板各贡献一半）。所以</p>
+          <div class="formula">\[ F=Q\cdot\frac{E}{2}=(\sigma A)\cdot\frac{E}{2}=\frac12\varepsilon_{0}E^{2}A\;\;\checkmark \]</div>
+          <p>与应力张量结果一致。两者等价的物理原因：应力张量本质上把 Lorentz 力密度 \(\rho\vec{E}\)（这里 \(\rho\) 是面电荷的 \(\sigma\delta\) 分布）改写成场的面积分。优势在于应力张量方法<strong>不必追踪源</strong>——只需包围面的场即可，对复杂几何（电介质、含磁场情形）尤其方便。</p>
+          <p><span class="ans">答案：(a) \(F/A=\tfrac12\varepsilon_{0}E^{2}=39.8\,\mathrm{Pa}\)（吸引力）；(b) \(F=0.398\,\mathrm{N}\)；(c) 与 \(F=\tfrac12\varepsilon_{0}E^{2}A\) 一致。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 太阳帆的辐射压 Radiation Pressure on a Solar Sail</h4>
+        <p class="example-statement">一太阳帆面积 \(A=100\,\mathrm{m^{2}}\)（\(10\,\mathrm{m}\times 10\,\mathrm{m}\)）、面密度 \(\sigma_{s}=m/A=10\,\mathrm{g/m^{2}}\)（即总质量 \(m=1.0\,\mathrm{kg}\)），正对太阳（\(I_{\odot}=1361\,\mathrm{W/m^{2}}\) 在 1 AU）。（a）若帆为<strong>完全吸收体</strong>，求辐射压与加速度；（b）若为<strong>完全反射体</strong>，重复之；（c）若反射率为 0.9，求一年（\(3.16\times 10^{7}\,\mathrm{s}\)）后达到的速度（忽略引力、由静止出发）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a 吸收）：</strong>每个光子能量 \(U\) 携带动量 \(p=U/c\)，被吸收后全部传给帆。压力 \(P=I/c\)，力 \(F=P\cdot A\)：</p>
+          <div class="formula">\[ F_{\text{abs}}=\frac{I_{\odot}A}{c}=\frac{1361\times 100}{2.998\times 10^{8}}=4.54\times 10^{-4}\,\mathrm{N},\qquad a_{\text{abs}}=\frac{F}{m}=4.54\times 10^{-4}\,\mathrm{m/s^{2}}. \]</div>
+          <p class="step"><strong>解（b 反射）：</strong>光子动量反向（从 \(+p\) 变 \(-p\)），动量改变 \(2p\)，传给帆：</p>
+          <div class="formula">\[ F_{\text{refl}}=\frac{2I_{\odot}A}{c}=9.07\times 10^{-4}\,\mathrm{N},\qquad a_{\text{refl}}=9.07\times 10^{-4}\,\mathrm{m/s^{2}}. \]</div>
+          <p class="step"><strong>解（c \(\rho=0.9\)）：</strong>有效力学压力 \(P=(1+\rho)I/c=1.9I/c\)：</p>
+          <div class="formula">\[ a=\frac{1.9I_{\odot}}{c\,\sigma_{s}}=\frac{1.9\times 1361}{2.998\times 10^{8}\times 0.010}=\frac{2586}{2.998\times 10^{6}}=8.63\times 10^{-4}\,\mathrm{m/s^{2}}. \]</div>
+          <p>一年后 \(v=at=8.63\times 10^{-4}\times 3.16\times 10^{7}=\mathbf{2.7\times 10^{4}\,\mathrm{m/s}\approx 27\,\mathrm{km/s}}\)。<strong>不消耗燃料</strong>，仅靠光的动量传递，可达相当速度——「光帆」是星际推进的真实方案（如 Breakthrough Starshot 计划）。注意实际加速还要考虑太阳引力（\(g_{\odot}=0.006\,\mathrm{m/s^{2}}\) 在 1 AU，远小于光压加速度 \(\sim 10^{-3}\)，故光压主导）。</p>
+          <p><span class="ans">答案：(a) 吸收：\(F=0.454\,\mathrm{mN}\)，\(a=4.54\times 10^{-4}\,\mathrm{m/s^{2}}\)；(b) 反射：\(F=0.907\,\mathrm{mN}\)，\(a=9.07\times 10^{-4}\,\mathrm{m/s^{2}}\)；(c) \(\rho=0.9\)：\(a=8.63\times 10^{-4}\,\mathrm{m/s^{2}}\)，一年后 \(v\approx 27\,\mathrm{km/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 平面波的电磁势（洛伦兹规范）Potentials of a Plane Wave in the Lorenz Gauge</h4>
+        <p class="example-statement">真空中一束线偏振平面电磁波 \(\vec{E}=E_{0}\cos(kz-\omega t)\,\hat{x}\)、\(\vec{B}=(E_{0}/c)\cos(kz-\omega t)\,\hat{y}\)（\(\omega=ck\)）。（a）找一组 \((\phi,\vec{A})\) 在<strong>洛伦兹规范</strong>下产生此场；（b）验证 Lorenz 条件 \(\partial_{\mu}A^{\mu}=0\)；（c）验证 \(\phi,\vec{A}\) 各自满足齐次波方程 \(\Box\,\phi=0\)、\(\Box\,\vec{A}=0\)（源为零，因波在真空）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>选 \(\phi=0\)（横向规范，洛伦兹规范的特例）。设 \(\vec{A}=A_{0}\sin(kz-\omega t)\,\hat{x}\)。则</p>
+          <div class="formula">\[ \vec{E}=-\frac{\partial\vec{A}}{\partial t}=-A_{0}(-\omega)\cos(kz-\omega t)\hat{x}=A_{0}\omega\cos(kz-\omega t)\hat{x}. \]</div>
+          <p>匹配 \(E_{0}\)：\(A_{0}=E_{0}/\omega\)。再验证磁场：\(\vec{B}=\nabla\times\vec{A}=\partial A_{x}/\partial z\,\hat{y}=A_{0}k\cos(kz-\omega t)\hat{y}=(E_{0}k/\omega)\cos(kz-\omega t)\hat{y}=(E_{0}/c)\cos(kz-\omega t)\hat{y}\) ✓（用 \(\omega/k=c\)）。故</p>
+          <div class="formula">\[ \boxed{\;\;\phi=0,\qquad \vec{A}=\frac{E_{0}}{\omega}\sin(kz-\omega t)\,\hat{x}.\;\;} \]</div>
+          <p class="step"><strong>解（b）：</strong>Lorenz 条件：\((1/c^{2})\partial\phi/\partial t+\nabla\!\cdot\!\vec{A}=0+0=0\)（因 \(\phi=0\)，且 \(\vec{A}\) 只有 \(x\) 分量但不依赖 \(x\)）。Lorenz 规范满足 ✓。</p>
+          <p class="step"><strong>解（c）：</strong>\(\Box\,\phi=0\) 平凡。\(\Box\,\vec{A}=(\nabla^{2}-(1/c^{2})\partial^{2}/\partial t^{2})[A_{0}\sin(kz-\omega t)\hat{x}]=(-k^{2}+(\omega^{2}/c^{2}))A_{0}\sin(kz-\omega t)\hat{x}=(-k^{2}+k^{2})A_{0}\sin=0\) ✓（用 \(\omega=ck\)）。满足齐次波方程（真空无源）。</p>
+          <p class="step"><strong>注：</strong>这种「横向」选择（\(\phi=0\)、\(\vec{A}\perp\hat{k}\)）既是 Lorenz 规范也是 Coulomb 规范——对自由电磁波两规范重合。但若有源存在（电荷、电流），两规范给出不同形式的 \(\phi\)（Coulomb 瞬时 vs Lorenz 推迟），尽管最终 \(\vec{E},\vec{B}\) 相同。<strong>规范不变性</strong>保证物理唯一，规范选择只影响计算便利。</p>
+          <p><span class="ans">答案：(a) \(\phi=0\)，\(\vec{A}=(E_{0}/\omega)\sin(kz-\omega t)\hat{x}\)；(b) \(\partial_{\mu}A^{\mu}=0\) ✓；(c) \(\Box\vec{A}=0\) ✓。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>认为「能量沿导线流动」。</strong>这是最顽固的直觉错误。例 8.2 表明：充入电容器的能量经<strong>场</strong>（坡印亭矢量）从极板间的圆柱<strong>侧面</strong>流入，<strong>不</strong>是沿导线传来。导线的作用是引导电荷与电流（源），但能量的物理通道是导线周围的电磁场。同理，电阻发热的能量也是经其周围的 \(\vec{E}\times\vec{B}\) 流入——「能流」发生在场中，不在导体内部。</li>
+        <li><strong>混淆 \(\vec{S}\) 与「净能流」。</strong>坡印亭矢量 \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\) 描述<strong>瞬时局域</strong>能流方向，但「净流入某区域」需要看 \(-\nabla\!\cdot\!\vec{S}\)。静电场中常有非零的 \(\vec{S}\)（如电阻上有稳恒 \(\vec{E}\)、周围有 \(\vec{B}\) 产生径向 \(\vec{S}\)），但若系统稳定则 \(\nabla\!\cdot\!\vec{S}\) 与 \(\partial u/\partial t=0\) 自洽。<strong>不要</strong>只看 \(\vec{S}\) 的方向就下结论说「能量从 X 流向 Y」——必须计算散度或对包围面做积分。</li>
+        <li><strong>把 Lorenz 规范与 Lorentz 变换混为一谈。</strong>二者源于不同物理学家：<strong>L. Lorenz</strong>（丹麦，1867）提出规范条件 \(\partial_{\mu}A^{\mu}=0\)；<strong>H. Lorentz</strong>（荷兰）提出相对论的 Lorentz 变换。Lorenz 规范的<strong>价值</strong>正在于它使麦克斯韦方程在 Lorentz 变换下保持形式不变（协变）。拼写差一字母，物理差半世纪。</li>
+        <li><strong>用应力张量算「力」时忘记规范或符号。</strong> \(T_{ij}\) 是动量<strong>通量</strong>张量：正对面积元法向朝外时，\(T_{nn}>0\) 表示<strong>沿外法向流出</strong>动量，对应区域内部受到反方向的力（指向内部为压力、外部为拉力）。对体积 \(V\) 内物质受力，公式 \(\vec{F}=\oint\vec{T}\cdot\mathrm{d}\vec{a}-\mathrm{d}\vec{p}_{\text{field}}/\mathrm{d}t\) 中 \(\mathrm{d}\vec{a}\) 取<strong>外</strong>法向。静场问题（\(\mathrm{d}\vec{p}_{\text{field}}/\mathrm{d}t=0\)）变成纯面积分。符号错则力方向反。</li>
+        <li><strong>误把能量密度写成 \(u=\tfrac12\varepsilon_{0}E^{2}+\tfrac12\mu_{0}B^{2}\)</strong>。错误在于磁场项系数。正确：\(u=\tfrac12\varepsilon_{0}E^{2}+B^{2}/(2\mu_{0})\)（注意 \(B^{2}/(2\mu_{0})\)，不是 \(\tfrac12\mu_{0}B^{2}\)）。后者的量纲是 \(\mathrm{N^{2}/(A^{2}\,m^{2})}\cdot\mathrm{T^{2}}\) ... 完全不对。验证量纲：\(\varepsilon_{0}E^{2}\sim\mathrm{(F/m)(V/m)^{2}}=\mathrm{J/m^{3}}\) ✓；\(B^{2}/\mu_{0}\sim\mathrm{T^{2}/(N/A^{2})}=\mathrm{(N/(A\,m))^{2}\cdot A^{2}/N}=\mathrm{N/m^{2}}=\mathrm{J/m^{3}}\) ✓。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 电阻丝周围的坡印亭矢量 Poynting Vector Around a Current-Carrying Resistor</summary>
+        <div class="hint">长直圆柱形电阻丝（半径 \(a\)、长度 \(L\)、电阻 \(R\)），通稳恒电流 \(I\)。由欧姆定律 \(\vec{E}=IR/L\,\hat{z}\)（沿丝方向）；由安培环路定律 \(\vec{B}=\mu_{0}I/(2\pi a)\,\hat{\varphi}\)（在丝表面）。计算表面处的 \(\vec{S}\) 并证明流入丝的功率等于 \(I^{2}R\)。</div>
+        <div class="solution">
+          在丝表面 \(r=a\)：\(\vec{E}\) 沿 \(+\hat{z}\)、\(\vec{B}\) 沿 \(+\hat{\varphi}\)。
+          <br>\(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}=(1/\mu_{0})(IR/L)(\mu_{0}I/2\pi a)\,\hat{z}\times\hat{\varphi}\)。
+          <br>柱坐标中 \(\hat{z}\times\hat{\varphi}=-\hat{r}\)（指向轴心），故 \(\vec{S}=-(I^{2}R)/(2\pi a L)\,\hat{r}\) ——<strong>径向指向丝内</strong>。
+          <br>单位长度丝的侧面面积为 \(2\pi a\cdot 1\)，故单位长度流入功率 \(P/L=|\vec{S}|\cdot 2\pi a=I^{2}R/L\)，总 \(P=I^{2}R\) ✓。
+          <br><strong>物理：</strong>焦耳热所需的能量经电阻周围的电磁场流入，<strong>不是</strong>沿导线内部传来。这正是坡印亭定理的精神。<span class="ans">答案：\(\vec{S}\) 径向指向丝内，\(P_{\text{in}}=I^{2}R\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 平面波的电场振幅与磁压 Electric vs Magnetic Pressure in a Wave</summary>
+        <div class="hint">由对称性 \(\tfrac12\varepsilon_{0}E^{2}=B^{2}/(2\mu_{0})\)（平面波电场磁场均分能量）。计算 E₀=1.0 kV/m 时（a）总能量密度；（b）磁场部分对应的等效压力（用 \(B^{2}/2\mu_{0}\) 解释为磁压）。</div>
+        <div class="solution">
+          (a) 平面波电场磁场各贡献一半：
+          <br>\(u_{\text{peak}}=\varepsilon_{0}E_{0}^{2}=8.854\times 10^{-12}\times (10^{3})^{2}=8.85\times 10^{-6}\,\mathrm{J/m^{3}}\)。平均值减半：\(\langle u\rangle=4.43\times 10^{-6}\,\mathrm{J/m^{3}}\)。
+          <br>(b) 磁场部分 \(\langle u_{B}\rangle=\langle u\rangle/2=2.21\times 10^{-6}\,\mathrm{J/m^{3}}\)，量纲上等于压强 \(\mathrm{Pa}\)。
+          <br>对照：辐射压（反射）\(P=2\langle u\rangle=8.86\,\mu\mathrm{Pa}\)——比「磁压部分」大 4 倍，因为反射波把动量全部反转。
+          <br><strong>理解：</strong>电磁波的压力不是单独的电或磁压力，而是 Lorentz 力的协同作用，对应应力张量的特定分量。<span class="ans">答案：(a) \(\langle u\rangle=4.43\times 10^{-6}\,\mathrm{J/m^{3}}\)；(b) \(\langle u_{B}\rangle=2.21\,\mu\mathrm{Pa}\)（等效磁压）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 应力张量求点电荷之间的排斥力 Force Between Two Like Charges via Stress Tensor</summary>
+        <div class="hint">两等量正电荷 \(+q\) 相距 \(2a\)，对称放置于 \(x\) 轴上 \((\pm a,0,0)\)。在两电荷垂直平分面 \(x=0\) 上计算 \(T_{xx}\)，通过对该平面（半径无穷大的圆盘）积分求左电荷对右电荷的排斥力。</div>
+        <div class="solution">
+          在 \(x=0\) 平面（中垂面），由对称性 \(\vec{E}\) 沿 \(+\hat{x}\)（来自左电荷推右电荷方向）。每个电荷在中点距离 \(\sqrt{a^{2}+r^{2}}\)（\(r\) 为离轴距离），贡献 \(E=q/(4\pi\varepsilon_{0}(a^{2}+r^{2}))\)；x 分量为 \(E_{x}=2\cdot\frac{q}{4\pi\varepsilon_{0}(a^{2}+r^{2})}\cdot\frac{a}{\sqrt{a^{2}+r^{2}}}=\frac{qa}{2\pi\varepsilon_{0}(a^{2}+r^{2})^{3/2}}\)。其他分量由对称性消去。
+          <br>\(T_{xx}=\tfrac12\varepsilon_{0}E_{x}^{2}=\frac{q^{2}a^{2}}{8\pi^{2}\varepsilon_{0}(a^{2}+r^{2})^{3}}\)。
+          <br>对中垂面（半径趋于无穷）积分：\(F_{x}=\int_{0}^{\infty}T_{xx}\cdot 2\pi r\,\mathrm{d}r=\frac{q^{2}a^{2}}{4\pi\varepsilon_{0}}\int_{0}^{\infty}\frac{r\,\mathrm{d}r}{(a^{2}+r^{2})^{3}}\)。
+          <br>令 \(u=a^{2}+r^{2}\)，\(\mathrm{d}u=2r\,\mathrm{d}r\)：\(=\frac{q^{2}a^{2}}{4\pi\varepsilon_{0}}\cdot\frac12\int_{a^{2}}^{\infty}u^{-3}\mathrm{d}u=\frac{q^{2}a^{2}}{8\pi\varepsilon_{0}}\cdot\frac{1}{2a^{4}}\cdot 2=\frac{q^{2}}{16\pi\varepsilon_{0}a^{2}}\cdot\frac{1}{1}=\frac{1}{4\pi\varepsilon_{0}}\frac{q^{2}}{(2a)^{2}}\) ✓
+          <br>这正是库仑定律的结果！应力张量自动给出两电荷的相互作用力——无须直接计算电荷所受的场，只要在中垂面（任一包围面）计算场的通量。<strong>场传递相互作用</strong>的图像在此完全严格化。
+          <br><span class="ans">答案：\(F=\frac{1}{4\pi\varepsilon_{0}}\frac{q^{2}}{(2a)^{2}}\)（与库仑定律一致）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 推迟势的展开：电偶极辐射的远场 Retarded Potential — Electric Dipole Radiation Field</summary>
+        <div class="hint">设偶极矩 \(\vec{p}(t)=p_{0}\cos\omega t\,\hat{z}\) 位于原点。对远处 \(r\gg\lambda/2\pi\)（即 \(kr\gg 1\)），推迟势 \(\vec{A}(\vec{r},t)=\frac{\mu_{0}}{4\pi}\frac{\dot{\vec{p}}(t-r/c)}{r}\)。求 \(\vec{E},\vec{B}\) 的远场（保留 \(1/r\) 项），并验证 \(|E|/|B|=c\)。</div>
+        <div class="solution">
+          \(\vec{A}(\vec{r},t)=\frac{\mu_{0}}{4\pi}\frac{\dot{\vec{p}}(t_{r})}{r}\)，\(t_{r}=t-r/c\)，\(\dot{\vec{p}}=-\omega p_{0}\sin\omega t_{r}\,\hat{z}\)。
+          <br>在远场区（\(r\gg\lambda\)），主要项来自 \(-\partial\vec{A}/\partial t\) 对显式 \(t\) 求导（不是对 \(r\) 的依赖）：
+          <br>\(\vec{E}\approx-\partial\vec{A}/\partial t=-\frac{\mu_{0}}{4\pi r}\ddot{\vec{p}}(t_{r})=-\frac{\mu_{0}}{4\pi r}\omega^{2}p_{0}\cos\omega t_{r}\,\hat{z}\)。
+          <br>但实际辐射场是<strong>横向</strong>的，要把 \(\hat{z}\) 投影到 \(\hat{r}\) 的垂面：\(\vec{E}_{\perp}=\vec{E}-(\vec{E}\cdot\hat{r})\hat{r}\)。用球坐标（\(\hat{z}=\cos\theta\hat{r}-\sin\theta\hat{\theta}\)）：
+          <br>\(\vec{E}_{\text{rad}}=\frac{\mu_{0}\omega^{2}p_{0}\sin\theta}{4\pi r}\cos\omega t_{r}\,\hat{\theta}=\frac{\omega^{2}p_{0}\sin\theta}{4\pi\varepsilon_{0}c^{2}r}\cos(kr-\omega t)\,\hat{\theta}\)。
+          <br>\(\vec{B}=\nabla\times\vec{A}\approx-\frac{\mu_{0}\omega^{2}p_{0}\sin\theta}{4\pi c r}\cos\omega t_{r}\,\hat{\varphi}\)（用 \(1/r\) 主导项）。
+          <br>对照：\(|\vec{E}_{\text{rad}}|/|\vec{B}_{\text{rad}}|=c\) ✓。
+          <br>辐射强度：\(\langle S\rangle=\frac12\varepsilon_{0}c\,|\vec{E}_{\text{rad}}|^{2}\propto\sin^{2}\theta/r^{2}\)（偶极辐射图样 \(\sin^{2}\theta\)）。
+          <br>总辐射功率 \(P=\frac{\mu_{0}\omega^{4}p_{0}^{2}}{12\pi c}\)（Larmor 公式对偶极辐射）。这是第 9 章辐射问题的核心。<span class="ans">答案：\(\vec{E}_{\text{rad}}=\frac{\omega^{2}p_{0}\sin\theta}{4\pi\varepsilon_{0}c^{2}r}\cos(kr-\omega t)\hat{\theta}\)，\(\vec{B}_{\text{rad}}=\vec{E}_{\text{rad}}/c\cdot\hat{\varphi}\)；\(P=\mu_{0}\omega^{4}p_{0}^{2}/(12\pi c)\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 协变麦克斯韦方程：由 \(F^{\mu\nu}\) 还原 \(\vec{E},\vec{B}\) 方程 Recover Vector Maxwell Equations from Covariant Form</summary>
+        <div class="hint">取 \(\nu=0\) 与 \(\nu=i\)（空间分量），用 \(F^{0i}=-E_{i}/c\)、\(F^{ij}=-\epsilon_{ijk}B_{k}\)，将 \(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) 还原为 Gauss 电场定律与 Ampère–Maxwell 定律。</div>
+        <div class="solution">
+          <strong>\(\nu=0\)</strong>：\(\partial_{\mu}F^{\mu 0}=\mu_{0}J^{0}=\mu_{0}c\rho\)。注意 \(F^{00}=0\)，\(F^{i0}=-F^{0i}=E_{i}/c\)：
+          <br>\(\partial_{i}F^{i0}=\partial_{i}(E_{i}/c)=\nabla\!\cdot\!\vec{E}/c=\mu_{0}c\rho\)。
+          <br>\(\Rightarrow\nabla\!\cdot\!\vec{E}=\mu_{0}c^{2}\rho=\rho/\varepsilon_{0}\) ✓（用 \(\mu_{0}\varepsilon_{0}=1/c^{2}\)）。
+          <br><strong>\(\nu=i\)</strong>：\(\partial_{\mu}F^{\mu i}=\mu_{0}J^{i}\)。拆 \(\mu=0\) 与 \(\mu=j\)：
+          <br>\(\partial_{0}F^{0i}+\partial_{j}F^{ji}=\mu_{0}J_{i}\)。
+          <br>\(\partial_{0}=\frac{1}{c}\partial/\partial t\)（协变度量符号），\(F^{0i}=-E_{i}/c\)：第一项 \(=-(1/c^{2})\partial E_{i}/\partial t\)。
+          <br>\(F^{ji}=-F^{ij}=\epsilon_{ijk}B_{k}\)：第二项 \(=\partial_{j}\epsilon_{ijk}B_{k}=(\nabla\times\vec{B})_{i}\)。
+          <br>合：\((\nabla\times\vec{B})_{i}-\frac{1}{c^{2}}\frac{\partial E_{i}}{\partial t}=\mu_{0}J_{i}\Rightarrow\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\) ✓。
+          <br>类似地，齐次方程 \(\partial_{[\lambda}F_{\mu\nu]}=0\)（或 \(\partial_{\mu}\widetilde{F}^{\mu\nu}=0\)）取适当分量给出 \(\nabla\!\cdot\!\vec{B}=0\) 与 \(\nabla\times\vec{E}=-\partial\vec{B}/\partial t\)。
+          <br><strong>结论：</strong>四个矢量方程是一个张量方程 \(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) 的四个分量，<strong>洛伦兹协变性</strong>立即成立：左、右均为矢量，在任意惯性系下形式不变。<span class="ans">答案：\(\nu=0\to\) Gauss E；\(\nu=i\to\) Ampère–Maxwell。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>充电电容器的坡印亭矢量 / 能量流 — Poynting Vector for a Charging Capacitor.</strong> 圆形平行板电容器正以电流 \(I=C\,\mathrm{d}V/\mathrm{d}t\) 充电。极板间电场 \(\vec{E}\) 垂直极板向下，随时间增强；由 Ampère–Maxwell 定律，时变 \(\vec{E}\) 感生方位方向的磁场 \(\vec{B}_{\varphi}\)（在边缘 \(r=R\) 处为 \(B_{\varphi}=\frac{R}{2c^{2}}\frac{\mathrm{d}E}{\mathrm{d}t}\)）；坡印亭矢量 \(\vec{S}=(1/\mu_{0})\vec{E}\times\vec{B}\) <strong>径向指向电容器内部</strong>——能量从极板间圆柱的<strong>侧面</strong>流入场的体积，正是坡印亭定理 \(P_{\text{in}}=\mathrm{d}U/\mathrm{d}t\) 的可视化。侧视图（横截面）中：\(\vec{E}\) 竖直向下（橙色）、\(\vec{B}\) 在左边缘指入页面（⊗）、在右边缘指出页面（⊙）、\(\vec{S}\) 在两侧都水平指向中央（紫色）。<strong>调整滑块</strong>：极板半径、间距、充电速率，观察能量密度增长、\(|\vec{S}|\) 与流入功率如何随之变化，并验证 \(P_{\text{in}}=\mathrm{d}U/\mathrm{d}t\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="620" height="440"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          // SI constants
+          var eps0 = 8.854e-12;
+          var mu0 = 4 * Math.PI * 1e-7;
+          var c = 2.998e8;
+
+          var DEFAULTS = { R: 5.0, d: 1.0, rate: 1.0 };
+          var params = { R: DEFAULTS.R, d: DEFAULTS.d, rate: DEFAULTS.rate };
+
+          // Geometry of drawing (pixels)
+          var CX = W / 2, CY = H / 2 + 10;
+
+          function platePixelW(Rcm) { return Math.max(60, Rcm * 18); }   // plate width vs radius (cm)
+          function platePixelH(dmm) { return Math.max(14, dmm * 10); }   // gap vs separation (mm)
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { E: 0.0, t: 0.0, U: 0.0, prevU: 0.0, dUdt: 0.0, running: true }; },
+            step: function (dt, t, s) {
+              // charging rate slider: rate * 1e11 V/(m·s)
+              var dEdt = params.rate * 1e11;
+              // slow the sim so it is visible: real dt is fast; we scale so 1 frame = ~1e-7 s of physics
+              var physDt = dt * 5e-7;
+              s.prevU = s.U;
+              s.E += dEdt * physDt;
+              // cap near air breakdown
+              if (s.E > 3.0e6) { s.E = 3.0e6; s.running = false; }
+              var R = params.R * 1e-2;       // m
+              var d = params.d * 1e-3;       // m
+              var vol = Math.PI * R * R * d;
+              s.U = 0.5 * eps0 * s.E * s.E * vol;
+              s.dUdt = (s.U - s.prevU) / Math.max(physDt, 1e-12);
+              s.t += physDt;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var R = params.R * 1e-2;          // m
+              var d = params.d * 1e-3;          // m
+              var dEdt = params.rate * 1e11;    // V/(m·s)
+
+              // derived fields at edge r = R
+              var Bphi = (R / (2 * c * c)) * dEdt;            // T
+              var S = (s.E * Bphi) / mu0;                     // W/m^2 (radial inward)
+              var Aside = 2 * Math.PI * R * d;                // m^2 cylindrical side area
+              var Pin = S * Aside;                             // W
+              var u = 0.5 * eps0 * s.E * s.E;                 // J/m^3 (E dominates over B contribution for capacitor)
+
+              // drawing geometry
+              var pW = platePixelW(params.R);
+              var pH = platePixelH(params.d);
+              var left = CX - pW / 2, right = CX + pW / 2;
+              var top = CY - pH / 2, bot = CY + pH / 2;
+
+              // header
+              ctx.save();
+              ctx.font = 'bold 15px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('充电电容器 · 能量从侧面流入  Charging Capacitor — Energy in via the Sides', 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillText('E↓ 增大 → 感生 Bφ 环绕轴 → S = E×B/μ₀ 径向指向场区', 14, 32);
+              ctx.restore();
+
+              // ----- draw top plate (+) -----
+              ctx.save();
+              ctx.fillStyle = 'rgba(37,99,235,0.18)';
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 2.5;
+              ctx.fillRect(left, top - 14, pW, 14);
+              ctx.strokeRect(left, top - 14, pW, 14);
+              // + symbols
+              ctx.fillStyle = PS.colors.primary;
+              ctx.font = 'bold 13px system-ui';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              for (var i = 0; i < 5; i++) {
+                var xx = left + (i + 0.5) * pW / 5;
+                ctx.fillText('+', xx, top - 7);
+              }
+              ctx.restore();
+
+              // ----- bottom plate (-) -----
+              ctx.save();
+              ctx.fillStyle = 'rgba(220,38,38,0.18)';
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.5;
+              ctx.fillRect(left, bot, pW, 14);
+              ctx.strokeRect(left, bot, pW, 14);
+              ctx.fillStyle = PS.colors.accent;
+              ctx.font = 'bold 13px system-ui';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              for (var i2 = 0; i2 < 5; i2++) {
+                var xx2 = left + (i2 + 0.5) * pW / 5;
+                ctx.fillText('−', xx2, bot + 7);
+              }
+              ctx.restore();
+
+              // ----- E field arrows (vertical, downward between plates) -----
+              var nE = 7;
+              var ES = Math.min(1, s.E / 3.0e6);              // normalized 0..1
+              ctx.save();
+              var eColor = '#ea580c';
+              for (var k = 0; k < nE; k++) {
+                var xe = left + (k + 0.5) * pW / nE;
+                var yTop = top + 2;
+                var yBot = bot - 2;
+                var yEnd = yTop + (yBot - yTop) * (0.35 + 0.55 * ES);
+                PS.drawArrow(ctx, xe, yTop, xe, yEnd, eColor);
+              }
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillStyle = eColor;
+              ctx.textAlign = 'left';
+              ctx.fillText('E↓', right + 8, top + pH / 2);
+              ctx.restore();
+
+              // ----- B field symbols at left/right edges (⊗ into page on left, ⊙ out on right) -----
+              // edge of cylindrical field region = at plate edges
+              ctx.save();
+              var bColor = '#0891b2';
+              ctx.strokeStyle = bColor;
+              ctx.fillStyle = bColor;
+              ctx.lineWidth = 2;
+              // multiple symbols stacked vertically along the side
+              var nB = 3;
+              for (var b = 0; b < nB; b++) {
+                var yb = top + (b + 1) * pH / (nB + 1);
+                // left edge: B into page (⊗)
+                var xl = left - 18;
+                ctx.beginPath(); ctx.arc(xl, yb, 7, 0, 2 * Math.PI); ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(xl - 5, yb - 5); ctx.lineTo(xl + 5, yb + 5);
+                ctx.moveTo(xl + 5, yb - 5); ctx.lineTo(xl - 5, yb + 5);
+                ctx.stroke();
+                // right edge: B out of page (⊙)
+                var xr = right + 18;
+                ctx.beginPath(); ctx.arc(xr, yb, 7, 0, 2 * Math.PI); ctx.stroke();
+                ctx.beginPath(); ctx.arc(xr, yb, 2.2, 0, 2 * Math.PI); ctx.fill();
+              }
+              ctx.font = 'bold 12px system-ui';
+              ctx.textAlign = 'center';
+              ctx.fillText('Bφ', left - 18, top - 22);
+              ctx.fillText('Bφ', right + 18, top - 22);
+              ctx.restore();
+
+              // ----- S vector arrows (horizontal, pointing INWARD at both edges) -----
+              var SS = Math.min(1, S / 5.0e5);    // normalized for display
+              ctx.save();
+              var sColor = '#7c3aed';
+              var arrowLen = 28 + 70 * SS;
+              // left side: arrow pointing right (toward center)
+              for (var a1 = 0; a1 < 3; a1++) {
+                var ya = top + (a1 + 1) * pH / 4;
+                PS.drawArrow(ctx, left - 18 - arrowLen, ya, left - 22, ya, sColor);
+              }
+              // right side: arrow pointing left (toward center)
+              for (var a2 = 0; a2 < 3; a2++) {
+                var yb2 = top + (a2 + 1) * pH / 4;
+                PS.drawArrow(ctx, right + 18 + arrowLen, yb2, right + 22, yb2, sColor);
+              }
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillStyle = sColor;
+              ctx.textAlign = 'center';
+              ctx.fillText('S →', left - 18 - arrowLen / 2, top - 8);
+              ctx.fillText('← S', right + 18 + arrowLen / 2, top - 8);
+              ctx.restore();
+
+              // ----- numeric readouts (right panel) -----
+              var panelX = 14, panelY = 70, panelW = 168, panelH = 220;
+              ctx.save();
+              ctx.fillStyle = 'rgba(120,120,120,0.07)';
+              ctx.fillRect(panelX, panelY, panelW, panelH);
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(panelX, panelY, panelW, panelH);
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.font = 'bold 12px system-ui';
+              ctx.fillText('实时读数 Live readout', panelX + 8, panelY + 6);
+              ctx.font = '11px ui-monospace, monospace';
+              var lines = [
+                ['R =', (params.R).toFixed(1) + ' cm'],
+                ['d =', (params.d).toFixed(1) + ' mm'],
+                ['dE/dt =', (dEdt).toExponential(2) + ' V/(m·s)'],
+                ['E =', s.E.toExponential(2) + ' V/m'],
+                ['Bφ(R) =', Bphi.toExponential(2) + ' T'],
+                ['u_E =', u.toExponential(2) + ' J/m³'],
+                ['|S| =', S.toExponential(2) + ' W/m²'],
+                ['A_侧 =', Aside.toExponential(2) + ' m²'],
+                ['P_in =', Pin.toExponential(2) + ' W'],
+                ['dU/dt =', s.dUdt.toExponential(2) + ' W'],
+                ['U =', s.U.toExponential(2) + ' J']
+              ];
+              for (var li = 0; li < lines.length; li++) {
+                var ly = panelY + 28 + li * 16;
+                ctx.fillStyle = PS.colors.text;
+                ctx.fillText(lines[li][0], panelX + 8, ly);
+                ctx.fillStyle = PS.colors.primary;
+                ctx.fillText(lines[li][1], panelX + 60, ly);
+              }
+              ctx.restore();
+
+              // ----- check-mark: Pin ≈ dU/dt -----
+              ctx.save();
+              ctx.font = 'bold 11px system-ui';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var ratio = (s.dUdt > 1e-3) ? (Pin / s.dUdt) : 1;
+              var matchText = 'P_in / (dU/dt) = ' + ratio.toFixed(3) + '  (≈1 ✓)';
+              ctx.fillStyle = (ratio > 0.95 && ratio < 1.05) ? '#16a34a' : '#ea580c';
+              ctx.fillText(matchText, panelX, panelY + panelH + 6);
+              ctx.restore();
+
+              // ----- wire stubs entering plates -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.moveTo(left - 60, top - 7); ctx.lineTo(left, top - 7);
+              ctx.moveTo(left - 60, bot + 7); ctx.lineTo(left, bot + 7);
+              ctx.stroke();
+              ctx.font = '11px system-ui';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('I →', left - 30, top - 22);
+              ctx.fillText('← I', left - 30, bot + 14);
+              ctx.restore();
+
+              // ----- capacitor axis label -----
+              ctx.save();
+              ctx.font = '11px system-ui';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('（中央轴 / central axis）', CX, bot + 32);
+              ctx.restore();
+
+              // ----- paused notice -----
+              if (!s.running) {
+                ctx.save();
+                ctx.font = 'bold 13px system-ui';
+                ctx.fillStyle = PS.colors.accent;
+                ctx.textAlign = 'center';
+                ctx.fillText('已达到空气击穿电场 (~3 MV/m) · 按 Reset 重置', CX, H - 14);
+                ctx.restore();
+              }
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'R', label: '极板半径 R (cm)', min: 2, max: 10, step: 0.5, value: DEFAULTS.R },
+            { type: 'slider', key: 'd', label: '极板间距 d (mm)', min: 0.5, max: 4, step: 0.5, value: DEFAULTS.d },
+            { type: 'slider', key: 'rate', label: '充电速率 dE/dt (×10¹¹ V/m/s)', min: 0.2, max: 3, step: 0.1, value: DEFAULTS.rate },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('R', function (v) { params.R = v; });
+          ctl.on('d', function (v) { params.d = v; });
+          ctl.on('rate', function (v) { params.rate = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p><strong>麦克斯韦方程组（微分形式，SI）</strong>——经典电动力学的核心：</p>
+      <div class="formula">\[ \nabla\!\cdot\!\vec{E}=\frac{\rho}{\varepsilon_{0}},\quad \nabla\!\cdot\!\vec{B}=0,\quad \nabla\times\vec{E}=-\frac{\partial\vec{B}}{\partial t},\quad \nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\frac{\partial\vec{E}}{\partial t}. \]</div>
+      <p><strong>电磁势</strong> \(\vec{B}=\nabla\times\vec{A}\)、\(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\)；<strong>规范变换</strong> \((\phi,\vec{A})\to(\phi-\partial\chi/\partial t,\vec{A}+\nabla\chi)\) 不改 \((\vec{E},\vec{B})\)。常用规范：库仑 \(\nabla\!\cdot\!\vec{A}=0\)；洛伦兹 \(\partial_{\mu}A^{\mu}=0\)（即 \((1/c^{2})\partial\phi/\partial t+\nabla\!\cdot\!\vec{A}=0\)），后者使势满足推迟波方程 \(\Box\phi=-\rho/\varepsilon_{0}\)、\(\Box\vec{A}=-\mu_{0}\vec{J}\)。</p>
+      <p><strong>能量与动量</strong>：</p>
+      <div class="formula">\[ u=\tfrac12\varepsilon_{0}E^{2}+\frac{1}{2\mu_{0}}B^{2},\quad \vec{S}=\frac{1}{\mu_{0}}\vec{E}\times\vec{B},\quad \frac{\partial u}{\partial t}+\nabla\!\cdot\!\vec{S}=-\vec{J}\!\cdot\!\vec{E}\;\;\text{(Poynting)}. \]</div>
+      <div class="formula">\[ T_{ij}=\varepsilon_{0}\!\Bigl(E_{i}E_{j}-\tfrac12\delta_{ij}E^{2}\Bigr)+\frac{1}{\mu_{0}}\!\Bigl(B_{i}B_{j}-\tfrac12\delta_{ij}B^{2}\Bigr),\quad \vec{g}=\frac{\vec{S}}{c^{2}}. \]</div>
+      <p><strong>辐射压</strong>：\(P_{\text{abs}}=I/c\)、\(P_{\text{refl}}=2I/c\)（\(I=\langle|\vec{S}|\rangle\)）。</p>
+      <p><strong>协变形式</strong>（第 10 章详）：\(A^{\mu}=(\phi/c,\vec{A})\)、\(F^{\mu\nu}=\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu}\)、\(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) 与 \(\partial_{\mu}\widetilde{F}^{\mu\nu}=0\)。</p>
+      <p><strong>核心观念</strong>：能量与动量储存于<strong>场</strong>中而非源中；导线仅引导电荷，能量通道是周围的电磁场（\(\vec{S}\)）。麦克斯韦应力张量把场对物质的作用力写成场的面积分，与场线「张力 + 侧向压力」的图像吻合。麦克斯韦方程组在洛伦兹规范下具有显式协变形式——\(\vec{E}\) 与 \(\vec{B}\) 在不同惯性系下混合为统一的 \(F^{\mu\nu}\)。</p>
+      <div class="key-terms">Maxwell's equations (麦克斯韦方程组), gauge invariance (规范不变性), Lorenz gauge (洛伦兹规范), Poynting vector \(\vec{S}\) (坡印亭矢量), Poynting's theorem (坡印亭定理), Maxwell stress tensor \(T_{ij}\) (麦克斯韦应力张量), field momentum \(\vec{g}=\vec{S}/c^{2}\) (场动量密度), radiation pressure (辐射压), field-strength tensor \(F^{\mu\nu}\) (场强张量)</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

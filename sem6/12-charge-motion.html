@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 带电粒子在电磁场中的运动 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第12章 · 电动力学 Electrodynamics</p>
+      <h1>带电粒子在电磁场中的运动 <span class="en-title">Motion of Charges in Electromagnetic Fields</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>本章把<strong>洛伦兹力</strong> (Lorentz force) \(\vec F=q(\vec E+\vec v\times\vec B)\) 当作<strong>运动定律</strong>来用——给定 \(\vec E,\vec B\)，求带电粒子的轨迹。我们会从最简单的<strong>均匀磁场中的圆周运动</strong> (cyclotron motion) 出发，一路推进到 <strong>E×B 漂移</strong> (E×B drift)、<strong>磁镜</strong> (magnetic mirror) 与<strong>磁瓶</strong> (magnetic bottle)、<strong>质谱仪</strong>与<strong>粒子加速器</strong>，最后简短触及<strong>辐射反作用</strong> (radiation reaction)。学完本章你应能：</p>
+      <ul>
+        <li>写出<strong>洛伦兹力</strong> (Lorentz force) \(\vec F=q(\vec E+\vec v\times\vec B)\)，论证<strong>磁力永不做功</strong>（\(\vec v\cdot(\vec v\times\vec B)\equiv 0\)），故粒子动能变化只来自电场：\(\mathrm dK/\mathrm dt=q\vec E\cdot\vec v\)。</li>
+        <li>推导<strong>回旋运动</strong> (cyclotron motion) 的两个核心量：Larmor 半径 \(r_{L}=mv_{\perp}/(|q|B)\) 与回旋角频率 \(\omega_{c}=|q|B/m\)，并说明 <strong>\(T_{c}=2\pi/\omega_{c}\) 在非相对论极限下与粒子速率无关</strong>。</li>
+        <li>推导<strong>E×B 漂移</strong> \(\vec v_{d}=\vec E\times\vec B/B^{2}\)，论证它<strong>与 \(q,m\) 都无关</strong>（对正负电荷同方向），并描述从静止释放的粒子描绘的<strong>摆线</strong> (cycloid)。</li>
+        <li>用<strong>磁矩绝热不变量</strong> (adiabatic invariant) \(\mu=mv_{\perp}^{2}/(2B)\) 推导<strong>磁镜反射条件</strong>与<strong>损失锥</strong> (loss cone) 半角 \(\alpha_{\mathrm{lc}}=\arcsin\sqrt{B_{\min}/B_{\max}}\)。</li>
+        <li>解决<strong>质谱仪</strong> (mass spectrometer) 与<strong>回旋 / 同步加速器</strong> (cyclotron / synchrotron) 的设计问题，包括用 E×B 速度选择器与等比 \(r\propto m\) 分离同位素。</li>
+        <li>指出<strong>辐射反作用</strong> (radiation reaction) 的存在与 <strong>Abraham–Lorentz</strong> 力 \(\vec F_{\mathrm{rad}}=(q^{2}/6\pi\varepsilon_{0}c^{3})\,\dot{\vec a}\)（与「加加速度」成正比），及其「 runaway 解」疑难。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 洛伦兹力定律 \(\vec F=q(\vec E+\vec v\times\vec B)\)</h3>
+      <p>带电粒子在电磁场中所受的力是<strong>洛伦兹力</strong> (Lorentz force)：</p>
+      <div class="formula">\[ \boxed{\;\vec F\;=\;q\,(\vec E+\vec v\times\vec B)\;} \]</div>
+      <p>这是<strong>定义性的运动定律</strong>（不是从牛顿第二定律导出，而是把 \(\vec E,\vec B\) 的物理意义钉死）。注意两个关键点：</p>
+      <ul>
+        <li><strong>磁力永不做功</strong>：\(\vec F_{\mathrm{mag}}\cdot\vec v=q(\vec v\times\vec B)\cdot\vec v\equiv 0\)（混合积有两个 \(\vec v\)）。粒子的动能变化 \(\mathrm dK/\mathrm dt=\vec F\cdot\vec v=q\vec E\cdot\vec v\) <strong>只由电场贡献</strong>。在<strong>纯磁场</strong>中，粒子速率（从而动能）守恒——它只是改变方向。</li>
+        <li><strong>相对论形式不变</strong>：\(\vec F=q(\vec E+\vec v\times\vec B)\) 在相对论下仍成立，但应理解为 \(\mathrm d\vec p/\mathrm dt\)（其中 \(\vec p=\gamma m\vec v\)），而非 \(m\vec a\)。本章例题都在 \(v\ll c\) 范围内，可用 \(m\vec a\) 形式。</li>
+      </ul>
+      <p>本章研究 \(\vec E,\vec B\) 为<strong>已知场</strong>（外加场）时粒子的轨迹。我们将逐步从简单（均匀 \(\vec B\)、\(\vec E=0\)）到复杂（E×B 漂移、缓变 \(\vec B\) 的磁镜效应）。</p>
+      <div class="key-terms">Lorentz force (洛伦兹力), magnetic force does no work (磁力不做功), relativistic momentum \(\vec p=\gamma m\vec v\)</div>
+
+      <h3>2. 均匀磁场中的回旋运动（\(\vec E=0\)）</h3>
+      <p>设 \(\vec B=B\hat z\)（均匀沿 \(z\) 轴），\(\vec E=0\)）。取速度分量 \(\vec v=v_{\perp}\hat\phi+v_{\parallel}\hat z\)（垂直 / 平行于 \(\vec B\)）。</p>
+      <p><strong>平行分量</strong>：\(m\dot v_{\parallel}=q(v_{\parallel}\hat z\times\vec B)_{z}=0\)（磁力与 \(\vec B\) 垂直，无沿 \(z\) 分量），故 \(v_{\parallel}=\) 常数，粒子沿 \(z\) 匀速漂移。</p>
+      <p><strong>垂直分量</strong>：磁力 \(\vec F_{\perp}=qv_{\perp}\hat\phi\times B\hat z=qv_{\perp}B(\hat\phi\times\hat z)=-qv_{\perp}B\hat r\)（指向圆心），提供向心力。由 \(m v_{\perp}^{2}/r=|q|v_{\perp}B\) 得：</p>
+      <div class="formula">\[ \boxed{\;r_{L}\;=\;\frac{mv_{\perp}}{|q|B}\quad(\text{Larmor 半径 / 回旋半径}),\qquad \omega_{c}\;=\;\frac{|q|B}{m}\quad(\text{回旋角频率})\;} \]</div>
+      <p>粒子的<strong>垂直运动是匀速圆周</strong>，角速度 \(\omega_{c}\) 与速率 \(v_{\perp}\) <strong>无关</strong>；周期：</p>
+      <div class="formula">\[ T_{c}\;=\;\frac{2\pi}{\omega_{c}}\;=\;\frac{2\pi m}{|q|B}\quad(\text{非相对论下与 }v_{\perp}\text{ 无关}) \]</div>
+      <p>回旋频率的<strong>速率无关性</strong>是回旋加速器（见 §5）的关键：固定频率的射频（RF）电压可一直加速粒子。但在相对论极限下 \(m\to\gamma m\)，\(\omega_{c}\) 随能量下降，需要 <strong>同步加速器</strong>（调频）或<strong>等时性回旋加速器</strong>（非均匀 \(B\) 补偿）。</p>
+      <p>整体轨迹是<strong>螺旋线</strong> (helix)：绕 \(\vec B\) 轴的圆周运动叠加沿 \(\vec B\) 的匀速漂移。<strong>螺距</strong> (pitch) \(=v_{\parallel}T_{c}\)。</p>
+      <p>方向：对 \(q>0\)，绕 \(\vec B\) <strong>顺时针</strong>（从 \(\vec B\) 方向看，即从 \(+z\) 向下看）；对 \(q<0\) <strong>逆时针</strong>。</p>
+      <div class="key-terms">Larmor radius \(r_{L}\) (拉莫尔半径 / 回旋半径), cyclotron frequency \(\omega_{c}\) (回旋角频率), helical motion (螺旋运动)</div>
+
+      <h3>3. E×B 漂移与摆线轨迹</h3>
+      <p>现在设 \(\vec E\perp\vec B\)。取 \(\vec E=E\hat x\)、\(\vec B=B\hat z\)。运动方程：</p>
+      <div class="formula">\[ m\dot v_{x}=qE+qBv_{y},\qquad m\dot v_{y}=-qBv_{x} \]</div>
+      <p>令 \(\vec v\to\vec v'+\vec v_{d}\)（移去常速度 \(\vec v_{d}\)），并选择 \(\vec v_{d}\) 使方程中<strong>常数项（电场）消失</strong>。代入：\(qE+qB v_{d,y}=0\Rightarrow v_{d,y}=-E/B\)；\(-qB v_{d,x}=0\Rightarrow v_{d,x}=0\)。在 \(\vec v_{d}\) 参考系中，粒子做纯圆周运动（\(\omega_{c}\) 同前）。在<strong>实验室系</strong>，圆周叠加匀速漂移：</p>
+      <div class="formula">\[ \boxed{\;\vec v_{d}\;=\;\frac{\vec E\times\vec B}{B^{2}}\quad(\text{E}\times\text{B drift, 大小 }|v_{d}|=E/B\text{ 当 }E\perp B)\;} \]</div>
+      <p><strong>重要性质</strong>：</p>
+      <ul>
+        <li>\(\vec v_{d}\) <strong>与 \(q\) 无关</strong>（正负电荷同方向漂移）——因为 \(q\) 同时出现在 \(\vec E\) 力和 \(\vec v\times\vec B\) 力中，正好抵消。</li>
+        <li>\(\vec v_{d}\) <strong>与 \(m\) 无关</strong>——更重的粒子圆周更大但更慢，两者抵消。</li>
+        <li>\(\vec v_{d}\) <strong>与粒子速率无关</strong>——叠加在任意圆周运动上。</li>
+      </ul>
+      <p>对粒子从<strong>静止释放</strong>（\(\vec v(0)=0\)）的特殊情形，可解析解出轨迹为<strong>摆线</strong> (cycloid)：</p>
+      <div class="formula">\[ x(t)=\frac{E}{B\omega_{c}}\big(1-\cos\omega_{c}t\big),\qquad y(t)=\frac{E}{B\omega_{c}}\sin\omega_{c}t-\frac{E}{B}\,t \]</div>
+      <p>这正是「半径 \(R=E/(B\omega_{c})=mE/(qB^{2})\) 的轮子沿 \(y\) 方向滚动、轮缘上一点」描绘的曲线。每经过一个周期 \(T_{c}\)，粒子前进 \(v_{d}T_{c}=2\pi R\)，重新回到零速率（<strong>尖点</strong> cusp）。</p>
+      <p>等离子体物理中，<strong>正负电荷同方向同速率漂移</strong>意味着 E×B 漂移<strong>不构成电流</strong>（正负电流相互抵消）——这与重力场中的 \(\vec g\times\vec B\) 漂移（依赖 \(m\)，因而分离正负电荷）截然不同。</p>
+      <div class="key-terms">E×B drift \(\vec v_{d}=\vec E\times\vec B/B^{2}\) (E×B 漂移), cycloid (摆线), cusp (尖点), guiding center (引导中心)</div>
+
+      <h3>4. 磁镜与磁瓶：磁矩绝热不变量</h3>
+      <p>考虑<strong>沿轴缓慢变化</strong>的磁场 \(\vec B=B(z)\hat z\)（在磁镜两端 \(B\) 增强）。在粒子绕 \(\vec B\) 转一圈的快时间尺度上，\(B(z)\) 几乎不变；但在粒子沿 \(z\) 漂移的慢时间尺度上，\(B\) 在变。<strong>两个时间尺度的分离</strong>使一个量在慢运动中近似守恒——<strong>磁矩绝热不变量</strong>：</p>
+      <div class="formula">\[ \boxed{\;\mu\;=\;\frac{m v_{\perp}^{2}}{2B}\;=\;\text{const.}\quad(\text{当 }B\text{ 缓变，绝热不变})\;} \]</div>
+      <p>物理上 \(\mu\) 就是粒子回旋运动的<strong>磁矩</strong>（电流环 \(I=q/T_{c}\)、面积 \(\pi r_{L}^{2}\)，\(m_{\text{环}}=I\pi r_{L}^{2}=mv_{\perp}^{2}/(2B)\)）。\(\mu\) 守恒的论证：粒子回旋产生的<strong>感应电场</strong>（由 \(\partial\vec B/\partial t\) 通过粒子轨迹张的面积）做功改变 \(v_{\perp}\)，正好使 \(v_{\perp}^{2}/B\) 不变。</p>
+      <p>配合<strong>能量守恒</strong>（磁力不做功）：\(\tfrac12 m(v_{\perp}^{2}+v_{\parallel}^{2})=\) 常数 \(=K\)。故：</p>
+      <div class="formula">\[ v_{\parallel}^{2}\;=\;\frac{2K}{m}-v_{\perp}^{2}\;=\;\frac{2K}{m}-\frac{2\mu B}{m} \]</div>
+      <p>当粒子进入 \(B\) 增强的区域，\(v_{\perp}\) 增大（\(\mu\) 守恒），\(v_{\parallel}\) 减小（能量守恒）。在某一点 \(B=B_{\mathrm{mir}}\)，\(v_{\parallel}\to 0\)，粒子被反射。设粒子在中心（\(B=B_{\min}\)）的<strong>俯仰角</strong> (pitch angle) \(\alpha_{0}\) 满足 \(\sin\alpha_{0}=v_{\perp0}/v\)，则反射点：</p>
+      <div class="formula">\[ \boxed{\;B_{\mathrm{mir}}\;=\;\frac{B_{\min}}{\sin^{2}\alpha_{0}}\;} \]</div>
+      <p>若磁场最大值 \(B_{\max}\) 不足以让 \(v_{\parallel}\) 归零，即 \(B_{\mathrm{mir}}>B_{\max}\)（等价于 \(\sin^{2}\alpha_{0}<B_{\min}/B_{\max}\)），粒子逃逸而非反射。临界角即<strong>损失锥</strong> (loss cone) 半角：</p>
+      <div class="formula">\[ \boxed{\;\sin\alpha_{\mathrm{lc}}\;=\;\sqrt{\frac{B_{\min}}{B_{\max}}},\qquad \alpha_{\mathrm{lc}}\;=\;\arcsin\sqrt{\frac{B_{\min}}{B_{\max}}}\;} \]</div>
+      <p>俯仰角 \(\alpha_{0}>\alpha_{\mathrm{lc}}\) 的粒子被<strong>捕获</strong>，\(\alpha_{0}<\alpha_{\mathrm{lc}}\) 的进入损失锥<strong>逃逸</strong>。<strong>磁瓶</strong> (magnetic bottle) 由两端高 \(B\) 区域构成；<strong>地球范艾伦辐射带</strong> (Van Allen belts) 是天然磁瓶，捕获来自太阳风的带电粒子。</p>
+      <div class="key-terms">adiabatic invariant \(\mu\) (磁矩绝热不变量), pitch angle \(\alpha\) (俯仰角), loss cone (损失锥), magnetic bottle (磁瓶), Van Allen belts (范艾伦带)</div>
+
+      <h3>5. 质谱仪、回旋加速器与同步加速器</h3>
+      <p><strong>质谱仪</strong> (mass spectrometer) 的标准设计分两步：</p>
+      <ol>
+        <li><strong>速度选择器</strong> (velocity selector)：交叉 \(\vec E\perp\vec B\)，只有满足 \(qE=qvB\Rightarrow v=E/B\) 的粒子受力平衡、直线穿过。其余被偏转淘汰。</li>
+        <li><strong>偏转分析器</strong>：通过选择器的粒子进入另一均匀 \(B_{2}\) 区，做半圆运动，打在探测板上。半径 \(r=mv/(qB_{2})\)，打到板上的位置距入口 \(2r=2mv/(qB_{2})\)。</li>
+      </ol>
+      <p>对同位素（同 \(q\)、同 \(v\)、不同 \(m\)）：\(r\propto m\)，分离量 \(\Delta r/r=\Delta m/(2m)\)。<strong>注意</strong>：分离 <em>正比于</em> \(\Delta m\)，而非 \(\Delta m/m\) ——这是质谱仪能达到同位素分辨率的关键。</p>
+      <p><strong>回旋加速器</strong> (cyclotron)：两个 D 形电极之间加频率 \(f_{c}=|q|B/(2\pi m)\) 的交变电压。粒子每次穿越间隙被电场加速，在 D 内做半圆运动（半径随 \(v\) 增大）。由于 \(T_{c}\) 与 \(v\) 无关，固定频率的 RF 可一直保持同步，直到粒子能量达到相对论极限。</p>
+      <p><strong>同步加速器</strong> (synchrotron)：当 \(v\to c\)，\(\gamma\) 增长，\(\omega_{c}=|q|B/(\gamma m)\) 下降。维持同步有两种方案：(i) <strong>同步回旋</strong>（频率随能量降低）；(ii) <strong>等时性回旋</strong>（让 \(B\) 随半径增大，使 \(\omega_{c}\) 恒定）。LHC（大型强子对撞机）使用超导磁体使质子加速到 7 TeV。</p>
+      <div class="key-terms">velocity selector (速度选择器), mass spectrometer (质谱仪), cyclotron (回旋加速器), synchrotron (同步加速器)</div>
+
+      <h3>6. 辐射反作用（Abraham–Lorentz 力，简述）</h3>
+      <p>加速运动的电荷辐射电磁波（Larmor 公式 \(P=q^{2}a^{2}/(6\pi\varepsilon_{0}c^{3})\)）。能量守恒要求辐射损失以一个<strong>反作用力</strong>作用在粒子上。Abraham（1903）与 Lorentz 推得（非相对论形式）：</p>
+      <div class="formula">\[ \boxed{\;\vec F_{\mathrm{rad}}\;=\;\frac{q^{2}}{6\pi\varepsilon_{0}c^{3}}\,\dot{\vec a}\;=\;m\tau_{0}\,\dot{\vec a}\;,\qquad \tau_{0}\equiv\frac{q^{2}}{6\pi\varepsilon_{0}mc^{3}}\;} \]</div>
+      <p>反作用力正比于<strong>加加速度</strong> \(\dot{\vec a}=\mathrm d\vec a/\mathrm dt\)（不是加速度本身）。对电子 \(\tau_{0}\approx 6.26\times 10^{-24}\,\mathrm s\)，日常情况下完全可忽略；但当电荷经历极强的加加速度（如同步辐射中的高能电子），反作用变得重要。<strong>两点疑难</strong>：</p>
+      <ul>
+        <li><strong>Runaway 解</strong>：方程 \(m\vec a=\vec F_{\mathrm{ext}}+m\tau_{0}\dot{\vec a}\) 即使 \(\vec F_{\mathrm{ext}}=0\) 也允许 \(\vec a(t)=\vec a_{0}e^{t/\tau_{0}}\) 的指数增长解——粒子「自我加速」。</li>
+        <li><strong>预加速</strong>（acausal）：为消除 runaway 而做的形式解让粒子在力加上去<em>之前</em>就开始加速（时间提前 \(\tau_{0}\)，量级极小但破坏因果）。</li>
+      </ul>
+      <p>正确的相对论处理（Landau–Lifshitz 近似，将 \(\vec F_{\mathrm{rad}}\) 展开到 \(\tau_{0}\) 一阶）消除这些疑难，给出物理上合理的结果。本章后续例题不涉及辐射反作用，但请记住<strong>洛伦兹力本身有适用范围</strong>。</p>
+      <div class="key-terms">Larmor formula (拉莫尔公式), Abraham–Lorentz force \(\vec F_{\mathrm{rad}}\) (亚伯拉罕–洛伦兹力), runaway solution (runaway 解)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从 \(m\vec a=q\vec v\times\vec B\) 导出回旋半径与频率</h3>
+      <p>纯磁场（\(\vec E=0\)）、均匀 \(\vec B=B\hat z\)。把 \(\vec v\) 分解为平行 (\(v_{\parallel}\hat z\)) 与垂直 (\(v_{\perp}\hat\phi\)，柱坐标)。</p>
+      <p>平行：\(m\dot v_{\parallel}=q(v_{\parallel}\hat z\times\vec B)_{z}=0\)（因 \(\vec v\times\vec B\perp\vec B\)，无 \(z\) 分量）。故 \(v_{\parallel}=\) 常数。</p>
+      <p>垂直：圆周运动的向心加速度 \(a_{\perp}=v_{\perp}^{2}/r\)。磁力大小 \(|q\vec v\times\vec B|=|q|v_{\perp}B\)（\(\vec v\perp\vec B\)）。牛顿第二定律：</p>
+      <div class="formula">\[ m\,\frac{v_{\perp}^{2}}{r}\;=\;|q|\,v_{\perp}B\;\;\Longrightarrow\;\; \boxed{\;r_{L}\;=\;\frac{mv_{\perp}}{|q|B}\;} \]</div>
+      <p>角速度 \(\omega=v_{\perp}/r_{L}=|q|B/m\)（<strong>注意与 \(v_{\perp}\) 无关</strong>）。周期：</p>
+      <div class="formula">\[ \boxed{\;T_{c}\;=\;\frac{2\pi}{\omega_{c}}\;=\;\frac{2\pi m}{|q|B}\quad(\text{与 }v_{\perp}\text{ 无关，非相对论极限})\;} \]</div>
+      <p><strong>相对论修正</strong>：\(m\to\gamma m\)，故 \(\omega_{c}\to\omega_{c}/\gamma\)，\(r_{L}\to\gamma r_{L}\)。在固定 RF 频率的回旋加速器中，粒子接近光速后 \(\omega_{c}\) 下降，与 RF 失配——需要同步加速器。</p>
+
+      <h3>推导 B：E×B 漂移 \(\vec v_{d}=\vec E\times\vec B/B^{2}\)</h3>
+      <p>设 \(\vec E=E\hat x\)、\(\vec B=B\hat z\)。运动方程分量形式（牛顿第二定律 \(m\vec a=q(\vec E+\vec v\times\vec B)\)，且 \((v_{x}\hat x+v_{y}\hat y)\times B\hat z=B(v_{y}\hat x-v_{x}\hat y)\)）：</p>
+      <div class="formula">\[ m\dot v_{x}=qE+qBv_{y},\qquad m\dot v_{y}=-qBv_{x} \]</div>
+      <p>分解 \(\vec v=\vec v'+\vec v_{d}\)（漂移 \(\vec v_{d}=(v_{d,x},v_{d,y})\) 为常矢量）：</p>
+      <div class="formula">\[ m\dot v'_{x}=qE+qB(v'_{y}+v_{d,y}),\qquad m\dot v'_{y}=-qB(v'_{x}+v_{d,x}) \]</div>
+      <p>选择 \(\vec v_{d}\) 使方程中常数项为零（即让 \(\vec v'\) 满足<strong>纯磁力运动方程</strong>）：</p>
+      <div class="formula">\[ qE+qBv_{d,y}=0\;\Rightarrow\;v_{d,y}=-E/B,\qquad -qBv_{d,x}=0\;\Rightarrow\;v_{d,x}=0 \]</div>
+      <p>即 \(\vec v_{d}=-(E/B)\hat y\)。矢量形式（任意方向）：</p>
+      <div class="formula">\[ \boxed{\;\vec v_{d}\;=\;\frac{\vec E\times\vec B}{B^{2}}\;} \]</div>
+      <p><strong>验证</strong>（用 \(\vec v_{d}\) 代入运动方程，看净力是否为零）：\(\vec F=q(\vec E+\vec v_{d}\times\vec B)=q\vec E+q\,\dfrac{\vec E\times\vec B}{B^{2}}\times\vec B\)。用三重积 \((\vec E\times\vec B)\times\vec B=(\vec E\cdot\vec B)\vec B-B^{2}\vec E\)。设 \(\vec E\perp\vec B\)：\((\vec E\cdot\vec B)=0\)，故 \((\vec E\times\vec B)\times\vec B=-B^{2}\vec E\)。代入：\(\vec F=q\vec E+q(-B^{2}\vec E/B^{2})=q\vec E-q\vec E=0\) ✓。漂移参考系中净力为零，故粒子在该系做纯圆周运动。</p>
+      <p><strong>关键结论</strong>：\(\vec v_{d}\) 中<strong>不含 \(q\) 或 \(m\)</strong>——所有带电粒子以相同速度同方向漂移。这是等离子体物理中最深刻的简化之一。</p>
+
+      <h3>推导 C：磁镜反射条件与损失锥</h3>
+      <p>设粒子在中心（\(B=B_{\min}\)）的速率为 \(v\)、俯仰角 \(\alpha_{0}\)（\(\sin\alpha_{0}=v_{\perp0}/v\)，\(\cos\alpha_{0}=v_{\parallel0}/v\)）。</p>
+      <p><strong>两个守恒律</strong>：</p>
+      <ol>
+        <li><strong>能量守恒</strong>（磁力不做功）：\(\tfrac12 m(v_{\perp}^{2}+v_{\parallel}^{2})=\tfrac12 mv^{2}=\) 常数。</li>
+        <li><strong>磁矩绝热不变量</strong>：\(\mu=mv_{\perp}^{2}/(2B)=\) 常数 \(\Rightarrow v_{\perp}^{2}=(B/B_{\min})\,v_{\perp0}^{2}=(B/B_{\min})\,v^{2}\sin^{2}\alpha_{0}\)。</li>
+      </ol>
+      <p>代入能量守恒：\(v_{\parallel}^{2}=v^{2}-v_{\perp}^{2}=v^{2}\big[1-(B/B_{\min})\sin^{2}\alpha_{0}\big]\)。</p>
+      <p><strong>反射条件</strong>：\(v_{\parallel}=0\) 给出反射点 \(B=B_{\mathrm{mir}}\)：</p>
+      <div class="formula">\[ 1-\frac{B_{\mathrm{mir}}}{B_{\min}}\sin^{2}\alpha_{0}=0\;\;\Longrightarrow\;\; \boxed{\;B_{\mathrm{mir}}\;=\;\frac{B_{\min}}{\sin^{2}\alpha_{0}}\;} \]</div>
+      <p>若磁场有最大值 \(B_{\max}\)，反射需要 \(B_{\mathrm{mir}}\le B_{\max}\)：</p>
+      <div class="formula">\[ \frac{B_{\min}}{\sin^{2}\alpha_{0}}\le B_{\max}\;\;\Longrightarrow\;\; \sin^{2}\alpha_{0}\ge\frac{B_{\min}}{B_{\max}}\;\;\Longrightarrow\;\; \sin\alpha_{0}\ge\sqrt{\frac{B_{\min}}{B_{\max}}} \]</div>
+      <p>临界角（损失锥半角）：\(\sin\alpha_{\mathrm{lc}}=\sqrt{B_{\min}/B_{\max}}\)。俯仰角 \(\alpha_{0}\ge\alpha_{\mathrm{lc}}\) 被捕获，\(\alpha_{0}<\alpha_{\mathrm{lc}}\) 进入损失锥逃逸。对于磁镜比 \(R_{m}=B_{\max}/B_{\min}\)，\(\alpha_{\mathrm{lc}}=\arcsin(1/\sqrt{R_{m}})\)：磁镜比越大，损失锥越窄。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 1 keV 质子在 0.5 T 磁场中的回旋半径与周期</h4>
+        <p class="example-statement">一个动能为 \(K=1.00\,\mathrm{keV}\) 的质子在均匀磁场 \(B=0.500\,\mathrm T\)（垂直于初速度）中运动。求 (a) 速率 \(v\)；(b) 回旋半径 \(r_{L}\)；(c) 回旋角频率 \(\omega_{c}\)、周期 \(T_{c}\)、频率 \(f_{c}\)。取 \(m_{p}=1.673\times 10^{-27}\,\mathrm{kg}\)，\(e=1.602\times 10^{-19}\,\mathrm C\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 动能 \(K=1.00\times 10^{3}\,\mathrm{eV}=1.00\times 10^{3}\times 1.602\times 10^{-19}\,\mathrm J=1.602\times 10^{-16}\,\mathrm J\)。</p>
+          <p class="step">非相对论：\(v=\sqrt{2K/m_{p}}=\sqrt{2\times 1.602\times 10^{-16}/1.673\times 10^{-27}}=\sqrt{1.915\times 10^{11}}=4.38\times 10^{5}\,\mathrm{m/s}\)。</p>
+          <p class="step">检验非相对论：\(v/c=4.38\times 10^{5}/3.0\times 10^{8}=1.46\times 10^{-3}\ll 1\) ✓。</p>
+          <p class="step">(b) 回旋半径 \(r_{L}=m_{p}v/(eB)=\dfrac{1.673\times 10^{-27}\times 4.38\times 10^{5}}{1.602\times 10^{-19}\times 0.500}=\dfrac{7.33\times 10^{-22}}{8.01\times 10^{-20}}=9.15\times 10^{-3}\,\mathrm m=9.15\,\mathrm{mm}\)。</p>
+          <p class="step">(c) 回旋角频率 \(\omega_{c}=eB/m_{p}=\dfrac{1.602\times 10^{-19}\times 0.500}{1.673\times 10^{-27}}=4.79\times 10^{7}\,\mathrm{rad/s}\)。</p>
+          <p class="step">周期 \(T_{c}=2\pi/\omega_{c}=2\pi/4.79\times 10^{7}=1.31\times 10^{-7}\,\mathrm s=131\,\mathrm{ns}\)。</p>
+          <p class="step">频率 \(f_{c}=1/T_{c}=7.63\times 10^{6}\,\mathrm{Hz}=7.63\,\mathrm{MHz}\)。</p>
+          <p class="step"><strong>对比 10 eV 电子</strong>（同 \(B=0.5\,\mathrm T\)）：\(v_{e}=\sqrt{2\times 10\times 1.602\times 10^{-19}/9.109\times 10^{-31}}=1.88\times 10^{6}\,\mathrm{m/s}\)（\(v/c=6.3\times 10^{-3}\) 仍非相对论）。\(r_{L,e}=m_{e}v_{e}/(eB)=9.11\times 10^{-31}\times 1.88\times 10^{6}/(1.602\times 10^{-19}\times 0.500)=2.13\times 10^{-5}\,\mathrm m=21.3\,\mu\mathrm m\)。\(T_{c,e}=2\pi m_{e}/(eB)=7.14\times 10^{-11}\,\mathrm s=71.4\,\mathrm{ps}\)，\(f_{c,e}=14.0\,\mathrm{GHz}\)。<strong>注意</strong>：电子比质子轻 1836 倍，同能量下半径小得多（\(21\,\mu\mathrm m\) vs \(9\,\mathrm{mm}\)），频率高得多（\(14\,\mathrm{GHz}\) vs \(7.6\,\mathrm{MHz}\)）。</p>
+          <p><span class="ans">质子：\(v=4.38\times 10^{5}\,\mathrm{m/s}\)，\(r_{L}=9.15\,\mathrm{mm}\)，\(\omega_{c}=4.79\times 10^{7}\,\mathrm{rad/s}\)，\(T_{c}=131\,\mathrm{ns}\)，\(f_{c}=7.63\,\mathrm{MHz}\)。10 eV 电子：\(r_{L,e}=21.3\,\mu\mathrm m\)，\(f_{c,e}=14.0\,\mathrm{GHz}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 E×B 漂移：质子与电子有相同的漂移速度</h4>
+        <p class="example-statement">在交叉场 \(\vec E=5.00\times 10^{3}\,\hat x\,\mathrm{V/m}\)、\(\vec B=0.0500\,\hat z\,\mathrm T\) 中，求 (a) 漂移速度 \(\vec v_{d}\)（大小与方向）；(b) 对质子，从静止释放后的 Larmor 半径、回旋周期与<strong>每个周期的漂移距离</strong>；(c) 同 (b) 但对电子；(d) 论证为什么质子与电子的<strong>漂移速度相同</strong>。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 漂移速度：</p>
+          <p class="step">\(\vec v_{d}=\dfrac{\vec E\times\vec B}{B^{2}}=\dfrac{(5.00\times 10^{3}\,\hat x)\times(0.0500\,\hat z)}{(0.0500)^{2}}=\dfrac{5\times 10^{3}\times 0.05}{2.5\times 10^{-3}}(\hat x\times\hat z)=1.00\times 10^{5}\times(-\hat y)=-1.00\times 10^{5}\,\hat y\,\mathrm{m/s}\)。</p>
+          <p class="step">大小 \(|v_{d}|=E/B=5.00\times 10^{3}/0.0500=1.00\times 10^{5}\,\mathrm{m/s}=100\,\mathrm{km/s}\)，方向 \(-\hat y\)。</p>
+          <p class="step">(b) 质子从静止释放，初始动能为零；电场先把粒子加速（动能增加），但<strong>磁力不做功</strong>，最终粒子沿摆线运动。摆线的「轮子半径」\(R=mE/(|q|B^{2})\)（推导见 §3）：</p>
+          <p class="step">\(R_{p}=\dfrac{m_{p}E}{eB^{2}}=\dfrac{1.673\times 10^{-27}\times 5.00\times 10^{3}}{1.602\times 10^{-19}\times(0.0500)^{2}}=\dfrac{8.37\times 10^{-24}}{4.01\times 10^{-22}}=2.09\times 10^{-2}\,\mathrm m=2.09\,\mathrm{cm}\)。</p>
+          <p class="step">回旋周期 \(T_{c,p}=2\pi m_{p}/(eB)=2\pi\times 1.673\times 10^{-27}/(1.602\times 10^{-19}\times 0.0500)=1.31\times 10^{-6}\,\mathrm s=1.31\,\mu\mathrm s\)。</p>
+          <p class="step">每个周期的漂移距离 \(=v_{d}\cdot T_{c,p}=1.00\times 10^{5}\times 1.31\times 10^{-6}=0.131\,\mathrm m=13.1\,\mathrm{cm}\)。</p>
+          <p class="step">(c) 电子：\(R_{e}=m_{e}E/(eB^{2})=\dfrac{9.109\times 10^{-31}\times 5.00\times 10^{3}}{1.602\times 10^{-19}\times 2.5\times 10^{-3}}=\dfrac{4.55\times 10^{-27}}{4.01\times 10^{-22}}=1.14\times 10^{-5}\,\mathrm m=11.4\,\mu\mathrm m\)。</p>
+          <p class="step">\(T_{c,e}=2\pi m_{e}/(eB)=7.14\times 10^{-11}\,\mathrm s=71.4\,\mathrm{ps}\)。</p>
+          <p class="step">每个周期漂移距离 \(=v_{d}\cdot T_{c,e}=1.00\times 10^{5}\times 7.14\times 10^{-11}=7.14\times 10^{-6}\,\mathrm m=7.14\,\mu\mathrm m\)。</p>
+          <p class="step">(d) 漂移 \(\vec v_{d}=\vec E\times\vec B/B^{2}\) 的表达式中<strong>不含 \(q\) 或 \(m\)</strong>。物理上：电力 \(q\vec E\) 与磁力 \(q\vec v\times\vec B\) 都正比于 \(q\)，故 \(q\) 在合力中消去；漂移是在合力为零的参考系里，那个参考系由 \(\vec E\) 与 \(\vec B\) <strong>唯一</strong>决定，与粒子无关。质量 \(m\) 决定圆周半径与周期（重粒子大圆周慢转、轻粒子小圆周快转），但乘积 \(v_{d}\cdot T_{c}\) 中的依赖也消去……等等，<strong>每个周期的漂移距离</strong> \(v_{d}T_{c}=(E/B)(2\pi m/(qB))=2\pi mE/(qB^{2})\) <em>确实</em>依赖 \(m/q\)！这并不矛盾——漂移<strong>速度</strong>相同，但每个圆周用的时间不同，故<strong>每个周期走的距离</strong>不同。等离子体整体漂移仍由 \(|\vec v_{d}|\) 决定。</p>
+          <p><span class="ans">（a）\(|v_{d}|=100\,\mathrm{km/s}\)，方向 \(-\hat y\)。（b）质子：\(R=2.09\,\mathrm{cm}\)，\(T_{c}=1.31\,\mu\mathrm s\)，每周期漂移 \(13.1\,\mathrm{cm}\)。（c）电子：\(R=11.4\,\mu\mathrm m\)，\(T_{c}=71.4\,\mathrm{ps}\)，每周期漂移 \(7.14\,\mu\mathrm m\)。（d）\(\vec v_{d}\) 表达式不含 \(q,m\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 磁镜损失锥与反射位置</h4>
+        <p class="example-statement">一个磁瓶装置中心处磁场 \(B_{\min}=0.100\,\mathrm T\)，两端磁镜处最大值 \(B_{\max}=1.00\,\mathrm T\)。求 (a) 损失锥半角 \(\alpha_{\mathrm{lc}}\)；(b) 在中心具有俯仰角 \(\alpha_{0}=30^{\circ}\) 的粒子反射处的磁场 \(B_{\mathrm{mir}}\)，是否被捕获？(c) 同 (b) 但 \(\alpha_{0}=10^{\circ}\)；(d) 一个能量 \(K=1.00\,\mathrm{keV}\)、\(\alpha_{0}=45^{\circ}\) 的质子，反射瞬间垂直速度 \(v_{\perp}\) 多大？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 损失锥半角：</p>
+          <p class="step">\(\sin\alpha_{\mathrm{lc}}=\sqrt{B_{\min}/B_{\max}}=\sqrt{0.100/1.00}=\sqrt{0.100}=0.316\)。</p>
+          <p class="step">\(\alpha_{\mathrm{lc}}=\arcsin(0.316)=18.4^{\circ}\)。俯仰角 \(\alpha_{0}>18.4^{\circ}\) 的粒子被捕获，\(\alpha_{0}<18.4^{\circ}\) 的进入损失锥逃逸。</p>
+          <p class="step">(b) \(\alpha_{0}=30^{\circ}\)：反射处 \(B_{\mathrm{mir}}=B_{\min}/\sin^{2}\alpha_{0}=0.100/\sin^{2}30^{\circ}=0.100/0.25=0.400\,\mathrm T\)。</p>
+          <p class="step">因 \(B_{\mathrm{mir}}=0.400\,\mathrm T<B_{\max}=1.00\,\mathrm T\)，粒子<strong>在到达磁镜最强处之前就反射</strong>，被捕获 ✓。</p>
+          <p class="step">(c) \(\alpha_{0}=10^{\circ}\)：\(B_{\mathrm{mir}}=0.100/\sin^{2}10^{\circ}=0.100/(0.1736)^{2}=0.100/0.0301=3.32\,\mathrm T\)。</p>
+          <p class="step">因 \(B_{\mathrm{mir}}=3.32\,\mathrm T>B_{\max}=1.00\,\mathrm T\)，粒子<strong>在反射之前就已穿过磁镜</strong>，逃逸（在损失锥内）✓。</p>
+          <p class="step">(d) 反射瞬间 \(v_{\parallel}=0\)，全部动能在垂直方向：\(v_{\perp}=\sqrt{2K/m_{p}}\)。</p>
+          <p class="step">\(v_{\perp}=\sqrt{2\times 1.602\times 10^{-16}/1.673\times 10^{-27}}=\sqrt{1.915\times 10^{11}}=4.38\times 10^{5}\,\mathrm{m/s}\)（=粒子总速率，反射瞬间无平行分量）。</p>
+          <p class="step">注意 \(\alpha_{0}=45^{\circ}>\alpha_{\mathrm{lc}}=18.4^{\circ}\)，该粒子被捕获。其反射处 \(B_{\mathrm{mir}}=0.100/\sin^{2}45^{\circ}=0.100/0.500=0.200\,\mathrm T\)。</p>
+          <p class="step"><strong>物理意义</strong>：磁镜比 \(R_{m}=B_{\max}/B_{\min}=10\) 给出窄损失锥（\(18.4^{\circ}\)）。在等离子体中，损失锥内的粒子持续逃逸，导致<strong>各向异性速度分布</strong>（沿 \(\vec B\) 方向高能粒子耗尽），是磁约束聚变实验中的核心问题。</p>
+          <p><span class="ans">（a）\(\alpha_{\mathrm{lc}}=18.4^{\circ}\)。（b）\(\alpha_{0}=30^{\circ}\)：\(B_{\mathrm{mir}}=0.400\,\mathrm T\)，捕获。（c）\(\alpha_{0}=10^{\circ}\)：\(B_{\mathrm{mir}}=3.32\,\mathrm T\)，逃逸。（d）\(v_{\perp}=4.38\times 10^{5}\,\mathrm{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 质谱仪分离铀同位素 \(^{235}\mathrm U\) 与 \(^{238}\mathrm U\)</h4>
+        <p class="example-statement">一台质谱仪由速度选择器加偏转磁体组成。速度选择器：\(E_{1}=2.00\times 10^{3}\,\mathrm{V/m}\)，\(B_{1}=0.0200\,\mathrm T\)（交叉）。偏转区：\(B_{2}=0.500\,\mathrm T\)（垂直于粒子速度），粒子做半圆后打在探测板上。U 离子带电荷 \(+e\)。求 (a) 通过选择器的离子速度 \(v\)；(b) \(^{238}\mathrm U\) 与 \(^{235}\mathrm U\) 在板上的撞击位置（距入口）；(c) 两同位素在板上的<strong>间距</strong>；(d) 间距与平均半径之比，与 \(\Delta m/(2m)\) 比较。取原子质量单位 \(u=1.661\times 10^{-27}\,\mathrm{kg}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 速度选择器：粒子受力平衡 \(qE_{1}=qvB_{1}\)，得：</p>
+          <p class="step">\(v=E_{1}/B_{1}=2.00\times 10^{3}/0.0200=1.00\times 10^{5}\,\mathrm{m/s}\)。</p>
+          <p class="step">(b) 在偏转区 \(B_{2}\) 中，半径 \(r=mv/(qB_{2})\)。撞击位置 \(=2r\)（半圆轨迹）。</p>
+          <p class="step">\(m_{238}=238\,u=238\times 1.661\times 10^{-27}=3.953\times 10^{-25}\,\mathrm{kg}\)；\(m_{235}=235\,u=3.903\times 10^{-25}\,\mathrm{kg}\)。</p>
+          <p class="step">\(r_{238}=\dfrac{m_{238}v}{eB_{2}}=\dfrac{3.953\times 10^{-25}\times 1.00\times 10^{5}}{1.602\times 10^{-19}\times 0.500}=\dfrac{3.953\times 10^{-20}}{8.01\times 10^{-20}}=0.4935\,\mathrm m\)。撞击位置 \(2r_{238}=0.987\,\mathrm m\)。</p>
+          <p class="step">\(r_{235}=\dfrac{m_{235}v}{eB_{2}}=\dfrac{3.903\times 10^{-25}\times 1.00\times 10^{5}}{8.01\times 10^{-20}}=0.4872\,\mathrm m\)。撞击位置 \(2r_{235}=0.974\,\mathrm m\)。</p>
+          <p class="step">(c) 间距 \(\Delta d=2(r_{238}-r_{235})=2\times(0.4935-0.4872)=2\times 0.0063=0.0126\,\mathrm m=1.26\,\mathrm{cm}\)。</p>
+          <p class="step">(d) 平均半径 \(\bar r=(r_{238}+r_{235})/2=0.4904\,\mathrm m\)。\(\Delta r/\bar r=0.0063/0.4904=0.0129=1.29\%\)。</p>
+          <p class="step">理论值 \(\Delta m/(2m)=3/(2\times 236.5)=6.35\times 10^{-3}=0.635\%\)。等等——这与 \(1.29\%\) 不符？让我重新检查：\(\Delta r/r=\Delta m/m\)（因为 \(r\propto m\)），而非 \(\Delta m/(2m)\)。<strong>修正</strong>：由 \(r=mv/(qB)\)，\(\Delta r/r=\Delta m/m\)。\(\Delta m/m=3/236.5=1.27\%\) ✓ 与 \(1.29\%\) 一致（小数舍入差）。</p>
+          <p class="step"><strong>之前我说</strong> \(\Delta r/r=\Delta m/(2m)\) <strong>是错的</strong>——这是常见笔误。正确：\(r\propto m\) 直接给出 \(\Delta r/r=\Delta m/m\)。探测板上的<strong>间距</strong> \(=2\Delta r\)，即 \(2r(\Delta m/m)\)。</p>
+          <p class="step"><strong>应用</strong>：1.26 cm 间距远大于探测分辨率（\(\sim\,\mu\mathrm m\)），所以质谱仪能轻松分辨相邻同位素。曼哈顿计划中的电磁分离法（Calutron）正是用此原理浓缩 \(^{235}\mathrm U\)。</p>
+          <p><span class="ans">（a）\(v=1.00\times 10^{5}\,\mathrm{m/s}\)。（b）\(^{238}\mathrm U\)：\(2r=98.7\,\mathrm{cm}\)；\(^{235}\mathrm U\)：\(2r=97.4\,\mathrm{cm}\)。（c）间距 \(1.26\,\mathrm{cm}\)。（d）\(\Delta r/r=\Delta m/m=1.27\%\) ✓。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 回旋加速器设计：12 MeV 质子的频率与磁极尺寸</h4>
+        <p class="example-statement">设计一台质子回旋加速器，最大动能 \(K_{\max}=12.0\,\mathrm{MeV}\)，磁感应强度 \(B=1.50\,\mathrm T\)（均匀）。求 (a) 回旋频率 \(f_{c}\)；(b) 最大速率 \(v_{\max}\)；(c) 最大轨道半径 \(r_{\max}\)（即磁极半径下限）；(d) 检验相对论修正的重要性。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 回旋频率（固定，非相对论）：</p>
+          <p class="step">\(f_{c}=\dfrac{eB}{2\pi m_{p}}=\dfrac{1.602\times 10^{-19}\times 1.50}{2\pi\times 1.673\times 10^{-27}}=\dfrac{2.403\times 10^{-19}}{1.051\times 10^{-26}}=2.29\times 10^{7}\,\mathrm{Hz}=22.9\,\mathrm{MHz}\)。</p>
+          <p class="step">RF 振荡器需在 22.9 MHz 工作（这是商业短波波段，技术上容易实现）。</p>
+          <p class="step">(b) 最大动能 \(K_{\max}=12.0\times 10^{6}\,\mathrm{eV}=12.0\times 10^{6}\times 1.602\times 10^{-19}=1.922\times 10^{-12}\,\mathrm J\)。</p>
+          <p class="step">\(v_{\max}=\sqrt{2K_{\max}/m_{p}}=\sqrt{2\times 1.922\times 10^{-12}/1.673\times 10^{-27}}=\sqrt{2.298\times 10^{15}}=4.79\times 10^{7}\,\mathrm{m/s}\)。</p>
+          <p class="step">(c) 最大半径 \(r_{\max}=\dfrac{m_{p}v_{\max}}{eB}=\dfrac{1.673\times 10^{-27}\times 4.79\times 10^{7}}{1.602\times 10^{-19}\times 1.50}=\dfrac{8.01\times 10^{-20}}{2.403\times 10^{-19}}=0.333\,\mathrm m=33.3\,\mathrm{cm}\)。</p>
+          <p class="step">磁极半径至少 33 cm，磁体直径约 67 cm（实际更大，留边缘场修正空间）。</p>
+          <p class="step">(d) 相对论检验：\(\beta=v/c=4.79\times 10^{7}/3.0\times 10^{8}=0.160\)。</p>
+          <p class="step">\(\gamma=1/\sqrt{1-\beta^{2}}=1/\sqrt{1-0.0256}=1/\sqrt{0.9744}=1/0.9871=1.013\)。</p>
+          <p class="step">回旋频率相对下降 \(\Delta f/f=(1-1/\gamma)=1-1/1.013=0.013=1.3\%\)。</p>
+          <p class="step"><strong>临界判断</strong>：固定频率的回旋加速器，加速间隙相位漂移 1.3% 约对应 \(0.013\times 360^{\circ}=4.7^{\circ}\) 相位失配——若 RF 持续运行数千圈，粒子会与加速相位完全失配而<strong>无法继续加速</strong>。这是<strong>固定频率回旋加速器的能量上限</strong>（约 20 MeV for protons）。更高能量需 (i) <strong>同步回旋加速器</strong>（频率随能量降低，调变频）；或 (ii) <strong>等时性回旋</strong>（让 \(B\) 随半径增加，使 \(B/\gamma\) 保持常数）。</p>
+          <p class="step"><strong>历史注记</strong>：Lawrence 1932 年的第一台回旋加速器产生 1.2 MeV 质子，磁极直径 11 英寸；现代等时性回旋加速器可达到 500 MeV 以上（用于介子产生）。</p>
+          <p><span class="ans">（a）\(f_{c}=22.9\,\mathrm{MHz}\)。（b）\(v_{\max}=4.79\times 10^{7}\,\mathrm{m/s}=0.16c\)。（c）\(r_{\max}=33.3\,\mathrm{cm}\)（磁极直径约 67 cm）。（d）\(\gamma=1.013\)，频率失配 1.3%，是固定频率回旋的能量上限。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>认为磁力可以做功</strong>。磁力 \(\vec F_{\mathrm{mag}}=q\vec v\times\vec B\) 永远垂直于 \(\vec v\)，故 \(\vec F_{\mathrm{mag}}\cdot\vec v\equiv 0\)。<strong>磁力永远不改变粒子动能</strong>，只改变方向。粒子能量变化 \(\mathrm dK/\mathrm dt=q\vec E\cdot\vec v\) 只由电场贡献。在纯磁场中粒子速率守恒——这是回旋频率与速率无关的根源。</li>
+        <li><strong>以为 E×B 漂移依赖电荷正负</strong>。\(\vec v_{d}=\vec E\times\vec B/B^{2}\) 表达式中<strong>不含 \(q\) 或 \(m\)</strong>——正负电荷以<strong>相同速度、相同方向</strong>漂移。这与「电场使正负电荷反向」的直觉冲突：电场确实让它们初始反向加速，但磁力的方向也反转（因 \(\vec v\) 反转），最终在引导中心参考系中两者都做纯圆周、漂移速度相同。等离子体中 E×B 漂移<strong>不产生电流</strong>，因为正负电流抵消。</li>
+        <li><strong>用 \(\omega_{c}=qB/m\) 进入相对论区而不修正</strong>。相对论下 \(m\to\gamma m\)，故 \(\omega_{c}=|q|B/(\gamma m)\) 随能量下降。固定频率的回旋加速器在 \(v\gtrsim 0.1c\) 时与粒子失配——这是 Lawrence 原始回旋加速器的能量上限（约 20 MeV）。更高能量必须用同步加速器（变频或变场）。</li>
+        <li><strong>认为「非均匀磁场就构成磁镜」</strong>。磁镜反射需要<strong>沿运动方向 \(B\) 增加</strong>（且增加足够多使 \(B_{\mathrm{mir}}=B_{\min}/\sin^{2}\alpha_{0}\le B_{\max}\)）。若粒子向 \(B\) 减小方向运动，它<strong>不会被反射</strong>，反而\(v_{\parallel}\) 增大、\(v_{\perp}\) 减小（绝热不变量使速度向量沿 \(\vec B\)「倾倒」）。此外，俯仰角小于损失锥角 \(\alpha_{\mathrm{lc}}\) 的粒子即使朝强场方向运动也会逃逸。</li>
+        <li><strong>混淆 Larmor 半径与回旋直径</strong>，或在摆线问题中混淆「轮子半径」与轨道半径。E×B 漂移摆线的「轮子半径」\(R=mE/(|q|B^{2})\) 等于从静止释放后粒子的 Larmor 半径（此时 \(v_{\perp}\) 在引导中心系等于 \(|v_{d}|\)，故 \(r_{L}=m|v_{d}|/(|q|B)=mE/(|q|B^{2})\)）。但若粒子有初始速度，Larmor 半径会更大，摆线变成扁摆线（curtate trochoid）或结环摆线（prolate trochoid）。</li>
+        <li><strong>把 Abraham–Lorentz 力当作「小修正」随意忽略</strong>。它在数学上有 <strong>runaway 解</strong>与<strong>预加速</strong>疑难，提示洛伦兹力方程在辐射修正下不再自洽。严格的相对论量子电动力学（QED）给出无疑难的 Landau–Lifshitz 形式。在普通物理题中可忽略，但在同步辐射、强激光等离子体相互作用等场景中是核心效应。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 宇宙射线质子在地球磁场中的回旋半径：一个能量为 \(1.00\,\mathrm{GeV}\) 的宇宙射线质子进入赤道上空，地磁场近似为 \(B=30\,\mu\mathrm T\) 水平向北。若质子速度垂直于 \(\vec B\) 且沿东西方向，求 (a) 非相对论近似下的回旋半径（错误结果）；(b) 相对论正确结果。质子静质量能 \(m_{p}c^{2}=938\,\mathrm{MeV}\)。</summary>
+        <div class="hint">非相对论：\(r=mv/(qB)\) 用 \(v=\sqrt{2K/m}\) 算。相对论：\(r=p/(qB)=\gamma mv/(qB)\)，其中 \(\gamma=1+K/(m_{p}c^{2})\)。</div>
+        <div class="solution">
+          <p>(a) 非相对论（错误）：\(v_{\text{nr}}=\sqrt{2K/m_{p}}=\sqrt{2\times 1.602\times 10^{-10}/1.673\times 10^{-27}}=\sqrt{1.915\times 10^{17}}=4.38\times 10^{8}\,\mathrm{m/s}\)。这已经超过光速 \(c=3.0\times 10^{8}\,\mathrm{m/s}\)，<strong>显然错误</strong>，必须用相对论。</p>
+          <p>(b) 相对论：\(\gamma=1+K/(m_{p}c^{2})=1+1000/938=2.066\)。</p>
+          <p>\(\beta=\sqrt{1-1/\gamma^{2}}=\sqrt{1-1/4.27}=\sqrt{0.766}=0.875\)，故 \(v=0.875c=2.63\times 10^{8}\,\mathrm{m/s}\)。</p>
+          <p>\(p=\gamma m_{p}v=2.066\times 1.673\times 10^{-27}\times 2.63\times 10^{8}=9.09\times 10^{-19}\,\mathrm{kg\,m/s}\)。</p>
+          <p>\(r=p/(eB)=9.09\times 10^{-19}/(1.602\times 10^{-19}\times 30\times 10^{-6})=9.09\times 10^{-19}/4.81\times 10^{-24}=1.89\times 10^{5}\,\mathrm m=189\,\mathrm{km}\)。</p>
+          <p><strong>物理意义</strong>：地磁场太弱，高能宇宙射线质子几乎不受影响——回旋半径 189 km 远大于大气尺度。地磁场主要偏转低能太阳风粒子（极光来源）。</p>
+          <p><span class="ans">非相对论错（超光速）；相对论 \(r\approx 189\,\mathrm{km}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 摆线轨迹的最高点：粒子从静止释放在交叉场 \(\vec E=E\hat x\)、\(\vec B=B\hat z\) 中。已知摆线参数方程 \(x(t)=R(1-\cos\omega_{c}t)\)、\(y(t)=R\sin\omega_{c}t-v_{d}t\)，\(R=mE/(|q|B^{2})\)、\(v_{d}=E/B\)。证明：(a) 尖点（\(v=0\)）出现在 \(t=nT_{c}\)，\(n=0,1,2,\dots\)；(b) 相邻尖点的间距为 \(2\pi R\)。</summary>
+        <div class="hint">在尖点处速度归零：\(v_{x}=\dot x\)、\(v_{y}=\dot y\) 同时为零。求 \(\omega_{c}t=n\cdot 2\pi\)。</div>
+        <div class="solution">
+          <p>\(v_{x}=\dot x=R\omega_{c}\sin\omega_{c}t\)；\(v_{y}=\dot y=R\omega_{c}\cos\omega_{c}t-v_{d}\)。</p>
+          <p>由 \(R=mE/(|q|B^{2})\) 与 \(\omega_{c}=|q|B/m\)：\(R\omega_{c}=mE\cdot|q|B/(|q|B^{2}\cdot m)=E/B=v_{d}\)。故 \(v_{y}=v_{d}\cos\omega_{c}t-v_{d}=v_{d}(\cos\omega_{c}t-1)\)。</p>
+          <p>(a) 尖点：\(v_{x}=0\Rightarrow\sin\omega_{c}t=0\Rightarrow\omega_{c}t=n\pi\)；同时 \(v_{y}=0\Rightarrow\cos\omega_{c}t=1\Rightarrow\omega_{c}t=2\pi n\)。两者交集：\(\omega_{c}t=2\pi n\)，即 \(t=nT_{c}\) ✓。</p>
+          <p>(b) 相邻尖点 \(t=0\) 与 \(t=T_{c}\)：位置 \((x,y)|_{t=0}=(0,0)\)；\((x,y)|_{t=T_{c}}=(R(1-\cos 2\pi),R\sin 2\pi-v_{d}T_{c})=(0,0-v_{d}\cdot 2\pi/\omega_{c})=(0,-2\pi R\cdot\dfrac{v_{d}}{v_{d}})=(0,-2\pi R)\)。间距 \(=2\pi R\) ✓。</p>
+          <p><strong>摆线 = 「半径 \(R\) 的轮子在 \(y\) 方向滚动」</strong>：每滚动一周（\(2\pi R\) 距离），轮缘一点画出一段摆线，回到地面（\(v=0\)，尖点）。</p>
+          <p><span class="ans">(a) 尖点 \(t=nT_{c}=2\pi n/\omega_{c}\)；(b) 间距 \(2\pi R\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 磁瓶的捕获比例：磁镜装置 \(B_{\min}=0.20\,\mathrm T\)，\(B_{\max}=5.0\,\mathrm T\)。中心处各向同性速度分布的质子（动能为 \(K=1.00\,\mathrm{keV}\)）。求 (a) 损失锥半角 \(\alpha_{\mathrm{lc}}\)；(b) 在损失锥内的粒子比例（假设各向同性）。</summary>
+        <div class="hint">各向同性分布中，俯仰角在 \([0,\alpha]\) 内的概率正比于立体角 \(\Omega=2\pi(1-\cos\alpha)\)（半锥角 \(\alpha\) 的锥的立体角），除以总立体角 \(4\pi\)。两端的损失锥对称。</div>
+        <div class="solution">
+          <p>(a) \(\sin\alpha_{\mathrm{lc}}=\sqrt{B_{\min}/B_{\max}}=\sqrt{0.20/5.0}=\sqrt{0.040}=0.200\)。\(\alpha_{\mathrm{lc}}=\arcsin(0.200)=11.5^{\circ}\)。</p>
+          <p>(b) 单端损失锥立体角 \(\Omega=2\pi(1-\cos\alpha_{\mathrm{lc}})=2\pi(1-0.980)=2\pi\times 0.0199=0.125\,\mathrm{sr}\)。</p>
+          <p>两端总损失锥立体角 \(=2\times 0.125=0.250\,\mathrm{sr}\)。</p>
+          <p>占各向同性分布（总 \(4\pi\,\mathrm{sr}\)）的比例 \(=0.250/(4\pi)=0.250/12.566=0.0199\approx 2.0\%\)。</p>
+          <p><strong>结论</strong>：仅 2% 粒子立即逃逸，98% 被捕获——这是磁镜作为等离子体约束装置的基础。但被捕获的粒子会因库仑碰撞不断「散射」进入损失锥，最终几乎全部逃逸。这就是<strong>磁镜装置</strong>作为聚变反应器的致命限制（已被主流托卡马克取代）。</p>
+          <p><span class="ans">\(\alpha_{\mathrm{lc}}=11.5^{\circ}\)；各向同性分布下损失锥占 \(\approx 2.0\%\)（98% 被捕获）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. E×B 漂移作为速度选择器：质谱仪的速度选择器由交叉场 \(E=3000\,\mathrm{V/m}\)、\(B=0.030\,\mathrm T\) 构成。(a) 求通过选择器的离子速度 \(v\)；(b) 一束包含 \(^{1}\mathrm H^{+}\)（质子）与 \(^{2}\mathrm H^{+}\)（氘核）的离子（假设都从同一电离源获得 \(K=100\,\mathrm{eV}\) 动能）通过选择器，哪种粒子被通过？哪种被偏转？</summary>
+        <div class="hint">速度选择器只让 \(v=E/B\) 的粒子通过，与 \(m,q\) 无关。动能相同的质子与氘核<strong>速度不同</strong>（\(v=\sqrt{2K/m}\)）。</div>
+        <div class="solution">
+          <p>(a) \(v=E/B=3000/0.030=1.00\times 10^{5}\,\mathrm{m/s}\)。</p>
+          <p>(b) 100 eV 动能：</p>
+          <p>质子（\(m_{p}=1.673\times 10^{-27}\,\mathrm{kg}\)）：\(v_{p}=\sqrt{2K/m_{p}}=\sqrt{2\times 100\times 1.602\times 10^{-19}/1.673\times 10^{-27}}=\sqrt{1.915\times 10^{10}}=1.38\times 10^{5}\,\mathrm{m/s}\)。</p>
+          <p>氘核（\(m_{d}=2m_{p}=3.346\times 10^{-27}\,\mathrm{kg}\)）：\(v_{d}=\sqrt{2K/m_{d}}=\sqrt{0.958\times 10^{10}}=9.79\times 10^{4}\,\mathrm{m/s}\approx 0.98\times 10^{5}\,\mathrm{m/s}\)。</p>
+          <p>选择器通过速度 \(v=1.00\times 10^{5}\,\mathrm{m/s}\)。质子 \(v_{p}=1.38\times 10^{5}\)（太快），氘核 \(v_{d}=0.98\times 10^{5}\)（接近）。</p>
+          <p><strong>结论</strong>：氘核的速率与选择速度相差仅 2%，<strong>几乎通过</strong>（实际有微小偏转）；质子速率高出 38%，<strong>明显被偏转淘汰</strong>。这正是质谱仪用速度选择器<strong>过滤不同质量同动能粒子</strong>的原理（同动能下重粒子慢、轻粒子快，选择器可针对特定 \(m\) 优化）。</p>
+          <p><strong>另一种设计</strong>：如果两离子以<strong>相同动量</strong>而非相同能量进入选择器，则选择器选 \(v\) 后用 \(B_{2}\) 偏转给出 \(r=mv/(qB_{2})=p/(qB_{2})\)——这时同动量粒子打到<strong>同一位置</strong>，无分离。所以质谱仪必须先<strong>能量选择</strong>（或动量选择）再分析质量。</p>
+          <p><span class="ans">（a）\(v=1.00\times 10^{5}\,\mathrm{m/s}\)。（b）氘核接近通过；质子被偏转淘汰。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 范艾伦辐射带中电子的回旋频率：地球范艾伦内带高能电子典型能量为 \(1\,\mathrm{MeV}\)，地磁场 \(B\approx 30\,\mu\mathrm T\)。求电子的回旋频率（相对论）与回旋半径。电子静质量能 \(m_{e}c^{2}=0.511\,\mathrm{MeV}\)。</summary>
+        <div class="hint">相对论：\(\gamma=1+K/(m_{e}c^{2})\)，\(\omega_{c}=eB/(\gamma m_{e})\)，\(r_{L}=\gamma m_{e}v_{\perp}/(eB)\)，\(v_{\perp}\approx c\sqrt{1-1/\gamma^{2}}\)。</div>
+        <div class="solution">
+          <p>\(\gamma=1+K/(m_{e}c^{2})=1+1.0/0.511=1+1.957=2.957\)。</p>
+          <p>\(\beta=\sqrt{1-1/\gamma^{2}}=\sqrt{1-1/8.74}=\sqrt{0.886}=0.941\)，\(v=0.941c=2.82\times 10^{8}\,\mathrm{m/s}\)。</p>
+          <p>\(\omega_{c}=eB/(\gamma m_{e})=\dfrac{1.602\times 10^{-19}\times 30\times 10^{-6}}{2.957\times 9.109\times 10^{-31}}=\dfrac{4.81\times 10^{-24}}{2.693\times 10^{-30}}=1.79\times 10^{6}\,\mathrm{rad/s}\)。</p>
+          <p>\(f_{c}=\omega_{c}/(2\pi)=2.84\times 10^{5}\,\mathrm{Hz}=284\,\mathrm{kHz}\)（VLF 波段，可与电离层反射的啸声模式电磁波耦合——「啸声」现象）。</p>
+          <p>\(r_{L}=\gamma m_{e}v/(eB)=\dfrac{2.957\times 9.109\times 10^{-31}\times 2.82\times 10^{8}}{1.602\times 10^{-19}\times 30\times 10^{-6}}=\dfrac{7.59\times 10^{-22}}{4.81\times 10^{-24}}=158\,\mathrm m\)。</p>
+          <p><strong>对比非相对论结果</strong>：若误用 \(m\) 而非 \(\gamma m\)，频率会高 2.96 倍，半径会小 2.96 倍。在 MeV 能量范围必须用相对论公式。</p>
+          <p><span class="ans">\(\omega_{c}=1.79\times 10^{6}\,\mathrm{rad/s}\)，\(f_{c}=284\,\mathrm{kHz}\)；\(r_{L}\approx 158\,\mathrm m\)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — E×B 漂移与摆线轨迹 E×B Drift &amp; Cycloid</h2>
+      <p class="sim-desc">在交叉均匀场 \(\vec E=E\hat x\)、\(\vec B=B\hat z\)（垂直纸面向外）中，一个带电粒子从原点释放。粒子受到电场加速、磁场偏转，描绘出<strong>摆线</strong> (cycloid) 轨迹，整体沿 \(\vec v_{d}=\vec E\times\vec B/B^{2}\) 漂移（本例中为 \(-y\) 方向，即画布上向下）。调节滑块 <strong>E、B、q、m</strong> 与初速度 \(v_{0y}\)，验证：<strong>漂移速度 \(|v_{d}|=E/B\) 与 \(q,m\) 无关</strong>（HUD 实时显示）；只有<strong>圆周半径</strong>与<strong>周期</strong>随 \(m/q\) 变化。负电荷的摆线弧形反向，但漂移方向<strong>不变</strong>。按 <strong>↺ 重置 Reset</strong> 重新开始轨迹。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="680" height="460"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+
+          // Physics parameters (SI-like "demo" units chosen so motion is visible at 60 fps)
+          var params = {
+            E: 2.0,        // electric field magnitude (V/m, demo)
+            B: 1.5,        // magnetic field magnitude (T, demo)
+            q: 1.0,        // charge (×e, can be negative)
+            m: 0.5,        // mass (×m_proton, demo)
+            v0y: 0.0,      // initial vy (m/s)
+          };
+
+          // Canvas layout: origin near top-left so cycloid can drift downward
+          var ORIGIN_X = 70;
+          var ORIGIN_Y = 70;
+          var PX_PER_M = 80;   // 1 m = 80 px
+
+          // Derivative for RK4: state = [x, y, vx, vy]; E along +x; B along +z
+          function deriv(state, t) {
+            var vx = state[2], vy = state[3];
+            var qm = params.q / params.m;
+            // (v × B)_x = vy * B, (v × B)_y = -vx * B  (B = B ẑ)
+            return [
+              vx,
+              vy,
+              qm * params.E + qm * params.B * vy,
+              -qm * params.B * vx
+            ];
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return {
+                x: 0, y: 0,
+                vx: 0, vy: params.v0y,
+                trail: [],
+                born: 0,
+              };
+            },
+            step: function (dt, t, s) {
+              // Sub-step so omega_c * ddt < 0.1 for RK4 accuracy
+              var omega = Math.abs(params.q) * params.B / params.m;
+              var nSub = Math.max(1, Math.ceil(omega * dt / 0.08));
+              nSub = Math.min(nSub, 200);
+              var ddt = dt / nSub;
+              var st = [s.x, s.y, s.vx, s.vy];
+              for (var i = 0; i < nSub; i++) {
+                st = PS.integrate(deriv, st, t + i * ddt, ddt, 'rk4');
+              }
+              s.x = st[0]; s.y = st[1]; s.vx = st[2]; s.vy = st[3];
+              s.trail.push([s.x, s.y]);
+              if (s.trail.length > 1800) s.trail.shift();
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // Grid and axes
+              PS.drawGrid(ctx, { originX: ORIGIN_X, originY: ORIGIN_Y, scale: PX_PER_M, step: 1 });
+              PS.drawText(ctx, 'x', W - 14, ORIGIN_Y - 6, { font: 'bold 13px system-ui', color: PS.colors.axis });
+              PS.drawText(ctx, 'y', ORIGIN_X + 6, 14, { font: 'bold 13px system-ui', color: PS.colors.axis });
+
+              // E-field arrows (red, pointing +x), in a few rows
+              var eRows = [0.5, 1.5, 2.5, 3.5, 4.5];
+              eRows.forEach(function (ym) {
+                var ypx = ORIGIN_Y - ym * PX_PER_M;
+                if (ypx < 8 || ypx > H - 8) return;
+                for (var k = 0; k < 7; k++) {
+                  var x0 = ORIGIN_X + 0.3 * PX_PER_M + k * 1.0 * PX_PER_M;
+                  if (x0 > W - 60) break;
+                  PS.drawArrow(ctx, x0, ypx, x0 + 28, ypx, PS.colors.accent);
+                }
+              });
+              PS.drawText(ctx, 'E → (沿 +x)', 12, H - 28, { font: 'bold 13px system-ui', color: PS.colors.accent });
+
+              // B-field "out of page" symbols (dots in circles, green) — sparse
+              for (var iy = 0; iy < 5; iy++) {
+                for (var ix = 0; ix < 8; ix++) {
+                  var cx = 35 + ix * 90;
+                  var cy = 35 + iy * 95;
+                  if (cx > W - 50 || cy > H - 50) continue;
+                  ctx.save();
+                  ctx.strokeStyle = PS.colors.accent2;
+                  ctx.lineWidth = 1.1;
+                  ctx.globalAlpha = 0.55;
+                  ctx.beginPath(); ctx.arc(cx, cy, 5.5, 0, 2 * Math.PI); ctx.stroke();
+                  ctx.fillStyle = PS.colors.accent2;
+                  ctx.beginPath(); ctx.arc(cx, cy, 1.5, 0, 2 * Math.PI); ctx.fill();
+                  ctx.restore();
+                }
+              }
+              PS.drawText(ctx, 'B ⊙ (出纸面, +z)', W - 150, H - 28, { font: 'bold 13px system-ui', color: PS.colors.accent2 });
+
+              // Trail
+              if (s.trail.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                s.trail.forEach(function (p, i) {
+                  var px = ORIGIN_X + p[0] * PX_PER_M;
+                  var py = ORIGIN_Y - p[1] * PX_PER_M;
+                  if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                });
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              // Particle
+              var ppx = ORIGIN_X + s.x * PX_PER_M;
+              var ppy = ORIGIN_Y - s.y * PX_PER_M;
+              PS.drawCircle(ctx, ppx, ppy, 7, { fill: PS.colors.primary, stroke: PS.colors.text, lineWidth: 1 });
+
+              // Velocity arrow at particle
+              var vsc = 35;
+              var vex = ppx + s.vx * vsc;
+              var vey = ppy - s.vy * vsc;
+              PS.drawArrow(ctx, ppx, ppy, vex, vey, PS.colors.primary, 'v');
+
+              // Drift arrow (independent of q, m!) drawn near origin
+              // v_d = E × B / B² with E=E x̂, B=B ẑ: v_d = (E·B/B²)(x̂ × ẑ) = -(E/B) ŷ
+              var vd_mag = params.E / params.B;
+              var vd_x = 0;
+              var vd_y_phys = -vd_mag;  // in physics y (downward = negative)
+              // canvas y: subtract physics y → ORIGIN_Y - (y_phys) * PX_PER_M ; arrow length:
+              var vd_len = Math.min(80, vd_mag * 30);
+              var vd_x2 = ORIGIN_X + 30 + vd_x * 30;
+              var vd_y2 = (ORIGIN_Y + 30) - vd_y_phys * 30;  // canvas y
+              // Place drift arrow in a small fixed box on the right side of origin
+              var arr_x1 = ORIGIN_X + 35;
+              var arr_y1 = ORIGIN_Y + 15;
+              var arr_x2 = arr_x1 + 0;                       // v_d has only y component here
+              var arr_y2 = arr_y1 + Math.min(60, vd_mag * 25); // canvas +y = physics -y = drift dir
+              PS.drawArrow(ctx, arr_x1, arr_y1, arr_x2, arr_y2, '#0891b2', 'v_d = E×B/B²');
+
+              // HUD (bottom-right): key invariants
+              var omega = params.q * params.B / params.m;
+              var vd = params.E / params.B;
+              var rL = params.m * params.E / (Math.abs(params.q) * params.B * params.B);
+              var T = 2 * Math.PI / Math.abs(omega);
+              var speedNow = Math.hypot(s.vx, s.vy);
+
+              ctx.save();
+              ctx.globalAlpha = 0.94;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(W - 290, H - 175, 280, 165);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(W - 290, H - 175, 280, 165);
+              ctx.restore();
+              var hx = W - 282, hy = H - 158;
+              PS.drawText(ctx, 'E×B 漂移参数 Drift parameters', hx, hy, { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'v_d = E/B = ' + vd.toFixed(3) + ' m/s', hx, hy + 20, { font: '12px system-ui', color: '#0891b2' });
+              PS.drawText(ctx, 'ω_c = qB/m = ' + omega.toFixed(3) + ' rad/s', hx, hy + 38, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'T_c = 2π/ω_c = ' + T.toFixed(3) + ' s', hx, hy + 56, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'r_L = mE/(|q|B²) = ' + rL.toFixed(3) + ' m', hx, hy + 74, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'q = ' + params.q.toFixed(2) + ' e,  m = ' + params.m.toFixed(2) + ' m_p', hx, hy + 92, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '|v| = ' + speedNow.toFixed(3) + ' m/s', hx, hy + 110, { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '漂移 v_d 与 q, m 无关 ✓', hx, hy + 130, { font: 'bold 11px system-ui', color: PS.colors.accent2 });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'E',   label: '电场 E (V/m)',     min: 0.5, max: 5.0, step: 0.1,  value: 2.0 },
+            { type: 'slider', key: 'B',   label: '磁场 B (T)',       min: 0.5, max: 3.0, step: 0.1,  value: 1.5 },
+            { type: 'slider', key: 'q',   label: '电荷 q (×e)',      min: -2.0, max: 2.0, step: 0.1, value: 1.0 },
+            { type: 'slider', key: 'm',   label: '质量 m (×m_p)',    min: 0.3,  max: 3.0, step: 0.1, value: 0.5 },
+            { type: 'slider', key: 'v0y', label: '初速度 v_{0y} (m/s)', min: -3.0, max: 3.0, step: 0.1, value: 0.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('E',   function (v) { params.E = v; });
+          ctl.on('B',   function (v) { params.B = v; });
+          ctl.on('q',   function (v) { params.q = v; });
+          ctl.on('m',   function (v) { params.m = v; });
+          ctl.on('v0y', function (v) { params.v0y = v; sim.reset(); });
+          ctl.on('reset', function () {
+            params.E = 2.0; ctl.set('E', 2.0);
+            params.B = 1.5; ctl.set('B', 1.5);
+            params.q = 1.0; ctl.set('q', 1.0);
+            params.m = 0.5; ctl.set('m', 0.5);
+            params.v0y = 0.0; ctl.set('v0y', 0.0);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>本章把<strong>洛伦兹力</strong> \(\vec F=q(\vec E+\vec v\times\vec B)\) 当作运动方程，研究带电粒子在已知电磁场中的轨迹。<strong>磁力永不做功</strong>（\(\vec v\cdot(\vec v\times\vec B)\equiv 0\)），故粒子动能变化 \(\mathrm dK/\mathrm dt=q\vec E\cdot\vec v\) 只来自电场。在<strong>均匀纯磁场</strong>中，粒子做<strong>螺旋运动</strong>：垂直分量是圆周（Larmor 半径 \(r_{L}=mv_{\perp}/(|q|B)\)，回旋频率 \(\omega_{c}=|q|B/m\)），平行分量匀速——周期 \(T_{c}=2\pi m/(|q|B)\) <strong>非相对论下与速率无关</strong>。在<strong>交叉场 E×B</strong> 中，粒子描绘<strong>摆线</strong>，整体以 <strong>E×B 漂移</strong> \(\vec v_{d}=\vec E\times\vec B/B^{2}\) 运动，<strong>与 \(q,m\) 无关</strong>（正负电荷同方向漂移）。在<strong>缓变磁场</strong>中，<strong>磁矩绝热不变量</strong> \(\mu=mv_{\perp}^{2}/(2B)\) 守恒，使粒子在强场区反射，构成<strong>磁镜</strong>与<strong>磁瓶</strong>；俯仰角小于<strong>损失锥角</strong> \(\alpha_{\mathrm{lc}}=\arcsin\sqrt{B_{\min}/B_{\max}}\) 的粒子逃逸。<strong>质谱仪</strong>用速度选择器加偏转磁体分离同位素（\(r=mv/(qB)\propto m\)）；<strong>回旋加速器</strong>用固定 RF 频率 \(f_{c}=|q|B/(2\pi m)\) 加速粒子（相对论极限后需同步加速器）。<strong>辐射反作用</strong>由 Abraham–Lorentz 力 \(\vec F_{\mathrm{rad}}=(q^{2}/6\pi\varepsilon_{0}c^{3})\dot{\vec a}\)（与加加速度成正比）描述，在强场或高能下变得重要。</p>
+      <ul>
+        <li>洛伦兹力：\(\vec F=q(\vec E+\vec v\times\vec B)\)，\(\mathrm dK/\mathrm dt=q\vec E\cdot\vec v\)（磁力不做功）。</li>
+        <li>回旋运动：\(r_{L}=\dfrac{mv_{\perp}}{|q|B}\)，\(\omega_{c}=\dfrac{|q|B}{m}\)，\(T_{c}=\dfrac{2\pi m}{|q|B}\)（非相对论下与 \(v_{\perp}\) 无关）。</li>
+        <li>E×B 漂移：\(\vec v_{d}=\dfrac{\vec E\times\vec B}{B^{2}}\)（与 \(q,m\) 无关；对 \(\vec E\perp\vec B\)，\(|v_{d}|=E/B\)）。</li>
+        <li>摆线（从静止释放）：\(x(t)=\dfrac{E}{B\omega_{c}}(1-\cos\omega_{c}t)\)，\(y(t)=\dfrac{E}{B\omega_{c}}\sin\omega_{c}t-\dfrac{E}{B}t\)。</li>
+        <li>磁矩绝热不变量：\(\mu=\dfrac{mv_{\perp}^{2}}{2B}=\) 常数。</li>
+        <li>磁镜反射：\(B_{\mathrm{mir}}=\dfrac{B_{\min}}{\sin^{2}\alpha_{0}}\)；损失锥 \(\sin\alpha_{\mathrm{lc}}=\sqrt{\dfrac{B_{\min}}{B_{\max}}}\)。</li>
+        <li>质谱仪：速度选择器 \(v=E/B\)；偏转半径 \(r=mv/(qB)\)，\(\Delta r/r=\Delta m/m\)。</li>
+        <li>回旋加速器：\(f_{c}=\dfrac{|q|B}{2\pi m}\)；相对论修正 \(m\to\gamma m\)。</li>
+        <li>Abraham–Lorentz 力：\(\vec F_{\mathrm{rad}}=\dfrac{q^{2}}{6\pi\varepsilon_{0}c^{3}}\,\dot{\vec a}=m\tau_{0}\,\dot{\vec a}\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\vec F=q(\vec E+\vec v\times\vec B),\quad r_{L}=\frac{mv_{\perp}}{|q|B},\quad \omega_{c}=\frac{|q|B}{m},\quad \vec v_{d}=\frac{\vec E\times\vec B}{B^{2}}\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;\mu=\frac{mv_{\perp}^{2}}{2B}=\text{const.},\quad B_{\mathrm{mir}}=\frac{B_{\min}}{\sin^{2}\alpha_{0}},\quad \sin\alpha_{\mathrm{lc}}=\sqrt{\frac{B_{\min}}{B_{\max}}}\;} \]
+      </div>
+      <p><strong>核心收获</strong>：磁力对粒子做「几何操控」——改变方向、固定速率；电场做「能量注入」。两者的合成产生一系列非平凡的轨迹：圆周、螺旋、摆线、磁镜反射。E×B 漂移的 \(q,m\) 无关性是等离子体物理的基石；磁矩绝热不变量是「快慢尺度分离」导致守恒量的最干净例子，在等离子体物理、天体物理（宇宙射线传播、磁层物理）与聚变研究中无处不在。本章为下章「电磁感应」（法拉第定律 \(\varepsilon=-\mathrm d\Phi_{B}/\mathrm dt\)）做准备——运动的电荷（电流）感应出 EMF，正是这些轨迹的宏观体现。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 含时微扰与跃迁 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第3章 · 量子力学 II Quantum Mechanics II</p>
+      <h1>含时微扰与跃迁 <span class="en-title">Time-Dependent Perturbation &amp; Transitions</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>第 1 章我们用<strong>不含时</strong>微扰论 (time-independent perturbation theory) 计算了定态能级的位移 \(\delta E^{(1)}=\langle n|\hat H'|n\rangle\)。但物理学中最深刻的一类问题——原子如何吸收光子、原子核为何 \(\beta\) 衰变、激光如何工作、为何恒星光谱里有暗线——都涉及<strong>量子跃迁</strong> (quantum transitions)：系统从初态 \(|i\rangle\) 跃迁到能量不同的末态 \(|f\rangle\)。这要求扰动<strong>显含时间</strong>，从而把能量「从外部泵入或抽出」。学完本章后，你将能够：</p>
+      <ul>
+        <li>把含时微扰 \(\hat H'(t)\) 加在 \(\hat H_{0}\) 上后，写出态按未扰本征态 \(|n\rangle\) 的展开式 \(\ket{\psi(t)}=\sum_{n}c_{n}(t)\,e^{-iE_{n}t/\hbar}\ket{n}\)，并用<strong>一阶微扰论</strong> (first-order perturbation theory) 推出 \(c_{f}^{(1)}(t)\)。</li>
+        <li>由 \(c_{f}^{(1)}(t)\) 算出<strong>跃迁概率</strong> \(P_{i\to f}(t)=|c_{f}^{(1)}(t)|^{2}\)，论证对谐振扰动它在共振时呈 \(\sin^{2}\) 振荡、对连续末态求和后给出恒定<strong>跃迁速率</strong> (transition rate)。</li>
+        <li>陈述并推导 <strong>Fermi 黄金定则</strong> (Fermi's golden rule) \(W_{i\to f}=\dfrac{2\pi}{\hbar}|\langle f|\hat H'|i\rangle|^{2}\rho(E_{f})\)，并阐明它成立所需的「连续末态 + 长时间」前提。</li>
+        <li>对单光子电偶极跃迁应用<strong>选择定则</strong> (selection rules) \(\Delta\ell=\pm1\)、\(\Delta m=0,\pm1\)、宇称必变；判定哪些氢原子跃迁「允许」、哪些「禁戒」。</li>
+        <li>区分<strong>吸收</strong> (absorption)、<strong>受激发射</strong> (stimulated emission) 与<strong>自发发射</strong> (spontaneous emission)；写出 Einstein 系数 \(A_{21}\)、\(B_{12}\)、\(B_{21}\) 的相互关系 \(g_{1}B_{12}=g_{2}B_{21}\)、\(A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\)，并由热平衡 Planck 分布推导之。</li>
+        <li>用能量–时间不确定性关系 \(\Delta E\cdot\Delta t\sim\hbar\) 解释<strong>自然线宽</strong> (natural line width) 与<strong>寿命展宽</strong> (lifetime broadening)：激发态寿命 \(\tau\Rightarrow\Delta E=\hbar/\tau\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 含时微扰的标准提法</h3>
+      <p>设未扰 Hamilton 量 \(\hat H_{0}\) 有<strong>离散本征态</strong> \(\hat H_{0}\ket{n}=E_{n}\ket{n}\)。加上显含时间的微扰 \(\hat H'(t)\)：</p>
+      <div class="formula">\[ \hat H(t)=\hat H_{0}+\hat H'(t),\qquad \hat H'(t)\ \text{一般地依赖}\ t. \]</div>
+      <p>含时 Schrödinger 方程 \(\hat H\ket{\psi(t)}=i\hbar\,\partial_{t}\ket{\psi(t)}\) 不再存在定态解，但可把态按未扰基展开（<strong>相互作用绘景</strong> interaction picture 的核心思想）：</p>
+      <div class="formula">\[ \ket{\psi(t)}=\sum_{n}c_{n}(t)\,e^{-iE_{n}t/\hbar}\ket{n}. \]</div>
+      <p>代入 Schrödinger 方程、左乘 \(\bra{f}\)、用 \(\langle f|n\rangle=\delta_{fn}\)，得到<strong>系数的精确演化方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;\dv{c_{f}}{t}=-\frac{i}{\hbar}\sum_{n}\,c_{n}(t)\,e^{i\omega_{fn}t}\,\langle f|\hat H'(t)|n\rangle,\qquad \omega_{fn}\equiv\frac{E_{f}-E_{n}}{\hbar}\;} \]</div>
+      <p>这是一组<strong>精确</strong>的耦合 ODE（无近似），但通常无法解析求解。<strong>一阶微扰论</strong>的核心近似：设 \(t=0\) 时系统处于 \(\ket{i}\)，即 \(c_{i}(0)=1\)、\(c_{n\ne i}(0)=0\)；只要微扰足够弱以至于末态概率 \(|c_{f}|^{2}\ll 1\)，就把求和中的 \(c_{n}(t)\) 替换为 \(c_{n}\approx\delta_{ni}\)：</p>
+      <div class="formula">\[ \dv{c_{f}^{(1)}}{t}=-\frac{i}{\hbar}\,e^{i\omega_{fi}t}\,\langle f|\hat H'(t)|i\rangle\quad\Longrightarrow\quad \boxed{\;c_{f}^{(1)}(t)=-\frac{i}{\hbar}\int_{0}^{t}\!\langle f|\hat H'(t')|i\rangle\,e^{i\omega_{fi}t'}\,dt'\;} \]</div>
+      <p>这是本章一切后续结果的总出发点。<strong>跃迁概率</strong> (transition probability)：</p>
+      <div class="formula">\[ P_{i\to f}(t)=\big|c_{f}^{(1)}(t)\big|^{2}. \]</div>
+      <p>注意 \(P_{i\to f}\) 是「时刻 \(t\) 处于 \(\ket f\rangle\) 的概率」——一阶近似下 \(P\) 可大于物理允许值（>1），这表明近似失效，需到更高阶或非微扰方法（如 Rabi 振荡）。</p>
+      <div class="key-terms">interaction picture (相互作用绘景), transition probability (跃迁概率), first-order perturbation (一阶微扰), Bohr angular frequency \(\omega_{fi}\) (Bohr 角频率)</div>
+
+      <h3>2. 谐振微扰——吸收与受激发射</h3>
+      <p>原子与单色光波耦合是最重要的实例。沿 \(\hat z\) 偏振、角频率 \(\omega\) 的电场 \(E(t)=2E_{0}\cos\omega t\) 通过电偶极相互作用耦合到原子：</p>
+      <div class="formula">\[ \hat H'(t)=-\hat d\cdot\vec E(t)=-\hat z\,\hat d\cdot 2E_{0}\cos\omega t=-\hat d_{z}E_{0}\big(e^{-i\omega t}+e^{+i\omega t}\big)\equiv\hat V e^{-i\omega t}+\hat V^{\dagger}e^{+i\omega t}, \]</div>
+      <p>其中 \(\hat V=-E_{0}\hat d_{z}\)。代入一阶公式并积分：</p>
+      <div class="formula">\[ c_{f}^{(1)}(t)=-\frac{i}{\hbar}\Big[\langle f|\hat V|i\rangle\,\frac{e^{i(\omega_{fi}-\omega)t}-1}{i(\omega_{fi}-\omega)}+\langle f|\hat V^{\dagger}|i\rangle\,\frac{e^{i(\omega_{fi}+\omega)t}-1}{i(\omega_{fi}+\omega)}\Big]. \]</div>
+      <p>两项中哪一项起主导取决于 \(\omega\) 与 \(\omega_{fi}\) 的相对大小：</p>
+      <ul>
+        <li><strong>\(\omega\approx\omega_{fi}\)</strong>（即 \(E_{f}\gt E_{i}\)、光子能量 \(\hbar\omega\) 恰好等于能级差）：第一项分母接近零，<strong>共振吸收</strong> (resonant absorption)。第二项远离共振可忽略（<strong>旋转波近似</strong> rotating-wave approximation, RWA）。</li>
+        <li><strong>\(\omega\approx-\omega_{fi}\)</strong>（即 \(E_{f}\lt E_{i}\)）：第二项共振，对应<strong>受激发射</strong> (stimulated emission)：原子在入射场「同步」诱导下放出光子，落到低能态，放出光子与入射光子同相位、同方向、同频率。</li>
+      </ul>
+      <p>共振吸收下的跃迁概率（仅保留第一项）：</p>
+      <div class="formula">\[ \boxed{\;P_{i\to f}(t)\approx\frac{|\langle f|\hat V|i\rangle|^{2}}{\hbar^{2}}\,\frac{\sin^{2}\!\big[(\omega_{fi}-\omega)t/2\big]}{\big[(\omega_{fi}-\omega)/2\big]^{2}}\;} \]</div>
+      <p>这是著名的 \(\mathrm{sinc}^{2}\) 型曲线：峰值 \(\propto t^{2}\)、宽度 \(\sim 1/t\)、面积 \(\propto t\)。共振时（\(\omega=\omega_{fi}\)）取极限得 \(P=|\langle f|\hat V|i\rangle|^{2}t^{2}/\hbar^{2}\)——这正是 Rabi 在<strong>双态精确解</strong>里的小时间极限；长时间则被饱和（需 Rabi 振荡公式 \(P=\sin^{2}(\Omega_{R}t/2)\)，\(\Omega_{R}=2|V|/\hbar\)）。</p>
+      <div class="key-terms">resonant absorption (共振吸收), stimulated emission (受激发射), rotating-wave approximation RWA (旋转波近似), Rabi oscillation (Rabi 振荡), sinc² function (sinc² 函数)</div>
+
+      <h3>3. Fermi 黄金定则——跃迁到连续末态</h3>
+      <p>真实物理中末态往往不是单一的离散能级，而是<strong>连续谱</strong> (continuum)：自由电子（电离）、光子模式（自发发射）、声子（固体无辐射跃迁）等。把 \(\mathrm{sinc}^{2}\) 曲线对所有能量在共振附近的末态求和（详见推导节）：</p>
+      <div class="formula">\[ \boxed{\;W_{i\to f}\;=\;\frac{2\pi}{\hbar}\,\big|\langle f|\hat H'|i\rangle\big|^{2}\,\rho(E_{f})\qquad\text{(Fermi 黄金定则)}\;} \]</div>
+      <p>这里 \(W_{i\to f}\) 是<strong>恒定跃迁速率</strong> (constant transition rate, 单位 \(\mathrm{s^{-1}}\)），\(P_{i\to f}(t)=W_{i\to f}\,t\) 在「黄金定则区」线性增长；\(\rho(E_{f})\) 是<strong>末态密度</strong> (density of states)，即单位能量间隔内的末态数（单位 \(\mathrm{J^{-1}}\)）。三个要素缺一不可：</p>
+      <ul>
+        <li><strong>跃迁矩阵元</strong> (transition matrix element) \(|\langle f|\hat H'|i\rangle|^{2}\)：耦合强度，决定「跃迁强弱」。选择定则就出自这里——若矩阵元为零，跃迁<strong>禁戒</strong> (forbidden)。</li>
+        <li><strong>末态密度</strong> \(\rho(E_{f})\)：<strong>必须</strong>是连续或准连续谱。否则 \(\mathrm{sinc}^{2}\) 只是振荡，无法定义恒定速率。</li>
+        <li><strong>能量守恒</strong>由 \(\delta(E_{f}-E_{i})\) 因子（长时极限下 \(\mathrm{sinc}^{2}\to\pi t\delta/\hbar\)）自动实现：只有 \(E_{f}=E_{i}\) 附近的末态才显著被占据。</li>
+      </ul>
+      <p>典型的量级：原子–真空耦合（自发发射）\(W\sim10^{6}\text{–}10^{9}\,\mathrm{s^{-1}}\)；Auger 过程 \(W\sim10^{12}\text{–}10^{15}\,\mathrm{s^{-1}}\)；弱作用 \(\beta\) 衰变 \(W\sim10^{-4}\,\mathrm{s^{-1}}\)（寿命约 15 min，对应中子）。</p>
+      <div class="key-terms">Fermi's golden rule (Fermi 黄金定则), transition rate (跃迁速率), density of final states \(\rho(E_f)\) (末态密度), energy conservation via \(\delta(E_f-E_i)\) (能量守恒)</div>
+
+      <h3>4. 选择定则——出自矩阵元，不出自能量守恒</h3>
+      <p>对单光子电偶极跃迁 (electric-dipole, E1)，扰算符 \(\hat H'=-\hat{\vec d}\cdot\vec E\) 中的<strong>位置算符</strong> \(\vec r\) 是一个<strong>一阶球张量</strong> (rank-1 spherical tensor)，故它只能改变轨道角动量量子数 \(\ell\) 一个单位。具体推导（用 Wigner–Eckart 定理或直接积分三个球谐函数）给出 <strong>E1 选择定则</strong>：</p>
+      <div class="formula">\[ \boxed{\;\Delta\ell=\pm 1,\qquad \Delta m=0,\pm 1,\qquad \Delta s=0,\qquad \text{宇称必变}\;} \]</div>
+      <p>各条规则的物理来源：</p>
+      <ul>
+        <li><strong>\(\Delta\ell=\pm1\)</strong>：光子自旋为 1，角动量守恒；同时 \(\vec r\) 是奇宇称算符，初末态宇称必须相反（这已蕴含 \(\Delta\ell\) 为奇数；最强允许的是 \(\pm1\)）。</li>
+        <li><strong>\(\Delta m=0,\pm1\)</strong>：分别对应 \(\sigma_{0}\)（线偏振，光子 \(m_{\gamma}=0\)）、\(\sigma^{+}\)、\(\sigma^{-}\)（圆偏振，\(m_{\gamma}=\pm1\)）。</li>
+        <li><strong>\(\Delta s=0\)</strong>：电偶极作用不耦合自旋（非相对论极限）；自旋翻转需磁偶极 (M1) 或相对论修正，速率被压低 \(\sim\alpha^{2}\)。</li>
+      </ul>
+      <p>违反 E1 选择定则的跃迁并非绝对禁戒——更高阶过程（M1 磁偶极、E2 电四极）可发生，但速率被压低 \(10^{-3}\text{–}10^{-8}\) 倍。最著名的「禁戒」跃迁是氢原子 <strong>\(2s\to1s\)</strong>：\(\Delta\ell=0\) 严格违反 E1，只能通过<strong>双光子发射</strong> (two-photon emission) 进行，寿命约 \(0.12\,\mathrm{s}\)，比典型 \(2p\) 长约 \(10^{8}\) 倍。这正是氢原子第一激发态存在亚稳态 \(2s\) 的原因。</p>
+      <div class="key-terms">electric-dipole transition E1 (电偶极跃迁), selection rule (选择定则), parity (宇称), spherical tensor (球张量), Wigner–Eckart theorem (Wigner–Eckart 定理), forbidden transition (禁戒跃迁), two-photon emission (双光子发射), metastable state (亚稳态)</div>
+
+      <h3>5. Einstein A 与 B 系数——自发发射的唯象描述</h3>
+      <p>考虑一对能级 \(E_{2}\gt E_{1}\)、简并度 \(g_{2}\)、\(g_{1}\)，处于能量密度为 \(\rho(\nu)\)（单位 \(\mathrm{J\,m^{-3}\,Hz^{-1}}\)）的各向同性辐射场中。Einstein (1917) 唯象地引入三个速率：</p>
+      <div class="formula">\[ \underbrace{W_{1\to2}^{\,\text{abs}}=B_{12}\,\rho(\nu)}_{\text{吸收 absorption}},\qquad \underbrace{W_{2\to1}^{\,\text{stim}}=B_{21}\,\rho(\nu)}_{\text{受激发射 stimulated}},\qquad \underbrace{W_{2\to1}^{\,\text{spon}}=A_{21}}_{\text{自发发射 spontaneous}}. \]</div>
+      <p>把原子置于温度为 \(T\) 的黑体腔中，达到热平衡时上、下能级布居满足 Boltzmann 分布 \(N_{2}/N_{1}=(g_{2}/g_{1})\,e^{-h\nu/kT}\)。<strong>细致平衡</strong> (detailed balance)：向上速率 = 向下速率，</p>
+      <div class="formula">\[ N_{1}\,B_{12}\,\rho(\nu)\;=\;N_{2}\,A_{21}+N_{2}\,B_{21}\,\rho(\nu). \]</div>
+      <p>要求解得的 \(\rho(\nu)\) 与 Planck 黑体公式 \(\rho(\nu)=\dfrac{8\pi h\nu^{3}}{c^{3}}\,\dfrac{1}{e^{h\nu/kT}-1}\) 相容（详见推导节），给出两条<strong>Einstein 关系</strong>：</p>
+      <div class="formula">\[ \boxed{\;g_{1}\,B_{12}=g_{2}\,B_{21},\qquad \frac{A_{21}}{B_{21}}=\frac{8\pi h\nu^{3}}{c^{3}}\;} \]</div>
+      <p>由第二条关系立刻看出：\(A_{21}\propto\nu^{3}B_{21}\)，即高频跃迁远更倾向于自发发射（这就是可见光易于自发发射、射频跃迁几乎只能受激的原因——也是激光在光频段难以造出的根本难度）。把 \(B_{21}\) 与电偶极矩阵元联系起来：</p>
+      <div class="formula">\[ A_{21}=\frac{\omega^{3}\,|\vec d_{12}|^{2}}{3\pi\varepsilon_{0}\hbar c^{3}}\quad(\text{各向同性平均}),\qquad B_{21}=\frac{|\vec d_{12}|^{2}}{6\varepsilon_{0}\hbar^{2}}\quad(\text{用}\ \rho(\nu)). \]</div>
+      <div class="key-terms">Einstein A &amp; B coefficients (Einstein A 与 B 系数), detailed balance (细致平衡), Boltzmann population (Boltzmann 布居), statistical weight \(g\) (简并度), isotropic average (各向同性平均)</div>
+
+      <h3>6. 自发发射的物理起源——必须量子化电磁场</h3>
+      <p>Einstein 的 \(A_{21}\) 是<strong>唯象</strong>引入的：他从热平衡一致性<strong>反推</strong>出必须存在一项与外场无关的「自发」发射，但无法说明其物理起源。完整解释需要<strong>量子电动力学</strong> (QED)：<strong>把电磁场本身量子化</strong>，光子是激发量子，真空是场的基态 \(\ket{0}\)。在相互作用 Hamilton 量中</p>
+      <div class="formula">\[ \hat H_{\text{int}}=-\hat{\vec d}\cdot\hat{\vec E}(\vec r),\qquad \hat{\vec E}(\vec r)=\sum_{\vec k,\lambda}\sqrt{\frac{\hbar\omega_{k}}{2\varepsilon_{0}V}}\Big(\hat a_{\vec k\lambda}\,\vec e_{\vec k\lambda}\,e^{i\vec k\cdot\vec r}+\hat a_{\vec k\lambda}^{\dagger}\,\vec e_{\vec k\lambda}^{*}\,e^{-i\vec k\cdot\vec r}\Big), \]</div>
+      <p>含算符 \(\hat a^{\dagger}\)（产生一个光子）的项可以作用于真空 \(\ket{0}\) 给出 \(\hat a^{\dagger}\ket{0}=\ket{1\text{ photon}}\)。于是「自发发射」在 QED 中即是：<strong>原子 + 真空 \(\to\) 原子（低能态）+ 一个光子</strong>。这是<strong>真空涨落</strong> (vacuum fluctuations) 受激的发射，本质仍符合 Fermi 黄金定则——只不过末态密度 \(\rho(E_{f})\) 现在是光子态密度 \(\rho(\hbar\omega)=\omega^{2}V/(\pi^{2}\hbar c^{3})\)。把所有光子模式求和给出 \(A_{21}=\omega^{3}|\vec d_{12}|^{2}/(3\pi\varepsilon_{0}\hbar c^{3})\)，与 Einstein 的结果一致。<strong>经典外场永远给不出 \(A_{21}\)</strong>——这是电磁场必须量子化的最直接证据。</p>
+      <div class="key-terms">quantum electrodynamics QED (量子电动力学), vacuum fluctuation (真空涨落), photon creation operator \(\hat a^{\dagger}\) (光子产生算符), photon DOS (光子态密度)</div>
+
+      <h3>7. 自然线宽与寿命展宽——\(\Delta E\cdot\Delta t\sim\hbar\)</h3>
+      <p>自发发射使激发态不能永远存活——它按指数律衰减 \(N_{2}(t)=N_{2}(0)e^{-\Gamma t}\)，其中 \(\Gamma=A_{21}+\Gamma_{\text{其它}}\)。<strong>寿命</strong> (lifetime) \(\tau=1/\Gamma\)。能量–时间不确定性关系告诉我们，有限寿命意味着能量不可能锐定：</p>
+      <div class="formula">\[ \boxed{\;\Delta E\cdot\tau\sim\hbar\qquad\Longleftrightarrow\qquad \Delta E_{\text{FWHM}}=\frac{\hbar}{\tau}=\hbar\Gamma\;} \]</div>
+      <p>严格地说：概率幅 \(c_{2}(t)\propto e^{-iE_{2}t/\hbar}\,e^{-\Gamma t/2}\)（衰减率为 \(\Gamma/2\)，因概率衰减 \(\propto e^{-\Gamma t}\)）。Fourier 变换得 Lorentzian 谱型</p>
+      <div class="formula">\[ |\tilde c_{2}(E)|^{2}\propto\frac{1}{(E-E_{2})^{2}+(\hbar\Gamma/2)^{2}},\qquad \Delta E_{\text{FWHM}}=\hbar\Gamma=\frac{\hbar}{\tau}. \]</div>
+      <p>对应的频率宽 \(\Delta\nu_{\text{FWHM}}=\Gamma/(2\pi)=1/(2\pi\tau)\)。对氢原子 \(2p\to1s\)（\(\tau\approx1.6\,\mathrm{ns}\)）得 \(\Delta E\approx4.1\times10^{-7}\,\mathrm{eV}\)、\(\Delta\nu\approx 99\,\mathrm{MHz}\)；对钠 D 线（\(\tau\approx 16\,\mathrm{ns}\)）\(\Delta\nu\approx 10\,\mathrm{MHz}\)。<strong>这是固有宽度</strong>，与仪器无关；实验测得的实际线宽还需叠加 Doppler 展宽（\(\propto T^{1/2}\)）、碰撞展宽（\(\propto\) 压强）等，但自然线宽给出最基本的下限。</p>
+      <div class="key-terms">natural line width (自然线宽), lifetime broadening (寿命展宽), Lorentzian line shape (Lorentzian 谱型), FWHM (半高全宽), exponential decay (指数衰减), Doppler broadening (多普勒展宽)</div>
+
+      <h3>8. 总结图景——三种发射与三个时间尺度</h3>
+      <p>本章把所有「跃迁」现象统一在三件事下：</p>
+      <ul>
+        <li><strong>三类过程</strong>：吸收（光子湮灭）、受激发射（光子复制、相位锁定）、自发发射（光子产生、各向同性）。激光工作依赖 \(B_{21}\rho\gt A_{21}\) 且布居反转 \(N_{2}\gt N_{1}\)；黑体辐射达到平衡时三者使每对能级 Boltzmann 分布稳定。</li>
+        <li><strong>三个尺度</strong>：跃迁矩阵元（强度，决定选择定则）、末态密度（连续性，决定能否定义速率）、能量匹配（守恒，决定共振）。</li>
+        <li><strong>统一公式</strong>：Fermi 黄金定则 \(W=(2\pi/\hbar)|V|^{2}\rho\) 同时涵盖光电离、Auger、\(\beta\) 衰变、自发发射（在 QED 中）等一切「弱耦合到连续」的过程。</li>
+      </ul>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从一阶振幅到 Fermi 黄金定则</h2>
+      <p><strong>目标</strong>：从精确的一阶跃迁振幅 \(c_{f}^{(1)}(t)\) 出发，对一组准连续末态求和，严格地导出 \(P_{\text{tot}}(t)=W\,t\)，并论证黄金定则的成立条件。这也是 Einstein \(A/B\) 关系的微观版本。</p>
+
+      <p><strong>第一步：单末态跃迁概率</strong>。考虑一个<strong>与时间无关</strong>的恒定微扰 \(\hat H'\)（在 \(t=0\) 时突然开启）作用于初态 \(\ket{i}\)。一阶振幅：</p>
+      <div class="formula">\[ c_{f}^{(1)}(t)=-\frac{i}{\hbar}\,V_{fi}\int_{0}^{t}\!e^{i\omega_{fi}t'}\,dt'=-\frac{V_{fi}}{\hbar}\cdot\frac{e^{i\omega_{fi}t}-1}{\omega_{fi}},\qquad V_{fi}\equiv\langle f|\hat H'|i\rangle. \]</div>
+      <p>取模平方（用 \(|e^{i\theta}-1|^{2}=4\sin^{2}(\theta/2)\)）：</p>
+      <div class="formula">\[ \boxed{\;P_{i\to f}(t)=|c_{f}^{(1)}(t)|^{2}=\frac{|V_{fi}|^{2}}{\hbar^{2}}\cdot\frac{4\sin^{2}(\omega_{fi}t/2)}{\omega_{fi}^{2}}\;} \]</div>
+      <p>这是 \(\omega_{fi}\) 的 \(\mathrm{sinc}^{2}\) 型函数：在 \(\omega_{fi}=0\)（精确共振）取峰值 \(|V_{fi}|^{2}t^{2}/\hbar^{2}\)，第一个零点在 \(\omega_{fi}=\pm 2\pi/t\)，半高全宽 \(\Delta\omega_{fi}\sim 2\pi/t\)——时间越长，「能量窗口」越窄。</p>
+
+      <p><strong>第二步：对连续末态求和</strong>。设末态能量在 \(E_{i}\) 附近是连续的，单位能量间隔内的末态数为 \(\rho(E_{f})\)。总跃迁概率：</p>
+      <div class="formula">\[ P_{\text{tot}}(t)=\int\!P_{i\to f}(t)\,\rho(E_{f})\,dE_{f}=\int\!\rho(E_{f})\,\frac{|V_{fi}|^{2}}{\hbar^{2}}\cdot\frac{4\sin^{2}\!\big[(E_{f}-E_{i})t/(2\hbar)\big]}{\big[(E_{f}-E_{i})/\hbar\big]^{2}}\,dE_{f}. \]</div>
+      <p>把被积函数中缓变量 \(\rho(E_{f})|V_{fi}|^{2}\) 在 \(E_{f}=E_{i}\) 处提出积分（若带宽 \(\gg 2\pi\hbar/t\) 这是合法的近似），换元 \(y=(E_{f}-E_{i})t/(2\hbar)\)、\(dE_{f}=(2\hbar/t)\,dy\)：</p>
+      <div class="formula">\[ P_{\text{tot}}(t)\approx\rho(E_{i})|V_{fi}|^{2}\cdot\frac{4}{\hbar^{2}}\cdot\frac{2\hbar}{t}\int_{-\infty}^{\infty}\!\frac{\sin^{2}y}{(2y/t)^{2}\cdot(1/\hbar)^{2}}\cdot\frac{1}{1}\,dy\;\to\;\frac{2\pi}{\hbar}|V_{fi}|^{2}\rho(E_{i})\cdot t. \]</div>
+      <p>最后一步用了著名定积分 \(\displaystyle\int_{-\infty}^{\infty}\!\frac{\sin^{2}y}{y^{2}}\,dy=\pi\)，并识别为 <strong>\(\delta\)-函数</strong> 表示：</p>
+      <div class="formula">\[ \lim_{t\to\infty}\frac{\sin^{2}(\omega t/2)}{(\omega/2)^{2}\cdot(\pi t/2)}=\delta(\omega)\quad\Longrightarrow\quad \frac{4\sin^{2}(\omega_{fi}t/2)}{\omega_{fi}^{2}}\xrightarrow{t\to\infty}2\pi t\,\delta(\omega_{fi}). \]</div>
+      <p>这正是黄金定则的「微观根源」：长时间下 \(\mathrm{sinc}^{2}\) 收缩为 \(\delta\)（精确能量守恒），同时面积 \(\propto t\)（速率恒定）。</p>
+
+      <div class="formula">\[ \boxed{\;W_{i\to f}=\frac{P_{\text{tot}}(t)}{t}=\frac{2\pi}{\hbar}\,|V_{fi}|^{2}\,\rho(E_{i})\qquad\text{(Fermi 黄金定则)}\;} \]</div>
+
+      <p><strong>第三步：成立条件</strong>。整个推导用到了三件事：</p>
+      <ul>
+        <li><strong>末态连续</strong>：\(\rho(E_{f})\) 在 \(E_{i}\) 附近光滑、非零。若末态是离散的（如双能级原子），\(\mathrm{sinc}^{2}\) 只是振荡——P 在 0 与峰值间反复，不存在「速率」概念。</li>
+        <li><strong>时间中等长</strong>：下限 \(t\gg\hbar/\Delta E_{\text{band}}\)（\(\mathrm{sinc}^{2}\) 远窄于带宽，能看作 \(\delta\)）；上限 \(t\ll\hbar/|V|^{2}\rho\)（\(P_{\text{tot}}\ll 1\)，一阶近似有效）。两个尺度之间通常有很宽的窗口，黄金定则在该窗口内极为精确。</li>
+        <li><strong>一阶微扰有效</strong>：\(P_{\text{tot}}\ll 1\)。当 \(P\to 1\) 时末态被显著占据，必须解耦合 ODE 或用更高级方法（如光学 Bloch 方程）。</li>
+      </ul>
+      <p><strong>谐振扰动情形</strong>：若 \(\hat H'(t)=\hat V e^{-i\omega t}+\hat V^{\dagger}e^{+i\omega t}\)，则重复上述推导给出两个 \(\delta\)-峰，分别位于 \(E_{f}=E_{i}+\hbar\omega\)（吸收）与 \(E_{f}=E_{i}-\hbar\omega\)（受激发射），各自速率</p>
+      <div class="formula">\[ W_{i\to f}^{\text{abs}}=\frac{2\pi}{\hbar}|\langle f|\hat V|i\rangle|^{2}\rho(E_{i}+\hbar\omega),\qquad W_{i\to f}^{\text{stim}}=\frac{2\pi}{\hbar}|\langle f|\hat V^{\dagger}|i\rangle|^{2}\rho(E_{i}-\hbar\omega). \]</div>
+      <p>这就是 Einstein \(B\) 系数的微观形式（\(B_{12}\rho(\nu)=W^{\text{abs}}\)）。把光子量子化后，让末态包含一个新产生的光子，重复黄金定则即得 \(A_{21}\)。 \(\square\)</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 Fermi 黄金定则——Auger 型跃迁速率 Golden-rule rate given matrix element and DOS</h4>
+        <p class="example-statement">某原子的内层激发态 \(\ket{i}\) 通过电子–电子相互作用 (Auger 过程) 衰变到一个自由电子加一个离子末态。在共振能量处的微扰矩阵元与末态密度分别为：</p>
+        <div class="formula">\[ |\langle f|\hat H'|i\rangle|=1.00\times10^{-22}\,\mathrm{J},\qquad \rho(E_{f})=5.00\times10^{17}\,\mathrm{J^{-1}}. \]</div>
+        <p class="example-statement">求跃迁速率 \(W_{i\to f}\) 与平均寿命 \(\tau\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>直接代入 Fermi 黄金定则：</p>
+          <div class="formula">\[ W_{i\to f}=\frac{2\pi}{\hbar}|\langle f|\hat H'|i\rangle|^{2}\rho(E_{f})=\frac{2\pi}{1.055\times10^{-34}}\,(1.00\times10^{-22})^{2}\,(5.00\times10^{17}) \]</div>
+          <p class="step">分步计算：\(2\pi/\hbar=5.96\times10^{34}\,\mathrm{J^{-1}\,s^{-1}}\)；\(|V|^{2}=1.00\times10^{-44}\,\mathrm{J^{2}}\)；</p>
+          <div class="formula">\[ W=(5.96\times10^{34})(1.00\times10^{-44})(5.00\times10^{17})=2.98\times10^{8}\,\mathrm{s^{-1}}. \]</div>
+          <p class="step">平均寿命：</p>
+          <div class="formula">\[ \tau=\frac{1}{W}=\frac{1}{2.98\times10^{8}}=3.36\times10^{-9}\,\mathrm{s}. \]</div>
+          <p><span class="ans">\(W_{i\to f}\approx 2.98\times10^{8}\,\mathrm{s^{-1}}\)，\(\tau\approx 3.36\,\mathrm{ns}\)</span>。</p>
+          <p class="step"><strong>核验</strong>：典型 Auger 过程寿命在 ns–ps 范围，与本题结果一致。检查黄金定则条件：若末态带宽 \(\Delta E_{\text{band}}\sim1\,\mathrm{eV}=1.6\times10^{-19}\,\mathrm{J}\)，则 \(\hbar/\Delta E_{\text{band}}\sim 7\times10^{-16}\,\mathrm{s}\)，远短于 \(\tau\sim10^{-9}\,\mathrm{s}\)；同时 \(W\tau=1\)，恰在边界，黄金定则对寿命估算精确。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 氢原子跃迁的电偶极选择定则 E1 selection rules for H transitions</h4>
+        <p class="example-statement">判定下列氢原子跃迁是否为电偶极 (E1) 允许，并计算允许跃迁的光子能量与波长：</p>
+        <div class="formula">\[ \text{(a)}\ 2p\to1s,\qquad\text{(b)}\ 3d\to1s,\qquad\text{(c)}\ 2s\to1s,\qquad\text{(d)}\ 3p\to2s. \]</div>
+        <div class="example-solution">
+          <p class="step"><strong>选择定则</strong>：\(\Delta\ell=\pm1\)，\(\Delta m=0,\pm1\)，宇称必变（对单电子 H，\((-1)^{\ell}\) 是宇称）。逐一判定：</p>
+          <p class="step"><strong>(a) \(2p\to1s\)</strong>：\(\ell:1\to0\)，\(\Delta\ell=-1\) ✓，宇称 \((-1)^{1}\to(-1)^{0}\) 改变 ✓。E1 <strong>允许</strong>（Lyman-α）。</p>
+          <p class="step">能量差与波长（氢能级 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\)）：</p>
+          <div class="formula">\[ \Delta E=E_{2}-E_{1}=13.6\Big(1-\frac{1}{4}\Big)=10.2\,\mathrm{eV},\qquad \lambda=\frac{hc}{\Delta E}=\frac{1240\,\mathrm{eV\,nm}}{10.2\,\mathrm{eV}}=121.6\,\mathrm{nm}. \]</div>
+          <p><span class="ans">(a) 允许；\(\Delta E=10.2\,\mathrm{eV}\)、\(\lambda=121.6\,\mathrm{nm}\)（Lyman-α）</span>。</p>
+          <p class="step"><strong>(b) \(3d\to1s\)</strong>：\(\ell:2\to0\)，\(\Delta\ell=-2\) ✗。E1 <strong>禁戒</strong>。物理上：\(3d\) 必须先 E1 衰变到 \(2p\)（\(\Delta\ell=-1\) ✓），再由 \(2p\to1s\) 完成（级联衰变 cascade）。</p>
+          <p><span class="ans">(b) 禁戒（\(\Delta\ell=-2\)）；级联 \(3d\to2p\to1s\)</span>。</p>
+          <p class="step"><strong>(c) \(2s\to1s\)</strong>：\(\ell:0\to0\)，\(\Delta\ell=0\) ✗。同时宇称不改变。E1 严格<strong>禁戒</strong>。该跃迁只能通过<strong>双光子发射</strong> (E1+E1 二阶过程) 进行，速率为 \(8.22\,\mathrm{s^{-1}}\)，寿命 \(\tau\approx 0.122\,\mathrm{s}\)——比 \(2p\) 长约 \(7.6\times10^{7}\) 倍。<span class="ans">\(2s\) 是氢原子的亚稳态 (metastable)</span>。</p>
+          <p class="step"><strong>(d) \(3p\to2s\)</strong>：\(\ell:1\to0\)，\(\Delta\ell=-1\) ✓；宇称改变 ✓。E1 <strong>允许</strong>（Balmer 系，Hα 的一个分量）。</p>
+          <div class="formula">\[ \Delta E=13.6\Big(\frac{1}{4}-\frac{1}{9}\Big)=1.889\,\mathrm{eV},\qquad \lambda=\frac{1240}{1.889}=656.5\,\mathrm{nm}. \]</div>
+          <p><span class="ans">(d) 允许；\(\lambda\approx 656.5\,\mathrm{nm}\)（Hα 红光）</span>。</p>
+          <p class="step"><strong>物理核验</strong>：选择定则把 Lyman 系（终态 \(1s\)）的所有跃迁限定为 \(np\to1s\)；Balmer 系（终态 \(2s,2p\)）允许 \(ns\to2p\)、\(nd\to2p\)、\(np\to2s\) 等。这正是实验观测的 Lyman、Balmer 谱线分布的解释。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 由电偶极矩阵元算 Einstein A 与 B—from Lyman-α Computing \(A_{21}\), \(B_{21}\) from the dipole matrix element</h4>
+        <p class="example-statement">氢原子 Lyman-α 跃迁 \(2p_{z}\to1s\) 的电偶极矩阵元为 \(\langle1s|ez|2p_{z}\rangle=\dfrac{128\sqrt 2}{243}\,a_{0}\approx 0.745\,a_{0}\)。常量 \(a_{0}=5.292\times10^{-11}\,\mathrm{m}\)、\(e=1.602\times10^{-19}\,\mathrm{C}\)、\(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{F/m}\)、\(\hbar=1.055\times10^{-34}\,\mathrm{J\,s}\)、\(c=2.998\times10^{8}\,\mathrm{m/s}\)、\(h=6.626\times10^{-34}\,\mathrm{J\,s}\)、\(1\,\mathrm{eV}=1.602\times10^{-19}\,\mathrm{J}\)。计算：</p>
+        <div class="formula">\[ \text{(a)}\ |\vec d_{12}|^{2};\quad\text{(b)}\ A_{21};\quad\text{(c)}\ B_{21}\ \text{（用}\ \rho(\nu)\ \text{约定）};\quad\text{(d)}\ \tau=1/A_{21}. \]</div>
+        <div class="example-solution">
+          <p class="step">(a) \(|\vec d_{12}|=e\cdot 0.745\,a_{0}=(1.602\times10^{-19})(0.745)(5.292\times10^{-11})=6.31\times10^{-30}\,\mathrm{C\,m}\)；</p>
+          <div class="formula">\[ |\vec d_{12}|^{2}=(6.31\times10^{-30})^{2}=3.98\times10^{-59}\,\mathrm{C^{2}\,m^{2}}. \]</div>
+          <p class="step">(b) 角频率：\(\hbar\omega=\Delta E=10.2\,\mathrm{eV}=1.634\times10^{-18}\,\mathrm{J}\)；</p>
+          <div class="formula">\[ \omega=\frac{1.634\times10^{-18}}{1.055\times10^{-34}}=1.549\times10^{16}\,\mathrm{rad/s},\qquad \omega^{3}=3.72\times10^{48}\,\mathrm{s^{-3}}. \]</div>
+          <p class="step">自发发射系数（各向同性平均公式 \(A_{21}=\omega^{3}|\vec d_{12}|^{2}/(3\pi\varepsilon_{0}\hbar c^{3})\)）：</p>
+          <div class="formula">\[ 3\pi\varepsilon_{0}\hbar c^{3}=3\pi(8.854\times10^{-12})(1.055\times10^{-34})(2.694\times10^{25})=2.37\times10^{-19}, \]</div>
+          <div class="formula">\[ A_{21}=\frac{(3.72\times10^{48})(3.98\times10^{-59})}{2.37\times10^{-19}}=\frac{1.48\times10^{-10}}{2.37\times10^{-19}}=6.24\times10^{8}\,\mathrm{s^{-1}}. \]</div>
+          <p><span class="ans">\(A_{21}\approx 6.24\times10^{8}\,\mathrm{s^{-1}}\)</span>。</p>
+          <p class="step">(c) Einstein 关系 \(A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\)，其中 \(\nu=\omega/(2\pi)=2.465\times10^{15}\,\mathrm{Hz}\)、\(\nu^{3}=1.498\times10^{46}\,\mathrm{Hz^{3}}\)：</p>
+          <div class="formula">\[ \frac{8\pi h\nu^{3}}{c^{3}}=\frac{8\pi(6.626\times10^{-34})(1.498\times10^{46})}{2.694\times10^{25}}=\frac{2.494\times10^{14}}{2.694\times10^{25}}=9.26\times10^{-12}\,\mathrm{J\,s\,m^{-3}}. \]</div>
+          <div class="formula">\[ B_{21}=\frac{A_{21}}{A_{21}/B_{21}}=\frac{6.24\times10^{8}}{9.26\times10^{-12}}=6.74\times10^{19}\,\mathrm{m^{3}\,J^{-1}\,s^{-2}}. \]</div>
+          <p><span class="ans">\(B_{21}\approx 6.74\times10^{19}\,\mathrm{m^{3}\,J^{-1}\,s^{-2}}\)</span>（用 \(\rho(\nu)\) 约定）。可交叉核验：直接由 \(B_{21}=|\vec d_{12}|^{2}/(6\varepsilon_{0}\hbar^{2})=3.98\times10^{-59}/(6\times 8.854\times10^{-12}\times 1.113\times10^{-68})=6.74\times10^{19}\)，结果一致。</p>
+          <p class="step">(d) 寿命：</p>
+          <div class="formula">\[ \tau=\frac{1}{A_{21}}=\frac{1}{6.24\times10^{8}}=1.60\times10^{-9}\,\mathrm{s}. \]</div>
+          <p><span class="ans">\(\tau=1.60\,\mathrm{ns}\)</span>——与氢原子 \(2p\) 态实验寿命 \(1.6\,\mathrm{ns}\) 精确吻合。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 Lyman-α 的自然线宽 Lifetime-broadened linewidth of H \(2p\to1s\)</h4>
+        <p class="example-statement">氢原子 \(2p\) 态寿命 \(\tau=1.60\,\mathrm{ns}\)（例 3.3）。求其自然线宽（FWHM）：能量宽度 \(\Delta E\)（eV）、频率宽度 \(\Delta\nu\)（Hz）、波长宽度 \(\Delta\lambda\)（fm）。已知 \(\lambda=121.6\,\mathrm{nm}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：能量–时间不确定性给出 Lorentzian 谱型的 FWHM：</p>
+          <div class="formula">\[ \Delta E_{\text{FWHM}}=\frac{\hbar}{\tau}=\frac{1.055\times10^{-34}}{1.60\times10^{-9}}=6.59\times10^{-26}\,\mathrm{J}=4.12\times10^{-7}\,\mathrm{eV}. \]</div>
+          <p><span class="ans">\(\Delta E=4.12\times10^{-7}\,\mathrm{eV}\)</span>。</p>
+          <p class="step">频率宽度：</p>
+          <div class="formula">\[ \Delta\nu_{\text{FWHM}}=\frac{1}{2\pi\tau}=\frac{1}{2\pi(1.60\times10^{-9})}=9.95\times10^{7}\,\mathrm{Hz}=99.5\,\mathrm{MHz}. \]</div>
+          <p><span class="ans">\(\Delta\nu\approx 99.5\,\mathrm{MHz}\)</span>。</p>
+          <p class="step">由 \(\lambda=c/\nu\) 微分得 \(|\Delta\lambda|=\lambda^{2}\Delta\nu/c\)：</p>
+          <div class="formula">\[ \Delta\lambda=\frac{(121.6\times10^{-9})^{2}(9.95\times10^{7})}{2.998\times10^{8}}=\frac{1.469\times10^{-6}}{2.998\times10^{8}}=4.90\times10^{-15}\,\mathrm{m}=4.90\,\mathrm{fm}. \]</div>
+          <p><span class="ans">\(\Delta\lambda\approx 4.90\,\mathrm{fm}\)</span>（femtometer）。相对线宽 \(\Delta\lambda/\lambda=4.90\times10^{-15}/1.216\times10^{-7}=4.03\times10^{-8}\)——极窄！</p>
+          <p class="step"><strong>物理核验</strong>：相对线宽 \(Q=\nu/\Delta\nu=2.465\times10^{15}/9.95\times10^{7}=2.48\times10^{7}\)（品质因数约 2500 万）。这就是为何原子谱线可作为长度与频率基准。在实际气体中，Doppler 展宽（室温下 \(\sim1\,\mathrm{GHz}\)）远大于自然线宽，需用激光冷却或原子束才能逼近自然极限。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 恒温辐射场中的吸收速率——激发态如何被「泵浦」 Absorption rate at stellar temperature</h4>
+        <p class="example-statement">温度 \(T=10^{4}\,\mathrm{K}\) 的热等离子体（典型 O 型恒星大气）中，求氢原子 \(1s\to2p\)（Lyman-α）的<strong>吸收速率</strong> \(W_{1\to2}^{\,\text{abs}}=B_{12}\rho(\nu)\)。已知 \(B_{21}=6.74\times10^{19}\,\mathrm{m^{3}\,J^{-1}\,s^{-2}}\)（例 3.3），\(g_{1}=g_{2}=1\)，Lyman-α 频率 \(\nu=2.465\times10^{15}\,\mathrm{Hz}\)。比较与自发发射速率 \(A_{21}=6.24\times10^{8}\,\mathrm{s^{-1}}\) 的大小。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：先由 Einstein 关系 \(g_{1}B_{12}=g_{2}B_{21}\)（这里 \(g_{1}=g_{2}=1\)）得 \(B_{12}=B_{21}=6.74\times10^{19}\)。</p>
+          <p class="step">计算 Planck 谱 \(\rho(\nu)=\dfrac{8\pi h\nu^{3}}{c^{3}}\cdot\dfrac{1}{e^{h\nu/kT}-1}\)。先算指数：</p>
+          <div class="formula">\[ \frac{h\nu}{kT}=\frac{(6.626\times10^{-34})(2.465\times10^{15})}{(1.381\times10^{-23})(10^{4})}=\frac{1.634\times10^{-18}}{1.381\times10^{-19}}=11.83, \]</div>
+          <div class="formula">\[ e^{11.83}-1=1.373\times10^{5}-1\approx1.373\times10^{5}. \]</div>
+          <p class="step">前因子 \(8\pi h\nu^{3}/c^{3}=9.26\times10^{-12}\,\mathrm{J\,s\,m^{-3}}=9.26\times10^{-12}\,\mathrm{J\,m^{-3}\,Hz^{-1}}\)（已在例 3.3 算得）。故</p>
+          <div class="formula">\[ \rho(\nu)=\frac{9.26\times10^{-12}}{1.373\times10^{5}}=6.74\times10^{-17}\,\mathrm{J\,m^{-3}\,Hz^{-1}}. \]</div>
+          <p class="step">吸收速率：</p>
+          <div class="formula">\[ W_{1\to2}^{\,\text{abs}}=B_{12}\,\rho(\nu)=(6.74\times10^{19})(6.74\times10^{-17})=4.55\times10^{3}\,\mathrm{s^{-1}}. \]</div>
+          <p><span class="ans">\(W^{\,\text{abs}}\approx4.55\times10^{3}\,\mathrm{s^{-1}}\)</span>（每秒约 4500 次吸收事件）。</p>
+          <p class="step"><strong>与自发发射比较</strong>：</p>
+          <div class="formula">\[ \frac{W^{\,\text{abs}}}{A_{21}}=\frac{4.55\times10^{3}}{6.24\times10^{8}}=7.3\times10^{-6}. \]</div>
+          <p>即使在 \(10^{4}\,\mathrm{K}\) 这样高温的等离子体中，Lyman-α 的吸收速率仍比自发发射小约 5 个数量级——因为 \(h\nu=10.2\,\mathrm{eV}\) 远大于 \(kT=0.862\,\mathrm{eV}\)，Planck 因子 \(e^{-h\nu/kT}=e^{-11.83}\approx 7.3\times10^{-6}\) 极度压低紫外光子密度。<strong>受激与自发发射相等的临界温度</strong>满足 \(h\nu/kT=\ln 2\)：</p>
+          <div class="formula">\[ T_{\text{crit}}=\frac{h\nu}{k\ln2}=\frac{(6.626\times10^{-34})(2.465\times10^{15})}{(1.381\times10^{-23})(0.6931)}=1.71\times10^{5}\,\mathrm{K}. \]</div>
+          <p><span class="ans">\(T_{\text{crit}}\approx 1.71\times10^{5}\,\mathrm{K}\)</span>——只有在该温度以上，受激速率才赶上自发速率；这是激光在紫外波段比红外难以实现的根本原因（\(A_{21}\propto\nu^{3}\)）。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：对离散末态也套用 Fermi 黄金定则。</strong>黄金定则 \(W=(2\pi/\hbar)|V|^{2}\rho\) 的核心是末态<strong>连续或准连续</strong>——\(\rho(E_{f})\) 必须光滑非零。对真正的离散末态（如双能级原子），\(\mathrm{sinc}^{2}\) 函数只是随时间振荡（甚至 Rabi 振荡），不存在恒定「速率」；强行除以 \(t\) 给出的「平均速率」毫无物理意义。判定准则：\(\rho(E_{f})\times\Delta E_{\text{band}}\gg1\)（带宽内含很多能级），且 \(t\gg\hbar/\Delta E_{\text{band}}\)（时间足够长，能量分辨率优于能级间距）。</li>
+        <li><strong>误区 2：以为选择定则来自能量守恒。</strong>完全不是！选择定则 \(\Delta\ell=\pm1\)、\(\Delta m=0,\pm1\) 来自<strong>跃迁矩阵元</strong> \(\langle f|\hat H'|i\rangle\) 的角动量代数（电偶极算符是一阶球张量）。能量守恒是另一回事——它来自黄金定则中的 \(\delta(E_{f}-E_{i})\) 因子。一个跃迁可能满足能量守恒但仍被禁戒（如 \(3d\to1s\)），也可能不严格满足能量守恒但被允许（短暂虚跃迁、Kramers–Heisenberg 散射）。</li>
+        <li><strong>误区 3：把「自发发射」当作经典场的结果。</strong>经典电磁场只能给出 <strong>\(B\)</strong> 系数（受激）。\(A_{21}\) 在 Einstein 1917 的论文中是<strong>反推</strong>出的——必须存在与外场无关的自发发射项才能与 Planck 黑体公式相容——但经典理论无法解释它的物理起源。完整推导 \(A_{21}\) 必须<strong>把电磁场量子化</strong>（Dirac 1927）：自发发射本质是「真空涨落受激的发射」，末态光子模式从 0 个变为 1 个。把电磁场经典处理时永远丢失 \(A_{21}\)。</li>
+        <li><strong>误区 4：把 \(\Delta E\cdot\Delta t\sim\hbar\) 当成「能量不守恒」的允许。</strong>恰恰相反：能量始终严格守恒（包括光子在内）。自然线宽 \(\Delta E=\hbar/\tau\) 来自激发态<strong>概率幅的指数衰减</strong>，其 Fourier 变换是 Lorentzian——这是<strong>波叠加</strong>效应，不是「测不准」。一个短寿命粒子并不「违反」能量守恒；它只是其衰变末态的能量分布有 Lorentzian 宽度，峰值能量仍精确等于初态能量。</li>
+        <li><strong>误区 5：把 \(P_{i\to f}(t)\) 当作「单位时间的跃迁概率」。</strong>\(P_{i\to f}(t)\) 是<strong>累积概率</strong>（时刻 \(t\) 处于 \(\ket f\rangle\) 的概率）。速率 \(W=\mathrm{d}P/\mathrm{d}t\) 只在黄金定则区（连续末态、长时间）才存有定义良好的「常数速率」含义。在共振单末态情形，\(P\) 振荡（Rabi），瞬时 \(\mathrm{d}P/\mathrm{d}t\) 也振荡，不能用单一数字描述。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 黄金定则——基础计算。某微扰的矩阵元大小 \(|\langle f|\hat H'|i\rangle|=2.0\,\mathrm{meV}\)，末态密度 \(\rho(E_{f})=0.50\,\mathrm{states/meV}\)。求跃迁速率 \(W\) 与平均寿命 \(\tau\)。</summary>
+        <div class="hint">先把 meV 换算成 J：\(1\,\mathrm{meV}=1.602\times10^{-22}\,\mathrm{J}\)。\(W=(2\pi/\hbar)|V|^{2}\rho\)。</div>
+        <div class="solution">
+          <p>\(|V|=2.0\,\mathrm{meV}=3.204\times10^{-22}\,\mathrm{J}\)；\(|V|^{2}=1.027\times10^{-43}\,\mathrm{J^{2}}\)。</p>
+          <p>\(\rho=0.50/(1.602\times10^{-22})=3.12\times10^{21}\,\mathrm{J^{-1}}\)。</p>
+          <p>\(W=\dfrac{2\pi}{1.055\times10^{-34}}(1.027\times10^{-43})(3.12\times10^{21})=(5.96\times10^{34})(3.20\times10^{-22})=1.91\times10^{13}\,\mathrm{s^{-1}}\)。</p>
+          <p><span class="ans">\(W\approx1.91\times10^{13}\,\mathrm{s^{-1}}\)；\(\tau=1/W=5.24\times10^{-14}\,\mathrm{s}=52.4\,\mathrm{fs}\)</span>（典型分子内振动弛豫时间尺度）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 氢原子跃迁是否 E1 允许？判定以下四个跃迁：(a) \(3d\to2p\)；(b) \(4f\to3d\)；(c) \(3s\to2p\)；(d) \(3d\to2s\)。对允许者计算光子能量与波长。</summary>
+        <div class="hint">检查 \(\Delta\ell=\pm1\)、宇称改变。允许的话用 \(E_{n}=-13.6/n^{2}\,\mathrm{eV}\)、\(\lambda=hc/\Delta E\)。</div>
+        <div class="solution">
+          <p>(a) \(3d\to2p\)：\(\ell:2\to1\)，\(\Delta\ell=-1\) ✓。允许。\(\Delta E=13.6(1/4-1/9)=1.889\,\mathrm{eV}\)；\(\lambda=1240/1.889=656.5\,\mathrm{nm}\)（Hα）。</p>
+          <p>(b) \(4f\to3d\)：\(\ell:3\to2\)，\(\Delta\ell=-1\) ✓。允许。\(\Delta E=13.6(1/9-1/16)=0.661\,\mathrm{eV}\)；\(\lambda=1240/0.661=1876\,\mathrm{nm}\)（红外，Paschen 系边缘）。</p>
+          <p>(c) \(3s\to2p\)：\(\ell:0\to1\)，\(\Delta\ell=+1\) ✓。允许。\(\Delta E=1.889\,\mathrm{eV}\)；\(\lambda=656.5\,\mathrm{nm}\)（Hα 另一分量）。</p>
+          <p>(d) \(3d\to2s\)：\(\ell:2\to0\)，\(\Delta\ell=-2\) ✗。<span class="ans">禁戒</span>（必须通过 \(3d\to2p\to1s\) 或 \(3d\to2p\) 级联）。</p>
+          <p><span class="ans">(a)(b)(c) 允许；(d) 禁戒</span>。注意 \(3d\to2p\) 与 \(3s\to2p\) 都发出 Hα（656.5 nm），构成该谱线的精细结构分量。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 钠 D 线的自然线宽。钠 D 线（\(\lambda=589.0\,\mathrm{nm}\)，\(3p\to3s\)）的激发态寿命 \(\tau=16.0\,\mathrm{ns}\)。求：(a) \(A_{21}\)；(b) \(\Delta E\)（eV）；(c) \(\Delta\nu\)（Hz）；(d) \(\Delta\lambda\)（fm）。</summary>
+        <div class="hint">\(A=1/\tau\)，\(\Delta E=\hbar/\tau\)，\(\Delta\nu=1/(2\pi\tau)\)，\(\Delta\lambda=\lambda^{2}\Delta\nu/c\)。</div>
+        <div class="solution">
+          <p>(a) \(A_{21}=1/(16.0\times10^{-9})=6.25\times10^{7}\,\mathrm{s^{-1}}\)。</p>
+          <p>(b) \(\Delta E=\hbar/\tau=1.055\times10^{-34}/(16.0\times10^{-9})=6.59\times10^{-27}\,\mathrm{J}=4.12\times10^{-8}\,\mathrm{eV}\)。</p>
+          <p>(c) \(\Delta\nu=1/(2\pi\times16.0\times10^{-9})=9.95\times10^{6}\,\mathrm{Hz}=9.95\,\mathrm{MHz}\)。</p>
+          <p>(d) \(\Delta\lambda=(589.0\times10^{-9})^{2}(9.95\times10^{6})/(2.998\times10^{8})=1.149\times10^{-14}\,\mathrm{m}=11.5\,\mathrm{fm}\)。</p>
+          <p><span class="ans">\(A=6.25\times10^{7}\,\mathrm{s^{-1}}\)；\(\Delta E=4.12\times10^{-8}\,\mathrm{eV}\)；\(\Delta\nu=9.95\,\mathrm{MHz}\)；\(\Delta\lambda=11.5\,\mathrm{fm}\)</span>。注意 \(\Delta\lambda/\lambda=1.95\times10^{-8}\)；在常温钠蒸气中实际测得的 D 线宽度 \(\sim1\,\mathrm{GHz}\)，主要来自 Doppler 展宽，远宽于自然线宽。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 推导 Einstein 关系 \(g_{1}B_{12}=g_{2}B_{21}\) 与 \(A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\)。从细致平衡出发，要求平衡时 \(\rho(\nu)\) 与 Planck 公式相容。</summary>
+        <div class="hint">细致平衡：\(N_{1}B_{12}\rho=N_{2}A_{21}+N_{2}B_{21}\rho\)，\(N_{2}/N_{1}=(g_{2}/g_{1})e^{-h\nu/kT}\)。解出 \(\rho\)，与 Planck 公式 \(\rho=(8\pi h\nu^{3}/c^{3})/(e^{h\nu/kT}-1)\) 比较系数。</div>
+        <div class="solution">
+          <p>由细致平衡：\(\rho=(N_{2}/N_{1})A_{21}/(B_{12}-(N_{2}/N_{1})B_{21})\)。</p>
+          <p>代入 Boltzmann 比 \(N_{2}/N_{1}=(g_{2}/g_{1})e^{-h\nu/kT}\equiv r\,e^{-h\nu/kT}\)，其中 \(r=g_{2}/g_{1}\)：</p>
+          <div class="formula">\[ \rho=\frac{r\,e^{-h\nu/kT}\,A_{21}}{B_{12}-r\,e^{-h\nu/kT}B_{21}}=\frac{r\,A_{21}}{B_{12}\,e^{h\nu/kT}-r\,B_{21}}. \]</div>
+          <p>要求与 Planck 公式相容：分母须正比于 \(e^{h\nu/kT}-1\)，故 \(B_{12}=r\,B_{21}\)，即 \(g_{1}B_{12}=g_{2}B_{21}\)（<strong>第一条 Einstein 关系</strong>）。</p>
+          <p>于是 \(\rho=(r A_{21})/(r B_{21}(e^{h\nu/kT}-1))=A_{21}/(B_{21}(e^{h\nu/kT}-1))\)。与 Planck 公式比较得：</p>
+          <div class="formula">\[ \frac{A_{21}}{B_{21}}=\frac{8\pi h\nu^{3}}{c^{3}}\quad\text{（第二条 Einstein 关系）}. \]</div>
+          <p><span class="ans">\(g_{1}B_{12}=g_{2}B_{21}\)，\(A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\)</span>。注意：Einstein 仅凭热力学一致性就预言了受激发射的存在（1917，早于 QED）；但他无法解释 \(A_{21}\) 的微观起源——这要等到 Dirac 1927 量化电磁场。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 受激与自发的临界温度。对一条能量 \(h\nu=2.00\,\mathrm{eV}\)（可见光，约 620 nm）的跃迁，求使受激发射速率 \(B_{21}\rho(\nu)\) 等于自发发射速率 \(A_{21}\) 的温度 \(T_{\text{crit}}\)。</summary>
+        <div class="hint">令 \(B_{21}\rho=A_{21}\)，用 \(A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\) 与 Planck \(\rho\) 公式。</div>
+        <div class="solution">
+          <p>\(B_{21}\rho=A_{21}\Rightarrow\rho=A_{21}/B_{21}=8\pi h\nu^{3}/c^{3}\)。</p>
+          <p>Planck: \(\rho=(8\pi h\nu^{3}/c^{3})/(e^{h\nu/kT}-1)\)。令两者相等：</p>
+          <div class="formula">\[ \frac{8\pi h\nu^{3}}{c^{3}}\cdot\frac{1}{e^{h\nu/kT}-1}=\frac{8\pi h\nu^{3}}{c^{3}}\Longrightarrow e^{h\nu/kT}-1=1\Longrightarrow\frac{h\nu}{kT}=\ln2. \]</div>
+          <p>\(T=h\nu/(k\ln2)=(2.00\times1.602\times10^{-19})/((1.381\times10^{-23})(0.6931))=3.204\times10^{-19}/9.571\times10^{-24}=3.35\times10^{4}\,\mathrm{K}\)。</p>
+          <p><span class="ans">\(T_{\text{crit}}\approx3.35\times10^{4}\,\mathrm{K}\)</span>——比太阳表面（5778 K）高约 6 倍。因此可见光波段在任何实际黑体辐射场中，自发发射都远远超过受激发射；只有<strong>布居反转 + 光学谐振腔</strong>（即激光）才能使受激发射占主导。这就是激光在 1960 年才被发明、而射频激射器（maser）早在 1954 年就实现的根本原因：射频 \(h\nu\) 小，\(T_{\text{crit}}\) 也低（液氮温度即可）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：Fermi 黄金定则——跃迁到连续态 Golden-Rule Transition to a Continuum</h2>
+      <p class="sim-desc">这是一个把抽象的 Fermi 黄金定则「可视化」的仿真。设初态 \(\ket{i}\)（蓝色虚线）通过微扰 \(\hat H'\) 耦合到一片<strong>连续末态</strong> \(\{\ket{f}\}\)（横轴：能量 \(E_{f}\)，分布在 \(E_{i}\) 两侧的带宽 \(\Delta E\) 内）。<strong>上半幅</strong>：每个末态的占据概率 \(|c_{f}(t)|^{2}=(|V|^{2}/\hbar^{2})\,4\sin^{2}((E_{f}-E_{i})t/2\hbar)/(E_{f}-E_{i})^{2}\) 用绿色竖条表示——注意中心（\(E_{f}=E_{i}\)）一项按 \(t^{2}\) 增长最快，两侧呈 sinc² 振荡；<strong>下半幅</strong>：总概率 \(P_{\text{tot}}(t)=W\cdot t\)（黄金定则区线性增长，斜率即 \(W\)），当前时刻用红点标出。<strong>调节耦合 \(|V|\) 与态密度 \(\rho\) 滑块</strong>：\(W\propto|V|^{2}\rho\)，斜率与时间尺度都会相应变化——这是 Fermi 黄金定则最直观的体现。点 <strong>↺ 重置</strong> 重新开始时间扫描（仿真中取 \(\hbar=1\)，能量、时间为约化单位）。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physics (simulation units, ℏ = 1) ----
+          var HBAR = 1.0;
+          var params = { V: 0.15, rho: 20 };
+          function Wrate() { return (2 * Math.PI / HBAR) * params.V * params.V * params.rho; }
+
+          // Continuum band for visualization
+          var N_CONT = 21;
+          var E_BAND = 8.0;
+          function E_f(j) { return -E_BAND / 2 + (j + 0.5) * E_BAND / N_CONT; }
+          function cf2(j, t) {
+            var Ef = E_f(j);
+            var V = params.V;
+            if (Math.abs(Ef) < 1e-9) return V * V * t * t / (HBAR * HBAR);
+            var half = Ef * t / (2 * HBAR);
+            var s = Math.sin(half);
+            // (V²/ℏ²) · 4 sin²(ω t/2) / ω² with ω = Ef/ℏ
+            return (4 * V * V * s * s) / (Ef * Ef) * (HBAR * HBAR);
+          }
+
+          // Sweep: physical time sweeps from 0 → tMax over SWEEP_SEC of wall-clock
+          var SWEEP_SEC = 8.0;
+          function tMax() { return Math.max(0.05, 0.5 / Math.max(Wrate(), 1e-6)); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tau: 0 }; },
+            step: function (dt, t, s) {
+              s.tau += dt / SWEEP_SEC;
+              if (s.tau > 1.0) s.tau = 0;  // continuous loop
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var Wr = Wrate();
+              var tm = tMax();
+              var physT = s.tau * tm;
+              var P = Math.min(Wr * physT, 1.0);
+
+              // ===== Title =====
+              PS.drawText(ctx, 'Fermi 黄金定则：跃迁到连续态  Fermi Golden Rule — Transition to a Continuum',
+                12, 18, { font: '14px system-ui, sans-serif', color: C.text });
+
+              // ===== Top panel: continuum band + occupancies =====
+              var top_y0 = 38, top_h = 130;
+              var plot_x0 = 50, plot_x1 = W - 25;
+              function xE(E) { return plot_x0 + (E + E_BAND / 2) / E_BAND * (plot_x1 - plot_x0); }
+              // baseline
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(plot_x0, top_y0 + top_h); ctx.lineTo(plot_x1, top_y0 + top_h); ctx.stroke();
+              // |i> marker (vertical dashed at E = 0)
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
+              ctx.beginPath(); ctx.moveTo(xE(0), top_y0); ctx.lineTo(xE(0), top_y0 + top_h); ctx.stroke();
+              ctx.setLineDash([]);
+              PS.drawText(ctx, '|i⟩  E_i', xE(0) + 5, top_y0 + 11, { font: '12px system-ui, sans-serif', color: C.primary });
+              // axis labels
+              PS.drawText(ctx, '终态能量 E_f', plot_x1 - 70, top_y0 + top_h + 14, { font: '11px system-ui, sans-serif', color: C.text });
+              PS.drawText(ctx, '−ΔE/2', xE(-E_BAND / 2), top_y0 + top_h + 14, { font: '10px system-ui, sans-serif', color: C.text, align: 'center' });
+              PS.drawText(ctx, '+ΔE/2', xE(E_BAND / 2), top_y0 + top_h + 14, { font: '10px system-ui, sans-serif', color: C.text, align: 'center' });
+              // subplot label
+              PS.drawText(ctx, '各 |f⟩ 的占据 |c_f(t)|²（中心项 ∝ t²，两侧 sinc² 振荡）', plot_x0, top_y0 - 4, { font: '10px system-ui, sans-serif', color: C.text });
+              // population bars
+              var maxC = 1e-12;
+              for (var j = 0; j < N_CONT; j++) { var p = cf2(j, physT); if (p > maxC) maxC = p; }
+              for (var j = 0; j < N_CONT; j++) {
+                var Ef = E_f(j);
+                var x = xE(Ef);
+                ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x - 2, top_y0 + top_h); ctx.lineTo(x + 2, top_y0 + top_h); ctx.stroke();
+                var h = (cf2(j, physT) / maxC) * (top_h - 14);
+                ctx.fillStyle = C.accent2; ctx.globalAlpha = 0.85;
+                ctx.fillRect(x - 4, top_y0 + top_h - 2 - h, 8, h);
+                ctx.globalAlpha = 1;
+              }
+
+              // ===== Bottom panel: P(t) plot =====
+              var bp_x0 = 50, bp_y0 = 220, bp_w = W - 80, bp_h = 150;
+              function xT(tt) { return bp_x0 + (tt / tm) * bp_w; }
+              function yP(Pv) { return bp_y0 + bp_h - Pv * bp_h; }
+
+              // grid lines
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 0.7; ctx.globalAlpha = 0.6;
+              var yticks = [0, 0.25, 0.5, 0.75, 1.0];
+              for (var i = 0; i < yticks.length; i++) {
+                ctx.beginPath(); ctx.moveTo(bp_x0, yP(yticks[i])); ctx.lineTo(bp_x0 + bp_w, yP(yticks[i])); ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              // axes
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(bp_x0, bp_y0); ctx.lineTo(bp_x0, bp_y0 + bp_h); ctx.lineTo(bp_x0 + bp_w, bp_y0 + bp_h);
+              ctx.stroke();
+              // y-tick labels
+              ctx.fillStyle = C.text; ctx.font = '10px system-ui, sans-serif';
+              for (var i = 0; i < yticks.length; i++) {
+                ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+                ctx.fillText(yticks[i].toString(), bp_x0 - 5, yP(yticks[i]));
+              }
+              // x-tick labels
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              ctx.fillText('0', bp_x0, bp_y0 + bp_h + 4);
+              ctx.fillText(tm.toFixed(2), bp_x0 + bp_w, bp_y0 + bp_h + 4);
+              ctx.fillText((tm / 2).toFixed(2), bp_x0 + bp_w / 2, bp_y0 + bp_h + 4);
+              // axis titles
+              PS.drawText(ctx, 'P_{i→f}(t)', bp_x0 - 32, bp_y0 + bp_h / 2, { font: '11px system-ui, sans-serif', color: C.text });
+              PS.drawText(ctx, '时间 t  (ℏ = 1 单位)', bp_x0 + bp_w / 2, bp_y0 + bp_h + 22, { font: '11px system-ui, sans-serif', color: C.text, align: 'center' });
+              // subplot label
+              PS.drawText(ctx, '总跃迁概率 P(t) = W·t （黄金定则区）', bp_x0, bp_y0 - 6, { font: '10px system-ui, sans-serif', color: C.text });
+
+              // golden-rule line P = W·t
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(xT(0), yP(0));
+              var Pend = Math.min(Wr * tm, 1.0);
+              ctx.lineTo(xT(Pend / Wr), yP(Pend));
+              ctx.stroke();
+              // slope annotation
+              var midT = tm * 0.4;
+              var midP = Math.min(Wr * midT, 1.0);
+              PS.drawText(ctx, 'slope = W = ' + Wr.toFixed(3), xT(midT) + 6, yP(midP) - 4,
+                { font: '11px system-ui, sans-serif', color: C.primary });
+
+              // current point
+              PS.drawCircle(ctx, xT(physT), yP(P), 4.5, { fill: C.accent, stroke: C.text, lineWidth: 1.2 });
+
+              // ===== Readouts =====
+              PS.drawText(ctx,
+                'W = (2π/ℏ) |V|² ρ = 2π × (' + params.V.toFixed(3) + ')² × ' + params.rho.toFixed(0) + ' / ℏ = ' + Wr.toFixed(3) + '  (1/time-unit)',
+                12, H - 32, { font: '11px system-ui, sans-serif', color: C.text });
+              PS.drawText(ctx,
+                't = ' + physT.toFixed(3) + ',   P(t) = W·t = ' + P.toFixed(3) + '   |   改变 |V| → W∝V² ；改变 ρ → W∝ρ',
+                12, H - 16, { font: '11px system-ui, sans-serif', color: C.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'V', label: '耦合 |V| (energy units)', min: 0.05, max: 0.40, step: 0.01, value: 0.15 },
+            { type: 'slider', key: 'rho', label: '态密度 ρ (states/energy)', min: 5, max: 50, step: 1, value: 20 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('V', function (v) { params.V = v; });
+          ctl.on('rho', function (v) { params.rho = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>含时微扰论把「量子跃迁」还原成一件最简单的事：弱扰动 \(\hat H'(t)\) 缓慢地把初态「漏」到末态。一阶振幅的 \(\mathrm{sinc}^{2}\) 因子把「能量守恒」与「时间–带宽」联系起来；对连续末态求和后给出 <strong>Fermi 黄金定则</strong>——恒定跃迁速率。<strong>选择定则</strong>出自矩阵元的对称性；<strong>Einstein A/B</strong> 把吸收、受激发射、自发发射三者用热平衡绑在一起；<strong>自然线宽</strong>是寿命的 Fourier 对偶。三者背后是同一个核心思想：<em>耦合强度 × 末态密度</em>。</p>
+      <div class="formula">\[ \text{一阶振幅: }\;c_{f}^{(1)}(t)=-\frac{i}{\hbar}\int_{0}^{t}\!\langle f|\hat H'(t')|i\rangle\,e^{i\omega_{fi}t'}\,dt',\qquad P_{i\to f}=|c_{f}^{(1)}|^{2} \]</div>
+      <div class="formula">\[ \text{恒定扰动: }\;P_{i\to f}(t)=\frac{|V_{fi}|^{2}}{\hbar^{2}}\cdot\frac{4\sin^{2}(\omega_{fi}t/2)}{\omega_{fi}^{2}} \]</div>
+      <div class="formula">\[ \text{Fermi 黄金定则: }\;W_{i\to f}=\frac{2\pi}{\hbar}\,|\langle f|\hat H'|i\rangle|^{2}\,\rho(E_{f})\quad(\text{连续末态},\ t\gg\hbar/\Delta E_{\text{band}}) \]</div>
+      <div class="formula">\[ \text{E1 选择定则: }\;\Delta\ell=\pm1,\ \Delta m=0,\pm1,\ \Delta s=0,\ \text{宇称必变} \]</div>
+      <div class="formula">\[ \text{Einstein 关系: }\;g_{1}B_{12}=g_{2}B_{21},\qquad \frac{A_{21}}{B_{21}}=\frac{8\pi h\nu^{3}}{c^{3}},\qquad A_{21}=\frac{\omega^{3}|\vec d_{12}|^{2}}{3\pi\varepsilon_{0}\hbar c^{3}} \]</div>
+      <div class="formula">\[ \text{自然线宽 (lifetime broadening): }\;\Delta E_{\text{FWHM}}=\hbar\Gamma=\frac{\hbar}{\tau},\qquad \Delta\nu_{\text{FWHM}}=\frac{1}{2\pi\tau} \]</div>
+      <p><strong>核心收获</strong>：所有「弱耦合 + 连续末态」的跃迁现象——光电离、Auger、\(\beta\) 衰变、自发发射（QED 中）、激光抽运——都共享同一个数学结构（黄金定则）。区别仅在于扰动的物理来源（电磁、弱作用、电子–电子关联）与末态密度的具体形式（自由电子、光子模式、声子带）。掌握本章，你就掌握了量子跃迁的统一语言；下一章我们将把光<strong>作为经典波</strong>与原子相互作用（半经典理论），看 Rabi 振荡、绝热 passages、与 §π 脉冲——那是不属于「弱耦合」的强场世界。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

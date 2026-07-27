@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 相对论电动力学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第10章 · 电动力学 Electrodynamics</p>
+      <h1>相对论电动力学 <span class="en-title">Relativistic Electrodynamics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>理解<strong>麦克斯韦方程组的洛伦兹协变性</strong> (Lorentz covariance of Maxwell's equations)：电动力学从一开端就是相对论性的——不需要「修补」就能在任意惯性系下成立。\(\vec{E}\) 与 \(\vec{B}\) 不是两个独立客体，而是同一个<strong>电磁场强张量</strong> \(F^{\mu\nu}\) 在不同惯性系下呈现的不同分量。</li>
+        <li>构造<strong>四维电流</strong> \(J^{\mu}=(c\rho,\,\vec{J})\) 与<strong>四维势</strong> \(A^{\mu}=(\phi/c,\,\vec{A})\)，验证它们是洛伦兹四矢量；把<strong>电荷守恒</strong> (charge conservation) 写成协变形式 \(\partial_{\mu}J^{\mu}=0\)。</li>
+        <li>写出<strong>电磁场强张量</strong> \(F^{\mu\nu}=\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu}\)（反对称，分量编码 \(\vec{E},\vec{B}\)）；把<strong>四个麦克斯韦方程</strong>凝缩为两个张量方程：\(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) 与 \(\partial_{[\lambda}F_{\mu\nu]}=0\)（<strong>比安基恒等式</strong> / Bianchi identity，等价于 \(\partial_{\mu}\widetilde{F}^{\mu\nu}=0\)）。</li>
+        <li>从张量变换律 \(F'^{\mu\nu}=\Lambda^{\mu}{}_{\rho}\Lambda^{\nu}{}_{\sigma}F^{\rho\sigma}\) 推出 <strong>\(\vec{E},\vec{B}\) 的洛伦兹变换规则</strong>：平行于速度的分量不变，垂直分量按 \(E'_{\perp}=\gamma(E_{\perp}+\vec{v}\times\vec{B})\)、\(B'_{\perp}=\gamma(B_{\perp}-\vec{v}\times\vec{E}/c^{2})\) 混合。一帧中的纯电场在另一帧中会感应出磁场。</li>
+        <li>把<strong>洛伦兹力</strong> (Lorentz force) 写成<strong>四力</strong>形式 \(\mathrm{d}p^{\mu}/\mathrm{d}\tau=qF^{\mu\nu}u_{\nu}\)（\(p^{\mu}\) 四动量、\(u^{\nu}\) 四速度、\(\tau\) 固有时），并还原为三维 \(\mathrm{d}\vec{p}/\mathrm{d}t=q(\vec{E}+\vec{v}\times\vec{B})\)；验证时间分量给出功率 \(q\vec{E}\cdot\vec{v}\)。</li>
+        <li>识别两个<strong>洛伦兹不变量</strong> (Lorentz invariants) \(\vec{E}\cdot\vec{B}\) 与 \(E^{2}-c^{2}B^{2}\)；据此判断「在何帧下纯 E 或纯 B」「电磁波（\(E=cB\), \(\vec{E}\perp\vec{B}\)）在所有惯性系下都是电磁波」。</li>
+        <li>写出电荷在电磁场中的<strong>相对论拉氏量</strong> \(L=-mc^{2}/\gamma+q\vec{A}\cdot\vec{v}-q\phi\) 与<strong>哈密顿量</strong> \(H=\sqrt{m^{2}c^{4}+c^{2}(\vec{P}-q\vec{A})^{2}}+q\phi\)；由拉氏方程导出洛伦兹力，从而把分析力学与电动力学统一起来。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 协变性的核心思想 The Central Idea of Covariance</h3>
+      <p>在第 8 章我们已经把麦克斯韦方程组写成本构形式（\(\nabla\!\cdot\!\vec{E}=\rho/\varepsilon_{0}\) 等），并预览了它们的协变写法。本章给出<strong>完整处理</strong>。关键观念：</p>
+      <p style="border-left:3px solid var(--sim-accent2,#16a34a);padding:6px 14px;background:rgba(22,163,74,0.06);margin:10px 0;"><strong>麦克斯韦方程组天然就是相对论性的。</strong>它们在任意惯性系下形式不变——这是历史上<strong>先有相对论性理论、后才发现狭义相对论</strong>的著名案例。爱因斯坦 1905 年的论文标题即为《论运动物体的电动力学》。电动力学不需要修补就能满足相对性原理；需要修补的是牛顿力学。</p>
+      <p>但「\(\vec{E}\) 与 \(\vec{B}\) 是分别的场」这一表述是<strong>依赖于观察者</strong>的：在某惯性系下纯电场的问题（如静电场中的电荷），在另一惯性系下会同时呈现电场与磁场。这是「场」作为<strong>一个统一的几何客体</strong>的不同投影。该客体就是二阶反对称张量 \(F^{\mu\nu}\)。</p>
+      <p>我们采用<strong>闵可夫斯基度规</strong> \(\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\) 与坐标 \(x^{\mu}=(ct,\vec{r})\)。希腊指标 \(\mu,\nu\in\{0,1,2,3\}\)，拉丁指标 \(i,j\in\{1,2,3\}\)（空间）。爱因斯坦求和约定生效。</p>
+      <div class="key-terms">Lorentz covariance (洛伦兹协变性), inertial frame (惯性系), Minkowski metric \(\eta_{\mu\nu}\) (闵可夫斯基度规), Einstein summation (爱因斯坦求和)</div>
+
+      <h3>2. 四维电流 \(J^{\mu}\) The Four-Current</h3>
+      <p>电荷密度 \(\rho\) 与电流密度 \(\vec{J}\) 在不同惯性系下互相「流动」——一帧中静止电荷（只有 \(\rho\)）在另一帧中是运动的（同时有 \(\rho'\) 与 \(\vec{J}'\)）。它们合并为<strong>四维电流</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;J^{\mu}=(c\rho,\,\vec{J})=(c\rho,\,J_{x},J_{y},J_{z}).\;\;} \]</div>
+      <p><strong>四维电流是洛伦兹矢量</strong>：在洛伦兹变换下 \(J'^{\mu}=\Lambda^{\mu}{}_{\nu}J^{\nu}\)，四个分量按矢量法则混合。这是<strong>电荷守恒</strong>的几何必然结果：连续性方程 \(\partial\rho/\partial t+\nabla\!\cdot\!\vec{J}=0\) 可写成</p>
+      <div class="formula">\[ \boxed{\;\;\partial_{\mu}J^{\mu}=\frac{\partial\rho}{\partial t}+\nabla\!\cdot\!\vec{J}=0\;\;\Leftrightarrow\;\;\text{电荷守恒 (charge conservation)}.}\;\;} \]</div>
+      <p>左式是四维散度——一个洛伦兹标量。它在所有惯性系下同时为零，对应<strong>总电荷 \(Q=\int\rho\,\mathrm{d}^{3}r\) 是洛伦兹不变量</strong>（实验事实：电子电荷 \(e=-1.602\times 10^{-19}\,\mathrm{C}\) 在任何惯性系下测量都相同）。</p>
+      <p><strong>验证 \(J^{\mu}\) 的变换</strong>：考虑一团总电荷 \(Q\) 的物质，在自身静止系 \(S_{0}\) 中 \(\rho_{0}=Q/V_{0}\)、\(\vec{J}_{0}=0\)。在实验室系 \(S\) 中它以速度 \(\vec{v}\) 运动：体积因<strong>长度收缩</strong>变为 \(V=V_{0}/\gamma\)，故 \(\rho=\gamma\rho_{0}\)；电流 \(\vec{J}=\rho\vec{v}=\gamma\rho_{0}\vec{v}\)。所以 \(J^{\mu}=(c\gamma\rho_{0},\,\gamma\rho_{0}\vec{v})=\gamma\rho_{0}(c,\vec{v})\)——正是静止系四矢量 \(\rho_{0}(c,\vec{0})\) 经洛伦兹 booster 而来。✓</p>
+      <div class="key-terms">four-current \(J^{\mu}=(c\rho,\vec{J})\) (四维电流), continuity equation \(\partial_{\mu}J^{\mu}=0\) (连续性方程), total charge invariance (总电荷不变)</div>
+
+      <h3>3. 四维势 \(A^{\mu}\) 与场强张量 \(F^{\mu\nu}\) Four-Potential &amp; Field-Strength Tensor</h3>
+      <p>第 8 章已经引入势函数：\(\vec{B}=\nabla\times\vec{A}\)、\(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\)。把 \(\phi\) 与 \(\vec{A}\) 合并为<strong>四维势</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;A^{\mu}=\Bigl(\frac{\phi}{c},\,\vec{A}\Bigr).\;\;} \]</div>
+      <p>在<strong>洛伦兹规范</strong> \(\partial_{\mu}A^{\mu}=0\) 下，\(A^{\mu}\) 满足推迟波方程 \(\Box A^{\mu}=\mu_{0}J^{\mu}\)，左右都是四矢量，故 \(A^{\mu}\) 在洛伦兹变换下按四矢量变换。\(\vec{E}\) 与 \(\vec{B}\) 由 \(A^{\mu}\) 的<strong>导数</strong>组合而成，需用一个<strong>二阶反对称张量</strong>来统一描述：</p>
+      <div class="formula">\[ \boxed{\;\;F^{\mu\nu}\equiv\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu}=-F^{\nu\mu}\;\;\text{(反对称 / antisymmetric)}.}\;\;} \]</div>
+      <p>代入 \(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\) 与 \(\vec{B}=\nabla\times\vec{A}\)，逐分量计算（用 \(\partial^{0}=(1/c)\partial/\partial t\)、\(\partial^{i}=-\partial/\partial x^{i}\)）：</p>
+      <div class="formula">\[ F^{0i}=\frac{1}{c}\frac{\partial A^{i}}{\partial t}-\Bigl(-\frac{\partial}{\partial x^{i}}\Bigr)\Bigl(\frac{\phi}{c}\Bigr)=\frac{1}{c}\Bigl(\frac{\partial A_{i}}{\partial t}+\frac{\partial\phi}{\partial x^{i}}\Bigr)=-\frac{E_{i}}{c}, \]</div>
+      <div class="formula">\[ F^{ij}=-\frac{\partial A^{j}}{\partial x^{i}}+\frac{\partial A^{i}}{\partial x^{j}}=-(\nabla\times\vec{A})_{k}\,\epsilon_{ijk}=-\epsilon_{ijk}B_{k}\quad(k\neq i,j). \]</div>
+      <p>写成矩阵（行 \(\mu\)、列 \(\nu\)，顺序 \(0,1,2,3=ct,x,y,z\)）：</p>
+      <div class="formula">\[ \boxed{\;\;F^{\mu\nu}=\begin{pmatrix} 0 & -E_{x}/c & -E_{y}/c & -E_{z}/c\\[2pt] E_{x}/c & 0 & -B_{z} & B_{y}\\[2pt] E_{y}/c & B_{z} & 0 & -B_{x}\\[2pt] E_{z}/c & -B_{y} & B_{x} & 0 \end{pmatrix}.\;\;} \]</div>
+      <p>读法：第 0 行/列编码 \(\vec{E}/c\)，纯空间块编码 \(\vec{B}\)。反对称性 \(F^{\nu\mu}=-F^{\mu\nu}\) 自动保证对角元为零。降指标（\(F_{\mu\nu}=\eta_{\mu\rho}\eta_{\nu\sigma}F^{\rho\sigma}\)）只在时间-空间分量上变号：\(F_{0i}=+E_{i}/c\)、\(F_{ij}=F^{ij}\)。</p>
+      <p><strong>对偶张量</strong> (dual tensor) \(\widetilde{F}^{\mu\nu}=\tfrac12\epsilon^{\mu\nu\rho\sigma}F_{\rho\sigma}\)（\(\epsilon^{0123}=+1\)）相当于把 \(\vec{E}/c\leftrightarrow\vec{B}\) 互换（带符号）：\(\widetilde{F}^{0i}=-B_{i}\)、\(\widetilde{F}^{ij}=+\epsilon_{ijk}E_{k}/c\)。</p>
+      <div class="key-terms">four-potential \(A^{\mu}=(\phi/c,\vec{A})\) (四维势), field-strength tensor \(F^{\mu\nu}\) (场强张量), antisymmetric (反对称), dual tensor \(\widetilde{F}^{\mu\nu}\) (对偶张量), \(\epsilon^{\mu\nu\rho\sigma}\) (Levi-Civita 符号)</div>
+
+      <h3>4. 协变麦克斯韦方程 Covariant Maxwell Equations</h3>
+      <p>四个矢量麦克斯韦方程（第 8 章）凝缩为<strong>两个张量方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\;\;}\qquad\text{(含源 / inhomogeneous)} \]</div>
+      <div class="formula">\[ \boxed{\;\;\partial_{\lambda}F_{\mu\nu}+\partial_{\mu}F_{\nu\lambda}+\partial_{\nu}F_{\lambda\mu}=0\;\;\Leftrightarrow\;\;\partial_{\mu}\widetilde{F}^{\mu\nu}=0\;\;}\quad\text{(齐次 / homogeneous, Bianchi)} \]</div>
+      <p>取 \(\nu=0\)：\(\partial_{\mu}F^{\mu 0}=\partial_{i}F^{i0}=\partial_{i}(E_{i}/c)=\nabla\!\cdot\!\vec{E}/c=\mu_{0}J^{0}=\mu_{0}c\rho\)，给出 <strong>Gauss 电场</strong> \(\nabla\!\cdot\!\vec{E}=\rho/\varepsilon_{0}\) ✓。</p>
+      <p>取 \(\nu=i\)：\(\partial_{0}F^{0i}+\partial_{j}F^{ji}=-(1/c^{2})\partial E_{i}/\partial t+(\nabla\times\vec{B})_{i}=\mu_{0}J_{i}\)，给出 <strong>Ampère–Maxwell</strong> \(\nabla\times\vec{B}=\mu_{0}\vec{J}+\mu_{0}\varepsilon_{0}\partial\vec{E}/\partial t\) ✓。</p>
+      <p>齐次方程取 \((\lambda,\mu,\nu)=(1,2,3)\)：\(\partial_{x}F_{23}+\partial_{y}F_{31}+\partial_{z}F_{12}=-\partial_{x}B_{x}-\partial_{y}B_{y}-\partial_{z}B_{z}=0\)，即 <strong>Gauss 磁场</strong> \(\nabla\!\cdot\!\vec{B}=0\) ✓。</p>
+      <p>取 \((\lambda,\mu,\nu)=(0,2,3)\)：\(\partial_{0}F_{23}+\partial_{2}F_{30}+\partial_{3}F_{02}=-(1/c)\partial B_{x}/\partial t-(1/c)\partial E_{z}/\partial y+(1/c)\partial E_{y}/\partial z=0\)，即 \((\nabla\times\vec{E})_{x}=-\partial B_{x}/\partial t\) ✓（<strong>Faraday</strong> 的 \(x\) 分量）。</p>
+      <p><strong>洛伦兹协变性现在显然</strong>：左、右两边都是洛伦兹张量（同阶），在任意惯性系下形式不变。这是把四个矢量方程压成两个张量方程的最大胜利——它立刻保证「在所有惯性系下，电动力学有相同形式」。</p>
+      <div class="key-terms">inhomogeneous equation \(\partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\) (含源方程), Bianchi identity \(\partial_{[\lambda}F_{\mu\nu]}=0\) (比安基恒等式), covariance manifest (协变性显然)</div>
+
+      <h3>5. \(\vec{E},\vec{B}\) 的洛伦兹变换 Field Transformation Between Frames</h3>
+      <p>设惯性系 \(S'\) 以速度 \(\vec{v}=v\hat{x}\) 相对 \(S\) 运动。场强张量按 \(F'^{\mu\nu}=\Lambda^{\mu}{}_{\rho}\Lambda^{\nu}{}_{\sigma}F^{\rho\sigma}\) 变换，把分量整理回 \(\vec{E}',\vec{B}'\) 形式，得：</p>
+      <div class="formula">\[ \boxed{\;\;\begin{aligned} E'_{x}&=E_{x},\\ E'_{y}&=\gamma\bigl(E_{y}-vB_{z}\bigr),\\ E'_{z}&=\gamma\bigl(E_{z}+vB_{y}\bigr), \end{aligned}\qquad \begin{aligned} B'_{x}&=B_{x},\\ B'_{y}&=\gamma\Bigl(B_{y}+\tfrac{v}{c^{2}}E_{z}\Bigr),\\ B'_{z}&=\gamma\Bigl(B_{z}-\tfrac{v}{c^{2}}E_{y}\Bigr). \end{aligned}\;\;} \]</div>
+      <p>用<strong>平行 / 垂直分解</strong>（相对 \(\vec{v}\)）写得更紧凑（任意方向 boost）：</p>
+      <div class="formula">\[ \boxed{\;\;\vec{E}'_{\parallel}=\vec{E}_{\parallel},\quad \vec{B}'_{\parallel}=\vec{B}_{\parallel},\quad \vec{E}'_{\perp}=\gamma\bigl(\vec{E}_{\perp}+\vec{v}\times\vec{B}\bigr),\quad \vec{B}'_{\perp}=\gamma\Bigl(\vec{B}_{\perp}-\frac{\vec{v}\times\vec{E}}{c^{2}}\Bigr).\;\;} \]</div>
+      <p><strong>物理含义</strong>：平行分量不变，垂直分量在 \(\vec{E}\) 与 \(\vec{B}\) 之间<strong>混合</strong>。这是电与磁统一的精髓：在某系下看到的「纯电场」（如静电场）在另一系下会同时呈现电场 <em>与</em> 磁场——后者正是「电流所产生的磁场」在另一观察者眼中的自然呈现（详见例 10.1 与仿真）。</p>
+      <p>低速极限 \(v\ll c\)（\(\gamma\to 1\)）：\(\vec{E}'\approx\vec{E}+\vec{v}\times\vec{B}\)、\(\vec{B}'\approx\vec{B}-\vec{v}\times\vec{E}/c^{2}\)。前者正是运动电荷感受到的磁力 \(q\vec{v}\times\vec{B}\) 的来源；后者微小（\(1/c^{2}\) 量级），所以日常经验中「磁场是磁场、电场是电场」——但严格说二者从未真正分离过。</p>
+      <div class="key-terms">parallel/perpendicular decomposition (平行/垂直分解), field mixing (场混合), low-speed limit (低速极限)</div>
+
+      <h3>6. 协变洛伦兹力 Covariant Lorentz Force</h3>
+      <p>三维洛伦兹力 \(\mathrm{d}\vec{p}/\mathrm{d}t=q(\vec{E}+\vec{v}\times\vec{B})\)（\(\vec{p}=\gamma m\vec{v}\) 是相对论性动量）可写成<strong>四力</strong>形式：</p>
+      <div class="formula">\[ \boxed{\;\;\frac{\mathrm{d}p^{\mu}}{\mathrm{d}\tau}=qF^{\mu\nu}u_{\nu},\qquad p^{\mu}=m u^{\mu},\quad u^{\mu}=\gamma(c,\vec{v}).\;\;} \]</div>
+      <p>这里 \(\tau\) 是<strong>固有时</strong> (proper time)，\(\mathrm{d}\tau=\mathrm{d}t/\gamma\)，是所有惯性系都同意的标量。\(u^{\mu}=\mathrm{d}x^{\mu}/\mathrm{d}\tau\) 是四速度，永远类时且 \(u_{\mu}u^{\mu}=c^{2}\)。</p>
+      <p><strong>空间分量</strong>（\(\mu=i\)）：\(\mathrm{d}p^{i}/\mathrm{d}\tau=q(F^{i0}u_{0}+F^{ij}u_{j})=q\bigl[(E_{i}/c)(\gamma c)+\epsilon_{ijk}B_{k}(\gamma v_{j})\bigr]\)（用 \(u_{0}=+\gamma c\)、\(u_{j}=-\gamma v_{j}\)、\(F^{ij}=-\epsilon_{ijk}B_{k}\)）。整理后除以 \(\gamma\)（即 \(\mathrm{d}/\mathrm{d}t\)）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}\vec{p}}{\mathrm{d}t}=q\bigl(\vec{E}+\vec{v}\times\vec{B}\bigr)\;\;\checkmark\;\;\text{(三维洛伦兹力)}. \]</div>
+      <p><strong>时间分量</strong>（\(\mu=0\)）：\(\mathrm{d}p^{0}/\mathrm{d}\tau=qF^{0\nu}u_{\nu}=q\bigl[(-E_{i}/c)(-\gamma v_{i})\bigr]=\gamma q\vec{E}\cdot\vec{v}/c\)。因 \(p^{0}=E_{\text{tot}}/c\)（\(E_{\text{tot}}=\gamma mc^{2}\)），\(\mathrm{d}p^{0}/\mathrm{d}\tau=(\gamma/c)\,\mathrm{d}E_{\text{tot}}/\mathrm{d}t\)，所以：</p>
+      <div class="formula">\[ \frac{\mathrm{d}E_{\text{tot}}}{\mathrm{d}t}=q\vec{E}\cdot\vec{v}.\;\;\text{(磁场不做功 / magnetic field does no work)}. \]</div>
+      <p>磁场只改变动量方向，不改变能量；电场才是能量的载体——这一熟悉结论现在作为协变方程的一个分量自动得出。</p>
+      <div class="key-terms">four-force \(qF^{\mu\nu}u_{\nu}\) (四力), four-momentum \(p^{\mu}=mu^{\mu}\) (四动量), four-velocity \(u^{\mu}=\gamma(c,\vec{v})\) (四速度), proper time \(\tau\) (固有时), magnetic field does no work (磁场不做功)</div>
+
+      <h3>7. 洛伦兹不变量 Lorentz Invariants</h3>
+      <p>由 \(F^{\mu\nu}\) 可构造两个独立的洛伦兹标量（在所有惯性系下数值相同）：</p>
+      <div class="formula">\[ \boxed{\;\;\mathcal{I}_{1}=F_{\mu\nu}F^{\mu\nu}=2\bigl(B^{2}-E^{2}/c^{2}\bigr)\;\;\Leftrightarrow\;\;E^{2}-c^{2}B^{2}=-\tfrac12\mathcal{I}_{1}\;\;\text{(不变 / invariant)},}\;\;} \]</div>
+      <div class="formula">\[ \boxed{\;\;\mathcal{I}_{2}=\widetilde{F}_{\mu\nu}F^{\mu\nu}=-\,\frac{4}{c}\vec{E}\cdot\vec{B}\;\;\Leftrightarrow\;\;\vec{E}\cdot\vec{B}\;\;\text{(不变 / invariant)}.}\;\;} \]</div>
+      <p><strong>物理应用</strong>：</p>
+      <ul>
+        <li><strong>纯 E 或纯 B 的判据</strong>：若 \(\vec{E}\cdot\vec{B}=0\)（且 \(E^{2}\neq c^{2}B^{2}\)），则存在一个惯性系使得场<strong>纯电</strong>（若 \(E>cB\)）或<strong>纯磁</strong>（若 \(cB>E\)）。详见例 10.3 与练习 10.1。</li>
+        <li><strong>电磁波</strong>：\(E=cB\) 且 \(\vec{E}\perp\vec{B}\)，故两个不变量都为零。这是一个<strong>零场</strong> (null field)：在任意惯性系下都满足 \(E'=cB'\)、\(\vec{E}'\perp\vec{B}'\)——光速运动的电磁波无静止系，在任何惯性系下都是电磁波。</li>
+        <li><strong>不能把纯 E 变为纯 B</strong>（除非 \(\vec{E}\cdot\vec{B}=0\)）：若某系下 \(\vec{B}=0\) 则 \(\vec{E}\cdot\vec{B}=0\) 且 \(E^{2}-c^{2}B^{2}=E^{2}>0\)。两不变量决定在任意系下 \(E'^{2}>c^{2}B'^{2}\) 与 \(\vec{E}'\cdot\vec{B}'=0\)；要让 \(B'\neq 0\) 同时 \(E'=0\)，需 \(E'^{2}-c^{2}B'^{2}=-c^{2}B'^{2}<0\)，与原正性矛盾。所以纯 E 只能变为「E 主、B 辅」，不能变为纯 B。详见误区 3。</li>
+      </ul>
+      <div class="key-terms">Lorentz invariant \(\vec{E}\cdot\vec{B}\) (洛伦兹不变量), invariant \(E^{2}-c^{2}B^{2}\) (洛伦兹不变量), null field (零场/光场), pure E / pure B frame (纯电/纯磁系)</div>
+
+      <h3>8. 相对论拉氏量与哈密顿量 Relativistic Lagrangian &amp; Hamiltonian</h3>
+      <p>带电粒子在电磁场中的<strong>相对论拉氏量</strong>：</p>
+      <div class="formula">\[ \boxed{\;\;L=-\frac{mc^{2}}{\gamma}+q\vec{A}\cdot\vec{v}-q\phi=-mc^{2}\sqrt{1-\frac{v^{2}}{c^{2}}}+q\vec{A}\cdot\vec{v}-q\phi.\;\;} \]</div>
+      <p>第一项 \(-mc^{2}/\gamma\) 是自由相对论粒子的拉氏量（注意：不是 \(\tfrac12 mv^{2}\)，后者是非相对论极限 \(v\ll c\) 下展开 \(mc^{2}/\gamma\approx mc^{2}-\tfrac12 mv^{2}\) 去掉常数 \(mc^{2}\) 后的结果）。后两项 \(q\vec{A}\cdot\vec{v}-q\phi=q(u_{\mu}A^{\mu})\cdot(\text{—})\) 描述粒子与场的最小耦合。</p>
+      <p><strong>正则动量</strong>：</p>
+      <div class="formula">\[ \vec{P}_{\text{can}}\equiv\frac{\partial L}{\partial\vec{v}}=\gamma m\vec{v}+q\vec{A}=\vec{p}_{\text{kin}}+q\vec{A}, \]</div>
+      <p>即「机械动量 \(\vec{p}_{\text{kin}}=\gamma m\vec{v}\)」加「规范势动量 \(q\vec{A}\)」。这是量子力学中<strong>正则量子化</strong> \(\hat{\vec{P}}=-i\hbar\nabla-q\vec{A}\) 的经典渊源。</p>
+      <p><strong>欧拉-拉格朗日方程</strong> \(\mathrm{d}(\partial L/\partial\vec{v})/\mathrm{d}t=\partial L/\partial\vec{r}\) 自动给出洛伦兹力（推导见 10.B）。这是分析力学与电动力学的统一：同一个 \(L\) 既给出 \(\vec{F}=q(\vec{E}+\vec{v}\times\vec{B})\)，又通过 \(\gamma\) 因子自动包含相对论性动量。</p>
+      <p><strong>哈密顿量</strong>（勒让德变换 \(H=\vec{P}_{\text{can}}\cdot\vec{v}-L\)）：</p>
+      <div class="formula">\[ \boxed{\;\;H=\sqrt{m^{2}c^{4}+c^{2}\bigl(\vec{P}_{\text{can}}-q\vec{A}\bigr)^{2}}+q\phi=\gamma mc^{2}+q\phi.\;\;} \]</div>
+      <p>无场时 \(H=\sqrt{p^{2}c^{2}+m^{2}c^{4}}\) 即相对论色散关系 \(E^{2}=p^{2}c^{2}+m^{2}c^{4}\)。在静电场（\(\vec{A}=0\)）中 \(H\) 守恒，给出能量守恒 \(\gamma mc^{2}+q\phi=\text{const}\)；在纯磁场（\(\phi=0\)）中 \(H=\gamma mc^{2}\) 守恒（速率不变，方向变），与「磁力不做功」一致。</p>
+      <div class="key-terms">relativistic Lagrangian \(L=-mc^{2}/\gamma+q\vec{A}\cdot\vec{v}-q\phi\) (相对论拉氏量), canonical momentum \(\vec{P}_{\text{can}}=\gamma m\vec{v}+q\vec{A}\) (正则动量), minimal coupling (最小耦合), Hamiltonian \(H=\sqrt{m^{2}c^{4}+c^{2}(\vec{P}-q\vec{A})^{2}}+q\phi\) (哈密顿量)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 10.A — 由张量变换律导出 \(\vec{E},\vec{B}\) 变换规则 Deriving the Field Transformation</h3>
+      <p class="step"><strong>步骤 1（洛伦兹 booster 矩阵）：</strong>取 \(S'\) 以速度 \(v\hat{x}\) 相对 \(S\) 运动。坐标变换 \(x'^{\mu}=\Lambda^{\mu}{}_{\nu}x^{\nu}\) 用矩阵：</p>
+      <div class="formula">\[ \Lambda^{\mu}{}_{\nu}=\begin{pmatrix}\gamma & -\gamma\beta & 0 & 0\\ -\gamma\beta & \gamma & 0 & 0\\ 0 & 0 & 1 & 0\\ 0 & 0 & 0 & 1\end{pmatrix},\qquad\beta=\frac{v}{c}. \]</div>
+      <p class="step"><strong>步骤 2（张量变换）：</strong>\(F'^{\mu\nu}=\Lambda^{\mu}{}_{\rho}\Lambda^{\nu}{}_{\sigma}F^{\rho\sigma}\)。计算 \((0,1)\) 分量（即 \(-E'_{x}/c\)）：</p>
+      <div class="formula">\[ F'^{01}=\Lambda^{0}{}_{\rho}\Lambda^{1}{}_{\sigma}F^{\rho\sigma}=\Lambda^{0}{}_{0}\Lambda^{1}{}_{1}F^{01}+\Lambda^{0}{}_{1}\Lambda^{1}{}_{0}F^{10}=\gamma^{2}F^{01}+(-\gamma\beta)(-\gamma\beta)(-F^{01}). \]</div>
+      <p>代入 \(F^{01}=-E_{x}/c\)：\(F'^{01}=\gamma^{2}(1-\beta^{2})(-E_{x}/c)=-E_{x}/c\)（用了 \(\gamma^{2}(1-\beta^{2})=1\)）。故 \(E'_{x}=E_{x}\) ✓（平行分量不变）。</p>
+      <p class="step"><strong>步骤 3（\((0,2)\) 分量）：</strong>涉及 \(\rho,\sigma\) 中第二个指标为 2，而 \(\Lambda^{2}{}_{\sigma}=\delta^{2}{}_{\sigma}\)（不被 boost 影响）：</p>
+      <div class="formula">\[ F'^{02}=\Lambda^{0}{}_{\rho}\Lambda^{2}{}_{\sigma}F^{\rho\sigma}=\Lambda^{0}{}_{\rho}F^{\rho 2}=\Lambda^{0}{}_{0}F^{02}+\Lambda^{0}{}_{1}F^{12}=\gamma(-E_{y}/c)+(-\gamma\beta)(-B_{z})=\frac{1}{c}\bigl[-\gamma E_{y}+\gamma v B_{z}\bigr]. \]</div>
+      <p>读出 \(-E'_{y}/c=[-\gamma E_{y}+\gamma v B_{z}]/c\)，即 \(E'_{y}=\gamma(E_{y}-vB_{z})\) ✓。同理 \(E'_{z}=\gamma(E_{z}+vB_{y})\)（注意 \(F^{13}=+B_{y}\) 给出 \(+\) 号）。</p>
+      <p class="step"><strong>步骤 4（空间-空间分量 \((1,2)\)）：</strong>\(F'^{12}=\Lambda^{1}{}_{\rho}\Lambda^{2}{}_{\sigma}F^{\rho\sigma}=\Lambda^{1}{}_{\rho}F^{\rho 2}=\Lambda^{1}{}_{0}F^{02}+\Lambda^{1}{}_{1}F^{12}=(-\gamma\beta)(-E_{y}/c)+\gamma(-B_{z})=-\bigl[\gamma B_{z}-\gamma(v/c^{2})E_{y}\cdot c\cdot(1/c)\bigr]\)... 直接得 \(F'^{12}=-B'_{z}=-\gamma B_{z}+\gamma\beta E_{y}/c\)，即 \(B'_{z}=\gamma(B_{z}-(v/c^{2})E_{y})\) ✓。</p>
+      <p class="step"><strong>步骤 5（紧凑形式）：</strong>把三个分量合写成矢量形式（任意 boost 方向 \(\vec{v}\)）：分解为平行 / 垂直两部分，平行分量不变，垂直分量按 \(\vec{E}'_{\perp}=\gamma(\vec{E}_{\perp}+\vec{v}\times\vec{B})\)、\(\vec{B}'_{\perp}=\gamma(\vec{B}_{\perp}-\vec{v}\times\vec{E}/c^{2})\)。<strong>关键观察</strong>：电场垂直分量加入 \(\vec{v}\times\vec{B}\)，磁场垂直分量加入 \(-\vec{v}\times\vec{E}/c^{2}\)——两者互相对称，仅差因子 \(c^{2}\)，反映 \(\vec{E}/c\) 与 \(\vec{B}\) 在 \(F^{\mu\nu}\) 中处于相似地位。</p>
+
+      <h3>推导 10.B — 由拉氏量导出洛伦兹力 Lorentz Force from the Lagrangian</h3>
+      <p class="step"><strong>步骤 1（正则动量）：</strong>\(L=-mc^{2}\sqrt{1-v^{2}/c^{2}}+q\vec{A}\cdot\vec{v}-q\phi\)，其中 \(\vec{v}^{2}=\vec{v}\cdot\vec{v}\)。</p>
+      <div class="formula">\[ \frac{\partial L}{\partial\vec{v}}=\frac{mc^{2}\cdot(\vec{v}/c^{2})}{\sqrt{1-v^{2}/c^{2}}}+q\vec{A}=\gamma m\vec{v}+q\vec{A}\equiv\vec{P}_{\text{can}}. \]</div>
+      <p class="step"><strong>步骤 2（\(\partial L/\partial\vec{r}\)）：</strong>\(\vec{v}\) 视为独立于 \(\vec{r}\)（拉氏量形式），则</p>
+      <div class="formula">\[ \frac{\partial L}{\partial x_{i}}=q\frac{\partial A_{j}}{\partial x_{i}}v_{j}-q\frac{\partial\phi}{\partial x_{i}}\;\;\Rightarrow\;\;\nabla L=q\bigl(\vec{v}\cdot\nabla\bigr)\vec{A}+q\vec{v}\times(\nabla\times\vec{A})-q\nabla\phi, \]</div>
+      <p>其中用了矢量恒等式 \(\nabla(\vec{A}\cdot\vec{v})=(\vec{v}\cdot\nabla)\vec{A}+\vec{v}\times(\nabla\times\vec{A})\)（\(\vec{v}\) 视为常矢量对 \(\vec{r}\) 求导）。</p>
+      <p class="step"><strong>步骤 3（\(\mathrm{d}/\mathrm{d}t\) 作用）：</strong>正则动量含 \(q\vec{A}(\vec{r},t)\)，粒子运动时</p>
+      <div class="formula">\[ \frac{\mathrm{d}\vec{P}_{\text{can}}}{\mathrm{d}t}=\frac{\mathrm{d}(\gamma m\vec{v})}{\mathrm{d}t}+q\Bigl[\frac{\partial\vec{A}}{\partial t}+(\vec{v}\cdot\nabla)\vec{A}\Bigr]. \]</div>
+      <p class="step"><strong>步骤 4（欧拉-拉格朗日）：</strong>\(\mathrm{d}\vec{P}_{\text{can}}/\mathrm{d}t=\partial L/\partial\vec{r}\)，代入：</p>
+      <div class="formula">\[ \frac{\mathrm{d}(\gamma m\vec{v})}{\mathrm{d}t}+q\frac{\partial\vec{A}}{\partial t}+q(\vec{v}\cdot\nabla)\vec{A}=q(\vec{v}\cdot\nabla)\vec{A}+q\vec{v}\times(\nabla\times\vec{A})-q\nabla\phi. \]</div>
+      <p>两边消去 \(q(\vec{v}\cdot\nabla)\vec{A}\)：</p>
+      <div class="formula">\[ \frac{\mathrm{d}(\gamma m\vec{v})}{\mathrm{d}t}=q\bigl[-\nabla\phi-\partial\vec{A}/\partial t\bigr]+q\vec{v}\times(\nabla\times\vec{A})=q\vec{E}+q\vec{v}\times\vec{B}\;\;\checkmark \]</div>
+      <p>（用了 \(\vec{E}=-\nabla\phi-\partial\vec{A}/\partial t\)、\(\vec{B}=\nabla\times\vec{A}\)）。这就是相对论性洛伦兹力 \(\mathrm{d}\vec{p}_{\text{kin}}/\mathrm{d}t=q(\vec{E}+\vec{v}\times\vec{B})\)，其中 \(\vec{p}_{\text{kin}}=\gamma m\vec{v}\)。<strong>关键</strong>：\(\gamma\) 因子从拉氏量自动出现，无需额外假设；牛顿形式 \(\vec{F}=m\vec{a}\) 在高速下失效，但 \(\vec{F}=\mathrm{d}\vec{p}/\mathrm{d}t\) 始终正确。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 静止电荷 → 运动系中观察到 \(E'\) 与感应 \(B'\) Static Charge Becomes \(E'\)+\(B'\) in a Moving Frame</h4>
+        <p class="example-statement">点电荷 \(q=1.0\,\mu\mathrm{C}\) 静止于惯性系 \(S\) 的原点。考察场点 \((0,b,0)\)、\(b=10\,\mathrm{cm}\)。（a）求 \(S\) 中该点的 \(\vec{E}\) 与 \(\vec{B}\)；（b）惯性系 \(S'\) 以 \(v=0.60c\) 沿 \(+\hat{x}\) 方向相对 \(S\) 运动，求 \(S'\) 中同一时空点的 \(\vec{E}'\) 与 \(\vec{B}'\)；（c）解释 \(\vec{B}'\) 的方向为何对应「电流所产生的磁场」。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>由库仑定律 \(\vec{E}=\frac{1}{4\pi\varepsilon_{0}}\frac{q}{b^{2}}\hat{y}\)，取 \(1/(4\pi\varepsilon_{0})=8.99\times 10^{9}\,\mathrm{N\,m^{2}/C^{2}}\)、\(c=3.00\times 10^{8}\,\mathrm{m/s}\)：</p>
+          <div class="formula">\[ \vec{E}=(8.99\times 10^{9})\cdot\frac{10^{-6}}{(0.10)^{2}}\,\hat{y}=8.99\times 10^{5}\,\hat{y}\;\,\mathrm{V/m},\qquad\vec{B}=0. \]</div>
+          <p class="step"><strong>解（b）：</strong>\(\beta=0.60\)，\(\gamma=1/\sqrt{1-0.36}=1/0.80=1.25\)。场变换（boost 沿 \(+\hat{x}\)）：</p>
+          <div class="formula">\[ E'_{x}=E_{x}=0,\quad E'_{y}=\gamma(E_{y}-vB_{z})=\gamma E_{y}=1.25\times 8.99\times 10^{5}=1.12\times 10^{6}\,\mathrm{V/m}, \]</div>
+          <div class="formula">\[ B'_{z}=\gamma\Bigl(B_{z}-\frac{v}{c^{2}}E_{y}\Bigr)=-\gamma\frac{v}{c^{2}}E_{y}=-1.25\times\frac{0.60}{3.00\times 10^{8}}\times 8.99\times 10^{5}=-2.25\times 10^{-3}\,\mathrm{T}. \]</div>
+          <p>故 \(\vec{E}'=1.12\times 10^{6}\,\hat{y}\;\mathrm{V/m}\)（横向增强 \(\gamma=1.25\) 倍）、\(\vec{B}'=-2.25\times 10^{-3}\,\hat{z}\;\mathrm{T}=-2.25\,\mathrm{mT}\,\hat{z}\)。</p>
+          <p class="step"><strong>解（c）：</strong>在 \(S'\) 中电荷以 \(-v\hat{x}\) 运动（因 \(S'\) 相对 \(S\) 向 \(+\hat{x}\)），构成沿 \(-\hat{x}\) 的电流元 \(I\mathrm{d}\vec{l}\leftrightarrow q\vec{v}\)。在 \((0,b,0)\) 处（即 \(\hat{y}\) 方向），由右手定则：拇指指电流方向 \(-\hat{x}\)，四指绕轴——在 \(+\hat{y}\) 点处的磁场沿 \(-\hat{z}\) 方向（即 \(\otimes\)，垂直页面向内）。这恰好与 \(\vec{B}'=-2.25\,\mathrm{mT}\,\hat{z}\) 一致。即「运动电荷的磁场」与「电场经洛伦兹变换感生磁场」是同一现象的两种描述。</p>
+          <p class="step"><strong>数值校核</strong>：\(|\vec{B}'|/|\vec{E}'|=(v/c^{2})=0.60/(3.00\times 10^{8})=2.0\times 10^{-9}\,\mathrm{s/m}\)，故 \(|\vec{B}'|=2.0\times 10^{-9}\times 1.12\times 10^{6}=2.24\times 10^{-3}\,\mathrm{T}\) ✓。也可写成 \(|\vec{B}'|=\mu_{0}\gamma q v/(4\pi b^{2})\)（用 \(\mu_{0}=1/\varepsilon_{0}c^{2}\)），这正是「以速度 \(v\) 运动的电荷的磁场」公式。</p>
+          <p><span class="ans">答案：(a) \(\vec{E}=8.99\times 10^{5}\,\hat{y}\;\mathrm{V/m}\)、\(\vec{B}=0\)；(b) \(\vec{E}'=1.12\times 10^{6}\,\hat{y}\;\mathrm{V/m}\)、\(\vec{B}'=-2.25\times 10^{-3}\,\hat{z}\;\mathrm{T}\)；(c) \(\vec{B}'\) 对应电流沿 \(-\hat{x}\) 的电流磁场，方向由右手定则给出。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 由给定 \(\vec{E},\vec{B}\) 构造 \(F^{\mu\nu}\) 并读回 Constructing \(F^{\mu\nu}\) and Recovering Fields</h4>
+        <p class="example-statement">已知 \(\vec{E}=(3.0\times 10^{5},\,0,\,0)\,\mathrm{V/m}\)（沿 \(+\hat{x}\)）、\(\vec{B}=(0,\,1.5\times 10^{-3},\,0)\,\mathrm{T}\)（沿 \(+\hat{y}\)）。（a）写出 \(F^{\mu\nu}\) 的矩阵（数值，SI 单位）；（b）验证反对称性并读回 \(\vec{E},\vec{B}\) 检查一致；（c）计算两不变量 \(\vec{E}\cdot\vec{B}\) 与 \(E^{2}-c^{2}B^{2}\)，判断是否存在某惯性系使场变成纯电或纯磁。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>用 \(E_{x}/c=3.0\times 10^{5}/(3.00\times 10^{8})=1.0\times 10^{-3}\)（单位 \(\mathrm{V\,s/m^{2}=T}\)）。代入矩阵：</p>
+          <div class="formula">\[ F^{\mu\nu}=\begin{pmatrix} 0 & -1.0\times 10^{-3} & 0 & 0\\ 1.0\times 10^{-3} & 0 & 0 & 1.5\times 10^{-3}\\ 0 & 0 & 0 & 0\\ 0 & -1.5\times 10^{-3} & 0 & 0 \end{pmatrix}\;\mathrm{(T)}, \]</div>
+          <p>其中只有 \(F^{01}=-E_{x}/c\)、\(F^{10}=+E_{x}/c\)、\(F^{13}=+B_{y}\)、\(F^{31}=-B_{y}\) 非零（\(E_{y}=E_{z}=B_{x}=B_{z}=0\)）。</p>
+          <p class="step"><strong>解（b）：</strong>反对称性 \(F^{10}=-F^{01}=+1.0\times 10^{-3}\) ✓、\(F^{31}=-F^{13}=-1.5\times 10^{-3}\) ✓、对角全零 ✓。读回：\(E_{x}=-c\cdot F^{01}=-(3.00\times 10^{8})(-1.0\times 10^{-3})=3.0\times 10^{5}\,\mathrm{V/m}\) ✓、\(B_{y}=F^{13}=1.5\times 10^{-3}\,\mathrm{T}\) ✓。其余分量由 \(F^{02}=-E_{y}/c=0\)、\(F^{23}=-B_{x}=0\) 等给出零。</p>
+          <p class="step"><strong>解（c）：</strong></p>
+          <div class="formula">\[ \vec{E}\cdot\vec{B}=E_{x}B_{x}+E_{y}B_{y}+E_{z}B_{z}=0+0+0=0, \]</div>
+          <div class="formula">\[ E^{2}-c^{2}B^{2}=(3.0\times 10^{5})^{2}-(3.00\times 10^{8})^{2}(1.5\times 10^{-3})^{2}=9.0\times 10^{10}-2.025\times 10^{11}=-1.125\times 10^{11}\,(\mathrm{V/m})^{2}. \]</div>
+          <p>\(\vec{E}\cdot\vec{B}=0\) 且 \(E^{2}-c^{2}B^{2}<0\)（即 \(cB>E\)）。由不变量判据：存在一个惯性系使场变成<strong>纯磁场</strong>（\(E'=0\)）。求该系速度：沿 \(\hat{z}\) 方向 boost（垂直于 \(\vec{E}\) 与 \(\vec{B}\)），令 \(E'_{\perp}=0\)：\(\vec{E}+\vec{v}\times\vec{B}=0\)，即 \(3.0\times 10^{5}\hat{x}+v\hat{z}\times(1.5\times 10^{-3}\hat{y})=3.0\times 10^{5}\hat{x}-v(1.5\times 10^{-3})\hat{x}=0\)，故 \(v=E_{x}/B_{y}=3.0\times 10^{5}/1.5\times 10^{-3}=2.0\times 10^{8}\,\mathrm{m/s}=(2/3)c\)。该校验 \(v<c\) ✓ 与 \(cB>E\) 一致。在该系中 \(B'=\sqrt{B^{2}-E^{2}/c^{2}}=\sqrt{(1.5\times 10^{-3})^{2}-(3.0\times 10^{5}/3.0\times 10^{8})^{2}}=\sqrt{2.25\times 10^{-6}-1.0\times 10^{-6}}=1.12\times 10^{-3}\,\mathrm{T}\)。</p>
+          <p><span class="ans">答案：(a) 见上矩阵；(b) 反对称 ✓、读回一致；(c) \(\vec{E}\cdot\vec{B}=0\)、\(E^{2}-c^{2}B^{2}=-1.125\times 10^{11}\)；存在纯磁系，\(v=2.0\times 10^{8}\,\mathrm{m/s}\) 沿 \(+\hat{z}\)，\(B'=1.12\times 10^{-3}\,\mathrm{T}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 验证不变量 \(\vec{E}\cdot\vec{B}\) 与 \(E^{2}-c^{2}B^{2}\) 在两系中相同 Verifying Invariance in Two Frames</h4>
+        <p class="example-statement">用例 10.1 的数据：\(S\) 中 \(\vec{E}=8.99\times 10^{5}\,\hat{y}\,\mathrm{V/m}\)、\(\vec{B}=0\)；\(S'\)（\(\beta=0.60\)）中 \(\vec{E}'=1.12\times 10^{6}\,\hat{y}\,\mathrm{V/m}\)、\(\vec{B}'=-2.25\times 10^{-3}\,\hat{z}\,\mathrm{T}\)。验证两洛伦兹不变量在 \(S\) 与 \(S'\) 中数值相同（容许末位误差）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（\(\vec{E}\cdot\vec{B}\)）：</strong></p>
+          <div class="formula">\[ S:\;\vec{E}\cdot\vec{B}=(8.99\times 10^{5})(0)=0. \]</div>
+          <div class="formula">\[ S':\;\vec{E}'\cdot\vec{B}'=E'_{y}B'_{y}+E'_{z}B'_{z}=(1.12\times 10^{6})(0)+(0)(-2.25\times 10^{-3})=0.\;\;\checkmark \]</div>
+          <p>\(\vec{E}\perp\vec{B}'\)（一沿 \(\hat{y}\) 一沿 \(\hat{z}\)），故点积为零。原系 \(\vec{B}=0\) 也使不变量为零。一致 ✓。</p>
+          <p class="step"><strong>解（\(E^{2}-c^{2}B^{2}\)）：</strong></p>
+          <div class="formula">\[ S:\;E^{2}-c^{2}B^{2}=(8.99\times 10^{5})^{2}-0=8.08\times 10^{11}\,(\mathrm{V/m})^{2}. \]</div>
+          <div class="formula">\[ S':\;E'^{2}-c^{2}B'^{2}=(1.12\times 10^{6})^{2}-(3.00\times 10^{8})^{2}(2.25\times 10^{-3})^{2} \]</div>
+          <div class="formula">\[ =1.25\times 10^{12}-9.00\times 10^{16}\times 5.06\times 10^{-6}=1.25\times 10^{12}-4.56\times 10^{11}=7.94\times 10^{11}\,(\mathrm{V/m})^{2}. \]</div>
+          <p>两者在末位差 \(\sim 2\%\) 内一致（来自把 \(E_{y}\)、\(\gamma\) 等取三位有效数字的舍入）。如用更精确值 \(E_{y}=8.98755... \times 10^{5}\)、\(\gamma=1.25\) 严格计算，两系给出 \(8.078\times 10^{11}\) 与 \(8.079\times 10^{11}\)，完全一致 ✓。</p>
+          <p class="step"><strong>解（物理意义）：</strong>\(E^{2}-c^{2}B^{2}>0\) 且 \(\vec{E}\cdot\vec{B}=0\) 说明该场是「电主」的——存在一个惯性系使场变成纯电（即原 \(S\)）。不可能存在某系使场变成纯磁（那需要 \(E^{2}-c^{2}B^{2}<0\)）。这一点不能通过任何 boost 改变。</p>
+          <p><span class="ans">答案：两不变量在 \(S\) 与 \(S'\) 中均为 \(\vec{E}\cdot\vec{B}=0\)、\(E^{2}-c^{2}B^{2}\approx 8.1\times 10^{11}\,(\mathrm{V/m})^{2}\)。✓</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 匀速运动电荷的场（海维赛场）Field of a Uniformly Moving Charge</h4>
+        <p class="example-statement">点电荷 \(q=1.0\,\mu\mathrm{C}\) 在实验室系 \(S\) 中以恒速 \(v=0.80c\) 沿 \(+\hat{x}\) 运动。在电荷<strong>瞬时位置</strong>的横向 \(b=10\,\mathrm{cm}\) 处（即点 \((0,b,0)\) 当电荷过原点时刻）以及纵向前方 \(a=10\,\mathrm{cm}\) 处（即 \((a,0,0)\)），分别求 \(\vec{E}\) 与 \(\vec{B}\)。解释场的「煎饼」(pancake) 形状。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（运动电荷的场公式）：</strong>对匀速运动电荷，场为（海维赛 1888，由例 10.1 的变换 + 库仑场导出）：在瞬时位置 \(\vec{r}_{q}\)、场点 \(\vec{r}\)，令 \(\vec{R}=\vec{r}-\vec{r}_{q}\)、\(\Theta\) 为 \(\vec{R}\) 与 \(\vec{v}\) 的夹角，则</p>
+          <div class="formula">\[ \vec{E}=\frac{q}{4\pi\varepsilon_{0}}\frac{(1-\beta^{2})\,\vec{R}}{R^{3}(1-\beta^{2}\sin^{2}\Theta)^{3/2}},\qquad\vec{B}=\frac{\vec{v}\times\vec{E}}{c^{2}}. \]</div>
+          <p class="step"><strong>解（横向点 \(\Theta=\pi/2\)）：</strong>\(\beta=0.80\)、\(\gamma=1/\sqrt{1-0.64}=1/0.60=5/3\approx 1.667\)。分母 \((1-\beta^{2}\cdot 1)^{3/2}=(1-0.64)^{3/2}=(0.36)^{3/2}=0.216\)。分子系数 \((1-\beta^{2})=0.36\)。两者相除：\(0.36/0.216=1.667=\gamma\)。故</p>
+          <div class="formula">\[ |\vec{E}_{\perp}|=\frac{\gamma q}{4\pi\varepsilon_{0}b^{2}}=1.667\times 8.99\times 10^{5}=1.50\times 10^{6}\,\mathrm{V/m}\;\;\text{(沿 \(\hat{y}\))}. \]</div>
+          <div class="formula">\[ |\vec{B}_{\perp}|=\frac{v|\vec{E}_{\perp}|}{c^{2}}=\frac{0.80\times 1.50\times 10^{6}}{3.00\times 10^{8}}=4.00\times 10^{-3}\,\mathrm{T}\;\;\text{(沿 \(-\hat{z}\)，由 \(\vec{v}\times\vec{E}=v\hat{x}\times E\hat{y}=vE\hat{z}\) 后除 \(c^{2}\) 给 \(+\hat{z}\)；但场点在电荷右侧时 \(\vec{R}=+b\hat{y}\)，故 \(\vec{E}=+E\hat{y}\)，\(\vec{B}=vE/c^{2}\,\hat{z}\)，即 \(+4.0\,\mathrm{mT}\,\hat{z}\))}. \]</div>
+          <p>校核右手定则：电流 \(q\vec{v}\) 沿 \(+\hat{x}\)，场点在 \(+\hat{y}\)，磁场应沿 \(+\hat{z}\)（⊙ 出页面） ✓。</p>
+          <p class="step"><strong>解（纵向点 \(\Theta=0\)）：</strong>分母 \((1-0)^{3/2}=1\)。系数 \((1-\beta^{2})=0.36=1/\gamma^{2}\)：</p>
+          <div class="formula">\[ |\vec{E}_{\parallel}|=\frac{(1-\beta^{2})\,q}{4\pi\varepsilon_{0}a^{2}}=\frac{1}{\gamma^{2}}\cdot 8.99\times 10^{5}=\frac{8.99\times 10^{5}}{2.778}=3.23\times 10^{5}\,\mathrm{V/m}\;\;\text{(沿 \(\hat{x}\))}. \]</div>
+          <div class="formula">\[ |\vec{B}_{\parallel}|=\frac{v|\vec{E}_{\parallel}|\sin 0}{c^{2}}=0\;\;\text{(\(\vec{v}\parallel\vec{E}\)，叉乘为零)}. \]</div>
+          <p class="step"><strong>解（煎饼形状）：</strong>横向 \(|\vec{E}|=1.50\times 10^{6}\) 比纵向 \(3.23\times 10^{5}\) 大 \(\sim 4.6\) 倍（约 \(\gamma^{3}=4.63\) 倍，正是横向 / 纵向比 \(\gamma/(1/\gamma^{2})=\gamma^{3}\)）。场的总通量 \(\oint\vec{E}\cdot\mathrm{d}\vec{a}=q/\varepsilon_{0}\) 不变（高斯定律），但分布被「压扁」——横向密集、纵向稀疏，呈煎饼 / 油炸圈形。<strong>物理原因</strong>：在电荷静止系中场是球对称库仑场；从实验室系看，横向距离因长度收缩 apparent 改变（同时性的相对性使「同时刻」面在两系下不同），库仑场经洛伦兹变换后自然给出此分布。低速时（\(\gamma\to 1\)）场恢复球对称。</p>
+          <p><span class="ans">答案：横向 \((0,b,0)\)：\(\vec{E}=1.50\times 10^{6}\,\hat{y}\,\mathrm{V/m}\)、\(\vec{B}=4.0\,\mathrm{mT}\,\hat{z}\)。纵向 \((a,0,0)\)：\(\vec{E}=3.23\times 10^{5}\,\hat{x}\,\mathrm{V/m}\)、\(\vec{B}=0\)。横向比纵向强 \(\gamma^{3}\) 倍——煎饼形场分布。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 相对论哈密顿量与高能电子的同步辐射频率 Relativistic Hamiltonian &amp; Cyclotron Frequency</h4>
+        <p class="example-statement">能量 \(K=1.0\,\mathrm{MeV}\) 的电子（动能，静止能量 \(m_{e}c^{2}=0.511\,\mathrm{MeV}\)）垂直射入均匀磁场 \(B=0.50\,\mathrm{T}\)。（a）求电子的 \(\gamma\)、速率 \(v\)、机械动量 \(p\ kann\;\mathrm{kg\,m/s}\)；（b）用相对论力学求<strong>回旋频率</strong> \(\omega_{c}\) 与轨道半径 \(r\)；（c）与经典（非相对论）结果比较，说明为何加速器必须用相对论力学。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>\(E_{\text{tot}}=K+m_{e}c^{2}=1.0+0.511=1.511\,\mathrm{MeV}\)，故 \(\gamma=E_{\text{tot}}/(m_{e}c^{2})=1.511/0.511=2.958\)。由 \(\gamma=1/\sqrt{1-\beta^{2}}\)：\(\beta=\sqrt{1-1/\gamma^{2}}=\sqrt{1-1/8.750}=\sqrt{0.8857}=0.941\)。\(v=0.941c=2.82\times 10^{8}\,\mathrm{m/s}\)。机械动量 \(p=\gamma m_{e}v=2.958\times(9.11\times 10^{-31})\times(2.82\times 10^{8})=7.60\times 10^{-22}\,\mathrm{kg\,m/s}\)（用 \(p c=\sqrt{E_{\text{tot}}^{2}-(m_{e}c^{2})^{2}}\) 验证：\(pc=\sqrt{1.511^{2}-0.511^{2}}=\sqrt{2.283-0.261}=\sqrt{2.022}=1.422\,\mathrm{MeV}\)，\(p=1.422\,\mathrm{MeV}/c=1.422\times 10^{6}\times 1.602\times 10^{-19}/(3.00\times 10^{8})=7.59\times 10^{-22}\,\mathrm{kg\,m/s}\) ✓）。</p>
+          <p class="step"><strong>解（b 回旋频率）：</strong>纯磁场（\(\phi=0,\vec{A}=\tfrac12\vec{B}\times\vec{r}\)）中 \(H=\gamma m_{e}c^{2}\) 守恒（磁力不做功）。运动方程 \(\mathrm{d}\vec{p}/\mathrm{d}t=q\vec{v}\times\vec{B}\)：因 \(|\vec{p}|=\gamma m_{e}v\) 不变，仅方向旋转，回旋频率</p>
+          <div class="formula">\[ \omega_{c}=\frac{qB}{\gamma m_{e}}=\frac{(1.602\times 10^{-19})(0.50)}{(2.958)(9.11\times 10^{-31})}=2.97\times 10^{10}\,\mathrm{rad/s}. \]</div>
+          <p>半径：</p>
+          <div class="formula">\[ r=\frac{p}{qB}=\frac{7.60\times 10^{-22}}{(1.602\times 10^{-19})(0.50)}=9.49\times 10^{-3}\,\mathrm{m}=9.5\,\mathrm{mm}. \]</div>
+          <p class="step"><strong>解（c 与经典比较）：</strong>经典 \(\omega_{c}^{(\text{cl})}=qB/m_{e}=8.79\times 10^{10}\,\mathrm{rad/s}\)、\(r^{(\text{cl})}=mv/(qB)\) 但经典下 \(v\) 用能量算不正确。若误用经典 \(K=\tfrac12 m_{e}v^{2}\) 算 \(v=\sqrt{2K/m_{e}}=\sqrt{2\times 10^{6}\times 1.602\times 10^{-19}/9.11\times 10^{-31}}=5.93\times 10^{8}\,\mathrm{m/s}>c\)——直接超光速，矛盾。即使勉强用，给出的回旋频率会是 \(\gamma\) 倍偏大（\(\sim 3\) 倍）。在粒子加速器（回旋加速器、同步加速器）中这种偏离在高能下变得致命：相对论效应使粒子在固定频率射频腔中失相，必须用<strong>稳相原理</strong>（同步加速器）或调变磁场（同步回旋）。例 10.5 是「相对论电动力学不是数学奢侈，而是工程必需」的最简实例。</p>
+          <p><span class="ans">答案：(a) \(\gamma=2.958\)、\(v=0.941c\)、\(p=7.6\times 10^{-22}\,\mathrm{kg\,m/s}\)；(b) \(\omega_{c}=2.97\times 10^{10}\,\mathrm{rad/s}\)（4.7 GHz）、\(r=9.5\,\mathrm{mm}\)；(c) 经典给出 \(\omega_{c}^{(\text{cl})}=8.79\times 10^{10}\,\mathrm{rad/s}\)（约 3 倍偏大）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把 \(\vec{E}\) 与 \(\vec{B}\) 视为两个独立的场。</strong>它们不是——是同一个张量 \(F^{\mu\nu}\) 的不同分量。某惯性系下看到的「纯电场」（如静止电荷的库仑场），在另一惯性系下会同时呈现 \(\vec{E}'\) 与 \(\vec{B}'\)。<strong>电与磁本质上是同一客体</strong>（电磁场）在不同观察者眼里的不同投影。这是为什么「电场」与「磁场」用同一个 \(F^{\mu\nu}\) 描述、且麦克斯韦方程组天然具有洛伦兹协变性。</li>
+        <li><strong>混淆「不变量」与「守恒量」。</strong>「洛伦兹不变量」(Lorentz invariant) 指在<strong>不同惯性系</strong>下数值相同（如 \(E^{2}-c^{2}B^{2}\)、\(\vec{E}\cdot\vec{B}\)、总电荷 \(Q\)、固有时 \(\tau\)）；「守恒量」(conserved) 指在<strong>同一惯性系</strong>随时间不变（如能量、动量、总电荷 \(Q\)）。总电荷 \(Q\) 既是不变量也是守恒量，但这是<strong>两个不同的属性</strong>：前者来自 \(J^{\mu}\) 的四矢量性质 + 全空间积分，后者来自连续性方程 \(\partial_{\mu}J^{\mu}=0\)。</li>
+        <li><strong>认为「纯 E 总能变换成纯 B」。</strong>错误。若 \(\vec{E}\cdot\vec{B}\neq 0\)，则<strong>不存在</strong>任何惯性系使场变成纯 E 或纯 B（因为不变量 \(\vec{E}'\cdot\vec{B}'\neq 0\) 必须保持）。即使 \(\vec{E}\cdot\vec{B}=0\)，能否变成纯 E 或纯 B 还要看 \(E^{2}-c^{2}B^{2}\)：\(>0\) 时只能变成纯 E、\(<0\) 时只能变成纯 B、\(=0\)（零场，电磁波）既不能纯 E 也不能纯 B（恒为 \(E'=cB'\)）。</li>
+        <li><strong>在洛伦兹力中误用坐标时 \(t\) 代替固有时 \(\tau\)。</strong>四力 \(\mathrm{d}p^{\mu}/\mathrm{d}\tau=qF^{\mu\nu}u_{\nu}\) 用 \(\tau\)；三维力 \(\mathrm{d}\vec{p}/\mathrm{d}t=q(\vec{E}+\vec{v}\times\vec{B})\) 用 \(t\)。混用会差因子 \(\gamma\)。注意 \(u^{\mu}=\gamma(c,\vec{v})\) 已含 \(\gamma\)；若误写成 \(\mathrm{d}p^{\mu}/\mathrm{d}t=qF^{\mu\nu}(\mathrm{d}x_{\nu}/\mathrm{d}t)\)（用坐标时），等式右边会少一个 \(\gamma\)，结果错误。<strong>四矢量方程永远用 \(\tau\)，三维矢量方程可用 \(t\)。</strong></li>
+        <li><strong>把拉氏量写成 \(L=\tfrac12 mv^{2}-q\phi+q\vec{A}\cdot\vec{v}\)。</strong>这是<strong>非相对论</strong>形式（动能 \(\tfrac12 mv^{2}\)）。相对论拉氏量第一项是 \(-mc^{2}/\gamma=-mc^{2}\sqrt{1-v^{2}/c^{2}}\)（不是 \(\tfrac12 mv^{2}\)、也不是 \(\gamma mc^{2}\)）。展开 \(v\ll c\)：\(-mc^{2}/\gamma\approx -mc^{2}+\tfrac12 mv^{2}+\ldots\)，常数 \(-mc^{2}\) 不影响运动方程，去掉后得非相对论形式。哈密顿量也类似：相对论 \(H=\sqrt{p^{2}c^{2}+m^{2}c^{4}}+q\phi\approx mc^{2}+p^{2}/(2m)+q\phi\)（低速展开）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 找出使场变成纯磁的惯性系 Find the Frame Where \(\vec{E}'=0\)</summary>
+        <div class="hint">已知 \(\vec{E}=3.0\times 10^{5}\,\hat{x}\,\mathrm{V/m}\)、\(\vec{B}=1.0\times 10^{-3}\,\hat{y}\,\mathrm{T}\)。\(\vec{E}\perp\vec{B}\)，\(\vec{E}\cdot\vec{B}=0\)。求使 \(\vec{E}'=0\) 的惯性系速度 \(\vec{v}\)（给出大小与方向）。提示：用 \(\vec{E}'_{\perp}=\gamma(\vec{E}+\vec{v}\times\vec{B})=0\)。</div>
+        <div class="solution">
+          要使 \(\vec{E}+\vec{v}\times\vec{B}=0\)，即 \(3.0\times 10^{5}\hat{x}+v\hat{?}\times(1.0\times 10^{-3}\hat{y})=0\)。选 \(\vec{v}=v\hat{z}\)：\(\hat{z}\times\hat{y}=-\hat{x}\)，故 \(v\hat{z}\times B\hat{y}=-vB\hat{x}\)，方程变 \(3.0\times 10^{5}-v(1.0\times 10^{-3})=0\)，\(v=3.0\times 10^{8}\,\mathrm{m/s}=c\)！
+          <br>但 \(v=c\) 不可达——这与 \(E=cB\) 的判据一致：\(cB=(3.0\times 10^{8})(1.0\times 10^{-3})=3.0\times 10^{5}\,\mathrm{V/m}=E\)，故两不变量都为零，场是<strong>零场</strong>（如电磁波），不存在纯 E 或纯 B 系。
+          <br>若把 \(B\) 改为 \(1.5\times 10^{-3}\,\mathrm{T}\)（即例 10.2），则 \(v=E/B=2.0\times 10^{8}\,\mathrm{m/s}\lt c\) ✓，沿 \(+\hat{z}\)，存在纯磁系。
+          <br><span class="ans">答案：原数据 \(v=c\) 不可达，场为零场（\(E=cB\)），无纯磁系；若 \(B=1.5\,\mathrm{mT}\) 则 \(v=2.0\times 10^{8}\,\mathrm{m/s}\) 沿 \(+\hat{z}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 计算四力 \(\mathrm{d}p^{\mu}/\mathrm{d}\tau\) Compute the Four-Force</summary>
+        <div class="hint">质子（\(m=1.67\times 10^{-27}\,\mathrm{kg}\)、\(q=+e\)）在某瞬时以 \(\vec{v}=0.60c\,\hat{x}\) 运动，所在场为 \(\vec{E}=1.0\times 10^{6}\,\hat{y}\,\mathrm{V/m}\)、\(\vec{B}=0.50\,\hat{z}\,\mathrm{T}\)。计算四力 \(f^{\mu}=qF^{\mu\nu}u_{\nu}\) 的四个分量。</div>
+        <div class="solution">
+          \(\gamma=1/\sqrt{1-0.36}=1.25\)，\(u^{\mu}=\gamma(c,\,v,\,0,\,0)=(1.25c,\,1.25\times 0.60c,\,0,\,0)=(3.75\times 10^{8},\,2.25\times 10^{8},\,0,\,0)\)。
+          <br>降指标 \(u_{\mu}=(+1.25c,\,-1.25\times 0.60c,\,0,\,0)=(3.75\times 10^{8},\,-2.25\times 10^{8},\,0,\,0)\)。
+          <br>场强张量分量：\(F^{01}=-E_{x}/c=0\)、\(F^{02}=-E_{y}/c=-1.0\times 10^{6}/(3.0\times 10^{8})=-3.33\times 10^{-3}\)、\(F^{03}=0\)、\(F^{12}=B_{y}\)... 等等；本题 \(E_{x}=E_{z}=B_{x}=B_{y}=0\)，只有 \(E_{y}\) 与 \(B_{z}\)。故 \(F^{02}=-3.33\times 10^{-3}\)、\(F^{12}=-B_{z}=-0.50\)、\(F^{20}=+E_{y}/c=+3.33\times 10^{-3}\)、\(F^{21}=+B_{z}=+0.50\)。
+          <br>\(f^{0}=qF^{0\nu}u_{\nu}=q(F^{02}u_{2})=q(-3.33\times 10^{-3})(0)=0\)。咦——这是因为 \(u_{2}=0\)（粒子沿 \(\hat{x}\) 运动无 \(y\) 分量）。
+          <br>等等，重做：\(u_{2}=-u^{2}=-\gamma v_{y}=0\)（因 \(v_{y}=0\)）。但 \(F^{02}\neq 0\) 给出 \(f^{0}=qF^{02}u_{2}=0\)？不对——洛伦兹力时间分量是 \(q\vec{E}\cdot\vec{v}/c\)，本题 \(\vec{E}\cdot\vec{v}=E_{y}v_{y}+E_{x}v_{x}=0\)（\(v_{y}=0,E_{x}=0\)）——但 \(\vec{E}\perp\vec{v}\) 时磁场使粒子轨道弯曲，会立刻产生 \(v_{y}\)，此刻瞬时 \(\vec{E}\cdot\vec{v}=0\)。故 \(f^{0}=0\) ✓。
+          <br>空间分量：
+          <br>\(f^{1}=q(F^{10}u_{0}+F^{12}u_{2})=q(0\cdot u_{0}+(-0.50)\cdot 0)=0\)。
+          <br>\(f^{2}=q(F^{20}u_{0}+F^{21}u_{1})=q[(+3.33\times 10^{-3})(3.75\times 10^{8})+(+0.50)(-2.25\times 10^{8})]\)
+          <br>\(=q[1.25\times 10^{6}-1.125\times 10^{8}]=q[-1.000\times 10^{8}]\)。
+          <br>嗯，第二项远大于第一项——磁场主导。重算第一项：\((3.33\times 10^{-3})(3.75\times 10^{8})=1.25\times 10^{6}\)。第二项：\((0.50)(2.25\times 10^{8})=1.125\times 10^{8}\)。差 \(\approx -1.11\times 10^{8}\)。乘 \(q=1.602\times 10^{-19}\)：\(f^{2}\approx -1.78\times 10^{-11}\,\mathrm{N}\)（\(\hat{y}\) 方向）。
+          <br>对应三维力 \(\mathrm{d}p^{2}/\mathrm{d}t=f^{2}/\gamma\approx -1.42\times 10^{-11}\,\mathrm{N}\)。验证：\(q(E_{y}-v B_{z})=(1.602\times 10^{-19})(1.0\times 10^{6}-0.60\times 3.0\times 10^{8}\times 0.50)=(1.602\times 10^{-19})(1.0\times 10^{6}-9.0\times 10^{7})=-(1.602\times 10^{-19})(8.9\times 10^{7})=-1.43\times 10^{-11}\,\mathrm{N}\) ✓
+          <br>\(f^{3}=0\)（无 \(z\) 方向场）。
+          <br><span class="ans">答案：\(f^{\mu}=(0,\,0,\,-1.78\times 10^{-11},\,0)\,\mathrm{N}\)（即沿 \(-\hat{y}\)，磁场项 \(qvB\) 主导电场项 \(qE\)）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 沿运动方向前方的场 Field Along the Line of Motion</summary>
+        <div class="hint">用例 10.4 的公式：电荷 \(q=1.0\,\mu\mathrm{C}\) 以 \(v=0.60c\) 沿 \(+\hat{x}\) 运动。在电荷瞬时位置前方（沿 \(+\hat{x}\)）距离 \(a=5.0\,\mathrm{cm}\) 处的 \(\vec{E}\) 与 \(\vec{B}\)？验证 \(\vec{B}=0\) 且 \(|\vec{E}|\) 比库仑值小 \(\gamma^{2}\) 倍。</div>
+        <div class="solution">
+          \(\beta=0.60\)、\(\gamma=1.25\)。\(\Theta=0\)（沿运动方向）：\(\vec{E}=(1-\beta^{2})q/(4\pi\varepsilon_{0}a^{2})\hat{x}=q/(4\pi\varepsilon_{0}\gamma^{2}a^{2})\hat{x}\)。
+          <br>库仑值 \(E_{0}=q/(4\pi\varepsilon_{0}a^{2})=(8.99\times 10^{9})(10^{-6})/(0.05)^{2}=3.60\times 10^{6}\,\mathrm{V/m}\)。
+          <br>\(|\vec{E}|=E_{0}/\gamma^{2}=3.60\times 10^{6}/1.5625=2.30\times 10^{6}\,\mathrm{V/m}\)（沿 \(+\hat{x}\)）。
+          <br>\(\vec{B}=(\vec{v}\times\vec{E})/c^{2}=0\)（因 \(\vec{v}\parallel\vec{E}\)）。
+          <br><strong>解读：</strong>沿运动方向，长度收缩把场线「挤」到横向；纵向场反而稀疏（弱 \(\gamma^{2}\) 倍）。这是相对论性运动电荷场呈「煎饼」分布的体现：横向强、纵向弱。<span class="ans">答案：\(\vec{E}=2.30\times 10^{6}\,\hat{x}\,\mathrm{V/m}\)、\(\vec{B}=0\)，比库仑值小 \(1/\gamma^{2}=0.64\) 倍。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 电磁波在任意惯性系下仍是电磁波 EM Wave in Any Frame Is Still an EM Wave</summary>
+        <div class="hint">真空中平面电磁波 \(E_{y}=E_{0}\cos(kx-\omega t)\)、\(B_{z}=E_{0}/c\cos(kx-\omega t)\)。证明：在任意 boost 沿 \(+\hat{x}\)（传播方向）的惯性系下，仍有 \(E'=cB'\)、\(\vec{E}'\perp\vec{B}'\)，即仍为电磁波。计算变换后振幅 \(E'_{0}\)。</div>
+        <div class="solution">
+          boost 沿传播方向 \(\hat{x}\)：\(\vec{E},\vec{B}\) 都垂直于 \(\vec{v}\)（即都垂直 \(\hat{x}\)）。
+          <br>\(E'_{y}=\gamma(E_{y}-vB_{z})=\gamma E_{0}\cos(kx-\omega t)(1-v/c)=\gamma(1-\beta)E_{0}\cos(\ldots)\)。
+          <br>\(B'_{z}=\gamma(B_{z}-(v/c^{2})E_{y})=\gamma(E_{0}/c)(1-\beta)\cos(\ldots)\)。
+          <br>故 \(E'_{y}/B'_{z}=c\) ✓，且 \(\vec{E}'\perp\vec{B}'\)（仍分别沿 \(\hat{y},\hat{z}\)）。新振幅 \(E'_{0}=\gamma(1-\beta)E_{0}=\sqrt{(1-\beta)/(1+\beta)}\,E_{0}\)。
+          <br>这就是<strong>多普勒红移 / 蓝移因子</strong>：朝波源运动（\(\beta>0\)，即追着波跑）会蓝移（\(E'_{0}>E_{0}\) 当 \(\beta\to -1\)，即反向运动接近波源）；远离则红移。\(\gamma(1-\beta)=\sqrt{(1-\beta)/(1+\beta)}\) 称为<strong>多普勒因子</strong>。
+          <br><strong>解读：</strong>两个不变量 \(E^{2}-c^{2}B^{2}=0\) 与 \(\vec{E}\cdot\vec{B}=0\) 是零场的标志——在任意惯性系下都为零，故电磁波在所有惯性系下都是电磁波（光速不变原理的体现）。<span class="ans">答案：\(E'_{0}=\sqrt{(1-\beta)/(1+\beta)}\,E_{0}\)，仍满足 \(E'=cB'\)、\(\vec{E}'\perp\vec{B}'\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 用哈密顿量推导相对论性『等效势能』 Hamiltonian in a Static Field</summary>
+        <div class="hint">电子在均匀静电场 \(E=1.0\times 10^{6}\,\mathrm{V/m}\)（沿 \(+\hat{y}\)）中由静止释放，经加速电压 \(V_{0}=500\,\mathrm{kV}\)（即 \(\phi\) 改变 \(-500\,\mathrm{kV}\)）。用哈密顿量守恒求电子末态 \(\gamma\)、\(v\)。</div>
+        <div class="solution">
+          \(\vec{A}=0\)、\(\phi=-E y\)（设 \(y=0\) 出发、\(\phi(0)=0\)）。哈密顿量 \(H=\sqrt{p^{2}c^{2}+m_{e}^{2}c^{4}}+q\phi\) 不显含 \(t\)，故守恒：
+          <br>\(H_{\text{init}}=m_{e}c^{2}+0=0.511\,\mathrm{MeV}\)（静止电子）。
+          <br>\(H_{\text{final}}=\gamma m_{e}c^{2}+q\phi_{\text{final}}=\gamma m_{e}c^{2}+(-e)(-500\,\mathrm{kV})=\gamma(0.511\,\mathrm{MeV})+0.500\,\mathrm{MeV}\)。
+          <br>守恒：\(0.511=\gamma\cdot 0.511+0.500\)... 等等，电子电荷 \(q=-e\)，沿 \(+\hat{y}\) 电场被推往 \(-\hat{y}\)，势能 \(q\phi=-e\phi\)。若 \(\phi\) 增加（朝 \(+\hat{y}\) 走），\(q\phi\) 减少（势能降低），动能增加。设末态 \(\phi_{f}=-500\,\mathrm{kV}\)：\(q\phi_{f}=(-e)(-500\,\mathrm{kV})=+500\,\mathrm{keV}=+0.500\,\mathrm{MeV}\)。
+          <br>守恒 \(H_{i}=H_{f}\)：\(0.511=\gamma\cdot 0.511+0.500\)，\(\gamma=(0.511-0.500)/0.511=0.0215\)——小于 1 不可能！
+          <br>符号错了。重新：电子受力 \(\vec{F}=q\vec{E}=-e\vec{E}\)，沿 \(-\hat{y}\)。势能 \(U=q\phi=-e\phi\)，若沿 \(-\hat{y}\) 运动 \(\phi\) 减小（因 \(\vec{E}=-\nabla\phi\)，\(E_{y}=+E\) 给 \(\phi=-Ey\)，沿 \(-\hat{y}\) 时 \(y\downarrow\)，\(\phi\uparrow\)）。错乱了，重来：\(E_{y}=+1.0\times 10^{6}\)，取 \(\phi=-Ey=-1.0\times 10^{6}y\)。沿 \(-\hat{y}\) 走 \(y\) 减小，\(\phi\) 增加。终点 \(\Delta\phi=+500\,\mathrm{kV}\)。\(q\phi_{f}-q\phi_{i}=q\Delta\phi=(-e)(+500\,\mathrm{kV})=-500\,\mathrm{keV}\)，势能减少 500 keV，动能增加 500 keV。
+          <br>\(K_{f}=K_{i}+500\,\mathrm{keV}=0+500\,\mathrm{keV}\)。故 \(\gamma=1+K/(m_{e}c^{2})=1+0.500/0.511=1.979\)。
+          <br>\(\beta=\sqrt{1-1/\gamma^{2}}=\sqrt{1-0.255}=0.864\)，\(v=0.864c=2.59\times 10^{8}\,\mathrm{m/s}\)。
+          <br>校核：经典公式 \(v=\sqrt{2K/m_{e}}=\sqrt{2\times 5\times 10^{5}\times 1.602\times 10^{-19}/9.11\times 10^{-31}}=4.19\times 10^{8}\,\mathrm{m/s}>c\)，超光速——经典失效。相对论给出合理答案。<span class="ans">答案：\(\gamma=1.98\)、\(v=0.864c\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>场的洛伦兹变换 / Field Transformation Between Frames.</strong> 左半屏显示静止电荷在惯性系 \(S\) 中的纯库仑场（径向 \(\vec{E}\)，无 \(\vec{B}\)）。右半屏显示同一物理在惯性系 \(S'\)（以速度 \(v=\beta c\) 沿 \(+\hat{x}\) 相对 \(S\) 运动）下的呈现：径向 \(\vec{E}'\) 在横向被压缩并增强（按 \(\gamma\)），同时感生出方位方向的 \(\vec{B}'\)（由 \(\otimes\)、\(\odot\) 标记，对应稳恒电流的磁场——这正是例 10.1 与例 10.4 的可视化）。<strong>拖动滑块</strong>改变 \(\beta\)，观察 \(\gamma\)、横向增强比 \(E'_{\perp}/E=\gamma\)、纵向不变比 \(E'_{\parallel}/E=1\)，以及感应磁场的强度变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+          var c = 3.0e8;
+
+          var DEFAULTS = { beta: 0.60, showB: true };
+          var params = { beta: DEFAULTS.beta, showB: DEFAULTS.showB };
+
+          function gamma(b) { return 1 / Math.sqrt(Math.max(1e-6, 1 - b * b)); }
+
+          // draw ⊙ (out of page, Bz>0) or ⊗ (into page, Bz<0) with size by |Bz|
+          function drawBSymbol(ctx, x, y, bzSign) {
+            var mag = Math.min(1.5, Math.abs(bzSign));
+            var r = 5 + 4 * mag;
+            ctx.save();
+            ctx.strokeStyle = '#0891b2';
+            ctx.fillStyle = '#0891b2';
+            ctx.lineWidth = 1.6;
+            ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.stroke();
+            if (bzSign > 0) {
+              // out of page: dot
+              ctx.beginPath(); ctx.arc(x, y, r * 0.32, 0, 2 * Math.PI); ctx.fill();
+            } else {
+              // into page: X
+              var s = r * 0.62;
+              ctx.beginPath();
+              ctx.moveTo(x - s, y - s); ctx.lineTo(x + s, y + s);
+              ctx.moveTo(x + s, y - s); ctx.lineTo(x - s, y + s);
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var beta = params.beta;
+              var g = gamma(beta);
+
+              // layout
+              var panelW = W / 2;
+              var cy = H / 2 + 12;
+              var cxL = panelW / 2;
+              var cxR = panelW + panelW / 2;
+              var R = 100;
+              var k = 52;          // base arrow length (px)
+
+              // title
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('电磁场的洛伦兹变换 · Lorentz Transformation of E,B', W / 2, 16);
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillText("S 静止电荷 → S' 中 E\' + B\'（电流磁场）", W / 2, 32);
+              ctx.restore();
+
+              // divider
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(panelW, 44); ctx.lineTo(panelW, H - 6); ctx.stroke();
+              ctx.restore();
+
+              // ---- LEFT PANEL: S ----
+              drawPanel(ctx, cxL, cy, R, 'Frame S · 电荷静止 / charge at rest', '#2563eb');
+              drawFieldS(ctx, cxL, cy, R, k);
+
+              // ---- RIGHT PANEL: S' ----
+              drawPanel(ctx, cxR, cy, R,
+                "Frame S' · v = " + beta.toFixed(2) + "c · γ = " + g.toFixed(3),
+                '#dc2626');
+              drawFieldSp(ctx, cxR, cy, R, k, beta, g, params.showB);
+
+              // ---- numeric readout (bottom) ----
+              ctx.save();
+              ctx.font = '11px ui-monospace, monospace';
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'middle';
+              var yL = H - 16;
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('S\' 系读数:', 12, yL);
+              ctx.fillStyle = '#dc2626';
+              ctx.fillText('E′⊥/E = γ = ' + g.toFixed(3) + '  (横向增强 transverse ×γ)', 84, yL);
+              ctx.fillStyle = '#7c3aed';
+              ctx.fillText('E′∥/E = 1.000  (纵向不变 long. unchanged)', 360, yL);
+              ctx.fillStyle = '#0891b2';
+              ctx.fillText('|B′| ∝ γβ', 600, yL);
+              ctx.restore();
+            }
+          });
+
+          function drawPanel(ctx, cx, cy, R, label, color) {
+            // dashed sample circle
+            ctx.save();
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.stroke();
+            ctx.setLineDash([]);
+            // label
+            ctx.font = 'bold 12px system-ui, sans-serif';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'alphabetic';
+            ctx.fillText(label, cx, cy - R - 16);
+            ctx.restore();
+          }
+
+          function drawFieldS(ctx, cx, cy, R, k) {
+            var N = 12;
+            for (var i = 0; i < N; i++) {
+              var th = (i / N) * 2 * Math.PI;
+              var sx = cx + R * Math.cos(th);
+              var sy = cy + R * Math.sin(th);
+              // E points radially outward; in canvas, same direction as (cos th, sin th)
+              var dx = k * Math.cos(th);
+              var dy = k * Math.sin(th);
+              PS.drawArrow(ctx, sx, sy, sx + dx, sy + dy, '#2563eb');
+            }
+            // charge at center
+            PS.drawCircle(ctx, cx, cy, 10, { fill: '#16a34a', stroke: '#065f46', lineWidth: 2 });
+            PS.drawText(ctx, '+q', cx, cy + 1, { align: 'center', baseline: 'middle', color: '#ffffff', font: 'bold 10px system-ui' });
+            // annotation
+            ctx.save();
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = '#2563eb';
+            ctx.textAlign = 'center';
+            ctx.fillText('E: 径向库仑 / radial Coulomb', cx, cy + R + 22);
+            ctx.fillStyle = '#0891b2';
+            ctx.fillText('B = 0', cx, cy + R + 38);
+            ctx.restore();
+          }
+
+          function drawFieldSp(ctx, cx, cy, R, k, beta, g, showB) {
+            var N = 12;
+            // E' arrows: x-component unchanged, y-component enhanced by γ
+            for (var i = 0; i < N; i++) {
+              var th = (i / N) * 2 * Math.PI;
+              var sx = cx + R * Math.cos(th);
+              var sy = cy + R * Math.sin(th);
+              var Exp = k * Math.cos(th);          // E'_x = E_x (parallel unchanged)
+              var Eyp = g * k * Math.sin(th);      // E'_y = γ E_y (perpendicular enhanced)
+              PS.drawArrow(ctx, sx, sy, sx + Exp, sy + Eyp, '#dc2626');
+            }
+            // B' symbols (in page z): B'_z ∝ -γβ E_y_math
+            // In canvas: math-y = -canvas-y, so at canvas angle θ (sin θ > 0 ⇒ below center, math y < 0)
+            // For charge moving in -x (in S'), at math-y < 0 point: B_z_math > 0 (out of page).
+            // We use canvas sin(th): sin(th)>0 ⇒ canvas-below ⇒ B out of page (⊙).
+            if (showB) {
+              var Nb = 12;
+              var Rb = R * 0.55;
+              for (var j = 0; j < Nb; j++) {
+                var thb = (j / Nb) * 2 * Math.PI;
+                var bx = cx + Rb * Math.cos(thb);
+                var by = cy + Rb * Math.sin(thb);
+                // bzSign: positive = out of page, negative = into page
+                var bzSign = g * beta * Math.sin(thb);  // sin(thb)>0 (canvas-below) → out of page
+                if (Math.abs(bzSign) > 0.02) {
+                  drawBSymbol(ctx, bx, by, bzSign);
+                }
+              }
+            }
+            // charge with velocity arrow (moves in -x in S')
+            PS.drawCircle(ctx, cx, cy, 10, { fill: '#16a34a', stroke: '#065f46', lineWidth: 2 });
+            PS.drawText(ctx, '+q', cx, cy + 1, { align: 'center', baseline: 'middle', color: '#ffffff', font: 'bold 10px system-ui' });
+            var vlen = 24 + 40 * beta;
+            PS.drawArrow(ctx, cx - 16, cy, cx - 16 - vlen, cy, '#7c3aed', "v'");
+            // annotation
+            ctx.save();
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = '#dc2626';
+            ctx.textAlign = 'center';
+            ctx.fillText("E′: 横向压缩 + 增强", cx, cy + R + 22);
+            ctx.fillStyle = '#0891b2';
+            ctx.fillText("B′: 方位环绕 = 电流磁场", cx, cy + R + 38);
+            ctx.restore();
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'beta', label: "S' 相对 S 的速度 β = v/c", min: 0, max: 0.95, step: 0.01, value: DEFAULTS.beta },
+            { type: 'toggle', key: 'showB', label: "显示 B' 场 / Show B'", value: DEFAULTS.showB },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('beta', function (v) { params.beta = v; });
+          ctl.on('showB', function (v) { params.showB = v; });
+          ctl.on('reset', function () {
+            params.beta = DEFAULTS.beta;
+            params.showB = DEFAULTS.showB;
+            ctl.set('beta', DEFAULTS.beta);
+            ctl.set('showB', DEFAULTS.showB);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p><strong>四矢量与张量</strong>：</p>
+      <div class="formula">\[ J^{\mu}=(c\rho,\vec{J}),\quad A^{\mu}=(\phi/c,\vec{A}),\quad u^{\mu}=\gamma(c,\vec{v}),\quad p^{\mu}=(E_{\text{tot}}/c,\vec{p}). \]</div>
+      <p><strong>场强张量</strong>（反对称，编码 \(\vec{E},\vec{B}\)）：</p>
+      <div class="formula">\[ F^{\mu\nu}=\partial^{\mu}A^{\nu}-\partial^{\nu}A^{\mu},\quad F^{0i}=-E_{i}/c,\quad F^{ij}=-\epsilon_{ijk}B_{k}. \]</div>
+      <p><strong>协变麦克斯韦方程</strong>（两个张量方程 = 四个矢量方程）：</p>
+      <div class="formula">\[ \partial_{\mu}F^{\mu\nu}=\mu_{0}J^{\nu}\;\;\text{(含源)},\qquad \partial_{[\lambda}F_{\mu\nu]}=0\;\Leftrightarrow\;\partial_{\mu}\widetilde{F}^{\mu\nu}=0\;\;\text{(Bianchi)}. \]</div>
+      <p><strong>场变换</strong>（boost \(\vec{v}\)）：平行不变、垂直混合：</p>
+      <div class="formula">\[ \vec{E}'_{\perp}=\gamma(\vec{E}_{\perp}+\vec{v}\times\vec{B}),\quad \vec{B}'_{\perp}=\gamma(\vec{B}_{\perp}-\vec{v}\times\vec{E}/c^{2}),\quad \vec{E}'_{\parallel}=\vec{E}_{\parallel},\ \vec{B}'_{\parallel}=\vec{B}_{\parallel}. \]</div>
+      <p><strong>协变洛伦兹力</strong>（用固有时 \(\tau\)）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}p^{\mu}}{\mathrm{d}\tau}=qF^{\mu\nu}u_{\nu}\;\Rightarrow\;\frac{\mathrm{d}\vec{p}}{\mathrm{d}t}=q(\vec{E}+\vec{v}\times\vec{B}),\quad \frac{\mathrm{d}E_{\text{tot}}}{\mathrm{d}t}=q\vec{E}\cdot\vec{v}. \]</div>
+      <p><strong>两个洛伦兹不变量</strong>：</p>
+      <div class="formula">\[ \vec{E}\cdot\vec{B}\;\;\text{(pseudoscalar)},\qquad E^{2}-c^{2}B^{2}\;\;\text{(scalar)}. \]</div>
+      <p><strong>相对论拉氏量与哈密顿量</strong>：</p>
+      <div class="formula">\[ L=-\frac{mc^{2}}{\gamma}+q\vec{A}\cdot\vec{v}-q\phi,\quad \vec{P}_{\text{can}}=\gamma m\vec{v}+q\vec{A},\quad H=\sqrt{m^{2}c^{4}+c^{2}(\vec{P}_{\text{can}}-q\vec{A})^{2}}+q\phi. \]</div>
+      <p><strong>核心观念</strong>：电动力学天然是相对论性的——麦克斯韦方程组在洛伦兹变换下形式不变。\(\vec{E}\) 与 \(\vec{B}\) 是同一张量 \(F^{\mu\nu}\) 的分量，在不同惯性系下互相混合；唯有 \(\vec{E}\cdot\vec{B}\) 与 \(E^{2}-c^{2}B^{2}\) 是观察者无关的客观属性。一帧中的「纯电场」在另一帧中呈现为「电场 + 磁场」——磁力本质上是电力在不同惯性系下的相对论修正。这一统一图景由闵可夫斯基在 1908 年完成，是经典场论的典范，也是广义相对论与量子场论的概念起点。</p>
+      <div class="key-terms">four-current \(J^{\mu}\) (四维电流), four-potential \(A^{\mu}\) (四维势), field-strength tensor \(F^{\mu\nu}\) (场强张量), dual tensor \(\widetilde{F}^{\mu\nu}\) (对偶张量), Bianchi identity (比安基恒等式), field transformation (场变换), covariant Lorentz force \(\mathrm{d}p^{\mu}/\mathrm{d}\tau=qF^{\mu\nu}u_{\nu}\) (协变洛伦兹力), Lorentz invariants \(\vec{E}\cdot\vec{B}\), \(E^{2}-c^{2}B^{2}\) (洛伦兹不变量), proper time \(\tau\) (固有时), relativistic Lagrangian (相对论拉氏量), canonical momentum \(\vec{P}_{\text{can}}\) (正则动量)</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 原子与分子物理 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第5章 · 量子力学 II Quantum Mechanics II</p>
+      <h1>原子与分子物理 <span class="en-title">Atomic &amp; Molecular Physics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>理解多电子原子的<b>中心场近似 (central-field approximation)</b>，并能写出原子的电子组态 (electron configuration)。</li>
+        <li>掌握填充顺序 (Aufbau 原理)、<b>泡利不相容原理 (Pauli exclusion principle)</b> 与 <b>洪德规则 (Hund's rules)</b>，预言原子的基态光谱项 (ground term)。</li>
+        <li>能读写 <b>LS 耦合 (LS coupling)</b> 下的光谱项符号 \( {}^{2S+1}L_J \)，并理解其对周期表结构的决定作用。</li>
+        <li>理解 <b>X 射线特征谱 (characteristic X-rays)</b> 与 <b>莫塞莱定律 (Moseley's law)</b> 的物理起源。</li>
+        <li>掌握 <b>玻恩–奥本海默近似 (Born–Oppenheimer approximation)</b> 与 <b>LCAO–MO 方法</b>，分析 H₂⁺ 的成键 / 反键轨道。</li>
+        <li>计算双原子分子的<b>转动 (rotational)</b> 与<b>振动 (vibrational)</b> 光谱跃迁能量。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 多电子原子与中心场近似 Multi-electron atoms &amp; the central-field approximation</h3>
+      <p>对于核电荷数 \(Z\) 的多电子原子，严格的哈密顿量 (Hamiltonian) 为：</p>
+      <div class="formula">
+      \[ \hat{H} = \sum_{i=1}^{Z}\left(-\frac{\hbar^{2}}{2m_{e}}\nabla_{i}^{2} - \frac{Ze^{2}}{4\pi\varepsilon_{0}r_{i}}\right) + \sum_{i<j}\frac{e^{2}}{4\pi\varepsilon_{0}r_{ij}} \]
+      </div>
+      <p>其中最后一项电子–电子排斥 \(1/r_{ij}\) 使方程不可分离。<b>中心场近似</b>将该项作球面平均，把每个电子看作在<b>等效中心势 (effective central potential)</b> \(V_{\mathrm{cf}}(r)\) 中独立运动：</p>
+      <div class="formula">
+      \[ V_{\mathrm{cf}}(r_i) = -\frac{Ze^{2}}{4\pi\varepsilon_{0}r_{i}} + \Big\langle\textstyle\sum_{j\neq i}\tfrac{e^{2}}{4\pi\varepsilon_{0}r_{ij}}\Big\rangle_{\!\text{sph.}} \]
+      </div>
+      <p>于是单电子方程可分离，电子态仍由量子数 \( (n,l,m_l,m_s) \) 标记，能量主要依赖于 \(n\) 与 \(l\)。剩余的非中心部分（包括电子间的排斥偏离球对称的部分）作为微扰处理，正是它给出了洪德规则、LS 耦合与精细结构。</p>
+
+      <h3>2. 电子组态与壳层结构 Electron configuration &amp; shell structure</h3>
+      <p>按 <b>泡利不相容原理</b>，每个态 \( (n,l,m_l,m_s) \) 至多容纳一个电子；子壳层 \( (n,l) \) 最多容纳 \(2(2l+1)\) 个电子。子壳层记号：\(l=0,1,2,3,\ldots \rightarrow s,p,d,f,\ldots\)。<b>构造原理 (Aufbau principle)</b> 按能量由低到高填充，经验规则为按 \(n+l\) 由小到大、相同 \(n+l\) 时 \(n\) 小者先填：</p>
+      <div class="formula">
+      \[ 1s,\;2s,\;2p,\;3s,\;3p,\;4s,\;3d,\;4p,\;5s,\;4d,\;5p,\;6s,\;4f,\;5d,\;6p,\;7s,\ldots \]
+      </div>
+      <p>例：铁 (Fe, \(Z=26\)) 的基态组态为 \([\mathrm{Ar}]\,3d^{6}4s^{2}\)。少数原子（如 Cr、Cu）为获得半满或全满 \(d\) 壳层的额外稳定性，出现例外：Cr 为 \([\mathrm{Ar}]\,3d^{5}4s^{1}\)，Cu 为 \([\mathrm{Ar}]\,3d^{10}4s^{1}\)。</p>
+
+      <h3>3. 洪德规则 Hund's rules</h3>
+      <p>对于给定的等价电子组态（同一子壳层），洪德规则按下列顺序确定能量最低的<b>光谱项 (term)</b>：</p>
+      <ol>
+        <li><b>最大化总自旋 \(S\)</b>：未配对电子尽量平行自旋（泡利原理允许下）。</li>
+        <li>对确定的 \(S\)，<b>最大化总轨道角动量 \(L\)</b>。</li>
+        <li>对小于半满的壳层，\(J=|L-S|\)；对大于半满的壳层，\(J=L+S\)（半满时 \(L=0\)，\(J=S\)）。</li>
+      </ol>
+
+      <h3>4. LS 耦合与光谱项符号 LS coupling &amp; term symbols</h3>
+      <p>在轻、中等原子中，电子间静电耦合强于自旋–轨道耦合，所有电子的轨道角动量耦合为 \(\vec{L}=\sum_i\vec{l}_i\)，自旋耦合为 \(\vec{S}=\sum_i\vec{s}_i\)，再合成总角动量 \(\vec{J}=\vec{L}+\vec{S}\)。这称为 <b>LS 耦合（罗素–桑德斯耦合 Russell–Saunders coupling）</b>。光谱项符号记为：</p>
+      <div class="formula">
+      \[ {}^{2S+1}L_{J},\qquad L=0,1,2,3,4,5,6,\ldots\;\text{记作}\;S,P,D,F,G,H,I,\ldots \]
+      </div>
+      <p>其中 \(2S+1\) 称为<b>多重度 (multiplicity)</b>。例如氢原子 1s¹ 的基态项为 \( {}^{2}S_{1/2} \)；氦 1s² 为 \( {}^{1}S_{0} \)；碳基态为 \( {}^{3}P_{0} \)（详见例 5.1）。</p>
+
+      <h3>5. 周期表的形成 How the periodic table emerges</h3>
+      <p>按构造原理逐个填充子壳层，自然得到周期表的 <b>s 区、p 区、d 区、f 区</b>结构。每一行的长度由该能级组可容纳的电子数决定：第 1 行 2 个（1s），第 2、3 行各 8 个（\(ns,np\)），第 4、5 行各 18 个（含 \((n{-}1)d\)），第 6、7 行各 32 个（含 \((n{-}2)f\)）。元素的化学性质主要由最外层未满壳层（价电子层）决定，这正是同族元素化学相似的根源。</p>
+
+      <h3>6. 自旋–轨道耦合与精细结构 Spin–orbit coupling &amp; fine structure</h3>
+      <p>电子在核势场中运动时，其自旋磁矩与轨道磁矩相互作用，<b>自旋–轨道哈密顿量</b>为：</p>
+      <div class="formula">
+      \[ \hat{H}_{\mathrm{SO}} = \frac{1}{2m_{e}^{2}c^{2}}\,\frac{1}{r}\frac{dV}{dr}\,\hat{\vec{L}}\!\cdot\!\hat{\vec{S}} \]
+      </div>
+      <p>由于 \(\vec{L}\cdot\vec{S}=\tfrac{1}{2}[J(J+1)-L(L+1)-S(S+1)]\,\hbar^{2}\)，同一 \(L,S\) 的项分裂为不同 \(J\) 的能级（<b>精细结构多重态 fine-structure multiplet</b>）。自旋–轨道常数 \(A\) 的符号决定能级顺序，正是洪德第三规则的物理根源：小于半满时 \(A<0\)，\(J\) 最小者最低（正常多重度）；大于半满时 \(A>0\)，\(J\) 最大者最低（倒反多重度）。</p>
+
+      <h3>7. X 射线与莫塞莱定律 X-rays &amp; Moseley's law</h3>
+      <p>当高能电子将原子内层电子击出后，外层电子落入该空穴便发出 <b>特征 X 射线 (characteristic X-ray)</b>。从 \(n=2\to n=1\) 的跃迁称为 \(K\alpha\) 线。莫塞莱 (Moseley, 1913) 发现 \(K\alpha\) 频率满足：</p>
+      <div class="formula">
+      \[ f_{K\alpha} = \tfrac{3}{4}\,c\,R_{\infty}\,(Z-1)^{2}\quad\Longleftrightarrow\quad \sqrt{f_{K\alpha}}\propto (Z-1) \]
+      </div>
+      <p>\(Z-1\) 因子反映了 \(K\) 壳层剩余一个电子对核荷的<b>屏蔽 (screening)</b>。这条经验定律确立了原子序 \(Z\)（而非原子量）是元素的基本序数，并预言了当时尚未发现的元素（如 Tc、Re）。</p>
+
+      <h3>8. 分子物理：玻恩–奥本海默近似 Born–Oppenheimer approximation</h3>
+      <p>由于 \(m_{e}\ll M_{\mathrm{nuc}}\)，电子运动远快于核。玻恩–奥本海默近似将核坐标 \(R\) 视为参数，先对固定 \(R\) 求解电子薛定谔方程，得到<b>势能曲面 (potential energy surface)</b> \(U(R)\)；核随后在 \(U(R)\) 上运动。这使分子问题分离为电子结构与核运动两部分。</p>
+
+      <h3>9. LCAO 分子轨道与 H₂⁺ LCAO molecular orbitals &amp; H₂⁺</h3>
+      <p><b>原子轨道线性组合 (LCAO, Linear Combination of Atomic Orbitals)</b> 构造分子轨道：\(\psi=\sum_i c_i\phi_i\)。对最简单的分子离子 H₂⁺（两个质子 + 一个电子），取两个 1s 轨道的对称 / 反称组合：</p>
+      <div class="formula">
+      \[ \psi_{\pm} = \frac{1}{\sqrt{2(1\pm S)}}\bigl(1s_{A}\pm 1s_{B}\bigr) \]
+      </div>
+      <p>对称组合 \(\psi_{+}\) 在两核之间无节点、电子云密集，能量降低，称为 <b>\(\sigma_{1s}\) 成键轨道 (bonding orbital)</b>；反称组合 \(\psi_{-}\) 在中点有节点，能量升高，称为 <b>\(\sigma^{*}_{1s}\) 反键轨道 (antibonding orbital)</b>。能量随核间距 \(R\) 的变化给出成键势阱：在 \(R_{e}\approx 2.49\,a_{0}\) 处出现极小，离解能 \(D_{e}\approx 1.76\,\mathrm{eV}\)（实验值 \(2.79\,\mathrm{eV}\)；差异来自简单 LCAO 忽略了轨道极化）。</p>
+
+      <h3>10. 分子光谱：转动与振动 Rotational &amp; vibrational spectra</h3>
+      <p>在刚性转子近似下，双原子分子的<b>转动能级</b>：</p>
+      <div class="formula">
+      \[ E_{J} = \frac{\hbar^{2}}{2I}\,J(J+1)\equiv B\,J(J+1),\qquad J=0,1,2,\ldots \]
+      </div>
+      <p>其中 \(I=\mu R_{e}^{2}\) 为转动惯量，\(\mu\) 为约化质量。转动跃迁选择定则 \(\Delta J=\pm 1\)。<b>振动能级（简谐近似）</b>：</p>
+      <div class="formula">
+      \[ E_{v} = \hbar\omega\!\left(v+\tfrac{1}{2}\right),\qquad v=0,1,2,\ldots,\quad \Delta v=\pm 1 \]
+      </div>
+      <p>室温下分子多处于 \(v=0\)，故红外吸收主要看到 \(v=0\to 1\) 的基频带，并附有转动精细结构（振转谱 rovibrational band）。</p>
+
+      <div class="key-terms">
+        central-field approximation (中心场近似), electron configuration (电子组态), Aufbau principle (构造原理), Pauli exclusion principle (泡利不相容原理), Hund's rules (洪德规则), LS coupling / Russell–Saunders coupling (LS 耦合), term symbol (光谱项符号), multiplicity (多重度), spin–orbit coupling (自旋–轨道耦合), fine structure (精细结构), Moseley's law (莫塞莱定律), screening (屏蔽), Born–Oppenheimer approximation (玻恩–奥本海默近似), LCAO–MO (原子轨道线性组合–分子轨道), bonding / antibonding orbital (成键 / 反键轨道), bond order (键级), dissociation energy (离解能)
+      </div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：H₂⁺ 的 LCAO 能量 Derivation of H₂⁺ LCAO Energies</h2>
+      <p>取原子单位（\(\hbar=m_{e}=e=4\pi\varepsilon_{0}=1\)），H₂⁺ 的电子哈密顿量（含核间排斥 \(1/R\)）为：</p>
+      <div class="formula">
+      \[ \hat{H} = -\tfrac{1}{2}\nabla^{2} - \frac{1}{r_{A}} - \frac{1}{r_{B}} + \frac{1}{R} = \underbrace{\left(-\tfrac{1}{2}\nabla^{2}-\tfrac{1}{r_{A}}\right)}_{\hat{H}_{A}^{(0)}} + \underbrace{\left(-\tfrac{1}{r_{B}}+\tfrac{1}{R}\right)}_{V'} \]
+      </div>
+      <p class="step"><strong>步骤 1：</strong> 选试探波函数 \(\psi_{\pm}=(1s_{A}\pm 1s_{B})/\sqrt{2(1\pm S)}\)，其中 \(S=\langle 1s_{A}|1s_{B}\rangle\) 为重叠积分 (overlap integral)。用变分法 (variational principle)，能量期望值为：</p>
+      <div class="formula">
+      \[ E_{\pm}(R) = \langle\psi_{\pm}|\hat{H}|\psi_{\pm}\rangle = \frac{H_{AA}\pm H_{AB}}{1\pm S} \]
+      </div>
+      <p class="step"><strong>步骤 2：</strong> 分解矩阵元。利用 \(1s_{A}\) 是 \(\hat{H}_{A}^{(0)}\) 的本征态（本征值 \(E_{H}=-\tfrac{1}{2}\) 哈特利）以及 \(\hat{H}_{A}^{(0)}\) 的厄米性：</p>
+      <div class="formula">
+      \[ H_{AA} = E_{H} + J,\quad J\equiv\langle 1s_{A}|V'|1s_{A}\rangle\quad(\text{库仑积分 Coulomb integral}) \]
+      \[ H_{AB} = E_{H}\,S + L,\quad L\equiv\langle 1s_{A}|V'|1s_{B}\rangle\quad(\text{共振积分 resonance integral}) \]
+      </div>
+      <p>代入即得：</p>
+      <div class="formula">
+      \[ E_{\pm}(R) = E_{H} + \frac{J(R)\pm L(R)}{1\pm S(R)} \]
+      </div>
+      <p class="step"><strong>步骤 3：</strong> 对氢 1s Slater 轨道 \(\psi_{1s}=\pi^{-1/2}e^{-r}\)，三个积分有解析式：</p>
+      <div class="formula">
+      \[ S(R)=e^{-R}\!\left(1+R+\tfrac{R^{2}}{3}\right),\quad J(R)=\frac{(1+R)\,e^{-2R}}{R},\quad L(R)=\frac{S(R)}{R}-(1+R)e^{-R} \]
+      </div>
+      <p class="step"><strong>步骤 4：</strong> 物理讨论。对 \(R\gtrsim 0.4\,a_{0}\)，\(L(R)<0\)，故 \(E_{+}<E_{H}\)（成键下降），\(E_{-}>E_{H}\)（反键升高）。数值求 \(dE_{+}/dR=0\)：</p>
+      <div class="formula">
+      \[ R_{e}\approx 2.49\,a_{0}\approx 1.32\,\mathrm{\AA},\qquad E_{+}(R_{e})\approx -0.565\,E_{h} \]
+      \[ D_{e}=E_{H}-E_{+}(R_{e})\approx 0.0648\,E_{h}=1.76\,\mathrm{eV}=170\,\mathrm{kJ/mol} \]
+      </div>
+      <p>与实验值 \(R_{e}=2.00\,a_{0},\;D_{e}=2.79\,\mathrm{eV}\) 相比，简单 LCAO 把键长高估约 25%、离解能低估约 37%，原因在于两 1s 轨道的线性组合无法描述核间电子云的<b>极化 (polarization)</b>与轨道收缩。改进方法（如加入 \(2p\) 轨道或用 James–Coolidge 变分波函数）可逼近精确解。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 写出 C、N、Fe 的电子组态与洪德基态项</h4>
+        <p class="example-statement">写出碳 (\(Z=6\))、氮 (\(Z=7\))、铁 (\(Z=26\)) 基态原子的电子组态，并用洪德规则确定它们的基态光谱项 \( {}^{2S+1}L_J \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（碳 C，\(Z=6\)）：</strong>组态 \(1s^{2}\,2s^{2}\,2p^{2}\)，价壳层为 \(2p^{2}\)（\(l=1\)，最多 6 个电子，半满为 3）。</p>
+          <ul>
+            <li>洪德一：两个 \(2p\) 电子取平行自旋，\(S=1/2+1/2=1\)。</li>
+            <li>洪德二：平行自旋要求 \(m_l\) 不同（泡利原理），最大 \(M_L=m_{l1}+m_{l2}=1+0=1\)，故 \(L=1\rightarrow P\)。</li>
+            <li>洪德三：小于半满（\(2<3\)），\(J=|L-S|=|1-1|=0\)。</li>
+          </ul>
+          <p>基态项：<span class="ans">\(\,{}^{3}P_{0}\)</span>。</p>
+
+          <p class="step"><strong>解（氮 N，\(Z=7\)）：</strong>组态 \(1s^{2}\,2s^{2}\,2p^{3}\)，\(2p^{3}\) 恰为半满。</p>
+          <ul>
+            <li>洪德一：三个电子均平行自旋，\(S=3/2\)。</li>
+            <li>洪德二：三个电子分占 \(m_l=-1,0,+1\)，\(M_L=0\)，故 \(L=0\rightarrow S\)。</li>
+            <li>洪德三：半满时 \(J=S=3/2\)。</li>
+          </ul>
+          <p>基态项：<span class="ans">\(\,{}^{4}S_{3/2}\)</span>。</p>
+
+          <p class="step"><strong>解（铁 Fe，\(Z=26\)）：</strong>组态 \([\mathrm{Ar}]\,3d^{6}4s^{2}\)，价壳层 \(3d^{6}\)（\(l=2\)，最多 10 个，半满为 5）。</p>
+          <ul>
+            <li>洪德一：5 个电子平行自旋填满 5 个 \(d\) 轨道，第 6 个反向配对，\(S=(5-1)/2=2\)。</li>
+            <li>洪德二：5 个满占电子贡献 \(M_L=-2{-}1{+}0{+}1{+}2=0\)，第 6 个放入 \(m_l=+2\) 以最大化 \(M_L\)，故 \(M_L=2\)，\(L=2\rightarrow D\)。</li>
+            <li>洪德三：大于半满（\(6>5\)），\(J=L+S=2+2=4\)。</li>
+          </ul>
+          <p>基态项：<span class="ans">\(\,{}^{5}D_{4}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 应用洪德规则——氧原子的基态项</h4>
+        <p class="example-statement">氧原子 (\(Z=8\)) 基态组态 \(1s^{2}\,2s^{2}\,2p^{4}\)。求其基态光谱项，并算出该基态能级相对于多重态重心的自旋–轨道裂距。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(2p^{4}\) 有 4 个电子，多于半满（半满为 3）。按空穴等价（\(p^{4}\) 等价于 \(p^{2}\) 空穴），\(S=1\)，\(L=1\rightarrow P\)。</p>
+          <ul>
+            <li>洪德三：大于半满，\(J=L+S=1+1=2\)。</li>
+          </ul>
+          <p>基态项：<span class="ans">\(\,{}^{3}P_{2}\)</span>。</p>
+          <p class="step">多重态 \( {}^{3}P \) 的三个 \(J\) 能级裂距由 \(\vec{L}\cdot\vec{S}=\tfrac{1}{2}[J(J+1)-L(L+1)-S(S+1)]\hbar^{2}\) 给出：</p>
+          <div class="formula">
+          \[ J=0:\ \tfrac{1}{2}[0-2-2]=-2;\quad J=1:\ \tfrac{1}{2}[2-2-2]=-1;\quad J=2:\ \tfrac{1}{2}[6-2-2]=+1 \]
+          </div>
+          <p>对大于半满的 \( {}^{3}P \)，自旋–轨道常数 \(A>0\)，故 \(J=2\) 能级最高，按洪德第三规则恰为基态。\(J=0,1\) 的能级分别比 \(J=2\) 高出 \(|A|\cdot(1-(-1))\cdot?\) — 具体地：\(E_{J}=A\,\tfrac{1}{2}[J(J+1)-L(L+1)-S(S+1)]\)，所以 \(E_{J=2}-E_{J=1}=A\cdot[1-(-1)]=2A\)，\(E_{J=1}-E_{J=0}=A\cdot[-1-(-2)]=A\)。<span class="ans">三能级间隔比为 \(E_{12}:E_{01}=2A:A=2:1\)（朗德间距定则 Landé interval rule）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 H₂⁺ 的 LCAO 成键能</h4>
+        <p class="example-statement">在 LCAO 近似下，H₂⁺ 在平衡核间距 \(R_{e}\approx 2.49\,a_{0}\) 处的电子能量为 \(E_{+}(R_{e})\approx -0.565\,E_{h}\)。求离解能 \(D_{e}\)（单位 eV 与 kJ/mol），并比较实验值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>离解过程 \(\mathrm{H}_{2}^{+}\to\mathrm{H}+\mathrm{H}^{+}\) 末态能量即氢原子基态 \(E_{H}=-\tfrac{1}{2}E_{h}=-0.500\,E_{h}\)。因此</p>
+          <div class="formula">
+          \[ D_{e} = E_{H}-E_{+}(R_{e}) = -0.500-(-0.565) = 0.0648\,E_{h} \]
+          </div>
+          <p>换算（\(1\,E_{h}=27.2114\,\mathrm{eV}=2625.5\,\mathrm{kJ/mol}\)）：</p>
+          <div class="formula">
+          \[ D_{e}=0.0648\times 27.2114\,\mathrm{eV}=1.76\,\mathrm{eV} \]
+          \[ D_{e}=0.0648\times 2625.5\,\mathrm{kJ/mol}=170\,\mathrm{kJ/mol} \]
+          </div>
+          <p><span class="ans">\(D_{e}^{\text{LCAO}}\approx 1.76\,\mathrm{eV}\approx 170\,\mathrm{kJ/mol}\)</span>。实验值为 <span class="ans">\(D_{e}^{\text{exp}}=2.79\,\mathrm{eV}=269\,\mathrm{kJ/mol}\)，\(R_{e}^{\text{exp}}=2.00\,a_{0}\)</span>。简单 LCAO 低估 \(D_{e}\) 约 37%，原因是只取两个 1s 轨道，未考虑电子云的极化与收缩。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 H₂、He₂ 与 He₂⁺ 的键级</h4>
+        <p class="example-statement">用同核双原子分子的 LCAO 能级图，确定 H₂、He₂、He₂⁺ 的电子排布与<b>键级 (bond order)</b>，定义键级 \(=\tfrac{1}{2}(N_{b}-N_{a})\)，\(N_{b},N_{a}\) 为成键 / 反键电子数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>仅考虑 \(1s\) 组成的 \(\sigma_{1s}\)（成键）与 \(\sigma^{*}_{1s}\)（反键）。</p>
+          <ul>
+            <li><b>H₂</b>（2 电子）：\((\sigma_{1s})^{2}\)，\(N_{b}=2\)，\(N_{a}=0\)。键级 \(=\tfrac{1}{2}(2-0)=1\)。<span class="ans">稳定单键，\(D_{e}=4.75\,\mathrm{eV}\)</span>。</li>
+            <li><b>He₂</b>（4 电子）：\((\sigma_{1s})^{2}(\sigma^{*}_{1s})^{2}\)，\(N_{b}=2\)，\(N_{a}=2\)。键级 \(=\tfrac{1}{2}(2-2)=0\)。<span class="ans">不成键——基态 He₂ 不存在（仅作为很弱的范德华分子存在）。</span></li>
+            <li><b>He₂⁺</b>（3 电子）：\((\sigma_{1s})^{2}(\sigma^{*}_{1s})^{1}\)，\(N_{b}=2\)，\(N_{a}=1\)。键级 \(=\tfrac{1}{2}(2-1)=\tfrac{1}{2}\)。<span class="ans">半键——He₂⁺ 在放电管中可被光谱观测，\(D_{e}\approx 2.5\,\mathrm{eV}\)。</span></li>
+          </ul>
+          <p>这正说明<b>反键轨道的升高抵消了成键轨道的降低</b>：填满一对成键–反键轨道不产生净键。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 HCl 的转动跃迁能量</h4>
+        <p class="example-statement">H\(^{35}\)Cl 的键长 \(R_{e}=1.27\,\text{\AA}\)。求（a）转动惯量 \(I\)；（b）转动常数 \(B\)（能量与 cm⁻¹）；（c）\(J=0\to 1\) 跃迁的光子能量与频率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解（a）：</strong>约化质量</p>
+          <div class="formula">
+          \[ \mu=\frac{m_{H}m_{Cl}}{m_{H}+m_{Cl}}=\frac{1\times 35.5}{1+35.5}\,\mathrm{amu}=0.9724\,\mathrm{amu}=1.615\times 10^{-27}\,\mathrm{kg} \]
+          \[ I=\mu R_{e}^{2}=1.615\times 10^{-27}\times(1.27\times 10^{-10})^{2}=2.60\times 10^{-47}\,\mathrm{kg\,m^{2}} \]
+          </div>
+          <p class="step"><strong>解（b）：</strong>转动常数（能量）：</p>
+          <div class="formula">
+          \[ B=\frac{\hbar^{2}}{2I}=\frac{(1.055\times 10^{-34})^{2}}{2\times 2.60\times 10^{-47}}=2.14\times 10^{-22}\,\mathrm{J} \]
+          </div>
+          <p>换算为波数：\(\tilde{B}=B/(hc)=2.14\times 10^{-22}/(1.986\times 10^{-23})=10.8\,\mathrm{cm^{-1}}\)（实验值 \(10.6\,\mathrm{cm^{-1}}\)，吻合良好）。</p>
+          <p class="step"><strong>解（c）：</strong>\(J=0\to 1\) 跃迁，\(\Delta E=2B\)：</p>
+          <div class="formula">
+          \[ \Delta E=2B=4.28\times 10^{-22}\,\mathrm{J}=2.66\times 10^{-3}\,\mathrm{eV},\qquad \nu=\frac{\Delta E}{h}=6.46\times 10^{11}\,\mathrm{Hz}=646\,\mathrm{GHz} \]
+          </div>
+          <p><span class="ans">\(\Delta E\approx 2.66\,\mathrm{meV}\approx 21.5\,\mathrm{cm^{-1}}\)，频率 \(\nu\approx 646\,\mathrm{GHz}\)（微波段）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><b>洪德规则的顺序错误：</b>三条规则必须按 \(S\rightarrow L\rightarrow J\) 的顺序依次应用。先固定 \(S\) 最大，再在该 \(S\) 下让 \(L\) 最大，<i>然后</i>由壳层是否过半定 \(J\)。不能跳过前两条直接想 \(J\)。</li>
+        <li><b>反键轨道使能量升高：</b>反键轨道不是“不参与”，而是<b>主动升高</b>能量。He₂ 之所以不成键，正是因为反键电子抵消了成键电子的稳定化（键级为零）。千万不要把反键当成“中性”。</li>
+        <li><b>光谱项符号完整地编码 \(L,S,J\)：</b>书写 \( {}^{2S+1}L_J \) 时，左上标是多重度 \(2S+1\)（不是 \(S\)），字母给出 \(L\)，右下标是 \(J\)。如 \( {}^{3}P_{2} \) 表示 \(S=1\)、\(L=1\)、\(J=2\)，而不是 \(S=3\)。</li>
+        <li><b>大于 / 小于半满的 \(J\) 公式相反：</b>小于半满用 \(J=|L-S|\)，大于半满用 \(J=L+S\)。判断“半满”是相对于该子壳层容量 \(2(2l+1)\)，不是相对于原子序。</li>
+        <li><b>玻恩–奥本海默近似假设核很重：</b>该近似依赖 \(m_{e}\ll M_{\mathrm{nuc}}\)。对电子–核质量比不够小的体系（如某些轻的离子或包含 μ 子的“奇异原子”）该近似可能失效，需要非绝热修正。</li>
+        <li><b>把 LCAO 当成精确解：</b>简单两轨道 LCAO 对 H₂⁺ 已有 30%+ 误差。它给出正确的<b>定性</b>图像（成键 / 反键、势阱），定量上还需加入更多原子轨道（极化、弥散）才能逼近精确解。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>5.1 写出 Ti²⁺（\(Z=22\)，\([\mathrm{Ar}]\,3d^{2}\)）与 Cr³⁺（\(Z=24\)，\([\mathrm{Ar}]\,3d^{3}\)）的基态光谱项。</summary>
+        <div class="hint">两题均小于半满（\(d\) 半满为 5）。先最大化 \(S\)，再最大化 \(L\)。</div>
+        <div class="solution">
+          <p><b>Ti²⁺ (\(d^{2}\))：</b>两电子平行自旋 \(S=1\)。最大 \(M_L=m_{l1}+m_{l2}=2+1=3\)，故 \(L=3\rightarrow F\)。小于半满，\(J=|L-S|=|3-1|=2\)。基态项 <span class="ans">\(\,{}^{3}F_{2}\)</span>。</p>
+          <p><b>Cr³⁺ (\(d^{3}\))：</b>三电子平行自旋 \(S=3/2\)。最大 \(M_L=2+1+0=3\)，\(L=3\rightarrow F\)。小于半满，\(J=|L-S|=|3-3/2|=3/2\)。基态项 <span class="ans">\(\,{}^{4}F_{3/2}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.2 用莫塞莱定律估算铜（Cu，\(Z=29\)）的 \(K\alpha\) 波长，并与实验值 1.541 Å 比较。</summary>
+        <div class="hint">用 \(1/\lambda_{K\alpha}=\tfrac{3}{4}R_{\infty}(Z-1)^{2}\)，\(R_{\infty}=1.0974\times 10^{7}\,\mathrm{m^{-1}}\)。</div>
+        <div class="solution">
+          <p>\(1/\lambda=0.75\times 1.0974\times 10^{7}\times (29-1)^{2}=0.75\times 1.0974\times 10^{7}\times 784=6.45\times 10^{9}\,\mathrm{m^{-1}}\)。</p>
+          <p>\(\lambda=1/(6.45\times 10^{9})=1.55\times 10^{-10}\,\mathrm{m}=\) <span class="ans">\(1.55\,\text{\AA}\)</span>，与实验值 1.541 Å 偏差约 0.6%。莫塞莱定律出色地预言了 \(K\alpha\) 波长。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.3 CO 的振动基频为 \(\tilde{\nu}=2170\,\mathrm{cm^{-1}}\)，约化质量 \(\mu=1.14\times 10^{-26}\,\mathrm{kg}\)。求（a）一个振动量子的能量（eV）；（b）力常数 \(k\)（N/m）。</summary>
+        <div class="hint">\(E=hc\tilde{\nu}\)；\(k=\mu(2\pi c\tilde{\nu})^{2}\)。</div>
+        <div class="solution">
+          <p><b>(a)</b> \(\Delta E=hc\tilde{\nu}=(6.626\times 10^{-34})(2.998\times 10^{10})(2170)=4.31\times 10^{-20}\,\mathrm{J}=\) <span class="ans">\(0.269\,\mathrm{eV}\)</span>。</p>
+          <p><b>(b)</b> \(\omega=2\pi c\tilde{\nu}=2\pi\times 2.998\times 10^{10}\times 2170=4.09\times 10^{14}\,\mathrm{rad/s}\)。</p>
+          <p>\(k=\mu\omega^{2}=1.14\times 10^{-26}\times(4.09\times 10^{14})^{2}=\) <span class="ans">\(1.91\times 10^{3}\,\mathrm{N/m}\)</span>（实验文献值约 \(1860\,\mathrm{N/m}\)，吻合很好）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.4 求双原子分子 O₂ 与 N₂ 的键级，并解释为何 O₂ 顺磁性而 N₂ 抗磁性。</summary>
+        <div class="hint">写出价电子的分子轨道排布。注意 O₂ 中 \(\pi^{*}_{2p}\) 上有未配对电子。</div>
+        <div class="solution">
+          <p><b>N₂</b>（10 个价电子）：价层排布 \((\sigma_{2s})^{2}(\sigma^{*}_{2s})^{2}(\pi_{2p})^{4}(\sigma_{2p})^{2}\)，\(N_{b}=8,\;N_{a}=2\)，键级 \(=\tfrac{1}{2}(8-2)=\) <span class="ans">\(3\)（三键）</span>。所有电子均配对，故抗磁性。</p>
+          <p><b>O₂</b>（12 个价电子）：按 O₂ 的能级顺序 \((\sigma_{2s})^{2}(\sigma^{*}_{2s})^{2}(\sigma_{2p})^{2}(\pi_{2p})^{4}(\pi^{*}_{2p})^{2}\)，最后两个电子按洪德规则分占两个简并 \(\pi^{*}\) 轨道且平行自旋。\(N_{b}=8,\;N_{a}=4\)，键级 \(=\tfrac{1}{2}(8-4)=\) <span class="ans">\(2\)（双键）</span>。两个未配对电子使 O₂ <span class="ans">顺磁性 (paramagnetic)</span>——这是分子轨道理论最漂亮的成功之一（简单路易斯结构无法预言此性质）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.5（挑战）一个原子的基态项为 \( {}^{2}D_{3/2} \)。求 \(S\)、\(L\)、\(J\)，并判断它是小于半满还是大于半满（已知自旋–轨道常数 \(A<0\)）。</summary>
+        <div class="hint">由多重度和字母反推 \(S,L\)；再用 \(A\) 的符号与洪德第三规则联系。</div>
+        <div class="solution">
+          <p>\(2S+1=2\Rightarrow S=1/2\)；\(D\Rightarrow L=2\)；下标 \(J=3/2\)。</p>
+          <p>\(A<0\) 表示小于半满的“正常”多重度（最低 \(J\) 能级最低）。直接验证：\(J=|L-S|=|2-1/2|=3/2\)，与下标一致。<span class="ans">\(S=1/2,\,L=2,\,J=3/2\)；该壳层小于半满。</span>例如 \(4d^{1}\) 组态（如 Y 原子）即满足此项。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 H₂⁺ Bonding &amp; Antibonding Curves</h2>
+      <p class="sim-desc">下图在 LCAO 近似下绘制 H₂⁺ 的<b>成键</b>能量 \(E_{+}(R)\)（绿）与<b>反键</b>能量 \(E_{-}(R)\)（红）随核间距 \(R\) 的变化。绿色曲线在 \(R_{e}\approx 2.49\,a_{0}\) 处出现成键势阱，蓝点标记平衡核间距，箭头标出离解能 \(D_{e}\)。拖动滑块改变<b>重叠因子 \(\kappa\)</b>（放大或压缩重叠与共振积分），观察势阱深浅与 \(R_{e}\) 的移动；点击重置恢复物理值 \(\kappa=1\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+          var params = { kappa: 1.0 };
+
+          // H2+ LCAO integrals (atomic units, R in a0); analytic for 1s Slater orbitals.
+          function overlap(R) { return Math.exp(-R) * (1 + R + R * R / 3); }
+          function Jcoul(R) { return (1 + R) * Math.exp(-2 * R) / R; }       // Coulomb shift (>0, repulsive)
+          function Lres(R)  { return overlap(R) / R - Math.exp(-R) * (1 + R); } // resonance (<0 for R > 0.4)
+
+          function energies(R) {
+            var S = overlap(R), J = Jcoul(R), L = Lres(R);
+            var Sk = params.kappa * S, Lk = params.kappa * L; // overlap scaling (phenomenological)
+            var ePlus  = -0.5 + (J + Lk) / (1 + Sk);
+            var eMinus = -0.5 + (J - Lk) / (1 - Sk);
+            return { ePlus: ePlus, eMinus: eMinus };
+          }
+          function findMin() {
+            var bestR = 2.5, bestE = 1e9;
+            for (var R = 1.05; R < 6.0; R += 0.01) {
+              var e = energies(R).ePlus;
+              if (e < bestE) { bestE = e; bestR = R; }
+            }
+            return { Re: bestR, Ee: bestE };
+          }
+
+          // Plot viewport
+          var x0 = 58, y0 = 26, pw = W - 78, ph = H - 72;
+          var Rmin = 1.0, Rmax = 6.0;
+          var Emin = -0.60, Emax = 0.20;
+          function xMap(R) { return x0 + (R - Rmin) / (Rmax - Rmin) * pw; }
+          function yMap(E) { return y0 + ph - (E - Emin) / (Emax - Emin) * ph; }
+          function clipY(y) { return Math.max(y0, Math.min(y0 + ph, y)); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static plot: physics recomputed each draw */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              // light grid
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.4;
+              ctx.lineWidth = 1;
+              for (var Rg = 1; Rg <= 6; Rg++) {
+                var xg = xMap(Rg);
+                ctx.beginPath(); ctx.moveTo(xg, y0); ctx.lineTo(xg, y0 + ph); ctx.stroke();
+              }
+              for (var Eg = -0.5; Eg <= 0.2; Eg += 0.1) {
+                var yg = yMap(Eg);
+                ctx.beginPath(); ctx.moveTo(x0, yg); ctx.lineTo(x0 + pw, yg); ctx.stroke();
+              }
+              ctx.restore();
+
+              // axes
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 + ph); ctx.lineTo(x0 + pw, y0 + ph);
+              ctx.stroke();
+              ctx.restore();
+
+              // tick labels
+              for (var Rt = 1; Rt <= 6; Rt++) {
+                PS.drawText(ctx, String(Rt), xMap(Rt), y0 + ph + 15,
+                  { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+              }
+              for (var Et = -0.5; Et <= 0.2; Et += 0.1) {
+                PS.drawText(ctx, Et.toFixed(1), x0 - 6, yMap(Et) + 3,
+                  { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'right' });
+              }
+              PS.drawText(ctx, 'R (a₀)', x0 + pw - 4, y0 + ph + 32,
+                { font: '12px system-ui, sans-serif', color: PS.colors.text, align: 'right' });
+              ctx.save();
+              ctx.translate(14, y0 + 14);
+              PS.drawText(ctx, 'E (Hartree)', 0, 0,
+                { font: '12px system-ui, sans-serif', color: PS.colors.text });
+              ctx.restore();
+
+              // dissociation asymptote E_H = -0.5
+              var yH = clipY(yMap(-0.5));
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.setLineDash([5, 4]); ctx.globalAlpha = 0.7;
+              ctx.beginPath(); ctx.moveTo(x0, yH); ctx.lineTo(x0 + pw, yH); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E_H = −½ E_h  (H + H⁺)', x0 + pw - 6, yH - 4,
+                { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'right' });
+
+              // Bonding curve E_+(R)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              var first = true;
+              for (var R = Rmin; R <= Rmax + 0.001; R += 0.03) {
+                var py = clipY(yMap(energies(R).ePlus));
+                var px = xMap(R);
+                if (first) { ctx.moveTo(px, py); first = false; } else { ctx.lineTo(px, py); }
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Antibonding curve E_-(R)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent; ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              first = true;
+              for (var R = Rmin; R <= Rmax + 0.001; R += 0.03) {
+                var py2 = clipY(yMap(energies(R).eMinus));
+                var px2 = xMap(R);
+                if (first) { ctx.moveTo(px2, py2); first = false; } else { ctx.lineTo(px2, py2); }
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // Find and mark equilibrium R_e
+              var res = findMin();
+              var Re = res.Re, Ee = res.Ee;
+              var De = -0.5 - Ee;                 // Hartree
+              var pxRe = xMap(Re), pyEe = clipY(yMap(Ee));
+
+              // vertical dashed line at R_e
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(pxRe, y0 + ph); ctx.lineTo(pxRe, pyEe); ctx.stroke();
+              ctx.restore();
+
+              // equilibrium point
+              PS.drawCircle(ctx, pxRe, pyEe, 4.5, { fill: PS.colors.primary });
+
+              // D_e double-arrow (offset to the right of R_e)
+              var xArr = pxRe + 22;
+              PS.drawArrow(ctx, xArr, yH, xArr, pyEe, PS.colors.primary);
+              PS.drawText(ctx, 'D_e = ' + (De * 27.2114).toFixed(2) + ' eV',
+                xArr + 8, (yH + pyEe) / 2 + 4,
+                { font: '12px system-ui, sans-serif', color: PS.colors.primary });
+              PS.drawText(ctx, 'R_e = ' + Re.toFixed(2) + ' a₀', pxRe + 6, y0 + ph + 15,
+                { font: '12px system-ui, sans-serif', color: PS.colors.primary });
+
+              // curve labels
+              var yPlusLab = clipY(yMap(energies(4.6).ePlus));
+              PS.drawText(ctx, 'E₊  σ₁s 成键 bonding', xMap(4.6) - 30, yPlusLab - 8,
+                { font: '12px system-ui, sans-serif', color: PS.colors.accent2 });
+              var yMinusLab = clipY(yMap(energies(2.4).eMinus));
+              PS.drawText(ctx, 'E₋  σ*₁s 反键 antibonding', xMap(2.4) + 10, yMinusLab - 6,
+                { font: '12px system-ui, sans-serif', color: PS.colors.accent });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'kappa', label: '重叠因子 κ / overlap factor', min: 0.5, max: 1.5, step: 0.05, value: 1.0 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('kappa', function (v) { params.kappa = v; });
+          ctl.on('reset', function () {
+            params.kappa = 1.0;
+            // sync slider DOM so display matches the reset value
+            var sl = document.querySelector('#controls-5 input[type=range]');
+            if (sl) sl.value = 1.0;
+            var vv = document.querySelector('#controls-5 .ctrl-value');
+            if (vv) vv.textContent = '1.00';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p><b>多电子原子：</b>中心场近似把电子视为在等效球对称势中独立运动，给出壳层结构 \( (n,l) \)，最多容纳 \(2(2l+1)\) 个电子。构造原理决定填充顺序。洪德规则（依次最大化 \(S\)，再 \(L\)，再由半满定 \(J\)）给出基态光谱项 \( {}^{2S+1}L_J \)。LS 耦合 + 自旋–轨道耦合给出精细结构多重态；裂距服从朗德间距定则。</p>
+      <p><b>X 射线：</b>莫塞莱定律 \(\sqrt{f_{K\alpha}}\propto (Z-1)\) 来自内层跃迁与 \(K\) 壳层屏蔽，确立了原子序 \(Z\) 的基本地位。</p>
+      <p><b>分子物理：</b>玻恩–奥本海默近似分离电子与核运动；LCAO–MO 把原子轨道线性组合成分子轨道。H₂⁺ 的对称 / 反称组合给出成键 / 反键轨道，简单 LCAO 给出 \(R_{e}\approx 2.49\,a_{0}\)、\(D_{e}\approx 1.76\,\mathrm{eV}\)（实验 2.79 eV）。键级 \(=\tfrac{1}{2}(N_{b}-N_{a})\) 解释 H₂、He₂、O₂、N₂ 的成键。分子光谱：转动能级 \(E_{J}=BJ(J+1)\)，振动能级 \(E_{v}=\hbar\omega(v+\tfrac{1}{2})\)。</p>
+      <div class="formula">
+      \[ \boxed{\,\text{电子容量}=2(2l+1);\quad {}^{2S+1}L_{J};\quad J=|L-S|\,(\text{半满以下}),\;J=L+S\,(\text{半满以上})\,} \]
+      \[ \boxed{\,E_{\pm}(R)=E_{H}+\frac{J(R)\pm L(R)}{1\pm S(R)};\quad \text{键级}=\tfrac{1}{2}(N_{b}-N_{a})\,} \]
+      \[ \boxed{\,E_{J}=\frac{\hbar^{2}}{2I}J(J+1),\;\Delta J=\pm1;\qquad E_{v}=\hbar\omega(v+\tfrac{1}{2}),\;\Delta v=\pm1\,} \]
+      \[ \boxed{\,f_{K\alpha}=\tfrac{3}{4}cR_{\infty}(Z-1)^{2}\,} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 全同粒子与多体 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第1章 · 量子力学 II Quantum Mechanics II</p>
+      <h1>全同粒子与多体 <span class="en-title">Identical Particles &amp; Many-Body</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述<strong>对称化公设</strong> (symmetrization postulate)：对全同玻色子 (bosons) 总波函数在交换两粒子时<strong>对称</strong> (\(+1\))，对全同费米子 (fermions) <strong>反对称</strong> (\(-1\))；用<strong>交换算符</strong> \(\hat{P}_{12}\) 的本征值 \(\pm 1\) 表达，并说明它源自粒子的<strong>不可分辨性</strong> (indistinguishability)。</li>
+        <li>用单粒子态 \(\psi_a,\psi_b\) 构造<strong>两粒子对称/反对称态</strong> (symmetric / antisymmetric 2-particle states)，把空间 (spatial) 与自旋 (spin) 部分作直积，使<strong>总</strong>波函数对费米子呈反对称；用此立刻推出<strong>泡利不相容原理</strong> (Pauli exclusion principle)——两个全同费米子不能处于完全相同的单粒子态。</li>
+        <li>写出 \(N\) 个费米子的<strong>斯莱特行列式</strong> (Slater determinant)，解释其归一化 \(1/\sqrt{N!}\)、行列式换行变号自动保证反对称、两行相同时行列式为零自动给出泡利不相容。</li>
+        <li>估算<strong>氦原子基态</strong> (Helium ground state) 能量：用有效核电荷 \(Z_{\text{eff}}\) 的变分试探波函数，得 \(Z_{\text{eff}}^{*}=Z-5/16\)，基态能量 \(\simeq -77.5\,\mathrm{eV}\)（实验 \(-79.0\,\mathrm{eV}\)）。</li>
+        <li>区分氦的<strong>单态仲氦</strong> (singlet / para-helium, \(S=0\)) 与<strong>三重态正氦</strong> (triplet / ortho-helium, \(S=1\))；用<strong>直接积分</strong> \(J\) 与<strong>交换积分</strong> \(K\) 写出两者能量差 \(\Delta E=2K\)，解释为什么三重态（空间反对称、电子互相「躲开」）能量更低——这是纯量子效应，无经典对应。</li>
+        <li>陈述<strong>变分原理</strong> (variational principle)：任意归一化试探态的能量期望是基态能量的<strong>上界</strong>，\(E[\psi_{\text{trial}}]\ge E_0\)；用此求出最优变分参数；并指出 <strong>Hartree–Fock</strong> 自洽场方法就是变分原理对多电子原子的系统化应用。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 全同粒子与交换算符 Identical Particles &amp; the Exchange Operator</h3>
+      <p>两个粒子若<strong>所有内禀性质</strong>（质量、电荷、自旋、磁矩……）完全相同，则称为<strong>全同粒子</strong> (identical particles)：电子与电子全同，质子与质子全同，但电子与 \(\mu\) 子不全同。经典力学中即使两粒子全同，仍可「涂上颜色」沿轨道追踪「1 号粒子」「2 号粒子」——但在量子力学中<strong>没有轨迹</strong>，当两个全同粒子的波包重叠后再次分开，<strong>原则上无法</strong>通过任何测量区分「哪个是 1、哪个是 2」。这种<strong>不可分辨性</strong> (indistinguishability) 给波函数加上了严苛的对称约束。</p>
+      <p>引入<strong>交换算符</strong> (exchange operator) \(\hat{P}_{12}\)：交换粒子 1 与粒子 2 的所有标签（坐标与自旋）</p>
+      <div class="formula">\[ \hat{P}_{12}\,\Psi(\vec{r}_1,s_1;\,\vec{r}_2,s_2)=\Psi(\vec{r}_2,s_2;\,\vec{r}_1,s_1). \]</div>
+      <p>再交换一次回到原态：\(\hat{P}_{12}^{2}=\mathbb{1}\)，所以 \(\hat{P}_{12}\) 的本征值只有 \(\pm 1\)。又因两粒子全同，<strong>所有物理可观测量</strong> \(\hat{A}\)（哈密顿量、动量、能量……）必须与 \(\hat{P}_{12}\) 对易：\([\hat{A},\hat{P}_{12}]=0\)——这意味着 \(\hat{P}_{12}\) 是<strong>运动常量</strong>，波函数的交换对称性不随时间演化改变。</p>
+      <div class="key-terms">identical particles (全同粒子), indistinguishability (不可分辨性), exchange operator \(\hat{P}_{12}\) (交换算符), eigenvalue \(\pm 1\) (本征值)</div>
+
+      <h3>2. 对称化公设 The Symmetrization Postulate</h3>
+      <p>量子力学在<strong>自旋-统计定理</strong> (spin-statistics theorem，量子场论中由相对论 + 局域性 + 正能量推出) 中给出最终答案：自然界按自旋把全同粒子分成两类，对应 \(\hat{P}_{12}\) 的两个本征值：</p>
+      <div class="formula">\[ \boxed{\;\text{全同玻色子（整数自旋 }s=0,1,2,\dots\text{）：}\hat{P}_{12}\Psi=+\Psi\;\;\text{（对称）}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{全同费米子（半整数自旋 }s=\tfrac12,\tfrac32,\dots\text{）：}\hat{P}_{12}\Psi=-\Psi\;\;\text{（反对称）}\;} \]</div>
+      <p>即<strong>对称化公设</strong> (symmetrization postulate)。例子：电子、质子、中子、\(\mu\) 子、夸克均为费米子（\(s=1/2\)）);\(\tau\)、\(\Omega^-\) 重子（\(s=3/2\)）亦为费米子；光子（\(s=1\)）、胶子（\(s=1\)）、Higgs（\(s=0\)）、\(^4\mathrm{He}\) 原子（2 质子+2 中子+2 电子=偶数个费米子合成）为玻色子；而 \({}^3\mathrm{He}\) 原子（2 质子+1 中子+2 电子=奇数个费米子）是费米子——同位素的统计性质截然不同，导致液氦 \({}^4\mathrm{He}\) 在 \(2.17\,\mathrm{K}\) 有超流转变而 \({}^3\mathrm{He}\) 要到 \(2.5\,\mathrm{mK}\) 才转变。</p>
+      <div class="key-terms">symmetrization postulate (对称化公设), boson (玻色子), fermion (费米子), symmetric (对称), antisymmetric (反对称), spin-statistics theorem (自旋-统计定理)</div>
+
+      <h3>3. 构造两粒子态：空间 \(\times\) 自旋 Two-Particle States (Spatial \(\otimes\) Spin)</h3>
+      <p>设两粒子可处于单粒子态 \(\psi_a\) 与 \(\psi_b\)。<strong>空间部分</strong>的对称与反对称组合：</p>
+      <div class="formula">\[ \Psi_{S}^{\text{sp}}(\vec{r}_1,\vec{r}_2)=\frac{1}{\sqrt{2}}\bigl[\psi_a(\vec{r}_1)\psi_b(\vec{r}_2)+\psi_a(\vec{r}_2)\psi_b(\vec{r}_1)\bigr]\;\;\text{（对称）}, \]</div>
+      <div class="formula">\[ \Psi_{A}^{\text{sp}}(\vec{r}_1,\vec{r}_2)=\frac{1}{\sqrt{2}}\bigl[\psi_a(\vec{r}_1)\psi_b(\vec{r}_2)-\psi_a(\vec{r}_2)\psi_b(\vec{r}_1)\bigr]\;\;\text{（反对称）}. \]</div>
+      <p>（若 \(a=b\)，\(\Psi_A^{\text{sp}}\) 恒为零——空间上不可能让两费米子占据同一单粒子态。）两个电子（自旋 \(1/2\)）的自旋部分按例 7.5 的结果：三重态 <strong>triplet</strong>（\(S=1\)，对称）与单态 <strong>singlet</strong>（\(S=0\)，反对称）：</p>
+      <div class="formula">\[ \chi_{S}^{(1)}\in\text{triplet（对称，3 重）},\qquad \chi_{A}^{(0)}=\frac{1}{\sqrt{2}}\bigl(|\!\uparrow\downarrow\rangle-|\!\downarrow\uparrow\rangle\bigr)\;\text{（singlet，反对称，1 重）}. \]</div>
+      <p>费米子总波函数（空间 \(\otimes\) 自旋）必须反对称。两种组合都满足：</p>
+      <div class="formula">\[ \underbrace{\Psi_{A}^{\text{sp}}\otimes\chi_{S}^{(1)}}_{\text{反对称}\,\times\,\text{对称}=反对称}\;(\text{三重态正氦 ortho}),\qquad \underbrace{\Psi_{S}^{\text{sp}}\otimes\chi_{A}^{(0)}}_{\text{对称}\,\times\,\text{反对称}=反对称}\;(\text{单态仲氦 para}). \]</div>
+      <p>所以即便两电子处于<strong>同一空间轨道</strong>（如氦基态 \(1s^2\)，\(\Psi^{\text{sp}}\) 对称），只要它们自旋构成 singlet（反向平行）总波函数仍反对称——这就是「电子配对填轨道」的量子起源。反之，两电子若自旋平行（triplet，对称），空间部分必须反对称，意味着它们倾向占据不同空间区域——这就是 <strong>Hund 第一规则</strong>的根源。</p>
+      <div class="key-terms">spatial part \(\Psi^{\text{sp}}\) (空间部分), spin part \(\chi\) (自旋部分), singlet (单态), triplet (三重态), para-helium (仲氦), ortho-helium (正氦), Hund's rule (洪德规则)</div>
+
+      <h3>4. 斯莱特行列式与泡利不相容 Slater Determinant &amp; Pauli Exclusion</h3>
+      <p>把两费米子构造推广到 \(N\) 个费米子占据正交归一的单粒子态 \(\{\psi_1,\psi_2,\dots,\psi_N\}\)：唯一反对称的归一化波函数是<strong>斯莱特行列式</strong> (Slater determinant)</p>
+      <div class="formula">\[ \boxed{\;\Psi(\xi_1,\dots,\xi_N)=\frac{1}{\sqrt{N!}}\begin{vmatrix}\psi_1(\xi_1)&\psi_1(\xi_2)&\cdots&\psi_1(\xi_N)\\ \psi_2(\xi_1)&\psi_2(\xi_2)&\cdots&\psi_2(\xi_N)\\ \vdots& & &\vdots\\ \psi_N(\xi_1)&\psi_N(\xi_2)&\cdots&\psi_N(\xi_N)\end{vmatrix}\;} \]</div>
+      <p>其中 \(\xi_i\equiv(\vec{r}_i,s_i)\) 表示第 \(i\) 个粒子的坐标+自旋复合标签。三条性质自动由行列式给出：</p>
+      <ul>
+        <li><strong>反对称</strong>：交换两粒子 = 交换两列 = 行列式变号。</li>
+        <li><strong>泡利不相容</strong>：若两行相同（即两个费米子占据同一单粒子态 \(\psi_i=\psi_j\)），行列式为零——不存在这种态。</li>
+        <li><strong>归一化</strong>：行列式展开有 \(N!\) 项正交乘积，故归一化为 \(1/\sqrt{N!}\)。</li>
+      </ul>
+      <p><strong>泡利不相容原理</strong> (Pauli exclusion principle, 1925) 的现代形式：每个<strong>单粒子量子态</strong> \((n,l,m_l,m_s)\) 至多容纳一个电子。原子壳层容量为 \(2(2l+1)\)：\(1s\) 容 2、\(2s\) 容 2、\(2p\) 容 6、\(3d\) 容 10……填满顺序对应周期表中元素的电子排布。化学的全部根基即是这一条量子规则。</p>
+      <div class="key-terms">Slater determinant (斯莱特行列式), Pauli exclusion principle (泡利不相容原理), shell capacity \(2(2l+1)\) (壳层容量), fermion not allowed in same state (不能同态)</div>
+
+      <h3>5. 氦原子：基态、激发态、交换积分 Two-Electron Atoms — Helium</h3>
+      <p>氦原子（\(Z=2\)，核外两电子）是最简单的<strong>多电子原子</strong>，是检验全同粒子物理的试金石。哈密顿量（玻恩–奥本海默近似下，核固定）：</p>
+      <div class="formula">\[ \hat{H}=\underbrace{\Bigl(-\frac{\hbar^{2}}{2m_e}\nabla_1^{2}-\frac{2e^{2}}{4\pi\epsilon_0 r_1}\Bigr)}_{\hat{h}_1\;(\text{氢原子状})}+\underbrace{\Bigl(-\frac{\hbar^{2}}{2m_e}\nabla_2^{2}-\frac{2e^{2}}{4\pi\epsilon_0 r_2}\Bigr)}_{\hat{h}_2}+\underbrace{\frac{e^{2}}{4\pi\epsilon_0 r_{12}}}_{\hat{V}_{ee}\;(\text{电子-电子排斥})}, \]</div>
+      <p>其中 \(r_{12}=|\vec{r}_1-\vec{r}_2|\)。前两项是两个独立的 \(\mathrm{He}^{+}\)（类氢，\(Z=2\)），可严格求解；第三项电子-电子排斥使问题不可分离变量，必须近似。</p>
+      <p><strong>基态 \(1s^{2}\)</strong>：忽略 \(\hat{V}_{ee}\) 时两电子都处于 \(\psi_{1s}\)（类氢 \(Z=2\)，能量 \(-54.4\,\mathrm{eV}\) 各），总 \(-108.8\,\mathrm{eV}\)。考虑排斥后实际基态能量 \(-79.0\,\mathrm{eV}\)（实验：第一电离 \(24.6\,\mathrm{eV}\) + 第二电离 \(54.4\,\mathrm{eV}\)）。空间部分对称（两电子同轨道），故自旋必为 singlet（仲氦，\(S=0\)）。</p>
+      <p><strong>激发态 \(1s\,2s\) 与 \(1s\,2p\)</strong>：一个电子留在 \(1s\)，另一个跃迁到 \(2s\) 或 \(2p\)。空间部分可对称（singlet，<strong>仲氦 para</strong>）或反对称（triplet，<strong>正氦 ortho</strong>）。两种态能量<strong>不同</strong>！原因：电子-电子排斥的期望依赖空间对称性。</p>
+      <p>定义<strong>直接积分</strong> (direct integral) \(J\) 与<strong>交换积分</strong> (exchange integral) \(K\)：</p>
+      <div class="formula">\[ J=\int\!\!\int|\psi_{1s}(\vec{r}_1)|^{2}|\psi_{2s}(\vec{r}_2)|^{2}\,\frac{e^{2}}{4\pi\epsilon_0 r_{12}}\,\mathrm{d}^{3}r_1\,\mathrm{d}^{3}r_2\;\;(\text{经典型库仑自能}), \]</div>
+      <div class="formula">\[ K=\int\!\!\int\psi_{1s}^{*}(\vec{r}_1)\psi_{2s}^{*}(\vec{r}_2)\,\frac{e^{2}}{4\pi\epsilon_0 r_{12}}\,\psi_{1s}(\vec{r}_2)\psi_{2s}(\vec{r}_1)\,\mathrm{d}^{3}r_1\,\mathrm{d}^{3}r_2\;\;(\text{纯量子，无经典对应}). \]</div>
+      <p>则两态能量为</p>
+      <div class="formula">\[ E_{\text{singlet}}=E_{1s}+E_{2s}+J+K\;\;\text{(para, 空间对称)},\qquad E_{\text{triplet}}=E_{1s}+E_{2s}+J-K\;\;\text{(ortho, 空间反对称)}. \]</div>
+      <p>实验测得 \(1s\,2s\) 组态：\({}^{1}S\)（para）在基态之上 \(20.62\,\mathrm{eV}\)，\({}^{3}S\)（ortho）在 \(19.82\,\mathrm{eV}\)。<strong>三重态更低</strong>，劈裂 \(\Delta E=E_s-E_t=2K=0.80\,\mathrm{eV}\)，故 \(K\simeq 0.40\,\mathrm{eV}\)。物理上：空间反对称时电子「互相躲开」（\(\Psi(\vec{r},\vec{r})=0\)，同一位置概率为零），平均距离更大，排斥能更小——这就是<strong>交换作用</strong> (exchange interaction)，是铁磁性、Hund 规则、化学键方向的根源，纯粹量子效应。</p>
+      <div class="key-terms">two-electron atom (双电子原子), direct integral \(J\) (直接积分), exchange integral \(K\) (交换积分), exchange interaction (交换作用), ortho/para-helium (正氦/仲氦)</div>
+
+      <h3>6. 变分原理与 Hartree–Fock 概览 Variational Principle &amp; Hartree–Fock</h3>
+      <p>多电子原子无法严格求解，需要近似。<strong>变分原理</strong> (variational principle) 给出最简单可靠的基态能量上界：</p>
+      <div class="formula">\[ \boxed{\;E[\psi_{\text{trial}}]\equiv\frac{\langle\psi_{\text{trial}}|\hat{H}|\psi_{\text{trial}}\rangle}{\langle\psi_{\text{trial}}|\psi_{\text{trial}}\rangle}\;\ge\;E_0\;}\qquad(\text{对任意归一化试探波函数}). \]</div>
+      <p>证明见推导 1.B：把 \(\psi_{\text{trial}}\) 按严格本征态 \(|n\rangle\) 展开 \(\psi_{\text{trial}}=\sum_n c_n|n\rangle\)，则 \(E[\psi_{\text{trial}}]=\sum_n|c_n|^{2}E_n\ge\sum_n|c_n|^{2}E_0=E_0\)。<strong>变分法</strong>：选含可调参数 \(\{\alpha\}\) 的试探函数，最小化 \(E(\alpha)\) → \(\partial E/\partial\alpha=0\) → 最优 \(\alpha^{*}\) 给出最优上界。例 1.3 用此估氦基态能量。</p>
+      <p><strong>Hartree–Fock 自洽场</strong> (Hartree–Fock self-consistent field, HF) 是变分原理的系统化：用<strong>单个斯莱特行列式</strong>作为 \(N\) 电子试探态，对每个空间轨道 \(\phi_i(\vec{r})\) 变分得一组耦合本征方程（Hartree–Fock 方程），其中每个电子在其他 \(N-1\) 个电子的平均场中运动，并显式包含交换项（来自行列式的反对称性）。HF 是现代量子化学（密度泛函 DFT、后 Hartree–Fock 方法）的出发点。</p>
+      <div class="key-terms">variational principle (变分原理), trial wavefunction (试探波函数), upper bound (上界), Hartree–Fock (HF 自洽场), self-consistent field (自洽场)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1.A — 从交换算符到泡利不相容 From the Exchange Operator to Pauli Exclusion</h3>
+      <p class="step"><strong>步骤 1（本征值约束）：</strong>\(\hat{P}_{12}^{2}=\mathbb{1}\)（两次交换回到原态）。设 \(|\Psi\rangle\) 是 \(\hat{P}_{12}\) 的本征态，本征值 \(\lambda\)：\(\hat{P}_{12}^{2}|\Psi\rangle=\lambda^{2}|\Psi\rangle=|\Psi\rangle\Rightarrow\lambda=\pm 1\)。</p>
+      <p class="step"><strong>步骤 2（构造本征态）：</strong>给定任意直积态 \(\psi_a(1)\psi_b(2)\)（用简写 \(1\equiv\xi_1\)，\(2\equiv\xi_2\)），其交换为 \(\psi_a(2)\psi_b(1)\)。构造对称 / 反对称组合：</p>
+      <div class="formula">\[ |\Psi_{\pm}\rangle=\frac{1}{\sqrt{2}}\bigl(\psi_a(1)\psi_b(2)\pm\psi_a(2)\psi_b(1)\bigr). \]</div>
+      <p class="step"><strong>步骤 3（验证本征值）：</strong>\(\hat{P}_{12}|\Psi_{\pm}\rangle=\tfrac{1}{\sqrt{2}}\bigl(\psi_a(2)\psi_b(1)\pm\psi_a(1)\psi_b(2)\bigr)=\pm\tfrac{1}{\sqrt{2}}\bigl(\psi_a(1)\psi_b(2)\pm\psi_a(2)\psi_b(1)\bigr)=\pm|\Psi_{\pm}\rangle\) ✓（加号时直接等；减号时提出负号）。故 \(\Psi_+\) 对应 \(\lambda=+1\)（玻色子），\(\Psi_-\) 对应 \(\lambda=-1\)（费米子）。</p>
+      <p class="step"><strong>步骤 4（泡利不相容）：</strong>令 \(a=b\)（两费米子欲占同一单粒子态）。则 \(\Psi_{-}=\tfrac{1}{\sqrt{2}}(\psi_a(1)\psi_a(2)-\psi_a(2)\psi_a(1))=\mathbf{0}\)。波函数恒为零——<strong>不存在这种态</strong>。即「两个全同费米子不能处于完全相同的单粒子量子态」。但 \(\Psi_{+}=\sqrt{2}\,\psi_a(1)\psi_a(2)\ne 0\)，玻色子不受此约束（Bose–Einstein 凝聚即大量玻色子凝聚到同一基态）。</p>
+      <p class="step"><strong>步骤 5（坐标+自旋推广）：</strong>当 \(\psi\) 含自旋指标 \(\xi=(\vec{r},s)\) 时，「同一单粒子态」指 \((n,l,m_l,m_s)\) 完全相同。两电子可同处 \(1s\) 轨道只要 \(m_s\) 不同（一 \(\uparrow\)、一 \(\downarrow\)），因为此时 \(\psi_a\ne\psi_b\)，行列式不为零。这就是「电子成对填轨道」的量子起源。</p>
+      <p class="step"><strong>步骤 6（与 \(N=2\) 斯莱特行列式一致）：</strong>\(\Psi_{-}(1,2)=\tfrac{1}{\sqrt{2}}\begin{vmatrix}\psi_a(1)&\psi_a(2)\\\psi_b(1)&\psi_b(2)\end{vmatrix}\) 展开即 \(\tfrac{1}{\sqrt{2}}(\psi_a(1)\psi_b(2)-\psi_a(2)\psi_b(1))\) ✓。换列变号 = 反对称；两行相同（\(a=b\)）= 行列式零 = 泡利。斯莱特行列式自动给出步骤 4–5 的所有结论。</p>
+
+      <h3>推导 1.B — 变分原理证明与氦基态能量 Proof of Variational Principle &amp; Helium Ground State</h3>
+      <p class="step"><strong>步骤 1（变分原理证明）：</strong>设 \(\hat{H}|n\rangle=E_n|n\rangle\)，\(E_0\le E_1\le\dots\) 为严格能谱。任意归一化 \(|\psi\rangle=\sum_n c_n|n\rangle\)，\(\sum|c_n|^{2}=1\)。则</p>
+      <div class="formula">\[ \langle\psi|\hat{H}|\psi\rangle=\sum_n|c_n|^{2}E_n\;\ge\;\sum_n|c_n|^{2}E_0=E_0\;\;\surd. \]</div>
+      <p>等号当且仅当 \(c_0=1\)、其余为零（即 \(|\psi\rangle=|0\rangle\) 严格基态）。故任何试探态给出基态能量的<strong>上界</strong>。</p>
+      <p class="step"><strong>步骤 2（氦的试探函数）：</strong>忽略 \(\hat{V}_{ee}\) 时基态为两电子同处类氢 \(1s\)（核电荷 \(Z=2\)）。考虑电子互相屏蔽，用<strong>有效核电荷</strong> \(Z_{\text{eff}}\) 替代 \(Z\)：</p>
+      <div class="formula">\[ \psi_{\text{trial}}(\vec{r}_1,\vec{r}_2)=\frac{Z_{\text{eff}}^{3}}{\pi a_0^{3}}\exp\!\Bigl[-\frac{Z_{\text{eff}}(r_1+r_2)}{a_0}\Bigr]\;\;\text{(已归一化)}, \]</div>
+      <p>把 \(Z_{\text{eff}}\) 当作变分参数。当 \(Z_{\text{eff}}=Z=2\) 时回归无屏蔽类氢近似。</p>
+      <p class="step"><strong>步骤 3（动能期望）：</strong>由维里定理，类氢 \(1s\)（参数 \(Z_{\text{eff}}\)）满足 \(\langle T\rangle_{\text{单}}=-\tfrac12\langle V_{Z_{\text{eff}}}\rangle_{\text{单}}\)，且总能量 \(-\tfrac12 Z_{\text{eff}}^{2}\alpha^{2}m_ec^{2}=-13.6\,Z_{\text{eff}}^{2}\,\mathrm{eV}\)，故 \(\langle T\rangle_{\text{单}}=+13.6\,Z_{\text{eff}}^{2}\,\mathrm{eV}\)。两电子：</p>
+      <div class="formula">\[ \langle T\rangle=2\times 13.6\,Z_{\text{eff}}^{2}=27.2\,Z_{\text{eff}}^{2}\,\mathrm{eV}. \]</div>
+      <p class="step"><strong>步骤 4（核-电子吸引期望）：</strong>真实核电荷 \(Z=2\)，但试探轨道用 \(Z_{\text{eff}}\)，故 \(\langle 1/r\rangle_{Z_{\text{eff}}}=Z_{\text{eff}}/a_0\)。</p>
+      <div class="formula">\[ \langle V_{ne}\rangle_{\text{单}}=\Big\langle-\frac{Ze^{2}}{4\pi\epsilon_0 r}\Big\rangle=-Z\cdot\frac{e^{2}}{4\pi\epsilon_0}\cdot\frac{Z_{\text{eff}}}{a_0}=-27.2\,Z\,Z_{\text{eff}}\,\mathrm{eV}. \]</div>
+      <p>两电子（\(Z=2\)）：\(\langle V_{ne}\rangle=-4\times 27.2\,Z_{\text{eff}}=-108.8\,Z_{\text{eff}}\,\mathrm{eV}\)。</p>
+      <p class="step"><strong>步骤 5（电子-电子排斥期望）：</strong>对两 \(1s\) 轨道（参数 \(Z_{\text{eff}}\)），标准结果</p>
+      <div class="formula">\[ \Big\langle\frac{e^{2}}{4\pi\epsilon_0 r_{12}}\Big\rangle=\frac{5}{8}\,Z_{\text{eff}}\cdot\frac{e^{2}}{4\pi\epsilon_0 a_0}=\frac{5}{8}Z_{\text{eff}}\times 27.2=17.0\,Z_{\text{eff}}\,\mathrm{eV}. \]</div>
+      <p class="step"><strong>步骤 6（总能量与极小化）：</strong></p>
+      <div class="formula">\[ E(Z_{\text{eff}})=27.2\,Z_{\text{eff}}^{2}-108.8\,Z_{\text{eff}}+17.0\,Z_{\text{eff}}=27.2\,Z_{\text{eff}}^{2}-91.8\,Z_{\text{eff}}\;\;(\mathrm{eV}). \]</div>
+      <p class="step">令 \(\mathrm{d}E/\mathrm{d}Z_{\text{eff}}=54.4\,Z_{\text{eff}}-91.8=0\)，得</p>
+      <div class="formula">\[ \boxed{\;Z_{\text{eff}}^{*}=\frac{91.8}{54.4}=\frac{27}{16}=Z-\frac{5}{16}=1.6875\;}\;\;(\text{屏蔽掉了 }5/16\text{ 个核电荷}). \]</div>
+      <p class="step">代入：\(E_{\min}=27.2\times(27/16)^{2}-91.8\times(27/16)=77.46-154.91=\mathbf{-77.5\,\mathrm{eV}}\)。实验值 \(-79.0\,\mathrm{eV}\)，误差仅 \(1.5\,\mathrm{eV}\)（约 \(1.9\%\)）；而未变分（\(Z_{\text{eff}}=2\)）给出 \(E=-74.8\,\mathrm{eV}\)，误差 \(4.2\,\mathrm{eV}\)。简单的屏蔽变分把误差削减了一大半。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 对称化与反对称化盒中两粒子 Symmetrize / Antisymmetrize Two Particles in a Box</h4>
+        <p class="example-statement">长 \(L=1.0\,\mathrm{nm}\) 的一维无限深方势阱中，两全同粒子，单粒子态 \(\phi_n(x)=\sqrt{2/L}\sin(n\pi x/L)\)。设粒子 1 处 \(n_1=1\)、粒子 2 处 \(n_2=2\)。(a) 写出对称与反对称空间波函数 \(\Psi_{\pm}(x_1,x_2)\)。(b) 验证 \(\hat{P}_{12}\Psi_{\pm}=\pm\Psi_{\pm}\)。(c) 计算 \(x_1=x_2=L/2\) 处 \(|\Psi_{\pm}|^{2}\)。(d) 若两粒子为电子且自旋平行（triplet），它们能在 \(n_1=n_2=1\) 吗？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 对称 / 反对称空间波函数：</strong></p>
+          <div class="formula">\[ \Psi_{\pm}(x_1,x_2)=\frac{1}{\sqrt{2}}\bigl[\phi_1(x_1)\phi_2(x_2)\pm\phi_1(x_2)\phi_2(x_1)\bigr]. \]</div>
+          <p class="step">代入 \(\phi_1(x)=\sqrt{2/L}\sin(\pi x/L)\)、\(\phi_2(x)=\sqrt{2/L}\sin(2\pi x/L)\)：</p>
+          <div class="formula">\[ \Psi_{\pm}=\frac{2}{L\sqrt{2}}\Bigl[\sin\!\frac{\pi x_1}{L}\sin\!\frac{2\pi x_2}{L}\pm\sin\!\frac{\pi x_2}{L}\sin\!\frac{2\pi x_1}{L}\Bigr]. \]</div>
+          <p class="step"><strong>(b) 交换对称性验证：</strong>交换 \(x_1\leftrightarrow x_2\)：</p>
+          <div class="formula">\[ \hat{P}_{12}\Psi_{\pm}=\frac{1}{\sqrt{2}}\bigl[\phi_1(x_2)\phi_2(x_1)\pm\phi_1(x_1)\phi_2(x_2)\bigr]=\pm\Psi_{\pm}\;\;\surd. \]</div>
+          <p class="step"><strong>(c) 对角线 \(x_1=x_2=L/2\)：</strong>\(\phi_1(L/2)=\sqrt{2/L}\sin(\pi/2)=\sqrt{2/L}\)；\(\phi_2(L/2)=\sqrt{2/L}\sin(\pi)=0\)。</p>
+          <div class="formula">\[ \Psi_{+}(L/2,L/2)=\frac{1}{\sqrt{2}}\bigl[\phi_1\phi_2+\phi_1\phi_2\bigr]_{L/2}=\sqrt{2}\cdot\phi_1(L/2)\phi_2(L/2)=0\;\;(\phi_2=0). \]</div>
+          <p class="step">但取一般点 \(x_1=x_2=x\)：\(\Psi_{-}(x,x)=\tfrac{1}{\sqrt{2}}[\phi_1(x)\phi_2(x)-\phi_1(x)\phi_2(x)]=\mathbf{0}\) 对<strong>所有</strong> \(x\)——反对称空间波函数沿整个对角线恒为零（费米子节点）。而 \(\Psi_{+}(x,x)=\sqrt{2}\phi_1(x)\phi_2(x)\ne 0\)，玻色子在对角线上反而<strong>增强</strong>（吸引趋势）。具体在 \(x=L/4\)：\(|\Psi_{+}|^{2}=2\times\tfrac{2}{L}\sin^{2}(\pi/4)\times\tfrac{2}{L}\sin^{2}(\pi/2)=\tfrac{4}{L^{2}}\approx 4.0\,\mathrm{nm^{-2}}\)。</p>
+          <p class="step"><strong>(d) triplet + 同轨道？</strong>若 \(n_1=n_2=1\) 且自旋平行（triplet，对称），则空间部分 \(\Psi_{-}\propto\phi_1(x_1)\phi_1(x_2)-\phi_1(x_2)\phi_1(x_1)=0\)。所以<strong>不允许</strong>：两电子若自旋平行必处于不同空间轨道（这就是 \(1s^{2}\) 基态必为 singlet 的原因）。若自旋反平行（singlet），空间可对称 \(\Psi_{+}=\sqrt{2}\phi_1(x_1)\phi_1(x_2)\ne 0\)，允许同轨道。这正是「电子成对填轨道」的量子起源。</p>
+          <p><span class="ans">答案：(a) 见上；(b) \(\hat{P}_{12}\Psi_{\pm}=\pm\Psi_{\pm}\) ✓；(c) 反对称沿整个对角线 \(|\Psi_{-}|^{2}=0\)（费米子节点）；对称在 \(x=L/4\) 处 \(|\Psi_{+}|^{2}\approx 4.0\,\mathrm{nm^{-2}}\)（增强）；(d) triplet + \(n_1=n_2\) 不允许（波函数为零）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 氦基态能量的变分估计（含 \(Z_{\text{eff}}\)） Variational Estimate of Helium Ground-State Energy</h4>
+        <p class="example-statement">氦原子（\(Z=2\)）两电子同处 \(1s\) 类氢轨道，但用有效核电荷 \(Z_{\text{eff}}\) 作变分：\(\psi_{\text{trial}}=(Z_{\text{eff}}^{3}/\pi a_0^{3})\exp[-Z_{\text{eff}}(r_1+r_2)/a_0]\)。(a) 用推导 1.B 的结果写出 \(E(Z_{\text{eff}})\)。(b) 求最优 \(Z_{\text{eff}}^{*}\) 与 \(E_{\min}\)。(c) 与无屏蔽（\(Z_{\text{eff}}=Z=2\)）及实验值 \(-79.0\,\mathrm{eV}\) 比较。(d) 物理解释 \(Z_{\text{eff}}^{*}\lt Z\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>常数：</strong>\(a_0=0.529\,\text{Å}\)、\(1\,\mathrm{Ry}=13.6\,\mathrm{eV}\)、Hartree \(=27.2\,\mathrm{eV}=e^{2}/(4\pi\epsilon_0 a_0)\)。</p>
+          <p class="step"><strong>(a) 总能量：</strong>由推导 1.B 步骤 3–6：</p>
+          <div class="formula">\[ E(Z_{\text{eff}})=\underbrace{27.2\,Z_{\text{eff}}^{2}}_{\langle T\rangle}+\underbrace{(-108.8\,Z_{\text{eff}})}_{\langle V_{ne}\rangle}+\underbrace{17.0\,Z_{\text{eff}}}_{\langle V_{ee}\rangle}=27.2\,Z_{\text{eff}}^{2}-91.8\,Z_{\text{eff}}\;\;(\mathrm{eV}). \]</div>
+          <p class="step"><strong>(b) 极小化：</strong>\(\mathrm{d}E/\mathrm{d}Z_{\text{eff}}=54.4\,Z_{\text{eff}}-91.8=0\)，故</p>
+          <div class="formula">\[ Z_{\text{eff}}^{*}=\frac{91.8}{54.4}=1.6875=\frac{27}{16}=Z-\frac{5}{16},\qquad E_{\min}=27.2(1.6875)^{2}-91.8(1.6875)=\mathbf{-77.5\,\mathrm{eV}}. \]</div>
+          <p class="step"><strong>(c) 三种估计对比：</strong></p>
+          <div class="formula">\[ \begin{array}{l|c|c|c}\text{方法} & Z_{\text{eff}} & E\,(\mathrm{eV}) & \text{相对实验误差}\\\hline \text{无屏蔽（}Z_{\text{eff}}=Z=2\text{）} & 2.00 & -74.8 & +5.3\%\\ \text{变分屏蔽（本例）} & 1.6875 & -77.5 & +1.9\%\\ \text{实验} & - & -79.0 & 0\end{array}\end{array} \]</div>
+          <p>简单的 \(Z_{\text{eff}}\) 变分把误差从 \(4.2\,\mathrm{eV}\) 砍到 \(1.5\,\mathrm{eV}\)。</p>
+          <p class="step"><strong>(d) 物理解释：</strong>\(Z_{\text{eff}}^{*}=2-0.3125\lt Z\)。两电子互相「屏蔽」：每个电子在另一电子的平均分布中感受到的有效核电荷比裸核 \(+2e\) 弱。屏蔽量 \(5/16\approx 0.31\) 反映电子-电子排斥的强度（直接来自 \(\langle V_{ee}\rangle=17.0\,Z_{\text{eff}}\) 中的 \(5/8\) 因子）。若进一步用含 \(r_{12}\) 显式关联项的试探（如 Hylleraas \(\psi\propto\exp[-Z_{\text{eff}}(r_1+r_2)/a_0](1+\beta r_{12})\)），变分能量可达 \(-78.9\,\mathrm{eV}\)，几乎与实验相符——关联效应是剩余误差的来源。</p>
+          <p><span class="ans">答案：\(E(Z_{\text{eff}})=27.2\,Z_{\text{eff}}^{2}-91.8\,Z_{\text{eff}}\,\mathrm{eV}\)；\(Z_{\text{eff}}^{*}=27/16=1.6875\)、\(E_{\min}=-77.5\,\mathrm{eV}\)（实验 \(-79.0\)，误差 \(1.9\%\)）；无屏蔽 \(-74.8\,\mathrm{eV}\)（误差 \(5.3\%\)）；\(Z_{\text{eff}}\lt Z\) 反映电子互相屏蔽。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 氦 \(1s\,2s\) 单态-三重态（交换）劈裂 Singlet–Triplet (Exchange) Splitting in Helium</h4>
+        <p class="example-statement">氦原子 \(1s\,2s\) 组态：一电子留 \(1s\)、另一在 \(2s\)。(a) 用空间对称/反对称态写出 para（singlet）与 ortho（triplet）能量 \(E_{+},E_{-}\)。(b) 实验测得 \({}^{1}S\) 态在基态之上 \(20.62\,\mathrm{eV}\)，\({}^{3}S\) 在 \(19.82\,\mathrm{eV}\)；求交换积分 \(K\) 与直接积分 \(J\)（用类氢 \(Z=2\) 近似估算 \(E_{1s},E_{2s}\) 的零阶能量）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 单态/三重态能量：</strong>把 \(\hat{V}_{ee}=e^{2}/(4\pi\epsilon_0 r_{12})\) 在对称（\(\Psi_{+}\)）与反对称（\(\Psi_{-}\)）空间态上取期望。展开后</p>
+          <div class="formula">\[ \langle V_{ee}\rangle_{\pm}=J\pm K, \]</div>
+          <p>其中 \(J=\iint|\psi_{1s}(\vec{r}_1)|^{2}|\psi_{2s}(\vec{r}_2)|^{2}\,\frac{e^{2}}{4\pi\epsilon_0 r_{12}}\,\mathrm{d}^{3}r_1\,\mathrm{d}^{3}r_2\)（直接积分，纯经典型库仑自能），\(K=\iint\psi_{1s}^{*}(\vec{r}_1)\psi_{2s}^{*}(\vec{r}_2)\,\frac{e^{2}}{4\pi\epsilon_0 r_{12}}\,\psi_{1s}(\vec{r}_2)\psi_{2s}(\vec{r}_1)\,\mathrm{d}^{3}r_1\,\mathrm{d}^{3}r_2\)（交换积分，无经典对应）。故</p>
+          <div class="formula">\[ E_{\text{singlet}}=E_{1s}+E_{2s}+J+K\;\;(\text{para}),\qquad E_{\text{triplet}}=E_{1s}+E_{2s}+J-K\;\;(\text{ortho}), \]</div>
+          <p class="step">劈裂：\(\Delta E=E_{\text{singlet}}-E_{\text{triplet}}=2K\)。</p>
+          <p class="step"><strong>(b) 提取 \(K\)：</strong>实验测得两态能量差</p>
+          <div class="formula">\[ \Delta E_{\text{exp}}=20.62-19.82=\mathbf{0.80\,\mathrm{eV}}=2K\;\Rightarrow\;K=0.40\,\mathrm{eV}. \]</div>
+          <p class="step"><strong>(c) 估 \(J\)：</strong>忽略 \(\hat{V}_{ee}\) 时类氢 \(Z=2\) 的零阶能量 \(E_{1s}^{(0)}=-13.6\,Z^{2}/1^{2}=-54.4\,\mathrm{eV}\)、\(E_{2s}^{(0)}=-13.6\,Z^{2}/2^{2}=-13.6\,\mathrm{eV}\)，和 \(-68.0\,\mathrm{eV}\)。实测 \({}^{3}S\) 在基态之上 \(19.82\,\mathrm{eV}\)，即绝对能量 \(E(1s\,2s;{}^{3}S)=-79.0+19.82=-59.2\,\mathrm{eV}\)。故</p>
+          <div class="formula">\[ E_{1s}+E_{2s}+J-K=-59.2\;\Rightarrow\;-68.0+J-0.40=-59.2\;\Rightarrow\;J=9.2\,\mathrm{eV}. \]</div>
+          <p class="step">（注：精确变分给出 \(J\) 与 \(K\) 的解析值，\(J\simeq 11.4\,\mathrm{eV}\)、\(K\simeq 1.2\,\mathrm{eV}\)；上面用零阶能量估得偏小，但定性与实验一致。关键是 \(\Delta E=2K\) 与实验吻合良好。）</p>
+          <p class="step"><strong>(d) 物理结论：</strong>三重态（ortho）<strong>更低</strong>。空间反对称意味着两电子「同位置概率为零」（\(\Psi_{-}(\vec{r},\vec{r})=0\)），平均距离更大，库仑排斥更小。Hund 第一规则即此：「同等组态下，最高自旋多重度能量最低」。这条 \(\sim 0.8\,\mathrm{eV}\) 的纯量子劈裂没有经典对应——经典两电荷间的库仑排斥与自旋无关。</p>
+          <p><span class="ans">答案：(a) \(E_{\pm}=E_{1s}+E_{2s}+J\pm K\)；(b) \(K=0.40\,\mathrm{eV}\)；(c) \(J\approx 9.2\,\mathrm{eV}\)（零阶估计）；(d) ortho（triplet）低 \(0.80\,\mathrm{eV}\)，Hund 第一规则的微观根源。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 写出 2 个与 3 个费米子的斯莱特行列式 Slater Determinants for 2 &amp; 3 Fermions</h4>
+        <p class="example-statement">(a) 写出氦基态（\(1s^{2}\)，自旋反平行）两电子的斯莱特行列式。(b) 写出锂基态（\(1s^{2}2s\)）三电子的斯莱特行列式。(c) 验证：(i) 交换两列变号；(ii) 交换两粒子等价于交换两列；(iii) 若两行相同则行列式为零。</p>
+        <div class="example-solution">
+          <p class="step"><strong>简记：</strong>单粒子自旋-轨道 \(\psi_{nls\sigma}(\xi)\)，其中 \(\xi=(\vec{r},s_z)\)；\(\sigma\in\{\uparrow,\downarrow\}\)；\(\psi_{nls\sigma}(\vec{r},s_z)=\phi_{nls}(\vec{r})\chi_{\sigma}(s_z)\)。</p>
+          <p class="step"><strong>(a) 氦基态 \(1s^{2}\)（占据 \(1s\uparrow\) 与 \(1s\downarrow\)）：</strong></p>
+          <div class="formula">\[ \Psi_{\text{He}}(1,2)=\frac{1}{\sqrt{2!}}\begin{vmatrix}\psi_{1s\uparrow}(\xi_1)&\psi_{1s\uparrow}(\xi_2)\\\psi_{1s\downarrow}(\xi_1)&\psi_{1s\downarrow}(\xi_2)\end{vmatrix}=\frac{1}{\sqrt{2}}\bigl[\psi_{1s\uparrow}(1)\psi_{1s\downarrow}(2)-\psi_{1s\uparrow}(2)\psi_{1s\downarrow}(1)\bigr]. \]</div>
+          <p class="step">两项分别代表「电子 1 上自旋、电子 2 下自旋」与「电子 1 下自旋、电子 2 上自旋」的叠加，负号保证总波函数反对称。空间部分都是 \(\phi_{1s}(\vec{r}_1)\phi_{1s}(\vec{r}_2)\)（对称），自旋部分是 singlet（反对称），乘积反对称 ✓。</p>
+          <p class="step"><strong>(b) 锂基态 \(1s^{2}2s\)（占据 \(1s\uparrow,1s\downarrow,2s\uparrow\)）：</strong></p>
+          <div class="formula">\[ \Psi_{\text{Li}}(1,2,3)=\frac{1}{\sqrt{3!}}\begin{vmatrix}\psi_{1s\uparrow}(\xi_1)&\psi_{1s\uparrow}(\xi_2)&\psi_{1s\uparrow}(\xi_3)\\\psi_{1s\downarrow}(\xi_1)&\psi_{1s\downarrow}(\xi_2)&\psi_{1s\downarrow}(\xi_3)\\\psi_{2s\uparrow}(\xi_1)&\psi_{2s\uparrow}(\xi_2)&\psi_{2s\uparrow}(\xi_3)\end{vmatrix}. \]</div>
+          <p class="step">归一化 \(1/\sqrt{6}\)。展开后有 \(3!=6\) 项（对应 \(1,2,3\) 的所有置换，带置换奇偶性的符号）。注意：第三个电子必须占 \(2s\)（而不是也填入 \(1s\)），因为 \(1s\) 已被 \(1s\uparrow\) 与 \(1s\downarrow\) 占满，再加第三个相同的行会使行列式恒等于零——这是周期表第三行第一族（Li）的物理原因。</p>
+          <p class="step"><strong>(c.i) 交换两列变号：</strong>行列式性质「列互换变号」。如 (a) 中交换两列：\(\begin{vmatrix}\psi_{1s\uparrow}(\xi_2)&\psi_{1s\uparrow}(\xi_1)\\\psi_{1s\downarrow}(\xi_2)&\psi_{1s\downarrow}(\xi_1)\end{vmatrix}=-\Psi_{\text{He}}(1,2)\) ✓。</p>
+          <p class="step"><strong>(c.ii) 交换粒子 = 交换列：</strong>交换粒子 1 与 2 意为所有 \(\xi_1\leftrightarrow\xi_2\)，即第 1 列与第 2 列互换 → 行列式变号 → 反对称 ✓。这正是费米子所需的 \(\hat{P}_{12}\Psi=-\Psi\)。</p>
+          <p class="step"><strong>(c.iii) 两行相同 ⇒ 行列式零：</strong>若两费米子占同一自旋-轨道（如让锂的第三电子也填 \(1s\uparrow\)），第三行 = 第一行，行列式恒为零——不存在该状态，泡利不相容 ✓。</p>
+          <p><span class="ans">答案：(a)(b) 见上；(c) 三条性质均由行列式代数自动保证：换列变号（反对称）、换粒子=换列（费米子 \(\hat{P}_{12}\Psi=-\Psi\)）、两行同（同态）⇒ 行列式零（泡利）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 泡利原理下的状态计数 Counting Allowed States under Pauli Exclusion</h4>
+        <p class="example-statement">(a) 主量子数 \(n=2\) 的氢壳层（\(l=0,1\)）最多容纳多少电子？(b) 两个全同自旋-1/2 费米子在 3 个不同空间轨道（\(a,b,c\)）中，能形成多少个反对称的两粒子态？(c) 对照两个全同自旋-0 玻色子（无自旋自由度）在 3 个空间轨道中能形成多少对称态？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) \(n=2\) 壳层容量：</strong>子壳 \(l=0\)（\(2s\)）有 \(2l+1=1\) 个 \(m_l\)、每个配 \(m_s=\pm\tfrac12\) 共 2 态；\(l=1\)（\(2p\)）有 \(2l+1=3\) 个 \(m_l\)、每个 2 个自旋共 6 态。总：</p>
+          <div class="formula">\[ N_{\max}(n=2)=\sum_{l=0}^{n-1}2(2l+1)=2(1)+2(3)=2+6=\mathbf{8\;\text{个电子}}. \]</div>
+          <p class="step">普遍公式：\(N_{\max}(n)=\sum_{l=0}^{n-1}2(2l+1)=2n^{2}\)。\quad \(n=1\to 2\)、\(n=2\to 8\)、\(n=3\to 18\)……对应周期表第 1、2、3 周期的元素数 \(2,8,8\)（注：因 \(4s\) 比 \(3d\) 低，第 3 周期止于 18 而非填满 \(3d\)）。</p>
+          <p class="step"><strong>(b) 2 个费米子在 3 个空间轨道（每轨道 \(\uparrow,\downarrow\) 两种自旋）：</strong>单粒子自旋-轨道总数 \(3\times 2=6\) 个：\(a\uparrow,a\downarrow,b\uparrow,b\downarrow,c\uparrow,c\downarrow\)。从中选 2 个<strong>不同</strong>的（自动反对称为行列式）：\(C_{6}^{2}=\dfrac{6\cdot 5}{2}=\mathbf{15}\) 个反对称两粒子态。</p>
+          <p class="step">另一种数法（按总自旋）：两电子耦合为 singlet（\(S=0\)，反对称自旋）需对称空间 → \(a,a\)、\(b,b\)、\(c,c\) 三种「同轨道配对」+ \(ab+ba\)、\(ac+ca\)、\(bc+cb\) 三种「不同轨道对称」共 6 个空间态 × 1（singlet 自旋）= 6。triplet（\(S=1\)，对称自旋，3 个 \(m_S\)）需反对称空间 → \(ab-ba\)、\(ac-ca\)、\(bc-cb\) 共 3 个 × 3 = 9。总数 \(6+9=\mathbf{15}\) ✓ 与上面一致。</p>
+          <p class="step"><strong>(c) 2 个自旋-0 玻色子在 3 个空间轨道（无自旋自由度）：</strong>允许同轨道（玻色子不受泡利约束）。状态分两类：(i) 同轨道：\((aa),(bb),(cc)\) 共 3 个；(ii) 不同轨道对称组合：\(\tfrac{1}{\sqrt{2}}(ab+ba)\)、\(\tfrac{1}{\sqrt{2}}(ac+ca)\)、\(\tfrac{1}{\sqrt{2}}(bc+cb)\) 共 3 个。总 \(3+3=\mathbf{6}\) 个对称态。</p>
+          <p class="step">对照：费米子 15 个、玻色子 6 个。<strong>不同</strong>。这是 Bose–Einstein 统计（允许「挤」在同一态）与 Fermi–Dirac 统计（一个态最多一个）的微观体现。低温下大量玻色子凝聚到能量最低的单一态（BEC），而费米子从最低态逐级往上填满（Fermi 海）。</p>
+          <p><span class="ans">答案：(a) \(n=2\) 容 8 个电子（普遍 \(2n^{2}\)）；(b) 15 个反对称两费米子态（\(=C_{6}^{2}\)）；(c) 6 个对称两玻色子态（\(=C_{3+2-1}^{2}\)，允许重复）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>只看空间部分的对称性，忘了自旋。</strong>对费米子，<strong>总</strong>波函数（空间 \(\otimes\) 自旋）必须反对称，不是空间部分单独。两电子处于同一空间轨道时空间部分对称，这并不违反泡利——只要自旋反平行构成 singlet（反对称），总波函数仍反对称。同样地，两电子自旋平行（triplet）时空间部分必须反对称。判断「是否允许」时永远看<strong>总</strong>对称性，不能只看一半。</li>
+        <li><strong>认为「泡利原理禁止两电子靠太近」。</strong>不严格。泡利原理禁止两电子处于<strong>完全相同</strong>的量子态 \((n,l,m_l,m_s)\)。两电子自旋不同（一 \(\uparrow\)、一 \(\downarrow\)）时<strong>可以</strong>共享同一空间轨道，也可以靠近到任意距离（库仑排斥会让这种近距离概率小，但不是泡利禁止）。只有当两电子<strong>全部量子数</strong>（含自旋）相同时，波函数才严格为零。「泡利排斥力」(Pauli repulsion) 是这种零概率的有效描述，并非新的基本力。</li>
+        <li><strong>把变分原理当作严格解。</strong>变分只给基态能量的<strong>上界</strong>：\(E[\psi_{\text{trial}}]\ge E_0\)。试探函数形式限制了能达到的精度（例 1.2 中 \(Z_{\text{eff}}\) 变分最高 \(-77.5\,\mathrm{eV}\)，仍比真实 \(-79.0\) 高 \(1.5\,\mathrm{eV}\)，因为没显式包含 \(r_{12}\) 关联）。变分<strong>不会低估</strong>基态能量——若算出比实验更低，多半是算错（积分、归一化、单位），而不是「找到比真实基态更低的态」。变分也不给激发态的上界（除非与所有更低态正交）。</li>
+        <li><strong>把交换积分 \(K\) 当成普通库仑能。</strong>直接积分 \(J\) 有经典对应（两电荷分布的经典库仑自能），但交换积分 \(K\) 来自行列式反对称化产生的「交换项」，<strong>没有经典对应</strong>。它导致单态-三重态劈裂 \(\Delta E=2K\)，使铁磁体、Hund 规则、化学键方向等都源自纯量子效应。把 \(K\) 解释为「两电子交换位置的真实过程」也不对——它只是干涉项，电子并不真的「互换轨道」。</li>
+        <li><strong>「全同」与「相似」混为一谈。</strong>对称化公设仅适用于<strong>真正全同</strong>的粒子（所有内禀性质精确相同）。电子与 \(\mu\) 子质量不同（\(m_\mu\approx 207m_e\)），即使电荷、自旋相同，也不算全同——它们的波函数不必有特定交换对称性。同理 \({}^3\mathrm{He}\)（费米子）与 \({}^4\mathrm{He}\)（玻色子）虽然化学性质几乎一样，统计性质截然不同。判断「是否要对称化」永远先问「这两个粒子是否真的全同」。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 构造 3 个全同玻色子的对称态 Symmetric State of 3 Identical Bosons</summary>
+        <div class="hint">3 个玻色子处于不同单粒子态 \(a,b,c\)，总波函数在任意两粒子交换下对称。可写成 6 个直积项之和。</div>
+        <div class="solution">
+          把所有 \(3!=6\) 种直积排列相加，归一化：
+          \[ \Psi_{S}(1,2,3)=\frac{1}{\sqrt{6}}\bigl[\psi_a(1)\psi_b(2)\psi_c(3)+\psi_a(1)\psi_b(3)\psi_c(2)+\psi_a(2)\psi_b(1)\psi_c(3)+\psi_a(2)\psi_b(3)\psi_c(1)+\psi_a(3)\psi_b(1)\psi_c(2)+\psi_a(3)\psi_b(2)\psi_c(1)\bigr]. \]
+          交换任意两粒子（如 \(1\leftrightarrow 2\)）只是把 6 项重新排列，求和不变 → 对称 ✓。归一化：6 项正交，每项模平方 \(1/6\)，求和 1 ✓。
+          <br>对照：3 个费米子的反对称态就是斯莱特行列式 \(1/\sqrt{6}\det[\psi_i(j)]\)，6 项带置换符号（偶置换 +、奇置换 −）。两种统计的差别就是「全 +」与「按置换奇偶性 \(\pm\)」。 <span class="ans">答：见上式，3 玻色子对称态为 6 项直积之和，归一化 \(1/\sqrt{6}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 验证 \(\hat{P}_{12}\) 与任意对称哈密顿量对易 \([\hat{H},\hat{P}_{12}]=0\)</summary>
+        <div class="hint">把 \(\hat{H}\) 写成对称形式（两粒子指标可换）；用 \(\hat{P}_{12}\hat{H}\) 与 \(\hat{H}\hat{P}_{12}\) 作用于 \(\Psi\) 比较结果。</div>
+        <div class="solution">
+          对全同两粒子系统，哈密顿量必须关于指标 \(1\leftrightarrow 2\) 对称，如 \(\hat{H}=\hat{h}(1)+\hat{h}(2)+\hat{V}(1,2)\)，其中 \(\hat{V}(1,2)=\hat{V}(2,1)\)（如库仑排斥 \(e^{2}/r_{12}\) 显然对称）。作用：
+          <br>\(\hat{P}_{12}\hat{H}\Psi(1,2)=\hat{P}_{12}\bigl[\hat{h}(1)+\hat{h}(2)+\hat{V}(1,2)\bigr]\Psi(1,2)=\bigl[\hat{h}(2)+\hat{h}(1)+\hat{V}(2,1)\bigr]\Psi(2,1)\)
+          <br>\(=\bigl[\hat{h}(1)+\hat{h}(2)+\hat{V}(1,2)\bigr]\Psi(2,1)=\hat{H}\hat{P}_{12}\Psi(1,2)\)。
+          <br>故 \([\hat{H},\hat{P}_{12}]=0\) ✓。
+          <br><strong>推论：</strong>若 \([\hat{H},\hat{P}_{12}]=0\)，则 \(\hat{P}_{12}\) 是运动常量：若初态为 \(\hat{P}_{12}\) 本征态（对称或反对称），演化保持本征值不变。这就是为什么玻色子永远对称、费米子永远反对称——对称性是<strong>守恒律</strong>。 <span class="ans">答：\([\hat{H},\hat{P}_{12}]=0\)，对称性守恒。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 双粒子无限深阱的能量本征值 Two Particles in a Box — Energy Spectrum</summary>
+        <div class="hint">非相互作用的两粒子哈密顿 \(\hat{H}=\hat{h}_1+\hat{h}_2\)，本征值 \(E_{n_1n_2}=E_{n_1}+E_{n_2}\)，\(E_n=n^{2}\pi^{2}\hbar^{2}/2mL^{2}\)。讨论费米子（自旋-1/2）与玻色子（自旋-0）的基态。</div>
+        <div class="solution">
+          单粒子能级 \(E_n=n^{2}E_1\)，\(E_1=\pi^{2}\hbar^{2}/2mL^{2}\)。两粒子总能 \(E_{n_1n_2}=(n_1^{2}+n_2^{2})E_1\)。
+          <br><strong>自旋-0 玻色子（同一种态可挤）：</strong>两玻色子同处 \(n_1=n_2=1\)，对称空间波函数 \(\Psi_{S}=\phi_1(x_1)\phi_1(x_2)\)（无 \(1/\sqrt{2}\) 因子，因仅一项）。基态能量 \(E_{11}^{(B)}=2E_1\)。
+          <br><strong>自旋-1/2 费米子（同态禁）：</strong>若两电子自旋平行（triplet，对称自旋），空间必反对称，最低能态为 \(n_1=1,n_2=2\)，能量 \(E_{12}^{(F)}=(1+4)E_1=5E_1\)。若自旋反平行（singlet），两电子可同处 \(n_1=n_2=1\)（空间对称 \(\phi_1\phi_1\)，自旋反对称 singlet），能量 \(E_{11}^{(F)}=2E_1\)——与玻色子相同！
+          <br><strong>对照：</strong>费米子的「基态」依赖自旋组态：singlet 时可同占 \(n=1\)（\(E=2E_1\)），triplet 时必占不同轨道（\(E=5E_1\)）。这就是为什么电子在原子中「成对填轨道」（singlet 配对）使能量最低。 <span class="ans">答：玻色子基态 \(2E_1\)；费米子 singlet 基态 \(2E_1\)、triplet 基态 \(5E_1\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 类氦离子 \(\mathrm{Li}^{+}\)、\(\mathrm{Be}^{2+}\) 的基态变分估计 Variational Estimate for \(\mathrm{Li}^{+}\), \(\mathrm{Be}^{2+}\)</summary>
+        <div class="hint">用推导 1.B 的普遍公式 \(Z_{\text{eff}}^{*}=Z-5/16\) 与 \(E_{\min}=-(54.4Z-17.0)^{2}/108.8\,\mathrm{eV}\)。</div>
+        <div class="solution">
+          \(\mathrm{Li}^{+}\)（\(Z=3\)）：
+          <br>\(Z_{\text{eff}}^{*}=3-5/16=43/16=2.6875\)。
+          <br>\(E_{\min}=-(54.4\times 3-17.0)^{2}/108.8=-(163.2-17.0)^{2}/108.8=-146.2^{2}/108.8=-21359/108.8\approx\mathbf{-196.5\,\mathrm{eV}}\)。
+          <br>实验 \(-198.1\,\mathrm{eV}\)（第一电离 \(75.6\) + 第二 \(122.5\)），误差 \(0.8\%\)。
+          <br>\(\mathrm{Be}^{2+}\)（\(Z=4\)）：
+          <br>\(Z_{\text{eff}}^{*}=4-5/16=59/16=3.6875\)。
+          <br>\(E_{\min}=-(54.4\times 4-17.0)^{2}/108.8=-(217.6-17.0)^{2}/108.8=-200.6^{2}/108.8\approx\mathbf{-370.0\,\mathrm{eV}}\)。
+          <br>实验 \(-371.6\,\mathrm{eV}\)，误差 \(0.4\%\)。
+          <br><strong>趋势：</strong>核电荷 \(Z\) 越大，电子-电子排斥相对越不重要（\(\sim Z\) vs 核吸引 \(\sim Z^{2}\)），变分精度提高。当 \(Z\to\infty\)，变分能量 \(E\to -27.2Z^{2}+17\cdot Z\cdot 2+\dots\to -27.2Z^{2}\)，趋近严格类氢极限。 <span class="ans">答：\(\mathrm{Li}^{+}\)：\(Z_{\text{eff}}^{*}=2.69\)，\(E_{\min}\approx -196.5\,\mathrm{eV}\)；\(\mathrm{Be}^{2+}\)：\(Z_{\text{eff}}^{*}=3.69\)，\(E_{\min}\approx -370.0\,\mathrm{eV}\)。大 \(Z\) 极限变分精度更高。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. Hund 第一规则的应用：碳原子 \(1s^{2}2s^{2}2p^{2}\) 基态 Applying Hund's First Rule — Carbon Ground Term</summary>
+        <div class="hint">两个 \(2p\) 电子（\(l=1\)），\(m_l\in\{-1,0,+1\}\)，每个 \(m_l\) 容两个自旋。Hund 第一规则：相同组态下最高 \(S\)（多重度）能量最低。</div>
+        <div class="solution">
+          \(2p\) 子壳层容量 \(2(2l+1)=6\)，碳有 2 个 \(2p\) 电子。
+          <br>按 Hund 规则，先最大化 \(S\)：两电子自旋平行（triplet，\(S=1\)，多重度 \(2S+1=3\)）。
+          <br>由泡利，\(m_s\) 相同（平行）的两电子不能 \(m_l\) 相同 → 选 \(m_{l1}=+1,m_{l2}=0\)（或 \(-1\)，等价）。总轨道 \(M_L=m_{l1}+m_{l2}=+1\)（最大）→ \(L=1\)（\(P\) 态）。
+          <br>多重度 \(3\) + 轨道 \(P\)（\(L=1\)）→ 谱项 \({}^{3}P\)。
+          <br>Hund 第二规则（\(l\) 未半满时 \(J=|L-S|\)）：\(J=|1-1|=0\)。基态谱项 \({}^{3}P_{0}\)。
+          <br>实验：碳基态确为 \({}^{3}P_{0}\)，与预测一致。激发谱项 \({}^{1}D_{2}\)（\(S=0,L=2\)）在 \({}^{3}P\) 之上 \(\sim 1.26\,\mathrm{eV}\)，\({}^{1}S_{0}\) 更高 \(\sim 2.68\,\mathrm{eV}\)。<strong>三重态最低</strong>，与氦 \(1s2s\) 相同的交换作用机理：自旋平行 ⇒ 空间反对称 ⇒ 电子互相躲开 ⇒ 库仑排斥更小。 <span class="ans">答：碳基态谱项 \({}^{3}P_{0}\)（\(S=1,L=1,J=0\)）；Hund 第一规则使 triplet 低于 singlet，源于交换积分 \(K&gt;0\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>盒中两粒子的联合概率 |Ψ(x₁,x₂)|² — Two Particles in a 1D Box.</strong>横轴 \(x_1/L\)、纵轴 \(x_2/L\)，颜色表示两粒子联合位置概率密度。两个全同粒子处于无限深势阱（\(L=1\)）的不同单粒子态 \(\phi_{n_1},\phi_{n_2}\)（\(n=1,2,\dots\)）。<strong>切换统计：</strong>玻色子（空间对称）→ 联合概率沿对角线 \(x_1=x_2\) <strong>增强</strong>（两粒子「喜欢待在一起」）；费米子（空间反对称）→ 沿对角线出现<strong>节点</strong>（\(|\Psi|^{2}=0\)，两费米子不能在同一位置——交换作用 / Pauli 排斥）。<strong>关键现象：</strong>若设 \(n_1=n_2\) 并切换为费米子，整张图变全黑——波函数恒为零（泡利不相容，不允许两费米子占据完全相同的态）。<strong>右侧</strong>面板显示「靠近对角线」\((|x_1-x_2|&lt;0.15L)\) 区域内的总概率：玻色子高、费米子低，定量展示「Pauli hole」。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="620" height="440"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          // Box length (normalized to 1)
+          var L = 1.0;
+
+          // Plot area geometry
+          var plotSize = 360;
+          var px0 = 64, py0 = 60;
+          var px1 = px0 + plotSize, py1 = py0 + plotSize;
+
+          // Heatmap grid resolution
+          var GW = 100, GH = 100;
+          var off = document.createElement('canvas');
+          off.width = GW; off.height = GH;
+          var offCtx = off.getContext('2d');
+          var imgData = offCtx.createImageData(GW, GH);
+
+          var DEFAULTS = { n1: 1, n2: 2, fermion: false };
+          var params = { n1: DEFAULTS.n1, n2: DEFAULTS.n2, fermion: DEFAULTS.fermion };
+
+          // Single-particle eigenfunction: φ_n(x) = √(2/L) sin(nπx/L)
+          function phi(n, x) {
+            return Math.sqrt(2 / L) * Math.sin(n * Math.PI * x / L);
+          }
+
+          // Two-particle wavefunction (spatial part)
+          function psiValue(x1, x2) {
+            var n1 = params.n1, n2 = params.n2;
+            if (n1 === n2) {
+              // Only symmetric possible; antisymmetric identically zero (Pauli)
+              if (params.fermion) return 0;
+              return phi(n1, x1) * phi(n2, x2); // = φ_n(x1)·φ_n(x2)
+            }
+            var a = phi(n1, x1) * phi(n2, x2);
+            var b = phi(n1, x2) * phi(n2, x1);
+            return params.fermion ? (a - b) / Math.SQRT2 : (a + b) / Math.SQRT2;
+          }
+
+          // Inferno-like colormap: t∈[0,1] → dark→purple→red→yellow
+          function colorMap(t) {
+            t = Math.max(0, Math.min(1, t));
+            var r, g, b;
+            if (t < 0.18) {
+              var s = t / 0.18;
+              r = 0; g = 0; b = 30 + s * 110;
+            } else if (t < 0.42) {
+              var s = (t - 0.18) / 0.24;
+              r = s * 130; g = 0; b = 140 - s * 20;
+            } else if (t < 0.68) {
+              var s = (t - 0.42) / 0.26;
+              r = 130 + s * 125; g = s * 110; b = 120 - s * 100;
+            } else if (t < 0.9) {
+              var s = (t - 0.68) / 0.22;
+              r = 255; g = 110 + s * 145; b = 20 - s * 20;
+            } else {
+              var s = (t - 0.9) / 0.1;
+              r = 255; g = 255; b = s * 220;
+            }
+            return [r | 0, g | 0, b | 0];
+          }
+
+          // Compute field, max, and "near-diagonal" probability
+          function computeField() {
+            var max = 0;
+            var field = new Float32Array(GW * GH);
+            var cellW = (L / GW) * (L / GH);
+            var pNear = 0, pTotal = 0;
+            for (var j = 0; j < GH; j++) {
+              // x2 increases from bottom (j=0) to top (j=GH-1)
+              var x2 = (j + 0.5) / GH * L;
+              for (var i = 0; i < GW; i++) {
+                var x1 = (i + 0.5) / GW * L;
+                var v = psiValue(x1, x2);
+                var d = v * v;
+                field[j * GW + i] = d;
+                if (d > max) max = d;
+                pTotal += d * cellW;
+                if (Math.abs(x1 - x2) < 0.15 * L) pNear += d * cellW;
+              }
+            }
+            return { field: field, max: max, pNear: pNear, pTotal: pTotal };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var res = computeField();
+              var field = res.field, max = res.max;
+              var safeMax = Math.max(max, 1e-15);
+
+              // write to off-screen low-res buffer
+              for (var i = 0; i < GW * GH; i++) {
+                var t = field[i] / safeMax;
+                var rgb = colorMap(t);
+                imgData.data[4 * i] = rgb[0];
+                imgData.data[4 * i + 1] = rgb[1];
+                imgData.data[4 * i + 2] = rgb[2];
+                imgData.data[4 * i + 3] = 255;
+              }
+              offCtx.putImageData(imgData, 0, 0);
+
+              // plot background + heatmap scaled up
+              ctx.save();
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(px0, py0, plotSize, plotSize);
+              ctx.imageSmoothingEnabled = true;
+              ctx.drawImage(off, 0, 0, GW, GH, px0, py0, plotSize, plotSize);
+              ctx.restore();
+
+              // plot border
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(px0, py0, plotSize, plotSize);
+              ctx.restore();
+
+              // diagonal x1 = x2 (from top-left (px0,py0) to bottom-right (px1,py1))
+              var diagColor, diagLW, diagDash;
+              if (params.fermion && params.n1 !== params.n2) {
+                diagColor = PS.colors.accent; diagLW = 2.6; diagDash = null;
+              } else if (params.n1 === params.n2 && params.fermion) {
+                diagColor = PS.colors.accent; diagLW = 2.6; diagDash = null;
+              } else {
+                diagColor = 'rgba(120,120,120,0.65)'; diagLW = 1.2; diagDash = [6, 4];
+              }
+              ctx.save();
+              ctx.strokeStyle = diagColor;
+              ctx.lineWidth = diagLW;
+              if (diagDash) ctx.setLineDash(diagDash);
+              ctx.beginPath();
+              ctx.moveTo(px0, py0);
+              ctx.lineTo(px1, py1);
+              ctx.stroke();
+              ctx.restore();
+
+              // axis labels & ticks
+              ctx.save();
+              ctx.font = 'bold 13px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('x₁ / L', (px0 + px1) / 2, py1 + 38);
+              ctx.save();
+              ctx.translate(px0 - 44, (py0 + py1) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('x₂ / L', 0, 0);
+              ctx.restore();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              [0, 0.5, 1].forEach(function (f) {
+                var x = px0 + f * plotSize;
+                ctx.fillText(f.toFixed(1), x, py1 + 16);
+              });
+              ctx.textAlign = 'right';
+              ctx.textBaseline = 'middle';
+              [0, 0.5, 1].forEach(function (f) {
+                var y = py1 - f * plotSize;
+                ctx.fillText(f.toFixed(1), px0 - 6, y);
+              });
+              ctx.restore();
+
+              // header
+              ctx.save();
+              ctx.font = 'bold 15px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var title = params.fermion
+                ? '费米子（空间反对称） · Fermion — antisymmetric spatial'
+                : '玻色子（空间对称） · Boson — symmetric spatial';
+              ctx.fillText('盒中两粒子  |Ψ(x₁,x₂)|²  —  ' + title, 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              var sub;
+              if (params.n1 === params.n2 && params.fermion) {
+                sub = '⚠  n₁ = n₂ = ' + params.n1 + '，反对称态恒为零 — 泡利不相容！';
+                ctx.fillStyle = PS.colors.accent;
+              } else if (params.n1 === params.n2) {
+                sub = 'n₁ = n₂ = ' + params.n1 + '（两粒子同处一态，仅对称可能）';
+              } else {
+                sub = '单粒子态：n₁ = ' + params.n1 + ',  n₂ = ' + params.n2;
+              }
+              ctx.fillText(sub, 14, 32);
+              ctx.restore();
+
+              // diagonal annotation
+              if (params.fermion && params.n1 !== params.n2) {
+                ctx.save();
+                ctx.font = 'bold 11px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.accent;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText('费米子节点 (Pauli)  Ψ(x,x)=0', px0 + 12, py0 + 18);
+                ctx.restore();
+              } else if (!params.fermion && params.n1 !== params.n2) {
+                ctx.save();
+                ctx.font = '11px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.accent2;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText('玻色子在对角线增强 (bunching)', px0 + 12, py0 + 18);
+                ctx.restore();
+              }
+
+              // ====== right info panel ======
+              var panelX = px1 + 26, panelY = py0, panelW = W - panelX - 12;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.45;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(panelX - 6, panelY - 14, panelW + 12, plotSize + 28);
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              function line(y, label, val, valColor) {
+                ctx.save();
+                ctx.font = '11.5px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.text;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, panelX, y);
+                ctx.font = 'bold 12px ui-monospace, Menlo, monospace';
+                ctx.fillStyle = valColor || PS.colors.text;
+                ctx.textAlign = 'right';
+                ctx.fillText(val, panelX + panelW - 4, y);
+                ctx.restore();
+              }
+
+              var y = panelY + 6;
+              ctx.save();
+              ctx.font = 'bold 12.5px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('物理量 Physical Quantities', panelX, y);
+              ctx.restore();
+              y += 22;
+              line(y, '统计 Statistics', params.fermion ? 'Fermion (–)' : 'Boson (+)', params.fermion ? PS.colors.accent : PS.colors.primary);
+              y += 19;
+              line(y, '单粒子态 n₁', String(params.n1));
+              y += 19;
+              line(y, '单粒子态 n₂', String(params.n2));
+              y += 19;
+              var E1 = params.n1 * params.n1;
+              var E2 = params.n2 * params.n2;
+              line(y, 'E₁+E₂  (单位 E₀)', (E1 + E2).toString(), PS.colors.accent2);
+              y += 19;
+              line(y, '∫|Ψ|² dV (应=1)', res.pTotal.toFixed(3), PS.colors.accent2);
+              y += 19;
+              var pNearPct = (res.pNear / Math.max(res.pTotal, 1e-12)) * 100;
+              line(y, '近对角线 P(|x₁-x₂|<0.15L)', pNearPct.toFixed(1) + ' %', params.fermion ? PS.colors.accent : PS.colors.primary);
+              y += 24;
+
+              ctx.save();
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('观察 Observations', panelX, y);
+              ctx.restore();
+              y += 18;
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var msg1, msg2;
+              if (params.n1 === params.n2 && params.fermion) {
+                msg1 = '★ n₁=n₂=' + params.n1 + ' 且费米子：';
+                msg2 = '   波函数恒为零（泡利不相容）';
+              } else if (params.fermion) {
+                msg1 = '★ 费米子：沿对角线 |Ψ|²=0';
+                msg2 = '   两粒子永不重合（Pauli hole）';
+              } else if (params.n1 === params.n2) {
+                msg1 = '★ 两玻色子同态：';
+                msg2 = '   联合概率 = |φ_n(x₁)|²|φ_n(x₂)|²';
+              } else {
+                msg1 = '★ 玻色子：对角线概率增强';
+                msg2 = '   (bosonic bunching)';
+              }
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillText(msg1, panelX, y);
+              y += 15;
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText(msg2, panelX, y);
+              y += 16;
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('近对角线区占比 ↔ 交换作用', panelX, y);
+              y += 14;
+              ctx.fillText('强度（费米子越小越强）。', panelX, y);
+              ctx.restore();
+
+              // colormap legend bar (bottom)
+              var legX = px0, legY = py1 + 52, legW = plotSize, legH = 10;
+              for (var k = 0; k < legW; k++) {
+                var tt = k / (legW - 1);
+                var c = colorMap(tt);
+                ctx.fillStyle = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
+                ctx.fillRect(legX + k, legY, 1, legH);
+              }
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(legX, legY, legW, legH);
+              ctx.font = '10px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left';
+              ctx.fillText('0', legX, legY + legH + 11);
+              ctx.textAlign = 'right';
+              ctx.fillText('|Ψ|²_最大', legX + legW, legY + legH + 11);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'toggle', key: 'fermion', label: '费米子 (反对称) / Fermion', value: DEFAULTS.fermion },
+            { type: 'slider', key: 'n1', label: 'n₁ (粒子 1)', min: 1, max: 5, step: 1, value: DEFAULTS.n1 },
+            { type: 'slider', key: 'n2', label: 'n₂ (粒子 2)', min: 1, max: 5, step: 1, value: DEFAULTS.n2 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('fermion', function (v) { params.fermion = v; });
+          ctl.on('n1', function (v) { params.n1 = v; });
+          ctl.on('n2', function (v) { params.n2 = v; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-1 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.n1);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.n2);
+            var toggle = document.querySelector('#controls-1 input[type=checkbox]');
+            if (toggle) {
+              toggle.checked = DEFAULTS.fermion;
+              toggle.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>对称化公设</strong>：全同玻色子（整数自旋）总波函数在交换下对称（\(+1\)），全同费米子（半整数自旋）反对称（\(-1\)）。</li>
+        <li><strong>交换算符</strong> \(\hat{P}_{12}\)：\(\hat{P}_{12}^{2}=\mathbb{1}\) ⇒ 本征值 \(\pm 1\)；与对称哈密顿量对易 \([\hat{H},\hat{P}_{12}]=0\) ⇒ 对称性是运动常量。</li>
+        <li><strong>两粒子态</strong>：对称 \(\Psi_{+}=\tfrac{1}{\sqrt{2}}(\psi_a(1)\psi_b(2)+\psi_a(2)\psi_b(1))\)、反对称 \(\Psi_{-}=\tfrac{1}{\sqrt{2}}(\psi_a(1)\psi_b(2)-\psi_a(2)\psi_b(1))\)。费米子总波函数（空间 \(\otimes\) 自旋）必须反对称：空间对称 × singlet 或 空间反对称 × triplet。</li>
+        <li><strong>斯莱特行列式</strong>：\(N\) 费米子波函数 \(=1/\sqrt{N!}\cdot\det[\psi_i(\xi_j)]\)。换列变号 = 反对称；两行相同 = 行列式零 = 泡利不相容。</li>
+        <li><strong>泡利不相容原理</strong>：两全同费米子不能处于完全相同的单粒子量子态 \((n,l,m_l,m_s)\)。原子壳层容量 \(2(2l+1)\)，\(n\) 壳层容量 \(2n^{2}\)。</li>
+        <li><strong>氦原子</strong>：基态 \(1s^{2}\) 必为 singlet（空间对称 ⇒ 自旋反对称）；激发态 \(1s\,2s\) 有 para（singlet，\(E_{+}=E_{1s}+E_{2s}+J+K\)）与 ortho（triplet，\(E_{-}=E_{1s}+E_{2s}+J-K\)），劈裂 \(\Delta E=2K\approx 0.80\,\mathrm{eV}\)，三重态更低（交换作用）。</li>
+        <li><strong>变分原理</strong>：\(E[\psi_{\text{trial}}]\ge E_0\)（上界）。氦基态 \(Z_{\text{eff}}\) 变分：\(Z_{\text{eff}}^{*}=Z-5/16=1.6875\)、\(E_{\min}=-77.5\,\mathrm{eV}\)（实验 \(-79.0\)）。Hartree–Fock 即变分原理 + 单斯莱特行列式对多电子系统的系统化应用。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\hat{P}_{12}\Psi(1,2)=\Psi(2,1),\qquad \hat{P}_{12}^{2}=\mathbb{1},\qquad \hat{P}_{12}\Psi_{\text{boson}}=+\Psi,\quad \hat{P}_{12}\Psi_{\text{fermion}}=-\Psi\;} \]</div>
+      <div class="formula">\[ \boxed{\;\Psi_{\pm}(1,2)=\frac{1}{\sqrt{2}}\bigl[\psi_a(1)\psi_b(2)\pm\psi_a(2)\psi_b(1)\bigr],\qquad a=b\Rightarrow\Psi_{-}\equiv 0\;\;(\text{Pauli})\;} \]</div>
+      <div class="formula">\[ \boxed{\;\Psi(1,\dots,N)=\frac{1}{\sqrt{N!}}\det[\psi_i(\xi_j)],\qquad \text{两行相同}\Rightarrow\det=0\;} \]</div>
+      <div class="formula">\[ \boxed{\;E_{\text{singlet}}=E_{1s}+E_{2s}+J+K,\quad E_{\text{triplet}}=E_{1s}+E_{2s}+J-K,\quad \Delta E=2K\;} \]</div>
+      <div class="formula">\[ \boxed{\;E[\psi_{\text{trial}}]=\frac{\langle\psi_{\text{trial}}|\hat{H}|\psi_{\text{trial}}\rangle}{\langle\psi_{\text{trial}}|\psi_{\text{trial}}\rangle}\ge E_{0},\qquad \text{He: }Z_{\text{eff}}^{*}=Z-\frac{5}{16},\;\; E_{\min}\approx -77.5\,\mathrm{eV}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

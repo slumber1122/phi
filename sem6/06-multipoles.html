@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 静电学与多极展开 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第6章 · 电动力学 Electrodynamics</p>
+      <h1>静电学与多极展开 <span class="en-title">Electrostatics &amp; Multipoles</span></h1>
+    </header>
+
+    <!-- ============================================================ Objectives -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>从高斯定律 \(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\) 与 \(\vec{E}=-\nabla V\) 出发，导出<strong>泊松方程</strong> (Poisson's equation) \(\nabla^{2}V=-\rho/\varepsilon_{0}\) 与在无源区退化的<strong>拉普拉斯方程</strong> (Laplace's equation) \(\nabla^{2}V=0\)，并指出在给定边界条件 (boundary conditions) 下二者唯一确定电势。</li>
+        <li>陈述并证明<strong>唯一性定理</strong> (uniqueness theorem)：在体积 \(\mathcal{V}\) 内指定 \(\rho\)，在边界 \(\mathcal{S}\) 上指定 Dirichlet（\(V\)）或 Neumann（\(\partial V/\partial n\)）条件，泊松方程的解唯一；对导体边界，给定每个导体的 \(V\) <em>或</em> 总电量 \(Q\) 同样唯一确定。</li>
+        <li>在导体表面写出正确的<strong>边界条件</strong>：\(V\) 连续；\(\vec{E}\) 切向分量连续；\(\vec{E}\) 法向分量跃变 \(E_{\perp}^{\text{上}}-E_{\perp}^{\text{下}}=\sigma/\varepsilon_{0}\)；导体内部 \(\vec{E}=0\)、表面是等势面、紧贴表面外 \(E=\sigma/\varepsilon_{0}\)。</li>
+        <li>用<strong>镜像法</strong> (method of images) 求解点电荷 near 接地导体平面、接地导体球（球心距 \(a\)、半径 \(R\) 时像电荷 \(q'=-qR/a\) 位于 \(b=R^{2}/a\)）、孤立导体球等三类典型问题，理解像是<strong>数学技巧</strong>而非真实电荷。</li>
+        <li>用<strong>勒让德多项式</strong> (Legendre polynomials) 生成的母函数 \(1/|\vec{r}-\vec{r}'|=\sum_{l}(r'^{\,l}/r^{l+1})P_{l}(\cos\gamma)\) 把远处观察点的电势展开为<strong>多极展开</strong> (multipole expansion)：单极 \(q\)、偶极 \(\vec{p}\)、四极 \(Q_{ij}\)，并会算这些<strong>多极矩</strong> (multipole moments)。</li>
+        <li>用<strong>分离变量法</strong> (separation of variables) 在笛卡尔 (Cartesian)、柱 (cylindrical)、球 (spherical, 含 \(Y_{lm}\)) 三种坐标系下解拉普拉斯方程的边值问题，并能对简单几何（盒子、球壳在均匀场中、楔形域等）写出闭合解。</li>
+      </ul>
+    </section>
+
+    <!-- ========================================================= Core Concepts -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 泊松方程与拉普拉斯方程 Poisson &amp; Laplace Equations</h3>
+      <p>静电学两条基本规律是 <strong>高斯定律</strong> \(\nabla\cdot\vec{E}=\rho/\varepsilon_{0}\) 与 <strong>静电场无旋</strong> \(\nabla\times\vec{E}=0\)。后者允许我们引入<strong>标量势</strong> (scalar potential) \(V\)：</p>
+      <div class="formula">\[ \vec{E}(\vec{r})=-\nabla V(\vec{r}). \]</div>
+      <p>代入高斯定律立即得 <strong>泊松方程</strong> (Poisson's equation)</p>
+      <div class="formula">\[ \boxed{\;\nabla^{2}V(\vec{r})=-\frac{\rho(\vec{r})}{\varepsilon_{0}}\;}\qquad\text{（泊松方程）}. \]</div>
+      <p>在无源区域 (\(\rho=0\)) 退化为 <strong>拉普拉斯方程</strong> (Laplace's equation)</p>
+      <div class="formula">\[ \boxed{\;\nabla^{2}V=0\;}\qquad\text{（拉普拉斯方程）}. \]</div>
+      <p>泊松方程的积分解由 <strong>格林函数</strong> (Green's function) 给出。在三维无穷空间中，\(\nabla^{2}\) 的格林函数为 \(-1/(4\pi|\vec{r}-\vec{r}'|)\)，故</p>
+      <div class="formula">\[ V(\vec{r})=\frac{1}{4\pi\varepsilon_{0}}\int\frac{\rho(\vec{r}')}{|\vec{r}-\vec{r}'|}\,\mathrm{d}^{3}r', \]</div>
+      <p>这正是把分布源视作无穷多 point-charge 元 \(dq=\rho\,\mathrm{d}^{3}r'\) 的代数叠加。它形式简单但要在工程中真正计算，往往要靠本章后面三大利器：唯一性、镜像法、分离变量。</p>
+      <div class="key-terms">scalar potential \(V\) (标量势), Poisson's equation (泊松方程), Laplace's equation (拉普拉斯方程), Green's function (格林函数)</div>
+
+      <h3>2. 边界条件 Boundary Conditions at a Surface</h3>
+      <p>在两种介质（或介质与真空）的界面 \(\mathcal{S}\) 处，电势与电场服从：</p>
+      <ul>
+        <li><strong>\(V\) 连续</strong>：\(V_{\text{上}}=V_{\text{下}}\)。否则 \(\vec{E}=-\nabla V\) 会出现无穷大势差导致无穷大电场力。</li>
+        <li><strong>\(\vec{E}\) 切向分量连续</strong>：\(E_{\parallel}^{\text{上}}=E_{\parallel}^{\text{下}}\)（由环路定理 \(\oint\vec{E}\cdot d\vec{l}=0\) 在跨界面小矩形上取极限得到）。</li>
+        <li><strong>\(\vec{E}\) 法向分量跃变</strong>：\(E_{\perp}^{\text{上}}-E_{\perp}^{\text{下}}=\sigma/\varepsilon_{0}\)，其中 \(\hat{n}\) 由「下」指向「上」，\(\sigma\) 为界面上的<strong>自由面电荷密度</strong> (free surface charge density)。等价地 \(V\) 的法向导数有跃变：\(\partial V/\partial n|_{\text{下}}-\partial V/\partial n|_{\text{上}}=\sigma/\varepsilon_{0}\)。</li>
+      </ul>
+      <p><strong>导体 (conductor)</strong> 的特殊情形：静电平衡时导体内 \(\vec{E}=0\)（否则自由电子会持续流动），所以：</p>
+      <ul>
+        <li>整个导体（包括内部和表面）是 <strong>等势体</strong> (equipotential)；表面是<strong>等势面</strong>。</li>
+        <li>表面外侧 \(\vec{E}\) 必<strong>垂直于表面</strong>（切向分量连续到导体内 \(E_{\parallel}=0\)），大小为 \(E=\sigma/\varepsilon_{0}\)。注意这<strong>不是</strong>把「无穷大平面 \(\sigma/(2\varepsilon_{0})\)」的公式直接搬来—— conductor 表面外侧的场，是<strong>所有</strong>电荷（包括该导体其他位置上的电荷以及外部电荷）的合场。</li>
+      </ul>
+      <div class="key-terms">free surface charge (自由面电荷), equipotential body (等势体), boundary conditions (边界条件), conductor surface (导体表面)</div>
+
+      <h3>3. 唯一性定理 Uniqueness Theorems</h3>
+      <p>唯一性定理是整个静电学问题求解的<strong>定心丸</strong>。它告诉你：<em>不管你用什么方法（哪怕靠「灵感」猜），只要找到一个满足方程与<strong>所有</strong>边界条件的解，它就是唯一正确的解。</em></p>
+      <p><strong>定理 1（Dirichlet/Neumann）：</strong>在区域 \(\mathcal{V}\) 内给定 \(\rho(\vec{r})\)，在边界 \(\mathcal{S}\) 上给定 (i) \(V\)（Dirichlet）<em>或</em> (ii) \(\partial V/\partial n\)（Neumann），则泊松方程在 \(\mathcal{V}\) 内的解<strong>唯一</strong>（Neumann 情形允许相差一个无关紧要的常数）。</p>
+      <p><strong>定理 2（导体）：</strong>若 \(\mathcal{V}\) 外围有若干导体 \(S_{1},S_{2},\dots\)，导体外部 \(\rho\) 给定，且每个导体上给定 (i) 电势 \(V_{i}\) <em>或</em> (ii) 总电荷 \(Q_{i}\)，则 \(\mathcal{V}\) 内的电场<strong>唯一</strong>确定。</p>
+      <p>证明见推导 6.A，关键工具是 <strong>格林第一恒等式</strong> (Green's first identity)：对任意标量场 \(\Phi,\Psi\)</p>
+      <div class="formula">\[ \int_{\mathcal{V}}\!\bigl(\Phi\nabla^{2}\Psi+\nabla\Phi\cdot\nabla\Psi\bigr)\,\mathrm{d}\tau=\oint_{\mathcal{S}}\Phi\,\frac{\partial\Psi}{\partial n}\,\mathrm{d}A. \]</div>
+      <div class="key-terms">uniqueness theorem (唯一性定理), Dirichlet condition (狄利克雷条件), Neumann condition (诺伊曼条件), Green's first identity (格林第一恒等式)</div>
+
+      <h3>4. 镜像法 Method of Images</h3>
+      <p>当存在<strong>接地导体</strong>（\(V=0\)）或<strong>绝缘导体</strong>（总 \(Q\) 固定）边界时，导体表面感应电荷的真实分布往往难求。但若能在<strong>导体内部</strong>（即「禁区」）放置若干<strong>虚拟像电荷</strong> (image charges)，使真实电荷加像电荷产生的场在导体表面满足给定边界条件，则按<strong>唯一性定理</strong>，这组电荷在导体外部产生的场就是真实场。下面给出三种经典情形。</p>
+
+      <h4>4.1 点电荷与无穷大接地导体平面</h4>
+      <p>点电荷 \(+q\) 位于距接地导体平面（取 \(z=0\)）高度 \(z=d\) 处。<strong>像电荷</strong> \(-q\) 对称地放在 \(z=-d\)。在 \(z>0\) 区域，两电荷叠加使 \(z=0\) 平面上处处 \(V=0\)（每点的两个贡献大小相等、符号相反），且 \(z\to\infty\) 时 \(V\to0\)，所以唯一性定理保证这就是解。</p>
+      <div class="formula">\[ V(x,y,z>0)=\frac{1}{4\pi\varepsilon_{0}}\!\left[\frac{q}{\sqrt{x^{2}+y^{2}+(z-d)^{2}}}-\frac{q}{\sqrt{x^{2}+y^{2}+(z+d)^{2}}}\right]. \]</div>
+      <p>对 \(+q\) 的<strong>力</strong>等于 \(-q\) 对它的库仑力（距离 \(2d\)）：</p>
+      <div class="formula">\[ \vec{F}=-\hat{z}\,\frac{1}{4\pi\varepsilon_{0}}\frac{q^{2}}{(2d)^{2}}\quad(\text{吸引力}). \]</div>
+      <p>导体表面<strong>感应电荷密度</strong> (induced surface charge) 由 \(z=0^{+}\) 处 \(E_{z}=\sigma/\varepsilon_{0}\) 给出（在柱坐标 \(\rho=\sqrt{x^{2}+y^{2}}\) 下）：</p>
+      <div class="formula">\[ \sigma(\rho)=-\frac{qd}{2\pi(\rho^{2}+d^{2})^{3/2}},\qquad\int_{0}^{\infty}\!\sigma(\rho)\,2\pi\rho\,\mathrm{d}\rho=-q. \]</div>
+      <p>感应电荷总和恰好为 \(-q\)，与像电荷一致——这是<strong>物理</strong>结果，不是巧合。</p>
+
+      <h4>4.2 点电荷与接地导体球</h4>
+      <p>半径 \(R\) 的接地导体球，球心在原点；点电荷 \(+q\) 位于 \(z=a\)（\(a>R\)）。像电荷 \(q'\) 应放在 \(z\) 轴上球内某点 \(b<R\)，让球面（\(r=R\)）每点 \(V=0\)。设 \(q'\) 在 \(z=b\)，则球面上点 \((R,\theta)\) 处：</p>
+      <div class="formula">\[ \frac{q}{\sqrt{R^{2}+a^{2}-2Ra\cos\theta}}+\frac{q'}{\sqrt{R^{2}+b^{2}-2Rb\cos\theta}}=0. \]</div>
+      <p>此式对<strong>所有</strong> \(\theta\) 成立，要求 \(b=R^{2}/a\) 且 \(q'=-qR/a\)（求解 \(\theta=0\) 与 \(\theta=\pi\) 两个端点即得）。因此</p>
+      <div class="formula">\[ \boxed{\;q'=-\frac{R}{a}\,q,\qquad b=\frac{R^{2}}{a}\;}\qquad(\text{接地导体球的镜像}). \]</div>
+      <p>对 \(+q\) 的<strong>力</strong>（沿 \(-\hat{z}\) 吸引）：</p>
+      <div class="formula">\[ F=-\frac{1}{4\pi\varepsilon_{0}}\frac{q\,|q'|}{(a-b)^{2}}=-\frac{1}{4\pi\varepsilon_{0}}\frac{q^{2}Ra}{(a^{2}-R^{2})^{2}}. \]</div>
+
+      <h4>4.3 点电荷与绝缘中性导体球</h4>
+      <p>若导体球<strong>绝缘且电中性</strong>（总 \(Q=0\)），上一小节的单像电荷给出正确的 \(V(R,\theta)\propto\) 形状但球面电势不为零（净像电荷 \(q'\ne0\)）。修正方法：在球心额外放第二像电荷 \(q''=-q'=+qR/a\)，使总像电荷为零，同时球面电势被一致地抬升（成为常数 \(kq''/R\)，仍是等势面）。两像电荷在球外产生正确解。</p>
+      <div class="key-terms">method of images (镜像法), image charge (像电荷), grounded conductor (接地导体), induced surface charge (感应面电荷)</div>
+
+      <h3>5. 多极展开 Multipole Expansion</h3>
+      <p>对<strong>局域分布</strong>（所有源在原点附近半径 \(r'_{\max}\) 内），观察点 \(\vec{r}\) 远处（\(r\gg r'_{\max}\)）的电势可用 \(r'\,/\,r\) 的幂次展开。利用 <strong>勒让德多项式的母函数</strong> (generating function for Legendre polynomials)</p>
+      <div class="formula">\[ \frac{1}{|\vec{r}-\vec{r}'|}=\frac{1}{r}\frac{1}{\sqrt{1-2(r'/r)\cos\gamma+(r'/r)^{2}}}=\sum_{l=0}^{\infty}\frac{r'^{\,l}}{r^{l+1}}\,P_{l}(\cos\gamma),\quad r>r', \]</div>
+      <p>其中 \(\gamma\) 是 \(\vec{r}\) 与 \(\vec{r}'\) 的夹角。代入积分得</p>
+      <div class="formula">\[ V(\vec{r})=\frac{1}{4\pi\varepsilon_{0}}\sum_{l=0}^{\infty}\frac{1}{r^{l+1}}\underbrace{\int r'^{\,l}P_{l}(\cos\gamma)\,\rho(\vec{r}')\,\mathrm{d}^{3}r'}_{\displaystyle\equiv\,q_{l}\text{（第 }l\text{ 阶多极矩）}}. \]</div>
+      <p>若分布<strong>关于 \(z\) 轴方位对称</strong>，则 \(\gamma=\theta-\theta'\) 退化为 \(\theta\) 关系（经完整角度积分后），可证</p>
+      <div class="formula">\[ V(r,\theta)=\frac{1}{4\pi\varepsilon_{0}}\sum_{l=0}^{\infty}\frac{q_{l}}{r^{l+1}}P_{l}(\cos\theta),\qquad q_{l}=2\pi\!\int_{0}^{\infty}\!\!\int_{0}^{\pi}\! r'^{\,l+2}\rho(r',\theta')P_{l}(\cos\theta')\sin\theta'\,\mathrm{d}\theta'\,\mathrm{d}r'. \]</div>
+      <p>前几阶勒让德多项式：\(P_{0}(x)=1\)、\(P_{1}(x)=x\)、\(P_{2}(x)=\tfrac{1}{2}(3x^{2}-1)\)、\(P_{3}(x)=\tfrac{1}{2}(5x^{3}-3x)\)。</p>
+
+      <h3>6. 多极矩：单极、偶极、四极 Multipole Moments</h3>
+      <p>把展开前几项写成<strong>笛卡尔张量</strong>形式更便于计算（且不依赖轴对称假设）：</p>
+      <div class="formula">\[ V(\vec{r})=\frac{1}{4\pi\varepsilon_{0}}\!\left[\frac{q}{r}+\frac{\vec{p}\cdot\hat{r}}{r^{2}}+\frac{1}{2}\sum_{i,j}Q_{ij}\frac{\hat{r}_{i}\hat{r}_{j}}{r^{3}}+\cdots\right], \]</div>
+      <p>其中（\(\vec{r}'=(x',y',z')\)，\(\displaystyle q=\) 总电荷、\(\displaystyle\vec{p}=\) 偶极矩、\(\displaystyle Q_{ij}=\) 四极矩张量）：</p>
+      <div class="formula">\[ q=\int\rho\,\mathrm{d}^{3}r',\qquad \vec{p}=\int\vec{r}'\rho\,\mathrm{d}^{3}r',\qquad Q_{ij}=\int(3x'_{i}x'_{j}-r'^{2}\delta_{ij})\,\rho\,\mathrm{d}^{3}r'. \]</div>
+      <p>要点：</p>
+      <ul>
+        <li>\(Q_{ij}\) 是<strong>对称无迹张量</strong> (symmetric, traceless)：\(Q_{ij}=Q_{ji}\)，\(Q_{xx}+Q_{yy}+Q_{zz}=0\)，故独立分量数 \(5\)。</li>
+        <li>展开<strong>收敛条件</strong>：\(r>r'_{\max}\)（观察点必须在包围所有源的最小球外）。在源内级数发散。</li>
+        <li>\(l\) 阶项 \(\propto 1/r^{l+1}\)，每升一阶多衰减一阶；远离源时单极主导（\(q\ne0\)），其次偶极、再次四极……。</li>
+        <li><strong>纯偶极的电势</strong> \(V=(1/4\pi\varepsilon_{0})\,p\cos\theta/r^{2}\)（\(\vec{p}\) 沿 \(+z\)）；<strong>线性四极</strong>（沿 \(z\) 轴 \(+q,0,-2q,+q\) 等价排布，对称于原点） \(V\propto P_{2}(\cos\theta)/r^{3}=(3\cos^{2}\theta-1)/(2r^{3})\)。</li>
+      </ul>
+      <div class="key-terms">monopole moment \(q\) (单极矩), dipole moment \(\vec{p}\) (偶极矩), quadrupole tensor \(Q_{ij}\) (四极矩张量), symmetric &amp; traceless (对称无迹), convergence radius \(r>r'_{\max}\) (收敛半径)</div>
+
+      <h3>7. 纯偶极的电场 Field of a Pure Dipole</h3>
+      <p>取 \(\vec{p}=p\hat{z}\)。由 \(V=(1/4\pi\varepsilon_{0})\,p\cos\theta/r^{2}\) 求 \(\vec{E}=-\nabla V\)（用球坐标）：</p>
+      <div class="formula">\[ E_{r}=\frac{1}{4\pi\varepsilon_{0}}\frac{2p\cos\theta}{r^{3}},\qquad E_{\theta}=\frac{1}{4\pi\varepsilon_{0}}\frac{p\sin\theta}{r^{3}},\qquad E_{\phi}=0. \]</div>
+      <p>沿偶极轴（\(\theta=0\)）只有 \(E_{r}=2p/(4\pi\varepsilon_{0}r^{3})\)，方向沿 \(+\hat{z}\)；赤道面（\(\theta=\pi/2\)）\(E_{r}=0\)，\(E_{\theta}=p/(4\pi\varepsilon_{0}r^{3})\)，方向 \(\hat{\theta}|_{\pi/2}=-\hat{z}\)。轴向场大小恰为赤道场的 \(2\) 倍——这是「偶极近场非各向同性」的标志。注意：远场 (\(r\to\infty\)) 按 \(1/r^{3}\) 衰减，远比单极的 \(1/r^{2}\) 快。</p>
+
+      <h3>8. 分离变量法：笛卡尔坐标 Separation of Variables — Cartesian</h3>
+      <p>设 \(V(x,y,z)=X(x)Y(y)Z(z)\)，代入 \(\nabla^{2}V=0\)，得 \(X''/X+Y''/Y+Z''/Z=0\)。三项之和为零意味着每一项是常数。例如二维问题（沿 \(z\) 平移不变）\(V(x,y)=X(x)Y(y)\)：取 \(X''/X=-k^{2},\;Y''/Y=+k^{2}\)（\(k\) 待定），则</p>
+      <div class="formula">\[ X(x)=A\sin kx+B\cos kx,\qquad Y(y)=C\sinh ky+D\cosh ky. \]</div>
+      <p>具体边界条件（如三边接地、一边给 \(V_{0}\)）定出 \(k\) 与系数。两边接地（\(x=0,x=a\) 处 \(V=0\)）迫使 \(k=n\pi/a\)（\(n=1,2,\dots\)）且取 \(\sin\) 形式；一般 \(V(x,y)\) 是这些「模式」的线性叠加（傅里叶级数）。见例 6.4 与练习题 4。</p>
+
+      <h3>9. 分离变量法：球坐标 Separation of Variables — Spherical</h3>
+      <p>方位对称时 \(V(r,\theta)=R(r)\Theta(\theta)\)，给出</p>
+      <div class="formula">\[ \frac{1}{r^{2}}\frac{\mathrm{d}}{\mathrm{d}r}\!\left(r^{2}\frac{\mathrm{d}R}{\mathrm{d}r}\right)-\frac{l(l+1)}{r^{2}}R=0,\qquad \frac{1}{\sin\theta}\frac{\mathrm{d}}{\mathrm{d}\theta}\!\left(\sin\theta\frac{\mathrm{d}\Theta}{\mathrm{d}\theta}\right)+l(l+1)\Theta=0. \]</div>
+      <p>角向方程的解是 \(P_{l}(\cos\theta)\)（要求 \(l\in\mathbb{N}_{0}\) 才能在 \(\theta=0,\pi\) 处不发散），径向解是 \(r^{l}\) 与 \(r^{-l-1}\) 的线性组合。一般解</p>
+      <div class="formula">\[ V(r,\theta)=\sum_{l=0}^{\infty}\left(A_{l}r^{l}+\frac{B_{l}}{r^{l+1}}\right)P_{l}(\cos\theta). \]</div>
+      <p>无方位对称时，用<strong>球谐函数</strong> (spherical harmonics) \(Y_{lm}(\theta,\phi)\)：</p>
+      <div class="formula">\[ V(r,\theta,\phi)=\sum_{l=0}^{\infty}\sum_{m=-l}^{l}\left(A_{lm}r^{l}+\frac{B_{lm}}{r^{l+1}}\right)Y_{lm}(\theta,\phi). \]</div>
+      <p>典型情形：原点处无源 \(\Rightarrow B_{l}=0\)（解在 \(r=0\) 正则）；无穷远处有限 \(\Rightarrow A_{l}\to0\)（除均匀外场贡献的 \(A_{1}r\cos\theta\) 项）。见例 6.4。</p>
+
+      <h3>10. 分离变量法：柱坐标 Separation of Variables — Cylindrical</h3>
+      <p>对方位角周期解 \(V(s,\phi,z)=S(s)\Phi(\phi)Z(z)\)，取 \(\Phi=e^{im\phi}\)（\(m\in\mathbb{Z}\)）、\(Z=e^{kz}\)（或 \(\sinh kz\)），径向 <strong>修正贝塞尔方程</strong> 的解为 \(I_{m}(ks),K_{m}(ks)\)（实宗量）或 \(J_{m}(ks),N_{m}(ks)\)（虚宗量）。完整讨论超出本章范围，但记住：<em>柱坐标下径向函数总是某类 Bessel 函数</em>，无穷远正则用 \(K_{m}\)，原点正则用 \(I_{m}\) 或 \(J_{m}\)。</p>
+      <div class="key-terms">separation of variables (分离变量法), Legendre polynomials \(P_{l}\) (勒让德多项式), spherical harmonics \(Y_{lm}\) (球谐函数), Bessel functions \(J_{m},N_{m},I_{m},K_{m}\) (贝塞尔函数)</div>
+    </section>
+
+    <!-- ============================================================ Derivation -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 6.A — 唯一性定理的证明 Proof of the Uniqueness Theorem</h3>
+      <p>考虑 Dirichlet 情形（Neumann 类似）。设 \(V_{1},V_{2}\) 是泊松方程在 \(\mathcal{V}\) 内的两个解，满足相同 \(\rho\) 与相同边界 \(V|_{\mathcal{S}}=V_{0}\)。令 \(\Phi\equiv V_{1}-V_{2}\)，则：</p>
+      <p class="step"><strong>步骤 1：</strong>线性叠加原理 ⇒ \(\nabla^{2}\Phi=\nabla^{2}V_{1}-\nabla^{2}V_{2}=(-\rho/\varepsilon_{0})-(-\rho/\varepsilon_{0})=0\) 在 \(\mathcal{V}\) 内；且 \(\Phi|_{\mathcal{S}}=V_{0}-V_{0}=0\) 在 \(\mathcal{S}\) 上。</p>
+      <p class="step"><strong>步骤 2：</strong>格林第一恒等式取 \(\Psi=\Phi\)（同式）：
+      \[ \int_{\mathcal{V}}\!\bigl(\Phi\nabla^{2}\Phi+|\nabla\Phi|^{2}\bigr)\,\mathrm{d}\tau=\oint_{\mathcal{S}}\Phi\,\frac{\partial\Phi}{\partial n}\,\mathrm{d}A. \]</p>
+      <p class="step"><strong>步骤 3：</strong>第一项：\(\Phi\nabla^{2}\Phi=\Phi\cdot0=0\)。右边：\(\Phi|_{\mathcal{S}}=0\) ⇒ 整个面积分为零。所以
+      \[ \int_{\mathcal{V}}|\nabla\Phi|^{2}\,\mathrm{d}\tau=0. \]</p>
+      <p class="step"><strong>步骤 4：</strong>被积函数 \(|\nabla\Phi|^{2}\ge0\) 处处非负；积分为零 ⇒ 被积函数恒为零 ⇒ \(\nabla\Phi\equiv0\) ⇒ \(\Phi\) 是常数。结合 \(\Phi|_{\mathcal{S}}=0\) 得 \(\Phi\equiv0\)，即 \(V_{1}=V_{2}\)。<span class="ans">唯一性得证。</span></p>
+      <p class="step"><strong>步骤 5（导体版本）：</strong>若边界是若干导体，给定 \(V_{i}\)：完全同上（每个导体表面 \(\Phi=0\)）。若给定总电量 \(Q_{i}\)：用导体表面 \(E_{\perp}=\sigma_{i}/\varepsilon_{0}\) ⇒ \(\partial V/\partial n=-\sigma_{i}/\varepsilon_{0}\)，两个解在导体 \(i\) 上 \(\partial\Phi/\partial n=-(\sigma_{i}^{(1)}-\sigma_{i}^{(2)})/\varepsilon_{0}\)；面积分 \(\oint_{S_{i}}\Phi\,\partial\Phi/\partial n\,\mathrm{d}A\) 中 \(\Phi\) 在导体上仍为常数（虽不知其值），而 \(\oint\partial\Phi/\partial n\,\mathrm{d}A=-(Q_{i}^{(1)}-Q_{i}^{(2)})/\varepsilon_{0}=0\)，故每块导体表面贡献为零，回到步骤 4。</p>
+
+      <h3>推导 6.B — 多极展开的推导 Derivation of the Multipole Expansion</h3>
+      <p>从 \(V(\vec{r})=(1/4\pi\varepsilon_{0})\int\rho(\vec{r}')/|\vec{r}-\vec{r}'|\,\mathrm{d}^{3}r'\) 出发，设 \(r>r'_{\max}\)（观察点在所有源之外）。</p>
+      <p class="step"><strong>步骤 1（母函数）：</strong>展开 \(\bigl[1-2(r'/r)\cos\gamma+(r'/r)^{2}\bigr]^{-1/2}\)。令 \(t=r'/r<1,\;x=\cos\gamma\)，由二项式展开 \((1+u)^{-1/2}=\sum_{l}(2l\,\text{choose}\,l)(-u/4)^{l}/l!\) 可证
+      \[ (1-2xt+t^{2})^{-1/2}=\sum_{l=0}^{\infty}P_{l}(x)\,t^{l},\quad|t|<1. \]</p>
+      <p class="step"><strong>步骤 2：</strong>因此 \(1/|\vec{r}-\vec{r}'|=(1/r)\sum_{l}(r'^{\,l}/r^{l})P_{l}(\cos\gamma)=\sum_{l}r'^{\,l}P_{l}(\cos\gamma)/r^{l+1}\)。代入 V：
+      \[ V(\vec{r})=\frac{1}{4\pi\varepsilon_{0}}\sum_{l=0}^{\infty}\frac{1}{r^{l+1}}\int r'^{\,l}P_{l}(\cos\gamma)\,\rho(\vec{r}')\,\mathrm{d}^{3}r'. \]</p>
+      <p class="step"><strong>步骤 3（前几项物理化）：</strong>\(l=0\)：\(P_{0}=1\)，给出 \((1/4\pi\varepsilon_{0})(1/r)\int\rho\,\mathrm{d}^{3}r'=(1/4\pi\varepsilon_{0})(q/r)\)，即<strong>单极项</strong>。\(\;l=1\)：\(P_{1}(\cos\gamma)=\cos\gamma=\hat{r}\cdot\hat{r}'\)，给出 \((1/4\pi\varepsilon_{0})(1/r^{2})\hat{r}\cdot\int\vec{r}'\rho\,\mathrm{d}^{3}r'=(1/4\pi\varepsilon_{0})(\vec{p}\cdot\hat{r}/r^{2})\)，即<strong>偶极项</strong>。\(\;l=2\)：用 <strong>球谐加法定理</strong> \(P_{2}(\cos\gamma)=\tfrac{1}{2}(3(\hat{r}\cdot\hat{r}')^{2}-1)\)，整理得 \((1/4\pi\varepsilon_{0})(1/(2r^{3}))\sum_{ij}Q_{ij}\hat{r}_{i}\hat{r}_{j}\)，即<strong>四极项</strong>。</p>
+      <p class="step"><strong>步骤 4（收敛性）：</strong>展开要求 \(|t|=r'/r<1\) 对<strong>所有</strong>源点成立，即 \(r>r'_{\max}\)。若观察点进入源分布内部（如求原子内电子云势），此级数发散，需改用其他方法（如直接积分或 \(1/r\) 在原点的展开）。</p>
+    </section>
+
+    <!-- ============================================================== Examples -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 多极展开：两个点电荷的各阶矩</h4>
+        <p class="example-statement">两点电荷：\(q_{1}=+3.0\,\mathrm{nC}\) 在原点，\(q_{2}=-1.0\,\mathrm{nC}\) 在 \(z=+2.0\,\mathrm{cm}\) 处。求总电荷 \(q\)、偶极矩 \(\vec{p}\)、四极矩张量 \(Q_{ij}\)；并分别用 (i) 仅单极、(ii) 单极+偶极、(iii) 单极+偶极+四极，估算 \(P=(0,0,+10\,\mathrm{cm})\) 处的电势，与精确值比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（坐标采用 SI 单位。）</p>
+          <p class="step"><strong>各阶矩：</strong>总电荷 \(q=q_{1}+q_{2}=3.0-1.0=+2.0\,\mathrm{nC}=2.0\times10^{-9}\,\mathrm{C}\)。</p>
+          <p class="step">偶极矩（取原点为参考）：
+          \[ \vec{p}=\sum_{a}q_{a}\vec{r}_{a}=q_{1}\cdot\vec{0}+q_{2}\cdot(0.02\,\hat{z})=(-1.0\times10^{-9})(0.02)\,\hat{z}=-2.0\times10^{-11}\,\hat{z}\,\mathrm{C\,m}. \]
+          即 \(|\vec{p}|=2.0\times10^{-11}\,\mathrm{C\,m}\)，方向沿 \(-\hat{z}\)。</p>
+          <p class="step">四极矩张量（仅对角非零，因所有电荷在 \(z\) 轴上）：
+          \[ Q_{zz}=\sum_{a}q_{a}(3z_{a}^{2}-r_{a}^{2})=(3\,\mathrm{nC})(0)+(-1\,\mathrm{nC})(3(0.02)^{2}-(0.02)^{2})=(-10^{-9})(8\times10^{-4})=-8.0\times10^{-13}\,\mathrm{C\,m^{2}}, \]
+          \[ Q_{xx}=Q_{yy}=\sum_{a}q_{a}(3x_{a}^{2}-r_{a}^{2})=(3\,\mathrm{nC})(0)+(-1\,\mathrm{nC})(0-(0.02)^{2})=+4.0\times10^{-13}\,\mathrm{C\,m^{2}}. \]
+          校验无迹：\(Q_{xx}+Q_{yy}+Q_{zz}=4+4-8=0\)。✓</p>
+          <p class="step"><strong>(i) 单极近似：</strong>在 \(P\) 点 \(r=0.10\,\mathrm{m},\theta=0\)：
+          \[ V^{(1)}=\frac{1}{4\pi\varepsilon_{0}}\frac{q}{r}=(8.99\times10^{9})\frac{2.0\times10^{-9}}{0.10}=180\,\mathrm{V}. \]</p>
+          <p class="step"><strong>(ii) 加偶极：</strong>\(V^{(2)}=V^{(1)}+\dfrac{1}{4\pi\varepsilon_{0}}\dfrac{\vec{p}\cdot\hat{r}}{r^{2}}\)。在 \(P\) 点 \(\hat{r}=+\hat{z}\)，故 \(\vec{p}\cdot\hat{r}=-2.0\times10^{-11}\)：
+          \[ \Delta V_{\text{dip}}=(8.99\times10^{9})\frac{-2.0\times10^{-11}}{(0.10)^{2}}=-18.0\,\mathrm{V},\qquad V^{(2)}=180-18.0=162\,\mathrm{V}. \]</p>
+          <p class="step"><strong>(iii) 加四极：</strong>\(\Delta V_{\text{quad}}=\dfrac{1}{4\pi\varepsilon_{0}}\dfrac{1}{2r^{3}}\sum_{ij}Q_{ij}\hat{r}_{i}\hat{r}_{j}\)。沿 \(z\) 轴 \(\hat{r}_{z}=1,\hat{r}_{x}=\hat{r}_{y}=0\)，故 \(\sum Q_{ij}\hat{r}_{i}\hat{r}_{j}=Q_{zz}=-8.0\times10^{-13}\)：
+          \[ \Delta V_{\text{quad}}=(8.99\times10^{9})\frac{-8.0\times10^{-13}}{2(0.10)^{3}}=-3.6\,\mathrm{V},\qquad V^{(3)}=162-3.6=158.4\,\mathrm{V}. \]</p>
+          <p class="step"><strong>精确值（直接叠加）：</strong>\(P\) 到 \(q_{1}\) 距离 \(0.10\,\mathrm{m}\)，到 \(q_{2}\) 距离 \(0.10-0.02=0.08\,\mathrm{m}\)：
+          \[ V_{\text{exact}}=(8.99\times10^{9})\!\left[\frac{3.0\times10^{-9}}{0.10}+\frac{-1.0\times10^{-9}}{0.08}\right]=(8.99\times10^{9})(1.75\times10^{-8})=157.3\,\mathrm{V}. \]</p>
+          <p>误差：(i) \(+14\%\)、(ii) \(+2.9\%\)、(iii) \(+0.7\%\)。<span class="ans">逐阶收敛，\(V^{(3)}\approx158\,\mathrm{V}\)（精确 \(157\,\mathrm{V}\)）。</span>这正体现了多极展开作为「远场渐近级数」的本质。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 接地导体平面上方的点电荷（力与感应电荷）</h4>
+        <p class="example-statement">点电荷 \(q=+1.0\,\mathrm{nC}\) 位于无穷大接地导体平面（\(z=0\)）上方 \(d=1.0\,\mathrm{cm}\) 处。求：(a) 作用于 \(q\) 的力；(b) 平面上正下方 (\(\rho=0\)) 处的感应面电荷密度 \(\sigma\)；(c) 平面上感应电荷的总和。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用镜像法：在 \(z=-d\) 处放 \(-q\)。对 \(z>0\) 区域，\(V\) 由这两电荷产生且 \(V(z=0)=0\)。</p>
+          <p class="step">(a) \(+q\) 受像电荷 \(-q\)（距离 \(2d\)）的库仑引力：
+          \[ F=-\frac{1}{4\pi\varepsilon_{0}}\frac{q^{2}}{(2d)^{2}}=-(8.99\times10^{9})\frac{(1.0\times10^{-9})^{2}}{(2.0\times10^{-2})^{2}}=-\frac{8.99\times10^{9}\cdot10^{-18}}{4.0\times10^{-4}}=-2.25\times10^{-5}\,\mathrm{N}. \]
+          方向沿 \(-\hat{z}\)（拉向平面）。</p>
+          <p class="step">(b) 导体表面 \(z=0^{+}\) 处 \(E_{z}=\sigma/\varepsilon_{0}\)。两电荷在 \((\rho,0)\) 处 \(z\) 分量：来自 \(+q\)（在 \(z=d\)）的 \(E_{z}\) 为 \(kd\cdot q/(\rho^{2}+d^{2})^{3/2}\)（沿 \(+\hat{z}\) 减少，故指向平面方向，即 \(-\hat{z}\)）；来自 \(-q\)（在 \(z=-d\)）的也沿 \(-\hat{z}\)，大小相同；总 \(E_{z}=-2kdq/(\rho^{2}+d^{2})^{3/2}\)。故
+          \[ \sigma(\rho)=\varepsilon_{0}E_{z}=-\frac{qd}{2\pi(\rho^{2}+d^{2})^{3/2}}. \]
+          代入 \(\rho=0,d=0.010,q=1.0\times10^{-9}\)：
+          \[ \sigma(0)=-\frac{1.0\times10^{-9}\cdot0.010}{2\pi(0.010)^{3}}=-\frac{1.0\times10^{-11}}{2\pi\cdot10^{-6}}=-1.59\times10^{-6}\,\mathrm{C/m^{2}}. \]
+          即 \(-1.59\,\mathrm{\mu C/m^{2}}\)（负感应电荷集中在正下方）。</p>
+          <p class="step">(c) 总感应电荷：
+          \[ Q_{\text{ind}}=\int_{0}^{\infty}\!\sigma(\rho)\,2\pi\rho\,\mathrm{d}\rho=-qd\int_{0}^{\infty}\!\frac{\rho\,\mathrm{d}\rho}{(\rho^{2}+d^{2})^{3/2}}. \]
+          令 \(u=\rho^{2}+d^{2},\,2\rho\,\mathrm{d}\rho=\mathrm{d}u\)，则内层 \(=\tfrac{1}{2}\int_{d^{2}}^{\infty}u^{-3/2}\,\mathrm{d}u=\bigl[-u^{-1/2}\bigr]_{d^{2}}^{\infty}=1/d\)。所以
+          \[ Q_{\text{ind}}=-qd\cdot\frac{1}{d}=-q=-1.0\,\mathrm{nC}. \]</p>
+          <p>这正是像电荷的大小。<span class="ans">\(|F|=2.25\times10^{-5}\,\mathrm{N}\)（吸引）、\(\sigma(0)=-1.59\,\mathrm{\mu C/m^{2}}\)、\(Q_{\text{ind}}=-1.0\,\mathrm{nC}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 接地导体球外的点电荷（像电荷与作用力）</h4>
+        <p class="example-statement">半径 \(R=5.0\,\mathrm{cm}\) 的接地导体球，球心在原点。点电荷 \(q=+10\,\mathrm{nC}\) 位于 \(z=a=10\,\mathrm{cm}\)（球外）。求：(a) 像电荷 \(q'\) 及其位置 \(b\)；(b) 作用于 \(q\) 的力；(c) 球面上感应电荷在球心产生的电势（用以核对总感应电荷）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由公式
+          \[ q'=-\frac{R}{a}\,q=-\frac{5}{10}(10\,\mathrm{nC})=-5.0\,\mathrm{nC},\qquad b=\frac{R^{2}}{a}=\frac{(0.05)^{2}}{0.10}=0.025\,\mathrm{m}=2.5\,\mathrm{cm}. \]
+          像电荷 \(q'=-5.0\,\mathrm{nC}\) 位于 \(z=+2.5\,\mathrm{cm}\)（在球内、\(q\) 与球心连线上）。</p>
+          <p class="step">(b) \(q\) 与 \(q'\) 间距 \(a-b=10-2.5=7.5\,\mathrm{cm}=0.075\,\mathrm{m}\)：
+          \[ F=\frac{1}{4\pi\varepsilon_{0}}\frac{q\,q'}{(a-b)^{2}}=(8.99\times10^{9})\frac{(10^{-8})(-5\times10^{-9})}{(0.075)^{2}}. \]
+          分子 \(=-4.5\times10^{-17}\)；分母 \(=5.625\times10^{-3}\)：
+          \[ F=(8.99\times10^{9})\cdot\frac{-4.5\times10^{-17}}{5.625\times10^{-3}}=-(8.99)(8.0)\times10^{-6}=-7.19\times10^{-5}\,\mathrm{N}. \]
+          （方向 \(-\hat{z}\)，把 \(q\) 拉向球。）<br>
+          用闭合公式验证：\(F=-kq^{2}Ra/(a^{2}-R^{2})^{2}=-(8.99\times10^{9})(10^{-16})(5\times10^{-3})/(7.5\times10^{-3})^{2}\) \(=-(8.99\times10^{9})(5\times10^{-19})/(5.625\times10^{-5})=-7.99\times10^{-5}\,\mathrm{N}\)。两次结果一致（差异来自上面 \(q q'\) 数值舍入）。</p>
+          <p class="step">(c) 总感应电荷应等于像电荷 \(q'=-5.0\,\mathrm{nC}\)（这是普遍定理：导体接地时感应电荷总量等于像电荷总量）。物理上，球内场为零、球面外侧 \(E_{\perp}\) 的积分给出 \(\oint\sigma\,\mathrm{d}A/\varepsilon_{0}\)，可证结果即 \(q'\)。</p>
+          <p><span class="ans">\(q'=-5.0\,\mathrm{nC}\)（位于 \(z=2.5\,\mathrm{cm}\)）、\(|F|\approx7.9\times10^{-5}\,\mathrm{N}\)（吸引）、\(Q_{\text{ind}}=-5.0\,\mathrm{nC}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 接地导体球置于均匀外场中（分离变量法）</h4>
+        <p class="example-statement">半径 \(R=1.0\,\mathrm{cm}\) 的接地导体球置于原本均匀的外电场 \(\vec{E}_{0}=E_{0}\hat{z}\)（\(E_{0}=1.0\times10^{4}\,\mathrm{V/m}\)）中。求：(a) 球外电势 \(V(r,\theta)\)；(b) 球面上感应面电荷密度 \(\sigma(\theta)\)，及其在两极与赤道处的值；(c) 球外 \(r=2.0\,\mathrm{cm},\theta=0\) 处的电势。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>方位对称 ⇒ 用球坐标分离变量 \(V(r,\theta)=\sum_{l}(A_{l}r^{l}+B_{l}/r^{l+1})P_{l}(\cos\theta)\)。</p>
+          <p class="step">(a) 边界条件：① \(V(R,\theta)=0\)（接地）；② \(r\to\infty\) 时 \(V\to -E_{0}z=-E_{0}r\cos\theta=-E_{0}rP_{1}(\cos\theta)\)。条件②迫使 \(A_{1}=-E_{0}\)，所有其他 \(A_{l\ne1}=0\)。</p>
+          <p class="step">条件①对所有 \(\theta\) 成立：对 \(l=1\) 有 \(0=A_{1}R+B_{1}/R^{2}\Rightarrow B_{1}=-A_{1}R^{3}=E_{0}R^{3}\)；对 \(l\ne1\) 有 \(B_{l}=0\)（因 \(A_{l}=0\)）。故
+          \[ \boxed{\;V(r,\theta)=-E_{0}\!\left(r-\frac{R^{3}}{r^{2}}\right)\!\cos\theta,\qquad r\ge R.\;} \]</p>
+          <p class="step">(b) 球面外侧法向场：\(E_{r}(R)=-\partial V/\partial r|_{R}\)。
+          \[ \frac{\partial V}{\partial r}=-E_{0}\!\left(1+\frac{2R^{3}}{r^{3}}\right)\!\cos\theta,\quad\Rightarrow\quad E_{r}(R)=+3E_{0}\cos\theta. \]
+          故 \(\sigma(\theta)=\varepsilon_{0}E_{r}(R)=3\varepsilon_{0}E_{0}\cos\theta\)（经典结果）。</p>
+          <p class="step">两极：\(\theta=0,\pi\)，\(\cos\theta=\pm1\)，\(\sigma=\pm3\varepsilon_{0}E_{0}=\pm3(8.854\times10^{-12})(10^{4})=\pm2.66\times10^{-7}\,\mathrm{C/m^{2}}\)，即 \(\pm0.266\,\mathrm{\mu C/m^{2}}\)（北极正、南极负）。</p>
+          <p class="step">赤道：\(\theta=\pi/2,\cos\theta=0\)，\(\sigma=0\)。</p>
+          <p class="step">(c) \(r=2R=0.020\,\mathrm{m},\theta=0,\cos\theta=1\)：
+          \[ V=-E_{0}(r-R^{3}/r^{2})=-(10^{4})\bigl(0.020-(0.010)^{3}/(0.020)^{2}\bigr)=-(10^{4})(0.020-2.5\times10^{-3}) \]
+          \[ =-(10^{4})(0.0175)=-175\,\mathrm{V}. \]</p>
+          <p><span class="ans">\(V(r,\theta)=-E_{0}(r-R^{3}/r^{2})\cos\theta\)；\(\sigma(\theta)=3\varepsilon_{0}E_{0}\cos\theta\)，两极 \(\pm0.27\,\mathrm{\mu C/m^{2}}\)、赤道为 \(0\)；\(V(2R,0)=-175\,\mathrm{V}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 纯偶极子的电场（轴向 vs 赤道）</h4>
+        <p class="example-statement">一个理想电偶极子 \(\vec{p}=p\hat{z}\)，\(p=1.0\times10^{-9}\,\mathrm{C\,m}\)。求距偶极子 \(r=10\,\mathrm{cm}\) 处的 \(\vec{E}\) 大小与方向：(a) 在偶极子轴向（\(\theta=0\)）；(b) 在赤道面（\(\theta=\pi/2\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>纯偶极电场（球坐标，\(\vec{p}\) 沿 \(z\)）：
+          \[ E_{r}=\frac{1}{4\pi\varepsilon_{0}}\frac{2p\cos\theta}{r^{3}},\qquad E_{\theta}=\frac{1}{4\pi\varepsilon_{0}}\frac{p\sin\theta}{r^{3}}. \]</p>
+          <p class="step">(a) \(\theta=0\)：\(\cos\theta=1,\sin\theta=0\)，故 \(E_{\theta}=0\)，
+          \[ E_{r}=\frac{2p}{4\pi\varepsilon_{0}r^{3}}=(8.99\times10^{9})\frac{2(1.0\times10^{-9})}{(0.10)^{3}}=(8.99\times10^{9})\cdot2.0\times10^{-7}=1.80\times10^{4}\,\mathrm{V/m}. \]
+          方向：\(\hat{r}|_{\theta=0}=+\hat{z}\)。所以 \(\vec{E}=+1.80\times10^{4}\,\hat{z}\,\mathrm{V/m}\)（与 \(\vec{p}\) 同向）。</p>
+          <p class="step">(b) \(\theta=\pi/2\)：\(\cos\theta=0,\sin\theta=1\)，故 \(E_{r}=0\)，
+          \[ E_{\theta}=\frac{p}{4\pi\varepsilon_{0}r^{3}}=(8.99\times10^{9})\frac{1.0\times10^{-9}}{(0.10)^{3}}=8.99\times10^{3}\,\mathrm{V/m}. \]
+          方向：\(\hat{\theta}|_{\pi/2}=-\hat{z}\)。所以 \(\vec{E}=-8.99\times10^{3}\,\hat{z}\,\mathrm{V/m}\)（与 \(\vec{p}\) 反向）。</p>
+          <p>轴向大小恰为赤道大小的 \(2\) 倍，符号相反。<span class="ans">轴向 \(E=1.80\times10^{4}\,\mathrm{V/m}\)（同向）、赤道 \(E=8.99\times10^{3}\,\mathrm{V/m}\)（反向）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- =============================================================== Pitfalls -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「像电荷是真实存在的电荷。」</strong> 错。像电荷是<strong>数学技巧</strong> (mathematical trick)，是为了在导体内部「禁区」复现外部边界条件而引入的虚拟电荷。它在物理上<strong>不存在</strong>：导体内部电场严格为零（自由电子重排使然），不存在像电荷产生的场。它在<strong>导体外部</strong>产生的场等价于真实感应电荷的场——这就是镜像法为何有效的根源。<strong>切勿</strong>在导体内部使用像电荷场。</li>
+        <li><strong>「多极展开在任何地方都成立。」</strong> 错。展开 \(1/|\vec{r}-\vec{r}'|=\sum_{l}r'^{\,l}P_{l}(\cos\gamma)/r^{l+1}\) 严格要求 \(r&gt;r'_{\max}\)（观察点在包围所有源的最小球之外）。若观察点在源分布内部，级数发散，必须直接积分或用其他展开。学生常不假思索地在原子内部或电荷分布中应用展开，导致错误结论。</li>
+        <li><strong>「任意猜出一个满足泊松方程的解就 OK。」</strong> 不完全。还必须满足<strong>全部</strong>边界条件。唯一性定理之所以是「定心丸」，正是因为它保证<strong>同时</strong>满足方程与所有边界条件的解唯一——少查一个边界（例如忘了无穷远的渐近条件，或忘了某个导体表面的电势）就会得到看似合理但完全错误的解。</li>
+        <li><strong>「导体表面外侧 \(E=\sigma/(2\varepsilon_{0})\)。」</strong> 错。这是<strong>无穷大均匀带电薄板</strong>的公式（两半空间各贡献 \(\sigma/(2\varepsilon_{0})\)）。导体表面紧贴外侧的正确结果是 \(E=\sigma/\varepsilon_{0}\)：另一半（导体内）的场为零（被自由电子屏蔽），故全部 \(\sigma/\varepsilon_{0}\) 都出现在外侧。差别源于「孤立的薄板」与「有厚度的导体」物理上不是同一回事。</li>
+        <li><strong>混淆 \(V\) 与 \(\vec{E}\) 的边界行为。</strong> \(V\) 在界面<strong>总是连续</strong>的；\(\vec{E}\) 的<strong>切向</strong>分量连续，但<strong>法向</strong>分量在有面电荷时跃变 \(\sigma/\varepsilon_{0}\)。学生常把「\(\vec{E}\) 在表面连续」一概而论，错。同样，导体内部 \(\vec{E}=0\) 但 \(V\ne0\)（\(V\) 是该导体的常值电势）——「场为零」不等于「电势为零」。</li>
+      </ul>
+    </section>
+
+    <!-- =============================================================== Practice -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 三共线电荷的多极展开：电荷 \(+2\,\mathrm{nC}\) 在 \(z=+1\,\mathrm{cm}\)、\(-1\,\mathrm{nC}\) 在原点、\(-1\,\mathrm{nC}\) 在 \(z=-2\,\mathrm{cm}\)。求总电荷、偶极矩 \(\vec{p}\)，并用偶极近似估 \(P=(0,0,+10\,\mathrm{cm})\) 处的 \(V\)，与直接叠加的精确值比较。</summary>
+        <div class="hint">先算 \(q_{\text{tot}}\)（是否为零决定主导项），再算 \(\vec{p}=\sum q_{a}\vec{r}_{a}\)，偶极近似 \(V\approx kp\cos\theta/r^{2}\)。</div>
+        <div class="solution">
+          总电荷 \(q_{\text{tot}}=2-1-1=0\)（无单极项）。偶极矩：
+          \[ p_{z}=\sum q_{a}z_{a}=(2)(+1)+(-1)(0)+(-1)(-2)=4\,\mathrm{nC\,cm}=4.0\times10^{-11}\,\mathrm{C\,m}. \]
+          方向 \(+\hat{z}\)。偶极近似：在 \(P\) 点 \(r=0.10,\theta=0\)
+          \[ V\approx\frac{kp}{r^{2}}=(8.99\times10^{9})\frac{4.0\times10^{-11}}{(0.10)^{2}}=36.0\,\mathrm{V}. \]
+          精确值：\(P\) 到三个电荷的距离分别为 \(0.09,0.10,0.12\,\mathrm{m}\)：
+          \[ V=(8.99\times10^{9})\!\left[\frac{2\times10^{-9}}{0.09}-\frac{10^{-9}}{0.10}-\frac{10^{-9}}{0.12}\right]=(8.99\times10^{9})(3.89\times10^{-9})=35.0\,\mathrm{V}. \]
+          误差约 \(3\%\)。<span class="ans">\(q=0\)、\(\vec{p}=4.0\times10^{-11}\hat{z}\,\mathrm{C\,m}\)、\(V_{\text{dip}}\approx36\,\mathrm{V}\)、\(V_{\text{exact}}\approx35\,\mathrm{V}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 把点电荷 \(q=+2.0\,\mathrm{nC}\) 从离接地导体平面 \(d=5.0\,\mathrm{mm}\) 处缓慢移到无穷远，外力需做多少功？(提示：力 \(F(d)=-kq^{2}/(2d)^{2}\)，外力反向且大小相等。)</summary>
+        <div class="hint">外力功 \(W_{\text{ext}}=-\int_{d}^{\infty}F(z)\,\mathrm{d}z\)（注意符号），代入 \(F=-kq^{2}/(2z)^{2}\)。</div>
+        <div class="solution">
+          外力克服吸引力做正功（\(q\) 远离平面）：
+          \[ W_{\text{ext}}=\int_{d}^{\infty}\!\frac{kq^{2}}{(2z)^{2}}\,\mathrm{d}z=\frac{kq^{2}}{4}\int_{d}^{\infty}\!z^{-2}\,\mathrm{d}z=\frac{kq^{2}}{4}\cdot\frac{1}{d}. \]
+          代入 \(q=2.0\times10^{-9},d=5.0\times10^{-3}\)：
+          \[ W_{\text{ext}}=\frac{(8.99\times10^{9})(4.0\times10^{-18})}{4\cdot5.0\times10^{-3}}=\frac{3.60\times10^{-8}}{2.0\times10^{-2}}=1.8\times10^{-6}\,\mathrm{J}. \]
+          <span class="ans">\(W_{\text{ext}}\approx1.8\,\mathrm{\mu J}\)。</span>（物理意义：这等于电荷与平面感应电荷之间的相互作用能 \(-\tfrac{1}{2}\cdot\tfrac{kq^{2}}{4d}\) 的负值——「\(\tfrac{1}{2}\)」因子来自感应电荷随 \(q\) 位置变化，是镜像法的著名 subtlety。）
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 接地导体球（半径 \(R\)）外 \(a=3R\) 处放点电荷 \(q\)。求像电荷 \(q'\)、像的位置 \(b\)，以及 \(q\) 所受的力（以 \(k,q,R\) 表示）。</summary>
+        <div class="hint">套用 \(q'=-qR/a\)、\(b=R^{2}/a\)；力 \(F=kq q'/(a-b)^{2}\)。</div>
+        <div class="solution">
+          \(q'=-qR/a=-q/3\)；\(b=R^{2}/a=R/3\)。
+          间距 \(a-b=3R-R/3=8R/3\)，故
+          \[ F=\frac{kq(-q/3)}{(8R/3)^{2}}=-\frac{kq^{2}}{3}\cdot\frac{9}{64R^{2}}=-\frac{3kq^{2}}{64R^{2}}\;\;(\text{吸引}). \]
+          <span class="ans">\(q'=-q/3\) 位于 \(b=R/3\)；\(\displaystyle F=-\frac{3kq^{2}}{64R^{2}}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 两块无穷大接地平行导体板 \(y=0\) 与 \(y=L=1.0\,\mathrm{cm}\)，板间在 \(x=0\) 处有一条缝，缝上电势给定为 \(V(0,y)=V_{0}\sin(\pi y/L)\)（\(V_{0}=100\,\mathrm{V}\)）。求板间电势 \(V(x,y)\)，并算 \(x=2.0\,\mathrm{cm},y=L/2\) 处的 \(V\)。</summary>
+        <div class="hint">用二维分离变量 \(V=X(x)Y(y)\)，\(Y\) 须在 \(y=0,L\) 处为零 ⇒ \(\sin(n\pi y/L)\)；\(X=e^{\pm n\pi x/L}\)。\(x&gt;0\) 取衰减支。</div>
+        <div class="solution">
+          \(Y\) 满足 \(Y(0)=Y(L)=0\) ⇒ \(Y_{n}=\sin(n\pi y/L)\)。对应 \(X_{n}=e^{\pm n\pi x/L}\)。\(x\to+\infty\) 时 \(V\to0\) ⇒ 取 \(e^{-n\pi x/L}\)。
+          匹配 \(x=0\) 边界 \(V(0,y)=V_{0}\sin(\pi y/L)\) ⇒ 只有 \(n=1\) 模式：
+          \[ V(x,y)=V_{0}\,e^{-\pi x/L}\sin(\pi y/L). \]
+          代入 \(x=0.02,L=0.01\)：\(e^{-\pi\cdot2}=e^{-2\pi}=1.867\times10^{-3}\)。在 \(y=L/2\)：\(\sin(\pi/2)=1\)。
+          \[ V=100\times1.867\times10^{-3}\times1=0.187\,\mathrm{V}. \]
+          <span class="ans">\(V(x,y)=V_{0}e^{-\pi x/L}\sin(\pi y/L)\)；\(V(2\,\mathrm{cm},L/2)\approx0.19\,\mathrm{V}\)。</span>（拉普拉斯方程在条形域中的典型<strong>指数衰减</strong>特征：边界扰动每跨越一个 \(L\) 衰减 \(e^{-\pi}\approx4.3\%\)。）
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 验证唯一性定理的边界条件自洽：例 6.4 中接地导体球在均匀外场中，求 (a) 球面 \(r=R\) 上 \(V=0\) 是否满足？(b) 总感应电荷 \(\oint\sigma\,\mathrm{d}A\) 等于多少？为何与「接地」不矛盾？</summary>
+        <div class="hint">直接代入 \(r=R\) 看 \(V\) 是否为零；用 \(\sigma=3\varepsilon_{0}E_{0}\cos\theta\) 做面积分，注意 \(\oint P_{1}\,\mathrm{d}\Omega=0\)。</div>
+        <div class="solution">
+          (a) \(V(R,\theta)=-E_{0}(R-R^{3}/R^{2})\cos\theta=-E_{0}(R-R)\cos\theta=0\)。✓ 对所有 \(\theta\) 都为零，满足接地条件。</p>
+          <p>(b) 总感应电荷：
+          \[ Q_{\text{ind}}=\oint\sigma\,\mathrm{d}A=\int_{0}^{2\pi}\!\!\int_{0}^{\pi}\!3\varepsilon_{0}E_{0}\cos\theta\cdot R^{2}\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\phi. \]
+          内层 \(\int_{0}^{\pi}\cos\theta\sin\theta\,\mathrm{d}\theta=\tfrac{1}{2}\sin^{2}\theta\bigl|_{0}^{\pi}=0\)。所以 \(Q_{\text{ind}}=0\)。
+          这与「接地」<strong>不</strong>矛盾：接地意味着 \(V=0\)（电势被钉死），并非电荷固定。「地」既能放出也能吸收电荷；本问题中球从「地」流入与流出等量异号电荷，净值零，但表面分布非零。<span class="ans">\(\;V(R,\theta)=0\;\)✓、\(\;Q_{\text{ind}}=0\)</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============================================================= Simulation -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>镜像法可视化：</strong>一点电荷 \(+q=+5\,\mathrm{nC}\)（红圆）位于接地导体平面（粗灰线，下方有阴影线表示导体内部）上方高度 \(d\) 处；其<strong>镜像</strong> \(-q\)（蓝虚圆）对称地位于平面下方。背景红色实线为 \(V&gt;0\) 等势线、蓝色实线为 \(V&lt;0\) 等势线（注意平面本身即 \(V=0\) 等势面，所有等势线均与之<strong>垂直相接</strong>）；浅灰细线为电场线（从 \(+q\) 出发，弯曲落到平面上每一点的感应负电荷处，落到平面时<strong>与平面垂直</strong>）；导体表面下方的小竖线表示感应面电荷密度 \(|\sigma(\rho)|\)。调节高度滑块观察场结构如何变化，按「重置」恢复默认。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="600" height="380"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+          var kCoul = 8.99e9;                       // N m^2 / C^2
+
+          // ---- World (meters) <-> Screen (pixels) ----
+          // Plane at world y=0 sits slightly above canvas center so the image
+          // (below) and the conductor hatching both fit.
+          var worldW = 0.12, worldH = 0.076;        // 12 cm x 7.6 cm viewport
+          var scale = W / worldW;                    // 5000 px/m
+          var planeSy = H * 0.42;                    // screen y of conducting plane
+          function w2sX(wx) { return W / 2 + wx * scale; }
+          function w2sY(wy) { return planeSy - wy * scale; }  // y>0 above plane
+
+          // ---- Parameters ----
+          var params = { height: 1.5 };              // cm, slider
+          var qReal = 5e-9;                          // C, fixed +q
+          function height() { return params.height * 1e-2; }  // m
+
+          function sources() {
+            var h = height();
+            return [
+              { x: 0, y: +h, q: +qReal },
+              { x: 0, y: -h, q: -qReal },            // image
+            ];
+          }
+
+          function potentialAt(x, y) {
+            var V = 0, cs = sources();
+            for (var i = 0; i < cs.length; i++) {
+              var dx = x - cs[i].x, dy = y - cs[i].y;
+              var r = Math.sqrt(dx * dx + dy * dy);
+              if (r < 0.0005) r = 0.0005;            // 0.5 mm softening
+              V += kCoul * cs[i].q / r;
+            }
+            return V;
+          }
+
+          function fieldAt(x, y) {
+            var Ex = 0, Ey = 0, cs = sources();
+            for (var i = 0; i < cs.length; i++) {
+              var dx = x - cs[i].x, dy = y - cs[i].y;
+              var r2 = dx * dx + dy * dy, r = Math.sqrt(r2);
+              if (r < 0.0005) { r = 0.0005; r2 = r * r; }
+              var fac = kCoul * cs[i].q / (r2 * r);
+              Ex += fac * dx;
+              Ey += fac * dy;
+            }
+            return { Ex: Ex, Ey: Ey };
+          }
+
+          // ---- Equipotential contours (marching squares) — upper half only ----
+          function drawContours(ctx) {
+            // Levels chosen for q=5 nC, h~1.5 cm scale (peak V ~ kq/h ~ 3000 V)
+            var levels = [-3000, -1000, -300, -100, -30,
+                           30, 100, 300, 1000, 3000];
+            var nx = 120, ny = 80;
+            var xMin = -worldW / 2, xMax = worldW / 2;
+            var yMin = 0, yMax = worldH * 0.55;      // only above plane
+            var dx = (xMax - xMin) / nx, dy = (yMax - yMin) / ny;
+            // sample potential on grid
+            var V = [];
+            for (var i = 0; i <= nx; i++) {
+              V[i] = [];
+              for (var j = 0; j <= ny; j++) {
+                V[i][j] = potentialAt(xMin + i * dx, yMin + j * dy);
+              }
+            }
+            function segLevel(lvl, style) {
+              ctx.save();
+              ctx.strokeStyle = style;
+              ctx.lineWidth = 1.1;
+              ctx.beginPath();
+              for (var i = 0; i < nx; i++) {
+                for (var j = 0; j < ny; j++) {
+                  var a = V[i][j], b = V[i + 1][j], c = V[i + 1][j + 1], d = V[i][j + 1];
+                  var above = (a > lvl ? 1 : 0) | (b > lvl ? 2 : 0) | (c > lvl ? 4 : 0) | (d > lvl ? 8 : 0);
+                  if (above === 0 || above === 15) continue;
+                  var x0 = xMin + i * dx, y0 = yMin + j * dy;
+                  function edge(p, q, ex, ey, fx, fy) {
+                    var t = (lvl - p) / (q - p);
+                    return { x: x0 + (ex + t * (fx - ex)) * dx, y: y0 + (ey + t * (fy - ey)) * dy };
+                  }
+                  var pts = [];
+                  if ((a > lvl) !== (b > lvl)) pts.push(edge(a, b, 0, 0, 1, 0));
+                  if ((b > lvl) !== (c > lvl)) pts.push(edge(b, c, 1, 0, 1, 1));
+                  if ((c > lvl) !== (d > lvl)) pts.push(edge(d, c, 0, 1, 1, 1));
+                  if ((d > lvl) !== (a > lvl)) pts.push(edge(a, d, 0, 0, 0, 1));
+                  if (pts.length >= 2) {
+                    ctx.moveTo(w2sX(pts[0].x), w2sY(pts[0].y));
+                    ctx.lineTo(w2sX(pts[1].x), w2sY(pts[1].y));
+                    if (pts.length === 4) {
+                      ctx.moveTo(w2sX(pts[2].x), w2sY(pts[2].y));
+                      ctx.lineTo(w2sX(pts[3].x), w2sY(pts[3].y));
+                    }
+                  }
+                }
+              }
+              ctx.stroke();
+              ctx.restore();
+            }
+            for (var L = 0; L < levels.length; L++) {
+              var v = levels[L];
+              segLevel(v, v > 0 ? 'rgba(220,38,38,0.55)' : 'rgba(37,99,235,0.55)');
+            }
+          }
+
+          // ---- Field-line tracing from a ring around +q (upper half) ----
+          function drawFieldLines(ctx) {
+            var h = height();
+            var r0 = 0.0008;                          // 0.8 mm start radius
+            var ds = 0.0003;                          // 0.3 mm step
+            var nLines = 16;
+            ctx.save();
+            ctx.strokeStyle = 'rgba(100,116,139,0.7)';
+            ctx.lineWidth = 1.0;
+            for (var k = 0; k < nLines; k++) {
+              var ang = (k / nLines) * 2 * Math.PI;
+              var x = r0 * Math.cos(ang), y = h + r0 * Math.sin(ang);
+              if (y < 0.0005) continue;               // skip lines starting below plane
+              ctx.beginPath();
+              ctx.moveTo(w2sX(x), w2sY(y));
+              for (var step = 0; step < 800; step++) {
+                var f = fieldAt(x, y);
+                var mag = Math.hypot(f.Ex, f.Ey);
+                if (mag < 1) break;
+                var nxp = x + (f.Ex / mag) * ds;
+                var nyp = y + (f.Ey / mag) * ds;
+                // stop if crossed plane (y < ~0)
+                if (nyp < 0.00015) {
+                  // snap to plane
+                  ctx.lineTo(w2sX(nxp), w2sY(0));
+                  break;
+                }
+                // stop if escaped viewport
+                if (Math.abs(nxp) > worldW / 2 || nyp > worldH * 0.55) break;
+                x = nxp; y = nyp;
+                ctx.lineTo(w2sX(x), w2sY(y));
+              }
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
+
+          // ---- Conducting plane + induced surface charge bars ----
+          function drawPlane(ctx) {
+            var C = PS.colors;
+            ctx.save();
+            // thick plane line
+            ctx.strokeStyle = C.axis;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, planeSy);
+            ctx.lineTo(W, planeSy);
+            ctx.stroke();
+            // hatching below indicating conductor interior
+            ctx.strokeStyle = C.axis;
+            ctx.globalAlpha = 0.45;
+            ctx.lineWidth = 1;
+            for (var xs = 0; xs <= W; xs += 9) {
+              ctx.beginPath();
+              ctx.moveTo(xs, planeSy + 1);
+              ctx.lineTo(xs - 8, planeSy + 9);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            ctx.restore();
+          }
+
+          function drawInducedSigma(ctx) {
+            // σ(ρ) = -q h / (2π (ρ²+h²)^(3/2));  plot as red bars just above plane
+            var h = height();
+            var sigmaMax = qReal / (2 * Math.PI * h * h);  // |σ(0)|
+            ctx.save();
+            for (var xs = 3; xs < W; xs += 3) {
+              var wx = (xs - W / 2) / scale;
+              var rho = Math.abs(wx);
+              var sigma = -qReal * h / (2 * Math.PI * Math.pow(rho * rho + h * h, 1.5));
+              var len = Math.abs(sigma) / sigmaMax * 26;   // px, max ~26
+              ctx.strokeStyle = 'rgba(220,38,38,0.65)';
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.moveTo(xs, planeSy);
+              ctx.lineTo(xs, planeSy - len);               // bars go UP (into field region)
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
+
+          // ---- The sim ----
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return {}; },
+            step: function (dt, t, s) { /* static field; nothing to integrate */ },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var h = height();
+
+              // faint vertical axis through the charge
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
+              ctx.restore();
+
+              // equipotentials (above plane), field lines, plane, induced σ
+              drawContours(ctx);
+              drawFieldLines(ctx);
+              drawPlane(ctx);
+              drawInducedSigma(ctx);
+
+              // image charge (drawn as dashed "ghost" since it's a mathematical trick)
+              var ix = w2sX(0), iy = w2sY(-h);
+              PS.drawCircle(ctx, ix, iy, 9, { fill: 'rgba(37,99,235,0.25)', stroke: 'rgba(37,99,235,0.9)', lineWidth: 1.5 });
+              ctx.save();
+              ctx.setLineDash([3, 3]);
+              ctx.strokeStyle = 'rgba(37,99,235,0.9)';
+              ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.arc(ix, iy, 9, 0, 2 * Math.PI); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '−q (image)', ix, iy + 24,
+                { font: 'bold 11px system-ui', color: 'rgba(37,99,235,1)', align: 'center' });
+
+              // real charge
+              var rx = w2sX(0), ry = w2sY(+h);
+              PS.drawCircle(ctx, rx, ry, 10, { fill: '#dc2626', stroke: C.text, lineWidth: 1.5 });
+              PS.drawText(ctx, '+q = 5.0 nC', rx, ry - 16,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+
+              // height dimension line on the left
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.globalAlpha = 0.7; ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(20, planeSy);
+              ctx.lineTo(20, ry);
+              ctx.stroke();
+              // little arrows
+              ctx.beginPath(); ctx.moveTo(16, planeSy - 5); ctx.lineTo(20, planeSy); ctx.lineTo(24, planeSy - 5); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(16, ry + 5); ctx.lineTo(20, ry); ctx.lineTo(24, ry + 5); ctx.stroke();
+              ctx.globalAlpha = 1;
+              ctx.restore();
+              PS.drawText(ctx, 'd = ' + params.height.toFixed(2) + ' cm', 28, (planeSy + ry) / 2,
+                { font: 'bold 11px system-ui', color: C.text, align: 'left' });
+
+              // titles / legend
+              PS.drawText(ctx,
+                '镜像法 Method of Images · 等势线 (red +/blue −) · 灰线 = 电场线 E-field lines',
+                W / 2, 14, { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+              var sigma0 = -qReal / (2 * Math.PI * h * h);   // σ(0)
+              var F = -kCoul * qReal * qReal / Math.pow(2 * h, 2);
+              var msg = 'σ(0) = ' + sigma0.toExponential(2) + ' C/m²   ·   F = ' + F.toExponential(2) + ' N   ·   Q_ind = −q';
+              PS.drawText(ctx, msg, W / 2, H - 8,
+                { font: 'bold 12px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'height', label: '电荷高度 d (cm)', min: 0.4, max: 3.0, step: 0.05, value: 1.5 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('height', function (v) { params.height = v; });
+          ctl.on('reset', function () { params.height = 1.5; sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <!-- =============================================================== Summary -->
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>泊松 / 拉普拉斯方程</strong>：\(\nabla^{2}V=-\rho/\varepsilon_{0}\)；无源区 \(\nabla^{2}V=0\)。它们是整个静电学边值问题的「运动方程」。</li>
+        <li><strong>边界条件</strong>：界面处 \(V\) 连续、\(E_{\parallel}\) 连续、\(E_{\perp}^{\text{上}}-E_{\perp}^{\text{下}}=\sigma/\varepsilon_{0}\)。导体：内部 \(\vec{E}=0\)、整体等势、表面外侧 \(E=\sigma/\varepsilon_{0}\)、表面是等势面。</li>
+        <li><strong>唯一性定理</strong>：给定 \(\rho\) + (Dirichlet 或 Neumann 边界)，解唯一；对导体边界，给定每个导体的 \(V\) <em>或</em> 总 \(Q\) 亦唯一。证明工具：格林第一恒等式 \(\int(\Phi\nabla^{2}\Psi+\nabla\Phi\cdot\nabla\Psi)\,\mathrm{d}\tau=\oint\Phi\,\partial\Psi/\partial n\,\mathrm{d}A\)。</li>
+        <li><strong>镜像法</strong>：在导体「禁区」内放虚拟像电荷，使其与真实电荷在导体表面合成的 \(V\) 满足给定边界条件 ⇒ 唯一性定理保证在导体外部此即真实场。三类典型：① 平面（像 \(-q\) 镜像对称）；② 接地导体球（\(q'=-qR/a\) 在 \(b=R^{2}/a\)）；③ 中性绝缘球（再加中心像 \(q''=-q'\) 使净像电荷为零）。</li>
+        <li><strong>多极展开</strong>：\(V=(1/4\pi\varepsilon_{0})\sum_{l}q_{l}P_{l}(\cos\theta)/r^{l+1}\)，\(q_{l}=\int r'^{\,l}P_{l}(\cos\gamma)\rho\,\mathrm{d}^{3}r'\)。前几阶的<strong>笛卡尔形式</strong>：单极 \(q=\int\rho\,\mathrm{d}^{3}r'\)、偶极 \(\vec{p}=\int\vec{r}'\rho\,\mathrm{d}^{3}r'\)、四极 \(Q_{ij}=\int(3x'_{i}x'_{j}-r'^{2}\delta_{ij})\rho\,\mathrm{d}^{3}r'\)（无迹对称）。</li>
+        <li><strong>纯偶极电场</strong>：\(E_{r}=2p\cos\theta/(4\pi\varepsilon_{0}r^{3})\)、\(E_{\theta}=p\sin\theta/(4\pi\varepsilon_{0}r^{3})\)，轴向 \(2\times\) 赤道，\(1/r^{3}\) 衰减。</li>
+        <li><strong>分离变量法</strong>：笛卡尔（\(\sin/\cos\times\sinh/\cosh\)，傅里叶级数匹配）；球（\(r^{l}\) 与 \(r^{-l-1}\) 配 \(P_{l}\) 或 \(Y_{lm}\)）；柱（Bessel 函数）。原则：先满足齐次边界（定本征值），再用其余边界定系数。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\nabla^{2}V=-\frac{\rho}{\varepsilon_{0}},\qquad \nabla^{2}V=0\;\;(\rho=0)\;} \]</div>
+      <div class="formula">\[ \boxed{\;E_{\perp}^{\text{上}}-E_{\perp}^{\text{下}}=\frac{\sigma}{\varepsilon_{0}},\quad E_{\parallel}^{\text{上}}=E_{\parallel}^{\text{下}},\quad V_{\text{上}}=V_{\text{下}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\text{镜像法：平面 }q'=-q\text{ 对称；球 }q'=-\frac{R}{a}q,\;b=\frac{R^{2}}{a}\;} \]</div>
+      <div class="formula">\[ \boxed{\;V(\vec{r})=\frac{1}{4\pi\varepsilon_{0}}\!\left[\frac{q}{r}+\frac{\vec{p}\cdot\hat{r}}{r^{2}}+\frac{1}{2}\sum_{ij}\frac{Q_{ij}\hat{r}_{i}\hat{r}_{j}}{r^{3}}+\cdots\right]\;} \]</div>
+      <div class="formula">\[ \boxed{\;V(r,\theta)=\sum_{l}\!\left(A_{l}r^{l}+\frac{B_{l}}{r^{l+1}}\right)\!P_{l}(\cos\theta)\quad(\text{球坐标分离变量})\;} \]</div>
+      <div class="formula">\[ \boxed{\;\vec{E}_{\text{dip}}=\frac{1}{4\pi\varepsilon_{0}r^{3}}\bigl[2p\cos\theta\,\hat{r}+p\sin\theta\,\hat{\theta}\bigr]\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 磁学与矢势 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第7章 · 电动力学 Electrodynamics</p>
+      <h1>磁学与矢势 <span class="en-title">Magnetostatics &amp; Vector Potential</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>第二学期我们已经熟悉了 <strong>毕奥–萨伐尔定律</strong> (Biot–Savart law) 与 <strong>安培环路定律</strong> (Ampère's circuital law) 的积分形式。本章把磁学<strong>提升到 honors / 研究生入门</strong>层次：引入一个比 \(\vec B\) 更「基本」的量——<strong>磁矢势</strong> (magnetic vector potential) \(\vec A\)，其中 \(\vec B=\nabla\times\vec A\)。它不仅是数学技巧，更在量子力学里具有独立的物理实在性（Aharonov–Bohm 效应）。学完本章你应能：</p>
+      <ul>
+        <li>写出<strong>磁矢势</strong> (magnetic vector potential) 的定义 \(\vec B=\nabla\times\vec A\)，以及<strong>毕奥–萨伐尔定律对 \(\vec A\) 的形式</strong> \( \vec A(\vec r)=\dfrac{\mu_{0}}{4\pi}\displaystyle\int\dfrac{\vec J(\vec r\,')}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r' \)。</li>
+        <li>陈述并运用<strong>安培定律微分形式</strong> (differential Ampère law) \(\nabla\times\vec B=\mu_{0}\vec J\)，与<strong>磁高斯定律</strong> \(\nabla\cdot\vec B=0\)（「无磁单极」）。</li>
+        <li>解释<strong>规范自由度</strong> (gauge freedom)：\(\vec A\to\vec A+\nabla\chi\) 保持 \(\vec B\) 不变；选取<strong>库仑规范</strong> (Coulomb gauge) \(\nabla\cdot\vec A=0\) 使泊松方程 \(\nabla^{2}\vec A=-\mu_{0}\vec J\) 解耦。</li>
+        <li>定义<strong>磁偶极矩</strong> (magnetic dipole moment) \(\vec m=\tfrac{1}{2}\displaystyle\int\vec r\times\vec J\,\mathrm d^{3}r\)，导出其远场矢势 \(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\hat r}{r^{2}}\) 与磁场 \(\vec B_{\text{dip}}\)。</li>
+        <li>在<strong>无电流区域</strong>（\(\vec J=0\)）使用<strong>磁标势</strong> (magnetic scalar potential) \(\Phi_{m}\)，满足 \(\vec B=-\mu_{0}\nabla\Phi_{m}\)、\(\nabla^{2}\Phi_{m}=0\)；掌握 \(\vec B\) 的<strong>边值关系</strong> (boundary conditions)。</li>
+        <li>计算磁偶极子在<strong>外场</strong>中的力矩 \(\vec\tau=\vec m\times\vec B\) 与能量 \(U=-\vec m\cdot\vec B\)；指出 <strong>Aharonov–Bohm 效应</strong>：在 \(\vec B=0\) 但 \(\vec A\ne 0 \) 的区域，量子相位仍受 \(\vec A\) 影响——\(\vec A\) 在 QM 中是物理实在的。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么需要矢势？\(\vec B=\nabla\times\vec A\)</h3>
+      <p>静磁学两条基本定律（高斯磁定律 + 微分安培定律）：</p>
+      <div class="formula">\[ \boxed{\;\nabla\cdot\vec B=0\quad(\text{无磁单极}),\qquad \nabla\times\vec B=\mu_{0}\vec J\quad(\text{安培定律微分形式})\;} \]</div>
+      <p>第一条说 \(\vec B\) 是<strong>无散</strong> (divergence-free) 场。矢量微积分恒等式告诉我们：<strong>任何无散场都可写为另一矢量的旋度</strong>。于是定义<strong>磁矢势</strong> \(\vec A(\vec r)\)：</p>
+      <div class="formula">\[ \boxed{\;\vec B(\vec r)\;\equiv\;\nabla\times\vec A(\vec r)\;} \]</div>
+      <p>这自动满足 \(\nabla\cdot\vec B=\nabla\cdot(\nabla\times\vec A)\equiv 0\)（旋度的散度恒为零）。物理上，\(\vec A\) 是比 \(\vec B\) 更「原始」的量——尤其在量子力学（AB 效应）与相对论（\(A^{\mu}=(\Phi/c,\vec A)\) 是四矢）中。\(\vec A\) 的量纲为 \(\mathrm{T\cdot m}\)（特斯拉·米），SI 单位 \(\mathrm{Wb/m}=\mathrm{T\cdot m}\)。</p>
+      <div class="key-terms">magnetic vector potential \(\vec A\) (磁矢势), Coulomb gauge (库仑规范), gauge freedom (规范自由度)</div>
+
+      <h3>2. 毕奥–萨伐尔定律的两种形式（对 \(\vec A\) 与对 \(\vec B\)）</h3>
+      <p>在<strong>库仑规范</strong>（见下节）下，矢势满足泊松方程 \(\nabla^{2}\vec A=-\mu_{0}\vec J\)，类比静电学 \(\nabla^{2}\Phi=-\rho/\varepsilon_{0}\) 解为 \(\Phi=(4\pi\varepsilon_{0})^{-1}\int\rho/R\,\mathrm d^{3}r'\)，立即得到：</p>
+      <div class="formula">\[ \boxed{\;\vec A(\vec r)\;=\;\frac{\mu_{0}}{4\pi}\int\frac{\vec J(\vec r\,')}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r'\;} \]</div>
+      <p>注意分子是<strong>矢量</strong> \(\vec J\)，故 \(\vec A\) 的方向沿电流方向。这是<strong>毕奥–萨伐尔定律的矢势形式</strong>。对它取旋度即得熟知的「\(\vec B\) 形式」：</p>
+      <div class="formula">\[ \vec B(\vec r)=\nabla\times\vec A(\vec r)=\frac{\mu_{0}}{4\pi}\int\frac{\vec J(\vec r\,')\times\hat R}{R^{2}}\,\mathrm d^{3}r',\qquad \vec R=\vec r-\vec r\,' \]</div>
+      <p>对线电流（粗细可忽略），\(\vec J\,\mathrm d^{3}r'\to I\,\mathrm d\vec l\)，回到第二学期的 \(\mathrm d\vec B=\dfrac{\mu_{0}}{4\pi}\dfrac{I\,\mathrm d\vec l\times\hat R}{R^{2}}\)。<strong>关键观察</strong>：\(\vec A\) 的积分核 \(1/R\) 比 \(\vec B\) 的积分核 \(\hat R/R^{2}\)「温和」——\(\vec A\) 在远场下降如 \(1/r\)（磁单极矩是零，但首阶是偶极 \(1/r^{2}\)），而 \(\vec B\) 下降如 \(1/r^{3}\)；用 \(\vec A\) 做积分通常更易收敛。</p>
+      <div class="key-terms">Biot–Savart law for \(\vec A\) (矢势的毕奥–萨伐尔定律), current density \(\vec J\) (电流密度)</div>
+
+      <h3>3. 规范自由度与库仑规范 \(\nabla\cdot\vec A=0\)</h3>
+      <p>对任意<strong>标量函数</strong> \(\chi(\vec r)\)，做替换：</p>
+      <div class="formula">\[ \boxed{\;\vec A(\vec r)\;\longrightarrow\;\vec A'(\vec r)=\vec A(\vec r)+\nabla\chi(\vec r)\;} \]</div>
+      <p>新矢势给出<strong>同一</strong>磁场：\(\vec B'=\nabla\times\vec A'=\nabla\times\vec A+\nabla\times(\nabla\chi)=\vec B+0=\vec B\)（梯度的旋度恒为零）。这就是<strong>规范自由度</strong> (gauge freedom)——\(\vec A\) 不能由 \(\vec B\) 唯一确定。为了「钉死」一个具体的 \(\vec A\)，需指定一个额外的「规范条件」。最常用的是<strong>库仑规范</strong>：</p>
+      <div class="formula">\[ \boxed{\;\text{Coulomb gauge:}\quad \nabla\cdot\vec A=0\;} \]</div>
+      <p>给定任意 \(\vec A\)，总能找到一个 \(\chi\) 使得 \(\vec A'=\vec A+\nabla\chi\) 满足 \(\nabla\cdot\vec A'=0\)——只需解 \(\nabla^{2}\chi=-\nabla\cdot\vec A\)（泊松方程，总有解）。在库仑规范下，安培定律 \(\nabla\times\vec B=\mu_{0}\vec J\) 用恒等式 \(\nabla\times(\nabla\times\vec A)=\nabla(\nabla\cdot\vec A)-\nabla^{2}\vec A=-\nabla^{2}\vec A\) 化为<strong>三个解耦的泊松方程</strong>（每个分量独立）：</p>
+      <div class="formula">\[ \boxed{\;\nabla^{2}\vec A\;=\;-\mu_{0}\vec J\quad(\text{库仑规范下})\;} \]</div>
+      <p>这正是上面 \(\vec A\) 的毕奥–萨伐尔解的来源。<strong>另一种常见规范</strong>是 <strong>Lorenz 规范</strong> \(\nabla\cdot\vec A+(1/c^{2})\partial\Phi/\partial t=0\)，与相对论协变形式天然契合，在电动力学（含时麦克斯韦方程）中更方便；本章静磁情形两者一致。</p>
+      <div class="key-terms">gauge transformation \(\vec A\to\vec A+\nabla\chi\) (规范变换), Coulomb gauge (库仑规范), Lorenz gauge (洛伦兹规范)</div>
+
+      <h3>4. 磁标势 \(\Phi_{m}\)（仅限 \(\vec J=0\) 区域）</h3>
+      <p>在<strong>没有自由电流</strong>（\(\vec J=0\)）的区域，安培定律化为 \(\nabla\times\vec B=0\)。无旋场必为某标量的梯度（的负）：</p>
+      <div class="formula">\[ \boxed{\;\vec B=-\mu_{0}\nabla\Phi_{m}\quad(\text{仅当 } \vec J=0)\;} \]</div>
+      <p>\(\Phi_{m}\) 称<strong>磁标势</strong> (magnetic scalar potential)。配合 \(\nabla\cdot\vec B=0\) 得 \(\nabla^{2}\Phi_{m}=0\)（拉普拉斯方程）——和静电学（\(\nabla^{2}\Phi=-\rho/\varepsilon_{0}\)）几乎完全平行，可借用镜像法、分离变量法等所有静电技巧。例如永久磁铁外部（电流为零）的磁场，可用 \(\Phi_{m}\) 描述；磁极化「磁荷」模型（虚构的 \(\rho_{m}=-\nabla\cdot\vec M\)）就是把磁化物质等效成「磁单极」分布的方便算法——但要注意，这只是数学技巧，<strong>物理上不存在真实磁单极</strong>。</p>
+      <div class="key-terms">magnetic scalar potential \(\Phi_{m}\) (磁标势), Laplace equation (拉普拉斯方程)</div>
+
+      <h3>5. 磁多极展开与磁偶极矩</h3>
+      <p>对局域电流分布（在原点附近），把 \(\vec A\) 的毕奥–萨伐尔积分按 \(r'/r\) 的幂次展开（与静电多极展开平行）：<strong>磁单极项恒为零</strong>（\(\nabla\cdot\vec A=0\) 强制总「磁荷」为零），首阶是<strong>偶极</strong>：</p>
+      <div class="formula">\[ \boxed{\;\vec A_{\text{dip}}(\vec r)\;=\;\frac{\mu_{0}}{4\pi}\,\frac{\vec m\times\hat r}{r^{2}}\;=\;\frac{\mu_{0}}{4\pi}\,\frac{\vec m\times\vec r}{r^{3}}\;} \]</div>
+      <p>其中<strong>磁偶极矩</strong> (magnetic dipole moment)：</p>
+      <div class="formula">\[ \boxed{\;\vec m\;=\;\tfrac{1}{2}\int\vec r\,'\times\vec J(\vec r\,')\,\mathrm d^{3}r'\;} \]</div>
+      <p>对线电流回路（电流 \(I\)，回路围的面积矢量 \(\vec A_{\text{area}}\)）：\(\vec m=I\,\vec A_{\text{area}}\)。例如半径 \(R\) 的圆形回路 \(\vec m=I\pi R^{2}\hat n\)（\(\hat n\) 沿右手定则轴线）。对 \(\vec A_{\text{dip}}\) 取旋度给出磁偶极<strong>磁场</strong>：</p>
+      <div class="formula">\[ \boxed{\;\vec B_{\text{dip}}(\vec r)\;=\;\frac{\mu_{0}}{4\pi r^{3}}\Big[\,3(\vec m\cdot\hat r)\hat r-\vec m\,\Big]\;=\;\frac{\mu_{0}}{4\pi r^{3}}\Big[\,3(\vec m\cdot\hat r)\hat r-\vec m\,\Big]\quad(\text{对 }r>0)\;} \]</div>
+      <p>这与电偶极 \(\vec E_{\text{dip}}\) 公式<strong>形式完全相同</strong>（只是把 \(\vec p\to\vec m\)、\(1/(4\pi\varepsilon_{0})\to\mu_{0}/(4\pi)\)）。但<strong>注意一处差异</strong>：在原点 \(r=0\) 处电偶极 \(\vec E\) 无奇点（除点偶极本身），而 \(\vec B_{\text{dip}}\) 在原点含一个接触项（delta 函数）\(-\frac{2\mu_{0}}{3}\vec m\,\delta^{3}(\vec r)\)，源自电流回路内部 \(\vec B\) 有限而 \(\nabla\times\vec B\ne 0\)。接触项在精细结构和超精细结构（氢 21 cm 线）中起决定性作用。</p>
+      <p>沿轴线（\(\vec m\parallel\hat z\)，观测点在 \(+z\) 轴上，\(\theta=0\)）：\(\vec B_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{2\vec m}{z^{3}}\)（轴向系数 2，与电偶极一致）。</p>
+      <div class="key-terms">magnetic dipole moment \(\vec m\) (磁偶极矩), magnetic multipole expansion (磁多极展开), contact term / delta function (接触项)</div>
+
+      <h3>6. 磁偶极子在外场中的能量与力矩</h3>
+      <p>把磁偶极子 \(\vec m\) 放在外磁场 \(\vec B_{\text{ext}}\) 中（假定外源固定），它受到：</p>
+      <div class="formula">\[ \boxed{\;\vec\tau\;=\;\vec m\times\vec B_{\text{ext}},\qquad U\;=\;-\vec m\cdot\vec B_{\text{ext}}\;} \]</div>
+      <p>与电偶极子公式 \(\vec\tau=\vec p\times\vec E\)、\(U=-\vec p\cdot\vec E\) 形式完全一致——第一学期力学、第二学期静电学的力矩/势能公式可直接迁移。力（对非均匀场）\(\vec F=\nabla(\vec m\cdot\vec B)\)。<strong>注意</strong>：这里 \(U\) 是「力学势能」（用来算力 \(\vec F=-\nabla U\) 与力矩 \(\vec\tau=-\partial U/\partial\theta\)）；构建磁场本身储能为 \(U_{\text{field}}=+\vec m\cdot\vec B\)（差一个符号是「外源做功」与「场储能」的差异，详见 Griffiths 6.1）。</p>
+      <div class="key-terms">torque \(\vec\tau=\vec m\times\vec B\) (磁力矩), magnetic potential energy \(U=-\vec m\cdot\vec B\) (磁势能)</div>
+
+      <h3>7. \(\vec B\) 的边值关系</h3>
+      <p>在两种介质（磁导率 \(\mu_{1},\mu_{2}\)）的界面，应用 \(\nabla\cdot\vec B=0\) 与 \(\nabla\times\vec B=\mu_{0}\vec J\) 的积分形式（小盒、小回路），得：</p>
+      <div class="formula">\[ \boxed{\;B_{1}^{\perp}=B_{2}^{\perp}\quad(\text{法向连续}),\qquad \vec B_{2}^{\parallel}-\vec B_{1}^{\parallel}=\mu_{0}\vec K\times\hat n\quad(\text{切向跃变})\;} \]</div>
+      <p>\(\vec K\) 为面电流密度，\(\hat n\) 由介质 1 指向介质 2。若无面电流（\(\vec K=0\)），\(\vec H\) 切向也连续（\(\vec H=\vec B/\mu\)）。</p>
+      <div class="key-terms">boundary conditions (边值关系), surface current \(\vec K\) (面电流密度)</div>
+
+      <h3>8. Aharonov–Bohm 效应：\(\vec A\) 在 QM 中「真实存在」</h3>
+      <p>经典电磁学里，作用在粒子上的力 \(\vec F=q(\vec E+\vec v\times\vec B)\) 只依赖 \(\vec E,\vec B\)——\(\vec A\) 似乎是「计算方便」的工具。但 1959 年 Aharonov 与 Bohm 指出：在量子力学里，<strong>即使 \(\vec B=0\) 的区域</strong>（粒子所到之处），只要 \(\vec A\ne 0\)，电子波的相位差</p>
+      <div class="formula">\[ \Delta\varphi\;=\;\frac{q}{\hbar}\oint\vec A\cdot\mathrm d\vec l\;=\;\frac{q}{\hbar}\,\Phi_{B} \]</div>
+      <p>仍可观测（\(\Phi_{B}\) 为螺线管磁通）。1960 年 Chambers 与 1986 年 Tonomura 的电子干涉实验明确证实。结论：在量子层次，\(\vec A\) 比原想的更「物理」，但「规范等价类」\([\vec A]\) 才是完全可观测的——所有规范相关的 \(\vec A\) 给出同一 \(\Delta\varphi\)。</p>
+      <div class="key-terms">Aharonov–Bohm effect (阿哈罗诺夫–玻姆效应), magnetic flux \(\Phi_{B}=\oint\vec B\cdot\mathrm d\vec a\) (磁通)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从 \(\nabla\times\vec B=\mu_{0}\vec J\) 到 \(\nabla^{2}\vec A=-\mu_{0}\vec J\)</h3>
+      <p>把 \(\vec B=\nabla\times\vec A\) 代入安培定律微分形式：</p>
+      <div class="formula">\[ \nabla\times(\nabla\times\vec A)\;=\;\mu_{0}\vec J \]</div>
+      <p>使用矢量恒等式 \(\nabla\times(\nabla\times\vec A)=\nabla(\nabla\cdot\vec A)-\nabla^{2}\vec A\)：</p>
+      <div class="formula">\[ \nabla(\nabla\cdot\vec A)-\nabla^{2}\vec A\;=\;\mu_{0}\vec J \]</div>
+      <p>选库仑规范 \(\nabla\cdot\vec A=0\)（规范自由度允许——总能找到这样的 \(\chi\)），第一项消失：</p>
+      <div class="formula">\[ \boxed{\;\nabla^{2}\vec A\;=\;-\mu_{0}\vec J\;} \]</div>
+      <p>这是<strong>三个标量泊松方程</strong>（每个笛卡尔分量一个）：\(\nabla^{2}A_{x}=-\mu_{0}J_{x}\)，等。类比 \(\nabla^{2}\Phi=-\rho/\varepsilon_{0}\) 的解 \(\Phi=(4\pi\varepsilon_{0})^{-1}\int\rho/R\,\mathrm d^{3}r'\)，立即写出：</p>
+      <div class="formula">\[ \vec A(\vec r)=\frac{\mu_{0}}{4\pi}\int\frac{\vec J(\vec r\,')}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r' \]</div>
+      <p>这同时<strong>自动</strong>满足库仑规范：\(\nabla\cdot\vec A=\dfrac{\mu_{0}}{4\pi}\displaystyle\int\dfrac{\nabla'\cdot\vec J}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r'\)，由稳态电流连续性方程 \(\nabla'\cdot\vec J=0\)（静磁学前提），得 \(\nabla\cdot\vec A=0\) ✓。</p>
+
+      <h3>推导 B：磁多极展开与偶极矩</h3>
+      <p>把 \(1/|\vec r-\vec r\,'|=1/r+\dfrac{\vec r\,'\cdot\hat r}{r^{2}}+\cdots\)（对 \(r\gg r'\)，局域源）代入 \(\vec A\) 积分：</p>
+      <div class="formula">\[ \vec A(\vec r)=\frac{\mu_{0}}{4\pi}\!\left[\frac{1}{r}\int\vec J\,\mathrm d^{3}r'\;+\;\frac{1}{r^{2}}\int(\vec r\,'\cdot\hat r)\vec J\,\mathrm d^{3}r'+\cdots\right] \]</div>
+      <p>第一项「磁单极」为零：\(\int J_{i}\,\mathrm d^{3}r'=\int\nabla'\cdot(x_{i}\vec J)\,\mathrm d^{3}r'-\int x_{i}(\nabla'\cdot\vec J)\,\mathrm d^{3}r'=0\)（第一项化为无穷远面积分 \(\to 0\)，第二项由 \(\nabla\cdot\vec J=0\)）。第二项改写：用恒等式 \(\vec J=\tfrac{1}{2}[(\vec J\cdot\nabla')\vec r\,'-(\vec r\,'\cdot\nabla')\vec J]+\tfrac{1}{2}[\vec r\,'\times(\nabla'\times\vec J)-\vec J\times(\nabla'\times\vec r\,')]\)... 更简洁地，使用</p>
+      <div class="formula">\[ \int(\vec r\,'\cdot\hat r)\vec J\,\mathrm d^{3}r'\;=\;\frac{1}{2}\int\big[\hat r\cdot(\vec r\,'\times\vec J)\big]\,\text{旋量转换}\;\Rightarrow\;\frac{1}{2}\int(\vec r\,'\times\vec J)\,\mathrm d^{3}r'\times\hat r \]</div>
+      <p>定义 \(\vec m\equiv\tfrac{1}{2}\displaystyle\int\vec r\,'\times\vec J\,\mathrm d^{3}r'\)，立即得 \(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\hat r}{r^{2}}\)。<strong>对线电流回路</strong>：\(\vec J\,\mathrm d^{3}r'\to I\,\mathrm d\vec l\)，由 Stokes 定理 \(\tfrac{1}{2}\oint(\vec r\,'\times\mathrm d\vec l)=\vec A_{\text{area}}\)（回路围面积矢量），所以 \(\vec m=I\vec A_{\text{area}}\) ✓。</p>
+
+      <h3>推导 C：\(\vec B_{\text{dip}}\) 与接触 delta 项</h3>
+      <p>对 \(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\vec r}{r^{3}}\) 取旋度，对 \(r>0\)：</p>
+      <div class="formula">\[ \vec B_{\text{dip}}(\vec r)=\frac{\mu_{0}}{4\pi r^{3}}\big[3(\vec m\cdot\hat r)\hat r-\vec m\big]\quad(r\ne 0) \]</div>
+      <p>但若 \(\vec m\) 是真正点偶极，需考虑原点附近：因 \(\nabla\cdot\vec B=0\) 在全空间（含原点），而上方表达式在原点有「洞」。\(\oint_{\text{球面}}\vec B\cdot\mathrm d\vec a\) 对小球的积分给出非零通量？不——\(\nabla\cdot\vec B=0\) 强制通量为零。细致分析（用 \(\nabla\times(\vec m\times\vec r/r^{3})\) 的分布导数）给出：</p>
+      <div class="formula">\[ \boxed{\;\vec B_{\text{dip}}(\vec r)\;=\;\frac{\mu_{0}}{4\pi r^{3}}\big[3(\vec m\cdot\hat r)\hat r-\vec m\big]\;+\;\frac{2\mu_{0}}{3}\vec m\,\delta^{3}(\vec r)\;} \]</div>
+      <p>delta 函数「接触项」对球面积分贡献 \((2\mu_{0}/3)\vec m\)，正好抵消 \(r\ne 0\) 部分对原点的「缺失」，使总通量为零。在氢原子超精细结构（电子磁场与质子自旋耦合）中，电子在质子处的波函数 \(|\psi(0)|^{2}\ne 0\)，正是这个 delta 项决定了 21 cm 线的劈裂。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 圆电流回路的矢势与轴线磁场</h4>
+        <p class="example-statement">半径 \(R=2.0\,\mathrm{cm}\)、电流 \(I=5.0\,\mathrm{A}\) 的圆电流回路位于 \(xy\) 平面、圆心在原点，电流绕 \(+z\) 轴（右手定则下 \(\vec m\) 沿 \(+z\)）。(a) 求远场（\(r\gg R\)）矢势 \(\vec A\)；(b) 用偶极公式算远场 \(z=10\,\mathrm{cm}\) 处 \(\vec B\)；(c) 用第二学期轴线公式 \(B(z)=\mu_{0}IR^{2}/[2(R^{2}+z^{2})^{3/2}]\) 严格算同点 \(\vec B\)，比较。取 \(\mu_{0}=4\pi\times 10^{-7}\,\mathrm{T\cdot m/A}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 回路磁矩 \(\vec m=I\pi R^{2}\hat z=5.0\times\pi\times(0.02)^{2}\hat z=5.0\times 1.257\times 10^{-3}\hat z=6.28\times 10^{-3}\,\mathrm{A\cdot m^{2}}\hat z\)。</p>
+          <p class="step">远场矢势 \(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\hat r}{r^{2}}\)。在赤道面（\(z=0\)，\(\theta=90^{\circ}\)，\(\hat r=\hat s\)，柱坐标径向）：\(\vec m\times\hat r=m\hat z\times\hat s=m\hat\phi\)，故 \(\vec A=\dfrac{\mu_{0}m}{4\pi r^{2}}\hat\phi\)（<strong>方位角方向</strong>，环绕 \(z\) 轴）。</p>
+          <p class="step">(b) 在轴线上 \(z=0.10\,\mathrm m\)、\(\theta=0\)，偶极公式 \(\vec B=\dfrac{\mu_{0}}{4\pi}\dfrac{2\vec m}{z^{3}}\)（轴向系数 2）：</p>
+          <p class="step">\(B=\dfrac{(4\pi\times 10^{-7})}{4\pi}\cdot\dfrac{2\times 6.28\times 10^{-3}}{(0.10)^{3}}=10^{-7}\cdot\dfrac{1.256\times 10^{-2}}{1.0\times 10^{-3}}=10^{-7}\cdot 12.56=1.26\times 10^{-6}\,\mathrm T=1.26\,\mu\mathrm T\)。</p>
+          <p class="step">(c) 严格公式 \(B=\dfrac{\mu_{0}IR^{2}}{2(R^{2}+z^{2})^{3/2}}\)。代入 \(I=5\)、\(R=0.02\)、\(z=0.10\)：</p>
+          <p class="step">\(R^{2}+z^{2}=4\times 10^{-4}+1.0\times 10^{-2}=1.04\times 10^{-2}\)；\((R^{2}+z^{2})^{3/2}=(1.04\times 10^{-2})^{1.5}=1.061\times 10^{-3}\)；</p>
+          <p class="step">\(B=\dfrac{(4\pi\times 10^{-7})\times 5\times 4\times 10^{-4}}{2\times 1.061\times 10^{-3}}=\dfrac{4\pi\times 10^{-7}\times 2\times 10^{-3}}{2.122\times 10^{-3}}=\dfrac{2.513\times 10^{-9}}{2.122\times 10^{-3}}=1.18\times 10^{-6}\,\mathrm T=1.18\,\mu\mathrm T\)。</p>
+          <p class="step"><strong>对比：</strong>偶极近似 \(1.26\,\mu\mathrm T\)，严格值 \(1.18\,\mu\mathrm T\)，误差 \(7\%\)。这是意料之中——比值 \(R/z=0.2\)，四极修正约为 \((R/z)^{2}\sim 4\%\) 量级，符号与具体几何决定细节。距回路越远（\(z\to\infty\)），偶极近似越准。</p>
+          <p><span class="ans">磁矩 \(|\vec m|=6.28\times 10^{-3}\,\mathrm{A\cdot m^{2}}\)；偶极近似 \(B(z=10\,\mathrm{cm})\approx 1.26\,\mu\mathrm T\)；严格值 \(1.18\,\mu\mathrm T\)（误差约 \(7\%\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 长直载流导线的 \(\vec A\)（恢复 \(\vec B=\mu_{0}I/(2\pi r)\)）</h4>
+        <p class="example-statement">无限长直导线沿 \(z\) 轴、电流 \(I=10\,\mathrm{A}\) 沿 \(+z\) 方向。(a) 选库仑规范下，证明 \(\vec A=-\hat z\,\dfrac{\mu_{0}I}{2\pi}\ln(r/r_{0})\)（\(r_{0}\) 任意参考半径）给出正确的 \(\vec B\)；(b) 取旋度恢复 \(\vec B\)；(c) 求距导线 \(r=2\,\mathrm{cm}\) 处的 \(B\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 柱坐标下，对 \(\vec A=A_{z}(r)\hat z\)（仅 \(z\) 分量，仅 \(r\) 依赖），旋度为：</p>
+          <div class="formula">\[ \vec B=\nabla\times\vec A=-\frac{\mathrm d A_{z}}{\mathrm d r}\hat\phi \]</div>
+          <p class="step">（柱坐标旋度表：\((\nabla\times\vec A)_{\phi}=\partial A_{r}/\partial z-\partial A_{z}/\partial r=-\mathrm d A_{z}/\mathrm d r\)。）取 \(A_{z}(r)=-\dfrac{\mu_{0}I}{2\pi}\ln(r/r_{0})\)，则 \(\mathrm d A_{z}/\mathrm d r=-\dfrac{\mu_{0}I}{2\pi r}\)。</p>
+          <p class="step">(b) \(\vec B=-(-\dfrac{\mu_{0}I}{2\pi r})\hat\phi=\dfrac{\mu_{0}I}{2\pi r}\hat\phi\) ✓——正是经典的安培结果（方向沿 \(\hat\phi\)，右手定则）。</p>
+          <p class="step"><strong>规范检验</strong>：\(\nabla\cdot\vec A=\partial A_{z}/\partial z=0\)（\(A_{z}\) 不依赖 \(z\)）✓ 库仑规范满足。</p>
+          <p class="step"><strong>规范自由度</strong>：可加任意 \(\nabla\chi\)，如 \(\chi=Cz\) 给出 \(\vec A\to\vec A+C\hat z\)——这不影响 \(\vec B\)，但改变 \(A_{z}\) 整体偏置。注意「绝对 \(\vec A\)」对无限长导线发散（\(\ln\infty\)），必须引入参考半径 \(r_{0}\)——这是无限长源的固有特性，\(\vec B\) 仍有限。</p>
+          <p class="step">(c) 数值：\(B=\dfrac{(4\pi\times 10^{-7})\times 10}{2\pi\times 0.02}=\dfrac{4\pi\times 10^{-6}}{0.04\pi}=\dfrac{4\times 10^{-6}}{0.04}=1.0\times 10^{-4}\,\mathrm T=0.10\,\mathrm{mT}=1.0\,\mathrm G\)（高斯）。</p>
+          <p class="step"><strong>对比地磁场</strong>：约 \(0.5\,\mathrm G\)，所以 \(10\,\mathrm A\) 电流在 \(2\,\mathrm{cm}\) 处的磁场约为地磁的 2 倍——很容易用罗盘检测。</p>
+          <p><span class="ans">\(\vec A=-\hat z\,\dfrac{\mu_{0}I}{2\pi}\ln(r/r_{0})\)；\(\vec B=\dfrac{\mu_{0}I}{2\pi r}\hat\phi\)；\(B(r=2\,\mathrm{cm})=1.0\times 10^{-4}\,\mathrm T=1.0\,\mathrm G\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 规范变换：验证 \(\vec A\to\vec A+\nabla\chi\) 不改 \(\vec B\)</h4>
+        <p class="example-statement">考虑均匀磁场 \(\vec B=B_{0}\hat z\)（\(B_{0}=0.50\,\mathrm T\)）。(a) 一种规范选择是 \(\vec A_{1}=\tfrac{B_{0}}{2}(-y\hat x+x\hat y)\)（对称规范）；(b) 另一种是 \(\vec A_{2}=B_{0}x\hat y\)（朗道规范）；(c) 证明两者旋度都给出 \(\vec B=B_{0}\hat z\)，并求连接它们的规范函数 \(\chi\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 对 \(\vec A_{1}=\tfrac{B_{0}}{2}(-y,x,0)\)，旋度</p>
+          <p class="step">\((\nabla\times\vec A_{1})_{x}=\partial A_{z}/\partial y-\partial A_{y}/\partial z=0-0=0\)；</p>
+          <p class="step">\((\nabla\times\vec A_{1})_{y}=\partial A_{x}/\partial z-\partial A_{z}/\partial x=0-0=0\)；</p>
+          <p class="step">\((\nabla\times\vec A_{1})_{z}=\partial A_{y}/\partial x-\partial A_{x}/\partial y=\tfrac{B_{0}}{2}(1)-\tfrac{B_{0}}{2}(-1)=B_{0}\)。✓</p>
+          <p class="step">所以 \(\vec B=B_{0}\hat z\) ✓。<strong>库仑规范检验</strong>：\(\nabla\cdot\vec A_{1}=\tfrac{B_{0}}{2}(0+0+0)=0\) ✓。</p>
+          <p class="step">(b) \(\vec A_{2}=B_{0}x\hat y=(0,B_{0}x,0)\)。旋度</p>
+          <p class="step">\((\nabla\times\vec A_{2})_{z}=\partial(B_{0}x)/\partial x-\partial 0/\partial y=B_{0}-0=B_{0}\) ✓；其他分量为零。</p>
+          <p class="step">\(\vec B=B_{0}\hat z\) ✓。\(\nabla\cdot\vec A_{2}=\partial(B_{0}x)/\partial y=0\) ✓ 库仑规范。</p>
+          <p class="step">(c) 求 \(\chi\) 使 \(\vec A_{2}=\vec A_{1}+\nabla\chi\)：</p>
+          <p class="step">\(A_{2x}-A_{1x}=0-(-\tfrac{B_{0}}{2}y)=\tfrac{B_{0}}{2}y=\partial\chi/\partial x\)；</p>
+          <p class="step">\(A_{2y}-A_{1y}=B_{0}x-\tfrac{B_{0}}{2}x=\tfrac{B_{0}}{2}x=\partial\chi/\partial y\)；</p>
+          <p class="step">\(A_{2z}-A_{1z}=0=\partial\chi/\partial z\)。</p>
+          <p class="step">由第一式积分：\(\chi=\tfrac{B_{0}}{2}xy+f(y,z)\)。代入第二式：\(\partial\chi/\partial y=\tfrac{B_{0}}{2}x+\partial f/\partial y=\tfrac{B_{0}}{2}x\)，故 \(\partial f/\partial y=0\)，\(f=g(z)\)。第三式给出 \(g'(z)=0\)，故 \(g=C\)（常数）。规范函数：</p>
+          <div class="formula">\[ \boxed{\;\chi(x,y)\;=\;\frac{B_{0}}{2}\,xy\;+\;C\;} \]</div>
+          <p class="step"><strong>验证</strong>：\(\nabla\chi=(\tfrac{B_{0}}{2}y,\tfrac{B_{0}}{2}x,0)\)。加上 \(\vec A_{1}=(-\tfrac{B_{0}}{2}y,\tfrac{B_{0}}{2}x,0)\cdot\tfrac{B_{0}}{2}\)... 让我们仔细写：\(\vec A_{1}+\nabla\chi=\tfrac{B_{0}}{2}(-y,x,0)+\tfrac{B_{0}}{2}(y,x,0)=\tfrac{B_{0}}{2}(0,2x,0)=(0,B_{0}x,0)=\vec A_{2}\) ✓。</p>
+          <p class="step"><strong>物理意义</strong>：两种规范给出同一 \(\vec B\)，但量子力学解均匀磁场中的电子（朗道能级）时，对称规范给出角动量本征态、朗道规范给出动量本征态——两种基等价，但物理图像截然不同。</p>
+          <p><span class="ans">两规范都给出 \(\vec B=0.50\,\hat z\,\mathrm T\)；规范函数 \(\chi=\tfrac{B_{0}}{2}xy+C\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 磁偶极子在外场中的力矩与能量（小线圈在外场中）</h4>
+        <p class="example-statement">一个半径 \(R=1.0\,\mathrm{cm}\)、\(N=100\) 匝、电流 \(I=0.50\,\mathrm{A}\) 的小线圈（线圈法向可绕水平轴转动，构成电流计模型），置于 \(B_{\text{ext}}=0.30\,\mathrm T\) 的水平均匀磁场中。初始线圈法向与外场夹角 \(\theta_{0}=60^{\circ}\)。(a) 求磁矩大小 \(|\vec m|\)；(b) 力矩大小；(c) 把线圈从 \(\theta=0\)（稳定平衡）转到 \(\theta=\pi\)（不稳定平衡）外力需做的功；(d) 求小角度振荡频率（线圈转动惯量 \(I_{\text{rot}}=2.0\times 10^{-6}\,\mathrm{kg\cdot m^{2}}\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 磁矩 \(|\vec m|=NIA=N I\pi R^{2}=100\times 0.50\times\pi\times(0.01)^{2}=0.50\times\pi\times 10^{-4}=1.571\times 10^{-4}\,\mathrm{A\cdot m^{2}}\)。</p>
+          <p class="step">(b) 力矩大小 \(|\vec\tau|=|\vec m\times\vec B_{\text{ext}}|=mB\sin\theta\)。在 \(\theta_{0}=60^{\circ}\)：</p>
+          <p class="step">\(\tau=1.571\times 10^{-4}\times 0.30\times\sin 60^{\circ}=1.571\times 10^{-4}\times 0.30\times 0.866=4.08\times 10^{-5}\,\mathrm{N\cdot m}\)。</p>
+          <p class="step">(c) 力矩势能 \(U=-\vec m\cdot\vec B=-mB\cos\theta\)。从 \(\theta=0\)（\(U_{i}=-mB\)）到 \(\theta=\pi\)（\(U_{f}=+mB\)），外力做功：</p>
+          <p class="step">\(W=U_{f}-U_{i}=2mB=2\times 1.571\times 10^{-4}\times 0.30=9.43\times 10^{-5}\,\mathrm J=94.3\,\mu\mathrm J\)。</p>
+          <p class="step">(d) 小角度力矩 \(\tau=-mB\sin\theta\approx -mB\theta\)（恢复力矩，线性近似）。运动方程 \(I_{\text{rot}}\ddot\theta=-mB\theta\)，即简谐振动：</p>
+          <p class="step">\(\omega=\sqrt{mB/I_{\text{rot}}}=\sqrt{(1.571\times 10^{-4}\times 0.30)/(2.0\times 10^{-6})}=\sqrt{4.71\times 10^{-5}/2.0\times 10^{-6}}=\sqrt{23.6}=4.85\,\mathrm{rad/s}\)。</p>
+          <p class="step">周期 \(T=2\pi/\omega=2\pi/4.85=1.30\,\mathrm s\)。频率 \(f=1/T=0.77\,\mathrm{Hz}\)。</p>
+          <p class="step"><strong>物理对应</strong>：这正是电流计 (galvanometer) 的工作原理——磁场中线圈偏转角度正比于电流。<strong>与第一学期力学、第二学期静电学</strong>类比：力矩公式 \(\vec\tau=\vec m\times\vec B\) 与 \(\vec\tau=\vec p\times\vec E\)、\(\vec\tau=\vec L\times\vec\omega\)（转动参考系）同形；势能 \(-\vec m\cdot\vec B\) 与 \(-\vec p\cdot\vec E\)、\(-\vec\mu\cdot\vec B\)（磁矩自旋）同形。</p>
+          <p><span class="ans">|\vec m|\approx 1.57\times 10^{-4}\,\mathrm{A\cdot m^{2}}；\(\tau(60^{\circ})\approx 4.08\times 10^{-5}\,\mathrm{N\cdot m}\)；\(W\approx 94\,\mu\mathrm J\)；\(\omega\approx 4.85\,\mathrm{rad/s}\)，\(T\approx 1.30\,\mathrm s\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 圆环回路的磁偶极矩（用定义式积分）</h4>
+        <p class="example-statement">半径 \(R=3.0\,\mathrm{cm}\)、电流 \(I=2.0\,\mathrm{A}\) 的圆形回路在 \(xy\) 平面，电流绕 \(+z\) 轴。用<strong>磁矩普遍定义式</strong> \(\vec m=\tfrac{1}{2}\displaystyle\oint\vec r\times I\,\mathrm d\vec l\)（线电流形式）求 \(\vec m\)，验证它等于 \(I\pi R^{2}\hat z\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>用极角 \(\phi\) 参数化回路：\(\vec r(\phi)=R\cos\phi\,\hat x+R\sin\phi\,\hat y\)（\(0\le\phi<2\pi\)），电流方向（绕 \(+z\) 轴右手定则）对应 \(\phi\) 增加方向，故 \(\mathrm d\vec l=(-R\sin\phi\,\hat x+R\cos\phi\,\hat y)\,\mathrm d\phi\)。</p>
+          <p class="step">叉积：</p>
+          <div class="formula">\[ \vec r\times\mathrm d\vec l=(R\cos\phi\,\hat x+R\sin\phi\,\hat y)\times(-R\sin\phi\,\hat x+R\cos\phi\,\hat y)\,\mathrm d\phi \]</div>
+          <p class="step">用 \(\hat x\times\hat x=0\)、\(\hat x\times\hat y=\hat z\)、\(\hat y\times\hat x=-\hat z\)、\(\hat y\times\hat y=0\)：</p>
+          <p class="step">\(\vec r\times\mathrm d\vec l=\big[R^{2}\cos^{2}\phi\,\hat z-(-R^{2}\sin^{2}\phi\,\hat z)\big]\mathrm d\phi=R^{2}(\cos^{2}\phi+\sin^{2}\phi)\hat z\,\mathrm d\phi=R^{2}\hat z\,\mathrm d\phi\)。</p>
+          <p class="step">所以</p>
+          <div class="formula">\[ \vec m=\tfrac{1}{2}I\oint\vec r\times\mathrm d\vec l=\tfrac{1}{2}IR^{2}\hat z\int_{0}^{2\pi}\mathrm d\phi=\tfrac{1}{2}IR^{2}\hat z\cdot 2\pi=I\pi R^{2}\hat z\;\checkmark \]</div>
+          <p class="step">数值：\(\vec m=2.0\times\pi\times(0.03)^{2}\hat z=2.0\times\pi\times 9\times 10^{-4}\hat z=5.65\times 10^{-3}\,\mathrm{A\cdot m^{2}}\hat z\)。</p>
+          <p class="step"><strong>方向验证</strong>：\(\vec m\parallel+\hat z\)——与右手定则（四指沿电流绕向 \(\phi\) 增加方向，拇指即磁矩）一致 ✓。</p>
+          <p class="step"><strong>推论</strong>：对任意<strong>平面</strong>回路，\(\tfrac{1}{2}\oint\vec r\times\mathrm d\vec l=\vec A_{\text{area}}\)（回路围的有向面积矢量），故 \(\vec m=I\vec A_{\text{area}}\) 对所有平面回路成立——不论形状。对<strong>非平面</strong>回路（如螺线管），需分段或回到体积分定义 \(\vec m=\tfrac{1}{2}\int\vec r\times\vec J\,\mathrm d^{3}r\)。</p>
+          <p><span class="ans">用定义式积分得 \(\vec m=I\pi R^{2}\hat z=5.65\times 10^{-3}\,\mathrm{A\cdot m^{2}}\hat z\)，与 \(I\vec A_{\text{area}}\) 完全一致 ✓。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把 \(\vec A\) 当成「只是为了方便」的数学工具。</strong>经典力学中只有 \(\vec E,\vec B\) 出现在洛伦兹力里，看起来 \(\vec A\) 不可观测。但量子力学（Aharonov–Bohm 效应）证明：即使在 \(\vec B=0\) 区域，只要 \(\vec A\ne 0\)，带电粒子波的相位仍受影响——\(\vec A\) 是物理实在的，只是「规范等价类」\([\vec A]\) 完全可测，单个代表元 \(\vec A\) 不可测。</li>
+        <li><strong>认为 \(\nabla\cdot\vec B=0\) 等价于「磁单极不存在」是「定律」。</strong>严格说 \(\nabla\cdot\vec B=0\) 是麦克斯韦方程<strong>经验总结</strong>。狄拉克 (Dirac, 1931) 指出：若存在哪怕一个磁单极，就能解释电荷量子化（\(eg=n\hbar/2\)，\(e\) 电荷、\(g\) 磁荷）。目前实验未发现磁单极；标准麦克斯韦方程维持 \(\nabla\cdot\vec B=0\)。这个等式意味着 \(\vec B\) 总是「闭合磁感线」（无源无汇），与电场 \(\nabla\cdot\vec E=\rho/\varepsilon_{0}\)（有源）形成根本对比。</li>
+        <li><strong>混淆 \(\vec A\) 与 \(\vec B\) 的物理方向。</strong>对长直导线，\(\vec B\) 沿 \(\hat\phi\)（环绕导线），但 \(\vec A\) 沿 \(\hat z\)（电流方向）！\(\vec A\) 的方向<strong>沿电流</strong>，而 \(\vec B\) 的方向<strong>环绕电流</strong>。对圆电流回路，\(\vec A\) 在远场沿 \(\hat\phi\)（绕磁矩轴），\(\vec B\) 沿磁矩轴 + 经线返回——两者方向不同。</li>
+        <li><strong>误以为磁矩 \(\vec m\) 沿「电流方向」。</strong>\(\vec m\) 垂直于回路平面、沿右手定则轴向（与 \(\hat n\) 同向），不在回路平面内。<strong>对圆环</strong>：电流在 \(xy\) 平面，但 \(\vec m\parallel\hat z\)。</li>
+        <li><strong>用 \(\vec B_{\text{dip}}=\dfrac{\mu_{0}}{4\pi r^{3}}[3(\vec m\cdot\hat r)\hat r-\vec m]\) 时忘记它只对 \(r>0\) 成立。</strong>原点处有 delta 接触项 \(\tfrac{2\mu_{0}}{3}\vec m\,\delta^{3}(\vec r)\)。\(\vec m\) 处波函数不为零时（如 s 态氢原子中电子在核处），这一项给出有限场 \(\langle B\rangle=(2\mu_{0}/3)|\vec m||\psi(0)|^{2}\)，是超精细结构 21 cm 线的来源。</li>
+        <li><strong>在时变情形仍坚持库仑规范「最自然」。</strong>静磁时 \(\nabla\cdot\vec J=0\) 自动满足 \(\nabla\cdot\vec A=0\)。但含时情形（电动力学），库仑规范 \(\nabla\cdot\vec A=0\) 会破坏相对论协变性（标势 \(\Phi\) 瞬时传播）——这时 <strong>Lorenz 规范</strong> \(\nabla\cdot\vec A+\tfrac{1}{c^{2}}\partial\Phi/\partial t=0\) 才给出延迟势 (retarded potentials)。第二学期静态框架与第六学期动态框架的衔接处常被忽视。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 有限长直导线的 \(\vec A\) 与 \(\vec B\)：长 \(2L\) 的直导线沿 \(z\) 轴从 \(-L\) 到 \(+L\)，电流 \(I\)。求中点垂直距离 \(s\) 处的 \(\vec A\) 与 \(\vec B\)，验证 \(L\to\infty\) 极限给出 \(\vec B=\mu_{0}I/(2\pi s)\hat\phi\)。</summary>
+        <div class="hint">\(\vec A=\hat z\,\dfrac{\mu_{0}I}{4\pi}\displaystyle\int_{-L}^{L}\dfrac{\mathrm dz'}{\sqrt{s^{2}+z'^{2}}}\)，积分结果 \(\ln\!\big[(L+\sqrt{L^{2}+s^{2}})/s\big]\)。</div>
+        <div class="solution">
+          <p>\(\vec A(s)=\hat z\,\dfrac{\mu_{0}I}{4\pi}\displaystyle\int_{-L}^{L}\dfrac{\mathrm dz'}{\sqrt{s^{2}+z'^{2}}}=\hat z\,\dfrac{\mu_{0}I}{4\pi}\cdot 2\ln\!\dfrac{L+\sqrt{L^{2}+s^{2}}}{s}\)。</p>
+          <p>\(\vec B=\nabla\times\vec A=-\dfrac{\mathrm dA_{z}}{\mathrm ds}\hat\phi=\dfrac{\mu_{0}I}{2\pi s}\cdot\dfrac{L}{\sqrt{L^{2}+s^{2}}}\hat\phi\)。</p>
+          <p>当 \(L\to\infty\)：\(L/\sqrt{L^{2}+s^{2}}\to 1\)，故 \(\vec B\to \mu_{0}I/(2\pi s)\hat\phi\) ✓。</p>
+          <p><span class="ans">\(\vec A=\hat z\,\dfrac{\mu_{0}I}{2\pi}\ln\!\big[(L+\sqrt{L^{2}+s^{2}})/s\big]\)；\(\vec B=\dfrac{\mu_{0}IL}{2\pi s\sqrt{L^{2}+s^{2}}}\hat\phi\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 共轴螺线管的磁标势：一无限长理想螺线管（半径 \(R\)、面电流密度 \(K=nI\) 沿 \(\hat\phi\)），内部 \(\vec B_{\text{in}}=\mu_{0}nI\hat z\)、外部 \(\vec B_{\text{out}}=0\)。证明外部可用 \(\Phi_{m}=0\) 描述，内部 \(\Phi_{m}=-nIz\)，验证 \(\vec B=-\mu_{0}\nabla\Phi_{m}\)。</summary>
+        <div class="hint">外部 \(\vec J=0\)、\(\nabla\times\vec B=0\)，可写 \(\vec B=-\mu_{0}\nabla\Phi_{m}\)；内部 \(\vec J\ne 0\) 不可直接用标势（除非把螺线管等效为「磁化体」）。</div>
+        <div class="solution">
+          <p>外部：\(\vec B_{\text{out}}=0\) ⇒ \(\nabla\Phi_{m}=0\) ⇒ \(\Phi_{m}\) 为常数，取 \(\Phi_{m}=0\) ✓。</p>
+          <p>内部（理想化下电流是面电流，体 \(\vec J=0\)，仍可写标势）：\(-\mu_{0}\nabla\Phi_{m}=\mu_{0}nI\hat z\) ⇒ \(\nabla\Phi_{m}=-nI\hat z\) ⇒ \(\Phi_{m}=-nIz+C\)。</p>
+          <p><strong>边值</strong>：\(r=R\) 处 \(B_{\perp}\) 连续（\(B_{z}^{\text{in}}=B_{z}^{\text{out}}\) 看似违反，但理想螺线管的面电流使切向 \(\vec H\) 跃变；法向 \(B\) 仍连续：\(B_{r}=0\) 两侧 ✓）。</p>
+          <p><strong>物理意义</strong>：「磁压」\(B^{2}/(2\mu_{0})=\mu_{0}n^{2}I^{2}/2\) 提供收缩力，解释螺线管为啥会被自己的磁场挤压。</p>
+          <p><span class="ans">\(\Phi_{m}^{\text{out}}=0\)，\(\Phi_{m}^{\text{in}}=-nIz\)；验证 \(\vec B=-\mu_{0}\nabla\Phi_{m}\) ✓。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 旋转带电球的磁矩：半径 \(R\) 的均匀带电球（总电荷 \(Q\)、质量 \(M\) 均匀分布），绕 \(z\) 轴以角速度 \(\omega\) 旋转。求磁矩 \(\vec m\) 与角动量 \(\vec L\) 的比值 \(\vec m/\vec L\)（即<strong>回转磁比</strong> gyromagnetic ratio）。</summary>
+        <div class="hint">体积元 \(\mathrm d^{3}r\) 带电 \(\rho\,\mathrm d^{3}r\)（\(\rho=Q/((4/3)\pi R^{3})\)），绕轴运动构成电流环。\(\vec L=\tfrac{2}{5}MR^{2}\omega\hat z\)。</div>
+        <div class="solution">
+          <p>用柱坐标 \((s,\phi,z)\)，体积元 \(\mathrm d^{3}r=s\,\mathrm ds\,\mathrm d\phi\,\mathrm dz\)，转动线速度 \(v=\omega s\)，体电流密度 \(J_{\phi}=\rho v=\rho\omega s\)。</p>
+          <p>\(\vec m=\tfrac{1}{2}\displaystyle\int\vec r\times\vec J\,\mathrm d^{3}r\)，只有 \(\phi\) 分量电流，叉积给出 \(\hat z\) 方向 \(m_{z}=\tfrac{1}{2}\displaystyle\int s\cdot J_{\phi}\,\mathrm d^{3}r=\tfrac{1}{2}\rho\omega\displaystyle\int s^{2}\,\mathrm d^{3}r=\tfrac{1}{2}\rho\omega\cdot\langle s^{2}\rangle\cdot\tfrac{4}{3}\pi R^{3}\)。</p>
+          <p>\(\langle s^{2}\rangle=\dfrac{1}{V}\displaystyle\int s^{2}\,\mathrm d^{3}r\)，对球 \(=\dfrac{2}{5}R^{2}\)。故 \(m_{z}=\tfrac{1}{2}\rho\omega\cdot\tfrac{2}{5}R^{2}\cdot\tfrac{4}{3}\pi R^{3}=\tfrac{1}{5}\rho\omega\cdot\tfrac{4}{3}\pi R^{5}=\tfrac{1}{5}Q\omega R^{2}\)。</p>
+          <p>\(\vec L=\tfrac{2}{5}MR^{2}\omega\hat z\)。</p>
+          <p>\(\gamma\equiv\dfrac{m_{z}}{L_{z}}=\dfrac{Q/(5)\cdot\omega R^{2}}{(2/5)MR^{2}\omega}=\dfrac{Q}{2M}\)。</p>
+          <p><strong>应用</strong>：电子（\(Q=-e\)，\(M=m_{e}\)）的经典预测 \(\gamma=-e/(2m_{e})\)；量子力学相对论修正给出 \(\gamma=-g e/(2m_{e})\)，\(g\approx 2\)（电子 \(g\)-因子，源自自旋）。这就是为何 <strong>ESR/EPR</strong>（电子自旋共振）的拉莫尔频率是经典预测的 2 倍。</p>
+          <p><span class="ans">\(\vec m/\vec L=Q/(2M)\)（经典回转磁比）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Aharonov–Bohm 相位差：一根无限长螺线管（半径 \(a=0.50\,\mathrm{mm}\)、内部均匀磁场 \(B=1.0\,\mathrm T\)）被电子波包绕行（电子不进入螺线管内部，仅在 \(r>a\) 区域，那里 \(\vec B=0\) 但 \(\vec A\ne 0\)）。求两电子路径绕螺线管一周产生的相位差 \(\Delta\varphi\)。电子电荷 \(e=1.602\times 10^{-19}\,\mathrm C\)，\(\hbar=1.055\times 10^{-34}\,\mathrm{J\cdot s}\)。</summary>
+        <div class="hint">\(\Delta\varphi=(e/\hbar)\oint\vec A\cdot\mathrm d\vec l=(e/\hbar)\Phi_{B}\)，\(\Phi_{B}=B\pi a^{2}\)（螺线管内磁通，与路径无关）。</div>
+        <div class="solution">
+          <p>磁通 \(\Phi_{B}=B\cdot\pi a^{2}=1.0\times\pi\times(5.0\times 10^{-4})^{2}=1.0\times\pi\times 2.5\times 10^{-7}=7.85\times 10^{-7}\,\mathrm{Wb}\)。</p>
+          <p>\(\Delta\varphi=\dfrac{e\Phi_{B}}{\hbar}=\dfrac{(1.602\times 10^{-19})(7.85\times 10^{-7})}{1.055\times 10^{-34}}=\dfrac{1.258\times 10^{-25}}{1.055\times 10^{-34}}=1.19\times 10^{9}\,\mathrm{rad}\)。</p>
+          <p>实际观测的是相位<strong>模 \(2\pi\)</strong>：\(\Delta\varphi\!\!\mod 2\pi\)。\(1.19\times 10^{9}/(2\pi)=1.90\times 10^{8}\)，故净相位差为 \((1.90\times 10^{8}\) 整数倍余 \()\approx 0\)——这看起来像没效应？</p>
+          <p><strong>关键</strong>：在 AB 实验里我们关心<strong>磁通量子化</strong>。定义<strong>磁通量子</strong> (flux quantum) \(\Phi_{0}=h/q\)：</p>
+          <p>对超导对（库珀对 \(q=2e\)）：\(\Phi_{0}=h/(2e)=6.626\times 10^{-34}/(3.204\times 10^{-19})=2.07\times 10^{-15}\,\mathrm{Wb}\)。</p>
+          <p>本例 \(\Phi_{B}/\Phi_{0}=7.85\times 10^{-7}/2.07\times 10^{-15}=3.79\times 10^{8}\) 个量子——磁通远大于单量子，相位差极大。</p>
+          <p><strong>实际 AB 实验</strong>：Tonomura 用极小磁通（被超导环屏蔽）实现 \(\Delta\varphi\sim\pi\)，观测到电子干涉条纹的<strong>明确位移</strong>，证明 \(\vec A\) 在 \(\vec B=0\) 区域仍产生物理效应。</p>
+          <p><span class="ans">\(\Delta\varphi=e\Phi_{B}/\hbar\approx 1.19\times 10^{9}\,\mathrm{rad}\)；磁通量子 \(\Phi_{0}=h/(2e)\approx 2.07\times 10^{-15}\,\mathrm{Wb}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 磁偶极矩的边值问题：长直导线（电流 \(I_{1}=10\,\mathrm A\)）旁有一矩形小线圈（\(N=50\) 匝，面积 \(A_{\text{coil}}=2.0\,\mathrm{cm^{2}}\)，电流 \(I_{2}=0.20\,\mathrm A\)），线圈中心距导线 \(d=5.0\,\mathrm{cm}\)，线圈法向垂直于导线、沿磁场方向（即指向 \(\hat\phi\)）。求线圈所受的力（指向导线还是远离？）。</summary>
+        <div class="hint">长直导线在距 \(r\) 处的 \(B=\mu_{0}I_{1}/(2\pi r)\)。小线圈可视为磁偶极子 \(\vec m=N I_{2}A\hat\phi\)。非均匀场中力 \(\vec F=\nabla(\vec m\cdot\vec B)\)。</div>
+        <div class="solution">
+          <p>磁场（径向依赖）：\(B(d)=\mu_{0}I_{1}/(2\pi d)\hat\phi\)，\(B\propto 1/r\) 故 \(\mathrm dB/\mathrm dr=-B/r\)。</p>
+          <p>线圈磁矩 \(\vec m=N I_{2}A=50\times 0.20\times 2.0\times 10^{-4}=2.0\times 10^{-3}\,\mathrm{A\cdot m^{2}}\)，沿 \(\hat\phi\)（与 \(\vec B\) 平行）。</p>
+          <p>势能 \(U=-\vec m\cdot\vec B=-mB(d)\)。力 \(F_{r}=-\mathrm dU/\mathrm dr=m\,\mathrm dB/\mathrm dr=-mB/r\)（指向导线，因 \(\vec m\) 与 \(\vec B\) 同向 → 朝场更强处）。</p>
+          <p>\(F=mB/d=m\cdot\dfrac{\mu_{0}I_{1}}{2\pi d}\cdot\dfrac{1}{d}=\dfrac{\mu_{0}mI_{1}}{2\pi d^{2}}\)。</p>
+          <p>代入：\(F=\dfrac{(4\pi\times 10^{-7})(2.0\times 10^{-3})(10)}{2\pi\times(0.05)^{2}}=\dfrac{8\pi\times 10^{-9}}{2\pi\times 2.5\times 10^{-3}}=\dfrac{4\times 10^{-9}}{2.5\times 10^{-3}}=1.6\times 10^{-6}\,\mathrm N\)，<strong>指向导线</strong>。</p>
+          <p><strong>物理检验</strong>：磁矩顺磁场方向时被<strong>吸</strong>入场更强处（\(U\) 更负），与电偶极子顺电场被吸入电场一致。若翻转电流方向使 \(\vec m\) 反平行 \(\vec B\)，则被推开。</p>
+          <p><span class="ans">\(F\approx 1.6\,\mu\mathrm N\)，指向导线（吸引）。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 圆电流回路的磁场 Magnetic Dipole Field of a Current Loop</h2>
+      <p class="sim-desc">一个半径 \(R\)、电流 \(I\) 的圆电流回路位于 \(xy\) 平面、圆心在原点，磁矩 \(\vec m=I\pi R^{2}\hat z\) 沿 \(+z\)。仿真用<strong>偶极近似</strong> \(\vec B_{\text{dip}}(\vec r)=\dfrac{\mu_{0}}{4\pi r^{3}}\big[3(\vec m\cdot\hat r)\hat r-\vec m\big]\) 绘制<strong>磁场线</strong>（金色，穿过回路中心沿 \(+z\) 出发、在外部经线返回）；并用<strong>方位角箭头</strong>（青色，绕 \(z\) 轴）绘制<strong>矢势</strong> \(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\hat r}{r^{2}}\)（仅赤道面方位角方向，故只在该平面画）。调节滑块：(i) <strong>电流 \(I\)</strong>（A）— 改变磁矩，整体强度按 \(I\) 缩放；(ii) <strong>回路半径 \(R\)</strong>（cm）— 改变磁矩按 \(R^{2}\)，并改变回路画在画布上的视觉大小；(iii) <strong>显示模式</strong>切换：磁场线 / 矢势 A / 同时。HUD 显示磁矩大小 \(|\vec m|\)、轴线上 \(B_{z}(0,0,z_{0})\)（取 \(z_{0}=3R\)）。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          // physics parameters (SI)
+          var MU0 = 4 * Math.PI * 1e-7;
+          var params = {
+            I: 5.0,        // current (A)
+            Rcm: 2.0,      // loop radius (cm)
+            mode: 'both',  // 'B', 'A', or 'both'
+          };
+
+          // canvas layout: loop drawn in perspective, axis = vertical (z up)
+          var CX = W / 2, CY = H / 2 + 30;   // loop center on canvas
+          var PX_PER_M = 1400;               // pixels per meter (so 1 cm ~ 14 px)
+
+          function loopRadiusPx() { return (params.Rcm / 100) * PX_PER_M; }
+          function dipoleMoment() { return params.I * Math.PI * Math.pow(params.Rcm / 100, 2); } // A·m^2
+
+          // Convert canvas (x,y) to physical (s, z) in meters relative to loop center
+          // canvas +y is DOWN; physical +z is UP. We'll let "up on canvas" = +z.
+          function physFromPx(px, py) {
+            var dx = (px - CX) / PX_PER_M;
+            var dz = -(py - CY) / PX_PER_M;   // flip y
+            var s = Math.abs(dx);             // cylindrical radial (we use sign to pick side)
+            return { s: s, z: dz, x: dx };
+          }
+
+          // Dipole B field at physical (s, z) [s = cylindrical radius, can be 0]
+          // m along +z. In cylindrical, B has components:
+          //   B_s = (mu0 / 4pi) * (3 m sinθ cosθ) / r^3
+          //   B_z = (mu0 / 4pi) * (m (3 cos^2θ - 1)) / r^3
+          // where cosθ = z/r, sinθ = s/r, r = sqrt(s^2 + z^2).
+          function dipB(s, z) {
+            var r2 = s * s + z * z;
+            var r = Math.sqrt(r2);
+            if (r < 1e-4) return { Bs: 0, Bz: 0, r: 1e-4 }; // avoid origin singularity
+            var cos = z / r, sin = s / r;
+            var m = dipoleMoment();
+            var k = MU0 / (4 * Math.PI) * m / (r2 * r);
+            return { Bs: k * 3 * sin * cos, Bz: k * (3 * cos * cos - 1), r: r };
+          }
+          // Dipole A field (azimuthal, only phi component nonzero in cylindrical)
+          //   A_phi = (mu0 / 4pi) * m sinθ / r^2  = (mu0 / 4pi) * m * s / r^3
+          // Direction: +phi (right-hand around +z). On +x side of loop, +phi = +y (down on canvas).
+          function dipA(s, z) {
+            var r2 = s * s + z * z;
+            var r = Math.sqrt(r2);
+            if (r < 1e-4) return { Aphi: 0, r: 1e-4 };
+            var m = dipoleMoment();
+            return { Aphi: MU0 / (4 * Math.PI) * m * s / (r2 * r), r: r };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tAnim: 0 }; },
+            step: function (dt, t, s) { s.tAnim += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var Rpx = loopRadiusPx();
+              var m = dipoleMoment();
+
+              // background: light grid + axes (z vertical, x horizontal)
+              PS.drawGrid(ctx, { originX: CX, originY: CY, scale: PX_PER_M / 100, step: 1 });
+              // axis labels
+              PS.drawText(ctx, 'z', CX + 4, 14, { font: 'bold 13px system-ui', color: PS.colors.axis });
+              PS.drawText(ctx, 'x', W - 14, CY - 6, { font: 'bold 13px system-ui', color: PS.colors.axis });
+              PS.drawText(ctx, 's', W - 14, CY + 14, { font: '11px system-ui', color: PS.colors.axis });
+
+              // ---- Draw loop (perspective: ellipse) ----
+              // Loop is in xy plane. On our canvas we view it edge-on as an ellipse
+              // with horizontal major axis 2*Rpx and minor axis ~ 0.35*Rpx (perspective squash).
+              var ellipseSquash = 0.32;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.ellipse(CX, CY, Rpx, Rpx * ellipseSquash, 0, 0, Math.PI * 2);
+              ctx.stroke();
+              // current direction arrowheads (along +phi = counterclockwise viewed from +z)
+              // small arrows at front of loop
+              var aAng = [0.3, Math.PI - 0.3, Math.PI + 0.3, -0.3];
+              aAng.forEach(function (a) {
+                var x = CX + Rpx * Math.cos(a);
+                var y = CY + Rpx * ellipseSquash * Math.sin(a);
+                // tangent direction (counterclockwise on canvas for +phi viewed from +z, which we're viewing from slightly above)
+                var tx = -Math.sin(a);
+                var ty = ellipseSquash * Math.cos(a);
+                var tlen = Math.hypot(tx, ty);
+                tx /= tlen; ty /= tlen;
+                PS.drawArrow(ctx, x - 6 * tx, y - 6 * ty, x + 6 * tx, y + 6 * ty, PS.colors.primary);
+              });
+              ctx.restore();
+              PS.drawText(ctx, 'loop R=' + params.Rcm.toFixed(1) + ' cm', CX - Rpx, CY + Rpx * ellipseSquash + 16,
+                { font: '11px system-ui', color: PS.colors.primary, align: 'center' });
+
+              // ---- Draw B field lines (dipole) ----
+              // Trace lines starting at angles around +z axis above the loop, going up and curving back.
+              // We integrate dr/dt = B_hat (unit B) numerically (RK4-ish via small Euler steps).
+              function drawBLine(startX, startZ, sign) {
+                // sign = +1 to trace along B direction, -1 against (we trace forward along B)
+                var x = startX, z = startZ;
+                var pts = [];
+                var maxSteps = 800;
+                for (var i = 0; i < maxSteps; i++) {
+                  pts.push([x, z]);
+                  var b = dipB(Math.abs(x), z);
+                  var Bx = (x >= 0 ? b.Bs : -b.Bs); // sign flips on left half
+                  var Bz = b.Bz;
+                  var Bmag = Math.hypot(Bx, Bz);
+                  if (Bmag < 1e-12) break;
+                  // step along B direction (fixed physical step ~ small)
+                  var step = 0.0008; // meters
+                  x += sign * step * Bx / Bmag;
+                  z += sign * step * Bz / Bmag;
+                  // stop if too far
+                  var rNow = Math.hypot(x, z);
+                  if (rNow > 0.12) break;  // ~12 cm
+                  // stop if we cross through loop plane far away (line completed)
+                  if (i > 50 && z < 0 && Math.abs(x) > loopRadiusPx() / PX_PER_M * 1.05) break;
+                }
+                // draw polyline on canvas
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent;
+                ctx.globalAlpha = 0.85;
+                ctx.lineWidth = 1.6;
+                ctx.beginPath();
+                pts.forEach(function (p, i) {
+                  var px = CX + p[0] * PX_PER_M;
+                  var py = CY - p[1] * PX_PER_M;
+                  if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                });
+                ctx.stroke();
+                ctx.restore();
+              }
+
+              if (params.mode === 'B' || params.mode === 'both') {
+                // start field lines at the top of the loop (just above, on +z axis region)
+                // We launch from various radii inside/near the loop upward; they will curve out and return.
+                var nLines = 7;
+                for (var k = 0; k < nLines; k++) {
+                  var frac = (k + 0.5) / nLines;
+                  var r0 = frac * (Rpx / PX_PER_M) * 0.95;  // start within loop radius
+                  // launch upward along B (on axis Bz > 0)
+                  drawBLine(r0, 0.0015, +1);
+                  drawBLine(-r0, 0.0015, +1);
+                }
+              }
+
+              // ---- Draw A field (azimuthal arrows around z axis, shown in equatorial plane) ----
+              if (params.mode === 'A' || params.mode === 'both') {
+                // Place arrows at several (s, z≈0) positions, on both +x and -x sides.
+                // A is in +phi direction: on +x side, +phi = +y_canvas (downward); on -x side, +phi = -y_canvas (upward).
+                // Visualize a few arrows at increasing s.
+                var sPositions = [1.5, 2.5, 4.0, 6.0]; // in units of R_lopp_phys
+                var Rphys = params.Rcm / 100;
+                sPositions.forEach(function (sMul) {
+                  var sx = sMul * Rphys;
+                  var a = dipA(Math.abs(sx), 0);
+                  var len = Math.min(34, 6 + a.Aphi * 1e6); // arbitrary visualization scaling
+                  // arrow on +x side: pointing DOWN on canvas (+y)
+                  var x1p = CX + sx * PX_PER_M;
+                  var y1p = CY - len / 2;
+                  var x2p = CX + sx * PX_PER_M;
+                  var y2p = CY + len / 2;
+                  PS.drawArrow(ctx, x1p, y1p, x2p, y2p, PS.colors.accent2);
+                  // arrow on -x side: pointing UP on canvas (-y)
+                  var x1n = CX - sx * PX_PER_M;
+                  var y1n = CY + len / 2;
+                  var x2n = CX - sx * PX_PER_M;
+                  var y2n = CY - len / 2;
+                  PS.drawArrow(ctx, x1n, y1n, x2n, y2n, PS.colors.accent2);
+                });
+                // also draw a faint circle at z=0 to evoke the circulating nature
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.globalAlpha = 0.18;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 6]);
+                sPositions.forEach(function (sMul) {
+                  var sx = sMul * Rphys;
+                  ctx.beginPath();
+                  ctx.ellipse(CX, CY, sx * PX_PER_M, sx * PX_PER_M * ellipseSquash, 0, 0, Math.PI * 2);
+                  ctx.stroke();
+                });
+                ctx.setLineDash([]);
+                ctx.restore();
+              }
+
+              // ---- labels ----
+              PS.drawText(ctx, 'I = ' + params.I.toFixed(1) + ' A', 12, H - 26,
+                { font: 'bold 12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, '|m| = I·πR² = ' + (m * 1e3).toFixed(2) + ' × 10⁻³ A·m²', 12, H - 10,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              // on-axis B at z = 3R (strict loop formula vs dipole approx)
+              var z0 = 3 * (params.Rcm / 100);
+              var Bz_strict = MU0 * params.I * Math.pow(params.Rcm / 100, 2) /
+                              (2 * Math.pow(params.Rcm / 100 * params.Rcm / 100 + z0 * z0, 1.5));
+              var Bz_dip = MU0 / (4 * Math.PI) * 2 * m / Math.pow(z0, 3);
+
+              // ---- HUD ----
+              ctx.save();
+              ctx.globalAlpha = 0.94;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(W - 268, 10, 258, 132);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(W - 268, 10, 258, 132);
+              ctx.restore();
+              var hx = W - 260, hy = 30;
+              PS.drawText(ctx, '回路 + 磁偶极场 Loop & Dipole', hx, hy,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'I      = ' + params.I.toFixed(2) + ' A', hx, hy + 20,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'R      = ' + params.Rcm.toFixed(2) + ' cm', hx, hy + 36,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '|m|    = ' + (m * 1e3).toFixed(2) + ' ×10⁻³ A·m²', hx, hy + 52,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'Bz(3R) 严格 = ' + (Bz_strict * 1e6).toFixed(2) + ' μT', hx, hy + 70,
+                { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, 'Bz(3R) 偶极 = ' + (Bz_dip * 1e6).toFixed(2) + ' μT', hx, hy + 86,
+                { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '误差     = ' + ((Bz_dip / Bz_strict - 1) * 100).toFixed(1) + ' %', hx, hy + 102,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '模式: ' + ({ B: '仅磁场 B', A: '仅矢势 A', both: '同时显示 B + A' }[params.mode]),
+                hx, hy + 120, { font: 'bold 11px system-ui', color: PS.colors.accent2 });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'I',   label: '电流 I (A)',     min: 0.5, max: 20,  step: 0.1,  value: 5.0 },
+            { type: 'slider', key: 'Rcm', label: '回路半径 R (cm)', min: 0.5, max: 6,   step: 0.1,  value: 2.0 },
+            { type: 'slider', key: 'modeIdx', label: '显示模式 (0=B,1=A,2=both)', min: 0, max: 2, step: 1, value: 2 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('I',   function (v) { params.I = v; });
+          ctl.on('Rcm', function (v) { params.Rcm = v; });
+          ctl.on('modeIdx', function (v) {
+            params.mode = (v === 0 ? 'B' : (v === 1 ? 'A' : 'both'));
+          });
+          ctl.on('reset', function () {
+            params.I = 5.0; ctl.set('I', 5.0);
+            params.Rcm = 2.0; ctl.set('Rcm', 2.0);
+            params.mode = 'both'; ctl.set('modeIdx', 2);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>静磁学的核心是<strong>两条基本方程</strong> \(\nabla\cdot\vec B=0\) 与 \(\nabla\times\vec B=\mu_{0}\vec J\)。前者强制 \(\vec B=\nabla\times\vec A\)，定义<strong>磁矢势</strong> \(\vec A\)；后者在<strong>库仑规范</strong> \(\nabla\cdot\vec A=0\) 下化为泊松方程 \(\nabla^{2}\vec A=-\mu_{0}\vec J\)，解为毕奥–萨伐尔定律的矢势形式 \(\vec A=(\mu_{0}/4\pi)\int\vec J/R\,\mathrm d^{3}r'\)。\(\vec A\) 有<strong>规范自由度</strong>（\(\vec A\to\vec A+\nabla\chi\)），但 \(\vec B\) 不变；量子 AB 效应证明规范等价类 \([\vec A]\) 物理实在。<strong>磁多极展开</strong>给出磁偶极矩 \(\vec m=\tfrac{1}{2}\int\vec r\times\vec J\,\mathrm d^{3}r\)，远场 \(\vec A_{\text{dip}}=\mu_{0}\vec m\times\hat r/(4\pi r^{2})\)，\(\vec B_{\text{dip}}\) 形式同电偶极（外加 delta 接触项）。在外场中磁偶极受力矩 \(\vec\tau=\vec m\times\vec B\)、能量 \(U=-\vec m\cdot\vec B\)，与电偶极 / 力学转动完全平行。</p>
+      <ul>
+        <li>定义与方程：\(\vec B=\nabla\times\vec A\)；\(\nabla\cdot\vec B=0\)；\(\nabla\times\vec B=\mu_{0}\vec J\)。</li>
+        <li>毕奥–萨伐尔对 \(\vec A\)：\(\vec A=\dfrac{\mu_{0}}{4\pi}\displaystyle\int\dfrac{\vec J}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r'\)。</li>
+        <li>规范自由度：\(\vec A\to\vec A+\nabla\chi\)（\(\vec B\) 不变）；库仑规范 \(\nabla\cdot\vec A=0\) ⇒ \(\nabla^{2}\vec A=-\mu_{0}\vec J\)。</li>
+        <li>磁标势（仅 \(\vec J=0\)）：\(\vec B=-\mu_{0}\nabla\Phi_{m}\)，\(\nabla^{2}\Phi_{m}=0\)。</li>
+        <li>磁偶极矩：\(\vec m=\tfrac{1}{2}\displaystyle\int\vec r\times\vec J\,\mathrm d^{3}r=I\vec A_{\text{area}}\)（平面回路）。</li>
+        <li>远场：\(\vec A_{\text{dip}}=\dfrac{\mu_{0}}{4\pi}\dfrac{\vec m\times\hat r}{r^{2}}\)；\(\vec B_{\text{dip}}=\dfrac{\mu_{0}}{4\pi r^{3}}[3(\vec m\cdot\hat r)\hat r-\vec m]+\dfrac{2\mu_{0}}{3}\vec m\,\delta^{3}(\vec r)\)。</li>
+        <li>外场中：\(\vec\tau=\vec m\times\vec B\)，\(U=-\vec m\cdot\vec B\)，\(\vec F=\nabla(\vec m\cdot\vec B)\)。</li>
+        <li>边值：\(B_{1}^{\perp}=B_{2}^{\perp}\)；\(\vec B_{2}^{\parallel}-\vec B_{1}^{\parallel}=\mu_{0}\vec K\times\hat n\)。</li>
+        <li>AB 效应：\(\Delta\varphi=(q/\hbar)\oint\vec A\cdot\mathrm d\vec l=(q/\hbar)\Phi_{B}\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\vec B=\nabla\times\vec A,\quad \nabla\cdot\vec B=0,\quad \nabla\times\vec B=\mu_{0}\vec J,\quad \vec A(\vec r)=\frac{\mu_{0}}{4\pi}\int\frac{\vec J(\vec r\,')}{|\vec r-\vec r\,'|}\,\mathrm d^{3}r'\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;\vec A\to\vec A+\nabla\chi\;(\vec B\text{ 不变}),\quad \nabla\cdot\vec A=0\Rightarrow\nabla^{2}\vec A=-\mu_{0}\vec J;\quad \vec m=\tfrac{1}{2}\int\vec r\times\vec J\,\mathrm d^{3}r,\quad \vec B_{\text{dip}}=\frac{\mu_{0}}{4\pi r^{3}}\big[3(\vec m\cdot\hat r)\hat r-\vec m\big]\;} \]
+      </div>
+      <p><strong>核心收获</strong>：磁矢势 \(\vec A\) 是静磁学的「真正主角」——它满足泊松方程（与静电学平行），其规范自由度反映了 \(\vec B\) 的无源性；磁偶极矩与电偶极矩有完全平行的远场结构和外场响应；接触 delta 项与 AB 效应是经典图像之外的「量子签名」，提醒我们 \(\vec A\) 在更深层次上是物理的。掌握本章为下学期「电动力学」（含时麦克斯韦方程、电磁波、Lorenz 规范与延迟势、辐射）打下矢势语言的坚实基础。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

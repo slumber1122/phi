@@ -146,6 +146,27 @@
         ]},
       ],
     },
+    {
+      name: '第六学期 · 量子力学 II + 电动力学 Quantum II + Electrodynamics',
+      parts: [
+        { name: '量子力学 II Quantum Mechanics II', items: [
+          { url: 'sem6/01-identical.html', title: '全同粒子与多体', en: 'Identical Particles & Many-Body' },
+          { url: 'sem6/02-perturbation.html', title: '不含时微扰论', en: 'Time-Independent Perturbation' },
+          { url: 'sem6/03-transitions.html', title: '含时微扰与跃迁', en: 'Transitions & Golden Rule' },
+          { url: 'sem6/04-scattering.html', title: '散射理论', en: 'Scattering Theory' },
+          { url: 'sem6/05-atoms-molecules.html', title: '原子与分子物理', en: 'Atomic & Molecular Physics' },
+        ]},
+        { name: '电动力学 Electrodynamics', items: [
+          { url: 'sem6/06-multipoles.html', title: '静电学与多极展开', en: 'Electrostatics & Multipoles' },
+          { url: 'sem6/07-magnetostatics.html', title: '磁学与矢势', en: 'Magnetostatics & Vector Potential' },
+          { url: 'sem6/08-maxwell-covariant.html', title: '麦克斯韦方程（协变与能量）', en: "Maxwell (Covariant) & Energy" },
+          { url: 'sem6/09-waves-radiation.html', title: '电磁波与辐射', en: 'EM Waves & Radiation' },
+          { url: 'sem6/10-relativistic-em.html', title: '相对论电动力学', en: 'Relativistic Electrodynamics' },
+          { url: 'sem6/11-fields-matter.html', title: '电磁介质', en: 'Fields in Matter' },
+          { url: 'sem6/12-charge-motion.html', title: '带电粒子在电磁场中的运动', en: 'Charge Motion in Fields' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }

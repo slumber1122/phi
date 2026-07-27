@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 不含时微扰论 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第2章 · 量子力学 II Quantum Mechanics II</p>
+      <h1>不含时微扰论 <span class="en-title">Time-Independent Perturbation Theory</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>氢原子的 Schrödinger 方程能闭式求解——但这是<strong>罕见的特例</strong>。真实体系几乎都不可严格求解：多电子原子的电子-电子相互作用、原子在外电磁场中的能量修正、对 Coulomb 势的微小偏离（产生精细结构）……这些问题的共同结构是：Hamilton 量可写成 \(H=H_{0}+\lambda H'\)，其中 \(H_{0}\) 可严格求解而 \(H'\) 是「小」的扰动。<strong>不含时微扰论</strong> (time-independent perturbation theory) 把能量与本征态按扰动参数 \(\lambda\) 展成幂级数，逐阶求解。它是量子力学应用最广的近似方法，也是本章主题。学完本章后，你将能够：</p>
+      <ul>
+        <li>把被扰 Hamilton 量写成 \(H=H_{0}+\lambda H'\)，并把能量 \(E_{n}=E_{n}^{(0)}+\lambda E_{n}^{(1)}+\lambda^{2}E_{n}^{(2)}+\cdots\) 与本征态 \(|n\rangle=|n^{(0)}\rangle+\lambda|n^{(1)}\rangle+\cdots\) 形式地展开；阐述展开收敛的物理条件（扰动矩阵元 \(\ll\) 能级间距）。</li>
+        <li>导出并应用<strong>非简并</strong> (non-degenerate) 微扰论三大公式：一阶能量修正 \(E_{n}^{(1)}=\langle n^{(0)}|H'|n^{(0)}\rangle\)、二阶能量修正 \(E_{n}^{(2)}=\sum_{m\ne n}\frac{|\langle m^{(0)}|H'|n^{(0)}\rangle|^{2}}{E_{n}^{(0)}-E_{m}^{(0)}}\)、一阶波函数修正 \(|n^{(1)}\rangle=\sum_{m\ne n}\frac{\langle m^{(0)}|H'|n^{(0)}\rangle}{E_{n}^{(0)}-E_{m}^{(0)}}|m^{(0)}\rangle\)。</li>
+        <li>识别<strong>简并</strong> (degenerate) 情形下非简并公式的发散（分母为零），并改用<strong>简并微扰论</strong>：在简并子空间中把 \(H'\) 对角化，解久期方程 \(\det\!\big[W-E^{(1)}I\big]=0\)；阐明「正确的零th-阶基」由 \(H'\) 的本征矢量给出。</li>
+        <li>计算氢原子 \(n=2\) 能级在均匀外电场中的<strong>线性 Stark 效应</strong> (\(\Delta E=\pm 3eEa_{0}\))，阐明它<strong>必须</strong>用简并处理（2s 与 2p\(_{0}\) 在 Coulomb 场中简并）；对比氢原子 1s 基态的<strong>二次 Stark 效应</strong>与极化率 \(\alpha=\tfrac{9}{2}\cdot 4\pi\varepsilon_{0}a_{0}^{3}\)。</li>
+        <li>列出氢原子<strong>精细结构</strong> (fine structure) 的三种相对论性来源——动能的相对论修正、自旋-轨道耦合、Darwin 项——并应用组合公式 \(E_{n,j}=E_{n}\!\left[1+\tfrac{\alpha^{2}}{n}\!\left(\tfrac{1}{j+1/2}-\tfrac{3}{4n}\right)\right]\) 计算 \(n=2\) 能级的精细结构分裂（约 \(4.53\times10^{-5}\,\mathrm{eV}\)，即 10.9 GHz）。</li>
+        <li>简要描述 <strong>Zeeman 效应</strong> (外磁场中能级按 \(m\) 分裂，\(\Delta E=\mu_{B}B\,g_{J}m_{j}\))；区分<strong>正常</strong>与<strong>反常</strong> Zeeman 效应，并写出 Landé g 因子。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 微扰问题的一般框架 General Framework</h3>
+      <p>设未扰 Hamilton 量 \(H_{0}\) 可严格求解：</p>
+      <div class="formula">\[ H_{0}\,|n^{(0)}\rangle=E_{n}^{(0)}\,|n^{(0)}\rangle,\qquad n=1,2,3,\dots \]</div>
+      <p>真实的 Hamilton 量加上一个不含时的小扰动 \(\lambda H'\)（\(\lambda\ll 1\) 是无量纲展开参数；很多课本直接把 \(\lambda\) 吸收进 \(H'\)，这里保留以便追踪阶数）：</p>
+      <div class="formula">\[ \boxed{\;H\;=\;H_{0}\;+\;\lambda H'.\;} \]</div>
+      <p>把待求的能量与本征态形式地展为 \(\lambda\) 的幂级数：</p>
+      <div class="formula">\[ E_{n}=E_{n}^{(0)}+\lambda E_{n}^{(1)}+\lambda^{2}E_{n}^{(2)}+\cdots,\qquad |n\rangle=|n^{(0)}\rangle+\lambda|n^{(1)}\rangle+\lambda^{2}|n^{(2)}\rangle+\cdots. \]</div>
+      <p>代入定态 Schrödinger 方程 \(H|n\rangle=E_{n}|n\rangle\)，按 \(\lambda\) 的幂次集项，得到<strong>逐阶递推</strong>的方程组（详见推导节）。<strong>展开有效性的物理判据</strong>：扰动矩阵元必须远小于所考虑能级与最近邻能级之差：</p>
+      <div class="formula">\[ \big|\langle m^{(0)}|H'|n^{(0)}\rangle\big|\;\ll\;\big|E_{m}^{(0)}-E_{n}^{(0)}\big|\qquad(\forall\,m\ne n). \]</div>
+      <p>违反此条件（例如存在<strong>简并</strong>或近简并能级）时，非简并公式发散，必须改用简并微扰论（第 3 节）。</p>
+      <div class="key-terms">unperturbed Hamiltonian \(H_{0}\) (未扰 Hamilton 量), perturbation \(H'\) (扰动 / 微扰), expansion parameter \(\lambda\) (展开参数), level spacing (能级间距)</div>
+
+      <h3>2. 非简并微扰论公式 Non-Degenerate Formulas</h3>
+      <p>假设 \(E_{n}^{(0)}\) <strong>非简并</strong>（无其他态与之同能量）。三大结果：</p>
+      <div class="formula">\[ \boxed{\;E_{n}^{(1)}\;=\;\big\langle n^{(0)}\big|H'\big|n^{(0)}\big\rangle.\;} \]</div>
+      <p>一阶能量修正就是扰动在未扰态里的<strong>期望值</strong>——这是整个微扰论最实用的一条公式。它可正可负，也可因对称性为零（见误区 2）。</p>
+      <div class="formula">\[ \boxed{\;E_{n}^{(2)}\;=\;\sum_{m\ne n}\frac{\big|\big\langle m^{(0)}\big|H'\big|n^{(0)}\big\rangle\big|^{2}}{E_{n}^{(0)}-E_{m}^{(0)}}.\;} \]</div>
+      <p>二阶修正恒为实数；其符号由分母决定。重要性质：<strong>能级「相互排斥」</strong>——与更高能级耦合使 \(E_n\) 降低（分母为负），与更低能级耦合使 \(E_n\) 升高。基态的二阶修正<strong>恒为负</strong>（所有分母均为 \(E_0^{(0)}-E_m^{(0)}<0\)），这是「基态能量被扰动总是压低」的数学根源（与变分法一致）。</p>
+      <div class="formula">\[ \boxed{\;|n^{(1)}\rangle\;=\;\sum_{m\ne n}\frac{\big\langle m^{(0)}\big|H'\big|n^{(0)}\big\rangle}{E_{n}^{(0)}-E_{m}^{(0)}}\,\big|m^{(0)}\big\rangle.\;} \]</div>
+      <p>一阶波函数修正是其它未扰态的线性组合；权重正比于扰动矩阵元、反比于能级差——「越近的邻居混入越多」。注意我们已选择 <strong>中间归一化</strong> (intermediate normalization) \(\langle n^{(0)}|n\rangle=1\)，故 \(|n^{(1)}\rangle\) 与 \(|n^{(0)}\rangle\) 正交、不含 \(|n^{(0)}\rangle\) 项。</p>
+      <p><strong>物理图像</strong>：扰动把原本「干净」的本征态 |n⟩「沾染」上其它态的成分；能量也随之偏移。一阶修正是「扰动本身的平均值」；二阶修正是「虚跃迁到中间态再返回」的能量代价，对应经典力学中频率混合的<strong>二级效应</strong>。</p>
+      <div class="key-terms">first-order energy correction \(E_{n}^{(1)}\) (一阶能量修正), second-order energy correction \(E_{n}^{(2)}\) (二阶能量修正), level repulsion (能级排斥), intermediate normalization (中间归一化)</div>
+
+      <h3>3. 简并微扰论——在简并子空间中対角化 \(H'\) Degenerate Perturbation Theory</h3>
+      <p>若 \(E_{n}^{(0)}\) 是 <strong>g 重简并</strong>：存在 \(g\) 个正交归一的未扰态 \(|n,a^{(0)}\rangle\)（\(a=1,\dots,g\)）都满足 \(H_{0}|n,a^{(0)}\rangle=E_{n}^{(0)}|n,a^{(0)}\rangle\)。非简并公式的分母 \(E_{n}^{(0)}-E_{m}^{(0)}\) 在 \(m\) 也属同一简并族时为零，<strong>公式发散</strong>——这是数学症状，物理上是「在简并能级上任何无穷小的扰动都会决定基矢方向」。</p>
+      <p>解决办法：在简并子空间 \(\mathcal{D}_{n}=\mathrm{span}\{|n,a^{(0)}\rangle\}\) 内，把扰动的投影看作有限维矩阵</p>
+      <div class="formula">\[ W_{ab}\;\equiv\;\big\langle n,a^{(0)}\big|H'\big|n,b^{(0)}\big\rangle,\qquad a,b=1,\dots,g, \]</div>
+      <p>并<strong>对角化</strong>这个 \(g\times g\) 厄米矩阵。本征值即一阶能量修正 \(E_{n,k}^{(1)}\)（\(k=1,\dots,g\)），本征矢量给出「正确的零th-阶组合态」：</p>
+      <div class="formula">\[ \big|\,\widetilde{n,k}^{\,(0)}\big\rangle=\sum_{a=1}^{g}c_{a}^{(k)}\big|n,a^{(0)}\big\rangle,\qquad \sum_{b}W_{ab}\,c_{b}^{(k)}=E_{n,k}^{(1)}\,c_{a}^{(k)}. \]</div>
+      <p>等价地，解<strong>久期方程</strong> (secular equation)</p>
+      <div class="formula">\[ \boxed{\;\det\!\Big[\,W-E_{n}^{(1)}\,I_{g}\,\Big]=0.\;} \]</div>
+      <p>关键点：在 \(|n,a^{(0)}\rangle\) 任意线性组合构成的简并子空间内，\(H'\) 只通过其投影 \(W\) 起作用（一阶），所以「在哪个基下」\(H'\) 最接近对角，是物理上「真实」的零th-阶态——这些组合态才使非简并公式在二阶及更高阶上仍成立。<strong>简并一旦被解除</strong>（得到 \(g\) 个不同的 \(E_{n,k}^{(1)}\)），后续处理回到非简并公式。</p>
+      <p>若久期方程有重根（仍部分简并），需要在剩余简并子空间内重复以上步骤，或进入二阶简并微扰论——本章不展开。</p>
+      <div class="key-terms">degenerate subspace (简并子空间), secular equation (久期方程), secular matrix \(W\) (久期矩阵), correct zeroth-order states (正确的零th-阶态)</div>
+
+      <h3>4. Stark 效应 The Stark Effect</h3>
+      <p>把原子置于均匀外电场 \(\vec{E}=E\hat{z}\) 中，电子（电荷 \(q=-e\)）获得势能</p>
+      <div class="formula">\[ H'_{S}\;=\;q\phi=(-e)(-Ez)=\,eEz\;=\;eE\,r\cos\theta. \]</div>
+      <p>\(z\) 是奇宇称算符，故在具有确定宇称的态间对角元为零：<strong>非简并态的一阶 Stark 修正为零</strong>。是否有线性 Stark 效应，完全取决于是否存在<strong>简并的反宇称态</strong>。</p>
+
+      <h4>4a. 氢原子 \(n=2\)：线性 Stark 效应（简并）</h4>
+      <p>\(n=2\) 的 Coulomb 能级 \(E_{2}^{(0)}=-13.6/4=-3.4\,\mathrm{eV}\) 是 <strong>4 重空间简并</strong>（不计自旋）：\(|2,0,0\rangle\) (2s)、\(|2,1,0\rangle\) (2p\(_{0}\))、\(|2,1,+1\rangle\) (2p\(_{+1}\))、\(|2,1,-1\rangle\) (2p\(_{-1}\))。在简并子空间内构造 \(4\times4\) 矩阵 \(W_{ij}=\langle 2,i|eEz|2,j\rangle\)。选择定则：\(z\) 满足 \(\Delta\ell=\pm1,\;\Delta m=0\)，故只有 2s↔2p\(_{0}\) 非零。计算（见例 7.3）：</p>
+      <div class="formula">\[ \langle 2,0,0|z|2,1,0\rangle=-3a_{0}\;\Longrightarrow\;W_{2s,2p_{0}}=-3eEa_{0}. \]</div>
+      <p>在基 \(\{|2s\rangle,|2p_{0}\rangle,|2p_{+1}\rangle,|2p_{-1}\rangle\}\) 下：</p>
+      <div class="formula">\[ W=\begin{pmatrix} 0 & -3eEa_{0} & 0 & 0\\ -3eEa_{0} & 0 & 0 & 0\\ 0 & 0 & 0 & 0\\ 0 & 0 & 0 & 0 \end{pmatrix}. \]</div>
+      <p>2×2 块 \(\begin{pmatrix}0&-3eEa_{0}\\-3eEa_{0}&0\end{pmatrix}\) 的本征值为 \(\pm 3eEa_{0}\)；对应的「正确零th-阶态」是奇偶组合 \((|2s\rangle\mp|2p_{0}\rangle)/\sqrt 2\)（电场把电子云沿 \(\pm\hat z\) 极化）。\(m=\pm1\) 的 2p 态在一级上不分裂。<strong>线性 Stark 效应</strong>：</p>
+      <div class="formula">\[ \boxed{\;\Delta E_{n=2}^{\text{lin}}\;=\;\{\,-3eEa_{0},\;0,\;0,\;+3eEa_{0}\,\}.\;} \]</div>
+      <p>线性（而非二次）依赖 \(E\)，正是因为 2s 与 2p\(_0\) <strong>简并</strong>——这是简并微扰论的标志性结果。</p>
+
+      <h4>4b. 氢原子 1s 基态：二次 Stark 效应与极化率</h4>
+      <p>1s 态非简并，一阶修正 \(\langle 1s|eEz|1s\rangle=0\)（宇称）。第一非零修正在<strong>二阶</strong>：</p>
+      <div class="formula">\[ E_{1}^{(2)}\;=\;-\frac{1}{2}\,\alpha\,E^{2},\qquad \alpha_{\mathrm{H},1s}\;=\;\frac{9}{2}\,(4\pi\varepsilon_{0})\,a_{0}^{3}\;\approx\;0.667\,\mathrm{\AA}^{3}. \]</div>
+      <p>\(\alpha\) 称为<strong>极化率</strong> (polarizability)。注意总修正为负（与「二阶基态修正恒负」一致），且对外场是<strong>二次</strong>依赖——这是非简并态 Stark 效应的普适特征。精确的 \(\alpha=4.5\cdot 4\pi\varepsilon_{0}a_{0}^{3}\) 来自 Dalgarno–Lewis 方法（一种避免显式求和所有中间态的技巧），例 7.2 给出数值估计。</p>
+      <div class="key-terms">Stark effect (Stark 效应), linear Stark effect (线性 Stark 效应), quadratic Stark effect (二次 Stark 效应), polarizability \(\alpha\) (极化率), parity selection rule (宇称选择定则)</div>
+
+      <h3>5. 氢原子的精细结构 Fine Structure of Hydrogen</h3>
+      <p>Schrödinger 方程的解 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\) 是<strong>非相对论</strong>结果。三个相对论性修正（均为 \(E_{n}\) 的 \(\alpha^{2}\) 量级，约 \(10^{-4}\)–\(10^{-5}\) 倍）合称<strong>精细结构</strong>：</p>
+      <ol>
+        <li><strong>相对论动能修正</strong> (relativistic correction to kinetic energy)。展开 \(T=\sqrt{p^{2}c^{2}+m_{e}^{2}c^{4}}-m_{e}c^{2}\) 至 \(p^{4}\) 阶：<div class="formula">\[ H'_{\mathrm{rel}}=-\frac{p^{4}}{8m_{e}^{3}c^{2}}. \]</div> 该项对任何 \((n,\ell)\) 都非零。</li>
+        <li><strong>自旋-轨道耦合</strong> (spin-orbit coupling)。电子自旋磁矩在电子「看」到的质子磁场中获得能量；或等价地在电子静止系中质子绕电子运动产生磁场： <div class="formula">\[ H'_{\mathrm{so}}=\frac{1}{2m_{e}^{2}c^{2}}\,\frac{1}{r}\frac{dV}{dr}\,\vec L\!\cdot\!\vec S=\frac{e^{2}}{8\pi\varepsilon_{0}m_{e}^{2}c^{2}\,r^{3}}\,\vec L\!\cdot\!\vec S. \]</div> 对 \(\ell=0\) 态 \(L=0\)，此项为零。Thomas 半经典修正自动给出因子 \(1/2\)（Thomas precession）。</li>
+        <li><strong>Darwin 项</strong> (Darwin term)。来自 Dirac 方程的非相对论还原，是对 \(s\) 态在核处波函数「涂抹」的修正： <div class="formula">\[ H'_{\mathrm{D}}=\frac{\hbar^{2}}{8m_{e}^{2}c^{2}}\,\nabla^{2}V=\frac{\pi e^{2}\hbar^{2}}{2\varepsilon_{0}m_{e}^{2}c^{2}}\,\delta^{3}(\vec r). \]</div> 仅对 \(\ell=0\)（s 态）非零（因 \(|\psi_{n0}(0)|^{2}\ne 0\)）。</li>
+      </ol>
+      <p>三项之和（精细结构常数 \(\alpha=e^{2}/(4\pi\varepsilon_{0}\hbar c)\approx 1/137.036\)）给出优美的<strong>组合公式</strong>：</p>
+      <div class="formula">\[ \boxed{\;E_{n,j}\;=\;E_{n}\!\left[\,1+\frac{\alpha^{2}}{n}\!\left(\frac{1}{j+1/2}-\frac{3}{4n}\right)\right],\qquad j=\ell\pm\tfrac{1}{2}.\;} \]</div>
+      <p>注意 \(j\) 是总角动量量子数（轨道 \(\vec L\)+自旋 \(\vec S\)），取值 \(1/2,3/2,\dots,\ell+1/2\)。<strong>关键结论</strong>：精细结构能量只依赖 \(n\) 与 \(j\)，不单独依赖 \(\ell\)——这是相对论 + 自旋-轨道 + Darwin 三项的特殊抵消，称为<strong>偶然简并的残余</strong>（剩余的 \(SO(4)\) 对称性在 Dirac 方程中升级为更高对称性）。因此 \(2s_{1/2}\) 与 \(2p_{1/2}\) <strong>仍然简并</strong>（Lamb 和 Retherford 1947 年用微波技术测出它们其实有 \(1058\,\mathrm{MHz}\) 的微小分裂——<strong>Lamb 移位</strong>，这是量子电动力学辐射修正的最早证据，超出本教程范围）。</p>
+      <div class="key-terms">fine structure (精细结构), relativistic kinetic correction (相对论动能修正), spin-orbit coupling (自旋-轨道耦合), Darwin term (Darwin 项), total angular momentum \(j\) (总角动量量子数), Lamb shift (Lamb 移位)</div>
+
+      <h3>6. Zeeman 效应（简述） The Zeeman Effect (Brief)</h3>
+      <p>外磁场 \(\vec{B}=B\hat z\) 中，电子的轨道磁矩 \(\vec\mu_{L}=-(e/2m_{e})\vec L\) 与自旋磁矩 \(\vec\mu_{S}=-(e/m_{e})\vec S\)（\(g_{s}\approx 2\)）产生能量修正</p>
+      <div class="formula">\[ H'_{Z}=-\vec\mu\cdot\vec B=\frac{eB}{2m_{e}}\,(L_{z}+2S_{z})=\mu_{B}B\,(m_{\ell}+2m_{s}),\qquad \mu_{B}\equiv\frac{e\hbar}{2m_{e}}=9.274\times10^{-24}\,\mathrm{J/T}. \]</div>
+      <p>\(\mu_{B}\) 是 <strong>Bohr 磁子</strong> (Bohr magneton)。在弱场（精细结构 &gt; Zeeman 分裂）下用耦合表象 \(|j,m_{j}\rangle\) 更自然，给出<strong>反常 Zeeman 效应</strong>：</p>
+      <div class="formula">\[ \Delta E_{Z}=\mu_{B}B\,g_{J}\,m_{j},\qquad g_{J}=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\;\text{(Landé g 因子)}. \]</div>
+      <p>对自旋配对的单态 (\(S=0\)，\(J=L\)），\(g_{J}=1\)，分裂简化为 \(\Delta E=\mu_{B}B\,m_{\ell}\)，即<strong>正常 Zeeman 效应</strong>（三重线：\(m_{\ell}=-1,0,+1\)）。磁场 \(B=1\,\mathrm{T}\) 时 \(\mu_{B}B=5.79\times10^{-5}\,\mathrm{eV}\approx 58\,\mu\mathrm{eV}\)，量级与 \(n=2\) 精细结构相当——所以「弱场 / 强场」需要具体问题具体分析。</p>
+      <div class="key-terms">Zeeman effect (Zeeman 效应), Bohr magneton \(\mu_{B}\) (Bohr 磁子), normal/anomalous Zeeman effect (正常/反常 Zeeman 效应), Landé g-factor (Landé g 因子)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 非简并微扰公式的严格推导</h2>
+      <p>我们从 \(H|n\rangle=E_{n}|n\rangle\) 出发，其中 \(H=H_{0}+\lambda H'\)，并把 \(E_{n},|n\rangle\) 按 \(\lambda\) 展开如上。代入：</p>
+      <div class="formula">\[ (H_{0}+\lambda H')\big(|n^{(0)}\rangle+\lambda|n^{(1)}\rangle+\lambda^{2}|n^{(2)}\rangle+\cdots\big) =\big(E_{n}^{(0)}+\lambda E_{n}^{(1)}+\lambda^{2}E_{n}^{(2)}+\cdots\big)\big(|n^{(0)}\rangle+\lambda|n^{(1)}\rangle+\cdots\big). \]</div>
+      <p>展开右端、把左端 \(H_{0}\) 与 \(\lambda H'\) 分别作用于级数，然后按 \(\lambda\) 的幂次集项。每一阶给出一个方程：</p>
+      <div class="formula">\[ \begin{aligned} \lambda^{0}&:\quad H_{0}|n^{(0)}\rangle=E_{n}^{(0)}|n^{(0)}\rangle,\\ \lambda^{1}&:\quad \big(H_{0}-E_{n}^{(0)}\big)|n^{(1)}\rangle=\big(E_{n}^{(1)}-H'\big)|n^{(0)}\rangle,\\ \lambda^{2}&:\quad \big(H_{0}-E_{n}^{(0)}\big)|n^{(2)}\rangle=\big(E_{n}^{(1)}-H'\big)|n^{(1)}\rangle+E_{n}^{(2)}|n^{(0)}\rangle. \end{aligned} \]</div>
+
+      <h4>步骤 1：一阶能量 \(E_{n}^{(1)}\)</h4>
+      <p>取一阶方程与 \(\langle n^{(0)}|\) 的内积。左端：\(\langle n^{(0)}|(H_{0}-E_{n}^{(0)})|n^{(1)}\rangle=(E_{n}^{(0)}-E_{n}^{(0)})\langle n^{(0)}|n^{(1)}\rangle=0\)（\(H_{0}\) 厄米且 \(|n^{(0)}\rangle\) 是其本征矢）。右端：\(\langle n^{(0)}|(E_{n}^{(1)}-H')|n^{(0)}\rangle=E_{n}^{(1)}-\langle n^{(0)}|H'|n^{(0)}\rangle\)。两端相等给出</p>
+      <div class="formula">\[ \boxed{\;E_{n}^{(1)}=\langle n^{(0)}|H'|n^{(0)}\rangle.\;} \]</div>
+
+      <h4>步骤 2：一阶波函数 \(|n^{(1)}\rangle\)</h4>
+      <p>用未扰完备集展开 \(|n^{(1)}\rangle=\sum_{m}c_{m}^{(1)}|m^{(0)}\rangle\)。中间归一化 \(\langle n^{(0)}|n\rangle=1\) 要求 \(c_{n}^{(1)}=0\)，故求和只对 \(m\ne n\)。把展开式代入一阶方程，再与 \(\langle k^{(0)}|\)（\(k\ne n\)）取内积：</p>
+      <div class="formula">\[ \langle k^{(0)}|(H_{0}-E_{n}^{(0)})|n^{(1)}\rangle=(E_{k}^{(0)}-E_{n}^{(0)})\,c_{k}^{(1)}=\langle k^{(0)}|(E_{n}^{(1)}-H')|n^{(0)}\rangle=-\langle k^{(0)}|H'|n^{(0)}\rangle, \]</div>
+      <p>最后一步用到 \(\langle k^{(0)}|n^{(0)}\rangle=0\)（\(k\ne n\)）。故</p>
+      <div class="formula">\[ c_{k}^{(1)}=\frac{\langle k^{(0)}|H'|n^{(0)}\rangle}{E_{n}^{(0)}-E_{k}^{(0)}}\;\Longrightarrow\;|n^{(1)}\rangle=\sum_{m\ne n}\frac{\langle m^{(0)}|H'|n^{(0)}\rangle}{E_{n}^{(0)}-E_{m}^{(0)}}|m^{(0)}\rangle. \]</div>
+      <p><strong>分母为零</strong>（即存在简并能级）时此式发散，是简并微扰论的直接动机。</p>
+
+      <h4>步骤 3：二阶能量 \(E_{n}^{(2)}\)</h4>
+      <p>取二阶方程与 \(\langle n^{(0)}|\) 的内积。左端为零（同步骤 1 论证）。右端：</p>
+      <div class="formula">\[ 0=\langle n^{(0)}|(E_{n}^{(1)}-H')|n^{(1)}\rangle+E_{n}^{(2)}\,\underbrace{\langle n^{(0)}|n^{(0)}\rangle}_{=1}=E_{n}^{(1)}\,\underbrace{\langle n^{(0)}|n^{(1)}\rangle}_{=0}-\langle n^{(0)}|H'|n^{(1)}\rangle+E_{n}^{(2)}. \]</div>
+      <p>代入 \(|n^{(1)}\rangle\) 的展开式：</p>
+      <div class="formula">\[ E_{n}^{(2)}=\langle n^{(0)}|H'|n^{(1)}\rangle=\sum_{m\ne n}\frac{\langle n^{(0)}|H'|m^{(0)}\rangle\,\langle m^{(0)}|H'|n^{(0)}\rangle}{E_{n}^{(0)}-E_{m}^{(0)}}=\sum_{m\ne n}\frac{\big|\langle m^{(0)}|H'|n^{(0)}\rangle\big|^{2}}{E_{n}^{(0)}-E_{m}^{(0)}}. \]</div>
+      <p>最后一步用到 \(H'\) 厄米（\(\langle n|H'|m\rangle=\langle m|H'|n\rangle^{*}\)）。这就完成了非简并公式的严格推导。整个方法可继续到任意阶（三阶能量修正需要 \(|n^{(2)}\rangle\)，以此类推），但实践中很少超过二阶。</p>
+      <p><strong>简并情形的修正</strong>：若 \(E_{n}^{(0)}=E_{k}^{(0)}\)，则 \(c_{k}^{(1)}\) 发散——这告诉我们「在简并能级上的零th-阶基选错了」。重新组合简并态为 \(H'\) 在子空间内的本征矢（即简并微扰论），新基下 \(\langle \widetilde{k}^{\,(0)}|H'|\widetilde{n}^{\,(0)}\rangle\) 在子空间内被对角化，跨子空间矩阵元对非简并公式的贡献有限（因为 \(E_{n}^{(0)}-E_{m}^{(0)}\ne 0\) 对 \(m\) 不在简并族内），发散被解除。这给出第 3 节的久期方程。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 四阶扰动谐振子的一阶能级修正 Quartic Perturbation of the Harmonic Oscillator</h4>
+        <p class="example-statement">一维谐振子 \(H_{0}=p^{2}/(2m)+\tfrac{1}{2}m\omega^{2}x^{2}\)（能量本征值 \(E_{n}^{(0)}=(n+\tfrac12)\hbar\omega\)，本征态 \(|n\rangle\)）受到四阶扰动 \(H'=\lambda x^{4}\)。求 \(|n\rangle\) 态的一阶能量修正 \(E_{n}^{(1)}\)。取一个具原子尺度的具体体系：电子 \(m=m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)，\(\hbar\omega=2.0\,\mathrm{eV}\)（约一个可见光子能量），扰动强度 \(\lambda=1.0\,\mathrm{eV/nm^{4}}\)。计算 \(n=0,1,2\) 态的修正值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>第一步计算 \(\langle n|x^{4}|n\rangle\)。引入自然长度尺度（零点振动）</p>
+          <p class="step">
+            \[ x_{0}\equiv\sqrt{\frac{\hbar}{2m\omega}},\qquad x=x_{0}(a+a^{\dagger}),\qquad [a,a^{\dagger}]=1. \]</p>
+          <p class="step">利用 \((a+a^{\dagger})|n\rangle=\sqrt{n+1}|n+1\rangle+\sqrt n|n-1\rangle\)，并追踪所有四步路径 \(n\to ?\to ?\to ?\to n\)（每步 \(\pm1\)），得</p>
+          <p class="step">
+            \[ \langle n|(a+a^{\dagger})^{4}|n\rangle=3(2n^{2}+2n+1) \]</p>
+          <p class="step">（六个返回路径之和：\(n\to n\pm1\to n\to n\pm1\to n\) 与 \(n\to n\pm1\to n\pm2\to n\pm1\to n\)）。因此</p>
+          <p class="step">
+            \[ \boxed{\;E_{n}^{(1)}=\lambda\langle n|x^{4}|n\rangle=3\lambda\big(2n^{2}+2n+1\big)\,x_{0}^{4}.\;} \]</p>
+          <p class="step"><strong>数值代入</strong>。先算 \(x_{0}\)：</p>
+          <p class="step">
+            \[ \omega=\frac{\hbar\omega}{\hbar}=\frac{2.0\times 1.602\times10^{-19}}{1.055\times10^{-34}}=3.04\times10^{15}\,\mathrm{rad/s}, \]</p>
+          <p class="step">
+            \[ x_{0}^{2}=\frac{\hbar}{2m_{e}\omega}=\frac{1.055\times10^{-34}}{2\times 9.11\times10^{-31}\times 3.04\times10^{15}}=1.905\times10^{-20}\,\mathrm{m^{2}}, \]</p>
+          <p class="step">
+            \[ x_{0}=1.38\times10^{-10}\,\mathrm{m}=0.138\,\mathrm{nm},\qquad x_{0}^{4}=3.63\times10^{-40}\,\mathrm{m^{4}}=3.63\times10^{-4}\,\mathrm{nm^{4}}. \]</p>
+          <p class="step">对各 \(n\)（用 \(\lambda x_{0}^{4}=1.0\times 3.63\times10^{-4}\,\mathrm{eV}=0.363\,\mathrm{meV}\)）：</p>
+          <ul>
+            <li>\(n=0\)：\(E_{0}^{(1)}=3\cdot 1\cdot 0.363=1.09\,\mathrm{meV}\)。</li>
+            <li>\(n=1\)：\(E_{1}^{(1)}=3\cdot 5\cdot 0.363/3\cdot 3=15\cdot x_{0}^{4}\cdot\lambda=15\cdot 0.363\cdot 10^{-3}/3 \)… 直接用系数：\(3(2+2+1)=15\)，\(E_{1}^{(1)}=15\cdot 0.363=5.44\,\mathrm{meV}\)。</li>
+            <li>\(n=2\)：\(3(8+4+1)=39\)，\(E_{2}^{(1)}=39\cdot 0.363=14.2\,\mathrm{meV}\)。</li>
+          </ul>
+          <p class="step"><strong>小性检查</strong>：\(E_{2}^{(1)}/\hbar\omega=14.2\times10^{-3}/2.0=7\times10^{-3}\ll 1\) ✓。扰动展开可靠。注意 \(E_{n}^{(1)}\propto 2n^{2}+2n+1\) <strong>随 \(n\) 增长迅速</strong>——高激发态更易被扰动，因为波函数延伸更远、\(|x|^{4}\) 的权重更大。<span class="ans">答案：\(E_{n}^{(1)}=3\lambda(2n^{2}+2n+1)x_{0}^{4}\)；数值 \(E_{0}^{(1)}=1.09\,\mathrm{meV}\)、\(E_{1}^{(1)}=5.44\,\mathrm{meV}\)、\(E_{2}^{(1)}=14.2\,\mathrm{meV}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 氢原子 1s 态的二次 Stark 效应与极化率 Quadratic Stark Effect of Hydrogen 1s</h4>
+        <p class="example-statement">氢原子基态 \(|1s\rangle\) 置于均匀外电场 \(E\) 中。扰动 \(H'=eEz\)。已知精确极化率 \(\alpha=\tfrac{9}{2}\cdot 4\pi\varepsilon_{0}a_{0}^{3}\)。求基态能量的二阶 Stark 修正公式，并计算 \(E=1.0\times10^{10}\,\mathrm{V/m}\)（强脉冲激光场，但仍低于场电离阈值 \(\sim 1.4\times10^{11}\,\mathrm{V/m}\)）时的能量偏移（eV）。取 \(a_{0}=5.29\times10^{-11}\,\mathrm{m}\)、\(4\pi\varepsilon_{0}=1.113\times10^{-10}\,\mathrm{C^{2}/(N\,m^{2})}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 1s 态非简并，宇称为偶；\(z\) 是奇宇称算符，故一阶修正</p>
+          <p class="step">
+            \[ E_{1}^{(1)}=eE\,\langle 1s|z|1s\rangle=0\quad\text{(被积函数为关于 }z\text{ 的奇函数)}. \]</p>
+          <p class="step">第一非零修正在二阶：</p>
+          <p class="step">
+            \[ E_{1}^{(2)}=\sum_{n\ne 1}\frac{|\langle n|eEz|1s\rangle|^{2}}{E_{1}^{(0)}-E_{n}^{(0)}}. \]</p>
+          <p class="step">求和遍历所有 \(n\ge 2\) 的束缚态（贡献最大的是最近的 \(2p\)）以及电离态连续谱。解析求和（Dalgarno–Lewis 方法）给出闭合形式</p>
+          <p class="step">
+            \[ \boxed{\;E_{1}^{(2)}=-\frac{1}{2}\,\alpha\,E^{2},\qquad \alpha=\frac{9}{2}\,(4\pi\varepsilon_{0})\,a_{0}^{3}=4.5\,(4\pi\varepsilon_{0})\,a_{0}^{3}.\;} \]</p>
+          <p class="step">(b) 代入数值。先算 \(a_{0}^{3}\)：</p>
+          <p class="step">
+            \[ a_{0}^{3}=(5.29\times10^{-11})^{3}=1.48\times10^{-31}\,\mathrm{m^{3}}, \]</p>
+          <p class="step">
+            \[ \alpha=4.5\times 1.113\times10^{-10}\times 1.48\times10^{-31}=7.42\times10^{-41}\,\mathrm{C\,m^{2}/V}. \]</p>
+          <p class="step">等价地 \(\alpha/(4\pi\varepsilon_{0})=4.5\,a_{0}^{3}=0.667\times10^{-30}\,\mathrm{m^{3}}=0.667\,\mathrm{\AA^{3}}\)（化学常用单位）。</p>
+          <p class="step">能量偏移：</p>
+          <p class="step">
+            \[ \Delta E_{1}=-\tfrac{1}{2}\alpha E^{2}=-\tfrac{1}{2}\times 7.42\times10^{-41}\times(1.0\times10^{10})^{2}=-3.71\times10^{-21}\,\mathrm{J}. \]</p>
+          <p class="step">换算 eV（\(1\,\mathrm{eV}=1.602\times10^{-19}\,\mathrm{J}\)）：</p>
+          <p class="step">
+            \[ \Delta E_{1}=\frac{-3.71\times10^{-21}}{1.602\times10^{-19}}=-2.31\times10^{-2}\,\mathrm{eV}=-23.1\,\mathrm{meV}. \]</p>
+          <p>这个能量对应一个<strong>感生偶极矩</strong> \(\vec p_{\mathrm{ind}}=-\partial\Delta E/\partial\vec E=\alpha\vec E\)，大小 \(p_{\mathrm{ind}}=\alpha E=7.42\times10^{-41}\times10^{10}=7.42\times10^{-31}\,\mathrm{C\,m}\)，相当于 \(0.00074\,e\,a_{0}\)（极小的电荷分离——原子几乎不被极化，这正是「微扰」成立的原因）。注意：(i) 修正<strong>恒为负</strong>（基态二阶定理）；(ii) 对 \(E\) 是<strong>二次</strong>依赖（与简并能级的线性 Stark 截然不同）；(iii) 数值 \(23\,\mathrm{meV}\) 远小于 \(|E_{1}|=13.6\,\mathrm{eV}\)，扰动展开有效。<span class="ans">答案：\(\Delta E_{1}=-\tfrac12\alpha E^{2}\)，\(\alpha=\tfrac{9}{2}\cdot 4\pi\varepsilon_{0}a_{0}^{3}=7.42\times10^{-41}\,\mathrm{C\,m^{2}/V}\)；\(E=10^{10}\,\mathrm{V/m}\) 时 \(\Delta E_{1}=-23.1\,\mathrm{meV}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 氢原子 \(n=2\) 的线性 Stark 分裂 Linear Stark Splitting of Hydrogen \(n=2\)</h4>
+        <p class="example-statement">把氢原子置于均匀电场 \(\vec E=E\hat z\) 中，只考虑 \(n=2\) 能级（4 重空间简并：2s, 2p\(_{0}\), 2p\(_{+1}\), 2p\(_{-1}\)）。先计算关键矩阵元 \(\langle 2,0,0|z|2,1,0\rangle\)，然后构造简并子空间的久期矩阵并求本征值。最后取 \(E=1.0\times10^{7}\,\mathrm{V/m}\)（\(10^{5}\,\mathrm{V/cm}\)，典型实验室场强）算出分裂量（eV 与频率）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 关键矩阵元。归一化波函数：</p>
+          <p class="step">
+            \[ R_{20}(r)=\tfrac{1}{2\sqrt2}a_{0}^{-3/2}(2-\rho)e^{-\rho/2},\quad R_{21}(r)=\tfrac{1}{2\sqrt6}a_{0}^{-3/2}\rho\,e^{-\rho/2},\quad \rho=r/a_{0}, \]</p>
+          <p class="step">
+            \[ Y_{00}=\tfrac{1}{\sqrt{4\pi}},\qquad Y_{10}=\sqrt{\tfrac{3}{4\pi}}\cos\theta. \]</p>
+          <p class="step">分离变量 \(\langle 2,0,0|r\cos\theta|2,1,0\rangle=\big(\int_{0}^{\infty}\!R_{20}R_{21}\,r^{3}\,dr\big)\big(\int Y_{00}^{*}\cos\theta\,Y_{10}\,d\Omega\big)\)。</p>
+          <p class="step"><strong>角向</strong>：用 \(\cos\theta=\sqrt{4\pi/3}\,Y_{10}\)，球谐函数正交归一：</p>
+          <p class="step">
+            \[ \int Y_{00}^{*}\cos\theta\,Y_{10}\,d\Omega=\tfrac{1}{\sqrt{4\pi}}\cdot\sqrt{\tfrac{4\pi}{3}}\int Y_{10}^{*}Y_{10}\,d\Omega=\tfrac{1}{\sqrt 3}. \]</p>
+          <p class="step"><strong>径向</strong>（\(\rho=r/a_{0}\)，\(r^{3}dr=a_{0}^{4}\rho^{3}d\rho\)）：</p>
+          <p class="step">
+            \[ \int_{0}^{\infty}\!R_{20}R_{21}\,r^{3}\,dr=\tfrac{a_{0}}{4\sqrt{12}}\int_{0}^{\infty}(2-\rho)\rho^{4}e^{-\rho}\,d\rho=\tfrac{a_{0}}{8\sqrt 3}\big(2\cdot 4!-5!\big) \]</p>
+          <p class="step">
+            \[ =\tfrac{a_{0}}{8\sqrt 3}(48-120)=\tfrac{-72\,a_{0}}{8\sqrt 3}=-3\sqrt3\,a_{0}. \]</p>
+          <p class="step">合并：</p>
+          <p class="step">
+            \[ \langle 2,0,0|z|2,1,0\rangle=(-3\sqrt 3\,a_{0})\cdot\tfrac{1}{\sqrt 3}=\boxed{\;-3a_{0}.\;} \]</p>
+          <p class="step">(b) 久期矩阵。扰动 \(H'=eEz\)。在基 \(\{|2s\rangle,|2p_{0}\rangle,|2p_{+1}\rangle,|2p_{-1}\rangle\}\) 下，选择定则 \(\Delta\ell=\pm1,\;\Delta m=0\) 限出唯一非零非对角元 \(W_{2s,2p_{0}}\)：</p>
+          <p class="step">
+            \[ W_{2s,2p_{0}}=eE\langle 2,0,0|z|2,1,0\rangle=-3eEa_{0}. \]</p>
+          <p class="step">所有对角元为零（\(z\) 奇宇称）；\(\langle 2p_{m}|z|2p_{m'}\rangle=0\)（同宇称），\(\langle 2s|z|2p_{\pm1}\rangle=0\)（\(\Delta m\ne 0\)）。故</p>
+          <p class="step">
+            \[ W=\begin{pmatrix} 0 & -3eEa_{0} & 0 & 0\\ -3eEa_{0} & 0 & 0 & 0\\ 0 & 0 & 0 & 0\\ 0 & 0 & 0 & 0 \end{pmatrix}. \]</p>
+          <p class="step">(c) 解久期方程。\(2\times2\) 块 \(\begin{pmatrix}0&-3eEa_{0}\\-3eEa_{0}&0\end{pmatrix}\) 的本征值为 \(\pm 3eEa_{0}\)，对应本征矢 \((|2s\rangle\mp|2p_{0}\rangle)/\sqrt2\)。\(2p_{\pm1}\) 块的本征值为 0（仍简并）。所以一级 Stark 分裂为：</p>
+          <p class="step">
+            \[ \boxed{\;\Delta E=\big\{\,+3eEa_{0},\;0,\;0,\;-3eEa_{0}\,\big\}.\;} \]</p>
+          <p class="step">(d) 数值代入 \(E=1.0\times10^{7}\,\mathrm{V/m}\)：</p>
+          <p class="step">
+            \[ 3eEa_{0}=3\times 1.602\times10^{-19}\times 1.0\times10^{7}\times 5.29\times10^{-11}=2.54\times10^{-22}\,\mathrm{J} \]</p>
+          <p class="step">
+            \[ =\frac{2.54\times10^{-22}}{1.602\times10^{-19}}=1.59\times10^{-3}\,\mathrm{eV}=1.59\,\mathrm{meV}. \]</p>
+          <p class="step">频率间隔 \(\nu=\Delta E/h=2.54\times10^{-22}/(6.626\times10^{-34})=3.83\times10^{11}\,\mathrm{Hz}=383\,\mathrm{GHz}\)（微波/毫米波区）。</p>
+          <p>注意：(i) \(n=2\) 能级在电场下<strong>三重分裂</strong>：一个上移、一个下移（线性于 \(E\)）、两个 \(m=\pm1\) 态留在原位；(ii) 分裂<strong>线性</strong>依赖外场——这是简并微扰论的标志（非简并的 1s 基态只有二次 Stark）；(iii) 「正确的零th-阶态」\((|2s\rangle\pm|2p_{0}\rangle)/\sqrt2\) 沿 \(\pm\hat z\) 方向有非零偶极矩（电子云被极化），这正是产生线性效应的物理原因——这些组合态本身具有内禀电偶极矩，与外场直接耦合。<span class="ans">答案：\(\langle 2,0,0|z|2,1,0\rangle=-3a_{0}\)；分裂 \(\Delta E=\pm 3eEa_{0}\) 与 0；\(E=10^{7}\,\mathrm{V/m}\) 时 \(|\Delta E|=1.59\,\mathrm{meV}\)（383 GHz）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 氢原子 \(n=2\) 精细结构分裂 Fine-Structure Splitting of Hydrogen \(n=2\)</h4>
+        <p class="example-statement">用精细结构组合公式 \(E_{n,j}=E_{n}[1+\tfrac{\alpha^{2}}{n}(\tfrac{1}{j+1/2}-\tfrac{3}{4n})]\) 计算氢原子 \(n=2\) 能级的精细结构分裂：(a) 列出 \(n=2\) 能级的所有 \((\ell,j)\) 组合；(b) 计算 \(2p_{1/2}\) 与 \(2p_{3/2}\) 的能量差（eV、GHz、cm\(^{-1}\)）；(c) 比较精细结构分裂与 \(n=2\) 简并能级在 \(B=1\,\mathrm{T}\) 磁场下的 Zeeman 分裂。取 \(\alpha=1/137.036\)、\(E_{R}=13.6\,\mathrm{eV}\)、\(\mu_{B}=5.788\times10^{-5}\,\mathrm{eV/T}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \(n=2\) 时 \(\ell=0\) 或 1。结合 \(j=\ell\pm\tfrac12\)（\(j\ge1/2\)）：</p>
+          <ul>
+            <li>\(\ell=0\) (2s)：\(j=\tfrac12\) → \(2s_{1/2}\)。</li>
+            <li>\(\ell=1\) (2p)：\(j=\tfrac12\) 或 \(\tfrac32\) → \(2p_{1/2}\)、\(2p_{3/2}\)。</li>
+          </ul>
+          <p class="step">精细结构公式预言 \(E_{n,j}\) 只依赖 \(n,j\)（不依赖 \(\ell\)），所以 \(2s_{1/2}\) 与 \(2p_{1/2}\) <strong>简并</strong>；\(2p_{3/2}\) 单独。共两个能量。</p>
+          <p class="step">(b) 公共因子：</p>
+          <p class="step">
+            \[ E_{2}^{(0)}=-\frac{13.6}{4}=-3.40\,\mathrm{eV},\qquad \frac{\alpha^{2}}{n}=\frac{(1/137.036)^{2}}{2}=\frac{5.325\times10^{-5}}{2}=2.663\times10^{-5}. \]</p>
+          <p class="step">\(j=1/2\)：\(\tfrac{1}{j+1/2}-\tfrac{3}{4n}=1-\tfrac38=\tfrac58\)。能量修正因子 \(=2.663\times10^{-5}\times\tfrac58=1.665\times10^{-5}\)。</p>
+          <p class="step">
+            \[ \Delta E_{2,1/2}^{(\mathrm{FS})}=E_{2}^{(0)}\cdot 1.665\times10^{-5}=(-3.40)\times 1.665\times10^{-5}=-5.66\times10^{-5}\,\mathrm{eV}=-56.6\,\mu\mathrm{eV}. \]</p>
+          <p class="step">\(j=3/2\)：\(\tfrac{1}{j+1/2}-\tfrac{3}{4n}=\tfrac12-\tfrac38=\tfrac18\)。因子 \(=2.663\times10^{-5}\times\tfrac18=3.329\times10^{-6}\)。</p>
+          <p class="step">
+            \[ \Delta E_{2,3/2}^{(\mathrm{FS})}=(-3.40)\times 3.329\times10^{-6}=-1.13\times10^{-5}\,\mathrm{eV}=-11.3\,\mu\mathrm{eV}. \]</p>
+          <p class="step">两能量之差（\(2p_{3/2}\) 减 \(2p_{1/2}\)，注意两者均为负、\(2p_{3/2}\) 接近未扰值）：</p>
+          <p class="step">
+            \[ \boxed{\;\Delta E_{\mathrm{FS}}(2p_{3/2}-2p_{1/2})=(-11.3)-(-56.6)=45.3\,\mu\mathrm{eV}=4.53\times10^{-5}\,\mathrm{eV}.\;} \]</p>
+          <p class="step">换算单位：</p>
+          <p class="step">
+            \[ \nu=\frac{\Delta E}{h}=\frac{4.53\times10^{-5}\times 1.602\times10^{-19}}{6.626\times10^{-34}}=1.10\times10^{10}\,\mathrm{Hz}=10.95\,\mathrm{GHz}, \]</p>
+          <p class="step">
+            \[ \tilde\nu=\frac{\Delta E}{hc}=\frac{4.53\times10^{-5}\,\mathrm{eV}}{1.2398\times10^{-4}\,\mathrm{eV\,cm}}=0.365\,\mathrm{cm^{-1}}. \]</p>
+          <p class="step">(c) Zeeman 分裂：\(B=1\,\mathrm{T}\) 时 \(\mu_{B}B=5.788\times10^{-5}\,\mathrm{eV}=57.9\,\mu\mathrm{eV}\)。这与 \(n=2\) 精细结构分裂（\(45.3\,\mu\mathrm{eV}\)）<strong>同量级</strong>——所以对 \(n=2\)，「\(1\,\mathrm{T}\)」既非明显弱场也非明显强场；要清楚地看到 Zeeman 主导（反常 Zeeman 模型适用），需 \(B\gg 1\,\mathrm{T}\)；要看到精细结构主导，需 \(B\ll 1\,\mathrm{T}\)。</p>
+          <p>历史上，Dirac 1928 年的相对论量子力学自动给出此公式（包括三部分自动统一），是理论物理的胜利。1947 年 Lamb 与 Retherford 用微波技术测出 \(2s_{1/2}\) 实际比 \(2p_{1/2}\) 高 \(1057.8\,\mathrm{MHz}\approx 4.37\,\mu\mathrm{eV}\)（<strong>Lamb 移位</strong>），打破剩余简并——这只能由量子电动力学（QED，真空涨落与电子自能）解释。<span class="ans">答案：\(n=2\) 精细结构分裂 \(\Delta E=4.53\times10^{-5}\,\mathrm{eV}=45.3\,\mu\mathrm{eV}=10.95\,\mathrm{GHz}=0.365\,\mathrm{cm^{-1}}\)；与 \(B=1\,\mathrm{T}\) Zeeman 分裂 \(57.9\,\mu\mathrm{eV}\) 同量级。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 三阶扰动谐振子的二阶修正（一阶因对称性消失） Second-Order Shift for Cubic Perturbation</h4>
+        <p class="example-statement">谐振子 \(H_{0}=p^{2}/(2m)+\tfrac12 m\omega^{2}x^{2}\) 加上<strong>立方</strong>扰动 \(H'=\lambda x^{3}\)（\(\lambda\) 任意）。（(a) 证明基态 \(|0\rangle\) 的一阶能量修正为零；(b) 计算基态二阶能量修正 \(E_{0}^{(2)}\) 的解析表达式；(c) 用与例 7.1 相同的参数（电子，\(\hbar\omega=2.0\,\mathrm{eV}\)，\(\lambda=1.0\,\mathrm{eV/nm^{3}}\)）算出数值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 一阶修正</p>
+          <p class="step">
+            \[ E_{0}^{(1)}=\lambda\langle 0|x^{3}|0\rangle. \]</p>
+          <p class="step">基态波函数 \(\psi_{0}(x)\propto e^{-m\omega x^{2}/(2\hbar)}\) 是 \(x\) 的偶函数；\(|\psi_{0}|^{2}\) 偶；\(x^{3}|\psi_{0}|^{2}\) 是 \(x\) 的奇函数。对 \(-\infty\) 到 \(+\infty\) 积分为零：</p>
+          <p class="step">
+            \[ \boxed{\;E_{0}^{(1)}=0\quad\text{(宇称守恒)。}\;} \]</p>
+          <p class="step">这是「一阶修正因对称性消失」的典型例子（见误区 2）——必须到二阶才能看到修正。</p>
+          <p class="step">(b) 二阶修正</p>
+          <p class="step">
+            \[ E_{0}^{(2)}=\lambda^{2}\sum_{m\ne 0}\frac{|\langle m|x^{3}|0\rangle|^{2}}{E_{0}^{(0)}-E_{m}^{(0)}}. \]</p>
+          <p class="step">用 \(x=x_{0}(a+a^{\dagger})\)，逐次作用：</p>
+          <p class="step">
+            \[ (a+a^{\dagger})^{3}|0\rangle=(a+a^{\dagger})^{2}|1\rangle=(a+a^{\dagger})(|0\rangle+\sqrt 2|2\rangle)=3|1\rangle+\sqrt 6|3\rangle. \]</p>
+          <p class="step">所以 \(x^{3}|0\rangle=x_{0}^{3}(3|1\rangle+\sqrt 6|3\rangle)\)，仅 \(|1\rangle\) 与 \(|3\rangle\) 接收非零矩阵元：</p>
+          <p class="step">
+            \[ \langle 1|x^{3}|0\rangle=3x_{0}^{3},\qquad \langle 3|x^{3}|0\rangle=\sqrt 6\,x_{0}^{3}. \]</p>
+          <p class="step">分母：\(E_{0}^{(0)}-E_{1}^{(0)}=-\hbar\omega\)，\(E_{0}^{(0)}-E_{3}^{(0)}=-3\hbar\omega\)。代入：</p>
+          <p class="step">
+            \[ E_{0}^{(2)}=\lambda^{2}\!\left[\frac{9x_{0}^{6}}{-\hbar\omega}+\frac{6x_{0}^{6}}{-3\hbar\omega}\right]=-\frac{11\,\lambda^{2}x_{0}^{6}}{\hbar\omega}=-\frac{11\lambda^{2}\hbar^{2}}{8m^{3}\omega^{4}}. \]</p>
+          <p class="step">
+            \[ \boxed{\;E_{0}^{(2)}=-\frac{11\,\lambda^{2}\hbar^{2}}{8m^{3}\omega^{4}}=-\frac{11\,\lambda^{2}x_{0}^{6}}{\hbar\omega}.\;} \]</p>
+          <p class="step">(c) 数值。沿用例 7.1 的 \(x_{0}=0.138\,\mathrm{nm}\)（\(x_{0}^{3}=2.63\times10^{-3}\,\mathrm{nm^{3}}\)、\(x_{0}^{6}=6.92\times10^{-6}\,\mathrm{nm^{6}}\)），\(\hbar\omega=2.0\,\mathrm{eV}\)，\(\lambda=1.0\,\mathrm{eV/nm^{3}}\)：</p>
+          <p class="step">
+            \[ E_{0}^{(2)}=-\frac{11\times 1.0^{2}\times 6.92\times10^{-6}}{2.0}=-3.81\times10^{-5}\,\mathrm{eV}=-38.1\,\mathrm{neV}. \]</p>
+          <p>对比：相同的「扰动强度量级」下，立方扰动给基态带来的二阶修正（\(38\,\mathrm{neV}\)）比四阶扰动的一阶修正（\(1.09\,\mathrm{meV}\)）小 <strong>4 个数量级</strong>——因为二阶多了一个矩阵元/能级间距的因子 \(\sim\lambda x_{0}^{3}/(\hbar\omega)\sim10^{-3}\)。这是「一阶消失就要付代价」的定量体现。<strong>小性检查</strong>：\(|E_{0}^{(2)}/\hbar\omega|\sim 2\times10^{-5}\ll 1\) ✓。注意二阶修正<strong>恒为负</strong>（基态定理）——即使扰动「方向」(\(\lambda\) 正负) 反过来，能量仍被压低，因 \(E^{(2)}\propto\lambda^{2}\)。<span class="ans">答案：(a) \(E_{0}^{(1)}=0\)；(b) \(E_{0}^{(2)}=-11\lambda^{2}\hbar^{2}/(8m^{3}\omega^{4})\)；(c) \(-38.1\,\mathrm{neV}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>对简并能级套用非简并公式。</strong>二阶修正 \(E_{n}^{(2)}=\sum_{m\ne n}|\langle m|H'|n\rangle|^{2}/(E_{n}-E_{m})\) 中若有 \(E_{m}^{(0)}=E_{n}^{(0)}\) 的简并项，分母为零、公式<strong>发散</strong>。这是数学症状，不是物理（真实能量修正有限）。<em>必须</em>切换到简并微扰论：在简并子空间内把 \(H'\) 对角化，解久期方程。<strong>线性 Stark 效应</strong>就是典型例子——若误用非简并公式于 2s 态（与 2p\(_0\) 简并），会得到无穷大，而真实结果是有限的 \(\pm 3eEa_{0}\)。</li>
+        <li><strong>把「一阶修正为零」误读为「无修正」。</strong>若 \(\langle n^{(0)}|H'|n^{(0)}\rangle=0\)（例如因宇称、时间反演或其它对称性），能量修正不一定是零——只是<strong>一阶</strong>为零。需要查二阶（甚至更高阶）。典型：(i) 谐振子加 \(x^{3}\) 扰动，基态一阶为零（宇称），但二阶不为零（\(-11\lambda^{2}\hbar^{2}/8m^{3}\omega^{4}\)）；(ii) 氢原子 1s 基态的 Stark 效应，一阶为零，二阶给出极化率 \(-\tfrac12\alpha E^{2}\)；(iii) 任何<em>非简并</em>宇称本征态在电场中的一阶 Stark 修正都因宇称消失。<strong>结论</strong>：一阶为零只是说「物理在更高阶」。</li>
+        <li><strong>忽略扰动要远小于能级间距的条件。</strong>整个微扰展开依赖 \(|\langle m|H'|n\rangle|\ll|E_{m}-E_{n}|\)。若扰动强度接近或超过能级间距，级数发散或收敛极慢，结果不可信。例如对氢原子 \(n\) 很高的 Rydberg 态，相邻 \(n\) 能级间距 \(\sim 2\cdot 13.6/n^{3}\,\mathrm{eV}\) 变得很小，原来「弱」的外场可能就不再是弱扰动。<strong>每次应用前都要做数量级检查</strong>：扰动矩阵元 / 能级间距 \(\ll 1\)？</li>
+        <li><strong>在错误的子空间内対角化。</strong>简并微扰论要求在<strong>整个简并子空间</strong>内対角化 \(H'\)，不能只取「看上去相关」的两三个态。例如氢原子 \(n=2\) 的 Stark 问题，简并子空间是 4 维（2s + 2p\(_{m=-1,0,+1}\)），即使 \(2p_{\pm1}\) 与其它态的耦合矩阵元都为零，<em>它们仍是简并子空间的成员</em>，必须在矩阵中保留（其本征值 0 也是合法的解）。另外，<strong>简并子空间外的</strong>态对一阶修正无贡献（只对二阶及更高阶有贡献），混为一谈会算错。</li>
+        <li><strong>见到「线性 Stark」就以为对所有原子都成立。</strong>线性 Stark 效应（\(\Delta E\propto E\)）<strong>仅当存在反宇称的简并能级</strong>时出现。氢原子 \(n\ge 2\) 的能级由于 Coulomb \(1/r\) 势的特殊对称性，s 与 p（乃至更高 \(\ell\)）<em>简并</em>——所以有线性 Stark。<strong>任何非简并态</strong>（包括所有碱金属原子的 ns 基态，因为内层电子屏蔽破坏了 \(\ell\) 简并）<em>没有</em>线性 Stark，只有二次。<strong>经验法则</strong>：看到能量对外场是线性响应 → 立刻怀疑简并；看到二次响应 → 多半是非简并态的二阶效应。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 谐振子加上 \(H'=\lambda x^{2}\) 扰动。证明这等价于频率从 \(\omega\) 变到 \(\omega'=\sqrt{\omega^{2}+2\lambda/m}\)，并用一阶微扰论算出 \(|n\rangle\) 的能量修正。再与小 \(\lambda\) 极限下的精确解 \((n+\tfrac12)\hbar\omega'\) 比较。</summary>
+        <div class="hint">把扰动写成 \(\lambda x^{2}=\lambda\hbar(a+a^{\dagger})^{2}/(2m\omega)\)。用 \(\langle n|(a+a^{\dagger})^{2}|n\rangle=2n+1\)。</div>
+        <div class="solution">完整 Hamilton 量 \(H=p^{2}/(2m)+\tfrac12 m\omega^{2}x^{2}+\lambda x^{2}=p^{2}/(2m)+\tfrac12 m(\omega')^{2}x^{2}\)，其中 \(\tfrac12 m(\omega')^{2}=\tfrac12 m\omega^{2}+\lambda\)，即 \((\omega')^{2}=\omega^{2}+2\lambda/m\)。精确能量 \((n+\tfrac12)\hbar\omega'\)。
+          <br><br>一阶修正：\(\langle n|x^{2}|n\rangle=x_{0}^{2}\langle n|(a+a^{\dagger})^{2}|n\rangle=x_{0}^{2}(2n+1)=\frac{\hbar}{2m\omega}(2n+1)=\frac{(n+1/2)\hbar}{m\omega}\)。
+          \[ E_{n}^{(1)}=\lambda\,\frac{(n+1/2)\hbar}{m\omega}. \]
+          所以 \(E_{n}\approx(n+\tfrac12)\hbar\omega+\lambda(n+\tfrac12)\hbar/(m\omega)=(n+\tfrac12)\hbar[\omega+\lambda/(m\omega)]\)。对比精确 \((n+\tfrac12)\hbar\omega'\) 在小 \(\lambda\) 展开 \(\omega'\approx\omega+\lambda/(m\omega)+O(\lambda^{2})\)——一阶<strong>完全吻合</strong> ✓。这正好检验了微扰论的正确性：一阶修正 = 精确能量在 \(\lambda=0\) 处的导数。
+          <span class="ans">\(E_{n}^{(1)}=\lambda(n+\tfrac12)\hbar/(m\omega)\)；与精确解小 \(\lambda\) 展开一阶项吻合。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 把氢原子 \(n=3\) 能级（9 重空间简并：3s、3p\(_{m}\)、3d\(_{m}\)，\(m\) 各取 \(-\ell,\dots,+\ell\)）置于均匀电场 \(E\hat z\) 中。指出 \(H'=eEz\) 在这 9 维简并子空间内<strong>非零</strong>的矩阵元模式（用选择定则），并说明 9 个能级一级分裂为几个不同的能量。</summary>
+        <div class="hint">\(\Delta\ell=\pm1\)、\(\Delta m=0\)。3s↔3p\(_{m=0}\)、3p\(_m\)↔3d\(_m\)。3d\(_{m=\pm1}\) 与 3d\(_{m=\pm2}\) 之间无 3p 同 \(m\) 邻居。</div>
+        <div class="solution">选择定则：\(z\) 满足 \(\Delta\ell=\pm1\)、\(\Delta m=0\)。
+          <br>所以非零矩阵元只发生在：
+          <ul>
+            <li>3s ↔ 3p\(_{0}\)（一个矩阵元 \(W_{s,p_{0}}\)）。</li>
+            <li>3p\(_{m}\) ↔ 3d\(_{m}\)（对每个 \(m=-1,0,+1\)，一个矩阵元 \(W_{p_m,d_m}\)）。</li>
+          </ul>
+          所有对角元为零（\(z\) 奇宇称）；3p\(_{m}\) 与 3p\(_{m'}\) 之间无耦合（同 \(\ell\)）；3d\(_m\) 与 3d\(_{m'}\) 之间也无耦合。3d\(_{m=\pm2}\) 既无 3p 同 \(m\) 邻居（3p 无 \(m=\pm 2\) 态），与 3d\(_{m\ne\pm2}\) 又无 \(\Delta m=0\) 耦合，所以<strong>完全不分裂</strong>，留在未扰能量。
+          <br>矩阵分块：一个 3×3 块 \(\{3s, 3p_0, 3d_0\}\)、两个 2×2 块 \(\{3p_{\pm1}, 3d_{\pm1}\}\)、两个 1×1 块 \(\{3d_{\pm2}\}\)。3×3 块给出 3 个本征值，每个 2×2 块给 2 个，1×1 块各 1 个。共 \(3+2+2+1+1=9\) 个，但有些可能简并。具体：两个 2×2 块（对应 \(m=+1\) 与 \(m=-1\)）结构相同（实矩阵元相同），给出<strong>两套相同的本征值对</strong>，所以是 2 重简并；3×3 块给出 3 个不同的本征值（一般情形）；两个 1×1 块给出未扰能量（2 重简并）。
+          <br>结论：\(n=3\) 能级在一级 Stark 下分裂为 \(3+2+1=6\) 个不同能量（其中两个能量各 2 重简并：来自 \(m=\pm1\) 的 2×2 块和来自 3d\(_{m=\pm2}\) 的 1×1 块）。3×3 块的解要求具体计算 \(\langle 3s|z|3p_0\rangle\) 与 \(\langle 3p_0|z|3d_0\rangle\)——留作挑战。
+          <span class="ans">非零矩阵元：3s↔3p\(_0\)、3p\(_m\)↔3d\(_m\)（\(m=-1,0,+1\)）；9 能级一级分裂为 6 个不同能量（其中 2 个能量各 2 重简并）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 计算氢原子 \(n=3\) 能级的精细结构分裂：(a) 列出所有 \((\ell,j)\)；(b) 用 \(E_{n,j}=E_{n}[1+\tfrac{\alpha^{2}}{n}(\tfrac{1}{j+1/2}-\tfrac{3}{4n})]\) 算出 \(3s_{1/2}\)、\(3p_{1/2}\)、\(3p_{3/2}\)、\(3d_{3/2}\)、\(3d_{5/2}\) 的能量修正（\(\mu\mathrm{eV}\)）；(c) 哪几对仍然简并？</summary>
+        <div class="hint">\(n=3\) 时 \(\alpha^{2}/n=5.325\times10^{-5}/3=1.775\times10^{-5}\)；\(3/(4n)=1/4\)。\(E_{3}^{(0)}=-13.6/9=-1.511\,\mathrm{eV}\)。</div>
+        <div class="solution">(a) \(n=3\)：\(\ell=0,1,2\)，对应 \(j=1/2\)、\(j=1/2,3/2\)、\(j=3/2,5/2\)。共 5 个 \((\ell,j)\) 组合。
+          <br>(b) 因子 \(E_{3}^{(0)}\cdot\alpha^{2}/n=(-1.511)\times 1.775\times10^{-5}=-2.682\times10^{-5}\,\mathrm{eV}=-26.82\,\mu\mathrm{eV}\)。
+          <br>各 \(j\) 的系数 \(c(j)=1/(j+1/2)-1/4\)：
+          <ul>
+            <li>\(j=1/2\)：\(c=1-1/4=3/4\)。修正 \(=-26.82\times 3/4=-20.1\,\mu\mathrm{eV}\)。</li>
+            <li>\(j=3/2\)：\(c=1/2-1/4=1/4\)。修正 \(=-26.82\times 1/4=-6.71\,\mu\mathrm{eV}\)。</li>
+            <li>\(j=5/2\)：\(c=1/3-1/4=1/12\)。修正 \(=-26.82\times 1/12=-2.23\,\mu\mathrm{eV}\)。</li>
+          </ul>
+          所以：
+          \[ 3s_{1/2}:\,-20.1\,\mu\mathrm{eV};\quad 3p_{1/2}:\,-20.1\,\mu\mathrm{eV};\quad 3p_{3/2}:\,-6.71\,\mu\mathrm{eV};\quad 3d_{3/2}:\,-6.71\,\mu\mathrm{eV};\quad 3d_{5/2}:\,-2.23\,\mu\mathrm{eV}. \]
+          (c) <strong>简并对</strong>：\(3s_{1/2}\) 与 \(3p_{1/2}\) 简并；\(3p_{3/2}\) 与 \(3d_{3/2}\) 简并；\(3d_{5/2}\) 单独。共 3 个不同能量。最大分裂 \(3d_{5/2}-3s_{1/2}=(-2.23)-(-20.1)=17.9\,\mu\mathrm{eV}\)。
+          <br>这再次验证「精细结构只依赖 \(n,j\)」的剩余简并。Lamb 移位会进一步打破 \(3s_{1/2}\)–\(3p_{1/2}\) 简并（约 \(314\,\mathrm{MHz}\)）。
+          <span class="ans">\(3s_{1/2}=3p_{1/2}=-20.1\,\mu\mathrm{eV}\)；\(3p_{3/2}=3d_{3/2}=-6.71\,\mu\mathrm{eV}\)；\(3d_{5/2}=-2.23\,\mu\mathrm{eV}\)。3 个不同能量。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 计算 \(2p\) 态（\(\ell=1,s=1/2\)，故 \(j=1/2\) 或 \(3/2\)）的 Landé g 因子 \(g_{J}\)，并求 \(2p_{3/2},m_{J}=1/2\) 在 \(B=2.0\,\mathrm{T}\) 磁场中的 Zeeman 能量修正。</summary>
+        <div class="hint">\(g_{J}=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\)；\(\Delta E=\mu_{B}Bg_{J}m_{J}\)；\(\mu_{B}=5.788\times10^{-5}\,\mathrm{eV/T}\)。</div>
+        <div class="solution">对 \(2p_{3/2}\)：\(L=1\)、\(S=1/2\)、\(J=3/2\)。
+          <br>\(L(L+1)=2\)、\(S(S+1)=3/4\)、\(J(J+1)=15/4\)。
+          \[ g_{J}=1+\frac{15/4+3/4-2}{2\cdot 15/4}=1+\frac{(15+3-8)/4}{15/2}=1+\frac{10/4}{15/2}=1+\frac{10}{4}\cdot\frac{2}{15}=1+\frac{20}{60}=1+\frac13=\frac43. \]
+          能量修正（\(m_{J}=1/2,B=2.0\,\mathrm{T}\)）：
+          \[ \Delta E=\mu_{B}B\,g_{J}\,m_{J}=5.788\times10^{-5}\times 2.0\times\tfrac43\times\tfrac12=5.788\times10^{-5}\times\tfrac43=7.72\times10^{-5}\,\mathrm{eV}=77.2\,\mu\mathrm{eV}. \]
+          对比：纯轨道（\(g=1\)）会给出 \(5.79\times10^{-5}\,\mathrm{eV}\)；纯自旋（\(g=2\)）会给 \(11.6\times10^{-5}\,\mathrm{eV}\)。Landé 因子给出介于两者之间的 \(4/3\)，反映了 \(2p_{3/2}\) 中轨道与自旋的混合（\(g_{J}\) 是它们按 \(J\) 的加权平均）。
+          <span class="ans">\(g_{J}(2p_{3/2})=4/3\)；\(\Delta E=77.2\,\mu\mathrm{eV}\)（对 \(m_{J}=+1/2,B=2\,\mathrm{T}\)）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）证明：对氢原子的精细结构，能量 \(E_{n,j}\) 只依赖 \(n\) 与 \(j\)，不单独依赖 \(\ell\)。（即 \(ns_{1/2}\) 与 \(np_{1/2}\) 同能量；\(np_{3/2}\) 与 \(nd_{3/2}\) 同能量……）</summary>
+        <div class="hint">三项修正分别为：相对论修正 \(E_{r}^{(1)}=-\frac{(E_{n})^{2}}{2m_{e}c^{2}}\!\left[\frac{4n}{\ell+1/2}-3\right]\)；自旋-轨道 \(E_{so}^{(1)}=\frac{(E_{n})^{2}}{m_{e}c^{2}}\cdot\frac{n\big[j(j+1)-\ell(\ell+1)-3/4\big]}{\ell(2\ell+1)(\ell+1)}\)（\(\ell\ne 0\)）；Darwin \(E_{D}^{(1)}=\frac{(E_{n})^{2}}{m_{e}c^{2}}\cdot\frac{n}{\ell+1/2}\delta_{\ell,0}\)。把三者相加并分类讨论 \(\ell=0\)、\(\ell\ne 0\)，分别用 \(j=\ell\pm 1/2\)。</div>
+        <div class="solution"><em>略证：</em>
+          <br>对 \(\ell=0\)（s 态）：自旋-轨道为零（\(\vec L=0\)），只有相对论修正 + Darwin。但 Darwin 的形式正好等于「自旋-轨道在 \(\ell=0\) 极限下应该贡献的量」（这是 Dirac 方程还原时的一个微妙之处）。结合：\(j=1/2\) 给出 \(1/(j+1/2)=1\)，符合 \(1/(\ell+1/2)=1/(1/2)=2\)——但 Darwin 与相对论修正之和给出 \(-3/(4n)+1\)，正是 \(1/(j+1/2)-3/(4n)\)。
+          <br>对 \(\ell\ne 0\)：自旋-轨道的 \(\vec L\cdot\vec S\) 期望值为 \(\frac{\hbar^{2}}{2}[j(j+1)-\ell(\ell+1)-s(s+1)]\)，其中 \(s=1/2\)。代入 \(j=\ell+1/2\) 或 \(j=\ell-1/2\) 分别给出 \(\ell\hbar^{2}/2\) 与 \(-(\ell+1)\hbar^{2}/2\)。把所有三项相加（经冗长但直接的代数）会发现所有 \(\ell\) 单独依赖都抵消，最终表达式只含 \(j\) 与 \(n\)：
+          \[ E_{n,j}^{(\mathrm{FS})}=E_{n}\cdot\frac{\alpha^{2}}{n}\!\left(\frac{1}{j+1/2}-\frac{3}{4n}\right). \]
+          这显示 \(\ell\) 是「冗余」量子数——相对论 + 自旋-轨道 + Darwin 三者协同把 Coulomb 问题的额外 \(SO(4)\) 对称性「升级」为 Dirac 问题的对称性（更深的群论由 \(SO(4)\subset SO(4,2)\) 给出）。Lamb 移位（QED）才真正打破这一剩余简并。
+          <span class="ans">三项之和抵消所有 \(\ell\) 单独依赖，结果只含 \(n,j\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>微扰能级图 Perturbed Energy Levels。</strong>5 能级模型系统，未扰 Hamilton 量 \(H_{0}=\mathrm{diag}(0,\,1,\,1,\,2,\,3)\,\mathrm{eV}\)（\(E=1\) 是<strong>二重简并能级</strong>），扰动 \(H'\) 为一个固定的 \(5\times5\) 厄米矩阵。左侧显示未扰能级（简并能级用稍错开的双线 + ×2 标记），右侧显示当前 \(\lambda\) 下的<strong>真实</strong>能级（数值对角化）。拖动 <strong>\(\lambda\)</strong> 滑块（0→1）观察：(i) 简并能级<strong>分裂</strong>为两条（线性于 \(\lambda\)），(ii) 其它能级<strong>漂移</strong>（线性 + 微弱二次）。开启「自动播放」可让 \(\lambda\) 在 0–1 之间往返扫描，更直观看到分裂过程。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+
+          // ---------- 5-level model ----------
+          // Unperturbed energies (eV): E0=0, E1=E2=1 (degenerate pair), E3=2, E4=3
+          var E0 = [0, 1, 1, 2, 3];
+          // Perturbation matrix V (eV) -- symmetric, designed so that:
+          //  * the degenerate pair {1,2} splits (off-diagonal V[1][2]=0.25, diagonal asymmetry +-0.10)
+          //  * non-degenerate levels {0,3,4} get smooth first-order shifts + small second-order mixing
+          var V = [
+            [ 0.05,  0.00,  0.00,  0.04,  0.00],
+            [ 0.00,  0.10,  0.25,  0.00,  0.00],
+            [ 0.00,  0.25, -0.10,  0.00,  0.00],
+            [ 0.04,  0.00,  0.00,  0.15,  0.03],
+            [ 0.00,  0.00,  0.00,  0.03, -0.08]
+          ];
+
+          // ---------- Jacobi eigenvalue solver for symmetric NxN matrix ----------
+          function eigSym(M) {
+            var n = M.length;
+            // deep copy
+            var A = [];
+            for (var i = 0; i < n; i++) A.push(M[i].slice());
+            // eigenvectors as identity
+            var Vec = [];
+            for (var i = 0; i < n; i++) {
+              var row = new Array(n).fill(0); row[i] = 1; Vec.push(row);
+            }
+            for (var sweep = 0; sweep < 60; sweep++) {
+              // find largest off-diagonal
+              var p = 0, q = 1, mx = 0;
+              for (var i = 0; i < n; i++) for (var j = i+1; j < n; j++) {
+                if (Math.abs(A[i][j]) > mx) { mx = Math.abs(A[i][j]); p = i; q = j; }
+              }
+              if (mx < 1e-14) break;
+              var app = A[p][p], aqq = A[q][q], apq = A[p][q];
+              // rotation angle: choose smaller-magnitude tangent t = tan(phi)
+              // that solves t^2 + 2 t theta - 1 = 0, theta = (aqq-app)/(2 apq).
+              var theta = (aqq - app) / (2 * apq);
+              var t;
+              if (Math.abs(theta) < 1e-15) {
+                // app ≈ aqq: 45° rotation zeroes apq
+                t = (apq > 0 ? 1 : -1);
+              } else {
+                t = Math.sign(theta) / (Math.abs(theta) + Math.sqrt(theta*theta + 1));
+              }
+              var c = 1 / Math.sqrt(t*t + 1);
+              var s = t * c;
+              // apply rotation to rows/columns
+              for (var i = 0; i < n; i++) {
+                var aip = A[i][p], aiq = A[i][q];
+                A[i][p] =  c*aip - s*aiq;
+                A[i][q] =  s*aip + c*aiq;
+              }
+              for (var i = 0; i < n; i++) {
+                var api = A[p][i], aqi = A[q][i];
+                A[p][i] =  c*api - s*aqi;
+                A[q][i] =  s*api + c*aqi;
+              }
+              A[p][q] = 0; A[q][p] = 0;
+              for (var i = 0; i < n; i++) {
+                var vip = Vec[i][p], viq = Vec[i][q];
+                Vec[i][p] =  c*vip - s*viq;
+                Vec[i][q] =  s*vip + c*viq;
+              }
+            }
+            var result = [];
+            for (var i = 0; i < n; i++) result.push({ value: A[i][i] });
+            result.sort(function (a, b) { return a.value - b.value; });
+            return result;
+          }
+
+          // ---------- compute eigenvalues at given lambda ----------
+          function levelsAt(lam) {
+            var M = [];
+            for (var i = 0; i < 5; i++) {
+              var row = [];
+              for (var j = 0; j < 5; j++) {
+                row.push((i === j ? E0[i] : 0) + lam * V[i][j]);
+              }
+              M.push(row);
+            }
+            return eigSym(M).map(function (r) { return r.value; });
+          }
+
+          // ---------- controls / params ----------
+          var params = { lambda: 0.0, auto: false };
+          var state = { lam: 0.0, dir: 1, frame: 0 };
+
+          // layout
+          var LP_X1 = 270, RP_X0 = 370, RP_X1 = 610;
+          var Y_TOP = 60, Y_BOT = H - 50;
+          var E_MIN = -0.4, E_MAX = 3.5;
+          function eToY(e) { return Y_BOT - (e - E_MIN) / (E_MAX - E_MIN) * (Y_BOT - Y_TOP); }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { lam: 0.0, dir: 1, frame: 0 }; },
+            step: function (dt, t, s) {
+              s.frame++;
+              if (params.auto) {
+                // auto-cycle 0 -> 1 -> 0 with period ~6 s
+                s.lam += s.dir * dt * 0.35;
+                if (s.lam > 1) { s.lam = 1; s.dir = -1; }
+                if (s.lam < 0) { s.lam = 0; s.dir = +1; }
+              } else {
+                // smooth tween toward slider value
+                var target = params.lambda;
+                s.lam += (target - s.lam) * Math.min(1, dt * 6);
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var lam = s.lam;
+
+              // title
+              PS.drawText(ctx, '微扰能级图 Perturbed Energy Levels   λ = ' + lam.toFixed(3),
+                W/2, 22, { font: 'bold 14px system-ui', color: PS.colors.text, align: 'center' });
+              // PT validity: ratio of max V_ij to min level spacing
+              var maxV = 0;
+              for (var i = 0; i < 5; i++) for (var j = 0; j < 5; j++) if (i !== j && Math.abs(V[i][j]) > maxV) maxV = Math.abs(V[i][j]);
+              var minGap = 1.0;  // smallest non-degenerate spacing in H0
+              var ratio = lam * maxV / minGap;
+              var valid = ratio < 0.1;
+              PS.drawText(ctx, '扰动/能级间距 = ' + ratio.toFixed(3) + (valid ? '  (微扰有效 ✓)' : '  (强扰动 — 高阶项重要)'),
+                W/2, 40, { font: '12px system-ui', color: valid ? PS.colors.accent2 : PS.colors.accent, align: 'center' });
+
+              // ---- grid + axis ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid; ctx.lineWidth = 0.5; ctx.globalAlpha = 0.5;
+              for (var e = 0; e <= 3; e++) {
+                var yy = eToY(e);
+                ctx.beginPath(); ctx.moveTo(40, yy); ctx.lineTo(W-10, yy); ctx.stroke();
+              }
+              ctx.restore();
+              // energy axis on far left
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(40, Y_TOP); ctx.lineTo(40, Y_BOT); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'E (eV)', 28, Y_TOP - 8, { font: 'bold 11px system-ui', color: PS.colors.text, align: 'left' });
+              for (var e = 0; e <= 3; e++) {
+                PS.drawText(ctx, String(e), 36, eToY(e) + 4, { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              }
+
+              // ---- panel labels ----
+              PS.drawText(ctx, '未扰 Unperturbed', (40+LP_X1)/2, Y_TOP - 6, { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '微扰 Perturbed (λ='+lam.toFixed(2)+')', (RP_X0+RP_X1)/2, Y_TOP - 6, { font: 'bold 12px system-ui', color: PS.colors.text, align: 'center' });
+
+              // ---- LEFT: unperturbed levels ----
+              // non-degenerate levels: 0, 2, 3
+              // degenerate pair: E=1 (drawn as two slightly offset lines + label)
+              var ux0 = 80, ux1 = LP_X1 - 30;
+              // level E=0
+              drawLevel(ctx, ux0, ux1, eToY(0), '|0⟩  E=0', PS.colors.palette[0]);
+              // level E=1 (degenerate, draw two short lines + x2 label)
+              var midY = eToY(1);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.palette[1]; ctx.lineWidth = 2.5;
+              ctx.beginPath(); ctx.moveTo(ux0+10, midY-3); ctx.lineTo(ux0+80, midY-3); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(ux0+10, midY+3); ctx.lineTo(ux0+80, midY+3); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, '|1a⟩,|1b⟩  E=1  (×2 简并)', ux0+90, midY+4, { font: 'bold 12px system-ui', color: PS.colors.palette[1], align: 'left' });
+              // level E=2
+              drawLevel(ctx, ux0, ux1, eToY(2), '|3⟩  E=2', PS.colors.palette[3]);
+              // level E=3
+              drawLevel(ctx, ux0, ux1, eToY(3), '|4⟩  E=3', PS.colors.palette[4]);
+
+              // ---- compute perturbed levels ----
+              var pers = levelsAt(lam);  // sorted ascending, length 5
+              // map unperturbed (sorted) -> perturbed (sorted) by index
+              // unperturbed sorted: [E0=0, E=1 (lower of pair), E=1 (upper of pair), E=2, E=3]
+              // (we choose the two "1"s as indices 1 and 2)
+              var unsorted = [0, 1, 1, 2, 3];
+
+              // ---- RIGHT: perturbed levels ----
+              var px0 = RP_X0, px1 = RP_X1 - 10;
+              var labels = ['|0⟩', '|1a⟩', '|1b⟩', '|3⟩', '|4⟩'];
+              var cols = PS.colors.palette;
+              for (var k = 0; k < 5; k++) {
+                var yy = eToY(pers[k]);
+                var txt = labels[k] + '  E=' + pers[k].toFixed(3);
+                drawLevel(ctx, px0, px1, yy, txt, cols[k]);
+              }
+
+              // ---- connectors: unperturbed -> perturbed ----
+              // unperturbed endpoint x ~ ux1, perturbed endpoint x ~ px0
+              for (var k = 0; k < 5; k++) {
+                var yU = eToY(unsorted[k]);
+                var yP = eToY(pers[k]);
+                ctx.save();
+                ctx.strokeStyle = cols[k]; ctx.globalAlpha = 0.55; ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 3]);
+                // curved connector (bezier)
+                ctx.beginPath();
+                ctx.moveTo(ux1, yU);
+                ctx.bezierCurveTo((ux1+px0)/2, yU, (ux1+px0)/2, yP, px0, yP);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.restore();
+              }
+
+              // ---- highlight splitting of degenerate pair ----
+              if (lam > 0.005) {
+                var split = pers[2] - pers[1];  // energy difference
+                var yLo = eToY(pers[1]), yHi = eToY(pers[2]);
+                var xSplit = px1 + 4;
+                // double-headed arrow between the two split levels (on right edge)
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent; ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(xSplit, yLo); ctx.lineTo(xSplit, yHi); ctx.stroke();
+                // tiny arrow heads
+                ctx.beginPath(); ctx.moveTo(xSplit-3, yLo+5); ctx.lineTo(xSplit, yLo); ctx.lineTo(xSplit+3, yLo+5); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(xSplit-3, yHi-5); ctx.lineTo(xSplit, yHi); ctx.lineTo(xSplit+3, yHi-5); ctx.stroke();
+                ctx.restore();
+                // label rotated
+                ctx.save();
+                ctx.translate(xSplit + 12, (yLo+yHi)/2);
+                ctx.rotate(-Math.PI/2);
+                PS.drawText(ctx, '分裂 ΔE = ' + split.toFixed(3) + ' eV', 0, 0, { font: 'bold 11px system-ui', color: PS.colors.accent, align: 'center' });
+                ctx.restore();
+              }
+
+              // ---- bottom note ----
+              PS.drawText(ctx, '红色箭头：简并能级随 λ 增大而分裂（线性于 λ）；其它能级漂移（一阶+二阶）',
+                W/2, H - 14, { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+            }
+          });
+
+          function drawLevel(ctx, x0, x1, y, label, color) {
+            ctx.save();
+            ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+            ctx.restore();
+            PS.drawText(ctx, label, x0 - 4, y - 6, { font: 'bold 11px system-ui', color: color, align: 'left' });
+          }
+          // silence unused warning in strict envs
+          void sim;
+
+          // ---------- controls ----------
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'lambda', label: '扰动强度 λ', min: 0, max: 1, step: 0.01, value: 0 },
+            { type: 'toggle',  key: 'auto',   label: '自动播放 Auto-play', value: false },
+            { type: 'button',  key: 'reset',  label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('lambda', function (v) { params.lambda = v; if (params.auto) { params.auto = false; ctl.set('auto', false); } });
+          ctl.on('auto',    function (v) { params.auto = v; });
+          ctl.on('reset',   function () { params.lambda = 0; params.auto = false; ctl.set('lambda', 0); ctl.set('auto', false); sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>问题框架</strong>：\(H=H_{0}+\lambda H'\)，\(H_{0}|n^{(0)}\rangle=E_{n}^{(0)}|n^{(0)}\rangle\) 已知。把 \(E_{n},|n\rangle\) 按 \(\lambda\) 展开，逐阶求解。<strong>有效性条件</strong>：\(|\langle m|H'|n\rangle|\ll|E_{m}^{(0)}-E_{n}^{(0)}|\)。</li>
+        <li><strong>非简并公式</strong>（最常用）：\(E_{n}^{(1)}=\langle n^{(0)}|H'|n^{(0)}\rangle\)；\(E_{n}^{(2)}=\sum_{m\ne n}\frac{|\langle m^{(0)}|H'|n^{(0)}\rangle|^{2}}{E_{n}^{(0)}-E_{m}^{(0)}}\)；\(|n^{(1)}\rangle=\sum_{m\ne n}\frac{\langle m^{(0)}|H'|n^{(0)}\rangle}{E_{n}^{(0)}-E_{m}^{(0)}}|m^{(0)}\rangle\)。<strong>基态二阶修正恒为负</strong>。</li>
+        <li><strong>简并微扰论</strong>：在简并子空间 \(\{|n,a^{(0)}\rangle\}\) 内対角化 \(W_{ab}=\langle n,a|H'|n,b\rangle\)，解久期方程 \(\det(W-E^{(1)}I)=0\)。本征值 = 一阶修正；本征矢 = 「正确零th-阶态」。简并解除后回到非简并公式。</li>
+        <li><strong>Stark 效应</strong>：\(H'=eEz\)（奇宇称）。氢 \(n=2\)：4 重简并，简并微扰 → 线性分裂 \(\Delta E=\pm 3eEa_{0}\)（2s↔2p\(_0\) 耦合，\(m=\pm1\) 不变）。氢 1s：非简并，一阶为零（宇称），二阶 \(\Delta E=-\tfrac12\alpha E^{2}\)，极化率 \(\alpha=\tfrac{9}{2}\cdot 4\pi\varepsilon_{0}a_{0}^{3}=0.667\,\mathrm{\AA^{3}}\)。</li>
+        <li><strong>精细结构</strong>：相对论动能修正 + 自旋-轨道耦合 + Darwin 项，总分裂 \(\sim\alpha^{2}|E_{n}|\)。组合公式 \(E_{n,j}=E_{n}[1+\tfrac{\alpha^{2}}{n}(\tfrac{1}{j+1/2}-\tfrac{3}{4n})]\)，只依赖 \(n,j\)。\(n=2\)：\(2p_{3/2}-2p_{1/2}=4.53\times10^{-5}\,\mathrm{eV}=10.95\,\mathrm{GHz}\)。</li>
+        <li><strong>Zeeman 效应</strong>：\(\Delta E=\mu_{B}Bg_{J}m_{j}\)，\(\mu_{B}=e\hbar/(2m_{e})=5.788\times10^{-5}\,\mathrm{eV/T}\)。Landé 因子 \(g_{J}=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}\)。1 T 时 \(\sim 58\,\mu\mathrm{eV}\)，与 \(n=2\) 精细结构同量级。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\begin{aligned} &\text{非简并: }&&E_{n}^{(1)}=\langle n^{(0)}|H'|n^{(0)}\rangle,\;\; E_{n}^{(2)}=\sum_{m\ne n}\frac{|\langle m^{(0)}|H'|n^{(0)}\rangle|^{2}}{E_{n}^{(0)}-E_{m}^{(0)}}\\[2pt] &\text{简并: }&&\det\!\big[W_{ab}-E^{(1)}\delta_{ab}\big]=0,\;\; W_{ab}=\langle n,a^{(0)}|H'|n,b^{(0)}\rangle\\[2pt] &\text{Stark }n=2:&&\Delta E=\pm 3eEa_{0}\;\text{(线性, 简并)}\\[2pt] &\text{Stark }1s:&&\Delta E=-\tfrac12\alpha E^{2},\;\;\alpha=\tfrac{9}{2}\cdot 4\pi\varepsilon_{0}a_{0}^{3}=0.667\,\mathrm{\AA^{3}}\\[2pt] &\text{精细结构: }&&E_{n,j}=E_{n}\!\left[1+\tfrac{\alpha^{2}}{n}\!\left(\tfrac{1}{j+1/2}-\tfrac{3}{4n}\right)\right]\\[2pt] &\text{Zeeman: }&&\Delta E=\mu_{B}B\,g_{J}m_{j},\;\;\mu_{B}=\frac{e\hbar}{2m_{e}}=5.788\times10^{-5}\,\mathrm{eV/T} \end{aligned}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

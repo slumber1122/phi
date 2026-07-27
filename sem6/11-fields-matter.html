@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 电磁介质 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第六学期 · 第11章 · 电动力学 Electrodynamics</p>
+      <h1>电磁介质 <span class="en-title">Fields in Matter</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>真空中的麦克斯韦方程我们已经熟悉。然而绝大多数真实场景——电容器里的陶瓷、螺线管里的铁芯、光纤、生物组织——都涉及<strong>物质</strong>。本章把电磁学<strong>推广到介质中</strong>（honors 级别，对标 Griffiths 第 4–6 章）。核心思路：介质不「消灭」真空麦克斯韦方程，而是在微观尺度上通过<strong>极化</strong> (polarization) 与<strong>磁化</strong> (magnetization) 产生<strong>束缚源</strong> (bound sources)；把这些束缚源「挪」到两个辅助场 \(\vec D\)、\(\vec H\) 里，剩下「自由源」(free charges / currents) 的方程形式上与真空相同。学完本章你应能：</p>
+      <ul>
+        <li>定义<strong>极化强度</strong> \(\vec P\)（单位体积内的电偶极矩），导出<strong>束缚电荷</strong>——面密度 \(\sigma_{b}=\vec P\cdot\hat n\) 与体密度 \(\rho_{b}=-\nabla\cdot\vec P\)；解释它们如何充当 \(\vec E\) 的源。</li>
+        <li>定义<strong>电位移</strong> \(\vec D=\varepsilon_{0}\vec E+\vec P\)，写出<strong>介质中的高斯定律</strong> \(\nabla\cdot\vec D=\rho_{\text{free}}\)；理解 \(\vec D\) 只「看到」自由电荷。</li>
+        <li>对<strong>线性电介质</strong>写出 \(\vec P=\varepsilon_{0}\chi_{e}\vec E\) 与 \(\vec D=\varepsilon\vec E\)，其中 \(\varepsilon=\varepsilon_{0}(1+\chi_{e})=\varepsilon_{0}\varepsilon_{r}\)；计算填充介质的电容器电容 \(C\to\varepsilon_{r}C_{0}\)。</li>
+        <li>运用静电<strong>边值关系</strong>：\(D_{2}^{\perp}-D_{1}^{\perp}=\sigma_{\text{free}}\)、\(E_{1}^{\parallel}=E_{2}^{\parallel}\)；导出 \"场线弯折\" 公式 \(\tan\theta_{2}=(\varepsilon_{2}/\varepsilon_{1})\tan\theta_{1}\)。</li>
+        <li>定义<strong>磁化强度</strong> \(\vec M\)，导出<strong>束缚电流</strong>——面密度 \(\vec K_{b}=\vec M\times\hat n\) 与体密度 \(\vec J_{b}=\nabla\times\vec M\)；定义<strong>辅助场</strong> \(\vec H=\vec B/\mu_{0}-\vec M\)，写出<strong>介质中的安培定律</strong> \(\nabla\times\vec H=\vec J_{\text{free}}\)。</li>
+        <li>对<strong>线性磁介质</strong> \(\vec B=\mu\vec H\)，\(\mu=\mu_{0}(1+\chi_{m})=\mu_{0}\mu_{r}\)；区分<strong>抗/顺/铁磁性</strong> (dia/para/ferromagnetism)；运用磁边值关系 \(B_{1}^{\perp}=B_{2}^{\perp}\)、\(\vec H_{2}^{\parallel}-\vec H_{1}^{\parallel}=\vec K_{\text{free}}\times\hat n\)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 极化强度 \(\vec P\) 与束缚电荷</h3>
+      <p>把一块电介质置于外电场中，原子 / 分子的正负电荷中心被略微拉开，每个原子变成一个微小的电偶极子。把单位体积内的<strong>总电偶极矩</strong>记为<strong>极化强度</strong> (polarization)：</p>
+      <div class="formula">\[ \boxed{\;\vec P(\vec r)\;\equiv\;\frac{\text{单位体积内的总电偶极矩}}{\Delta V}\;=\;\lim_{\Delta V\to 0}\frac{\sum_{i\in\Delta V}\vec p_{i}}{\Delta V}\;} \]</div>
+      <p>\(\vec P\) 的 SI 单位是 \(\mathrm{C/m^{2}}\)（与面电荷密度同量纲，并非巧合）。介质中相邻偶极子的头尾相接会在介质内部或表面<strong>累积出净电荷</strong>，称为<strong>束缚电荷</strong> (bound charge)——「束缚」意为它们被弹簧般束缚在原子位置，不能像自由电子那样宏观移动。一段体积 \(V\)（表面 \(S\)）内的总束缚电荷恒为零（介质整体电中性），但可分布在表面与内部：</p>
+      <div class="formula">\[ \boxed{\;\sigma_{b}\;=\;\vec P\cdot\hat n\quad(\text{面束缚电荷}),\qquad \rho_{b}\;=\;-\nabla\cdot\vec P\quad(\text{体束缚电荷})\;} \]</div>
+      <p>\(\hat n\) 为介质表面的外法向。<strong>物理理解</strong>：当 \(\vec P\) 散度为零（均匀极化），介质内部无体束缚电荷，但表面依然有 \(\sigma_{b}=\vec P\cdot\hat n\)（因为偶极子一端「暴露」在表面）。当 \(\vec P\) 有非零散度（极化不均匀），偶极子头尾不能局部抵消，介质内部出现体束缚电荷。</p>
+      <p>有了束缚电荷，介质内的 \(\vec E\) 满足<strong>通常的</strong>高斯定律 \(\nabla\cdot\vec E=(\rho_{\text{free}}+\rho_{b})/\varepsilon_{0}\)——总电荷（自由 + 束缚）作源。把 \(\rho_{b}=-\nabla\cdot\vec P\) 代入：\(\varepsilon_{0}\nabla\cdot\vec E=\rho_{\text{free}}-\nabla\cdot\vec P\)，即 \(\nabla\cdot(\varepsilon_{0}\vec E+\vec P)=\rho_{\text{free}}\)。这就引出下一个核心量。</p>
+      <div class="key-terms">polarization \(\vec P\) (极化强度), bound charge (束缚电荷), bound surface charge \(\sigma_{b}=\vec P\cdot\hat n\) (面束缚电荷), bound volume charge \(\rho_{b}=-\nabla\cdot\vec P\) (体束缚电荷)</div>
+
+      <h3>2. 电位移 \(\vec D\) 与介质中的高斯定律</h3>
+      <p>定义<strong>电位移</strong> (electric displacement)：</p>
+      <div class="formula">\[ \boxed{\;\vec D\;\equiv\;\varepsilon_{0}\vec E+\vec P\;} \]</div>
+      <p>\(\vec D\) 的散度只由<strong>自由电荷</strong>决定：</p>
+      <div class="formula">\[ \boxed{\;\nabla\cdot\vec D\;=\;\rho_{\text{free}},\qquad \oint_{S}\vec D\cdot\mathrm d\vec a\;=\;Q_{\text{free,enc}}\;} \]</div>
+      <p>这是<strong>介质中的高斯定律</strong>。它的强大之处：求 \(\vec D\) 时只需考虑自由电荷分布（电极板上、人为放置的电荷），不必先知道 \(\vec P\)。<strong>注意</strong>：\(\vec D\) 的旋度一般不为零（\(\nabla\times\vec D=\nabla\times\vec P-\varepsilon_{0}\nabla\times\vec E=\nabla\times\vec P\)，静电学里 \(\nabla\times\vec E=0\) 但 \(\nabla\times\vec P\) 不一定为零）——所以 \(\vec D\) 一般<strong>不能</strong>写成某个势的梯度，只有 \(\vec E\) 可以。\(\vec D\) 的 SI 单位是 \(\mathrm{C/m^{2}}\)。</p>
+      <div class="key-terms">electric displacement \(\vec D=\varepsilon_{0}\vec E+\vec P\) (电位移), Gauss's law in matter (介质中的高斯定律), free charge \(\rho_{\text{free}}\) (自由电荷)</div>
+
+      <h3>3. 线性电介质：\(\vec P=\varepsilon_{0}\chi_{e}\vec E\)</h3>
+      <p>对大多数电介质（<strong>线性各向同性</strong>介质，linear isotropic dielectric），极化与引起它的电场成正比：</p>
+      <div class="formula">\[ \boxed{\;\vec P\;=\;\varepsilon_{0}\chi_{e}\vec E,\qquad \chi_{e}\;\text{——电极化率 (electric susceptibility)}\;} \]</div>
+      <p>代入 \(\vec D=\varepsilon_{0}\vec E+\vec P\)：</p>
+      <div class="formula">\[ \boxed{\;\vec D\;=\;\varepsilon_{0}(1+\chi_{e})\vec E\;\equiv\;\varepsilon\vec E,\qquad \varepsilon\equiv\varepsilon_{0}(1+\chi_{e})=\varepsilon_{0}\varepsilon_{r}\;} \]</div>
+      <p>其中 \(\varepsilon\) 是介质的<strong>介电常数</strong> (permittivity)，\(\varepsilon_{r}=1+\chi_{e}\) 是<strong>相对介电常数</strong> (relative permittivity / dielectric constant)。常见值：空气 \(\varepsilon_{r}\approx 1.00059\)、玻璃 \(\approx 4\text{–}7\)、云母 \(\approx 5\)、纯水 \(\approx 80\)（水之所以是良溶剂正是因为 \(\varepsilon_{r}\) 大）。对线性介质，\(\vec D\) 与 \(\vec E\) 同向、成正比——此时 \(\nabla\times\vec D=\varepsilon\nabla\times\vec E=0\)，可用 \(\vec D=-\varepsilon\nabla V\) 解边值问题。</p>
+      <div class="key-terms">electric susceptibility \(\chi_{e}\) (电极化率), permittivity \(\varepsilon\) (介电常数), relative permittivity \(\varepsilon_{r}=1+\chi_{e}\) (相对介电常数)</div>
+
+      <h3>4. 静电边值关系</h3>
+      <p>在两种介质（介电常数 \(\varepsilon_{1},\varepsilon_{2}\)）的平面界面，对「药盒」与「矩形回路」应用高斯定律与 \(\nabla\times\vec E=0\)，得：</p>
+      <div class="formula">\[ \boxed{\;D_{2}^{\perp}-D_{1}^{\perp}\;=\;\sigma_{\text{free}},\qquad E_{1}^{\parallel}\;=\;E_{2}^{\parallel}\;} \]</div>
+      <p>\(\sigma_{\text{free}}\) 是界面上的<strong>自由</strong>面电荷密度（不包括束缚电荷）。若界面无自由电荷（最常见情形），\(D_{\perp}\) 连续：\(\varepsilon_{1}E_{1}^{\perp}=\varepsilon_{2}E_{2}^{\perp}\)。结合 \(E_{\parallel}\) 连续，可推出<strong>场线弯折</strong>公式（设 \(\theta_{i}\) 为场线与法向的夹角）：</p>
+      <div class="formula">\[ \boxed{\;\frac{\tan\theta_{2}}{\tan\theta_{1}}\;=\;\frac{\varepsilon_{2}}{\varepsilon_{1}}\;} \]</div>
+      <p>电场线进入高 \(\varepsilon\) 介质时会「远离法向」弯折——本质上 \(\vec E\) 在低 \(\varepsilon\) 区更密集（场更强），\(\vec D\) 在高 \(\varepsilon\) 区更密集。详见仿真。</p>
+      <div class="key-terms">boundary conditions (边值关系), field-line refraction (场线弯折), tangential \(E\) continuous (E 切向连续), normal \(D\) continuous (D 法向连续)</div>
+
+      <h3>5. 磁化强度 \(\vec M\) 与束缚电流</h3>
+      <p>类似地，磁介质中的原子磁矩（来自电子轨道角动量与自旋）在外磁场下排列，单位体积内的<strong>净磁偶极矩</strong>称为<strong>磁化强度</strong> (magnetization)：</p>
+      <div class="formula">\[ \boxed{\;\vec M(\vec r)\;\equiv\;\lim_{\Delta V\to 0}\frac{\sum_{i\in\Delta V}\vec m_{i}}{\Delta V}\;(\mathrm{A/m})\;} \]</div>
+      <p>相邻原子电流环可以等效为「在介质内部流动的电流」——<strong>束缚电流</strong> (bound current)。证明（见推导 C）：体电流密度 \(\vec J_{b}=\nabla\times\vec M\)，面电流密度 \(\vec K_{b}=\vec M\times\hat n\)：</p>
+      <div class="formula">\[ \boxed{\;\vec J_{b}\;=\;\nabla\times\vec M\quad(\text{体束缚电流}),\qquad \vec K_{b}\;=\;\vec M\times\hat n\quad(\text{面束缚电流})\;} \]</div>
+      <p><strong>物理图像</strong>：相邻电流环在介质内部电流方向相反、互相抵消；但在表面，最外层的电流环没有邻居抵消，留下「绕介质表面」的电流。若 \(\vec M\) 不均匀（\(\nabla\times\vec M\ne 0\)），介质内部亦有束缚电流。</p>
+      <div class="key-terms">magnetization \(\vec M\) (磁化强度), bound volume current \(\vec J_{b}=\nabla\times\vec M\) (体束缚电流), bound surface current \(\vec K_{b}=\vec M\times\hat n\) (面束缚电流)</div>
+
+      <h3>6. 辅助场 \(\vec H\) 与介质中的安培定律</h3>
+      <p>真空中安培定律 \(\nabla\times\vec B=\mu_{0}\vec J_{\text{total}}\)，其中 \(\vec J_{\text{total}}=\vec J_{\text{free}}+\vec J_{b}\)。把 \(\vec J_{b}=\nabla\times\vec M\) 代入：\(\nabla\times\vec B=\mu_{0}\vec J_{\text{free}}+\mu_{0}\nabla\times\vec M\)，即 \(\nabla\times(\vec B/\mu_{0}-\vec M)=\vec J_{\text{free}}\)。定义<strong>辅助场</strong> \(\vec H\)：</p>
+      <div class="formula">\[ \boxed{\;\vec H\;\equiv\;\frac{\vec B}{\mu_{0}}-\vec M\;} \]</div>
+      <p>得<strong>介质中的安培定律</strong>：</p>
+      <div class="formula">\[ \boxed{\;\nabla\times\vec H\;=\;\vec J_{\text{free}},\qquad \oint_{C}\vec H\cdot\mathrm d\vec l\;=\;I_{\text{free,enc}}\;} \]</div>
+      <p>\(\vec H\) 只「看到」自由电流——这对螺线管绕组电流等极易处理。\(\vec H\) 的 SI 单位是 \(\mathrm{A/m}\)（与 \(\vec M\) 相同）。<strong>注意</strong>：\(\nabla\cdot\vec H=-\nabla\cdot\vec M\) 一般不为零（\(\vec B\) 无散但 \(\vec M\) 不一定无散），所以 \(\vec H\) 一般<strong>不能</strong>写成某个标势的负梯度（除非在无磁化区或特定对称下）。在物理上，洛伦兹力 \(\vec F=q\vec v\times\vec B\) 用的是 \(\vec B\)，<strong>不是</strong> \(\vec H\)——\(\vec H\) 是数学便利。</p>
+      <div class="key-terms">auxiliary field \(\vec H=\vec B/\mu_{0}-\vec M\) (辅助场 H), Ampère's law in matter (介质中的安培定律), free current \(\vec J_{\text{free}}\) (自由电流)</div>
+
+      <h3>7. 线性磁介质：抗 / 顺 / 铁磁性</h3>
+      <p>对<strong>线性各向同性</strong>磁介质：</p>
+      <div class="formula">\[ \boxed{\;\vec M\;=\;\chi_{m}\vec H,\qquad \vec B\;=\;\mu\vec H,\qquad \mu\;=\;\mu_{0}(1+\chi_{m})\;=\;\mu_{0}\mu_{r}\;} \]</div>
+      <p>\(\chi_{m}\) 是<strong>磁化率</strong> (magnetic susceptibility)，\(\mu_{r}=1+\chi_{m}\) 是<strong>相对磁导率</strong>。按 \(\chi_{m}\) 的正负与大小区分三类磁介质：</p>
+      <ul>
+        <li><strong>抗磁性 (diamagnetic)</strong>：\(\chi_{m}<0\)（典型 \(\sim -10^{-5}\)），\(\vec M\) 反平行于 \(\vec B\)。所有材料都有抗磁响应（楞次定律式的「抗拒」），但在另两类中被掩盖。例子：铋、铜、水、超导体（\(\chi_{m}\approx -1\)，完美抗磁，Meissner 效应）。</li>
+        <li><strong>顺磁性 (paramagnetic)</strong>：\(\chi_{m}>0\)（典型 \(\sim +10^{-5}\) 到 \(10^{-3}\)），\(\vec M\) 平行 \(\vec B\)。源自具有固有磁矩的原子（未配对电子）沿场排列，与热运动对抗。例子：铝、铂、氧分子、稀土离子。服从 Curie 定律 \(\chi_{m}\propto 1/T\)。</li>
+        <li><strong>铁磁性 (ferromagnetic)</strong>：\(\chi_{m}\gg 1\)（可达 \(10^{3}\text{–}10^{5}\)），且<strong>非线性</strong>、<strong>有磁滞</strong> (hysteresis)。源于相邻原子磁矩的交换相互作用 (exchange interaction) 自发平行排列形成<strong>磁畴</strong> (domains)。例子：铁、钴、镍及诸多合金。温度超过<strong>居里温度</strong> \(T_{C}\) 时变为顺磁（铁的 \(T_{C}\approx 770^{\circ}\mathrm{C}\)）。</li>
+      </ul>
+      <p><strong>关键警告</strong>：\(\vec B=\mu\vec H\) 仅对线性介质成立。铁磁体的 \(\vec B\) 与 \(\vec H\) 关系由<strong>磁滞回线</strong> (hysteresis loop) 描述——同一 \(\vec H\) 可对应不同 \(\vec B\)（取决于历史），且存在<strong>饱和</strong> (saturation) 与<strong>剩磁</strong> (remanence)。永久磁铁就是利用剩磁。</p>
+      <div class="key-terms">magnetic susceptibility \(\chi_{m}\) (磁化率), diamagnetism (抗磁性), paramagnetism (顺磁性), ferromagnetism (铁磁性), hysteresis (磁滞), magnetic domain (磁畴)</div>
+
+      <h3>8. 静磁边值关系</h3>
+      <p>应用 \(\nabla\cdot\vec B=0\)（小药盒）与 \(\nabla\times\vec H=\vec J_{\text{free}}\)（小矩形回路）于界面：</p>
+      <div class="formula">\[ \boxed{\;B_{1}^{\perp}\;=\;B_{2}^{\perp}\quad(\text{法向连续}),\qquad \vec H_{2}^{\parallel}-\vec H_{1}^{\parallel}\;=\;\vec K_{\text{free}}\times\hat n\quad(\text{切向跃变})\;} \]</div>
+      <p>若界面无自由面电流（\(\vec K_{\text{free}}=0\)），\(H_{\parallel}\) 连续：\(B_{1}^{\parallel}/\mu_{1}=B_{2}^{\parallel}/\mu_{2}\)。结合 \(B_{\perp}\) 连续，得<strong>磁场线弯折</strong>公式（形式上与电介质对偶）：</p>
+      <div class="formula">\[ \boxed{\;\frac{\tan\theta_{2}}{\tan\theta_{1}}\;=\;\frac{\mu_{2}}{\mu_{1}}\;} \]</div>
+      <p>磁场线进入高 \(\mu\) 材料（如铁）时强烈「远离法向」——\(\mu_{r}=1000\)、\(\theta_{1}=30^{\circ}\) 时 \(\theta_{2}\approx 89.9^{\circ}\)。这就是<strong>磁屏蔽</strong> (magnetic shielding) 的原理：高 \(\mu\) 材料把磁感线「吸」进自身，使内部空腔接近无场。</p>
+      <div class="key-terms">normal \(B\) continuous (B 法向连续), tangential \(H\) continuous (H 切向连续), magnetic shielding (磁屏蔽)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从偶极子图像到 \(\rho_{b}=-\nabla\cdot\vec P\) 与 \(\sigma_{b}=\vec P\cdot\hat n\)</h3>
+      <p>把介质模型化为数密度 \(n\) 的微观偶极子 \(\vec p=q\vec d\)（\(\vec d\) 从 \(-q\) 指向 \(+q\)），则 \(\vec P=n\vec p=nq\vec d\)。考察介质内任意闭合面 \(S\)（包围体积 \(V\)）：穿出 \(S\) 的「正电荷」总数等于「偶极子的 \(+q\) 端在外、\(-q\) 端在内」的偶极子数。对面积元 \(\mathrm d\vec a=\hat n\,\mathrm da\)，只有那些偶极子，其 \(\vec d\) 在 \(\mathrm d\vec a\) 方向投影为正且 \(\vec d\cdot\hat n\) 跨越 \(S\)，会贡献。一个偶极子贡献 \(+q\)（端点跨越）当且仅当其位于 \(S\) 邻近薄层内（厚度 \(|\vec d\cdot\hat n|\)）。精确计算：穿出 \(S\) 的正电荷量</p>
+      <div class="formula">\[ Q_{\text{out}}\;=\;\oint_{S}\vec P\cdot\mathrm d\vec a \]</div>
+      <p>（每单位面积、单位时间跨越的电荷 = \(\vec P\cdot\hat n\)）。既然介质整体电中性，留在 \(V\) 内的净束缚电荷为</p>
+      <div class="formula">\[ Q_{b,\text{enc}}\;=\;-Q_{\text{out}}\;=\;-\oint_{S}\vec P\cdot\mathrm d\vec a\;=\;\int_{V}(-\nabla\cdot\vec P)\,\mathrm d^{3}r \]</div>
+      <p>最后等号用散度定理。因 \(V\) 任意，被积函数给出体束缚电荷密度：</p>
+      <div class="formula">\[ \boxed{\;\rho_{b}\;=\;-\nabla\cdot\vec P\;} \]</div>
+      <p>对有限大小介质，应用同一论证到<strong>表面</strong>：紧贴表面的薄层内 \(\vec P\) 突然降为零（介质外 \(\vec P=0\)），\(-\nabla\cdot\vec P\) 在表面成 delta 函数。形式上：在表面附近，\(\vec P\) 由内向外从 \(\vec P_{\text{in}}\) 跃变到零，\(\nabla\cdot\vec P\) 含 \(-\vec P_{\text{in}}\cdot\hat n\,\delta(\text{表面})\) 项，对应面密度 \(\sigma_{b}=\vec P\cdot\hat n\)（\(\hat n\) 为外法向）。</p>
+
+      <h3>推导 B：介质高斯定律 \(\nabla\cdot\vec D=\rho_{\text{free}}\)</h3>
+      <p>真空中静电高斯定律 \(\nabla\cdot\vec E=\rho_{\text{total}}/\varepsilon_{0}\)，其中总电荷 \(\rho_{\text{total}}=\rho_{\text{free}}+\rho_{b}\)。代入 \(\rho_{b}=-\nabla\cdot\vec P\)：</p>
+      <div class="formula">\[ \nabla\cdot\vec E\;=\;\frac{\rho_{\text{free}}-\nabla\cdot\vec P}{\varepsilon_{0}}\;\Longrightarrow\;\varepsilon_{0}\nabla\cdot\vec E+\nabla\cdot\vec P\;=\;\rho_{\text{free}} \]</div>
+      <p>由矢量恒等式 \(\nabla\cdot(\varepsilon_{0}\vec E+\vec P)=\varepsilon_{0}\nabla\cdot\vec E+\nabla\cdot\vec P\)，定义 \(\vec D\equiv\varepsilon_{0}\vec E+\vec P\) 立得：</p>
+      <div class="formula">\[ \boxed{\;\nabla\cdot\vec D\;=\;\rho_{\text{free}}\;} \]</div>
+      <p>注意我们并未「丢弃」束缚电荷——它仍藏在 \(\vec P\)（即 \(\vec D\) 与 \(\vec E\) 之差）里。给定 \(\vec D\)，由 \(\vec E=\vec D/\varepsilon\)（线性介质）即可还原 \(\vec E\)，再由 \(\vec P=\vec D-\varepsilon_{0}\vec E\) 还原 \(\vec P\) 与 \(\sigma_{b},\rho_{b}\)。</p>
+
+      <h3>推导 C：从磁偶极子图像到 \(\vec J_{b}=\nabla\times\vec M\) 与 \(\vec K_{b}=\vec M\times\hat n\)</h3>
+      <p>把磁介质模型化为数密度 \(n\) 的微观电流环（每个电流环磁矩 \(\vec m=I_{\text{atom}}\vec a\)，\(\vec a\) 为环围面积矢量），则 \(\vec M=n\vec m\)。考察介质内任意闭合曲线 \(C\)（围面积 \(S\)）：净穿过 \(S\) 的束缚电流等于「被 \(C\) 切割」的电流环数 × 单环电流 \(I_{\text{atom}}\)。一个电流环被 \(C\) 切割当且仅当它的环面跨越 \(C\) 的边界线。细致分析（每个体积元 \(\mathrm d^{3}r\) 内电流 \(\vec J_{\text{atom}}\) 贡献到 \(\oint_{C}\vec M\cdot\mathrm d\vec l\)）给出：</p>
+      <div class="formula">\[ I_{b,\text{enc}}\;=\;\oint_{C}\vec M\cdot\mathrm d\vec l\;=\;\int_{S}(\nabla\times\vec M)\cdot\mathrm d\vec a \]</div>
+      <p>最后等号用 Stokes 定理。故体束缚电流密度：</p>
+      <div class="formula">\[ \boxed{\;\vec J_{b}\;=\;\nabla\times\vec M\;} \]</div>
+      <p>对有限介质，\(\vec M\) 在表面突然降为零，\(\nabla\times\vec M\) 含表面 delta 项，对应面束缚电流：</p>
+      <div class="formula">\[ \boxed{\;\vec K_{b}\;=\;\vec M\times\hat n\;} \]</div>
+      <p>\(\hat n\) 为外法向。<strong>方向检验</strong>：均匀磁化的圆柱（\(\vec M=M_{0}\hat z\) 沿轴），在弯曲侧面 \(\hat n=\hat s\)（径向），\(\vec K_{b}=M_{0}\hat z\times\hat s=M_{0}\hat\phi\)——方位角方向，正好等效于一个螺线管的绕组电流！这就是「永久磁铁等效于螺线管」的根源。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 均匀极化球的束缚电荷</h4>
+        <p class="example-statement">一个半径 \(R=2.0\,\mathrm{cm}\) 的均匀极化介质球，极化强度 \(\vec P=P_{0}\hat z\)，\(P_{0}=5.0\times 10^{-7}\,\mathrm{C/m^{2}}\)。(a) 求体束缚电荷密度 \(\rho_{b}\)；(b) 求面束缚电荷密度 \(\sigma_{b}(\theta)\)（\(\theta\) 为极角，从 \(+z\) 量起）；(c) 求总束缚电荷量；(d) 求该球的等效电偶极矩 \(\vec p\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 因 \(\vec P=P_{0}\hat z\) 为常矢量，\(\nabla\cdot\vec P=0\)，故</p>
+          <p class="step">\(\rho_{b}=0\)（介质内部无体束缚电荷）。</p>
+          <p class="step">(b) 在球面 \(\hat n=\hat r\)，使用 \(\hat z\cdot\hat r=\cos\theta\)：</p>
+          <div class="formula">\[ \sigma_{b}(\theta)\;=\;\vec P\cdot\hat r\;=\;P_{0}\cos\theta \]</div>
+          <p class="step">在「北极」(\(\theta=0\))：\(\sigma_{b}=+P_{0}=+5.0\times 10^{-7}\,\mathrm{C/m^{2}}\)；在「南极」(\(\theta=\pi\))：\(\sigma_{b}=-5.0\times 10^{-7}\,\mathrm{C/m^{2}}\)；赤道 (\(\theta=\pi/2\)) 为零。</p>
+          <p class="step">(c) 总束缚电荷（应等于零，验证介质整体电中性）：</p>
+          <p class="step">\(Q_{b,\text{面}}=\displaystyle\oint\sigma_{b}\,\mathrm da=P_{0}\int_{0}^{\pi}\cos\theta\cdot 2\pi R^{2}\sin\theta\,\mathrm d\theta=2\pi R^{2}P_{0}\Big[-\tfrac{1}{2}\cos^{2}\theta\Big]_{0}^{\pi}=\pi R^{2}P_{0}(\cos^{2}0-\cos^{2}\pi)=0\) ✓</p>
+          <p class="step">(d) 总偶极矩 \(\vec p=\displaystyle\int_{V}\vec P\,\mathrm d^{3}r=P_{0}\hat z\cdot\tfrac{4}{3}\pi R^{3}\)：</p>
+          <div class="formula">\[ \vec p\;=\;\tfrac{4}{3}\pi R^{3}P_{0}\,\hat z\;=\;\tfrac{4}{3}\pi(2.0\times 10^{-2})^{3}(5.0\times 10^{-7})\hat z\;=\;1.68\times 10^{-11}\,\hat z\;\mathrm{C\cdot m}\;=\;16.8\,\hat z\;\mathrm{pC\cdot m} \]</div>
+          <p class="step"><strong>附加</strong>：均匀极化球外 (\(r>R\)) 的电场恰为这个偶极矩的偶极场，\(\vec E_{\text{out}}=\dfrac{1}{4\pi\varepsilon_{0}}\dfrac{3(\vec p\cdot\hat r)\hat r-\vec p}{r^{3}}\)；球内 (\(r<R\)) 是均匀场 \(\vec E_{\text{in}}=-\dfrac{\vec P}{3\varepsilon_{0}}=-\dfrac{5.0\times 10^{-7}}{3\times 8.854\times 10^{-12}}\hat z=-1.88\times 10^{4}\hat z\,\mathrm{V/m}\)（<strong>退极化场</strong>，与 \(\vec P\) 反向）。</p>
+          <p><span class="ans">\(\rho_{b}=0\)；\(\sigma_{b}=P_{0}\cos\theta\)（最大 \(\pm 5.0\times 10^{-7}\,\mathrm{C/m^{2}}\)）；总束缚电荷 \(=0\)；\(\vec p=16.8\,\hat z\;\mathrm{pC\cdot m}\)；球内 \(\vec E_{\text{in}}\approx -1.88\times 10^{4}\hat z\,\mathrm{V/m}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 介质填充平行板电容器：\(C\to\varepsilon_{r}C_{0}\)</h4>
+        <p class="example-statement">平行板电容器极板面积 \(A=100\,\mathrm{cm^{2}}=1.00\times 10^{-2}\,\mathrm{m^{2}}\)、间距 \(d=1.00\,\mathrm{mm}=1.00\times 10^{-3}\,\mathrm{m}\)，极板间填满相对介电常数 \(\varepsilon_{r}=3.0\) 的线性电介质（如某种塑料）。电池维持极板间电压 \(V=12.0\,\mathrm{V}\)。(a) 求介质中 \(\vec D\)、\(\vec E\)、\(\vec P\)；(b) 求极板上的自由电荷 \(Q_{\text{free}}\)；(c) 求电容 \(C\) 并与真空电容 \(C_{0}\) 比较；(d) 求介质表面的束缚面电荷密度 \(\sigma_{b}\)，验证 \(|Q_{b}|/Q_{\text{free}}=1-1/\varepsilon_{r}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>设 \(\vec E\) 沿 \(+\hat z\)（从正极板指向负极板）。</p>
+          <p class="step">(a) 由电压：\(E=V/d=12.0/(1.00\times 10^{-3})=1.20\times 10^{4}\,\mathrm{V/m}\)。</p>
+          <p class="step">\(\vec D=\varepsilon\vec E=\varepsilon_{0}\varepsilon_{r}\vec E=(8.854\times 10^{-12})(3.0)(1.20\times 10^{4})=3.19\times 10^{-7}\,\mathrm{C/m^{2}}\)，方向沿 \(+\hat z\)。</p>
+          <p class="step">\(\vec P=\vec D-\varepsilon_{0}\vec E=(\varepsilon_{r}-1)\varepsilon_{0}\vec E=2.0\times(8.854\times 10^{-12})(1.20\times 10^{4})=2.13\times 10^{-7}\,\mathrm{C/m^{2}}\)，方向 \(+\hat z\)。</p>
+          <p class="step">(b) 高斯定律（介质中）：取「药盒」包围正极板内表面，\(\mathrm d\vec a\) 指向介质，\(D_{\perp}=\sigma_{\text{free}}\)。故</p>
+          <p class="step">\(Q_{\text{free}}=D\cdot A=(3.19\times 10^{-7})(1.00\times 10^{-2})=3.19\times 10^{-9}\,\mathrm{C}=3.19\,\mathrm{nC}\)。</p>
+          <p class="step">(c) 电容 \(C=Q_{\text{free}}/V=3.19\times 10^{-9}/12.0=2.66\times 10^{-10}\,\mathrm{F}=266\,\mathrm{pF}\)。</p>
+          <p class="step">对比真空电容 \(C_{0}=\varepsilon_{0}A/d=(8.854\times 10^{-12})(1.00\times 10^{-2})/(1.00\times 10^{-3})=8.85\times 10^{-11}\,\mathrm{F}=88.5\,\mathrm{pF}\)。</p>
+          <p class="step">比值 \(C/C_{0}=266/88.5=3.00=\varepsilon_{r}\) ✓。这正是「介质使电容增大 \(\varepsilon_{r}\) 倍」：</p>
+          <div class="formula">\[ \boxed{\;C\;=\;\frac{\varepsilon A}{d}\;=\;\varepsilon_{r}\cdot\frac{\varepsilon_{0}A}{d}\;=\;\varepsilon_{r}C_{0}\;} \]</div>
+          <p class="step">(d) 在介质上表面（紧贴正极板，外法向 \(\hat n=-\hat z\)）：</p>
+          <p class="step">\(\sigma_{b}^{\text{上}}=\vec P\cdot\hat n=(2.13\times 10^{-7}\hat z)\cdot(-\hat z)=-2.13\times 10^{-7}\,\mathrm{C/m^{2}}\)（<strong>负</strong>，屏蔽正极板上的 \(+\sigma_{\text{free}}\)）。</p>
+          <p class="step">下表面（\(\hat n=+\hat z\)）：\(\sigma_{b}^{\text{下}}=+2.13\times 10^{-7}\,\mathrm{C/m^{2}}\)（正）。</p>
+          <p class="step"><strong>验证</strong>：\(|\sigma_{b}|/\sigma_{\text{free}}=2.13\times 10^{-7}/3.19\times 10^{-7}=0.667=1-1/\varepsilon_{r}=1-1/3=2/3\) ✓。</p>
+          <p class="step"><strong>物理理解</strong>：介质表面的束缚电荷部分「抵消」了极板上自由电荷的场，使 \(E\) 比真空时小（同一 \(V\) 下），故极板需充入更多 \(Q_{\text{free}}\) 才能维持电压——\(C\) 增大。</p>
+          <p><span class="ans">\(D=3.19\times 10^{-7}\,\mathrm{C/m^{2}}\)，\(E=1.20\times 10^{4}\,\mathrm{V/m}\)，\(P=2.13\times 10^{-7}\,\mathrm{C/m^{2}}\)；\(Q_{\text{free}}=3.19\,\mathrm{nC}\)；\(C=266\,\mathrm{pF}=3C_{0}\)；\(|\sigma_{b}|=2.13\times 10^{-7}\,\mathrm{C/m^{2}}\)，比值 \(2/3=1-1/\varepsilon_{r}\) ✓。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 均匀磁化圆柱的束缚电流（等效螺线管）</h4>
+        <p class="example-statement">一个长 \(L=10.0\,\mathrm{cm}\)、半径 \(R=1.0\,\mathrm{cm}\) 的圆柱形永久磁铁，沿轴向均匀磁化 \(\vec M=M_{0}\hat z\)，\(M_{0}=1.00\times 10^{5}\,\mathrm{A/m}\)（接近钕磁铁的典型值）。(a) 求体束缚电流密度 \(\vec J_{b}\)；(b) 求面束缚电流密度 \(\vec K_{b}\)（分曲面与端面）；(c) 把磁铁等效为螺线管，求等效的 \(nI\)（单位长度安培匝数）；(d) 视为「长」螺线管（\(L\gg R\)），求磁铁内部中央处的 \(\vec B\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \(\vec J_{b}=\nabla\times\vec M=\nabla\times(M_{0}\hat z)=\vec 0\)（常矢量的旋度为零）。</p>
+          <p class="step">(b) 曲面（侧面）：外法向 \(\hat n=\hat s\)（柱坐标径向），</p>
+          <div class="formula">\[ \vec K_{b}^{\text{侧面}}\;=\;\vec M\times\hat n\;=\;M_{0}\hat z\times\hat s\;=\;M_{0}\hat\phi\;=\;(1.00\times 10^{5})\hat\phi\;\mathrm{A/m} \]</div>
+          <p class="step">方向沿 \(+\hat\phi\)（绕 \(+z\) 轴右手定则）。端面（上端 \(\hat n=+\hat z\)、下端 \(\hat n=-\hat z\)）：</p>
+          <p class="step">\(\vec K_{b}^{\text{端面}}=\vec M\times(\pm\hat z)=M_{0}\hat z\times(\pm\hat z)=\vec 0\)。</p>
+          <p class="step"><strong>结论</strong>：仅侧面有束缚电流，绕柱面环流——与一个面电流密度 \(K=M_{0}\) 的螺线管绕组<strong>完全等效</strong>。</p>
+          <p class="step">(c) 螺线管的等效：理想螺线管的 \(K_{\text{surf}}=nI\)（\(n\) 为单位长度匝数、\(I\) 为每匝电流），故</p>
+          <p class="step">\(nI=K_{b}=M_{0}=1.00\times 10^{5}\,\mathrm{A/m}\)。</p>
+          <p class="step">例如，若 \(n=1000\,\mathrm{turns/m}\)，则等效电流 \(I=M_{0}/n=100\,\mathrm{A}\)。</p>
+          <p class="step">(d) 理想长螺线管内部磁场 \(B=\mu_{0}nI\)，故</p>
+          <div class="formula">\[ \vec B_{\text{in}}\;\approx\;\mu_{0}M_{0}\hat z\;=\;(4\pi\times 10^{-7})(1.00\times 10^{5})\hat z\;=\;0.126\,\hat z\;\mathrm T\;=\;126\,\hat z\;\mathrm{mT} \]</div>
+          <p class="step"><strong>注</strong>：此近似对「无限长」成立。实际有限长磁铁中心处 \(B\) 略小（约 \(0.12\,\mathrm T\)），两端面附近更小（约一半）。注意 \(\vec H_{\text{in}}=\vec B/\mu_{0}-\vec M\approx\vec 0\)——永久磁铁内部 \(\vec H\approx 0\)，因无自由电流（\(\nabla\times\vec H=\vec J_{\text{free}}=0\)，且磁铁外部 \(\vec H\) 与 \(\vec B\) 反向）。</p>
+          <p class="step"><strong>关键认识</strong>：永久磁铁的磁场来源不是「磁荷」（无磁单极），而是<strong>原子电流环</strong>的宏观等效——即束缚电流 \(\vec K_{b}=\vec M\times\hat n\)。把条形磁铁想象成螺线管即可理解其场线（外部从 N 极回到 S 极，内部从 S 指向 N）。</p>
+          <p><span class="ans">\(\vec J_{b}=0\)；侧面 \(\vec K_{b}=1.00\times 10^{5}\hat\phi\,\mathrm{A/m}\)，端面 \(=0\)；等效 \(nI=10^{5}\,\mathrm{A/m}\)；\(\vec B_{\text{in}}\approx 0.126\hat z\,\mathrm T\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 带铁芯的螺线管：\(\vec H\) 与 \(\vec B\)</h4>
+        <p class="example-statement">一个长螺线管（匝数密度 \(n=2000\,\mathrm{turns/m}\)，电流 \(I=0.50\,\mathrm A\)）内部密绕一个相对磁导率 \(\mu_{r}=500\) 的软铁芯（可视为线性磁介质，忽略磁滞）。求：(a) 绕组电流对应的自由电流密度 \(\vec J_{\text{free}}\) 与 \(\vec H\)（芯内中央）；(b) 芯内 \(\vec B\) 与 \(\vec M\)；(c) 芯内的束缚电流密度 \(\vec K_{b}\)（柱面）；(d) 与无铁芯时 \(\vec B_{0}\) 比较，验证 \(\vec B=\mu_{r}\vec B_{0}\)；(e) 求螺线管单位体积储磁能 \(u\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 对环路 \(C\)（沿轴线长度 \(l\)，绕过匝数 \(N=nl\)）应用 \(\oint\vec H\cdot\mathrm d\vec l=I_{\text{free,enc}}\)：</p>
+          <p class="step">\(H\cdot l=nIl\Rightarrow H=nI=2000\times 0.50=1.00\times 10^{3}\,\mathrm{A/m}\)，方向沿 \(+\hat z\)（轴向）。</p>
+          <p class="step"><strong>关键</strong>：\(\vec H\) <strong>与介质无关</strong>，只由自由电流决定——无论有无铁芯，\(H=1000\,\mathrm{A/m}\)。</p>
+          <p class="step">(b) 由线性介质 \(\vec B=\mu\vec H=\mu_{0}\mu_{r}\vec H\)：</p>
+          <div class="formula">\[ \vec B=(4\pi\times 10^{-7})(500)(1.00\times 10^{3})\hat z=0.628\,\hat z\;\mathrm T=628\,\hat z\;\mathrm{mT} \]</div>
+          <p class="step">\(\vec M=\chi_{m}\vec H=(\mu_{r}-1)\vec H=499\times 1000\hat z=4.99\times 10^{5}\hat z\,\mathrm{A/m}\)。</p>
+          <p class="step">(c) 芯柱面（\(\hat n=\hat s\)）束缚电流：</p>
+          <p class="step">\(\vec K_{b}=\vec M\times\hat s=M_{0}\hat z\times\hat s=M_{0}\hat\phi=4.99\times 10^{5}\hat\phi\,\mathrm{A/m}\)。</p>
+          <p class="step"><strong>对比绕组电流</strong>：螺线管绕组的「等效面电流」\(K_{\text{free}}=nI=1000\,\mathrm{A/m}\)。束缚电流是它的 499 倍——铁芯之所以能把磁场放大约 500 倍，正是因为磁化产生的束缚电流远超绕组本身。</p>
+          <p class="step">(d) 无铁芯时 \(\vec B_{0}=\mu_{0}\vec H=(4\pi\times 10^{-7})(1000)\hat z=1.26\times 10^{-3}\hat z\,\mathrm T=1.26\,\hat z\,\mathrm{mT}\)。</p>
+          <p class="step">比值 \(B/B_{0}=628/1.26=499\approx\mu_{r}\) ✓。</p>
+          <p class="step"><strong>注</strong>：实际软铁会<strong>饱和</strong>（饱和磁化约 \(B_{\text{sat}}\sim 1.5\text{–}2\,\mathrm T\)）。本例 \(B=0.63\,\mathrm T\) 尚在近似线性区。若把 \(\mu_{r}\) 调到 5000，按线性预测 \(B=6.28\,\mathrm T\) 远超饱和，实际不可能——铁磁不是线性的。</p>
+          <p class="step">(e) 磁能密度（线性介质中）\(u=\frac{1}{2}\vec B\cdot\vec H=\frac{1}{2}(0.628)(1000)=314\,\mathrm{J/m^{3}}\)。</p>
+          <p class="step"><strong>对比真空</strong>：\(u_{0}=\frac{1}{2}\vec B_{0}\cdot\vec H=0.5(1.26\times 10^{-3})(1000)=0.63\,\mathrm{J/m^{3}}\)。能量密度比 \(u/u_{0}=499\approx\mu_{r}\)——铁芯储能能力提高约 500 倍，这是电感器 (inductor) 加铁芯的理由。</p>
+          <p><span class="ans">\(H=1000\,\mathrm{A/m}\)（与介质无关）；\(B=0.628\,\mathrm T\)，\(M=4.99\times 10^{5}\,\mathrm{A/m}\)；\(|\vec K_{b}|=4.99\times 10^{5}\,\mathrm{A/m}\)（约 500 倍绕组电流）；\(B/B_{0}\approx\mu_{r}=500\) ✓；\(u=314\,\mathrm{J/m^{3}}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 电介质界面的场线弯折</h4>
+        <p class="example-statement">介质 1（真空，\(\varepsilon_{1}=\varepsilon_{0}\)）与介质 2（电介质，\(\varepsilon_{r}=4.0\)，故 \(\varepsilon_{2}=4\varepsilon_{0}\)）以平面界面接触，界面法向 \(\hat n=+\hat x\)（由 1 指向 2）。介质 1 中均匀电场 \(\vec E_{1}=E_{0}(\sin\theta_{1}\,\hat x+\cos\theta_{1}\,\hat y)\)？—— 重新设定坐标：让法向为 \(x\)，则 \(\vec E\) 与法向夹角为 \(\theta_{1}=30^{\circ}\)，与界面夹角为余角。设 \(|\vec E_{1}|=E_{0}=200\,\mathrm{V/m}\)。界面无自由面电荷。(a) 求介质 2 中 \(\vec E_{2}\) 的大小与方向（角度 \(\theta_{2}\)）；(b) 求 \(|\vec D_{1}|\)、\(|\vec D_{2}|\)；(c) 验证 \(D_{1}^{\perp}=D_{2}^{\perp}\)；(d) 解释为何 \(|\vec E_{2}|<|\vec E_{1}|\) 而 \(|\vec D_{2}|>|\vec D_{1}|\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取界面法向 \(\hat n=\hat x\)。把 \(\vec E_{1}\) 分解为法向 (\(\perp\hat x\)) 与切向 (\(\parallel\hat y\))：</p>
+          <p class="step">\(E_{1}^{\perp}=E_{0}\cos\theta_{1}=200\cos 30^{\circ}=200(0.866)=173\,\mathrm{V/m}\)；</p>
+          <p class="step">\(E_{1}^{\parallel}=E_{0}\sin\theta_{1}=200\sin 30^{\circ}=200(0.500)=100\,\mathrm{V/m}\)。</p>
+          <p class="step">(a) 边值关系：\(E_{\parallel}\) 连续 → \(E_{2}^{\parallel}=E_{1}^{\parallel}=100\,\mathrm{V/m}\)。\(D_{\perp}\) 连续（无自由面电荷）→ \(\varepsilon_{2}E_{2}^{\perp}=\varepsilon_{1}E_{1}^{\perp}\) → \(E_{2}^{\perp}=(\varepsilon_{1}/\varepsilon_{2})E_{1}^{\perp}=(1/4)(173)=43.3\,\mathrm{V/m}\)。</p>
+          <p class="step">故 \(|\vec E_{2}|=\sqrt{(E_{2}^{\parallel})^{2}+(E_{2}^{\perp})^{2}}=\sqrt{100^{2}+43.3^{2}}=\sqrt{10000+1875}=\sqrt{11875}=109\,\mathrm{V/m}\)。</p>
+          <p class="step">角度 \(\theta_{2}=\arctan(E_{2}^{\parallel}/E_{2}^{\perp})=\arctan(100/43.3)=\arctan(2.31)=66.6^{\circ}\)。</p>
+          <p class="step"><strong>验证</strong>用弯折公式：\(\tan\theta_{2}=(\varepsilon_{2}/\varepsilon_{1})\tan\theta_{1}=4\tan 30^{\circ}=4(0.577)=2.31\) ✓。介质中场线<strong>远离法向</strong>弯折（\(\theta_{2}>\theta_{1}\)）。</p>
+          <p class="step">(b) \(|\vec D_{1}|=\varepsilon_{1}|\vec E_{1}|=\varepsilon_{0}(200)=(8.854\times 10^{-12})(200)=1.77\times 10^{-9}\,\mathrm{C/m^{2}}=1.77\,\mathrm{nC/m^{2}}\)。</p>
+          <p class="step">\(|\vec D_{2}|=\varepsilon_{2}|\vec E_{2}|=4\varepsilon_{0}(109)=(4)(8.854\times 10^{-12})(109)=3.86\times 10^{-9}\,\mathrm{C/m^{2}}=3.86\,\mathrm{nC/m^{2}}\)。</p>
+          <p class="step">(c) 验证法向 \(D\) 连续：\(D_{1}^{\perp}=\varepsilon_{1}E_{1}^{\perp}=\varepsilon_{0}(173)=1.53\times 10^{-9}\,\mathrm{C/m^{2}}\)。</p>
+          <p class="step">\(D_{2}^{\perp}=\varepsilon_{2}E_{2}^{\perp}=4\varepsilon_{0}(43.3)=1.53\times 10^{-9}\,\mathrm{C/m^{2}}\) ✓（相等）。</p>
+          <p class="step">(d) <strong>物理理解</strong>：界面无自由电荷，故进入与离开界面的 \(\vec D\) 通量必须相等（\(D_{\perp}\) 连续）。但 \(\vec D=\varepsilon\vec E\)，介质中 \(\varepsilon\) 大所以同 \(D_{\perp}\) 对应小 \(E_{\perp}\)。切向 \(\vec E\) 由静电场无旋性 (\(\oint\vec E\cdot\mathrm d\vec l=0\)) 强制连续。两个条件结合：进入高 \(\varepsilon\) 区，\(\vec E\) 沿「平行界面」方向偏，整体 \(|\vec E|\) 变小；而 \(|\vec D|=\varepsilon|\vec E|\) 因 \(\varepsilon\) 增大倍数超过 \(|\vec E|\) 减小倍数，反而变大。<strong>形象</strong>：\(\vec E\) <em>场</em>偏好「在低 \(\varepsilon\) 区挤一挤」（场能密度 \(u=\frac{1}{2}\varepsilon E^{2}\) 在低 \(\varepsilon\) 区同 \(E\) 下更低），\(\vec D\) <em>通量</em>则偏好「在高 \(\varepsilon\) 区汇聚」。</p>
+          <p><span class="ans">\(|\vec E_{2}|=109\,\mathrm{V/m}\)，\(\theta_{2}=66.6^{\circ}\)（远离法向）；\(|\vec D_{1}|=1.77\,\mathrm{nC/m^{2}}\)，\(|\vec D_{2}|=3.86\,\mathrm{nC/m^{2}}\)；\(D_{1}^{\perp}=D_{2}^{\perp}=1.53\times 10^{-9}\,\mathrm{C/m^{2}}\) ✓。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误以为 \(\vec D\) 与 \(\vec H\) 是「真正的」场。</strong>恰恰相反：作用在电荷上的洛伦兹力 \(\vec F=q\vec E+q\vec v\times\vec B\) 用的是 \(\vec E\)、\(\vec B\)——它们才是物理场。\(\vec D\)、\(\vec H\) 是为了在「介质」场景下让方程只含自由源而引入的<strong>辅助量</strong>，本质是 \(\vec E\) 与极化 \(\vec P\) 的组合（\(\vec D=\varepsilon_{0}\vec E+\vec P\)）或 \(\vec B\) 与磁化 \(\vec M\) 的组合（\(\vec H=\vec B/\mu_{0}-\vec M\)）。它们「屏蔽」了束缚源，但束缚源从未消失——只是被挪进了 \(\vec P\) 和 \(\vec M\)。</li>
+        <li><strong>混淆「\(D_{\perp}\) 连续」与「\(E_{\perp}\) 连续」。</strong>无自由面电荷时，\(D_{\perp}\) 连续，但 \(E_{\perp}=D_{\perp}/\varepsilon\) <strong>不</strong>连续——在两种介质中相差 \(\varepsilon_{1}/\varepsilon_{2}\) 倍。学生常想当然认为「法向连续」适用于 \(\vec E\)，但那只在真空（同一种介质）时成立。同理，磁界面上 \(B_{\perp}\) 连续而 \(H_{\perp}\) 不连续。</li>
+        <li><strong>把 \(\vec B=\mu\vec H\) 用到铁磁体。</strong>线性关系只对线性介质（抗磁、弱顺磁）严格成立。铁磁体的 \(\vec B\)–\(\vec H\) 关系是多值函数（磁滞回线），同一 \(\vec H\) 可对应不同的 \(\vec B\)（取决于磁化历史），且存在饱和与剩磁。把 \(\mu_{r}=5000\) 当作常数代入往往会得到非物理的巨大 \(\vec B\)——实际铁磁材料饱和于约 \(1.5\text{–}2\,\mathrm T\)。</li>
+        <li><strong>忘记 \(\vec P\) 与 \(\vec M\) 的源是<strong>总的</strong>场（含退极化 / 退磁场），而非外加场。</strong>线性介质方程 \(\vec P=\varepsilon_{0}\chi_{e}\vec E\) 中的 \(\vec E\) 是介质内<strong>最终的总场</strong>，包含外场与极化电荷产生的「退极化场」(depolarization field)。例如均匀极化球内部 \(\vec E_{\text{in}}=\vec E_{0}-\vec P/(3\varepsilon_{0})\)（外场减去退极化场）。直接把外加 \(E_{0}\) 代入会得到错误的 \(\vec P\)。同理磁介质中的退磁场（均匀磁化球内 \(\vec H_{\text{in}}=-\vec M/3\)）。</li>
+        <li><strong>忽略「\(\vec D\) 在低 \(\varepsilon\) 区与 \(\vec E\) 同向但量值放大」的几何效应。</strong>许多学生记不住「场在哪个区更密集」。规则：<strong>\(\vec E\) 偏好低 \(\varepsilon\) 区</strong>（场能 \(u_{E}\propto\varepsilon E^{2}\)，低 \(\varepsilon\) 容纳同 \(E\) 的代价小），<strong>\(\vec D\) 偏好高 \(\varepsilon\) 区</strong>（通量更易通过）。在介质界面，\(\vec E\) 场线弯折<strong>远离法向</strong>进入高 \(\varepsilon\) 区（角度增大）——对应电场在低 \(\varepsilon\) 区场强更大。</li>
+        <li><strong>误以为「电介质内部 \(\vec E\) 总是被屏蔽为零」。</strong>只在特定几何（如导体空腔内）才完全屏蔽。一般电介质只能把 \(\vec E\) <em>减弱</em>到原来的 \(1/\varepsilon_{r}\)（无限大均匀介质中的点电荷情形）或部分减弱。完全屏蔽需要 \(\varepsilon_{r}\to\infty\) 的极限，这正是导体的静电学行为（导体等价于 \(\varepsilon_{r}\to\infty\) 的介质）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 无限大电介质中的点电荷：把点电荷 \(Q=1.0\,\mu\mathrm C\) 埋入相对介电常数 \(\varepsilon_{r}=2.5\) 的无限大均匀线性电介质中。求距电荷 \(r=10\,\mathrm{cm}\) 处的 \(\vec D\)、\(\vec E\)、\(\vec P\)，并与真空情形比较 \(\vec E\) 的大小。</summary>
+        <div class="hint">用球对称：高斯面为同心球面，\(\oint\vec D\cdot\mathrm d\vec a=Q_{\text{free,enc}}\)。</div>
+        <div class="solution">
+          <p>球对称性 \(\Rightarrow\vec D=D(r)\hat r\)，由 \(\oint\vec D\cdot\mathrm d\vec a=Q\)：</p>
+          <p>\(D\cdot 4\pi r^{2}=Q\Rightarrow D=\dfrac{Q}{4\pi r^{2}}=\dfrac{1.0\times 10^{-6}}{4\pi(0.10)^{2}}=\dfrac{10^{-6}}{0.1257}=7.96\times 10^{-6}\,\mathrm{C/m^{2}}\)。</p>
+          <p>\(\vec E=\vec D/\varepsilon=\dfrac{D}{\varepsilon_{0}\varepsilon_{r}}\hat r=\dfrac{7.96\times 10^{-6}}{(8.854\times 10^{-12})(2.5)}\hat r=3.60\times 10^{5}\hat r\,\mathrm{V/m}\)。</p>
+          <p>\(\vec P=\vec D-\varepsilon_{0}\vec E=(1-1/\varepsilon_{r})\vec D=(1-0.4)(7.96\times 10^{-6})\hat r=4.78\times 10^{-6}\hat r\,\mathrm{C/m^{2}}\)。</p>
+          <p><strong>对比真空</strong>：\(E_{\text{vac}}=Q/(4\pi\varepsilon_{0}r^{2})=D/\varepsilon_{0}=8.99\times 10^{5}\,\mathrm{V/m}\)。比值 \(E/E_{\text{vac}}=1/\varepsilon_{r}=1/2.5=0.4\) ✓。介质把 \(\vec E\) 减弱为真空的 \(1/\varepsilon_{r}\)，但 \(\vec D\) 与真空情况相同（\(\vec D=\varepsilon_{0}\vec E_{\text{vac}}\)，因为高斯面内自由电荷相同）。</p>
+          <p><strong>束缚电荷</strong>：在点电荷邻近可设想一个微小空腔，腔壁上 \(\sigma_{b}=-P\cdot\hat n\)（朝向 \(Q\)），总束缚电荷 \(Q_{b,\text{腔壁}}=-(1-1/\varepsilon_{r})Q=-0.6\,\mu\mathrm C\)。从远处看，\(Q+Q_{b}=(1/\varepsilon_{r})Q=0.4\,\mu\mathrm C\)——这正是 \(\vec E\) 减弱 \(1/\varepsilon_{r}\) 倍的根源。</p>
+          <p><span class="ans">\(D=7.96\,\mu\mathrm{C/m^{2}}\)，\(E=3.60\times 10^{5}\,\mathrm{V/m}\)（真空 \(8.99\times 10^{5}\,\mathrm{V/m}\)，比 \(1/\varepsilon_{r}\)），\(P=4.78\,\mu\mathrm{C/m^{2}}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 同轴电缆的电容（介质填充）：同轴电缆内芯半径 \(a=1.0\,\mathrm{mm}\)、外壳半径 \(b=5.0\,\mathrm{mm}\)，内外导体之间填充 \(\varepsilon_{r}=2.3\) 的聚乙烯。求单位长度电容 \(C/L\)，并与真空情形比较。</summary>
+        <div class="hint">柱对称下 \(\vec D=D(s)\hat s\)，对单位长度应用 \(\oint\vec D\cdot\mathrm d\vec a=\lambda_{\text{free,enc}}\)（\(\lambda\) 为线电荷密度）。</div>
+        <div class="solution">
+          <p>由柱对称 \(\vec D=\dfrac{\lambda}{2\pi s}\hat s\)（\(a<s<b\)）。\(\vec E=\vec D/\varepsilon=\dfrac{\lambda}{2\pi\varepsilon s}\hat s\)。</p>
+          <p>电压 \(V=\displaystyle\int_{a}^{b}E\,\mathrm ds=\dfrac{\lambda}{2\pi\varepsilon}\ln(b/a)=\dfrac{\lambda}{2\pi\varepsilon_{0}\varepsilon_{r}}\ln(5.0)\)。</p>
+          <p>单位长度电容 \(C/L=\lambda/V=\dfrac{2\pi\varepsilon_{0}\varepsilon_{r}}{\ln(b/a)}=\dfrac{2\pi(8.854\times 10^{-12})(2.3)}{\ln 5}=\dfrac{1.280\times 10^{-10}}{1.609}=7.96\times 10^{-11}\,\mathrm{F/m}=79.6\,\mathrm{pF/m}\)。</p>
+          <p>真空情形 \(C_{0}/L=\dfrac{2\pi\varepsilon_{0}}{\ln(b/a)}=\dfrac{C/L}{\varepsilon_{r}}=34.6\,\mathrm{pF/m}\)。介质填充使电容增大 \(\varepsilon_{r}=2.3\) 倍。</p>
+          <p><strong>工程意义</strong>：典型同轴电缆（如 RG-58）的标称电容约 \(80\text{–}100\,\mathrm{pF/m}\)，与本题计算吻合——介质填充既增大电容也降低传播速度 \(v=c/\sqrt{\varepsilon_{r}}\)（信号延迟增加）。</p>
+          <p><span class="ans">\(C/L\approx 79.6\,\mathrm{pF/m}\)（真空 \(34.6\,\mathrm{pF/m}\)，比值 \(\varepsilon_{r}=2.3\)）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 磁界面的场线弯折（磁屏蔽原理）：介质 1 为真空（\(\mu_{1}=\mu_{0}\)），介质 2 为铁磁材料（\(\mu_{r}=1000\)），平面界面。介质 1 中磁场 \(\vec B_{1}=B_{0}(\sin 30^{\circ}\hat x+\cos 30^{\circ}\hat y)\)（\(\hat x\) 为法向，\(B_{0}=0.010\,\mathrm T\)）。求介质 2 中 \(\vec B_{2}\) 的角度 \(\theta_{2}\) 与大小，并说明磁屏蔽原理。</summary>
+        <div class="hint">\(B_{\perp}\) 连续、\(H_{\parallel}\) 连续 → \(\tan\theta_{2}=(\mu_{2}/\mu_{1})\tan\theta_{1}\)。</div>
+        <div class="solution">
+          <p>边值关系：\(B_{1}^{\perp}=B_{2}^{\perp}\)，\(H_{1}^{\parallel}=H_{2}^{\parallel}\) → \(B_{1}^{\parallel}/\mu_{1}=B_{2}^{\parallel}/\mu_{2}\)。</p>
+          <p>故 \(B_{2}^{\parallel}=(\mu_{2}/\mu_{1})B_{1}^{\parallel}=\mu_{r}B_{1}^{\parallel}=1000\cdot B_{0}\sin 30^{\circ}=500B_{0}\)；\(B_{2}^{\perp}=B_{1}^{\perp}=B_{0}\cos 30^{\circ}=0.866B_{0}\)。</p>
+          <p>\(\tan\theta_{2}=B_{2}^{\parallel}/B_{2}^{\perp}=500/0.866=577\)，故 \(\theta_{2}=\arctan(577)\approx 89.90^{\circ}\)。</p>
+          <p>|\(\vec B_{2}|=\sqrt{(500B_{0})^{2}+(0.866B_{0})^{2}}\approx 500B_{0}=5.0\,\mathrm T\)（远超铁的饱和！实际不可能，仅作线性近似说明）。</p>
+          <p><strong>磁屏蔽原理</strong>：在 \(\mu_{r}\gg 1\) 的材料中，磁场几乎完全「贴着」表面（\(\theta_{2}\to 90^{\circ}\)），磁感线被「吸」进铁磁材料内部，使材料背后（空腔内）的 \(\vec B\) 大幅减弱。例如示波器、精密仪器用坡莫合金 (\(\mu_{r}\sim 10^{4}\text{–}10^{5}\)) 罩屏蔽地磁场（约 \(50\,\mu\mathrm T\)）和外源干扰。</p>
+          <p><span class="ans">\(\theta_{2}\approx 89.90^{\circ}\)（几乎平行界面）；线性近似下 \(|\vec B_{2}|\approx 5\,\mathrm T\)（实际饱和于 \(\sim 1.5\,\mathrm T\)）；高 \(\mu\) 材料吸磁感线 → 磁屏蔽。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 均匀磁化球内的 \(\vec B\)：半径 \(R\) 的球均匀磁化 \(\vec M=M_{0}\hat z\)（无自由电流）。求球内的 \(\vec B\) 与 \(\vec H\)。（经典结果：球内 \(\vec B\) 均匀，\(\vec B_{\text{in}}=\frac{2}{3}\mu_{0}M_{0}\hat z\)。）</summary>
+        <div class="hint">把磁化等效为面束缚电流 \(\vec K_{b}=\vec M\times\hat r=M_{0}\sin\theta\,\hat\phi\)（形如旋转带电球的电流分布）；再用对称性论证球内 \(\vec B\) 均匀。</div>
+        <div class="solution">
+          <p>球面 (\(\hat n=\hat r\))：\(\vec K_{b}=\vec M\times\hat r=M_{0}\hat z\times\hat r=M_{0}\sin\theta\,\hat\phi\)（纬度方向，最大在赤道、两极为零）。这与「表面电荷分布 \(\sigma\propto\cos\theta\)' 产生内部均匀场」的静电学问题对偶。</p>
+          <p>用矢势的磁标势法（在 \(\vec J_{\text{free}}=0\) 区域 \(\vec H=-\nabla\Phi_{m}\)，\(\nabla^{2}\Phi_{m}=0\)），设球内外</p>
+          <p>\(\Phi_{m}^{\text{in}}=-H_{\text{in}}z\)（线性，对应均匀 \(\vec H_{\text{in}}=H_{\text{in}}\hat z\)），\(\Phi_{m}^{\text{out}}=m_{\text{eq}}\cos\theta/(4\pi r^{2})\)（偶极）。</p>
+          <p>边值：(i) \(B_{\perp}\) 连续：\(\mu_{0}(H_{\text{in}}+M_{0})\cos\theta=\mu_{0}H_{\text{out}}^{\perp}\)；(ii) \(H_{\parallel}\) 连续：\(-H_{\text{in}}\sin\theta=-H_{\text{out}}^{\parallel}\)。求解给出</p>
+          <p>\(H_{\text{in}}=-M_{0}/3\)（<strong>退磁场</strong>），\(\vec B_{\text{in}}=\mu_{0}(\vec H_{\text{in}}+\vec M)=\mu_{0}(-M_{0}/3+M_{0})\hat z=\dfrac{2}{3}\mu_{0}M_{0}\hat z\)。</p>
+          <p><strong>结果</strong>：</p>
+          <div class="formula">\[ \vec B_{\text{in}}\;=\;\frac{2}{3}\mu_{0}M_{0}\,\hat z,\qquad \vec H_{\text{in}}\;=\;-\frac{M_{0}}{3}\,\hat z \]</div>
+          <p><strong>数值</strong>：若 \(M_{0}=8.0\times 10^{5}\,\mathrm{A/m}\)（钕磁铁），\(\vec B_{\text{in}}=\frac{2}{3}(4\pi\times 10^{-7})(8.0\times 10^{5})\hat z=0.67\hat z\,\mathrm T\)。</p>
+          <p>「\(1/3\)」是球的<strong>退磁因子</strong> \(N\)（球：\(N=1/3\)）；对长圆柱（沿轴）\(N\approx 0\)，对扁平圆盘 \(N\approx 1\)。退磁因子决定有限大小磁体的内场——这是设计永久磁铁必须考虑的。</p>
+          <p><span class="ans">\(\vec B_{\text{in}}=\frac{2}{3}\mu_{0}M_{0}\hat z\)，\(\vec H_{\text{in}}=-\frac{M_{0}}{3}\hat z\)（退磁因子 \(N=1/3\)）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 部分填充的平行板电容器（介质板贴下极板）：平行板电容器（面积 \(A\)、间距 \(d\)），下半部分（厚度 \(d/2\)）填充相对介电常数 \(\varepsilon_{r}\) 的介质，上半部分为真空。求电容 \(C\) 与介质表面的束缚面电荷密度。</summary>
+        <div class="hint">把它视为两个电容串联：\(C_{1}=\varepsilon_{0}A/(d/2)\)（真空）和 \(C_{2}=\varepsilon_{0}\varepsilon_{r}A/(d/2)\)（介质）。</div>
+        <div class="solution">
+          <p>在自由电荷固定的情形下，\(\vec D\) 在两层中相等（无自由面电荷界面，\(D_{\perp}\) 连续）。设 \(\vec D=D\hat z\)，则</p>
+          <p>真空层 (\(0<z<d/2\))：\(E_{1}=D/\varepsilon_{0}\)；介质层 (\(d/2<z<d\))：\(E_{2}=D/(\varepsilon_{0}\varepsilon_{r})\)。</p>
+          <p>电压 \(V=E_{1}(d/2)+E_{2}(d/2)=\dfrac{Dd}{2\varepsilon_{0}}\Big(1+\dfrac{1}{\varepsilon_{r}}\Big)\)。</p>
+          <p>自由电荷面密度 \(\sigma_{\text{free}}=D\)，总 \(Q_{\text{free}}=\sigma_{\text{free}}A\)。故电容</p>
+          <p>\(C=\dfrac{Q_{\text{free}}}{V}=\dfrac{DA}{\dfrac{Dd}{2\varepsilon_{0}}(1+1/\varepsilon_{r})}=\dfrac{2\varepsilon_{0}A}{d}\cdot\dfrac{\varepsilon_{r}}{1+\varepsilon_{r}}=\dfrac{2\varepsilon_{0}\varepsilon_{r}A}{d(\varepsilon_{r}+1)}\)。</p>
+          <p><strong>对照</strong>：完全真空 \(C_{0}=\varepsilon_{0}A/d\)；完全填充 \(C=\varepsilon_{r}C_{0}\)。部分填充给出 \(C/C_{0}=\dfrac{2\varepsilon_{r}}{\varepsilon_{r}+1}\)（对 \(\varepsilon_{r}=3\)：\(C/C_{0}=6/4=1.5\)）。该值在 1 与 \(\varepsilon_{r}\) 之间——半填充不能给出 \(\varepsilon_{r}/2\) 倍，因为电场在介质中较弱（D 连续、E 不同），分配不均。</p>
+          <p><strong>束缚电荷</strong>：介质中 \(\vec P=\chi_{e}\varepsilon_{0}\vec E_{2}=\dfrac{\varepsilon_{r}-1}{\varepsilon_{r}}D\hat z\)。</p>
+          <p>介质上表面（贴真空，\(\hat n=+\hat z\)）：\(\sigma_{b}^{\text{上}}=P=\dfrac{\varepsilon_{r}-1}{\varepsilon_{r}}D\)（正）。</p>
+          <p>介质下表面（贴下极板，\(\hat n=-\hat z\)）：\(\sigma_{b}^{\text{下}}=-\dfrac{\varepsilon_{r}-1}{\varepsilon_{r}}D\)（负）。</p>
+          <p>界面（介质-真空）上 \(\sigma_{b}\) 是介质一侧的束缚电荷（紧贴界面），真空一侧无极化，故界面净束缚电荷 \(=\sigma_{b}^{\text{上}}\)。<strong>注意</strong>：界面处 \(D_{\perp}\) 连续但 \(E_{\perp}\) 不连续（\(E_{1}^{\perp}\ne E_{2}^{\perp}\)），这正与 \(\sigma_{b}\ne 0\) 一致（高斯定律 \(\varepsilon_{0}(E_{2}^{\perp}-E_{1}^{\perp})=\sigma_{b}\)，注意是 \(\varepsilon_{0}\vec E\) 不是 \(\vec D\) 的跃变对应束缚电荷）。</p>
+          <p><span class="ans">\(C=\dfrac{2\varepsilon_{0}\varepsilon_{r}A}{d(\varepsilon_{r}+1)}\)（介质贴下半）；界面束缚电荷 \(|\sigma_{b}|=\dfrac{\varepsilon_{r}-1}{\varepsilon_{r}}D\)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 电介质界面的场线弯折 Field-Line Refraction at a Dielectric Interface</h2>
+      <p class="sim-desc">真空（左侧，\(\varepsilon_{1}=\varepsilon_{0}\)）与线性电介质（右侧，\(\varepsilon_{2}=\varepsilon_{r}\varepsilon_{0}\)）以中央竖直线为界。一束均匀电场 \(\vec E_{1}\) 以入射角 \(\theta_{1}\)（与法向 \(\hat n=\hat x\) 的夹角）从左侧射入。<strong>无自由面电荷</strong>时边值关系给出：\(E_{1}^{\parallel}=E_{2}^{\parallel}\)（切向连续）、\(\varepsilon_{1}E_{1}^{\perp}=\varepsilon_{2}E_{2}^{\perp}\)（即 \(D_{\perp}\) 连续），合并得 <strong>\(\tan\theta_{2}=\varepsilon_{r}\tan\theta_{1}\)</strong>。场线在高 \(\varepsilon_{r}\) 区「远离法向」弯折，\(|\vec E|\) 在介质中变小（场偏好低 \(\varepsilon\) 区），\(|\vec D|\) 在介质中变大（通量偏好高 \(\varepsilon\) 区）。<strong>滑块</strong>：相对介电常数 \(\varepsilon_{r}\)（1–10）、入射角 \(\theta_{1}\)（0°–75°）；<strong>切换</strong>：着色按 \(|\vec E|\) 或 \(|\vec D|\)（看出场 / 通量集中区域）；<strong>重置</strong>按钮还原默认值。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+
+          var EPS0 = 8.854e-12; // F/m
+          var params = {
+            epsR: 3.0,      // 相对介电常数 (右介质 / 真空)
+            theta1Deg: 30,  // E_1 与法向 (x 轴) 夹角
+            showD: false,   // false=按 |E| 着色；true=按 |D| 着色
+          };
+
+          // Layout: interface is vertical at CX
+          var CX = W / 2;
+
+          function drawSmallArrowhead(ctx, x, y, ux, uy, color) {
+            // small triangular arrowhead at (x,y) pointing along unit (ux,uy)
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x + 6 * ux, y + 6 * uy);
+            ctx.lineTo(x - 4 * ux + 4 * uy, y - 4 * uy - 4 * ux);
+            ctx.lineTo(x - 4 * ux - 4 * uy, y - 4 * uy + 4 * ux);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var th1 = params.theta1Deg * Math.PI / 180;
+              var tan1 = Math.tan(th1);
+              var th2 = Math.atan(params.epsR * tan1); // tanθ₂ = ε_r tanθ₁
+              var th1Deg = params.theta1Deg;
+              var th2Deg = th2 * 180 / Math.PI;
+
+              // take |E₁| = 1 (reference) so we can compute ratios
+              var E1 = 1.0;
+              var E1par = E1 * Math.sin(th1);   // tangential (parallel to interface)
+              var E1perp = E1 * Math.cos(th1);  // normal
+              var E2par = E1par;                 // E_∥ continuous
+              var E2perp = E1perp / params.epsR; // D_⊥ continuous -> E_⊥ changes
+              var E2 = Math.hypot(E2par, E2perp);
+              var D1 = EPS0 * E1;                // |D₁| in vacuum (ε₀·|E₁|)
+              var D2 = params.epsR * EPS0 * E2;  // |D₂| = ε|E₂|
+
+              // ----- background tints: left vacuum, right dielectric -----
+              ctx.save();
+              ctx.fillStyle = 'rgba(180, 200, 230, 0.18)';
+              ctx.fillRect(0, 0, CX, H);
+              ctx.fillStyle = 'rgba(230, 200, 130, 0.22)';
+              ctx.fillRect(CX, 0, W - CX, H);
+              ctx.restore();
+
+              // ----- interface line -----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              ctx.moveTo(CX, 0);
+              ctx.lineTo(CX, H);
+              ctx.stroke();
+              ctx.restore();
+
+              // ----- labels for each medium -----
+              PS.drawText(ctx, '真空 Vacuum', 14, 26,
+                { font: 'bold 14px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'ε₁ = ε₀', 14, 46,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '电介质 Dielectric', CX + 14, 26,
+                { font: 'bold 14px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'ε₂ = ε_r·ε₀  (ε_r = ' + params.epsR.toFixed(2) + ')',
+                CX + 14, 46, { font: '12px system-ui', color: PS.colors.text });
+
+              // ----- normal vector n̂ (along +x) -----
+              var nY = H - 30;
+              PS.drawArrow(ctx, CX - 50, nY, CX + 50, nY, PS.colors.axis, 'n̂');
+              // a tangential indicator (along +y, dashed)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(CX, nY - 40);
+              ctx.lineTo(CX, nY - 4);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+              PS.drawText(ctx, '切向 ∥', CX + 6, nY - 36,
+                { font: '11px system-ui', color: PS.colors.axis });
+
+              // ----- decide color & per-medium emphasis based on showD -----
+              var lineColor, leftAlpha, rightAlpha;
+              if (params.showD) {
+                // |D| larger in dielectric
+                var ratioD = Math.min(1, D2 / Math.max(D1, 1e-30));
+                leftAlpha = 0.35;
+                rightAlpha = 0.55 + 0.45 * Math.min(1, (ratioD - 1) / 2); // emphasize high-ε
+                lineColor = PS.colors.accent2; // green family for D
+              } else {
+                // |E| larger in vacuum
+                var ratioE = E2 / Math.max(E1, 1e-30); // < 1
+                leftAlpha = 0.55 + 0.45 * (1 - ratioE); // emphasize low-ε
+                rightAlpha = 0.35;
+                lineColor = PS.colors.accent; // red family for E
+              }
+
+              // ----- draw parallel field lines -----
+              // direction in left medium on canvas: (cos θ₁, -sin θ₁) [up & right]
+              // direction in right medium: (cos θ₂, -sin θ₂)
+              var nLines = 9;
+              var margin = 50;
+              var spacing = (H - 2 * margin) / (nLines - 1);
+              var bendPoints = [];
+              for (var i = 0; i < nLines; i++) {
+                var yStart = margin + i * spacing;
+                var xStart = 8;
+                // trajectory in left: x(t) = xStart + t·cosθ₁, y(t) = yStart - t·sinθ₁
+                var tHit = (CX - xStart) / Math.cos(th1);
+                var yMid = yStart - tHit * Math.sin(th1);
+                if (yMid < 8 || yMid > H - 8) continue;
+                bendPoints.push({ x: CX, y: yMid });
+
+                // right medium trajectory
+                var xEnd = W - 8;
+                var tEnd = (xEnd - CX) / Math.cos(th2);
+                var yEnd = yMid - tEnd * Math.sin(th2);
+
+                // segment 1 (vacuum)
+                ctx.save();
+                ctx.strokeStyle = lineColor;
+                ctx.lineWidth = 1.8;
+                ctx.globalAlpha = leftAlpha;
+                ctx.beginPath();
+                ctx.moveTo(xStart, yStart);
+                ctx.lineTo(CX, yMid);
+                ctx.stroke();
+                ctx.restore();
+
+                // segment 2 (dielectric)
+                ctx.save();
+                ctx.strokeStyle = lineColor;
+                ctx.lineWidth = 1.8;
+                ctx.globalAlpha = rightAlpha;
+                ctx.beginPath();
+                ctx.moveTo(CX, yMid);
+                ctx.lineTo(xEnd, yEnd);
+                ctx.stroke();
+                ctx.restore();
+
+                // arrowheads at midpoints of each segment
+                drawSmallArrowhead(ctx, (xStart + CX) / 2, (yStart + yMid) / 2,
+                  Math.cos(th1), -Math.sin(th1), lineColor);
+                drawSmallArrowhead(ctx, (CX + xEnd) / 2, (yMid + yEnd) / 2,
+                  Math.cos(th2), -Math.sin(th2), lineColor);
+
+                // bend marker
+                PS.drawCircle(ctx, CX, yMid, 2.5, { fill: PS.colors.primary });
+              }
+
+              // ----- angle arcs at a representative bend point (middle line) -----
+              if (bendPoints.length > 0) {
+                var mid = bendPoints[Math.floor(bendPoints.length / 2)];
+                var Rarc = 32;
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                // θ₁ arc on LEFT of interface: span +x axis to field direction in left medium
+                ctx.strokeStyle = PS.colors.primary;
+                ctx.beginPath();
+                ctx.arc(mid.x, mid.y, Rarc, 0, -th1, true);
+                ctx.stroke();
+                PS.drawText(ctx, 'θ₁=' + th1Deg.toFixed(0) + '°',
+                  mid.x - Rarc - 30, mid.y - Rarc * 0.5,
+                  { font: 'bold 11px system-ui', color: PS.colors.primary });
+                // θ₂ arc on RIGHT of interface
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.beginPath();
+                ctx.arc(mid.x, mid.y, Rarc + 8, 0, -th2, true);
+                ctx.stroke();
+                PS.drawText(ctx, 'θ₂=' + th2Deg.toFixed(1) + '°',
+                  mid.x + Rarc + 12, mid.y - (Rarc + 8) * 0.6,
+                  { font: 'bold 11px system-ui', color: PS.colors.accent2 });
+                ctx.restore();
+              }
+
+              // ----- HUD (top-right) -----
+              var hx = W - 252, hy = 70;
+              var boxH = 188;
+              ctx.save();
+              ctx.globalAlpha = 0.96;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(hx - 10, hy - 28, 246, boxH);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(hx - 10, hy - 28, 246, boxH);
+              ctx.restore();
+
+              PS.drawText(ctx, '电介质界面 Dielectric Interface',
+                hx, hy, { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'ε_r = ' + params.epsR.toFixed(2),
+                hx, hy + 20, { font: 'bold 12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, 'θ₁ = ' + th1Deg.toFixed(1) + '° (真空)',
+                hx, hy + 38, { font: '12px system-ui', color: PS.colors.primary });
+              PS.drawText(ctx, 'θ₂ = ' + th2Deg.toFixed(1) + '° (介质)',
+                hx, hy + 56, { font: '12px system-ui', color: PS.colors.accent2 });
+              PS.drawText(ctx, 'tanθ₂ = ε_r·tanθ₁  ✓',
+                hx, hy + 76, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '|E₂|/|E₁| = ' + E2.toFixed(3),
+                hx, hy + 96, { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '|D₂|/|D₁| = ' + (D2 / Math.max(D1, 1e-30)).toFixed(3),
+                hx, hy + 114, { font: '12px system-ui', color: PS.colors.accent2 });
+              PS.drawText(ctx, 'D_⊥ 连续 / E_∥ 连续',
+                hx, hy + 134, { font: 'bold 11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, params.showD
+                ? '着色: |D|  (高 ε 区更密)'
+                : '着色: |E|  (低 ε 区更密)',
+                hx, hy + 152, { font: '11px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, '单位 ε_r=1 时无弯折',
+                hx, hy + 170, { font: '10px system-ui', color: PS.colors.axis });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'epsR', label: '相对介电常数 ε_r', min: 1, max: 10, step: 0.1, value: 3.0 },
+            { type: 'slider', key: 'theta1Deg', label: '入射角 θ₁ (°)', min: 0, max: 75, step: 1, value: 30 },
+            { type: 'toggle', key: 'showD', label: '按 |D| 着色 (默认 |E|)', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('epsR', function (v) { params.epsR = v; });
+          ctl.on('theta1Deg', function (v) { params.theta1Deg = v; });
+          ctl.on('showD', function (v) { params.showD = v; });
+          ctl.on('reset', function () {
+            params.epsR = 3.0; ctl.set('epsR', 3.0);
+            params.theta1Deg = 30; ctl.set('theta1Deg', 30);
+            params.showD = false; ctl.set('showD', false);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>电磁介质的核心思想是：<strong>介质不改变真空的麦克斯韦方程，只是在其中加入「束缚源」</strong>。把束缚源挪进两个辅助场——电位移 \(\vec D=\varepsilon_{0}\vec E+\vec P\) 与辅助场 \(\vec H=\vec B/\mu_{0}-\vec M\)——之后，剩下关于 \(\vec D\)、\(\vec H\) 的方程只含<strong>自由源</strong>，形式上与真空相同。</p>
+      <ul>
+        <li><strong>极化与束缚电荷</strong>：\(\vec P\)= 单位体积电偶极矩；\(\sigma_{b}=\vec P\cdot\hat n\)、\(\rho_{b}=-\nabla\cdot\vec P\)。</li>
+        <li><strong>电位移与介质高斯定律</strong>：\(\vec D=\varepsilon_{0}\vec E+\vec P\)；\(\nabla\cdot\vec D=\rho_{\text{free}}\)。</li>
+        <li><strong>线性电介质</strong>：\(\vec P=\varepsilon_{0}\chi_{e}\vec E\)、\(\vec D=\varepsilon\vec E\)、\(\varepsilon=\varepsilon_{0}(1+\chi_{e})=\varepsilon_{0}\varepsilon_{r}\)。电容 \(C\to\varepsilon_{r}C_{0}\)。</li>
+        <li><strong>静电边值关系</strong>：\(D_{2}^{\perp}-D_{1}^{\perp}=\sigma_{\text{free}}\)；\(E_{1}^{\parallel}=E_{2}^{\parallel}\)；弯折 \(\tan\theta_{2}/\tan\theta_{1}=\varepsilon_{2}/\varepsilon_{1}\)。</li>
+        <li><strong>磁化与束缚电流</strong>：\(\vec M\)= 单位体积磁偶极矩；\(\vec K_{b}=\vec M\times\hat n\)、\(\vec J_{b}=\nabla\times\vec M\)。</li>
+        <li><strong>辅助场 H 与介质安培定律</strong>：\(\vec H=\vec B/\mu_{0}-\vec M\)；\(\nabla\times\vec H=\vec J_{\text{free}}\)。</li>
+        <li><strong>线性磁介质</strong>：\(\vec B=\mu\vec H\)、\(\mu=\mu_{0}(1+\chi_{m})=\mu_{0}\mu_{r}\)。抗磁 (\(\chi_{m}<0\)，弱)、顺磁 (\(\chi_{m}>0\)，弱)、铁磁 (\(\chi_{m}\gg 1\)，非线性 / 磁滞)。</li>
+        <li><strong>静磁边值关系</strong>：\(B_{1}^{\perp}=B_{2}^{\perp}\)；\(H_{2}^{\parallel}-H_{1}^{\parallel}=K_{\text{free}}\)；弯折 \(\tan\theta_{2}/\tan\theta_{1}=\mu_{2}/\mu_{1}\)。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;\vec D=\varepsilon_{0}\vec E+\vec P,\quad \nabla\cdot\vec D=\rho_{\text{free}},\quad \vec P=\varepsilon_{0}\chi_{e}\vec E,\quad \vec D=\varepsilon\vec E\;(\varepsilon=\varepsilon_{0}\varepsilon_{r})\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;\vec H=\frac{\vec B}{\mu_{0}}-\vec M,\quad \nabla\times\vec H=\vec J_{\text{free}},\quad \vec B=\mu\vec H\;(\mu=\mu_{0}\mu_{r}),\quad \vec K_{b}=\vec M\times\hat n,\quad \vec J_{b}=\nabla\times\vec M\;} \]
+      </div>
+      <div class="formula">
+        \[ \boxed{\;\text{边值:}\quad D_{2}^{\perp}-D_{1}^{\perp}=\sigma_{\text{free}},\;\,E_{1}^{\parallel}=E_{2}^{\parallel},\;\,B_{1}^{\perp}=B_{2}^{\perp},\;\,H_{2}^{\parallel}-H_{1}^{\parallel}=K_{\text{free}}\;} \]
+      </div>
+      <p><strong>核心收获</strong>：介质电磁学不是「新物理」，而是把微观束缚源以宏观量 \(\vec P\)、\(\vec M\) 表征后，重组方程使之分离自由 / 束缚源的艺术。<strong>\(\vec D\) 与 \(\vec H\) 不是新场——它们是 \(\vec E\)、\(\vec B\) 与介质响应 \(\vec P\)、\(\vec M\) 的组合</strong>。物理力仍由 \(\vec E\)、\(\vec B\) 决定（洛伦兹力），而工程上关心的电容、电感、磁场能量、屏蔽等都由 \(\vec D\)、\(\vec H\) 直接掌控。铁磁性的非线性与磁滞指向更深层的量子力学（交换相互作用、磁畴），为后续「电动力学」与「凝聚态物理」课程铺垫。下一章将把<strong>含时</strong>麦克斯韦方程（介质中）的完整形式联立，导出电磁波在介质中的传播、折射与色散——本章的 \(\varepsilon\)、\(\mu\) 将成为决定光速 \(v=1/\sqrt{\varepsilon\mu}\) 与折射率 \(n=\sqrt{\varepsilon_{r}\mu_{r}}\) 的核心常数。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
