@@ -8,171 +8,179 @@
   <script src="js/math-config.js" defer></script>
   <script src="js/sims/physics-sims.js" defer></script>
   <script src="js/nav.js" defer></script>
+  <style>
+    /* Homepage-only layout — uses theme tokens, adapts to dark mode. */
+    .home-hero { padding: 2.4rem 0 0.4rem; }
+    .home-kicker { font-family: var(--font-display); font-weight:700; font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; color: var(--amber-deep); }
+    [data-theme="dark"] .home-kicker { color: var(--amber); }
+    .home-hero h1 { font-family: var(--font-display); font-weight:700; font-size: 2.3rem; line-height:1.1; margin:0.3rem 0 0.2rem; letter-spacing:-0.01em; }
+    .home-hero .en-title { display:block; font-family: var(--font-display); font-weight:500; font-size:1.05rem; color: var(--ink-mute); margin-top:0.2rem; }
+    .home-hero .lead { color: var(--ink-soft); max-width: 60ch; margin-top:0.9rem; }
+    /* signature spectrum bar */
+    .spectrum { height:7px; border-radius:99px; margin:1.5rem 0 0.4rem;
+      background: linear-gradient(90deg, var(--indigo), var(--sim-trace), var(--sage), var(--amber)); }
+    .spectrum-ticks { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:0.7rem; color:var(--ink-mute); margin-bottom:1.6rem; }
+
+    .stats { display:flex; flex-wrap:wrap; gap:0.5rem 1.4rem; margin:1.4rem 0 2rem; padding:0.9rem 1.1rem;
+      background: var(--paper-elev); border:1px solid var(--border); border-radius: var(--radius); }
+    .stat { font-family: var(--font-display); }
+    .stat b { font-size:1.15rem; color: var(--indigo-deep); }
+    [data-theme="dark"] .stat b { color: var(--indigo); }
+    .stat span { font-size:0.82rem; color:var(--ink-soft); margin-left:0.3rem; }
+
+    .map-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(232px,1fr)); gap:14px; }
+    .sem-card { display:block; text-decoration:none; color:var(--ink); background:var(--paper-elev);
+      border:1px solid var(--border); border-radius: var(--radius); padding:1rem 1.1rem 0.9rem;
+      transition: transform .15s, box-shadow .15s, border-color .15s; position:relative; }
+    .sem-card:hover { transform: translateY(-3px); box-shadow:0 8px 22px rgba(58,53,133,0.13); border-color: var(--indigo); }
+    .sem-num { font-family:var(--font-display); font-weight:700; font-size:0.74rem; letter-spacing:0.1em; color:var(--amber-deep); }
+    [data-theme="dark"] .sem-num { color: var(--amber); }
+    .sem-name { font-family:var(--font-display); font-weight:600; font-size:1.02rem; margin:0.15rem 0 0; }
+    .sem-en { font-size:0.78rem; color:var(--ink-mute); }
+    .sem-tags { margin:0.6rem 0 0.55rem; display:flex; flex-wrap:wrap; gap:5px; }
+    .tag { font-size:0.68rem; padding:2px 8px; border-radius:99px; background:var(--indigo-soft); color:var(--indigo-deep); white-space:nowrap; }
+    .sem-meta { font-size:0.76rem; color:var(--ink-soft); display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--rule); padding-top:0.45rem; }
+    .sem-go { color:var(--amber-deep); font-weight:600; font-family:var(--font-display); }
+    [data-theme="dark"] .sem-go { color: var(--amber); }
+
+    .appx-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:12px; }
+    .appx-card { display:block; text-decoration:none; color:var(--ink); background:var(--paper-elev);
+      border:1px solid var(--border); border-left:3px solid var(--amber); border-radius:var(--radius);
+      padding:0.85rem 1rem; transition: transform .14s, border-left-color .14s; }
+    .appx-card:hover { transform: translateX(3px); border-left-color: var(--indigo); }
+    .appx-t { font-family:var(--font-display); font-weight:600; font-size:0.96rem; }
+    .appx-en { font-size:0.76rem; color:var(--ink-mute); margin-left:0.3rem; }
+    .appx-d { font-size:0.8rem; color:var(--ink-soft); margin-top:0.3rem; line-height:1.4; }
+
+    .group-h { font-family:var(--font-display); font-weight:700; font-size:0.78rem; letter-spacing:0.1em;
+      text-transform:uppercase; color:var(--indigo-deep); margin:1.8rem 0 0.3rem; }
+    [data-theme="dark"] .group-h { color: var(--indigo); }
+    .group-sub { font-size:0.85rem; color:var(--ink-soft); margin:0 0 0.9rem; }
+    .section-title { font-family:var(--font-display); font-weight:700; font-size:1.3rem; margin:2.6rem 0 0.2rem; }
+
+    .howto { margin:2.4rem 0 1rem; padding:1rem 1.2rem; background:var(--paper-elev); border:1px solid var(--border); border-radius:var(--radius); font-size:0.9rem; color:var(--ink-soft); }
+    .howto b { color:var(--ink); }
+    .howto kbd { font-family:var(--font-mono); font-size:0.8rem; background:var(--paper-sunk); border:1px solid var(--border); border-radius:4px; padding:1px 6px; color:var(--indigo-deep); }
+  </style>
 </head>
 <body>
   <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
   <nav class="sidebar" id="sidebar"></nav>
   <main class="content">
-    <header class="index-hero">
-      <h1>物理学 · 八学期完整教程 <span class="en-title">Physics — Full 8-Semester Curriculum</span></h1>
-      <p class="subtitle">藤校物理专业本科级别 · 双语（中文 + 英文术语）· 可交互仿真 · 力学 → 电磁 → 热统 → 量子 → 高阶专题</p>
-      <div class="roadmap">
-        <p><strong>如何使用本教程 / How to use：</strong>每章包含 学习目标 → 核心概念 → 推导 → 例题 → 常见误区 → 练习题 → <em>可调参数交互仿真</em> → 小结。左侧目录按学期分组（可折叠），用 🌙 按钮切换深色模式。</p>
-        <p class="progress">进度：✅ 全部八个学期完成（力学 · 电磁 · 波动 · 热统 · 量子/经典力学 · 电动力学 · 凝聚态/核粒子 · GR/天体/QFT/等离子体）</p>
-      </div>
+
+    <header class="home-hero">
+      <p class="home-kicker">⚛ 八学期 · 互动物理教程</p>
+      <h1>物理学 <span class="en-title">Physics — Full 8-Semester Curriculum</span></h1>
+      <p class="lead">藤校物理专业本科级别的完整旅程：从经典力学到广义相对论，从电磁学到量子场论，从热统到等离子体与宇宙学。<strong>双语（中文 + 英文术语）</strong>、每章含<strong>可调参数交互仿真</strong>，并附<strong>实验史与光/视觉</strong>系列专题。</p>
+      <div class="spectrum" role="presentation"></div>
+      <div class="spectrum-ticks"><span>力学</span><span>电磁</span><span>波动·光学</span><span>热统</span><span>量子 I</span><span>量子 II · 电动力学</span><span>凝聚态 · 核粒子</span><span>GR · QFT · 前沿</span></div>
     </header>
 
-    <div class="toc-part-heading">✅ 第一学期 · 力学与现代物理 Mechanics &amp; Modern Physics</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="mechanics/01-vectors.html"><div class="tc-num">1</div><div class="tc-title">数学基础与矢量</div><div class="tc-en">Math Foundations &amp; Vectors</div></a>
-      <a class="toc-card" href="mechanics/02-kinematics.html"><div class="tc-num">2</div><div class="tc-title">运动学</div><div class="tc-en">Kinematics</div></a>
-      <a class="toc-card" href="mechanics/03-newton-laws.html"><div class="tc-num">3</div><div class="tc-title">牛顿定律与受力分析</div><div class="tc-en">Newton's Laws &amp; FBDs</div></a>
-      <a class="toc-card" href="mechanics/04-work-energy.html"><div class="tc-num">4</div><div class="tc-title">功、能量与守恒</div><div class="tc-en">Work, Energy &amp; Conservation</div></a>
-      <a class="toc-card" href="mechanics/05-momentum.html"><div class="tc-num">5</div><div class="tc-title">动量与碰撞</div><div class="tc-en">Momentum &amp; Collisions</div></a>
-      <a class="toc-card" href="mechanics/06-rotation.html"><div class="tc-num">6</div><div class="tc-title">转动动力学</div><div class="tc-en">Rotational Dynamics</div></a>
-      <a class="toc-card" href="mechanics/07-statics.html"><div class="tc-num">7</div><div class="tc-title">静力学与平衡</div><div class="tc-en">Statics &amp; Equilibrium</div></a>
-      <a class="toc-card" href="mechanics/08-oscillations.html"><div class="tc-num">8</div><div class="tc-title">振动</div><div class="tc-en">Oscillations</div></a>
-      <a class="toc-card" href="mechanics/09-gravitation.html"><div class="tc-num">9</div><div class="tc-title">引力</div><div class="tc-en">Gravitation</div></a>
-      <a class="toc-card" href="analytical/10-constraints.html"><div class="tc-num">10</div><div class="tc-title">约束、广义坐标与虚功</div><div class="tc-en">Constraints &amp; Virtual Work</div></a>
-      <a class="toc-card" href="analytical/11-lagrangian.html"><div class="tc-num">11</div><div class="tc-title">拉格朗日方程与最小作用量</div><div class="tc-en">Lagrange's Equations</div></a>
-      <a class="toc-card" href="analytical/12-noether.html"><div class="tc-num">12</div><div class="tc-title">守恒律与诺特定理</div><div class="tc-en">Noether's Theorem</div></a>
-      <a class="toc-card" href="analytical/13-hamiltonian.html"><div class="tc-num">13</div><div class="tc-title">哈密顿力学初步</div><div class="tc-en">Hamiltonian Mechanics</div></a>
-      <a class="toc-card" href="relativity/14-lorentz.html"><div class="tc-num">14</div><div class="tc-title">相对论基础与洛伦兹变换</div><div class="tc-en">Lorentz Transformations</div></a>
-      <a class="toc-card" href="relativity/15-spacetime.html"><div class="tc-num">15</div><div class="tc-title">时空几何与四维矢量</div><div class="tc-en">Spacetime &amp; Four-vectors</div></a>
-      <a class="toc-card" href="relativity/16-relativistic-dynamics.html"><div class="tc-num">16</div><div class="tc-title">相对论动力学</div><div class="tc-en">Relativistic Dynamics</div></a>
-      <a class="toc-card" href="fluids/17-statics.html"><div class="tc-num">17</div><div class="tc-title">流体静力学</div><div class="tc-en">Fluid Statics</div></a>
-      <a class="toc-card" href="fluids/18-dynamics.html"><div class="tc-num">18</div><div class="tc-title">流体动力学</div><div class="tc-en">Fluid Dynamics</div></a>
-      <a class="toc-card" href="advanced/19-chaos.html"><div class="tc-num">19</div><div class="tc-title">非线性动力学与混沌</div><div class="tc-en">Nonlinear Dynamics &amp; Chaos</div></a>
-      <a class="toc-card" href="advanced/20-numerical.html"><div class="tc-num">20</div><div class="tc-title">物理中的数值方法</div><div class="tc-en">Numerical Methods</div></a>
+    <div class="stats">
+      <div class="stat"><b>8</b><span>学期</span></div>
+      <div class="stat"><b>108+</b><span>章</span></div>
+      <div class="stat"><b>11</b><span>附录</span></div>
+      <div class="stat"><b>100+</b><span>交互仿真</span></div>
+      <div class="stat"><b>双语</b><span>中文 + EN 术语</span></div>
+      <div class="stat"><b>可离线</b><span>本地 MathJax</span></div>
     </div>
 
-    <div class="toc-part-heading">✅ 第二学期 · 电磁学 Electromagnetism</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem2/01-charge.html"><div class="tc-num">1</div><div class="tc-title">电荷与库仑定律</div><div class="tc-en">Charge &amp; Coulomb's Law</div></a>
-      <a class="toc-card" href="sem2/02-field.html"><div class="tc-num">2</div><div class="tc-title">电场</div><div class="tc-en">Electric Field</div></a>
-      <a class="toc-card" href="sem2/03-gauss.html"><div class="tc-num">3</div><div class="tc-title">高斯定理</div><div class="tc-en">Gauss's Law</div></a>
-      <a class="toc-card" href="sem2/04-potential.html"><div class="tc-num">4</div><div class="tc-title">电势</div><div class="tc-en">Electric Potential</div></a>
-      <a class="toc-card" href="sem2/05-conductors.html"><div class="tc-num">5</div><div class="tc-title">导体</div><div class="tc-en">Conductors</div></a>
-      <a class="toc-card" href="sem2/06-capacitance.html"><div class="tc-num">6</div><div class="tc-title">电容与电介质</div><div class="tc-en">Capacitance &amp; Dielectrics</div></a>
-      <a class="toc-card" href="sem2/07-dc-circuits.html"><div class="tc-num">7</div><div class="tc-title">直流电路</div><div class="tc-en">DC Circuits</div></a>
-      <a class="toc-card" href="sem2/08-magnetic-field.html"><div class="tc-num">8</div><div class="tc-title">磁场与洛伦兹力</div><div class="tc-en">Magnetic Field &amp; Lorentz Force</div></a>
-      <a class="toc-card" href="sem2/09-biot-savart.html"><div class="tc-num">9</div><div class="tc-title">毕奥-萨伐尔与安培定律</div><div class="tc-en">Biot-Savart &amp; Ampère's Law</div></a>
-      <a class="toc-card" href="sem2/10-induction.html"><div class="tc-num">10</div><div class="tc-title">电磁感应</div><div class="tc-en">Electromagnetic Induction</div></a>
-      <a class="toc-card" href="sem2/11-inductance.html"><div class="tc-num">11</div><div class="tc-title">电感与暂态</div><div class="tc-en">Inductance &amp; Transients</div></a>
-      <a class="toc-card" href="sem2/12-ac-circuits.html"><div class="tc-num">12</div><div class="tc-title">交流电路</div><div class="tc-en">AC Circuits</div></a>
-      <a class="toc-card" href="sem2/13-maxwell.html"><div class="tc-num">13</div><div class="tc-title">麦克斯韦方程组</div><div class="tc-en">Maxwell's Equations</div></a>
-      <a class="toc-card" href="sem2/14-em-waves.html"><div class="tc-num">14</div><div class="tc-title">电磁波</div><div class="tc-en">Electromagnetic Waves</div></a>
+    <h2 class="section-title">🗺️ 学期地图 Semester Map</h2>
+    <p class="group-sub">从经典到前沿的八段旅程。每张卡片链接到该学期第一章；完整的逐章目录在左侧导航。</p>
+    <div class="map-grid">
+      <a class="sem-card" href="mechanics/01-vectors.html">
+        <div class="sem-num">SEMESTER 1</div>
+        <div class="sem-name">力学与现代物理</div>
+        <div class="sem-en">Mechanics &amp; Modern Physics</div>
+        <div class="sem-tags"><span class="tag">牛顿力学</span><span class="tag">分析力学</span><span class="tag">相对论</span><span class="tag">流体</span><span class="tag">混沌</span></div>
+        <div class="sem-meta"><span>20 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem2/01-charge.html">
+        <div class="sem-num">SEMESTER 2</div>
+        <div class="sem-name">电磁学</div>
+        <div class="sem-en">Electromagnetism</div>
+        <div class="sem-tags"><span class="tag">静电</span><span class="tag">电路</span><span class="tag">磁场</span><span class="tag">感应</span><span class="tag">麦克斯韦</span></div>
+        <div class="sem-meta"><span>14 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem3/01-waves.html">
+        <div class="sem-num">SEMESTER 3</div>
+        <div class="sem-name">波动·光学·数学方法</div>
+        <div class="sem-en">Waves, Optics &amp; Math Methods</div>
+        <div class="sem-tags"><span class="tag">机械波</span><span class="tag">光学</span><span class="tag">傅里叶</span><span class="tag">偏振</span><span class="tag">PDE</span></div>
+        <div class="sem-meta"><span>14 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem4/01-temperature.html">
+        <div class="sem-num">SEMESTER 4</div>
+        <div class="sem-name">热力学与统计物理</div>
+        <div class="sem-en">Thermal &amp; Statistical Physics</div>
+        <div class="sem-tags"><span class="tag">热力学</span><span class="tag">熵</span><span class="tag">系综</span><span class="tag">配分函数</span><span class="tag">量子统计</span></div>
+        <div class="sem-meta"><span>12 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem5/01-origins.html">
+        <div class="sem-num">SEMESTER 5</div>
+        <div class="sem-name">量子力学 I + 高等经典力学</div>
+        <div class="sem-en">Quantum I + Adv. Classical</div>
+        <div class="sem-tags"><span class="tag">薛定谔</span><span class="tag">氢原子</span><span class="tag">自旋</span><span class="tag">拉格朗日</span><span class="tag">哈密顿</span></div>
+        <div class="sem-meta"><span>12 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem6/01-identical.html">
+        <div class="sem-num">SEMESTER 6</div>
+        <div class="sem-name">量子力学 II + 电动力学</div>
+        <div class="sem-en">Quantum II + Electrodynamics</div>
+        <div class="sem-tags"><span class="tag">微扰</span><span class="tag">散射</span><span class="tag">多极</span><span class="tag">辐射</span><span class="tag">协变</span></div>
+        <div class="sem-meta"><span>12 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem7/01-crystals.html">
+        <div class="sem-num">SEMESTER 7</div>
+        <div class="sem-name">凝聚态 + 核与粒子物理</div>
+        <div class="sem-en">Condensed Matter + Nuclear/Particle</div>
+        <div class="sem-tags"><span class="tag">晶体</span><span class="tag">能带</span><span class="tag">超导</span><span class="tag">核</span><span class="tag">标准模型</span></div>
+        <div class="sem-meta"><span>12 章</span><span class="sem-go">开始 →</span></div>
+      </a>
+      <a class="sem-card" href="sem8/01-equivalence.html">
+        <div class="sem-num">SEMESTER 8</div>
+        <div class="sem-name">GR · 天体 · QFT · 等离子体</div>
+        <div class="sem-en">GR · Astro · QFT · Plasma</div>
+        <div class="sem-tags"><span class="tag">广义相对论</span><span class="tag">黑洞</span><span class="tag">QFT</span><span class="tag">聚变</span><span class="tag">前沿</span></div>
+        <div class="sem-meta"><span>12 章</span><span class="sem-go">开始 →</span></div>
+      </a>
     </div>
 
-    <div class="toc-part-heading">✅ 第三学期 · 波动·光学·数学方法 Waves, Optics &amp; Math Methods</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem3/01-waves.html"><div class="tc-num">1</div><div class="tc-title">波动基础</div><div class="tc-en">Wave Basics</div></a>
-      <a class="toc-card" href="sem3/02-string-sound.html"><div class="tc-num">2</div><div class="tc-title">弦上的波与声波</div><div class="tc-en">String &amp; Sound Waves</div></a>
-      <a class="toc-card" href="sem3/03-superposition.html"><div class="tc-num">3</div><div class="tc-title">叠加·干涉·驻波</div><div class="tc-en">Superposition &amp; Standing Waves</div></a>
-      <a class="toc-card" href="sem3/04-doppler.html"><div class="tc-num">4</div><div class="tc-title">多普勒效应</div><div class="tc-en">Doppler Effect</div></a>
-      <a class="toc-card" href="sem3/05-fourier.html"><div class="tc-num">5</div><div class="tc-title">傅里叶分析</div><div class="tc-en">Fourier Analysis</div></a>
-      <a class="toc-card" href="sem3/06-geometric.html"><div class="tc-num">6</div><div class="tc-title">几何光学</div><div class="tc-en">Geometric Optics</div></a>
-      <a class="toc-card" href="sem3/07-lenses.html"><div class="tc-num">7</div><div class="tc-title">面镜与透镜</div><div class="tc-en">Mirrors &amp; Lenses</div></a>
-      <a class="toc-card" href="sem3/08-instruments.html"><div class="tc-num">8</div><div class="tc-title">光学仪器</div><div class="tc-en">Optical Instruments</div></a>
-      <a class="toc-card" href="sem3/09-interference.html"><div class="tc-num">9</div><div class="tc-title">波动光学·干涉</div><div class="tc-en">Interference</div></a>
-      <a class="toc-card" href="sem3/10-diffraction.html"><div class="tc-num">10</div><div class="tc-title">衍射</div><div class="tc-en">Diffraction</div></a>
-      <a class="toc-card" href="sem3/11-polarization.html"><div class="tc-num">11</div><div class="tc-title">偏振</div><div class="tc-en">Polarization</div></a>
-      <a class="toc-card" href="sem3/12-linear-algebra.html"><div class="tc-num">12</div><div class="tc-title">线性代数</div><div class="tc-en">Linear Algebra</div></a>
-      <a class="toc-card" href="sem3/13-ode-special.html"><div class="tc-num">13</div><div class="tc-title">微分方程与特殊函数</div><div class="tc-en">ODEs &amp; Special Functions</div></a>
-      <a class="toc-card" href="sem3/14-complex-pde.html"><div class="tc-num">14</div><div class="tc-title">复变函数与偏微分方程</div><div class="tc-en">Complex Analysis &amp; PDEs</div></a>
+    <h2 class="section-title">📚 附录索引 Appendix Index</h2>
+    <p class="group-sub">11 篇专题附录：参考资料、改变物理学的经典实验、以及"光与视觉"系列。</p>
+
+    <div class="group-h">📖 参考 Reference</div>
+    <div class="appx-grid">
+      <a class="appx-card" href="appendix/formulas.html"><div><span class="appx-t">公式速查表</span><span class="appx-en">Formula Sheets</span></div><div class="appx-d">全课程关键公式按主题速查。</div></a>
+      <a class="appx-card" href="appendix/math-review.html"><div><span class="appx-t">数学回顾</span><span class="appx-en">Math Review</span></div><div class="appx-d">微积分、线性代数、微分方程要点。</div></a>
+      <a class="appx-card" href="appendix/constants.html"><div><span class="appx-t">物理常数与单位</span><span class="appx-en">Constants &amp; Units</span></div><div class="appx-d">SI 单位、CODATA 常数、换算表。</div></a>
     </div>
 
-    <div class="toc-part-heading">✅ 第四学期 · 热力学与统计物理 Thermal &amp; Statistical Physics</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem4/01-temperature.html"><div class="tc-num">1</div><div class="tc-title">温度与热平衡</div><div class="tc-en">Temperature &amp; Equilibrium</div></a>
-      <a class="toc-card" href="sem4/02-heat.html"><div class="tc-num">2</div><div class="tc-title">热量·比热·潜热</div><div class="tc-en">Heat &amp; Calorimetry</div></a>
-      <a class="toc-card" href="sem4/03-ideal-gas.html"><div class="tc-num">3</div><div class="tc-title">理想气体与气体动理论</div><div class="tc-en">Ideal Gas &amp; Kinetic Theory</div></a>
-      <a class="toc-card" href="sem4/04-maxwell.html"><div class="tc-num">4</div><div class="tc-title">麦克斯韦-玻尔兹曼分布</div><div class="tc-en">Maxwell-Boltzmann</div></a>
-      <a class="toc-card" href="sem4/05-first-law.html"><div class="tc-num">5</div><div class="tc-title">热力学第一定律与过程</div><div class="tc-en">First Law &amp; Processes</div></a>
-      <a class="toc-card" href="sem4/06-engines.html"><div class="tc-num">6</div><div class="tc-title">热机·卡诺·第二定律</div><div class="tc-en">Engines, Carnot &amp; 2nd Law</div></a>
-      <a class="toc-card" href="sem4/07-entropy.html"><div class="tc-num">7</div><div class="tc-title">熵·热力学势·相变</div><div class="tc-en">Entropy, Potentials &amp; Phases</div></a>
-      <a class="toc-card" href="sem4/08-microstates.html"><div class="tc-num">8</div><div class="tc-title">微观态·玻尔兹曼熵</div><div class="tc-en">Microstates &amp; Boltzmann Entropy</div></a>
-      <a class="toc-card" href="sem4/09-canonical.html"><div class="tc-num">9</div><div class="tc-title">正则系综·配分函数</div><div class="tc-en">Canonical Ensemble &amp; Z</div></a>
-      <a class="toc-card" href="sem4/10-grand.html"><div class="tc-num">10</div><div class="tc-title">巨正则系综·化学势</div><div class="tc-en">Grand Canonical &amp; μ</div></a>
-      <a class="toc-card" href="sem4/11-quantum-stats.html"><div class="tc-num">11</div><div class="tc-title">量子统计</div><div class="tc-en">Quantum Statistics</div></a>
-      <a class="toc-card" href="sem4/12-fluctuations.html"><div class="tc-num">12</div><div class="tc-title">涨落与输运现象</div><div class="tc-en">Fluctuations &amp; Transport</div></a>
+    <div class="group-h">🔬 实验史 Experiment History</div>
+    <div class="appx-grid">
+      <a class="appx-card" href="appendix/electron-gun.html"><div><span class="appx-t">电子枪</span><span class="appx-en">The Electron Gun</span></div><div class="appx-d">发射·加速·聚焦，三极枪仿真。</div></a>
+      <a class="appx-card" href="appendix/double-slit.html"><div><span class="appx-t">双缝干涉的历史</span><span class="appx-en">The Double-Slit</span></div><div class="appx-d">杨→单光子→电子→which-path→退相干。</div></a>
+      <a class="appx-card" href="appendix/stern-gerlach.html"><div><span class="appx-t">Stern–Gerlach 实验</span><span class="appx-en">Stern–Gerlach</span></div><div class="appx-d">空间量子化与自旋的直接证据。</div></a>
+      <a class="appx-card" href="appendix/michelson-morley.html"><div><span class="appx-t">迈克尔逊–莫雷实验</span><span class="appx-en">Michelson–Morley</span></div><div class="appx-d">物理学最著名的零结果。</div></a>
     </div>
 
-    <div class="toc-part-heading">✅ 第五学期 · 量子力学 I + 高等经典力学 Quantum I + Adv. Classical</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem5/01-origins.html"><div class="tc-num">1</div><div class="tc-title">量子力学起源</div><div class="tc-en">Origins of QM</div></a>
-      <a class="toc-card" href="sem5/02-schrodinger.html"><div class="tc-num">2</div><div class="tc-title">波函数与薛定谔方程</div><div class="tc-en">Wave Function &amp; Schrödinger Eq.</div></a>
-      <a class="toc-card" href="sem5/03-1d.html"><div class="tc-num">3</div><div class="tc-title">一维势场问题</div><div class="tc-en">1D Potential Problems</div></a>
-      <a class="toc-card" href="sem5/04-formalism.html"><div class="tc-num">4</div><div class="tc-title">量子力学形式体系</div><div class="tc-en">QM Formalism</div></a>
-      <a class="toc-card" href="sem5/05-angular.html"><div class="tc-num">5</div><div class="tc-title">角动量</div><div class="tc-en">Angular Momentum</div></a>
-      <a class="toc-card" href="sem5/06-hydrogen.html"><div class="tc-num">6</div><div class="tc-title">氢原子</div><div class="tc-en">Hydrogen Atom</div></a>
-      <a class="toc-card" href="sem5/07-spin.html"><div class="tc-num">7</div><div class="tc-title">自旋</div><div class="tc-en">Spin</div></a>
-      <a class="toc-card" href="sem5/08-lagrangian-adv.html"><div class="tc-num">8</div><div class="tc-title">拉格朗日力学（深化）</div><div class="tc-en">Lagrangian (Advanced)</div></a>
-      <a class="toc-card" href="sem5/09-hamilton-canonical.html"><div class="tc-num">9</div><div class="tc-title">哈密顿方程与正则变换</div><div class="tc-en">Hamilton &amp; Canonical Transforms</div></a>
-      <a class="toc-card" href="sem5/10-rigid-body.html"><div class="tc-num">10</div><div class="tc-title">刚体动力学</div><div class="tc-en">Rigid Body Dynamics</div></a>
-      <a class="toc-card" href="sem5/11-hamilton-jacobi.html"><div class="tc-num">11</div><div class="tc-title">哈密顿-雅可比方程</div><div class="tc-en">Hamilton-Jacobi</div></a>
-      <a class="toc-card" href="sem5/12-perturbation.html"><div class="tc-num">12</div><div class="tc-title">经典微扰与 KAM</div><div class="tc-en">Classical Perturbation &amp; KAM</div></a>
+    <div class="group-h">💡 光与视觉 Light &amp; Vision</div>
+    <div class="appx-grid">
+      <a class="appx-card" href="appendix/photon-production.html"><div><span class="appx-t">光子的产生</span><span class="appx-en">How Photons Are Produced</span></div><div class="appx-d">机制总表 + 激光 / UV / EUV 制造。</div></a>
+      <a class="appx-card" href="appendix/how-we-see-color.html"><div><span class="appx-t">我们如何看到颜色</span><span class="appx-en">How We See Color</span></div><div class="appx-d">光谱 × 反射率 → 视锥 → 色觉。</div></a>
+      <a class="appx-card" href="appendix/how-we-see-form.html"><div><span class="appx-t">我们如何看到形状与距离</span><span class="appx-en">Form &amp; Depth</span></div><div class="appx-d">对比 / 边缘 / 双眼视差。</div></a>
+      <a class="appx-card" href="appendix/polarization-vision.html"><div><span class="appx-t">偏振视觉·看穿水面</span><span class="appx-en">Polarization Vision</span></div><div class="appx-d">菲涅尔 / 偏振 / 海鸟如何看鱼。</div></a>
     </div>
 
-    <div class="toc-part-heading">✅ 第六学期 · 量子力学 II + 电动力学 Quantum II + Electrodynamics</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem6/01-identical.html"><div class="tc-num">1</div><div class="tc-title">全同粒子与多体</div><div class="tc-en">Identical Particles &amp; Many-Body</div></a>
-      <a class="toc-card" href="sem6/02-perturbation.html"><div class="tc-num">2</div><div class="tc-title">不含时微扰论</div><div class="tc-en">Time-Independent Perturbation</div></a>
-      <a class="toc-card" href="sem6/03-transitions.html"><div class="tc-num">3</div><div class="tc-title">含时微扰与跃迁</div><div class="tc-en">Transitions &amp; Golden Rule</div></a>
-      <a class="toc-card" href="sem6/04-scattering.html"><div class="tc-num">4</div><div class="tc-title">散射理论</div><div class="tc-en">Scattering Theory</div></a>
-      <a class="toc-card" href="sem6/05-atoms-molecules.html"><div class="tc-num">5</div><div class="tc-title">原子与分子物理</div><div class="tc-en">Atomic &amp; Molecular Physics</div></a>
-      <a class="toc-card" href="sem6/06-multipoles.html"><div class="tc-num">6</div><div class="tc-title">静电学与多极展开</div><div class="tc-en">Electrostatics &amp; Multipoles</div></a>
-      <a class="toc-card" href="sem6/07-magnetostatics.html"><div class="tc-num">7</div><div class="tc-title">磁学与矢势</div><div class="tc-en">Magnetostatics &amp; Vector Potential</div></a>
-      <a class="toc-card" href="sem6/08-maxwell-covariant.html"><div class="tc-num">8</div><div class="tc-title">麦克斯韦方程（协变与能量）</div><div class="tc-en">Maxwell (Covariant) &amp; Energy</div></a>
-      <a class="toc-card" href="sem6/09-waves-radiation.html"><div class="tc-num">9</div><div class="tc-title">电磁波与辐射</div><div class="tc-en">EM Waves &amp; Radiation</div></a>
-      <a class="toc-card" href="sem6/10-relativistic-em.html"><div class="tc-num">10</div><div class="tc-title">相对论电动力学</div><div class="tc-en">Relativistic Electrodynamics</div></a>
-      <a class="toc-card" href="sem6/11-fields-matter.html"><div class="tc-num">11</div><div class="tc-title">电磁介质</div><div class="tc-en">Fields in Matter</div></a>
-      <a class="toc-card" href="sem6/12-charge-motion.html"><div class="tc-num">12</div><div class="tc-title">带电粒子在电磁场中的运动</div><div class="tc-en">Charge Motion in Fields</div></a>
+    <div class="howto">
+      <p style="margin-top:0"><b>如何使用 / How to use</b></p>
+      <p>• <b>逐章导航</b>：左侧目录按学期折叠分组，含上下章翻页。<br>
+      • <b>搜索</b>：侧边栏顶部搜索框（全 120 页全文检索），或按 <kbd>/</kbd> 聚焦。<br>
+      • <b>深色模式</b>：侧边栏 <b>🌙</b> 按钮切换。<br>
+      • <b>仿真</b>：每章末尾的 <em>🎛️ 互动仿真</em> 可拖滑块调参、实时看物理。<br>
+      • <b>离线</b>：MathJax 已本地化，断网亦可阅读与渲染公式。</p>
     </div>
 
-    <div class="toc-part-heading">✅ 第七学期 · 凝聚态 + 核与粒子物理 Condensed Matter + Nuclear/Particle</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem7/01-crystals.html"><div class="tc-num">1</div><div class="tc-title">晶体结构与倒格子</div><div class="tc-en">Crystals &amp; Reciprocal Lattice</div></a>
-      <a class="toc-card" href="sem7/02-phonons.html"><div class="tc-num">2</div><div class="tc-title">晶格振动与声子</div><div class="tc-en">Lattice Vibrations &amp; Phonons</div></a>
-      <a class="toc-card" href="sem7/03-bands.html"><div class="tc-num">3</div><div class="tc-title">自由电子与能带</div><div class="tc-en">Free Electrons &amp; Energy Bands</div></a>
-      <a class="toc-card" href="sem7/04-semiconductors.html"><div class="tc-num">4</div><div class="tc-title">半导体</div><div class="tc-en">Semiconductors</div></a>
-      <a class="toc-card" href="sem7/05-superconductivity.html"><div class="tc-num">5</div><div class="tc-title">超导电性</div><div class="tc-en">Superconductivity</div></a>
-      <a class="toc-card" href="sem7/06-magnetism.html"><div class="tc-num">6</div><div class="tc-title">固体磁性</div><div class="tc-en">Magnetism in Solids</div></a>
-      <a class="toc-card" href="sem7/07-nuclear-structure.html"><div class="tc-num">7</div><div class="tc-title">核结构</div><div class="tc-en">Nuclear Structure</div></a>
-      <a class="toc-card" href="sem7/08-radioactivity.html"><div class="tc-num">8</div><div class="tc-title">放射性与核衰变</div><div class="tc-en">Radioactivity &amp; Decay</div></a>
-      <a class="toc-card" href="sem7/09-reactions-fission.html"><div class="tc-num">9</div><div class="tc-title">核反应·裂变·聚变</div><div class="tc-en">Reactions, Fission &amp; Fusion</div></a>
-      <a class="toc-card" href="sem7/10-standard-model.html"><div class="tc-num">10</div><div class="tc-title">粒子物理与标准模型</div><div class="tc-en">Standard Model</div></a>
-      <a class="toc-card" href="sem7/11-symmetries.html"><div class="tc-num">11</div><div class="tc-title">对称性与守恒律</div><div class="tc-en">Symmetries &amp; Conservation</div></a>
-      <a class="toc-card" href="sem7/12-cosmology.html"><div class="tc-num">12</div><div class="tc-title">粒子天体物理与宇宙学</div><div class="tc-en">Particle Astro &amp; Cosmology</div></a>
-    </div>
-
-    <div class="toc-part-heading">✅ 第八学期 · 广义相对论·天体·量子场论·等离子体 GR · Astro · QFT · Plasma</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="sem8/01-equivalence.html"><div class="tc-num">1</div><div class="tc-title">等效原理与时空几何</div><div class="tc-en">Equivalence &amp; Spacetime</div></a>
-      <a class="toc-card" href="sem8/02-einstein-bh.html"><div class="tc-num">2</div><div class="tc-title">爱因斯坦方程与黑洞</div><div class="tc-en">Einstein's Eqs &amp; Black Holes</div></a>
-      <a class="toc-card" href="sem8/03-gr-waves-cosmo.html"><div class="tc-num">3</div><div class="tc-title">引力波与相对论宇宙学</div><div class="tc-en">GWs &amp; Relativistic Cosmology</div></a>
-      <a class="toc-card" href="sem8/04-stars.html"><div class="tc-num">4</div><div class="tc-title">恒星结构与演化</div><div class="tc-en">Stellar Structure &amp; Evolution</div></a>
-      <a class="toc-card" href="sem8/05-compact-objects.html"><div class="tc-num">5</div><div class="tc-title">致密天体与高能天体物理</div><div class="tc-en">Compact Objects &amp; High-Energy Astro</div></a>
-      <a class="toc-card" href="sem8/06-qft-basics.html"><div class="tc-num">6</div><div class="tc-title">量子场论基础</div><div class="tc-en">QFT Foundations</div></a>
-      <a class="toc-card" href="sem8/07-gauge-renorm.html"><div class="tc-num">7</div><div class="tc-title">规范场论与重整化</div><div class="tc-en">Gauge Theories &amp; Renormalization</div></a>
-      <a class="toc-card" href="sem8/08-electroweak-bsm.html"><div class="tc-num">8</div><div class="tc-title">电弱统一与超出标准模型</div><div class="tc-en">Electroweak &amp; BSM</div></a>
-      <a class="toc-card" href="sem8/09-plasma-basics.html"><div class="tc-num">9</div><div class="tc-title">等离子体物理基础</div><div class="tc-en">Plasma Physics Basics</div></a>
-      <a class="toc-card" href="sem8/10-plasma-fusion.html"><div class="tc-num">10</div><div class="tc-title">等离子体波与聚变</div><div class="tc-en">Plasma Waves &amp; Fusion</div></a>
-      <a class="toc-card" href="sem8/11-unification.html"><div class="tc-num">11</div><div class="tc-title">统一理论与量子引力</div><div class="tc-en">Unification &amp; Quantum Gravity</div></a>
-      <a class="toc-card" href="sem8/12-frontiers.html"><div class="tc-num">12</div><div class="tc-title">当代物理学前沿</div><div class="tc-en">Frontiers of Physics</div></a>
-    </div>
-
-    <div class="toc-part-heading">📚 附录 Appendix</div>
-    <div class="toc-grid">
-      <a class="toc-card" href="appendix/formulas.html"><div class="tc-num">★</div><div class="tc-title">公式速查表</div><div class="tc-en">Formula Sheets</div></a>
-      <a class="toc-card" href="appendix/math-review.html"><div class="tc-num">★</div><div class="tc-title">数学回顾</div><div class="tc-en">Math Review</div></a>
-      <a class="toc-card" href="appendix/constants.html"><div class="tc-num">★</div><div class="tc-title">物理常数与单位</div><div class="tc-en">Constants &amp; Units</div></a>
-    </div>
-
-    <div class="toc-part-heading" style="border-bottom-style:dashed;color:var(--text-mute)">🎓 八学期完整课程已全部生成 — Full 8-Semester Curriculum Complete</div>
-    <div class="upcoming-list">
-      <div class="up-item">涵盖藤校物理专业本科级别全部核心：从经典力学到广义相对论、从电磁学到量子场论、从热统到等离子体与宇宙学。共 ~95 章、95+ 可交互仿真。</div>
-    </div>
   </main>
 </body>
 </html>
