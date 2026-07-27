@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 K · 偏振视觉：海鸟如何看穿水面 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 K · Appendix K · 光的第三维度 The Third Dimension of Light</p>
+      <h1>偏振视觉：海鸟如何看穿水面 <span class="en-title">Polarization Vision</span></h1>
+    </header>
+
+    <p class="lead">海鸥能看见海里的鱼吗？能——但<strong>靠的不是紫外</strong>。陆地上红隼靠紫外追踪鼠尿有效，是因为空气里紫外能自由传播；而<strong>水会强烈吸收紫外</strong>（表层 1 米内所剩无几）。海鸟、海龟、章鱼等水下捕食者真正的杀手锏是<strong>偏振视觉 (polarization vision)</strong>：滤掉水面眩光、看穿水面。本附录讲清"看鱼"背后的物理——光在介质中的吸收、菲涅尔反射、偏振、斯涅耳窗，以及一场捕食者与猎物间的视觉军备竞赛。Seabirds see fish not via UV (water blocks it) but via polarization vision that cuts water-surface glare.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>说明为何<strong>紫外在水下没用</strong>（水吸收紫外），与陆地上的紫外戏法形成对比。</li>
+        <li>讲清水对可见光的选择性吸收（红先没、蓝绿穿透深）→ 水下动物的视色素调谐在蓝绿。</li>
+        <li>解释<strong>菲涅尔反射</strong>：掠视水面时反射率趋近 1（眩光遮眼），陡视时透射大、看得清水下。</li>
+        <li>说明<strong>偏振视觉</strong>如何滤眩光、靠偏振对比发现鱼/浮游生物。</li>
+        <li>理解<strong>斯涅耳窗</strong>（临界角 \(48.6^{\circ}\)）与"陡俯冲"的关系，以及鱼的反荫蔽 (counter-shading)。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心物理 Core Physics</h2>
+
+      <h3>① 为什么不是紫外？——水吸收紫外</h3>
+      <p>纯水对紫外的吸收极强，UVA 在表层约 1 米内就被吃掉大半，UVB/UVC 更是厘米级。所以海里的紫外通道基本作废——<strong>陆地上的"紫外尿迹"戏法在水下不成立</strong>。<strong>介质决定了哪个隐藏通道可用。</strong></p>
+
+      <h3>② 水对可见光的选择性吸收 → 蓝绿世界</h3>
+      <p>水把红光（\(\sim650\,\unit{nm}\)）在几米内吸收，橙黄次之，<strong>蓝绿（\(\sim450\!\sim\!500\,\unit{nm}\)）穿透最深</strong>（清水可达上百米）。所以水下是一片蓝绿，鱼和潜水动物的视色素（视紫质 rhodopsin）都调谐在<strong>蓝绿</strong>，以在水下获得最多信息。</p>
+
+      <h3>③ 菲涅尔反射：掠视 = 眩光，陡视 = 看穿</h3>
+      <p>光在空气-水界面，一部分透射（进水）、一部分反射（眩光）。反射比例由<strong>菲涅尔公式</strong>决定：</p>
+      <div class="formula">\[ R=\frac{R_s+R_p}{2},\qquad R_s=\!\left|\frac{n_1\cos\theta_i-n_2\cos\theta_t}{n_1\cos\theta_i+n_2\cos\theta_t}\right|^{2},\quad R_p=\!\left|\frac{n_1\cos\theta_t-n_2\cos\theta_i}{n_1\cos\theta_t+n_2\cos\theta_i}\right|^{2} \]</div>
+      <p>正入射时 \(R\approx2\%\)（几乎全透射，看得清水下）；掠射（\(\theta_i\to90^{\circ}\)）时 \(R\to1\)（水面如镜，只见天空眩光）。所以<strong>从陡角度俯视才看得见水下</strong>，斜眼一瞥全是眩光——这正是燕鸥、鲣鸟<strong>近乎垂直扎水俯冲</strong>的物理原因。</p>
+
+      <h3>④ 真正的超能力：偏振视觉</h3>
+      <p>水面反射的眩光是<strong>高度偏振的</strong>（尤其布儒斯特角 \(\theta_B\approx53^{\circ}\) 附近，反射光几乎全偏振）。鸟、海龟、章鱼、螳螂虾的一些视锥能感知光的<strong>偏振方向（电矢量）</strong>，相当于<strong>自带偏振太阳镜</strong>：</p>
+      <ul>
+        <li><strong>滤眩光</strong>：屏蔽偏振的反射眩光 → 看穿水面；</li>
+        <li><strong>偏振对比</strong>：透明或伪装的鱼、浮游生物会改变透射/散射光的偏振态，在偏振通道里露出马脚。</li>
+      </ul>
+
+      <h3>⑤ 斯涅耳窗与反荫蔽</h3>
+      <p>水下看上方，整个天空被压缩进一个 \(97^{\circ}\) 的<strong>斯涅耳窗 (Snell's window)</strong>（临界角 \(\theta_c=\arcsin(1/1.33)\approx48.6^{\circ}\)）；窗外是全反射的水下暗景。从空中看水下则反之：陡视看得见、掠视是眩光。</p>
+      <p>鱼也没坐以待毙——<strong>反荫蔽 (counter-shading)</strong>：背暗、腹白。从上方看，深背融入幽暗深水；从下方看，白腹融进明亮水面。这是被捕食者对"被看见"的直接反制。</p>
+      <div class="key-terms">polarization (偏振), Fresnel reflection (菲涅尔反射), transmittance/reflectance (透射率/反射率), Brewster angle (布儒斯特角), Snell's window (斯涅耳窗), critical angle (临界角 \(48.6^{\circ}\)), counter-shading (反荫蔽), rhodopsin (视紫质)</div>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation：临界角与"看进水"的极限</h2>
+      <p class="step">由斯涅尔定律 \(n_1\sin\theta_i=n_2\sin\theta_t\)，水下(\(n_2=1.33\))的光要射入空气(\(n_1=1\))，最大 \(\theta_t\) 满足 \(\sin\theta_t=1\)，对应水下 \(\theta_c=\arcsin(1/1.33)=48.6^{\circ}\)。超过此角的光在界面<strong>全反射 (TIR)</strong> 回水下——这就是斯涅耳窗的边界。</p>
+      <p class="step"><strong>对空中观察者</strong>：能"看进水"的有效角度也受这套折射约束；越接近正下方、透射越大（菲涅尔 \(T\to1\)），越能看见水下；越掠射、反射眩光越强（\(R\to1\)）。故海鸟<strong>陡俯冲</strong>以最大化透射、最小化眩光。</p>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"海鸟靠紫外看鱼。"<br>纠正：水吸收紫外，水下紫外通道作废；靠的是<strong>偏振视觉 + 蓝绿视觉 + 陡俯冲</strong>。</li>
+        <li><strong>误区：</strong>"水面反光只是好看，不影响看鱼。"<br>纠正：掠视时反射率趋近 1，<strong>眩光完全遮住水下</strong>；必须陡视或用偏振滤光。</li>
+        <li><strong>误区：</strong>"水里什么颜色都有。"<br>纠正：红光几米就没，水下是<strong>蓝绿主导</strong>；红鱼在深处看起来发黑。</li>
+        <li><strong>误区：</strong>"鱼随便就能被看见。"<br>纠正：反荫蔽 + 浑浊 + 深度都降低可见性；这是捕食者与猎物的视觉军备竞赛。</li>
+        <li><strong>误区：</strong>"偏振和颜色是一回事。"<br>纠正：颜色=波长，偏振=电矢量方向，是光的<strong>不同维度</strong>；偏振视觉是独立于色觉的第三通道。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation：看穿水面</h2>
+      <p class="sim-desc">侧视：空气在上、水在下，水面中央有一条<strong>反荫蔽</strong>的鱼（背暗腹白）。眼睛从角度 \(\phi\)（相对竖直）看水面。<strong>绿线=透射（看进水见鱼）</strong>，强度 ∝ 透射率 \(T\)；<strong>红线=反射眩光</strong>，强度 ∝ 反射率 \(R\)（菲涅尔），且是<strong>偏振的</strong>。拖 <strong>视角 \(\phi\)</strong>：陡视 \(T\) 大→看见鱼；掠视 \(R\) 大→眩光遮眼（海鸟因此陡俯冲）。</p>
+      <div class="sim-container">
+        <canvas id="sim-pol" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-pol"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-pol');
+        var W = canvas.width, H = canvas.height;
+        var SURF = 150, EYE = { x: 250, y: 50 };
+        var params = { phi: 20 };
+
+        function fresnel(phi) {           // phi in rad, air->water
+          var n1 = 1, n2 = 1.333;
+          var s = Math.sin(phi), c = Math.cos(phi);
+          var st = s * n1 / n2, ct = Math.sqrt(Math.max(0, 1 - st * st));
+          var Rs = (n1 * c - n2 * ct) / (n1 * c + n2 * ct); Rs *= Rs;
+          var Rp = (n1 * ct - n2 * c) / (n1 * ct + n2 * c); Rp *= Rp;
+          var R = (Rs + Rp) / 2;
+          return { R: R, T: 1 - R };
+        }
+
+        var sim = PS.createSim(canvas, {
+          state: function () { return {}; },
+          step: function () {},
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            var phi = params.phi * Math.PI / 180;
+            var fr = fresnel(phi);
+
+            // water tint
+            ctx.fillStyle = 'rgba(90,130,150,0.22)'; ctx.fillRect(0, SURF, W, H - SURF);
+            // surface
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(0, SURF); ctx.lineTo(W, SURF); ctx.stroke();
+            PS.drawText(ctx, '水面 water surface (空气 air / 水 water)', 6, SURF - 6, { font: '10px monospace', color: C.text });
+            PS.drawText(ctx, '空气 air', 6, 20, { font: '10px monospace', color: C.text });
+
+            // fish (counter-shaded): dark back, light belly, near bottom-center-right
+            var fx = 470, fy = 250;
+            ctx.fillStyle = '#33414a'; ellipse(ctx, fx, fy, 26, 11);          // dark back
+            ctx.fillStyle = '#d8d2bf'; ctx.beginPath(); ctx.arc(fx + 14, fy, 4, 0, 7); ctx.fill(); // tail hint
+            ctx.fillStyle = '#e7e0cc'; ellipse(ctx, fx, fy + 5, 24, 6);        // light belly
+            ctx.fillStyle = '#33414a'; ctx.beginPath(); ctx.arc(fx - 22, fy, 3, 0, 7); ctx.fill(); // eye
+            PS.drawText(ctx, '反荫蔽 counter-shading (背暗腹白)', fx - 40, fy + 28, { font: '9px monospace', color: C.text, align: 'center' });
+
+            // eye
+            PS.drawCircle(ctx, EYE.x, EYE.y, 7, { fill: C.text });
+            PS.drawText(ctx, '眼 eye', EYE.x, EYE.y - 14, { font: '10px monospace', color: C.text, align: 'center' });
+
+            // incident ray: from eye at angle phi (from vertical) to surface
+            var s = Math.sin(phi), c = Math.cos(phi);
+            var tHit = (SURF - EYE.y) / c;
+            var Sx = EYE.x + tHit * s;
+            // incident (gray)
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+            line(ctx, EYE.x, EYE.y, Sx, SURF);
+            // transmitted (refracted) ray into water, alpha = T (green)
+            var st = s / 1.333, ct = Math.sqrt(Math.max(0, 1 - st * st));
+            var tx = Sx + 150 * st, ty = SURF + 150 * ct;
+            ctx.save(); ctx.globalAlpha = 0.25 + fr.T * 0.75; ctx.strokeStyle = C.accent2; ctx.lineWidth = 2.5;
+            line(ctx, Sx, SURF, tx, ty); ctx.restore();
+            // reflected glare ray (mirror about vertical normal), alpha = R (red)
+            var rx = Sx + 120 * s, ry = SURF - 120 * c;   // reflected goes upward (sin same, -cos)
+            ctx.save(); ctx.globalAlpha = 0.15 + fr.R * 0.85; ctx.strokeStyle = C.accent; ctx.lineWidth = 2.5;
+            line(ctx, Sx, SURF, rx, ry); ctx.restore();
+            // polarization tick on glare (perp dashes)
+            if (fr.R > 0.15) {
+              ctx.strokeStyle = C.accent; ctx.lineWidth = 2; ctx.globalAlpha = fr.R;
+              var mx = Sx + 60 * s, my = SURF - 60 * c;
+              var px = -c * 8, py = -s * 8;  // perpendicular to ray
+              line(ctx, mx - px, my - py, mx + px, my + py);
+              ctx.globalAlpha = 1;
+              PS.drawText(ctx, '偏振眩光 polarized glare', rx + 4, ry, { font: '9px monospace', color: C.accent });
+            }
+
+            // T / R bars (bottom-left)
+            var bx = 40, by = 330, bw = 150, bh = 16;
+            ctx.fillStyle = C.bg; ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+            ctx.fillRect(bx, by - bh, bw, bh); ctx.strokeRect(bx, by - bh, bw, bh);
+            ctx.fillStyle = C.accent2; ctx.fillRect(bx + 1, by - bh + 1, (bw - 2) * fr.T, bh - 2);
+            ctx.fillStyle = C.bg; ctx.fillRect(bx, by + 4, bw, bh); ctx.strokeRect(bx, by + 4, bw, bh);
+            ctx.fillStyle = C.accent; ctx.fillRect(bx + 1, by + 5, (bw - 2) * fr.R, bh - 2);
+            ctx.fillStyle = C.text; ctx.font = '10px monospace';
+            ctx.fillText('透射 T (看进水) ' + Math.round(fr.T * 100) + '%', bx, by - bh - 4);
+            ctx.fillText('反射 R (眩光) ' + Math.round(fr.R * 100) + '%', bx, by + 4 + bh + 12);
+
+            // readout
+            var note = params.phi < 45 ? '陡视 → T 大 → 看见水下鱼（海鸟因此陡俯冲）' :
+                       params.phi < 70 ? '中等：开始被眩光干扰' : '掠视 → R 大 → 眩光遮眼，看不见鱼';
+            PS.drawText(ctx, '视角 φ = ' + params.phi + '°  |  ' + note, bx, H - 6, { font: '10px monospace', color: C.text });
+
+            function line(c2, x1, y1, x2, y2) { c2.beginPath(); c2.moveTo(x1, y1); c2.lineTo(x2, y2); c2.stroke(); }
+            function ellipse(c2, x, y, rx, ry) {
+              c2.beginPath(); c2.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI); c2.fill();
+            }
+          }
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-pol'), [
+          { type: 'slider', key: 'phi', label: '视角 φ (°，相对竖直)', min: 0, max: 88, step: 1, value: 20 },
+        ]);
+        ctl.on('phi', function (v) { params.phi = v; });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>海鸟看鱼<strong>不靠紫外</strong>（水吸收紫外）；靠<strong>偏振视觉 + 蓝绿视觉 + 陡俯冲</strong>。</li>
+        <li>水吸收红光早、蓝绿穿透深 → 水下动物视色素调谐蓝绿。</li>
+        <li>菲涅尔反射：陡视 \(T\) 大看得清水下，掠视 \(R\to1\) 眩光遮眼；偏振视觉滤眩光、靠偏振对比发现猎物。</li>
+        <li>斯涅耳窗临界角 \(48.6^{\circ}\)；鱼用反荫蔽（背暗腹白）反制。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\theta_c=\arcsin(1/n)\approx48.6^{\circ},\quad R=\tfrac{R_s+R_p}{2}\xrightarrow{\theta\to90^{\circ}}1,\quad \text{偏振视觉}\Rightarrow\text{滤眩光看穿水面}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

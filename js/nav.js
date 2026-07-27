@@ -224,6 +224,7 @@
           { url: 'appendix/photon-production.html', title: '光子的产生', en: 'How Photons Are Produced', ref: true },
           { url: 'appendix/how-we-see-color.html', title: '我们如何看到颜色', en: 'How We See Color', ref: true },
           { url: 'appendix/how-we-see-form.html', title: '我们如何看到形状与距离', en: 'How We See Form & Depth', ref: true },
+          { url: 'appendix/polarization-vision.html', title: '偏振视觉·看穿水面', en: 'Polarization Vision', ref: true },
         ]},
       ],
     },
