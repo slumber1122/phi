@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 经典微扰与 KAM 定理 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第12章 · 高等经典力学 Advanced Classical Mechanics</p>
+      <h1>经典微扰与 KAM 定理 <span class="en-title">Classical Perturbation &amp; KAM</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>第 8 章我们用拉格朗日方法写出<strong>可积系统</strong> (integrable systems) 的运动方程——\(n\) 个自由度总能找到 \(n\) 个运动常数，轨道被约束在 \(n\) 维<strong>不变环面</strong> (invariant tori) 上。但现实世界几乎总是「几乎可积」：太阳系并非严格的二体、加速器里总有磁公差、磁约束装置中粒子总受微弱湍流散射。本章要回答的核心问题是：<strong>当可积系统受到小扰动 \(\varepsilon\) 后，那些不变环面还能存活多少？</strong> Poincaré 称这是「动力系统的普遍问题」。学完本章后，你将能够：</p>
+      <ul>
+        <li>把一个被微扰的可积系统写成<strong>作用量–角变量</strong>形式 \(H(J,\theta)=H_{0}(j)+\varepsilon H_{1}(j,\theta)\)，并通过<strong>快角平均</strong> (averaging over the fast angle) 得到有效哈密顿量。</li>
+        <li>用<strong>一阶正则微扰论</strong> (canonical perturbation theory) 计算谐振子能量与频率的修正，并阐明「长期项」 (secular terms) 与「有界振荡项」的区别。</li>
+        <li>识别<strong>共振条件</strong> \(\vec n\!\cdot\!\vec\omega=0\)（频率成整数比），解释它为何使微扰展开失效并打开<strong>通往混沌的门户</strong>。</li>
+        <li>阐述<strong>绝热不变量</strong> (adiabatic invariant)：当参数缓慢变化时作用量 \(J\) 近似守恒（\(\Delta J/J\to 0\)），应用于长度缓慢变化的摆、缓慢扩张的盒中粒子。</li>
+        <li>陈述<strong>KAM 定理</strong> (Kolmogorov–Arnold–Moser)：足够小的扰动下，<strong>绝大多数</strong>「足够无理」环绕数的不变环面存活（仅略变形）；有理环绕数的环面破裂为岛屿链与随机层 (stochastic layers)。</li>
+        <li>用<strong>庞加莱截面</strong> (Poincaré section) 与<strong>标准映射</strong> (Chirikov–Taylor standard map) 数值可视化 KAM 结构，并将其物理图像联系到太阳系稳定性、粒子加速器与磁约束聚变。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 几乎可积系统——哈密顿微扰的标准写法</h3>
+      <p>一个 \(n\) 自由度的可积哈密顿系统 (integrable Hamiltonian) 总能通过<strong>正则变换</strong> (canonical transformation) 化为<strong>作用量–角变量</strong> \((J,\theta)\)，其中 \(J=(J_{1},\dots,J_{n})\) 是 \(n\) 个运动常数，\(\theta=(\theta_{1},\dots,\theta_{n})\) 是沿各环面以频率 \(\omega_{i}(J)=\partial H_{0}/\partial J_{i}\) 线性增长的角变量。运动是<strong>测地于不变环面</strong> \(\mathbb T^{n}\) 上的拟周期流。</p>
+      <p>本章的核心对象是被微扰的哈密顿量：</p>
+      <div class="formula">\[ \boxed{\;H(J,\theta)\;=\;H_{0}(J)\;+\;\varepsilon\,H_{1}(J,\theta),\qquad 0\lt\varepsilon\ll 1\;} \]</div>
+      <p>这里 \(H_{0}\) 是<strong>可积部分</strong>，\(\varepsilon H_{1}\) 是<strong>扰动</strong>。<strong>关键诊断</strong>：扰动是否足以破坏可积性？答案由共振与 KAM 定理共同给出。无量纲参数 \(\varepsilon\) 必须真实地小——它衡量扰动与能级间距之比。比如太阳系：木星对地球轨道的引力扰动相对 \(\odot\)–地球二体约为 \((m_{J}/M_{\odot})\cdot(a_{\oplus}/a_{J})^{3}\sim 10^{-5}\)，确实很小，但仍足以在长时间尺度上产生可观效应。</p>
+      <div class="key-terms">action–angle variables (作用量–角变量), integrable system (可积系统), invariant torus (不变环面), perturbation parameter \(\varepsilon\) (扰动参数)</div>
+
+      <h3>2. 正则微扰论——快角平均</h3>
+      <p>对未扰运动，\(J\) 严格守恒，\(\theta(t)=\theta_{0}+\omega(J)t\)。<strong>扰动后</strong>，由哈密顿方程：</p>
+      <div class="formula">\[ \dot J_{i}=-\frac{\partial H}{\partial\theta_{i}}=-\varepsilon\,\frac{\partial H_{1}}{\partial\theta_{i}},\qquad \dot\theta_{i}=\omega_{i}(J)+\varepsilon\,\frac{\partial H_{1}}{\partial J_{i}} \]</div>
+      <p>核心观察：\(J_{i}\) 不再守恒，但其变化率 \(\sim\varepsilon\)。把 \(H_{1}\) 在不变环面上对快角平均：</p>
+      <div class="formula">\[ \big\langle H_{1}\big\rangle(J)\;\equiv\;\frac{1}{(2\pi)^{n}}\int_{0}^{2\pi}\!\!\cdots\!\int_{0}^{2\pi} H_{1}(J,\theta)\,d^{n}\theta \]</div>
+      <p>把扰动展成多重傅里叶级数 \(H_{1}=\sum_{\vec k}H_{1,\vec k}(J)\,e^{i\vec k\cdot\theta}\)，平均只保留 \(\vec k=0\) 项：</p>
+      <div class="formula">\[ \big\langle H_{1}\big\rangle(J)=H_{1,\vec 0}(J) \]</div>
+      <p>由此得<strong>有效（平均）哈密顿量</strong> \(H_{\text{eff}}=H_{0}(J)+\varepsilon\langle H_{1}\rangle(J)\)，它仅含 \(J\)，故<strong>平均后 \(J\) 在 \(O(\varepsilon)\) 阶上仍是常数</strong>——这就是「作用量是绝热不变量」的微扰论依据。<strong>能量的一阶修正</strong>：</p>
+      <div class="formula">\[ \boxed{\;\delta E^{(1)}(J)\;=\;\varepsilon\,\big\langle H_{1}\big\rangle(J)\;} \]</div>
+      <p>修正后的<strong>频率</strong> \(\Omega_{i}=\partial(H_{0}+\varepsilon\langle H_{1}\rangle)/\partial J_{i}\)。需要强调：平均化只在尺度 \(t\ll 1/\varepsilon^{2}\) 上严格成立；更长时标上需二阶理论或 Nekhoroshev 估计。</p>
+      <div class="key-terms">canonical perturbation theory (正则微扰论), averaging method (平均法), secular (长期), effective Hamiltonian (有效哈密顿量)</div>
+
+      <h3>3. 长期项 vs 有界振荡项</h3>
+      <p>把 \(H_{1}\) 的振荡部分 \(\widetilde H_{1}=H_{1}-\langle H_{1}\rangle\) 代入 \(\dot J\) 并沿未扰轨迹积分：</p>
+      <div class="formula">\[ \Delta J_{i}(t)\;=\;-\varepsilon\int_{0}^{t}\!\frac{\partial\widetilde H_{1}}{\partial\theta_{i}}\bigg|_{\theta=\theta_{0}+\omega t'}\,dt' \;=\;-i\varepsilon\sum_{\vec k\ne\vec 0}k_{i}\,H_{1,\vec k}\int_{0}^{t}\!e^{i\vec k\cdot(\theta_{0}+\omega t')}\,dt' \]</div>
+      <p>若 <strong>\(\vec k\cdot\omega\ne 0\)</strong>，积分给振荡解 \((e^{i\vec k\cdot\omega t}-1)/(i\vec k\cdot\omega)\)，幅度<strong>有界</strong> \(\sim\varepsilon/(\vec k\cdot\omega)\)：作用量只做小幅摆动，不漂移。但若 <strong>\(\vec k\cdot\omega=0\)</strong>，则分母为零，积分<strong>线性增长</strong> \(\sim\varepsilon t\)——这就是<strong>长期项</strong> (secular term)，意味着扰动展开在 \(t\sim 1/\varepsilon\) 时失效。这是「共振 = 微扰论失效」的根。</p>
+      <div class="key-terms">bounded oscillation (有界振荡), secular term (长期项), resonance denominator (共振分母)</div>
+
+      <h3>4. 共振与微扰论的失效——通往混沌的门户</h3>
+      <p>当存在非零整数向量 \(\vec k\in\mathbb Z^{n}\setminus\{\vec 0\}\) 使 \(\vec k\cdot\vec\omega=0\)，称系统处于<strong>\(\vec k\)-共振</strong>。这等价于环绕数向量各分量成整数比 \(\omega_{1}:\omega_{2}:\cdots:\omega_{n}=k_{2}:k_{1}:\cdots\)（重排后）。</p>
+      <p>在共振附近，需要作<strong>共振变换</strong>：选慢组合 \(\psi=\vec k\cdot\theta\)（在共振上其变化率为 0），把它作为新角变量；其它快角被平均掉。剩下的<strong>共振哈密顿</strong> (resonance Hamiltonian) 通常只依赖一个慢角，回到 1 自由度问题——单摆型，有椭圆不动点（共振中心）与双曲不动点（异宿分界线）。分界线附近的运动对初值极其敏感，是<strong>随机层</strong> (stochastic layer) 的发源地，也是<strong>混沌的萌芽</strong>。</p>
+      <div class="formula">\[ \text{共振条件}\;\iff\;\exists\,\vec k\in\mathbb Z^{n}\setminus\{\vec 0\}:\;\vec k\cdot\vec\omega(J)=0 \]</div>
+      <p>Chirikov <strong>共振重叠判据</strong> (resonance-overlap criterion)：当相邻共振的宽度增长到彼此相接，全局混沌爆发——这是经验性但极其有效的图像，对应标准映射在 \(K\gtrsim K_{\text{cr}}\approx 0.9716\) 时所有跨越环面破裂。</p>
+      <div class="key-terms">resonance (共振), resonance Hamiltonian (共振哈密顿), separatrix (分界线), stochastic layer (随机层), Chirikov overlap criterion (共振重叠判据)</div>
+
+      <h3>5. 绝热不变量——慢变参数下的「准守恒」</h3>
+      <p>若系统的某参数 \(\lambda(t)\)（如摆长、磁场、盒子尺寸）随时间变化，且变化时标 \(\tau_{\lambda}\) 远大于系统本征周期 \(T\)，即 \(\tau_{\lambda}\omega\gg 1\)，则系统的<strong>作用量</strong> \(J\) 是<strong>绝热不变量</strong> (adiabatic invariant)：</p>
+      <div class="formula">\[ \boxed{\;\frac{\Delta J}{J}\;\to\;0\quad\text{当}\quad\tau_{\lambda}/T\to\infty\;} \]</div>
+      <p>更精确地，\(\Delta J\sim O(e^{-\tau_{\lambda}/T})\)（指数小）或 \(O(1/\tau_{\lambda})\)（幂律小），依解析结构而定。物理图像：在 \((J,\theta)\) 平面上，未扰轨道是绕环面的水平线；当 \(H\) 含时缓慢变化时，「能量面」移动，但作用量「跟不上」快振荡——平均而言 \(J\) 守恒。两个典型应用：</p>
+      <ul>
+        <li><strong>摆长缓慢变化的单摆</strong>：\(J=E/\omega_{0}\)（小角度），\(\omega_{0}=\sqrt{g/\ell}\)。\(J\) 守恒 ⇒ \(E\sqrt{\ell}\) 守恒 ⇒ \(E\propto\ell^{-1/2}\)，角幅度 \(\theta_{\max}\propto\ell^{-3/4}\)。</li>
+        <li><strong>缓慢扩张的盒中粒子</strong>：作用量 \(\oint p\,dx=2Lp=nh\)（Bohr–Sommerfeld）。若 \(L\to 2L\)，则 \(p\to p/2\)、\(E\to E/4\)——能级间距按 \(1/L^{2}\) 收缩。</li>
+      </ul>
+      <p>注意：绝热不变量仅在 \(\tau_{\lambda}\omega\gg 1\) 时成立；如果系统穿越分界线（如能量从振动接近到越过转动阈值），绝热不变量会跳变一个有限量（<strong>Hannay 角</strong> / <strong>不真不变量</strong>），见误区 1。</p>
+      <div class="key-terms">adiabatic invariant (绝热不变量), slowly varying parameter (慢变参数), Bohr–Sommerfeld quantization (玻尔–索末菲量子化)</div>
+
+      <h3>6. KAM 定理——「绝大多数」环面存活</h3>
+      <p><strong>KAM 定理</strong> (Kolmogorov 1954, Arnold 1963, Moser 1962)：考虑非退化的可积哈密顿量 \(H_{0}(J)\)（\(\det\,\partial^{2}H_{0}/\partial J^{2}\ne 0\)，即频率随作用量非平凡变化）受小扰动 \(\varepsilon H_{1}\)。则<strong>存在 \(\varepsilon_{0}\gt 0\)</strong>，当 \(\varepsilon\lt\varepsilon_{0}\) 时，<strong>绝大多数</strong>不变环面存活——它们仅被光滑地变形，仍制约其上的轨道；只有有理环绕数（共振环面）和「接近有理」的极薄 Cantor 集破裂。</p>
+      <p>存活条件是<strong>Diophantine 条件</strong> (Diophantine condition)：环绕数 \(\vec\omega\) 须远离一切有理向量：</p>
+      <div class="formula">\[ \big|\vec k\cdot\vec\omega\big|\;\ge\;\frac{\gamma}{|\vec k|^{\tau}},\qquad\forall\,\vec k\in\mathbb Z^{n}\setminus\{\vec 0\},\quad \tau\gt n-1 \]</div>
+      <p>其中 \(|\vec k|=|k_{1}|+\cdots+|k_{n}|\)，常数 \(\gamma\sim\varepsilon^{1/2}\)。<strong>「最无理」的数</strong>是<strong>黄金比例</strong> \(\varphi=(\sqrt 5-1)/2\approx 0.618\)（其连分数展开 \([0;1,1,1,\dots]\) 全为 1，最佳有理逼近收敛最慢）——它的 KAM 环面是「最顽强的」，对应标准映射里最后破裂的环面。</p>
+      <p>KAM 定理的革命性：它给出<strong>稳定的下界</strong>——「<em>绝大多数</em>」（按 Lebesgue 测度，扰动 \(\to 0\) 时测度 \(\to 1\)）轨道仍被不变环面制约，所以扰动可积系统<strong>不会</strong>普遍混沌。但<strong>共振环面破裂</strong>，在原环面位置生成<strong>岛屿链</strong> (island chains)，岛屿之间是<strong>随机层</strong>——混沌的萌芽。随着 \(\varepsilon\) 增大，随机层扩张并彼此融合，最终全局混沌（Chirikov 共振重叠）。</p>
+      <div class="key-terms">KAM theorem (KAM 定理), non-degeneracy (非退化条件), Diophantine condition (Diophantine 条件), golden ratio (黄金比例), island chain (岛屿链)</div>
+
+      <h3>7. 庞加莱截面——把流降为映射</h3>
+      <p>对 \(n\) 自由度自治哈密顿系统，轨道在 \(2n-1\) 维等能面上流动。取一个 \(2n-2\) 维<strong>截面</strong> \(\Sigma\)，每次轨道同向穿越 \(\Sigma\) 时记录坐标，得到一个<strong>庞加莱映射</strong> \(\mathcal P:\Sigma\to\Sigma\)。这样把连续流降为离散映射，便于可视化（对 2 自由度系统截面是 2 维，可在平面上画）。</p>
+      <ul>
+        <li><strong>周期轨道</strong>：\(\mathcal P^{q}(x)=x\) ⇒ 在截面上是有限 \(q\) 个点的集合。</li>
+        <li><strong>拟周期 KAM 环面</strong>：截面是<strong>闭合曲线</strong>（1 维环面截 2 维 \(\Sigma\)）。</li>
+        <li><strong>混沌轨道</strong>：截面是<strong>面积填充</strong>的散点云。</li>
+      </ul>
+      <p>最具标志性的例子是<strong>标准映射</strong> (standard map, Chirikov–Taylor 1969)，来自<strong>受周期踢击的转子</strong> (kicked rotor)：每次踢击之间自由旋转，踢击瞬间动量获得与角度正弦成正比的冲量：</p>
+      <div class="formula">\[ \boxed{\;p_{n+1}=p_{n}+K\sin\theta_{n}\;(\mathrm{mod}\,2\pi),\qquad \theta_{n+1}=\theta_{n}+p_{n+1}\;(\mathrm{mod}\,2\pi)\;} \]</div>
+      <p>这是 KAM 现象的「氢原子」：当 \(K=0\)，\(p\) 守恒，每个初值画出一条水平直线（不变环面）；\(K\) 增大时，KAM 环面变形但绝大多数存活；当 \(K\gtrsim 0.97\) 时，最后一个（黄金比例）环面破裂，全局混沌爆发，扩散 \(\langle(\Delta p)^{2}\rangle\sim D\,t\)（Chirikov 扩散）。下方仿真将逐帧呈现这一过程。</p>
+      <div class="key-terms">Poincaré section (庞加莱截面), Poincaré map (庞加莱映射), standard map (标准映射), kicked rotor (受击转子)</div>
+
+      <h3>8. 应用——从太阳系到磁约束聚变</h3>
+      <ul>
+        <li><strong>太阳系稳定性</strong>：行星间相互引力扰动使纯二体可积性破坏。KAM 保证（在扰动足够小的意义下）「绝大多数」行星轨道仍被不变环面约束，故短期稳定；但小行星带在木星–小行星平均运动共振处出现<strong>Kirkwood 空隙</strong>（如 3:1、5:2、2:1），正是共振清除的证据。长期 \(10^{9}\) 年尺度的<strong>混沌边缘</strong>（如水星近日点进动的混沌）需 Nekhoroshev 与数值 Laskar 类理论。</li>
+        <li><strong>粒子加速器</strong>：储存环中的质子受聚焦磁铁、二极磁铁公差、束束相互作用等周期扰动——本质是哈密顿映射。<strong>动力学孔径</strong> (dynamic aperture) 即稳定 KAM 环面所填充的相空间区域；超出孔径的粒子在共振驱动的随机层中扩散并丢失。优化磁铁格子本质上是「最大化 KAM 环面」。</li>
+        <li><strong>磁约束聚变</strong>：托卡马克中带电粒子的导向中心沿磁力线运动；如果磁力线位于<strong>有理磁面</strong>（安全因子 \(q=m/n\) 有理），则粒子轨道闭合——但共振扰动（RMP 线圈、撕裂模）可破坏这一环面，产生磁岛与随机化磁力线，加剧横越输运。KAM 框架直接对应「磁面存活性」。</li>
+      </ul>
+      <div class="key-terms">mean-motion resonance (平均运动共振), Kirkwood gap (Kirkwood 空隙), dynamic aperture (动力学孔径), magnetic surface (磁面), safety factor \(q\) (安全因子)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从快角平均到一阶能量修正</h2>
+      <p><strong>目标</strong>：从被微扰的哈密顿方程严格推出 \(\delta E^{(1)}=\varepsilon\langle H_{1}\rangle\)，并阐明平均化为何「合法」——即在时间尺度 \(t\sim 1/\varepsilon\) 上，作用量 \(J\) 的漂移仅为 \(O(\varepsilon)\)，可用有效的平均哈密顿量代替真实哈密顿量。</p>
+
+      <p><strong>设定</strong>：\(H(J,\theta)=H_{0}(J)+\varepsilon H_{1}(J,\theta)\)，扰动 \(H_{1}\) 在 \(\mathbb T^{n}\) 上解析，频率向量 \(\omega(J)=\partial H_{0}/\partial J\)。<strong>假设未扰系统非退化</strong> \(\det(\partial\omega/\partial J)=\det(\partial^{2}H_{0}/\partial J^{2})\ne 0\)。哈密顿方程：</p>
+      <div class="formula">\[ \dot J=-\varepsilon\,\partial_{\theta}H_{1}(J,\theta),\qquad \dot\theta=\omega(J)+\varepsilon\,\partial_{J}H_{1}(J,\theta) \]</div>
+
+      <p><strong>第一步：多重傅里叶展开</strong>。因 \(H_{1}\) 在环面上解析，可展为：</p>
+      <div class="formula">\[ H_{1}(J,\theta)\;=\;\sum_{\vec k\in\mathbb Z^{n}}\widehat H_{1,\vec k}(J)\,e^{i\vec k\cdot\theta},\qquad \widehat H_{1,\vec 0}(J)=\big\langle H_{1}\big\rangle(J) \]</div>
+      <p>对解析 \(H_{1}\)，系数满足 \(|\widehat H_{1,\vec k}|\lt Ce^{-\rho|\vec k|}\)（指数衰减）。</p>
+
+      <p><strong>第二步：作用量变化积分</strong>。沿未扰轨迹 \(\theta(t)=\theta_{0}+\omega t\)、\(J=J_{0}\)：</p>
+      <div class="formula">\[ J_{i}(t)-J_{i}(0)\;=\;-\varepsilon\int_{0}^{t}\!\partial_{\theta_{i}}H_{1}\bigg|_{J_{0},\theta_{0}+\omega t'}\,dt'\;=\;-i\varepsilon\sum_{\vec k\ne\vec 0}k_{i}\,\widehat H_{1,\vec k}(J_{0})\,e^{i\vec k\cdot\theta_{0}}\,\frac{e^{i(\vec k\cdot\omega)t}-1}{i(\vec k\cdot\omega)} \]</div>
+      <p>这是<strong>严格的</strong>一阶表达式。设 <strong>\(\vec k\cdot\omega\ne 0\) 对所有 \(\vec k\ne\vec 0\)</strong>（非共振），则 \(\vec k\)-项分母有界远离零（在最坏情况下需 Diophantine 假设保证 \(|\vec k\cdot\omega|^{-1}\) 至多幂律发散）。该振荡项的<strong>幅度</strong>：</p>
+      <div class="formula">\[ \big|\Delta J_{i}(t)\big|\;\le\;2\varepsilon\sum_{\vec k\ne\vec 0}\frac{|k_{i}|\,|\widehat H_{1,\vec k}|}{|\vec k\cdot\omega|}\;\le\;C'\varepsilon \]</div>
+      <p>即 <strong>\(J\) 的扰动是 \(O(\varepsilon)\) 且有界</strong>，不长期漂移。结论：在时间尺度 \(t\sim 1/\varepsilon\) 上，可把哈密顿量替换为其环面平均：</p>
+      <div class="formula">\[ H_{\text{eff}}(J)\;=\;H_{0}(J)+\varepsilon\,\big\langle H_{1}\big\rangle(J)\;=\;H_{0}(J)+\varepsilon\,\widehat H_{1,\vec 0}(J) \]</div>
+
+      <p><strong>第三步：能量修正</strong>。在固定的 \(J\) 上，能量本征值就是 \(H\) 在不变环面上的平均（因环面在 \(O(\varepsilon)\) 阶变形，但 \(J\) 不变）：</p>
+      <div class="formula">\[ \boxed{\;E(J)\;=\;H_{0}(J)\;+\;\varepsilon\,\big\langle H_{1}\big\rangle(J)\;+\;O(\varepsilon^{2})\;} \]</div>
+      <p>修正频率 \(\Omega_{i}(J)=\partial E/\partial J_{i}=\omega_{i}+\varepsilon\,\partial\langle H_{1}\rangle/\partial J_{i}\)。 \(\square\)</p>
+
+      <p><strong>关键警告</strong>：若存在 \(\vec k\ne\vec 0\) 使 \(\vec k\cdot\omega=0\)（共振），第二步中分母为零，<em>整个平均论证崩溃</em>。此时必须采用<strong>共振微扰论</strong>：保留 \(\vec k\cdot\theta\) 为新慢角，把它视为 1 自由度问题求解——结果是<strong>共振单摆型运动</strong>，分界线处的随机层即混沌萌芽。这正是 KAM 定理陈述中「绝大多数而非全部」环面存活的根源。</p>
+
+      <p><strong>标准映射的推导</strong>（旁注）：考虑受周期 \(\delta\)-踢击的转子 \(H=p^{2}/(2I)+K\,I\omega_{0}\cos\theta\sum_{n}\delta(t-nT)/\omega_{0}\)。踢击之间 \(p\) 守恒，\(\theta\) 自由旋转；踢击瞬间 \(p\) 跃变 \(\Delta p=-(\partial/\partial\theta)\int K\cos\theta\,\delta\,dt=K\sin\theta\)（取 \(\omega_{0}=T=I=1\) 量纲化）。先后顺序：先更新 \(p\)，再用<strong>新</strong> \(p\) 推 \(\theta\) 一格 ⇒ \(p_{n+1}=p_{n}+K\sin\theta_{n}\)、\(\theta_{n+1}=\theta_{n}+p_{n+1}\) (mod \(2\pi\))——正是下方仿真的核心映射。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 微扰谐振子的一阶能量与频率修正 Quartic oscillator — first-order shift</h4>
+        <p class="example-statement">质量 \(m=1.00\,\mathrm{kg}\)、频率 \(\omega=2\pi\,\mathrm{rad/s}\)（周期 \(T=1\,\mathrm{s}\)）的一维谐振子受四次微扰 \(\varepsilon H_{1}=\lambda x^{4}\)，\(\lambda=0.10\,\mathrm{J/m^{4}}\)。振幅 \(A=0.20\,\mathrm{m}\)。求：(a) 未扰能量 \(E_{0}\)；(b) 作用量 \(J\)；(c) 一阶能量修正 \(\delta E\)；(d) 一阶频率修正 \(\delta\omega\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \(E_{0}=\tfrac12 m\omega^{2}A^{2}=\tfrac12(1)(2\pi)^{2}(0.20)^{2}=0.5\cdot 39.478\cdot 0.04=0.7896\,\mathrm{J}\)。<span class="ans">\(E_{0}\approx 0.790\,\mathrm{J}\)</span>。</p>
+          <p class="step">(b) 对谐振子 \(J=E_{0}/\omega=0.7896/(2\pi)=0.12566\,\mathrm{J\,s}\)。直接核验：\(J=\tfrac12 m\omega A^{2}=0.5\cdot 1\cdot 2\pi\cdot 0.04=0.12566\)。<span class="ans">\(J=0.1257\,\mathrm{J\,s}\)</span>。</p>
+          <p class="step">(c) 在作用量–角变量下 \(x=\sqrt{2J/(m\omega)}\sin\theta=A\sin\theta\)。故 \(H_{1}=\lambda x^{4}=\lambda A^{4}\sin^{4}\theta\)。环面平均：</p>
+          <div class="formula">\[ \big\langle\sin^{4}\theta\big\rangle=\frac{1}{2\pi}\int_{0}^{2\pi}\!\sin^{4}\theta\,d\theta=\frac{3}{8} \]</div>
+          <p>一阶能量修正：</p>
+          <div class="formula">\[ \delta E=\lambda A^{4}\,\big\langle\sin^{4}\theta\big\rangle=(0.10)(0.20)^{4}\cdot\tfrac{3}{8}=0.10\cdot 0.0016\cdot 0.375=6.00\times 10^{-5}\,\mathrm{J} \]</div>
+          <p><span class="ans">\(\delta E=6.0\times 10^{-5}\,\mathrm{J}\)</span>（相对 \(7.6\times 10^{-5}\)，极小）。</p>
+          <p class="step">(d) 把 \(\delta E\) 写为 \(J\) 的函数：\(\delta E(J)=\lambda\,(2J/(m\omega))^{2}\cdot\tfrac{3}{8}=\dfrac{3\lambda}{2(m\omega)^{2}}J^{2}\)。修正频率：</p>
+          <div class="formula">\[ \Omega=\dv{E}{J}=\omega+\dv{\delta E}{J}=\omega+\frac{3\lambda J}{(m\omega)^{2}} \]</div>
+          <p>代入数值：\(\delta\omega=\dfrac{3(0.10)(0.12566)}{((1)(2\pi))^{2}}=\dfrac{0.0377}{39.478}=9.55\times 10^{-4}\,\mathrm{rad/s}\)。相对修正 \(\delta\omega/\omega=9.55\times 10^{-4}/6.283=1.52\times 10^{-4}\)。<span class="ans">\(\delta\omega\approx 9.55\times 10^{-4}\,\mathrm{rad/s}\)（相对 \(1.5\times 10^{-4}\)）</span>。物理上：四次项使大振幅端「更硬」，频率上升；定量上由平均 \(\langle\sin^{4}\rangle=3/8\) 决定。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 缓慢拉长摆长——作用量是绝热不变量 Pendulum lengthened adiabatically</h4>
+        <p class="example-statement">理想单摆 \(m=0.50\,\mathrm{kg}\)、\(\ell_{0}=1.00\,\mathrm{m}\)、初始角幅 \(\theta_{\max,0}=0.30\,\mathrm{rad}\)（约 \(17^{\circ}\)，小角近似可用）。在 \(\tau=60\,\mathrm{s}\) 内将摆长缓慢拉长到 \(\ell_{f}=2.00\,\mathrm{m}\)。设小角度近似始终成立，求末态能量 \(E_{f}\)、角幅 \(\theta_{\max,f}\)、弧幅 \(s_{\max,f}=\ell_{f}\theta_{\max,f}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>小角度下摆等价于频率 \(\omega_{0}=\sqrt{g/\ell}\) 的谐振子。未扰能量 \(E=\tfrac12 mg\ell\,\theta_{\max}^{2}\)，作用量：</p>
+          <div class="formula">\[ J=\frac{E}{\omega_{0}}=E\sqrt{\frac{\ell}{g}} \]</div>
+          <p class="step"><strong>绝热条件核验</strong>：\(\tau\omega_{0}=60\cdot\sqrt{9.8/1.0}=60\cdot 3.13=188\gg 1\)，绝热近似极佳 (\(\Delta J/J\sim 1/(\tau\omega_{0})^{2}\sim 3\times 10^{-5}\))。</p>
+          <p class="step"><strong>初始值</strong>：\(\omega_{0,0}=\sqrt{9.8/1.0}=3.130\,\mathrm{rad/s}\)；\(E_{0}=\tfrac12(0.50)(9.8)(1.0)(0.30)^{2}=0.2205\,\mathrm{J}\)；\(J=E_{0}/\omega_{0,0}=0.2205/3.130=0.07045\,\mathrm{J\,s}\)。</p>
+          <p class="step"><strong>末态</strong>：\(\omega_{0,f}=\sqrt{9.8/2.0}=2.213\,\mathrm{rad/s}\)。由 \(J=\text{const}\)：</p>
+          <div class="formula">\[ E_{f}=J\,\omega_{0,f}=0.07045\times 2.213=0.1559\,\mathrm{J}\;=\;\frac{E_{0}}{\sqrt 2} \]</div>
+          <p><span class="ans">\(E_{f}=0.156\,\mathrm{J}\)</span>（能量按 \(\ell^{-1/2}\) 减小）。</p>
+          <p class="step">由 \(E=\tfrac12 mg\ell\,\theta_{\max}^{2}\)：</p>
+          <div class="formula">\[ \theta_{\max,f}^{2}=\frac{2E_{f}}{mg\ell_{f}}=\frac{2(0.1559)}{(0.50)(9.8)(2.0)}=0.03182\;\Longrightarrow\;\theta_{\max,f}=0.1784\,\mathrm{rad} \]</div>
+          <p><span class="ans">\(\theta_{\max,f}=0.178\,\mathrm{rad}\)</span>（角幅按 \(\ell^{-3/4}\) 减小）。</p>
+          <p class="step">弧幅：</p>
+          <div class="formula">\[ s_{\max,f}=\ell_{f}\,\theta_{\max,f}=(2.0)(0.1784)=0.357\,\mathrm{m},\qquad s_{\max,0}=(1.0)(0.30)=0.300\,\mathrm{m} \]</div>
+          <p>比值 \(s_{\max,f}/s_{\max,0}=0.357/0.300=1.19\)。<span class="ans">弧幅增加 \(19\%\)</span>（按 \(\ell^{1/4}\) 增长）。</p>
+          <p class="step"><strong>物理核验</strong>：\(J\propto\ell^{0}\)、\(E\propto\ell^{-1/2}\)、\(\theta_{\max}\propto\ell^{-3/4}\)、\(s_{\max}\propto\ell^{+1/4}\)——四条标度律自洽。摆拉长时重力做负功（悬挂点拉起摆锤），能量下降；但周期变长比能量下降慢，所以弧幅反而上升。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 Kirkwood 3:1 共振——空隙位置预测 Locating the 3:1 Kirkwood gap</h4>
+        <p class="example-statement">木星轨道周期 \(T_{J}=11.86\,\mathrm{yr}\)、半长轴 \(a_{J}=5.204\,\mathrm{AU}\)。小行星带处于 3:1 平均运动共振（\(T_{J}/T_{a}=3/1\)）时，木星的反复扰动会累积清除该轨道。用开普勒第三定律预测该 Kirkwood 空隙的位置。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>3:1 共振要求 \(T_{J}/T_{a}=3\)，即</p>
+          <div class="formula">\[ T_{a}=\frac{T_{J}}{3}=\frac{11.86}{3}=3.953\,\mathrm{yr} \]</div>
+          <p>开普勒第三定律（在太阳–行星二体下，对以太阳质量为主的所有行星都有 \(T^{2}\propto a^{3}\)，故在 yr–AU 单位下 \(a^{3}=T^{2}\)）：</p>
+          <div class="formula">\[ a_{a}=a_{J}\,\bigg(\frac{T_{a}}{T_{J}}\bigg)^{2/3}=5.204\,\mathrm{AU}\times\bigg(\frac{1}{3}\bigg)^{2/3} \]</div>
+          <p>\((1/3)^{2/3}=e^{(2/3)\ln(1/3)}=e^{-0.7324}=0.4807\)。</p>
+          <div class="formula">\[ a_{a}=5.204\times 0.4807=2.502\,\mathrm{AU} \]</div>
+          <p><span class="ans">\(a_{\text{res}}\approx 2.50\,\mathrm{AU}\)</span>——与观测到的 3:1 Kirkwood 空隙位置（\(a\approx 2.5\,\mathrm{AU}\)）精确吻合。其它共振：5:2 在 \(a\approx 2.82\,\mathrm{AU}\)、2:1 在 \(a\approx 3.27\,\mathrm{AU}\)、3:2 Hilda 群在 \(a\approx 3.97\,\mathrm{AU}\)。</p>
+          <p class="step"><strong>共振清除机理</strong>：在 3:1 共振处，小行星每 3 个公转周期被木星在同一相对位置「拉一下」；这种<strong>相位锁定</strong>的反复扰动恰是<strong>共振分母为零</strong>导致长期项增长的天体物理实例（参见第 3、4 节）。数值积分显示该共振区域角动量在 \(\sim 10^{5}\) 年尺度上剧烈变化，最终与火星近交而弹射出小行星带。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 黄金比例环面——Diophantine 条件与 Greene 临界 K Golden-ratio KAM torus</h4>
+        <p class="example-statement">考虑标准映射中环绕数 \(\alpha=(\sqrt 5-1)/2\approx 0.618034\)（黄金比例共轭）的不变环面。(a) 写出 \(\alpha\) 的简单连分数；(b) 验证其 Diophantine 常数 \(\gamma\) 接近 \(1/\sqrt 5\)；(c) 用 Greene 判据估计使该环面破裂的临界 \(K\)。</p>
+        <div class="example-solution">
+          <p class="step">(a) 黄金比例满足 \(\alpha=1/(1+\alpha)\)，迭代即 \(\alpha=[0;1,1,1,\dots]\)——所有部分商为 1。这是「最简单也最无理」的连分数。</p>
+          <p class="step">(b) 收敛子 (convergents) \(p_{n}/q_{n}=F_{n}/F_{n+1}\)（\(F\) Fibonacci）依次为 \(1/1,1/2,2/3,3/5,5/8,8/13,13/21,\dots\)。对 \(5/8\) 与 \(8/13\) 验证：</p>
+          <div class="formula">\[ \big|\alpha-\tfrac{5}{8}\big|=\big|0.618034-0.625\big|=6.97\times 10^{-3},\qquad \frac{1}{\sqrt 5\cdot 8^{2}}=\frac{1}{32\sqrt 5}=6.99\times 10^{-3} \]</div>
+          <div class="formula">\[ \big|\alpha-\tfrac{8}{13}\big|=\big|0.618034-0.615385\big|=2.65\times 10^{-3},\qquad \frac{1}{\sqrt 5\cdot 13^{2}}=\frac{1}{169\sqrt 5}=2.65\times 10^{-3} \]</div>
+          <p>对 Fibonacci 收敛子，\(q^{2}|\alpha-p/q|\to 1/\sqrt 5=0.4472\)（Hurwitz 定理的下界）。<span class="ans">Diophantine 常数 \(\gamma=1/\sqrt 5\approx 0.447\)</span>——任何其它无理数的 \(\gamma\) 都不更大（即更难被有理逼近，更「鲁棒」）。</p>
+          <p class="step">(c) Greene 判据（1979）：通过迭代与不动点分析，黄金环面是标准映射中<strong>最后</strong>破裂的环面。其临界值：</p>
+          <div class="formula">\[ K_{\text{cr}}(\alpha_{\text{golden}})\;=\;0.971635406\ldots \]</div>
+          <p>对 \(K\lt K_{\text{cr}}\)，黄金环面存活；对 \(K\gt K_{\text{cr}}\)，它破裂为「肥胖的」Cantor 集，环面两侧的混沌海连通——<strong>全局扩散</strong>开始。<span class="ans">\(K_{\text{cr}}\approx 0.972\)，与图示全局混沌阈值一致</span>。注意 KAM 定理本身只给「存在 \(\varepsilon_{0}\)」的非构造性保证；Greene 判据给出具体的数值阈值。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 GPS 卫星的长期节点回归与近地点进动 GPS secular precession due to \(J_{2}\)</h4>
+        <p class="example-statement">地球非球形（主要是赤道隆起 \(J_{2}=1.0826\times 10^{-3}\)）对近地卫星产生长期摄动。GPS 卫星轨道参数：半长轴 \(a=26\,560\,\mathrm{km}\)、偏心率 \(e=0.010\)、倾角 \(i=55^{\circ}\)；地球 \(R_{\oplus}=6378\,\mathrm{km}\)，\(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^{3}/s^{2}}\)。求节点回归 \(\dot\Omega\) 与近地点进动 \(\dot\omega\)（用 deg/day 表示）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>平均运动：</p>
+          <div class="formula">\[ n=\sqrt{\frac{GM_{\oplus}}{a^{3}}}=\sqrt{\frac{3.986\times 10^{14}}{(2.656\times 10^{7})^{3}}}=\sqrt{\frac{3.986\times 10^{14}}{1.873\times 10^{22}}}=1.459\times 10^{-4}\,\mathrm{rad/s} \]</div>
+          <p>周期 \(T=2\pi/n=43\,080\,\mathrm{s}\approx 11\,\mathrm{h}\,58\,\mathrm{m}\) ✔（与 GPS 标称一致）。</p>
+          <p class="step"><strong>节点回归</strong>公式（一阶 \(J_{2}\) 长期项）：</p>
+          <div class="formula">\[ \dot\Omega=-\frac{3}{2}\,J_{2}\,n\,\bigg(\frac{R_{\oplus}}{a}\bigg)^{2}\!\frac{\cos i}{(1-e^{2})^{2}} \]</div>
+          <p>代入 \((R_{\oplus}/a)^{2}=(6378/26560)^{2}=0.05764\)，\(\cos 55^{\circ}=0.5736\)，\((1-e^{2})^{2}\approx 0.9998\)：</p>
+          <div class="formula">\[ \dot\Omega=-\tfrac{3}{2}(1.0826\times 10^{-3})(1.459\times 10^{-4})(0.05764)\frac{0.5736}{0.9998}=-7.83\times 10^{-9}\,\mathrm{rad/s} \]</div>
+          <p>换算为 deg/day：\(\times(180/\pi)\times 86400=57.296\times 86400=4.949\times 10^{6}\)。</p>
+          <div class="formula">\[ \dot\Omega=-7.83\times 10^{-9}\times 4.949\times 10^{6}=-0.0388\,\mathrm{deg/day} \]</div>
+          <p><span class="ans">\(\dot\Omega=-0.0388\,\mathrm{deg/day}=-14.2\,\mathrm{deg/yr}\)</span>（向西回归）。</p>
+          <p class="step"><strong>近地点进动</strong>：</p>
+          <div class="formula">\[ \dot\omega=+\frac{3}{4}\,J_{2}\,n\,\bigg(\frac{R_{\oplus}}{a}\bigg)^{2}\!\frac{5\cos^{2}i-1}{(1-e^{2})^{2}} \]</div>
+          <p>\(5\cos^{2}55^{\circ}-1=5(0.3290)-1=0.645\)。</p>
+          <div class="formula">\[ \dot\omega=+\tfrac{3}{4}(1.0826\times 10^{-3})(1.459\times 10^{-4})(0.05764)\frac{0.645}{0.9998}=+4.40\times 10^{-9}\,\mathrm{rad/s} \]</div>
+          <p>换算：\(\dot\omega=+4.40\times 10^{-9}\times 4.949\times 10^{6}=+0.0218\,\mathrm{deg/day}\)。<span class="ans">\(\dot\omega=+0.0218\,\mathrm{deg/day}=+7.96\,\mathrm{deg/yr}\)</span>（向东进动）。</p>
+          <p class="step"><strong>物理意义</strong>：这是<strong>长期项</strong> (secular term) 的典型——一周内 \(\Omega\) 退行 \(0.27^{\circ}\)，看似微小，但 10 年累积近 \(142^{\circ}\)，必须由地面监控系统定期修正（GPS 星座每颗卫星都有 \(\Omega\) 与 \(\omega\) 的漂移星历）。这正是开普勒二体模型受地球非球形「\(\varepsilon\sim J_{2}\sim 10^{-3}\)」扰动后产生的可预测长期效应——也是经典微扰论在工程中的日常应用。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：把「绝热」理解为「小」。</strong>绝热不变量要求 \(\tau_{\lambda}\omega\gg 1\)——参数变化比系统本征周期<strong>慢得多</strong>。绝对值大小无关：摆长从 \(1\,\mathrm{m}\) 变到 \(2\,\mathrm{m}\)「缓慢」与否取决于<strong>用时</strong>相对于摆周期。若 \(\tau_{\lambda}\sim T\)，则 \(J\) 可剧烈变化；典型如穿过分界线时，绝热不变量会跳变一个有限量（<strong>Hannay–Berry 几何相位</strong>相关的有限跳跃），不能简单地说「\(J\) 守恒」。</li>
+        <li><strong>误区 2：把 KAM 定理说成「所有环面都存活」。</strong>实际是「<strong>绝大多数</strong>（Diophantine 环绕数）环面存活」，且扰动需足够小。有理环绕数的环面<strong>必然</strong>破裂为岛屿链；接近有理的极薄 Cantor 集也破裂。当扰动增大到共振重叠时（Chirikov 判据），存活环面的测度急剧塌缩，全局混沌爆发。KAM 给的是<strong>下界</strong>（保底存活），而非全部存活。</li>
+        <li><strong>误区 3：把共振当成「增强稳定性」。</strong>恰恰相反——共振是<strong>通往混沌的门户</strong>。共振使微扰展开的特定项分母 \(\vec k\cdot\omega=0\)，长期项线性增长，扰动论失效。在共振附近，轨道被「锁相」于该频率比，受到相位一致的反复扰动，能量在共振宽度内被随机化。Kirkwood 空隙、土星环的 Cassini 缝、磁场中粒子损失都源于此。</li>
+        <li><strong>误区 4：在共振处仍盲目使用平均微扰论。</strong>当 \(\vec k\cdot\omega=0\)，第 2 节的「快角平均」分母为零、推导崩溃。必须先做<strong>共振变换</strong>：保留 \(\psi=\vec k\cdot\theta\) 为新慢角（变化率 \(\dot\psi=\vec k\cdot\omega\approx 0\)），把其它快角平均掉，得到只剩 \((J,\psi)\) 的共振哈密顿——通常化为单摆型方程。在共振中心是椭圆不动点（稳定岛屿），分界线处是双曲不动点（随机层）。</li>
+        <li><strong>误区 5：把 KAM 定理当作混沌的「证明」。</strong>KAM 给出的是<strong>稳定性下界</strong>——它说明「扰动可积系统<em>不会</em>普遍混沌」。但太阳系在 \(10^{9}\) 年尺度上的长期混沌、特定共振处的混沌扩散，是 KAM 之外的<strong>Nekhoroshev 估计</strong>（指数长时间稳定）和具体数值（Laskar 1994：行星近日点长期混沌，Lyapunov 时间 \(\sim 5\,\mathrm{Myr}\)）所揭示的。KAM 与混沌并不矛盾，二者描述不同时间尺度。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 三次微扰消失——一阶能量修为零。\(m=1.0\,\mathrm{kg}\)、\(\omega=2\pi\,\mathrm{rad/s}\) 的谐振子受三次微扰 \(\varepsilon H_{1}=\alpha x^{3}\)（\(\alpha=0.20\,\mathrm{J/m^{3}}\)）。振幅 \(A=0.15\,\mathrm{m}\)。计算一阶能量修正。</summary>
+        <div class="hint">用 \(x=A\sin\theta\)，求 \(\langle\sin^{3}\theta\rangle\)。</div>
+        <div class="solution">
+          <p>\(H_{1}=\alpha A^{3}\sin^{3}\theta\)。\(\langle\sin^{3}\theta\rangle=(1/2\pi)\int_{0}^{2\pi}\sin^{3}\theta\,d\theta=0\)（奇函数）。</p>
+          <p><span class="ans">\(\delta E^{(1)}=0\)</span>——三次微扰对一阶能量<strong>无贡献</strong>。物理：势 \(V=\tfrac12 m\omega^{2}x^{2}+\alpha x^{3}\) 不对称（向 \(+x\) 倾斜），但环面平均后正负相抵。要得到非零修正，需到二阶 \(\delta E^{(2)}\sim -\sum_{n\ne 0}|V_{0n}|^{2}/(E_{n}-E_{0})\)（量子类比）或经典中相应二阶作用量积分修正。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 缓慢扩张的盒子中粒子——绝热不变量。电子（\(m=9.11\times 10^{-31}\,\mathrm{kg}\)）在 \(L_{0}=1.0\,\mathrm{nm}\) 的一维无限深势阱中、\(n=1\) 态。在缓慢绝热扩张到 \(L_{f}=2.0\,\mathrm{nm}\) 后，求粒子能量（用 eV 表示）。</summary>
+        <div class="hint">作用量 \(\oint p\,dx=2Lp=nh\)（Bohr–Sommerfeld）。\(J\) 守恒 ⇒ \(Lp=\text{const}\)。</div>
+        <div class="solution">
+          <p>初态能量 \(E_{n}=n^{2}\pi^{2}\hbar^{2}/(2mL^{2})\)。</p>
+          <p>\(E_{0}=\pi^{2}(1.055\times 10^{-34})^{2}/(2\cdot 9.11\times 10^{-31}\cdot(10^{-9})^{2})=\pi^{2}\cdot 1.113\times 10^{-68}/(1.822\times 10^{-48})=6.02\times 10^{-20}\,\mathrm{J}=0.376\,\mathrm{eV}\)。</p>
+          <p>由 \(J=nh\) 守恒（绝热不变量），\(L\sqrt{2mE}=\text{const}\)，故 \(E\propto L^{-2}\)。</p>
+          <p>\(E_{f}=E_{0}(L_{0}/L_{f})^{2}=0.376/4=0.094\,\mathrm{eV}\)。</p>
+          <p><span class="ans">\(E_{f}=0.094\,\mathrm{eV}\)</span>（动能减半，动量 \(p\to p/2\)）。这正是量子数 \(n\) 在绝热过程中守恒的经典对应——作用量量子化与绝热不变量在量子力学中自动吻合（Proof: Einstein–Brillouin–Keller (EBK) 量子化）。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 预测 2:1 Kirkwood 空隙位置。在 \(T_{J}/T_{a}=2/1\) 共振处，小行星半长轴为多少？</summary>
+        <div class="hint">\(T_{a}=T_{J}/2\)，\(a=a_{J}(T_{a}/T_{J})^{2/3}\)。</div>
+        <div class="solution">
+          <p>\(T_{a}=11.86/2=5.93\,\mathrm{yr}\)。</p>
+          <p>\(a_{a}=5.204\,(1/2)^{2/3}=5.204\cdot 0.6300=3.278\,\mathrm{AU}\)。</p>
+          <p><span class="ans">\(a\approx 3.28\,\mathrm{AU}\)</span>，与观测 2:1 Kirkwood 空隙（\(3.27\,\mathrm{AU}\)）精确一致。注意 2:1 共振比 3:1 共振更宽更混沌——该处的 Hecuba 空隙几乎完全清空。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 标准映射的不动点与稳定性。对一般 \(K\gt 0\)，求标准映射 \(p_{n+1}=p_{n}+K\sin\theta_{n}\)、\(\theta_{n+1}=\theta_{n}+p_{n+1}\) (mod \(2\pi\)) 的周期-1 不动点，并判定椭圆（稳定）还是双曲（不稳定）。</summary>
+        <div class="hint">不动点满足 \((\theta_{*},p_{*})=\mathcal P(\theta_{*},p_{*})\)。线性化 Jacobi 矩阵 \(\mathbf J=\begin{pmatrix}1 & K\cos\theta_{*}\\1 & 1+K\cos\theta_{*}\end{pmatrix}\)（保面积 \(\det=1\)）。\(|\mathrm{tr}\,\mathbf J|\lt 2\) 为椭圆。</div>
+        <div class="solution">
+          <p>不动点要求 \(K\sin\theta_{*}=0\)（即 \(\theta_{*}=0\) 或 \(\pi\)）且 \(p_{*}=0\) (mod \(2\pi\))。两个不动点：\((0,0)\) 与 \((\pi,0)\)。</p>
+          <p><strong>\((0,0)\)</strong>：\(\cos\theta_{*}=1\)，\(\mathrm{tr}\,\mathbf J=2+K\)。对 \(K\gt 0\)，\(\mathrm{tr}\gt 2\) ⇒ <strong>双曲</strong>（不稳定），位于混沌海中央。</p>
+          <p><strong>\((\pi,0)\)</strong>：\(\cos\theta_{*}=-1\)，\(\mathrm{tr}\,\mathbf J=2-K\)。当 \(0\lt K\lt 4\) 时 \(|\mathrm{tr}|\lt 2\) ⇒ <strong>椭圆</strong>（稳定）。本征值 \(\lambda_{\pm}=e^{\pm i\sigma}\)，\(\sigma=\arccos(1-K/2)\)；对 \(K\ll 1\)，\(\sigma\approx\sqrt K\)，<strong>小振荡频率 \(\sqrt K\)</strong>（即所谓「共振岛屿」绕椭圆中心转的角速度）。</p>
+          <p><span class="ans">\((0,0)\) 双曲、\((\pi,0)\) 椭圆（对 \(0\lt K\lt 4\)）</span>。围绕 \((\pi,0)\) 的小振幅振荡频率 \(\sqrt K\) 给出 KAM 岛屿的尺寸标度（岛宽 \(\sim\sqrt K\)）。当 \(K\) 增大，更高阶共振（周期-\(q\) 岛链）相继出现并重叠——这就是 Chirikov 共振重叠通往全局混沌的路径。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：标准映射庞加莱截面 Standard Map (Chirikov–Taylor) Poincaré Section</h2>
+      <p class="sim-desc">这是 KAM 理论的「标志性图像」。从 \(\theta_{0}=0\) 处沿垂直方向撒下 28 条不同 \(p_{0}\) 的初值，对每条迭代标准映射 \(p_{n+1}=p_{n}+K\sin\theta_{n}\) (mod \(2\pi\))、\(\theta_{n+1}=\theta_{n}+p_{n+1}\) (mod \(2\pi\))，在 \((\theta,p)\) 截面上逐点画出。<strong>拖动 K 滑块</strong>：\(K=0\) 时所有初值画出水平直线（未扰不变环面）；\(K\) 增大时，KAM 环面变形但<strong>绝大多数存活</strong>；接近 \(K\approx 0.97\) 时，黄金比例环面（最后一条横贯环面）破裂，混沌海贯通上下，全局扩散开始。每条轨道用不同颜色绘制，便于追踪。点 <strong>↺ 重置</strong> 清空画布并重新撒种。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var ctx = canvas.getContext('2d');
+          var W = canvas.width, H = canvas.height;
+
+          // Plot region: (theta, p) in [-pi, pi] x [-pi, pi]
+          var margin = { l: 52, r: 22, t: 70, b: 52 };
+          var plotW = W - margin.l - margin.r;
+          var plotH = H - margin.t - margin.b;
+
+          // Perturbation strength (controlled by slider).
+          var K = 0.5;
+          var NUM_ICS = 28;
+          var ITERS_PER_FRAME = 5;
+          var MAX_ITERS = 8000;
+
+          // Offscreen canvas accumulates all plotted points across frames.
+          var off = document.createElement('canvas');
+          off.width = W; off.height = H;
+          var offctx = off.getContext('2d');
+
+          function toX(theta) { return margin.l + ((theta + Math.PI) / (2 * Math.PI)) * plotW; }
+          function toY(p)      { return margin.t + ((Math.PI - p) / (2 * Math.PI)) * plotH; }
+
+          function wrap(x) {
+            // wrap to [-pi, pi)
+            return ((x + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
+          }
+
+          function makeICs() {
+            var ics = [];
+            for (var i = 0; i < NUM_ICS; i++) {
+              // p0 spread uniformly across [-pi+0.1, pi-0.1]; tiny theta offset avoids fixed-point singularity.
+              var p0 = -Math.PI + 0.10 + (i + 0.5) * (2 * Math.PI - 0.20) / NUM_ICS;
+              var theta0 = 0.05 + (i % 7) * 0.040;
+              ics.push({
+                theta: theta0,
+                p: p0,
+                iters: 0,
+                color: PS.colors.palette[i % PS.colors.palette.length],
+              });
+            }
+            return ics;
+          }
+
+          function clearOffscreen() {
+            offctx.fillStyle = PS.colors.bg;
+            offctx.fillRect(0, 0, W, H);
+            drawAxes(offctx);
+          }
+
+          function iterMap(ic) {
+            var np = wrap(ic.p + K * Math.sin(ic.theta));
+            var nt = wrap(ic.theta + np);
+            ic.theta = nt; ic.p = np; ic.iters++;
+          }
+
+          function plotPoint(ic) {
+            offctx.fillStyle = ic.color;
+            var x = toX(ic.theta), y = toY(ic.p);
+            offctx.fillRect(x - 0.6, y - 0.6, 1.6, 1.6);
+          }
+
+          function drawAxes(c) {
+            var C = PS.colors;
+            // plot box
+            c.strokeStyle = C.axis; c.lineWidth = 1.5;
+            c.strokeRect(margin.l, margin.t, plotW, plotH);
+            // ticks
+            var ticks = [-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI];
+            var labels = ['-π', '-π/2', '0', 'π/2', 'π'];
+            c.fillStyle = C.text; c.font = '11px system-ui, sans-serif';
+            for (var i = 0; i < ticks.length; i++) {
+              c.textAlign = 'center'; c.textBaseline = 'top';
+              c.fillText(labels[i], toX(ticks[i]), margin.t + plotH + 6);
+              c.textAlign = 'right'; c.textBaseline = 'middle';
+              c.fillText(labels[i], margin.l - 6, toY(ticks[i]));
+            }
+            // axis titles
+            c.fillStyle = C.text; c.font = '13px system-ui, sans-serif';
+            c.textAlign = 'center'; c.textBaseline = 'bottom';
+            c.fillText('θ', margin.l + plotW / 2, H - 6);
+            c.save();
+            c.translate(16, margin.t + plotH / 2); c.rotate(-Math.PI / 2);
+            c.textAlign = 'center'; c.textBaseline = 'top';
+            c.fillText('p', 0, 0);
+            c.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              clearOffscreen();
+              return { ics: makeICs(), frame: 0 };
+            },
+            step: function (dt, t, s) {
+              for (var i = 0; i < s.ics.length; i++) {
+                var ic = s.ics[i];
+                if (ic.iters >= MAX_ITERS) continue;
+                for (var m = 0; m < ITERS_PER_FRAME; m++) {
+                  iterMap(ic);
+                  plotPoint(ic);
+                }
+              }
+              s.frame++;
+            },
+            draw: function (ctx, s, env) {
+              // Composite accumulated points onto visible canvas
+              PS.clear(ctx);
+              ctx.drawImage(off, 0, 0);
+              var C = PS.colors;
+              // Header
+              PS.drawText(ctx, '标准映射 (Chirikov–Taylor) 庞加莱截面  Standard Map Poincaré Section',
+                14, 22, { font: '15px system-ui, sans-serif', color: C.text });
+              var regime;
+              if (K < 1e-6)      regime = 'K = 0: 全部为水平不变环面 (integrable)';
+              else if (K < 0.97) regime = 'KAM 环面存活并变形 (most tori survive)';
+              else if (K < 1.4)  regime = '黄金环面已破裂 (K ≈ 0.972); 局部混沌海连通';
+              else               regime = '全局混沌 / Chirikov 扩散 (global chaos)';
+              PS.drawText(ctx, 'K = ' + K.toFixed(3) + '   —   ' + regime,
+                14, 44, { font: '12px system-ui, sans-serif', color: C.text });
+              // Total iteration count
+              var total = 0;
+              for (var i = 0; i < s.ics.length; i++) total += s.ics[i].iters;
+              PS.drawText(ctx, '总迭代 iters: ' + total + '   (28 条轨道)',
+                14, H - 14, { font: '11px system-ui, sans-serif', color: C.text });
+              // Live marker: small ring at first IC's current point (visual cue of activity)
+              if (s.ics.length > 0) {
+                var ic0 = s.ics[0];
+                PS.drawCircle(ctx, toX(ic0.theta), toY(ic0.p), 3,
+                  { fill: ic0.color, stroke: C.text, lineWidth: 1 });
+              }
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'slider', key: 'K', label: '扰动强度 K', min: 0, max: 2.0, step: 0.005, value: 0.5 },
+            { type: 'button', key: 'preset0',   label: 'K=0 (可积)' },
+            { type: 'button', key: 'presetLow', label: 'K=0.5 (KAM)' },
+            { type: 'button', key: 'presetCr',  label: 'K=0.97 (临界)' },
+            { type: 'button', key: 'presetHi',  label: 'K=1.5 (混沌)' },
+            { type: 'button', key: 'reset',     label: '↺ 重置 Reset' },
+          ]);
+          function applyK(newK) {
+            K = newK;
+            // reflect into the slider value label
+            ctl.set('K', K);
+            // re-seed: clear offscreen + new ICs
+            clearOffscreen();
+            var st = sim.getState();
+            st.ics = makeICs();
+            st.frame = 0;
+          }
+          ctl.on('K', function (v) {
+            K = v;
+            clearOffscreen();
+            var st = sim.getState();
+            st.ics = makeICs();
+            st.frame = 0;
+          });
+          ctl.on('preset0',   function () { applyK(0.0); });
+          ctl.on('presetLow', function () { applyK(0.5); });
+          ctl.on('presetCr',  function () { applyK(0.9716); });
+          ctl.on('presetHi',  function () { applyK(1.5); });
+          ctl.on('reset', function () {
+            K = 0.5; ctl.set('K', K);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>经典微扰论回答了「<strong>几乎可积系统</strong>」的命运：小扰动并不摧毁可积性，但<strong>共振</strong>是它的死穴。<strong>KAM 定理</strong>给出「绝大多数不变环面存活」的严格保证；<strong>共振破裂</strong>则孕育混沌。庞加莱截面与标准映射是把抽象定理变成可视化诊断的工具。</p>
+      <div class="formula">\[ \text{Perturbed Hamiltonian: }\;H(J,\theta)=H_{0}(J)+\varepsilon H_{1}(J,\theta),\quad \omega=\frac{\partial H_{0}}{\partial J} \]</div>
+      <div class="formula">\[ \text{First-order energy shift: }\;\delta E^{(1)}(J)=\varepsilon\,\big\langle H_{1}\big\rangle(J)=\frac{\varepsilon}{(2\pi)^{n}}\int_{\mathbb T^{n}}\!H_{1}\,d^{n}\theta \]</div>
+      <div class="formula">\[ \text{Secular vs bounded: }\;\Delta J\sim\varepsilon t\;\text{if}\;\vec k\!\cdot\!\vec\omega=0\;(\text{resonance});\quad \Delta J\sim O(\varepsilon)\;\text{otherwise} \]</div>
+      <div class="formula">\[ \text{Adiabatic invariant: }\;\frac{\Delta J}{J}\to 0\text{ when }\tau_{\lambda}\omega\gg 1;\quad J_{\text{pend}}=\frac{E}{\omega_{0}},\;\;J_{\text{box}}=\oint p\,dx=nh \]</div>
+      <div class="formula">\[ \text{KAM: for }\varepsilon\lt\varepsilon_{0},\;\text{tori with }|\vec k\!\cdot\!\vec\omega|\ge\gamma/|\vec k|^{\tau}\text{ survive (deformed); resonant tori break} \]</div>
+      <div class="formula">\[ \text{Standard map: }\;p_{n+1}=p_{n}+K\sin\theta_{n}\!\!\pmod{2\pi},\;\theta_{n+1}=\theta_{n}+p_{n+1}\!\!\pmod{2\pi};\;\;K_{\text{cr}}^{\text{golden}}\approx 0.9716 \]</div>
+      <div class="formula">\[ \text{Secular }J_{2}\text{ precession: }\;\dot\Omega=-\tfrac{3}{2}J_{2}n\Big(\tfrac{R}{a}\Big)^{2}\!\frac{\cos i}{(1-e^{2})^{2}},\;\dot\omega=+\tfrac{3}{4}J_{2}n\Big(\tfrac{R}{a}\Big)^{2}\!\frac{5\cos^{2}i-1}{(1-e^{2})^{2}} \]</div>
+      <p><strong>核心收获</strong>：可积 + 小扰动 \(\neq\) 仍严格可积，但也 \(\neq\) 普遍混沌——介于其间的是<strong>稀疏的随机层</strong>与<strong>大量的 KAM 环面</strong>。这是经典力学通向现代动力系统理论（Hamiltonian chaos、Nekhoroshev 估计、Arnold 扩散）的桥梁，也是从太阳系稳定性到磁约束聚变、粒子加速器设计的统一语言。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 波函数与薛定谔方程 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第2章 · 量子力学 I Quantum Mechanics I</p>
+      <h1>波函数与薛定谔方程 <span class="en-title">Wave Function &amp; Schrödinger Equation</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述<strong>玻恩诠释</strong> (Born interpretation)：波函数 \(\psi(\vec{r},t)\) 本身是复值且不直接可测，\(|\psi|^{2}\) 是<strong>概率密度</strong> (probability density)，在体积元 \(\mathrm{d}V\) 内找到粒子的概率为 \(|\psi|^{2}\,\mathrm{d}V\)。</li>
+        <li>施加<strong>归一化</strong> (normalization) 条件 \(\int|\psi|^{2}\,\mathrm{d}V=1\)，并论证一旦初始归一化，<strong>概率守恒</strong> \(\big(\partial_{t}\int|\psi|^{2}\,\mathrm{d}V=0\big)\) 保证此后永远归一——「重新归一化」实属多余。</li>
+        <li>写出<strong>含时薛定谔方程</strong> (time-dependent Schrödinger equation, TDSE) \(i\hbar\,\partial\psi/\partial t=\hat{H}\psi\) 与<strong>哈密顿算符</strong> (Hamiltonian) \(\hat{H}=-\hbar^{2}\nabla^{2}/2m+V\)，识别动能与势能项。</li>
+        <li>用<strong>分离变量法</strong> (separation of variables) 由 TDSE 导出<strong>定态</strong> (stationary state) \(\psi(\vec{r},t)=\phi(\vec{r})\,e^{-iEt/\hbar}\) 与<strong>时间无关薛定谔方程</strong> (TISE) \(\hat{H}\phi=E\phi\)，证明此时 \(|\psi|^{2}\) 与所有期望值都不依赖于 \(t\)。</li>
+        <li>运用<strong>算符</strong> (operator) 形式：位置 \(\hat{x}=x\)、动量 \(\hat{p}=-i\hbar\,\partial/\partial x\)，计算<strong>期望值</strong> (expectation value) \(\langle Q\rangle=\int\psi^{*}\hat{Q}\psi\,\mathrm{d}V\)。</li>
+        <li>应用<strong>海森堡不确定性原理</strong> (Heisenberg uncertainty principle) \(\Delta x\,\Delta p\ge\hbar/2\) 估算原子尺度束缚态的最低能量（「零点能」），并解释为何经典「粒子静止于一点」的图像在量子世界失效。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 波函数与玻恩诠释 Wave Function &amp; the Born Interpretation</h3>
+      <p>经典力学用 \((\vec{r}(t),\vec{p}(t))\) 描述粒子；量子力学用一个<strong>复值</strong>波函数 (wave function) \(\psi(\vec{r},t)\)——它本身<strong>不</strong>是可直接测量的物理量（复数怎能直接测？），但其模平方 \(|\psi|^{2}=\psi^{*}\psi\) 给出<strong>概率密度</strong>。这是 Max Born（1926）的诠释，量子力学的核心假设之一：</p>
+      <div class="formula">\[ \boxed{\;\text{在体积元 }\mathrm{d}V\text{ 内找到粒子的概率 }=|\psi(\vec{r},t)|^{2}\,\mathrm{d}V\;}\qquad\text{Born interpretation (玻恩诠释)} \]</div>
+      <p>由此立刻得到三点：(i) \(\psi\) 是复值的——实部与虚部都携带信息；(ii) \(\psi\) 与 \(\psi\,e^{i\alpha}\)（整体相位 \(e^{i\alpha}\)）给出同一概率分布——<strong>整体相位不可测</strong>；(iii) 但相对相位（如叠加态 \(\psi=c_{1}\psi_{1}+c_{2}\psi_{2}\) 中两项之间的相位差）会产生可观测的干涉——这是量子与经典的本质差别。</p>
+      <p>对一维问题，\(\psi(x,t)\) 的单位是 \(\mathrm{m^{-1/2}}\)；对三维 \(\psi(\vec{r},t)\) 单位为 \(\mathrm{m^{-3/2}}\)。这样 \(|\psi|^{2}\,\mathrm{d}x\) 与 \(|\psi|^{2}\,\mathrm{d}V\) 都是无量纲的概率。</p>
+      <div class="key-terms">wave function (波函数), Born interpretation (玻恩诠释), probability density (概率密度), complex-valued (复值), global phase (整体相位), relative phase (相对相位)</div>
+
+      <h3>2. 归一化与概率守恒 Normalization &amp; Probability Conservation</h3>
+      <p>既然 \(|\psi|^{2}\,\mathrm{d}V\) 是概率，全空间总概率必须为 1：</p>
+      <div class="formula">\[ \boxed{\;\int_{\text{全空间}}|\psi(\vec{r},t)|^{2}\,\mathrm{d}V=1\;}\qquad\text{归一化条件 normalization condition} \]</div>
+      <p>这是<strong>概率守恒</strong> (probability conservation) 的体现：粒子既不会凭空产生也不会消失。从 TDSE 出发可严格证明（推导 2.B）：若初始 \(t=0\) 时波函数已归一化，则此后任意时刻 \(\int|\psi(\vec{r},t)|^{2}\,\mathrm{d}V=1\) 恒成立——<strong>无需「重新归一化」</strong>。若数值演化中归一化常数漂移，那是积分误差，而非物理现象。</p>
+      <p>当给定波函数未归一化时（例如 \(\psi=A\,f(\vec{r})\)，\(A\) 待定），先计算 \(\int|f|^{2}\,\mathrm{d}V\)，再取 \(A=1/\sqrt{\int|f|^{2}\,\mathrm{d}V}\)（可差任意整体相位）。对一维束缚态通常 \(\int|f|^{2}\,\mathrm{d}V\) 有限；对平面波 \(e^{ikx}\) 这种延展态，积分发散，需要<strong>箱归一化</strong> (box normalization，见例 3)。</p>
+      <div class="key-terms">normalization (归一化), probability conservation (概率守恒), box normalization (箱归一化), bound state (束缚态)</div>
+
+      <h3>3. 含时薛定谔方程与哈密顿算符 Time-Dependent Schrödinger Equation &amp; Hamiltonian</h3>
+      <p>波函数如何随时间演化？由<strong>含时薛定谔方程</strong> (TDSE) 给出——量子力学的另一核心假设：</p>
+      <div class="formula">\[ \boxed{\;i\hbar\,\frac{\partial\psi(\vec{r},t)}{\partial t}=\hat{H}\,\psi(\vec{r},t)\;}\qquad\text{含时薛定谔方程 TDSE} \]</div>
+      <p>其中 \(\hat{H}\) 是<strong>哈密顿算符</strong> (Hamiltonian operator)，对应系统的总能量：</p>
+      <div class="formula">\[ \boxed{\;\hat{H}=-\frac{\hbar^{2}}{2m}\nabla^{2}+V(\vec{r},t)\;}\qquad\text{哈密顿算符（动能 }+\text{势能）} \]</div>
+      <p>第一项 \(-\hbar^{2}\nabla^{2}/2m\) 是<strong>动能算符</strong> \(\hat{p}^{2}/2m\)（其中 \(\hat{p}=-i\hbar\nabla\)），第二项 \(V\) 是<strong>势能</strong>。注意 TDSE 是<strong>一阶</strong>时间偏微分方程：给定 \(\psi(\vec{r},0)\) 即可唯一决定此后所有 \(\psi(\vec{r},t)\)。它线性且系数含 \(i\)，故概率幅随时间在复平面内旋转——这正是「量子相干性」的数学源头。</p>
+      <div class="key-terms">TDSE (含时薛定谔方程), Hamiltonian (哈密顿算符), kinetic-energy operator (动能算符), potential energy (势能), linearity (线性)</div>
+
+      <h3>4. 算符、期望值与厄米性 Operators, Expectation Values, Hermiticity</h3>
+      <p>量子力学中<strong>每个可观察量</strong> (observable) 对应一个<strong>厄米算符</strong> (Hermitian operator)。最基本两个：</p>
+      <div class="formula">\[ \hat{x}=x\;(\text{位置算符}),\qquad\hat{p}_{x}=-i\hbar\,\frac{\partial}{\partial x}\;(\text{动量算符}) \]</div>
+      <p>它们满足<strong>正则对易关系</strong> \([\hat{x},\hat{p}_{x}]\equiv\hat{x}\hat{p}_{x}-\hat{p}_{x}\hat{x}=i\hbar\)——这是「位置与动量无法同时确定」的代数根源（见第 7 节）。一般地把经典可观察量 \(Q(x,p)\) 中的 \(x,p\) 换成 \(\hat{x},\hat{p}\) 即得量子算符 \(\hat{Q}\)。例如动能 \(\hat{T}=\hat{p}^{2}/2m=-\hbar^{2}\nabla^{2}/2m\)，角动量 \(\hat{L}_{z}=\hat{x}\hat{p}_{y}-\hat{y}\hat{p}_{x}\)。</p>
+      <p><strong>期望值</strong> (expectation value) 是对处于态 \(\psi\) 的粒子<strong>多次独立测量</strong>的平均结果：</p>
+      <div class="formula">\[ \boxed{\;\langle Q\rangle_{\psi}=\int\psi^{*}\,(\hat{Q}\psi)\,\mathrm{d}V\;}\qquad\text{ expectation value } \]</div>
+      <p>对 \(\hat{x}\)：\(\langle x\rangle=\int x\,|\psi|^{2}\,\mathrm{d}x\)——经典意义下的「平均位置」。对 \(\hat{p}\)：\(\langle p\rangle=\int\psi^{*}(-i\hbar\,\partial\psi/\partial x)\,\mathrm{d}x\)，一般非零（即使 \(\psi\) 实值也可能 \(\langle p\rangle\ne 0\) 当 \(\psi\) 复值）。</p>
+      <p><strong>厄米性</strong>保证期望值为实数：\(\langle Q\rangle^{*}=\langle Q\rangle\)（测量值必为实数）。这要求 \(\hat{Q}=\hat{Q}^{\dagger}\)（自伴）。所有可观察量算符（\(\hat{x},\hat{p},\hat{H},\hat{L}\) 等）都是厄米的。</p>
+      <div class="key-terms">operator (算符), observable (可观察量), Hermitian (厄米的), canonical commutation relation (正则对易关系), expectation value (期望值), self-adjoint (自伴)</div>
+
+      <h3>5. 定态：分离变量与时间无关薛定谔方程 Stationary States: Separation of Variables &amp; TISE</h3>
+      <p>当势能 <strong>\(V\)</strong> 不显含时间时，可用<strong>分离变量</strong>求解 TDSE：设 \(\psi(\vec{r},t)=\phi(\vec{r})\,T(t)\)。代入 TDSE 并除以 \(\phi T\)：</p>
+      <div class="formula">\[ i\hbar\,\frac{T'(t)}{T(t)}=\frac{\hat{H}\phi(\vec{r})}{\phi(\vec{r})}\;=E\;(\text{常数}) \]</div>
+      <p>（左仅含 \(t\)、右仅含 \(\vec{r}\)，故都等于同一常数 \(E\)）。时间部分 \(T(t)=e^{-iEt/\hbar}\)；空间部分满足<strong>时间无关薛定谔方程</strong> (TISE)：</p>
+      <div class="formula">\[ \boxed{\;\hat{H}\,\phi(\vec{r})=E\,\phi(\vec{r})\;}\qquad\text{时间无关薛定谔方程 TISE} \]</div>
+      <p>这是<strong>本征值方程</strong> (eigenvalue equation)：\(\phi\) 是 \(\hat{H}\) 的本征态，\(E\) 是对应能量本征值。完整定态为：</p>
+      <div class="formula">\[ \boxed{\;\psi_{E}(\vec{r},t)=\phi_{E}(\vec{r})\,e^{-iEt/\hbar}\;}\qquad\text{stationary state (定态)} \]</div>
+      <p><strong>定态</strong>之所以得名：\(|\psi_{E}|^{2}=|\phi_{E}|^{2}\)（因为 \(|e^{-iEt/\hbar}|=1\)）<strong>不随时间变化</strong>；任何不显含 \(t\) 的可观察量的期望值 \(\langle Q\rangle=\int\phi_{E}^{*}\hat{Q}\phi_{E}\,\mathrm{d}V\) 也不变。但<strong>相位</strong> \(e^{-iEt/\hbar}\) 仍在以角频率 \(\omega=E/\hbar\) 旋转——「定」的只是概率分布，不是量子态本身。叠加多个定态时，相对相位 \(e^{-i(E_{2}-E_{1})t/\hbar}\) 会产生<strong>量子拍频</strong> (quantum beats)——这才是真正含时的演化。</p>
+      <div class="key-terms">separation of variables (分离变量法), TISE (时间无关薛定谔方程), eigenvalue equation (本征值方程), stationary state (定态), quantum beats (量子拍频)</div>
+
+      <h3>6. 自由粒子与平面波 Free Particle &amp; Plane Waves</h3>
+      <p>对自由粒子 \((V=0)\)，TISE 为 \(-\hbar^{2}\nabla^{2}\phi/2m=E\phi\)。一维有平面波解：</p>
+      <div class="formula">\[ \phi_{k}(x)=e^{ikx},\qquad E_{k}=\frac{\hbar^{2}k^{2}}{2m},\qquad p=\hbar k \]</div>
+      <p>完整定态 \(\psi_{k}(x,t)=e^{i(kx-\omega t)}\)，其中 \(\omega=E/\hbar=\hbar k^{2}/2m\)（自由粒子<strong>色散关系</strong> dispersion relation）。动量 \(\hat{p}\psi_{k}=\hbar k\,\psi_{k}\)：平面波是动量的本征态，动量确定 \(\Delta p=0\)。<strong>但</strong>位置完全不确定（\(|\psi|^{2}=1\) 处处相等）——\(\Delta x=\infty\)，符合 \(\Delta x\,\Delta p\ge\hbar/2\)。</p>
+      <p>平面波不可归一化（\(\int|e^{ikx}|^{2}\,\mathrm{d}x=\infty\)），故不是物理态。真实物理态是<strong>波包</strong> (wave packet)——大量平面波的叠加，如高斯波包：</p>
+      <div class="formula">\[ \psi(x,0)=(2\pi\sigma_{0}^{2})^{-1/4}\exp\!\Big(-\frac{x^{2}}{4\sigma_{0}^{2}}\Big)\,e^{ik_{0}x} \]</div>
+      <p>波包中心以<strong>群速度</strong> \(v_{g}=\mathrm{d}\omega/\mathrm{d}k=\hbar k_{0}/m=p_{0}/m\) 运动（经典粒子速度！）。自由波包还会<strong>弥散</strong>（spread）——\(\Delta x(t)\) 随时间增大（见仿真）。这是动量分布有宽度 \(\Delta p\ne 0\) 的直接后果：不同动量分量速度不同，逐渐散开。</p>
+      <div class="key-terms">free particle (自由粒子), plane wave (平面波), de Broglie wavelength \(\lambda=2\pi/k\) (德布罗意波长), dispersion relation (色散关系), wave packet (波包), group velocity (群速度), spreading (弥散)</div>
+
+      <h3>7. 海森堡不确定性原理 Heisenberg Uncertainty Principle</h3>
+      <p>从正则对易关系 \([\hat{x},\hat{p}]=i\hbar\) 用 Cauchy-Schwarz 不等式（推导略）可严格导出：</p>
+      <div class="formula">\[ \boxed{\;\Delta x\,\Delta p\ge\frac{\hbar}{2}=5.27\times 10^{-35}\,\mathrm{J\,s}\;}\qquad\text{Heisenberg uncertainty principle} \]</div>
+      <p>其中 \(\Delta x=\sqrt{\langle x^{2}\rangle-\langle x\rangle^{2}}\) 是标准差。<strong>这是概率分布展宽度的下界</strong>，与测量精度无关。更一般形式：对任意两可观察量 \(\hat{A},\hat{B}\)，</p>
+      <div class="formula">\[ \Delta A\,\Delta B\ge\frac{1}{2}\big|\langle[\hat{A},\hat{B}]\rangle\big| \]</div>
+      <p>当 \([\hat{A},\hat{B}]=0\)（两算符对易，有共同本征态）时可同时确定；\([\hat{x},\hat{p}]=i\hbar\ne 0\) 决定了位置与动量无法同时精确。<strong>高斯波包饱和</strong>该下界 \(\Delta x\,\Delta p=\hbar/2\)，是「最小不确定态」。</p>
+      <p>不确定性原理是量子世界的基石：它解释原子中电子不会坍缩到核上（束缚越小 \(\Delta x\)，动量与能量越高，必有一平衡点——即原子基态能量）；它给出「真空涨落」与「量子隧穿」的尺度；它说明经典「粒子在某点以某动量」的图像只是 \(\hbar\to 0\) 极限下的近似。</p>
+      <div class="key-terms">uncertainty principle (不确定性原理), standard deviation (标准差), minimum-uncertainty state (最小不确定态), saturation (饱和/取等)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 2.A — 分离变量导出定态 Separation of Variables → Stationary States</h3>
+      <p class="step"><strong>步骤 1（设势能不显含时间）：</strong>取 \(V=V(\vec{r})\)。TDSE 为 \(i\hbar\,\partial\psi/\partial t=\hat{H}\psi\)，其中 \(\hat{H}=-\hbar^{2}\nabla^{2}/2m+V(\vec{r})\)（不显含 \(t\)）。</p>
+      <p class="step"><strong>步骤 2（变量分离）：</strong>设 \(\psi(\vec{r},t)=\phi(\vec{r})\,T(t)\)。代入 TDSE：</p>
+      <div class="formula">\[ i\hbar\,\phi(\vec{r})\,T'(t)=T(t)\,\hat{H}\phi(\vec{r})\;\Rightarrow\;i\hbar\,\frac{T'(t)}{T(t)}=\frac{\hat{H}\phi(\vec{r})}{\phi(\vec{r})}. \]</div>
+      <p class="step"><strong>步骤 3（两侧必为常数）：</strong>左仅含 \(t\)，右仅含 \(\vec{r}\)。两独立变量取相同值唯有都等于常数。令此常数为 \(E\)（注意：尚未识别为「能量」，但稍后由本征值方程自洽给出）：</p>
+      <div class="formula">\[ i\hbar\,\frac{T'(t)}{T(t)}=E\quad\text{（时间部分）},\qquad\hat{H}\phi(\vec{r})=E\phi(\vec{r})\quad\text{（空间部分）}. \]</div>
+      <p class="step"><strong>步骤 4（解时间方程）：</strong>\(T'(t)=-(iE/\hbar)T(t)\)，解为 \(T(t)=e^{-iEt/\hbar}\)（取积分常数 \(T(0)=1\)；整体相位被吸收到 \(\phi\) 中）。</p>
+      <p class="step"><strong>步骤 5（识别能量）：</strong>空间方程 \(\hat{H}\phi=E\phi\) 表明 \(\phi\) 是 \(\hat{H}\) 的本征态、本征值 \(E\)。因 \(\hat{H}\) 对应总能量，\(E\) 即<strong>能量本征值</strong>。厄米性保证 \(E\in\mathbb{R}\)（实数）——这对 \(|T(t)|=1\) 是必要的，否则概率会按 \(e^{-\mathrm{Im}(E)t/\hbar}\) 指数衰减或发散。</p>
+      <p class="step"><strong>步骤 6（合并）：</strong>\(\psi_{E}(\vec{r},t)=\phi_{E}(\vec{r})\,e^{-iEt/\hbar}\)。<strong>验证定态性</strong>：\(|\psi_{E}|^{2}=|\phi_{E}|^{2}\,|e^{-iEt/\hbar}|^{2}=|\phi_{E}|^{2}\,\cdot 1=|\phi_{E}|^{2}\)，不依赖 \(t\) ✓。任何不显含 \(t\) 的 \(\hat{Q}\)：\(\langle Q\rangle=\int\phi_{E}^{*}\hat{Q}\phi_{E}\,\mathrm{d}V\) 也不依赖 \(t\) ✓。</p>
+      <p class="step"><strong>步骤 7（一般态 = 定态叠加）：</strong>线性叠加 \(\psi(\vec{r},t)=\sum_{n}c_{n}\phi_{n}(\vec{r})e^{-iE_{n}t/\hbar}\) 也是 TDSE 的解（线性）。只有<strong>单一</strong>能量成分时是定态；多成分叠加时各分量以不同频率旋转，相对相位 \(e^{-i(E_{m}-E_{n})t/\hbar}\) 产生拍频——\(|\psi|^{2}\) 此时显含 \(t\)。</p>
+
+      <h3>推导 2.B — 概率守恒：连续性方程 Probability Conservation &amp; Continuity Equation</h3>
+      <p class="step"><strong>步骤 1（定义概率密度与流）：</strong>\(\rho\equiv|\psi|^{2}=\psi^{*}\psi\)。<strong>概率流密度</strong>定义为</p>
+      <div class="formula">\[ \vec{\jmath}\equiv\frac{\hbar}{2mi}\big(\psi^{*}\nabla\psi-\psi\nabla\psi^{*}\big)=\frac{1}{m}\operatorname{Re}\!\big(\psi^{*}\hat{p}\psi\big). \]</div>
+      <p class="step"><strong>步骤 2（计算 \(\partial\rho/\partial t\)）：</strong>由乘积规则 \(\partial\rho/\partial t=(\partial\psi^{*}/\partial t)\psi+\psi^{*}(\partial\psi/\partial t)\)。由 TDSE 与其复共轭（用 \(V\) 实值，故 \(V^{*}=V\)）：</p>
+      <div class="formula">\[ \frac{\partial\psi}{\partial t}=-\frac{i}{\hbar}\hat{H}\psi,\qquad\frac{\partial\psi^{*}}{\partial t}=+\frac{i}{\hbar}(\hat{H}\psi)^{*}. \]</div>
+      <p class="step"><strong>步骤 3（代入并化简）：</strong>代入 \(\hat{H}=-\hbar^{2}\nabla^{2}/2m+V\)，势能项相消（\(V\psi^{*}\psi-V\psi^{*}\psi=0\)）：</p>
+      <div class="formula">\[ \frac{\partial\rho}{\partial t}=\frac{i\hbar}{2m}\big(\psi\nabla^{2}\psi^{*}-\psi^{*}\nabla^{2}\psi\big). \]</div>
+      <p class="step"><strong>步骤 4（识别散度）：</strong>上式右边 \(=-\nabla\cdot\vec{\jmath}\)（直接验证：\(\nabla\cdot\vec{\jmath}=(\hbar/2mi)[\nabla\psi^{*}\cdot\nabla\psi+\psi^{*}\nabla^{2}\psi-\nabla\psi\cdot\nabla\psi^{*}-\psi\nabla^{2}\psi^{*}]\)，前两两相消的项消掉，剩 \((\hbar/2mi)(\psi^{*}\nabla^{2}\psi-\psi\nabla^{2}\psi^{*})\)）。故</p>
+      <div class="formula">\[ \boxed{\;\frac{\partial\rho}{\partial t}+\nabla\cdot\vec{\jmath}=0\;}\qquad\text{量子连续性方程 continuity equation} \]</div>
+      <p class="step"><strong>步骤 5（积分形式）：</strong>对任意体积 \(V\) 积分：\(\mathrm{d}/\mathrm{d}t\!\int_{V}\rho\,\mathrm{d}V=-\oint_{\partial V}\vec{\jmath}\cdot\mathrm{d}\vec{A}\)——体积内概率的时变率等于净流入概率流。对全空间且 \(\psi\) 局域（无穷远处 \(\vec{\jmath}\to 0\)），面积分为零，故 \(\int|\psi|^{2}\,\mathrm{d}V\) 是<strong>运动常数</strong>。</p>
+      <p class="step"><strong>结论：</strong>若 \(\psi\) 在 \(t=0\) 时已归一化为 1，则此后<strong>永远</strong> \(\int|\psi|^{2}\,\mathrm{d}V=1\)，TDSE 自动保证。「重新归一化」既无必要也无物理——若数值模拟中发现漂移，那是离散化误差而非物理现象。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 归一化高斯波函数 Normalize a Gaussian Wave Function</h4>
+        <p class="example-statement">一维高斯波函数 \(\psi(x)=A\exp(-x^{2}/2a^{2})\)（实值），宽度参数 \(a=1.0\,\mathrm{nm}\)。求归一化常数 \(A\)（写出量纲）并计算粒子出现在区间 \([-a,a]\) 内的概率。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>归一化条件 \(\int_{-\infty}^{+\infty}|\psi|^{2}\,\mathrm{d}x=1\)。</p>
+          <p class="step"><strong>步骤 1（积分）：</strong>\(|A|^{2}\int_{-\infty}^{+\infty}e^{-x^{2}/a^{2}}\,\mathrm{d}x=|A|^{2}\,a\sqrt{\pi}=1\)（用标准高斯积分 \(\int e^{-\alpha x^{2}}\,\mathrm{d}x=\sqrt{\pi/\alpha}\)，这里 \(\alpha=1/a^{2}\)）。</p>
+          <p class="step"><strong>步骤 2（求 A）：</strong>\(|A|^{2}=1/(a\sqrt{\pi})\)，取 \(A\) 实正：\(A=(\pi a^{2})^{-1/4}\)。量纲：\([A]=[a]^{-1/2}=\mathrm{m^{-1/2}}\)（一维波函数的应有量纲 ✓）。</p>
+          <p class="step"><strong>数值：</strong>\(a=1.0\,\mathrm{nm}=10^{-9}\,\mathrm{m}\)，\(\pi a^{2}=\pi\times 10^{-18}\,\mathrm{m^{2}}=3.141\,59\times 10^{-18}\,\mathrm{m^{2}}\)。</p>
+          <p class="step">\(A=(3.141\,59\times 10^{-18})^{-1/4}\)。计算：\(\log_{10}(3.141\,59\times 10^{-18})=-17.502\,85\)，\(\times(-1/4)=4.375\,71\)，\(A=10^{4.375\,71}=\mathbf{2.375\times 10^{4}\,\mathrm{m^{-1/2}}}\)。</p>
+          <p class="step"><strong>步骤 3（区间概率）：</strong>\(P(-a\le x\le a)=|A|^{2}\int_{-a}^{a}e^{-x^{2}/a^{2}}\,\mathrm{d}x\)。换元 \(u=x/a\)，\(\mathrm{d}x=a\,\mathrm{d}u\)：</p>
+          <p class="step">\(P=|A|^{2}\,a\int_{-1}^{1}e^{-u^{2}}\,\mathrm{d}u=\dfrac{1}{\sqrt{\pi}}\cdot\sqrt{\pi}\,\operatorname{erf}(1)=\operatorname{erf}(1)\)。</p>
+          <p class="step">查误差函数表：\(\operatorname{erf}(1)=\mathbf{0.842\,7}\)。</p>
+          <p class="step"><strong>结论：</strong>粒子在 \([-a,a]\)（即 \(\pm 1\sigma\) 范围内，这里 \(\Delta x=a/\sqrt{2}=0.707\,\mathrm{nm}\)）被找到的概率为 84.27%；在区间外的概率为 15.73%。这是高斯分布「68-27」规则在 \(x/a=\pm 1\)（约 1.414\(\sigma\)）处的对应值。</p>
+          <p><span class="ans">答案：\(A=(\pi a^{2})^{-1/4}=2.375\times 10^{4}\,\mathrm{m^{-1/2}}\)；\(P(|x|\le a)=\operatorname{erf}(1)=0.842\,7\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 高斯波函数的 \(\langle x\rangle\) 与 \(\langle p\rangle\) Expectation Values for a Gaussian</h4>
+        <p class="example-statement">归一化波函数 \(\psi(x)=(2\pi\sigma_{0}^{2})^{-1/4}\exp(-x^{2}/4\sigma_{0}^{2})\exp(ik_{0}x)\)，其中 \(\sigma_{0}=1.0\,\mathrm{nm}\)、\(k_{0}=5.0\,\mathrm{nm^{-1}}\)。计算：(a) \(\langle x\rangle\) 与 \(\langle x^{2}\rangle\)（从而 \(\Delta x\)）；(b) \(\langle p\rangle\) 与 \(\Delta p\)；(c) 乘积 \(\Delta x\,\Delta p\) 并与 \(\hbar/2\) 比较；(d) 动能 \(\langle \hat{T}\rangle\)（用 \(\hat{T}=\hat{p}^{2}/2m\)，电子质量）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 位置矩：</strong>\(\langle x\rangle=\int x|\psi|^{2}\,\mathrm{d}x\)。被积函数 \(x\,|\psi|^{2}\) 是奇 \(\times\) 偶 = 奇；对称区间积分为零：\(\langle x\rangle=0\) ✓。</p>
+          <p class="step">\( |\psi|^{2}=(2\pi\sigma_{0}^{2})^{-1/2}\exp(-x^{2}/2\sigma_{0}^{2})\)，是方差 \(\sigma_{0}^{2}\) 的高斯密度。\(\langle x^{2}\rangle=\sigma_{0}^{2}=(1.0\,\mathrm{nm})^{2}\)。</p>
+          <p class="step">\(\Delta x=\sqrt{\langle x^{2}\rangle-\langle x\rangle^{2}}=\sigma_{0}=\mathbf{1.0\,\mathrm{nm}}\)。</p>
+          <p class="step"><strong>(b) 动量期望：</strong>\(\hat{p}=-i\hbar\,\partial/\partial x\)。\(\partial\psi/\partial x=(-x/2\sigma_{0}^{2}+ik_{0})\psi\)。</p>
+          <p class="step">\(\langle p\rangle=\int\psi^{*}(-i\hbar)\big(-x/2\sigma_{0}^{2}+ik_{0}\big)\psi\,\mathrm{d}x=-i\hbar\big[-\underbrace{\int x|\psi|^{2}\,\mathrm{d}x}_{0}+ik_{0}\big]=\hbar k_{0}\)。</p>
+          <p class="step">数值：\(\langle p\rangle=(1.055\times 10^{-34})(5.0\times 10^{9})=\mathbf{5.27\times 10^{-25}\,\mathrm{kg\,m/s}}\)。</p>
+          <p class="step"><strong>\(\langle p^{2}\rangle\)：</strong>\(\hat{p}^{2}=-\hbar^{2}\partial^{2}/\partial x^{2}\)。先算 \(\partial^{2}\psi/\partial x^{2}=\big[(-1/2\sigma_{0}^{2})+(-x/2\sigma_{0}^{2}+ik_{0})^{2}\big]\psi=\big[-1/2\sigma_{0}^{2}+x^{2}/4\sigma_{0}^{4}-ik_{0}x/\sigma_{0}^{2}-k_{0}^{2}\big]\psi\)。</p>
+          <p class="step">\(\langle p^{2}\rangle=-\hbar^{2}\int|\psi|^{2}\big[-1/2\sigma_{0}^{2}+x^{2}/4\sigma_{0}^{4}-ik_{0}x/\sigma_{0}^{2}-k_{0}^{2}\big]\,\mathrm{d}x\)。奇项 \(x\) 积分为零；\(\langle x^{2}\rangle=\sigma_{0}^{2}\)：</p>
+          <p class="step">\(=\ -\hbar^{2}\big[-1/(2\sigma_{0}^{2})+\sigma_{0}^{2}/(4\sigma_{0}^{4})-k_{0}^{2}\big]=-\hbar^{2}\big[-1/(2\sigma_{0}^{2})+1/(4\sigma_{0}^{2})-k_{0}^{2}\big]=\hbar^{2}\big[1/(4\sigma_{0}^{2})+k_{0}^{2}\big]\)。</p>
+          <p class="step">\(\Delta p=\sqrt{\langle p^{2}\rangle-\langle p\rangle^{2}}=\sqrt{\hbar^{2}/(4\sigma_{0}^{2})+\hbar^{2}k_{0}^{2}-\hbar^{2}k_{0}^{2}}=\hbar/(2\sigma_{0})\)。</p>
+          <p class="step">数值：\(\Delta p=1.055\times 10^{-34}/(2\times 10^{-9})=\mathbf{5.27\times 10^{-26}\,\mathrm{kg\,m/s}}\)（约为 \(\langle p\rangle\) 的 1/10，相对展宽 \(\Delta p/\langle p\rangle=0.10\)）。</p>
+          <p class="step"><strong>(c) 不确定性乘积：</strong>\(\Delta x\,\Delta p=\sigma_{0}\cdot\hbar/(2\sigma_{0})=\hbar/2=\mathbf{5.27\times 10^{-35}\,\mathrm{J\,s}}\)。</p>
+          <p class="step">这<strong>恰好等于</strong>海森堡下界 \(\hbar/2\)——高斯波包是「最小不确定态」， saturate 海森堡不等式。任何非高斯形状的波包，乘积都严格大于 \(\hbar/2\)。</p>
+          <p class="step"><strong>(d) 平均动能：</strong>\(\langle T\rangle=\langle p^{2}\rangle/2m=\big(\hbar^{2}/(4\sigma_{0}^{2})+\hbar^{2}k_{0}^{2}\big)/2m\)。</p>
+          <p class="step">第一项（「零点动能」）：\(\hbar^{2}/(4\sigma_{0}^{2}\cdot 2m)=(1.055\times 10^{-34})^{2}/(4\times 10^{-18}\times 2\times 9.11\times 10^{-31})=1.113\times 10^{-68}/7.29\times 10^{-48}=1.53\times 10^{-21}\,\mathrm{J}=\mathbf{0.009\,5\,\mathrm{eV}}\)。</p>
+          <p class="step">第二项（「漂运动能」）：\(\hbar^{2}k_{0}^{2}/2m\)。计算：\((1.055\times 10^{-34})^{2}\times(5\times 10^{9})^{2}/(2\times 9.11\times 10^{-31})=1.113\times 10^{-68}\times 2.5\times 10^{19}/1.822\times 10^{-30}=2.78\times 10^{-49}/1.822\times 10^{-30}=1.53\times 10^{-19}\,\mathrm{J}=\mathbf{0.954\,\mathrm{eV}}\)。</p>
+          <p class="step">\(\langle T\rangle=0.009\,5+0.954\approx\mathbf{0.964\,\mathrm{eV}}\)。主导项来自中心动量 \(\hbar k_{0}\)；零点动能（来自 \(\Delta p\)）贡献约 1%。</p>
+          <p><span class="ans">答案：\(\langle x\rangle=0,\Delta x=1.0\,\mathrm{nm}\)；\(\langle p\rangle=5.27\times 10^{-25}\,\mathrm{kg\,m/s},\Delta p=5.27\times 10^{-26}\,\mathrm{kg\,m/s}\)；\(\Delta x\,\Delta p=\hbar/2\)（饱和！）；\(\langle T\rangle\approx 0.964\,\mathrm{eV}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 自由粒子平面波：10 eV 电子的波长与动量 10 eV Electron Plane Wave</h4>
+        <p class="example-statement">动能为 \(K=10\,\mathrm{eV}\) 的自由电子由平面波 \(\psi(x,t)=A\,e^{i(kx-\omega t)}\) 描述（一维）。求：(a) 波数 \(k\) 与德布罗意波长 \(\lambda=2\pi/k\)；(b) 动量 \(p\) 与群速度 \(v_{g}\)；(c) 角频率 \(\omega\) 与周期 \(T\)；(d) 用边长 \(L=1\,\mathrm{cm}\) 的「箱归一化」(box normalization) 求 \(A\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 波数与波长：</strong>非相对论电子 \(K=\hbar^{2}k^{2}/2m\)，故 \(k=\sqrt{2mK}/\hbar\)。换能量单位：\(K=10\,\mathrm{eV}=10\times 1.602\times 10^{-19}=1.602\times 10^{-18}\,\mathrm{J}\)。</p>
+          <p class="step">\(2mK=2\times 9.11\times 10^{-31}\times 1.602\times 10^{-18}=2.919\times 10^{-48}\,\mathrm{kg^{2}\,m^{2}/s^{2}}\)。</p>
+          <p class="step">\(k=\sqrt{2.919\times 10^{-48}}/1.055\times 10^{-34}=1.708\times 10^{-24}/1.055\times 10^{-34}=\mathbf{1.619\times 10^{10}\,\mathrm{m^{-1}}}\)。</p>
+          <p class="step">\(\lambda=2\pi/k=6.283/1.619\times 10^{10}=\mathbf{3.88\times 10^{-10}\,\mathrm{m}=0.388\,\mathrm{nm}}\)。这正好是原子间距的尺度——电子显微镜（用 10-100 keV 电子，波长 pm 级）能分辨原子正是依赖此短波长。</p>
+          <p class="step"><strong>(b) 动量与群速度：</strong>\(p=\hbar k=1.055\times 10^{-34}\times 1.619\times 10^{10}=\mathbf{1.708\times 10^{-24}\,\mathrm{kg\,m/s}}\)。验证：\(p^{2}/2m=(1.708\times 10^{-24})^{2}/(2\times 9.11\times 10^{-31})=2.919\times 10^{-48}/1.822\times 10^{-30}=1.602\times 10^{-18}\,\mathrm{J}=10\,\mathrm{eV}\) ✓。</p>
+          <p class="step">\(v_{g}=p/m=1.708\times 10^{-24}/9.11\times 10^{-31}=\mathbf{1.875\times 10^{6}\,\mathrm{m/s}}\)（约 0.0063c，远低于光速，非相对论近似合理 ✓）。</p>
+          <p class="step"><strong>(c) 角频率与周期：</strong>\(\omega=E/\hbar=K/\hbar=1.602\times 10^{-18}/1.055\times 10^{-34}=\mathbf{1.519\times 10^{16}\,\mathrm{rad/s}}\)（注意：相对论极限时 \(E=\hbar\omega\) 含静能 \(mc^{2}\)，这里取 \(E=K\) 是非相对论近似）。</p>
+          <p class="step">周期 \(T=2\pi/\omega=6.283/1.519\times 10^{16}=\mathbf{4.14\times 10^{-16}\,\mathrm{s}=0.414\,\mathrm{fs}}\)。相位振荡极快——这也是为什么量子相位在宏观尺度平均为零，呈现经典行为。</p>
+          <p class="step"><strong>(d) 箱归一化：</strong>把电子放在周期为 \(L\) 的环上，要求 \(\psi(x+L)=\psi(x)\)，则 \(k\) 取 \(2\pi n/L\) 离散值。归一化 \(\int_{0}^{L}|A|^{2}\,\mathrm{d}x=|A|^{2}L=1\)，故</p>
+          <p class="step">\(A=1/\sqrt{L}=1/\sqrt{0.01}=\mathbf{10\,\mathrm{m^{-1/2}}}\)。</p>
+          <p class="step"><strong>注意：</strong>\(|\psi|^{2}=|A|^{2}=100\,\mathrm{m^{-1}}\) 在整个箱内均匀——\(\Delta x=\infty\)（实际上是 \(L/\sqrt{12}\)，箱内均匀分布）。这与 \(\Delta p=0\)（动量确定 \(p=\hbar k\)）共存，验证 \(\Delta x\,\Delta p\) 远超 \(\hbar/2\)。平面波不是最小不确定态。</p>
+          <p><span class="ans">答案：\(k=1.62\times 10^{10}\,\mathrm{m^{-1}},\lambda=0.388\,\mathrm{nm}\)；\(p=1.71\times 10^{-24}\,\mathrm{kg\,m/s},v_{g}=1.88\times 10^{6}\,\mathrm{m/s}\)；\(\omega=1.52\times 10^{16}\,\mathrm{rad/s},T=0.414\,\mathrm{fs}\)；\(A=10\,\mathrm{m^{-1/2}}\)（\(L=1\,\mathrm{cm}\) 箱归一化）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 不确定性原理估算原子尺度电子能量 Uncertainty Bound for an Atomic Electron</h4>
+        <p class="example-statement">粗略地把氢原子基态电子看作「束缚在 \(\Delta x\approx L=0.10\,\mathrm{nm}\)（玻尔半径量级）内」。(a) 用海森堡不等式估计最小 \(\Delta p\)；(b) 估算对应平均动能 \(\langle T\rangle\approx(\Delta p)^{2}/2m\)（电子）；(c) 与氢原子基态实际动能 \(13.6\,\mathrm{eV}\) 比较；(d) 用相同方法估算电子被禁锢在原子核大小 \(L=1\,\mathrm{fm}=10^{-15}\,\mathrm{m}\) 内的动能，说明为何电子不可能是原子核的组份。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 动量下界：</strong>\(\Delta p\ge\hbar/(2\Delta x)=\hbar/(2L)\)。</p>
+          <p class="step">数值：\(\Delta p\ge 1.055\times 10^{-34}/(2\times 1.0\times 10^{-10})=\mathbf{5.27\times 10^{-25}\,\mathrm{kg\,m/s}}\)。</p>
+          <p class="step"><strong>(b) 动能：</strong>\(\langle T\rangle\ge(\Delta p)^{2}/2m=(5.27\times 10^{-25})^{2}/(2\times 9.11\times 10^{-31})=2.78\times 10^{-49}/1.822\times 10^{-30}=\mathbf{1.53\times 10^{-19}\,\mathrm{J}=0.95\,\mathrm{eV}}\)。</p>
+          <p class="step"><strong>(c) 比较：</strong>氢原子基态实际 \(K_{\text{实际}}=+13.6\,\mathrm{eV}\)（维里定理：\(K=-E_{\text{总}}\)，\(E_{\text{总}}=-13.6\,\mathrm{eV}\)）。我们的下界 \(0.95\,\mathrm{eV}\) 低一个量级——这是预期的：海森堡不等式给的是<strong>下界</strong>而非精确值；更精确的氢原子高斯近似 \(\Delta x=a_{0}/\sqrt{2}=0.026\,\mathrm{nm}\) 给出 \(\Delta p\ge 2.0\times 10^{-24}\,\mathrm{kg\,m/s}\)，\(\langle T\rangle\ge 13.8\,\mathrm{eV}\)，与实际几乎一致。重点：<strong>量级正确</strong>——不确定性原理单独就预测了原子电子能量在 eV 量级。</p>
+          <p class="step"><strong>(d) 假设禁锢在原子核内：</strong>\(L=1\,\mathrm{fm}=10^{-15}\,\mathrm{m}\)。\(\Delta p\ge\hbar/(2L)=1.055\times 10^{-34}/(2\times 10^{-15})=5.27\times 10^{-20}\,\mathrm{kg\,m/s}\)。</p>
+          <p class="step">\(\langle T\rangle\ge(5.27\times 10^{-20})^{2}/(2\times 9.11\times 10^{-31})=2.78\times 10^{-39}/1.822\times 10^{-30}=\mathbf{1.53\times 10^{-9}\,\mathrm{J}=9.5\,\mathrm{GeV}}\)！</p>
+          <p class="step"><strong>物理意义：</strong>9.5 GeV 远高于电子静能 \(m_{e}c^{2}=0.511\,\mathrm{MeV}\)，必须用相对论公式（这只会让能量更高）。如此巨大能量远超核结合能（MeV/核子）——电子不可能被禁锢在原子核内。这是 1930 年代初物理学家（包括 Bohr）严肃考虑「原子核由质子+电子组成」假说被放弃的关键论据之一；中子（1932 年 Chadwick 发现）才是核子组份。</p>
+          <p class="step"><strong>反例对照：</strong>把电子换成中子（\(m_{n}\approx 1820\,m_{e}\)），同样 \(L=1\,\mathrm{fm}\) 给出 \(\langle T\rangle\sim 5\,\mathrm{MeV}\)——与核子结合能同量级，物理上合理 ✓。</p>
+          <p><span class="ans">答案：(a)(b) \(\Delta p\ge 5.27\times 10^{-25}\,\mathrm{kg\,m/s},\langle T\rangle\ge 0.95\,\mathrm{eV}\)；(c) 13.6 eV 实际值——量级一致；(d) 禁锢在 \(L=1\,\mathrm{fm}\) 内需 \(\ge 9.5\,\mathrm{GeV}\)，电子不可能存在于核内。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 验证定态的概率与期望值不随时间变化 Time-Independence for a Stationary State</h4>
+        <p class="example-statement">宽度 \(L=0.50\,\mathrm{nm}\) 一维无限深势阱中电子的基态波函数为 \(\psi_{1}(x,t)=\sqrt{2/L}\,\sin(\pi x/L)\,e^{-iE_{1}t/\hbar}\)（\(0\le x\le L\)，外部为零）。(a) 求基态能量 \(E_{1}\)（eV）；(b) 证明 \(|\psi_{1}(x,t)|^{2}\) 不显含 \(t\)；(c) 计算 \(t=0\) 与 \(t=T_{1}/4\)（\(T_{1}=2\pi\hbar/E_{1}\)）时刻在 \(x=L/2\) 处的 \(|\psi|^{2}\)，证明两者相等；(d) 计算 \(\langle x\rangle\)、\(\langle p\rangle\)，验证它们也不依赖时间。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 基态能量：</strong>\(E_{n}=n^{2}\pi^{2}\hbar^{2}/2mL^{2}\)，\(n=1\)：</p>
+          <p class="step">\(E_{1}=\pi^{2}(1.055\times 10^{-34})^{2}/(2\times 9.11\times 10^{-31}\times(5\times 10^{-10})^{2})=9.870\times 1.113\times 10^{-68}/(2\times 9.11\times 10^{-31}\times 2.5\times 10^{-19})\)。</p>
+          <p class="step">分子 \(=1.099\times 10^{-67}\)，分母 \(=4.555\times 10^{-49}\)，\(E_{1}=2.413\times 10^{-19}\,\mathrm{J}=\mathbf{1.51\,\mathrm{eV}}\)。</p>
+          <p class="step">周期 \(T_{1}=2\pi\hbar/E_{1}=6.283\times 1.055\times 10^{-34}/2.413\times 10^{-19}=2.75\times 10^{-15}\,\mathrm{s}=\mathbf{2.75\,\mathrm{fs}}\)。每 2.75 fs 相位转一整圈——但（如本题所证）<strong>看不到</strong>效果。</p>
+          <p class="step"><strong>(b) 概率密度：</strong>\(|\psi_{1}|^{2}=|\sqrt{2/L}\sin(\pi x/L)|^{2}\cdot|e^{-iE_{1}t/\hbar}|^{2}=(2/L)\sin^{2}(\pi x/L)\cdot 1=(2/L)\sin^{2}(\pi x/L)\)。</p>
+          <p class="step">\(e^{-iE_{1}t/\hbar}\) 是纯相位因子，模长 1，<strong>与 \(\phi(x)\) 的相位无关</strong>。结果<strong>不含 \(t\)</strong> ✓——定态之所以为「定」。</p>
+          <p class="step"><strong>(c) 数值验证：</strong>\(x=L/2=0.25\,\mathrm{nm}\)。\(\sin(\pi/2)=1\)。\( |\psi_{1}(L/2,t)|^{2}=(2/L)\cdot 1=2/(0.50\,\mathrm{nm})=\mathbf{4.0\,\mathrm{nm^{-1}}}\)。</p>
+          <p class="step">\(t=0\)：\(e^{-iE_{1}\cdot 0/\hbar}=1\)，\(|\psi|^{2}=4.0\,\mathrm{nm^{-1}}\) ✓。</p>
+          <p class="step">\(t=T_{1}/4\)：\(e^{-iE_{1}(T_{1}/4)/\hbar}=e^{-i\pi/2}=-i\)，\(|-i|^{2}=1\)，\(|\psi|^{2}=4.0\,\mathrm{nm^{-1}}\) ✓。</p>
+          <p class="step">两时刻<strong>完全相同</strong>。任意 \(t\) 都给出 4.0 nm⁻¹——尽管相位因子从 1 旋到 \(-i\) 再到 \(-1\) 等等。</p>
+          <p class="step"><strong>(d) 位置与动量期望：</strong>\(\langle x\rangle=\int_{0}^{L}x\,|\psi_{1}|^{2}\,\mathrm{d}x=(2/L)\int_{0}^{L}x\sin^{2}(\pi x/L)\,\mathrm{d}x\)。用 \(\sin^{2}\theta=(1-\cos 2\theta)/2\) 与积分公式：</p>
+          <p class="step">\(=\dfrac{2}{L}\Big[\dfrac{x^{2}}{4}-\dfrac{x\sin(2\pi x/L)}{4\pi/L}-\dfrac{\cos(2\pi x/L)}{2(2\pi/L)^{2}}\Big]_{0}^{L}=\dfrac{2}{L}\cdot\dfrac{L^{2}}{4}=\mathbf{L/2=0.25\,\mathrm{nm}}\) ✓（对称中心）。</p>
+          <p class="step">\(\langle p\rangle=\int_{0}^{L}\psi_{1}^{*}(-i\hbar\,\partial/\partial x)\psi_{1}\,\mathrm{d}x\)。\(\partial\psi/\partial x=\sqrt{2/L}(\pi/L)\cos(\pi x/L)e^{-iE_{1}t/\hbar}\)。被积函数含 \(\sin(\pi x/L)\cos(\pi x/L)=\tfrac12\sin(2\pi x/L)\)，在 \([0,L]\) 上积分为零。所以 \(\langle p\rangle=\mathbf{0}\) ✓（粒子在箱中来回反弹，无净动量）。</p>
+          <p class="step">两期望值都不显含 \(t\)——这是<strong>定态</strong>的一般性质（推导 2.A 步骤 6）。但注意：\(\langle p^{2}\rangle=2mE_{1}=\hbar^{2}\pi^{2}/L^{2}\ne 0\)，故 \(\Delta p=\pi\hbar/L\ne 0\)——「无净动量」与「动量分布有宽度」不矛盾（动量呈 \(\pm\pi\hbar/L\) 双峰分布，对应左行波与右行波等权叠加）。</p>
+          <p><span class="ans">答案：\(E_{1}=1.51\,\mathrm{eV},T_{1}=2.75\,\mathrm{fs}\)；\(|\psi|^{2}=(2/L)\sin^{2}(\pi x/L)\) 不含 \(t\)；\(x=L/2,t=0\) 与 \(t=T_{1}/4\) 处 \(|\psi|^{2}=4.0\,\mathrm{nm^{-1}}\) 相同；\(\langle x\rangle=L/2,\langle p\rangle=0\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「波函数 \(\psi\) 是物理量，可直接测量」。</strong>错。\(\psi\) 是<strong>复值</strong>，没有「测量复数」的仪器。可直接测量的是 <strong>\(|\psi|^{2}\)</strong>（概率密度）或由它衍生的期望值。把 \(\psi\) 当作经典波（水波、电磁波）类比时尤需警惕：电磁波 \(\vec{E}\) 本身可测，量子波函数则不然。Born 诠释正是为强调这一点。</li>
+        <li><strong>「忘了归一化」。</strong>常见错误。给定的 \(\psi\) 若未归一化，所有概率与期望值都错。务必先检查 \(\int|\psi|^{2}\,\mathrm{d}V=1\)；若不满足，先用 \(A=1/\sqrt{\int|f|^{2}\,\mathrm{d}V}\) 乘上。但反过来：<strong>已归一化后无需「重新归一化」</strong>——TDSE 保证概率守恒（推导 2.B）。把数值离散误差当作「需要重归一化」的物理信号是初学常见误判。</li>
+        <li><strong>「\(\Delta x\,\Delta p=\hbar/2\)」</strong>——把不等式当等式。错。海森堡给的是<strong>下界</strong>：\(\Delta x\,\Delta p\ge\hbar/2\)。仅<strong>高斯波包</strong>饱和（最小不确定态），其他形状（方波、指数衰减、定态粒子在箱中等）都<strong>严格大于</strong> \(\hbar/2\)。如无限深势阱基态：\(\Delta x=L\sqrt{1/12-1/(2\pi^{2})}\approx 0.18L\)，\(\Delta p=\pi\hbar/L\)，乘积 \(\approx 0.568\,\hbar\)，确实 \(>\hbar/2\)。</li>
+        <li><strong>「动量算符 \(\hat{p}=-\hbar\,\partial/\partial x\)」（漏掉 \(i\)）</strong>——错。正确为 \(\hat{p}=-i\hbar\,\partial/\partial x\)。漏 \(i\) 会令 \(\hat{p}\) 非厄米，期望值变虚数（与「测量值必实」矛盾），且 \([\hat{x},\hat{p}]\) 变成 \(-\hbar\) 而非 \(i\hbar\)，破坏正则对易关系。技巧记忆：\(\hat{p}\) 必含 \(-i\) 才能使平面波 \(e^{ikx}\) 成为其本征态：\(\hat{p}e^{ikx}=(-i\hbar)(ik)e^{ikx}=\hbar k\,e^{ikx}\) ✓。</li>
+        <li><strong>「定态意味着粒子不运动」。</strong>半错。定态 \(\psi(\vec{r},t)=\phi(\vec{r})e^{-iEt/\hbar}\) 的<strong>概率分布</strong>不随时间变化（\(|\psi|^{2}=|\phi|^{2}\)），但<strong>相位</strong>仍以频率 \(\omega=E/\hbar\) 旋转；动量分布可以有非零宽度（如粒子在箱中 \(\Delta p=\pi\hbar/L\ne 0\)），粒子仍在「反弹」——只是这种运动不改变概率分布。两不同定态叠加时，相对相位 \(e^{-i(E_{2}-E_{1})t/\hbar}\) 会让 \(|\psi|^{2}\) 显含时间，这才显现「运动」。</li>
+        <li><strong>把 \(\langle p\rangle=0\) 等同于 \(\Delta p=0\)。</strong>错。期望值是「平均」，标准差是「展宽」。实值波函数 \(\psi\in\mathbb{R}\) 总有 \(\langle p\rangle=0\)（用 \(\hat{p}\) 厄米 + 分部积分证明），但 \(\Delta p\) 一般非零（如基态高斯 \(\Delta p=\hbar/2\sigma_{0}\)）。零平均动量 \(\ne\) 零动量涨落。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 氢原子基态的归一化与径向概率 Normalizing the Hydrogen Ground State</summary>
+        <div class="hint">球坐标 \(\mathrm{d}V=r^{2}\sin\theta\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}\phi\)。氢基态 \(\psi(r)=(\pi a_{0}^{3})^{-1/2}e^{-r/a_{0}}\)，与角度无关。用 \(\int_{0}^{\infty}r^{2}e^{-\alpha r}\,\mathrm{d}r=2/\alpha^{3}\)。</div>
+        <div class="solution">
+          <strong>(a) 验证归一化：</strong>\(\int|\psi|^{2}\,\mathrm{d}V=4\pi\int_{0}^{\infty}|\psi|^{2}r^{2}\,\mathrm{d}r=\dfrac{4\pi}{\pi a_{0}^{3}}\int_{0}^{\infty}e^{-2r/a_{0}}r^{2}\,\mathrm{d}r\)。
+          <br>用 \(\alpha=2/a_{0}\)：\(\int_{0}^{\infty}r^{2}e^{-2r/a_{0}}\,\mathrm{d}r=2/(2/a_{0})^{3}=a_{0}^{3}/4\)。
+          <br>故 \(\int|\psi|^{2}\,\mathrm{d}V=4\pi/(\pi a_{0}^{3})\cdot a_{0}^{3}/4=1\) ✓。
+          <br><strong>(b) 玻尔半径内概率：</strong>\(P(r&lt;a_{0})=\dfrac{4\pi}{\pi a_{0}^{3}}\int_{0}^{a_{0}}e^{-2r/a_{0}}r^{2}\,\mathrm{d}r\)。
+          <br>换元 \(u=2r/a_{0}\)：\(=\dfrac{4}{a_{0}^{3}}\cdot\dfrac{a_{0}^{3}}{8}\int_{0}^{2}u^{2}e^{-u}\,\mathrm{d}u=\dfrac{1}{2}\int_{0}^{2}u^{2}e^{-u}\,\mathrm{d}u\)。
+          <br>\(\int_{0}^{2}u^{2}e^{-u}\,\mathrm{d}u=[-u^{2}e^{-u}-2ue^{-u}-2e^{-u}]_{0}^{2}=(-4e^{-2}-4e^{-2}-2e^{-2})-(-2)=2-10e^{-2}=0.6466\)。
+          <br>\(P(r&lt;a_{0})=0.323\)，即 \(\mathbf{32.3\%}\)。
+          <br>类似得 \(P(r&lt;2a_{0})=1-5e^{-4}\approx 0.7619\)（76.2%），\(P(r&lt;3a_{0})\approx 0.940\)（94.0%）。 <span class="ans">答：已归一化 ✓；\(P(r&lt;a_{0})=32.3\%\)；\(P(r&lt;2a_{0})=76.2\%\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 高斯波包饱和不确定性（再推导）Gaussian Saturates the Bound</summary>
+        <div class="hint">用例 2.1、2.2 的结果：归一化高斯 \(\psi=(2\pi\sigma_{0}^{2})^{-1/4}e^{-x^{2}/4\sigma_{0}^{2}}\) 有 \(\Delta x=\sigma_{0}\)。计算 \(\langle p^{2}\rangle\) 后取 \(\Delta p\)。</div>
+        <div class="solution">
+          纯实高斯（\(k_{0}=0\) 的特例）。由例 2.2 公式 \(\langle p^{2}\rangle=\hbar^{2}/(4\sigma_{0}^{2})\)（\(k_{0}=0\) 项消失），\(\langle p\rangle=0\)。
+          <br>\(\Delta p=\sqrt{\langle p^{2}\rangle-\langle p\rangle^{2}}=\hbar/(2\sigma_{0})\)。
+          <br>\(\Delta x\,\Delta p=\sigma_{0}\cdot\hbar/(2\sigma_{0})=\hbar/2\) ✓——饱和海森堡下界。
+          <br><strong>对照</strong>：无限深势阱基态 \(\phi_{1}=\sqrt{2/L}\sin(\pi x/L)\)，\(\langle x\rangle=L/2\)，\(\langle x^{2}\rangle=L^{2}/3-L^{2}/(2\pi^{2})\)。
+          <br>\(\Delta x=L\sqrt{1/12-1/(2\pi^{2})}=L\cdot 0.1808\)；\(\Delta p=\pi\hbar/L\)（用 \(\hat{p}^{2}\phi_{1}=(\pi\hbar/L)^{2}\phi_{1}\) 直接读出）。
+          <br>\(\Delta x\,\Delta p=0.1808\pi\hbar=0.568\hbar&gt;\hbar/2=0.500\hbar\) ✓——非高斯，不饱和。
+          <br><strong>物理意义</strong>：高斯是「形状最优」——给定 \(\Delta x\) 时 \(\Delta p\) 最小。<span class="ans">答：高斯 \(\Delta x\,\Delta p=\hbar/2\)（饱和）；势阱基态 \(\Delta x\,\Delta p\approx 0.568\hbar\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 自由高斯波包的弥散时间 Spreading Time of a Free Gaussian Packet</summary>
+        <div class="hint">自由高斯波包 \(\Delta x(t)=\sigma_{0}\sqrt{1+(t/\tau)^{2}}\)，特征时间 \(\tau=2m\sigma_{0}^{2}/\hbar\)。求（a）电子、（b） \(1\,\mathrm{g}\) 质点，初始 \(\sigma_{0}=1\,\mathrm{\mu m}\) 时宽度加倍所需的 \(t\)。</div>
+        <div class="solution">
+          \(\Delta x=2\sigma_{0}\Rightarrow 1+(t/\tau)^{2}=4\Rightarrow t=\sqrt{3}\,\tau\)。
+          <br><strong>(a) 电子</strong>（\(m=9.11\times 10^{-31}\,\mathrm{kg},\sigma_{0}=10^{-6}\,\mathrm{m}\)）：
+          <br>\(\tau=2\times 9.11\times 10^{-31}\times 10^{-12}/1.055\times 10^{-34}=1.727\times 10^{-8}\,\mathrm{s}=\mathbf{17.3\,\mathrm{ns}}\)。
+          <br>\(t=\sqrt{3}\times 17.3\,\mathrm{ns}=\mathbf{29.9\,\mathrm{ns}}\)——电子波包在几十纳秒内加倍宽度，量子弥散极快。
+          <br><strong>(b) \(1\,\mathrm{g}\) 质点</strong>（\(m=10^{-3}\,\mathrm{kg}\)）：
+          <br>\(\tau=2\times 10^{-3}\times 10^{-12}/1.055\times 10^{-34}=1.896\times 10^{19}\,\mathrm{s}=\mathbf{6.0\times 10^{11}\,\mathrm{years}}\)！
+          <br>约 6000 亿年——远超宇宙年龄（\(1.38\times 10^{10}\) 年）。这就是为什么日常物体「看起来不弥散」：\(\hbar/m\) 太小，量子弥散完全可忽略。
+          <br><strong>洞察</strong>：\(\tau\propto m\sigma_{0}^{2}\)。宏观物体质量比电子大 \(\sim 10^{28}\) 倍，弥散时间相应长 \(10^{28}\) 倍——经典极限自然涌现。 <span class="ans">答：电子 17.3 ns；\(1\,\mathrm{g}\) 质点 \(6\times 10^{11}\) 年（远超宇宙年龄）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 由能量反推波数（电子显微镜） Electron Microscope Wavelength</summary>
+        <div class="hint">非相对论 \(\lambda=h/p=h/\sqrt{2mK}\)。\(h=6.626\times 10^{-34}\,\mathrm{J\,s}\)。</div>
+        <div class="solution">
+          透射电子显微镜 (TEM) 用 \(K=100\,\mathrm{keV}=1.602\times 10^{-14}\,\mathrm{J}\) 电子。
+          <br>\(p=\sqrt{2mK}=\sqrt{2\times 9.11\times 10^{-31}\times 1.602\times 10^{-14}}=\sqrt{2.919\times 10^{-44}}=1.708\times 10^{-22}\,\mathrm{kg\,m/s}\)。
+          <br>\(\lambda=h/p=6.626\times 10^{-34}/1.708\times 10^{-22}=\mathbf{3.88\times 10^{-12}\,\mathrm{m}=3.88\,\mathrm{pm}}\)。
+          <br><strong>注意</strong>：100 keV 电子速度 \(v=p/m=1.88\times 10^{8}\,\mathrm{m/s}\approx 0.63c\)——非相对论近似开始失效，精确值需用 \(\lambda=h/\sqrt{2mK(1+K/2mc^{2})}\)，给出 \(\lambda=3.70\,\mathrm{pm}\)，相差 ~5%。
+          <br>对比可见光（\(\lambda\sim 500\,\mathrm{nm}\)）：TEM 分辨率高出 \(500/0.00388\sim 1.3\times 10^{5}\) 倍——这正是电子显微镜能分辨原子（间距 \(\sim 100\,\mathrm{pm}\)）的根本原因。 <span class="ans">答：\(\lambda\approx 3.88\,\mathrm{pm}\)（非相对论），\(3.70\,\mathrm{pm}\)（相对论修正）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 概率流：定态平面波的「流」与「密度」之比 Probability Current for a Plane Wave</summary>
+        <div class="hint">\(\vec{\jmath}=\dfrac{\hbar}{2mi}\big(\psi^{*}\nabla\psi-\psi\nabla\psi^{*}\big)=\dfrac{1}{m}\operatorname{Re}(\psi^{*}\hat{p}\psi)\)。对 \(\psi=Ae^{ikx}\)，\(\nabla\psi=ik\psi\)。</div>
+        <div class="solution">
+          \(\psi^{*}\nabla\psi=|A|^{2}e^{-ikx}\cdot ik\cdot e^{ikx}=ik|A|^{2}\)（纯虚）；其复共轭 \(\psi\nabla\psi^{*}=-ik|A|^{2}\)。
+          <br>代入 \(\vec{\jmath}=(\hbar/2mi)(\psi^{*}\nabla\psi-\psi\nabla\psi^{*})\)：
+          <br>\(\psi^{*}\nabla\psi-\psi\nabla\psi^{*}=2ik|A|^{2}\)。
+          <br>\(\vec{\jmath}=(\hbar/2mi)\cdot 2ik|A|^{2}=\hbar k|A|^{2}/m=p|A|^{2}/m=v_{g}|A|^{2}\)。
+          <br>而 \(\rho=|\psi|^{2}=|A|^{2}\)。故 \(\vec{\jmath}/\rho=v_{g}=\hbar k/m\)。
+          <br><strong>物理意义</strong>：概率流密度 = 概率密度 × 群速度，与经典流体 \(\vec{j}=\rho\vec{v}\) 形式一致。这正是「电子以速度 \(v_{g}\) 携带概率」的量子表述。
+          <br>对粒子在箱基态（驻波 \(\sin(\pi x/L)\)，两反向行波叠加），左行流与右行流等大反向，总 \(\vec{\jmath}=0\)——粒子在箱内「不动」（净流为零），尽管 \(\Delta p\ne 0\)。 <span class="ans">答：\(\vec{\jmath}=v_{g}|A|^{2}\)，比值 \(\vec{\jmath}/\rho=v_{g}=\hbar k/m\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>自由高斯波包的弥散 Spreading of a Free Gaussian Wave Packet.</strong> 一维自由电子的初始波包 \(\psi(x,0)=(2\pi\sigma_{0}^{2})^{-1/4}\exp(-x^{2}/4\sigma_{0}^{2})e^{ik_{0}x}\) 演化：红填充为概率密度 \(|\psi(x,t)|^{2}\)（面积恒为 1，体现概率守恒），蓝线为实部 \(\mathrm{Re}\,\psi(x,t)\)（任意视觉尺度，仅示意相位振荡）。视场自动跟随波包中心 \(x_{\text{peak}}=v_{g}t\)。<strong>请观察：</strong>① 即使 \(k_{0}=0\)（无整体运动），波包<strong>仍会弥散</strong>——这是动量分布有宽度 \(\Delta p=\hbar/2\sigma_{0}\) 的后果。② \(\sigma_{0}\) 越小（位置越确定），动量越不确定，弥散越快（\(\tau=2m\sigma_{0}^{2}/\hbar\) 与 \(\sigma_{0}^{2}\) 成正比）。③ 红填充峰值随时间下降、宽度增大，但<strong>面积保持 1</strong>（归一化守恒）。④ 底部读数 \(\Delta x\,\Delta p/\hbar\) 始终 \(\ge 0.500\)（海森堡下界，初始时刻恰饱和）。⑤ 增大 \(k_{0}\) 让波包运动加快（视场跟随），蓝色相位振荡波长 \(\lambda=2\pi/k_{0}\) 变短。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="760" height="440"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+
+          // Physical constants (SI)
+          var hbar = 1.054571817e-34; // J s
+          var me = 9.1093837015e-31;  // kg (electron mass)
+
+          var DEFAULTS = { sigma0_nm: 1.0, k0_per_nm: 1.0 };
+          var params = {
+            sigma0: DEFAULTS.sigma0_nm * 1e-9,
+            k0: DEFAULTS.k0_per_nm * 1e9
+          };
+
+          // Compute |psi|^2 and Re[psi] at (x, t) for free Gaussian packet
+          // Initial (t=0): psi(x,0) = (2 pi sigma0^2)^(-1/4) exp(-x^2/(4 sigma0^2)) exp(i k0 x)
+          // Analytical evolution (see standard QM texts):
+          //   alpha(t) = 1 + i hbar t / (2 m sigma0^2)
+          //   sigma(t) = sigma0 |alpha| = sigma0 sqrt(1 + (t/tau)^2),  tau = 2 m sigma0^2 / hbar
+          //   x_peak(t) = v_g t,  v_g = hbar k0 / m
+          //   |psi(x,t)|^2 = 1/(sqrt(2 pi) sigma(t)) exp(-(x-x_peak)^2 / (2 sigma(t)^2))
+          //   Re[psi] = (2 pi sigma0^2)^(-1/4) / sqrt(|alpha|) * exp(-(x-x_peak)^2/(4 sigma0^2 |alpha|^2))
+          //             * cos(carrier phase + chirp phase + alpha phase)
+          function packet(x, t, sigma0, k0) {
+            var s0sq = sigma0 * sigma0;
+            var beta = hbar * t / (2 * me * s0sq);   // dimensionless = t/tau
+            var abs_alpha = Math.sqrt(1 + beta * beta);
+            var sigma_t = sigma0 * abs_alpha;
+            var vg = hbar * k0 / me;
+            var xp = vg * t;
+            var xi = x - xp;
+
+            // probability density
+            var prob = Math.exp(-xi*xi/(2*sigma_t*sigma_t)) / (Math.sqrt(2*Math.PI) * sigma_t);
+
+            // Re[psi]
+            var amp = Math.pow(2*Math.PI*s0sq, -0.25) / Math.sqrt(abs_alpha);
+            var env = Math.exp(-xi*xi/(4*s0sq*abs_alpha*abs_alpha));
+            // phase contributions
+            //  1) from alpha^(-1/2):  -0.5 * atan(beta)
+            //  2) from exp(-xi^2/(4 s0sq alpha)):  +xi^2 * beta/(4 s0sq |alpha|^2)
+            //  3) carrier:  k0 * x - omega * t,  omega = hbar k0^2 / (2 m)
+            var phase_chirp = -0.5*Math.atan(beta) + (xi*xi*beta)/(4*s0sq*abs_alpha*abs_alpha);
+            var phase_carrier = k0 * x - (hbar*k0*k0/(2*me)) * t;
+            var re_psi = amp * env * Math.cos(phase_chirp + phase_carrier);
+
+            return { prob: prob, re_psi: re_psi, sigma_t: sigma_t, xp: xp };
+          }
+
+          // Plot region
+          var plotL = 60, plotR = 720, plotT = 75, plotB = 360;
+          var X_RANGE = 8e-9; // ±8 nm window around peak
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { sim_t: 0 }; },
+            step: function (dt, t, s) {
+              // 1 real second ≈ 10 fs of simulated time
+              s.sim_t += dt * 1e-14;
+              if (s.sim_t > 3e-13) s.sim_t = 3e-13; // cap at 300 fs
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var sigma0 = params.sigma0;
+              var k0 = params.k0;
+              var t = s.sim_t;
+
+              var beta = hbar * t / (2 * me * sigma0 * sigma0);
+              var abs_alpha = Math.sqrt(1 + beta*beta);
+              var sigma_t = sigma0 * abs_alpha;
+              var vg = hbar * k0 / me;
+              var x_peak = vg * t;
+
+              // y-axis scale based on the initial (t=0) peak of |psi|^2
+              var prob_peak0 = 1/(Math.sqrt(2*Math.PI) * sigma0);
+              var y_max = prob_peak0 * 1.3;
+
+              // Re[psi] visual scale: peak (t=0) is (2 pi sigma0^2)^(-1/4); scale so it fits within +/-0.6*y_max
+              var re_psi_peak0 = Math.pow(2*Math.PI*sigma0*sigma0, -0.25);
+              var re_scale = (0.6 * y_max) / re_psi_peak0;
+
+              function xpix(x) {
+                return plotL + ((x - (x_peak - X_RANGE)) / (2*X_RANGE)) * (plotR - plotL);
+              }
+              function ypix(p) {
+                return plotB - (p / y_max) * (plotB - plotT);
+              }
+
+              // ---- vertical grid + x labels (co-moving frame: offset from peak) ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.45;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'top';
+              for (var off = -6; off <= 6; off += 2) {
+                var xx = x_peak + off * 1e-9;
+                var px = xpix(xx);
+                ctx.beginPath(); ctx.moveTo(px, plotT); ctx.lineTo(px, plotB); ctx.stroke();
+                ctx.fillText((off > 0 ? '+' : '') + off + ' nm', px, plotB + 5);
+              }
+              // horizontal grid + y labels
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var i = 0; i <= 4; i++) {
+                var p = (i/4) * y_max;
+                var py = ypix(p);
+                ctx.beginPath(); ctx.moveTo(plotL, py); ctx.lineTo(plotR, py); ctx.stroke();
+                ctx.fillText((p*1e-9).toFixed(2), plotL - 5, py);
+              }
+              ctx.restore();
+
+              // ---- axis frame ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(plotL, plotT); ctx.lineTo(plotL, plotB); ctx.lineTo(plotR, plotB);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- axis labels ----
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('x − x_peak (共动系 co-moving frame)', (plotL + plotR)/2, plotB + 24);
+              ctx.translate(15, (plotT + plotB)/2);
+              ctx.rotate(-Math.PI/2);
+              ctx.fillText('|ψ|²  (nm⁻¹)', 0, 0);
+              ctx.restore();
+
+              // ---- compute arrays ----
+              var N = 600;
+              var dx = 2*X_RANGE / N;
+              var xpixArr = [], probArr = [], reArr = [];
+              for (var i = 0; i <= N; i++) {
+                var x = x_peak - X_RANGE + i*dx;
+                var r = packet(x, t, sigma0, k0);
+                xpixArr.push(xpix(x));
+                probArr.push(r.prob);
+                reArr.push(r.re_psi);
+              }
+
+              // ---- filled |psi|^2 ----
+              ctx.save();
+              ctx.fillStyle = PS.colors.accent;
+              ctx.globalAlpha = 0.32;
+              ctx.beginPath();
+              ctx.moveTo(xpixArr[0], plotB);
+              for (var i = 0; i <= N; i++) ctx.lineTo(xpixArr[i], ypix(probArr[i]));
+              ctx.lineTo(xpixArr[N], plotB);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+
+              // outline
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 2.4;
+              ctx.beginPath();
+              for (var i = 0; i <= N; i++) {
+                var py = ypix(probArr[i]);
+                if (i === 0) ctx.moveTo(xpixArr[i], py);
+                else ctx.lineTo(xpixArr[i], py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- Re[psi] (oscillating line) ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 1.6;
+              ctx.globalAlpha = 0.85;
+              ctx.beginPath();
+              var y_zero = ypix(0);
+              for (var i = 0; i <= N; i++) {
+                // scale Re[psi] visually so its envelope ~ 0.6 * y_max
+                var py = y_zero - (reArr[i] * re_scale / y_max) * (plotB - plotT);
+                if (i === 0) ctx.moveTo(xpixArr[i], py);
+                else ctx.lineTo(xpixArr[i], py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- peak marker ----
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.4;
+              ctx.setLineDash([5, 4]);
+              var xpk_pix = xpix(x_peak);
+              ctx.beginPath(); ctx.moveTo(xpk_pix, plotT); ctx.lineTo(xpk_pix, plotB); ctx.stroke();
+              ctx.restore();
+
+              // ---- title + readouts ----
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('自由高斯波包 Free Gaussian Wave Packet (electron)', plotL, 12);
+
+              ctx.font = '12px system-ui, sans-serif';
+              var t_fs = t * 1e15;
+              var sigma0_nm = sigma0 * 1e9;
+              var sigma_t_nm = sigma_t * 1e9;
+              var ratio = sigma_t / sigma0;
+              var k0_nm = k0 * 1e-9;
+              var lambda_nm = (2*Math.PI/k0) * 1e9;
+              var KE_eV = (hbar*hbar*k0*k0/(2*me)) / 1.602176634e-19;
+              var KE_total_eV = ((hbar*hbar*k0*k0/(2*me)) + (hbar*hbar/(8*me*sigma0*sigma0))) / 1.602176634e-19;
+              var dp = hbar/(2*sigma0);
+              var dxdp_norm = sigma_t * dp / hbar;
+
+              ctx.fillText('t = ' + t_fs.toFixed(1) + ' fs    σ₀ = ' + sigma0_nm.toFixed(2) +
+                           ' nm    k₀ = ' + k0_nm.toFixed(2) + ' nm⁻¹    λ = 2π/k₀ = ' + lambda_nm.toFixed(2) + ' nm',
+                           plotL, 34);
+              ctx.fillText('σ(t) = ' + sigma_t_nm.toFixed(2) + ' nm   (= σ₀ × ' + ratio.toFixed(2) +
+                           ')   →   包络在弥散  packet spreading',
+                           plotL, 52);
+
+              // uncertainty readout
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.font = 'bold 12px system-ui, sans-serif';
+              ctx.fillText('Δx · Δp / ℏ = ' + dxdp_norm.toFixed(3) +
+                           '    ≥  0.500  ✓   (Heisenberg lower bound; saturated at t = 0)',
+                           plotL, 388);
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillText('红填充 Red fill: |ψ(x,t)|² 概率密度（面积 = 1）  ·  蓝线 Blue: Re[ψ] 实部（任意视觉尺度）  ·  绿虚线 Green dashed: 波包中心 x_peak',
+                           plotL, 408);
+              ctx.fillText('〈T〉 ≈ ' + KE_total_eV.toFixed(3) + ' eV  =  ℏ²k₀²/2m (' + KE_eV.toFixed(3) +
+                           ' eV, 中心动量) + ℏ²/(8mσ₀²) (' + ((KE_total_eV-KE_eV)).toFixed(3) + ' eV, 零点)   |   v_g = ℏk₀/m = ' +
+                           (vg*1e-9*1e15).toFixed(3) + ' nm/fs',
+                           plotL, 424);
+
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'sigma0', label: 'σ₀ 初始宽度 (nm)', min: 0.5, max: 5.0, step: 0.1, value: DEFAULTS.sigma0_nm },
+            { type: 'slider', key: 'k0',     label: 'k₀ 波数 (nm⁻¹)',  min: 0,   max: 8.0, step: 0.1, value: DEFAULTS.k0_per_nm },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('sigma0', function (v) { params.sigma0 = v * 1e-9; });
+          ctl.on('k0',     function (v) { params.k0 = v * 1e9; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-2 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.sigma0_nm);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.k0_per_nm);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>波函数 \(\psi(\vec{r},t)\)</strong> 是复值；<strong>玻恩诠释</strong>：\(|\psi|^{2}\,\mathrm{d}V\) 是在 \(\mathrm{d}V\) 内找到粒子的概率。<strong>整体相位不可测</strong>，相对相位产生干涉。</li>
+        <li><strong>归一化</strong> \(\int|\psi|^{2}\,\mathrm{d}V=1\)。<strong>概率守恒</strong>（TDSE + 厄米 \(\hat{H}\)）保证此后永远归一，无需「重归一化」；连续性方程 \(\partial\rho/\partial t+\nabla\cdot\vec{\jmath}=0\)，\(\vec{\jmath}=(\hbar/2mi)(\psi^{*}\nabla\psi-\psi\nabla\psi^{*})\)。</li>
+        <li><strong>含时薛定谔方程</strong> \(i\hbar\,\partial\psi/\partial t=\hat{H}\psi\)，\(\hat{H}=-\hbar^{2}\nabla^{2}/2m+V\)。一阶时间偏微分，给定 \(\psi(\vec{r},0)\) 唯一决定演化。</li>
+        <li><strong>分离变量</strong>（\(V\) 不显含 \(t\)）：\(\psi_{E}(\vec{r},t)=\phi_{E}(\vec{r})\,e^{-iEt/\hbar}\)，\(\hat{H}\phi_{E}=E\phi_{E}\)（TISE）。定态 \(|\psi_{E}|^{2}=|\phi_{E}|^{2}\) 不含时间；多定态叠加才有真正含时演化。</li>
+        <li><strong>算符</strong>：\(\hat{x}=x\)、\(\hat{p}=-i\hbar\,\partial/\partial x\)，对易关系 \([\hat{x},\hat{p}]=i\hbar\)。可观察量对应<strong>厄米</strong>算符（保证实期望值）。</li>
+        <li><strong>期望值</strong> \(\langle Q\rangle=\int\psi^{*}\hat{Q}\psi\,\mathrm{d}V\)。多测量平均值；实值波函数 \(\langle p\rangle=0\) 但一般 \(\Delta p\ne 0\)。</li>
+        <li><strong>自由粒子</strong>：平面波 \(e^{i(kx-\omega t)}\)，\(\omega=\hbar k^{2}/2m\)，\(p=\hbar k\)，\(\lambda=2\pi/k\)（德布罗意）。平面波不可归一化，真实态是波包；自由波包弥散 \(\sigma(t)=\sigma_{0}\sqrt{1+(t/\tau)^{2}}\)，\(\tau=2m\sigma_{0}^{2}/\hbar\)。</li>
+        <li><strong>海森堡不确定性</strong> \(\Delta x\,\Delta p\ge\hbar/2\)（更一般地 \(\Delta A\,\Delta B\ge\tfrac12|\langle[\hat{A},\hat{B}]\rangle|\)）。下界，非等式；高斯波包饱和。是束缚态零点能、原子稳定性、隧穿等现象的根源。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;i\hbar\,\frac{\partial\psi}{\partial t}=\hat{H}\psi,\quad\hat{H}=-\frac{\hbar^{2}}{2m}\nabla^{2}+V,\quad\int|\psi|^{2}\,\mathrm{d}V=1\;}\;\text{(TDSE + 归一化)} \]</div>
+      <div class="formula">\[ \boxed{\;\psi_{E}(\vec{r},t)=\phi_{E}(\vec{r})\,e^{-iEt/\hbar},\quad\hat{H}\phi_{E}=E\phi_{E}\;}\;\text{(定态/分离变量)} \]</div>
+      <div class="formula">\[ \boxed{\;\hat{x}=x,\quad\hat{p}=-i\hbar\,\frac{\partial}{\partial x},\quad[\hat{x},\hat{p}]=i\hbar,\quad\langle Q\rangle=\int\psi^{*}\hat{Q}\psi\,\mathrm{d}V\;} \]</div>
+      <div class="formula">\[ \boxed{\;\Delta x\,\Delta p\ge\frac{\hbar}{2}=5.27\times 10^{-35}\,\mathrm{J\,s}\;}\;\text{(Heisenberg; 高斯波包饱和)} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

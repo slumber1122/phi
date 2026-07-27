@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 量子力学形式体系 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第4章 · 量子力学 I Quantum Mechanics I</p>
+      <h1>量子力学形式体系 <span class="en-title">Quantum-Mechanical Formalism</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>把<strong>量子态</strong> (quantum state) 表示为<strong>希尔伯特空间</strong> (Hilbert space) 中的矢量 \( |\psi\rangle \)，熟练运用 <strong>Dirac 符号</strong> (bra–ket notation)：右矢 (ket) \( |\psi\rangle \)、左矢 (bra) \( \langle\phi| \)、内积 \( \langle\phi|\psi\rangle \)。</li>
+        <li>陈述<strong>可观测量</strong> (observable) 由<strong>厄米算符</strong> (Hermitian operator) \(\hat{Q}=\hat{Q}^{\dagger}\) 表示；写出<strong>本征值方程</strong> \(\hat{Q}|q_{n}\rangle=q_{n}|q_{n}\rangle\)，证明本征值实、不同本征态正交。</li>
+        <li>陈述并运用<strong>展开假设</strong> (expansion postulate) \( |\psi\rangle=\sum_{n}c_{n}|n\rangle \)，测量得 \(q_{n}\) 的 Born 概率 \(P(q_{n})=|c_{n}|^{2}\)；解释测量使态<strong>坍缩</strong> (collapse) 到对应本征态。</li>
+        <li>计算<strong>对易子</strong> (commutator) \([A,B]=AB-BA\)，推导并运用<strong>正则对易关系</strong> \([\hat{x},\hat{p}]=i\hbar\)；论证相容可观测量 (compatible observables) 必然对易。</li>
+        <li>由 Robertson 不等式导出<strong>广义不确定性原理</strong> \(\Delta A\,\Delta B\ge\tfrac12|\langle[A,B]\rangle|\)，并就 \([\hat{x},\hat{p}]=i\hbar\) 得 \(\Delta x\,\Delta p\ge\hbar/2\)。</li>
+        <li>运用 <strong>Ehrenfest 定理</strong> \(\displaystyle \dv{\langle\hat{Q}\rangle}{t}=\tfrac{i}{\hbar}\langle[\hat{H},\hat{Q}]\rangle+\langle\partial_{t}\hat{Q}\rangle\) 把量子期望与经典运动方程联系起来。</li>
+        <li>对比<strong>薛定谔图景</strong> (state evolves) 与<strong>海森堡图景</strong> (operator evolves) 并理解二者预言相同；识别<strong>对易可观测量完全集</strong> (CSCO)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 量子态 — 希尔伯特空间中的矢量 Quantum States as Vectors in Hilbert Space</h3>
+      <p>经典力学用相空间中的「点」\((\vec{q},\vec{p})\) 描述系统状态；量子力学改用<strong>希尔伯特空间</strong> \(\mathcal{H}\)（一个完备的内积矢量空间）中的<strong>右矢</strong> \( |\psi\rangle \)。对单个无自旋粒子，\(\mathcal{H}\) 的元素是平方可积的复值波函数 \(\psi(x)\in L^{2}(\mathbb{R})\)，态矢即波函数。位形表象下：</p>
+      <div class="formula">\[ \psi(x)=\langle x|\psi\rangle,\qquad \langle\psi|\psi\rangle=\int_{-\infty}^{+\infty}|\psi(x)|^{2}\,\mathrm{d}x=1\;\;\text{（归一化 normalization）。} \]</div>
+      <p>两个态的内积 (inner product) 推广了普通矢量的点积：</p>
+      <div class="formula">\[ \langle\phi|\psi\rangle=\int_{-\infty}^{+\infty}\phi^{*}(x)\,\psi(x)\,\mathrm{d}x,\qquad \langle\phi|\psi\rangle=\langle\psi|\phi\rangle^{*}. \]</div>
+      <p>若 \(\langle\phi|\psi\rangle=0\) 称二态<strong>正交</strong> (orthogonal)；若 \( |\psi\rangle=a|\phi_{1}\rangle+b|\phi_{2}\rangle\)，称 \( |\psi\rangle \) 为<strong>叠加</strong> (superposition)。<strong>整体相位</strong> (global phase) 无物理：\( |\psi\rangle \) 与 \(e^{i\theta}|\psi\rangle\) 描述同一态；但<strong>相对相位</strong> (relative phase) 是物理的，它就是双缝干涉的根源。</p>
+      <div class="key-terms">Hilbert space (希尔伯特空间), ket (右矢), bra (左矢), inner product (内积), normalization (归一化), orthogonality (正交性), superposition (叠加), global/relative phase (整体/相对相位)</div>
+
+      <h3>2. 可观测量与厄米算符 Observables &amp; Hermitian Operators</h3>
+      <p>每个<strong>可观测量</strong>（位置、动量、能量、角动量、自旋…）对应一个<strong>厄米算符</strong> \(\hat{Q}\)：满足 \(\hat{Q}=\hat{Q}^{\dagger}\)，其中 dagger 表示<strong>共轭转置</strong>（矩阵元 \(\langle m|\hat{Q}|n\rangle^{*}=\langle n|\hat{Q}|m\rangle\)，即 \(\hat{Q}^{\dagger}\) 是 \(\hat{Q}\) 的「转置＋复共轭」）。位置与动量算符在位形表象下为：</p>
+      <div class="formula">\[ \hat{x}\psi(x)=x\,\psi(x),\qquad \hat{p}\psi(x)=-i\hbar\,\frac{\partial\psi}{\partial x}. \]</div>
+      <p>解<strong>本征值方程</strong> (eigenvalue equation)</p>
+      <div class="formula">\[ \hat{Q}\,|q_{n}\rangle=q_{n}\,|q_{n}\rangle \]</div>
+      <p>得到的本征值 \(q_{n}\) 是该测量可能出现的<strong>唯一结果</strong>。厄米性给出三条关键性质（证明见推导 4.A）：</p>
+      <ul>
+        <li><strong>本征值实</strong>：\(q_{n}\in\mathbb{R}\)（测得的数据是实数，物理要求）。</li>
+        <li><strong>不同本征态正交</strong>：\(q_{m}\ne q_{n}\Rightarrow\langle q_{m}|q_{n}\rangle=0\)。</li>
+        <li><strong>本征态完备</strong>：\(\sum_{n}|q_{n}\rangle\langle q_{n}|=\hat{\mathbb{1}}\)（resolution of identity），任意态可展开。</li>
+      </ul>
+      <p>由完备性立刻给出<strong>展开假设</strong> (expansion postulate)：</p>
+      <div class="formula">\[ |\psi\rangle=\sum_{n}c_{n}|q_{n}\rangle,\qquad c_{n}=\langle q_{n}|\psi\rangle,\qquad \langle\psi|\psi\rangle=\sum_{n}|c_{n}|^{2}=1. \]</div>
+      <p><strong>期望值</strong> (expectation value) 与<strong>方差</strong>：</p>
+      <div class="formula">\[ \langle\hat{Q}\rangle=\langle\psi|\hat{Q}|\psi\rangle=\sum_{n}|c_{n}|^{2}q_{n},\qquad (\Delta Q)^{2}=\langle\hat{Q}^{2}\rangle-\langle\hat{Q}\rangle^{2}. \]</div>
+      <div class="key-terms">observable (可观测量), Hermitian operator (厄米算符), adjoint/dagger (共轭转置), eigenvalue equation (本征值方程), eigenvalue (本征值), eigenstate (本征态), completeness (完备性), expectation value (期望值), standard deviation \(\Delta Q\) (不确定度)</div>
+
+      <h3>3. Dirac 符号与恒等分解 Dirac Notation &amp; Resolution of Identity</h3>
+      <p>Dirac 把 <strong>ket</strong> \( |\psi\rangle \) 视为列矢量，<strong>bra</strong> \( \langle\phi| \) 视为行矢量；内积 \( \langle\phi|\psi\rangle \) 是一个数；外积 \( |\psi\rangle\langle\phi| \) 是一个算符。厄米共轭 \(^{\dagger}\) 反转 bra-ket 顺序并取复共轭：\((c|\psi\rangle)^{\dagger}=c^{*}\langle\psi|\)，\((\hat{A}\hat{B})^{\dagger}=\hat{B}^{\dagger}\hat{A}^{\dagger}\)。<strong>恒等分解</strong> (resolution of identity) 让我们在任意基下表达算符：</p>
+      <div class="formula">\[ \hat{Q}=\sum_{m,n}|m\rangle\langle m|\hat{Q}|n\rangle\langle n|=\sum_{m,n}Q_{mn}\,|m\rangle\langle n|,\qquad Q_{mn}=\langle m|\hat{Q}|n\rangle. \]</div>
+      <p>这些 \(\{Q_{mn}\}\) 就是 \(\hat{Q}\) 在基 \(\{|n\rangle\}\) 下的<strong>矩阵元</strong>。算符代数 ⇄ 矩阵代数完全对应——这就是「矩阵力学」与「波动力学」数学等价的根源。</p>
+      <div class="key-terms">ket/bra (右/左矢), outer product (外积), adjoint (共轭), matrix element (矩阵元), resolution of identity (恒等分解)</div>
+
+      <h3>4. 对易子与正则对易关系 Commutators &amp; the Canonical Commutation Relation</h3>
+      <p><strong>对易子</strong> (commutator) 测量两算符是否「可交换顺序相乘」：</p>
+      <div class="formula">\[ [\hat{A},\hat{B}]\equiv\hat{A}\hat{B}-\hat{B}\hat{A},\qquad [\hat{A},\hat{B}]^{\dagger}=-[\hat{A}^{\dagger},\hat{B}^{\dagger}]. \]</div>
+      <p>对易子满足双线性、反交换 \([\hat{A},\hat{B}]=-[\hat{B},\hat{A}]\)、Leibniz 乘法律 \([\hat{A}\hat{B},\hat{C}]=\hat{A}[\hat{B},\hat{C}]+[\hat{A},\hat{C}]\hat{B}\)、Jacobi 恒等式。最重要的一例是<strong>正则对易关系</strong>：</p>
+      <div class="formula">\[ \boxed{\;[\hat{x},\hat{p}]=i\hbar\;}\qquad\text{（一维；推广到 \([\hat{x}_{i},\hat{p}_{j}]=i\hbar\,\delta_{ij}\)）} \]</div>
+      <p>它表达了「位置与动量在量子尺度上不再独立可测」。证明：作用在任意检验函数 \(f(x)\) 上，\(\hat{x}\hat{p}f=x(-i\hbar f')=-i\hbar x f'\)，而 \(\hat{p}\hat{x}f=-i\hbar(xf)'=-i\hbar(f+xf')\)，相减得 \([\hat{x},\hat{p}]f=i\hbar f\) ✓。</p>
+      <div class="key-terms">commutator (对易子), anticommutator (反对易子), canonical commutation relation (正则对易关系), Jacobi identity (Jacobi 恒等式)</div>
+
+      <h3>5. 广义不确定性原理 Generalized Uncertainty Principle</h3>
+      <p>定义不确定度 \(\Delta A=\sqrt{\langle\hat{A}^{2}\rangle-\langle\hat{A}\rangle^{2}}\)。对任意两个厄米算符 \(\hat{A},\hat{B}\)，<strong>Robertson 不等式</strong>给出：</p>
+      <div class="formula">\[ \boxed{\;\Delta A\,\Delta B\;\ge\;\tfrac12\,\bigl|\langle[\hat{A},\hat{B}]\rangle\bigr|\;} \]</div>
+      <p>代入正则对易关系 \([\hat{x},\hat{p}]=i\hbar\)（注意 \(\langle i\hbar\rangle=i\hbar\) 与 \(|i\hbar|=\hbar\)）立即得<strong>Heisenberg 不确定性原理</strong>：</p>
+      <div class="formula">\[ \boxed{\;\Delta x\,\Delta p\;\ge\;\frac{\hbar}{2}\;} \]</div>
+      <p>这不是测量技术的局限，而是量子态本身的内禀属性——一个态不可能同时是 \(\hat{x}\) 与 \(\hat{p}\) 的本征态。等号成立（最小不确定态）当且仅当态是<strong>高斯波包</strong> (Gaussian wave packet)，即谐振子基态与相干态。</p>
+      <div class="key-terms">Robertson inequality (Robertson 不等式), Heisenberg uncertainty principle (海森堡不确定性原理), minimum-uncertainty state (最小不确定态), Gaussian wave packet (高斯波包)</div>
+
+      <h3>6. 测量、Born 规则与坍缩 Measurement, Born Rule &amp; Collapse</h3>
+      <p>量子测量的两条公理：</p>
+      <ul>
+        <li><strong>Born 规则</strong>：若 \( |\psi\rangle=\sum_{n}c_{n}|q_{n}\rangle \)，则一次测量 \(\hat{Q}\) 得到结果 \(q_{n}\) 的概率是 \(\boxed{P(q_{n})=|c_{n}|^{2}=|\langle q_{n}|\psi\rangle|^{2}}\)。结果是 \(q_{n}\) 的<strong>本征值</strong>，永远不是任意值。</li>
+        <li><strong>投影坍缩</strong> (projection postulate)：测量得到 \(q_{n}\) 后，态<strong>立即</strong>坍缩到 \( |q_{n}\rangle \)（更一般地，到结果对应的本征子空间）。再次测量同物理量必得同一 \(q_{n}\)。</li>
+      </ul>
+      <p>测量<strong>改变了</strong>系统状态——这是量子与经典物理最深刻的区别之一。两步连续测量间，系统的演化由 Schrödinger 方程描述；测量瞬间是「非幺正」的、由观测者（或环境）选择的本征基决定。所谓<strong>量子退相干</strong> (decoherence) 理论解释了为什么宏观上我们看不到叠加：环境持续「测量」系统。</p>
+      <div class="key-terms">Born rule (Born 规则), probability amplitude (概率幅), projection postulate (投影假设), collapse (坍缩), decoherence (退相干)</div>
+
+      <h3>7. Ehrenfest 定理与经典极限 Ehrenfest Theorem &amp; the Classical Limit</h3>
+      <p>把 Schrödinger 方程 \(i\hbar\partial_{t}|\psi\rangle=\hat{H}|\psi\rangle\) 应用到 \(\langle\hat{Q}\rangle=\langle\psi|\hat{Q}|\psi\rangle\) 上（推导 4.B），得 <strong>Ehrenfest 定理</strong>：</p>
+      <div class="formula">\[ \boxed{\;\dv{}{t}\langle\hat{Q}\rangle=\frac{i}{\hbar}\bigl\langle[\hat{H},\hat{Q}]\bigr\rangle+\Bigl\langle\frac{\partial\hat{Q}}{\partial t}\Bigr\rangle\;} \]</div>
+      <p>对 \(\hat{Q}=\hat{x}\)：用 \(\hat{H}=\hat{p}^{2}/2m+V(\hat{x})\) 与 \([\hat{x},\hat{p}]=i\hbar\)，得 \(\dv{\langle\hat{x}\rangle}{t}=\langle\hat{p}\rangle/m\)。再取 \(\hat{Q}=\hat{p}\) 并用 \([\hat{p},V(\hat{x})]=-i\hbar V'(\hat{x})\)，得 \(\dv{\langle\hat{p}\rangle}{t}=-\langle V'(\hat{x})\rangle\)。合并：</p>
+      <div class="formula">\[ m\,\frac{\mathrm{d}^{2}\langle\hat{x}\rangle}{\mathrm{d}t^{2}}=-\bigl\langle V'(\hat{x})\bigr\rangle. \]</div>
+      <p>形式上很像牛顿第二定律——但注意是 \(\langle V'(\hat{x})\rangle\)（量子平均）而<strong>非</strong> \(V'(\langle\hat{x}\rangle)\)（经典值）。仅当波包远窄于势能变化尺度时二者可换，此时经典轨道浮现——这正是「经典极限」的微观含义。</p>
+      <div class="key-terms">Ehrenfest theorem (Ehrenfest 定理), classical limit (经典极限), wave packet (波包)</div>
+
+      <h3>8. 薛定谔图景 vs 海森堡图景 Schrödinger vs Heisenberg Pictures</h3>
+      <p>量子力学有两种完全等价的「分工方式」：</p>
+      <ul>
+        <li><strong>薛定谔图景</strong> (Schrödinger picture)：算符<strong>不变</strong>、态<strong>演化</strong>。\(i\hbar\,\partial_{t}|\psi_{S}(t)\rangle=\hat{H}_{S}|\psi_{S}(t)\rangle\)。形式解 \( |\psi_{S}(t)\rangle=\hat{U}(t,0)|\psi_{S}(0)\rangle \)，其中 \(\hat{U}=e^{-i\hat{H}t/\hbar}\) 是幺正时间演化算符。</li>
+        <li><strong>海森堡图景</strong> (Heisenberg picture)：态<strong>不变</strong>、算符<strong>演化</strong>。\(\hat{A}_{H}(t)=\hat{U}^{\dagger}\hat{A}_{S}\hat{U}\)，满足 <strong>海森堡运动方程</strong>：</li>
+      </ul>
+      <div class="formula">\[ \dv{\hat{A}_{H}}{t}=\frac{i}{\hbar}[\hat{H}_{H},\hat{A}_{H}]+\Bigl(\frac{\partial\hat{A}}{\partial t}\Bigr)_{H}. \]</div>
+      <p>两种图景给出<strong>相同</strong>的物理预测：\(\langle\psi_{S}(t)|\hat{A}_{S}|\psi_{S}(t)\rangle=\langle\psi_{H}|\hat{A}_{H}(t)|\psi_{H}\rangle\)。选择哪种只是计算便利——量子场论常用海森堡，初等量子力学常用薛定谔。</p>
+      <div class="key-terms">Schrödinger picture (薛定谔图景), Heisenberg picture (海森堡图景), unitary evolution (幺正演化), time-evolution operator (时间演化算符), Heisenberg equation of motion (海森堡运动方程)</div>
+
+      <h3>9. 相容可观测量与 CSCO Compatible Observables &amp; CSCO</h3>
+      <p>两可观测量 \(\hat{A},\hat{B}\) 称<strong>相容</strong> (compatible)，若 \([\hat{A},\hat{B}]=0\)。等价表述：</p>
+      <ul>
+        <li>\(\hat{A},\hat{B}\) 可以<strong>同时</strong>被精确测量（无不确定性下界：\(\Delta A\,\Delta B\ge 0\)）。</li>
+        <li>存在<strong>共同本征基</strong> \(\{|a_{m},b_{n}\rangle\}\) 同时对角化两者：\(\hat{A}|a_{m},b_{n}\rangle=a_{m}|a_{m},b_{n}\rangle\)、\(\hat{B}|a_{m},b_{n}\rangle=b_{n}|a_{m},b_{n}\rangle\)。</li>
+      </ul>
+      <p>若一组厄米算符 \(\{\hat{A}_{1},\hat{A}_{2},\dots,\hat{A}_{k}\}\) 两两对易且<strong>共同本征值组 \((a_{1},a_{2},\dots,a_{k})\) 唯一确定一个本征态</strong>（无简并），则称其为<strong>对易可观测量完全集</strong> (CSCO, complete set of commuting observables)。例：氢原子的 \(\{\hat{H},\hat{L}^{2},\hat{L}_{z}\}\)，量子数为 \((n,l,m)\)；三维自由粒子的 \(\{\hat{p}_{x},\hat{p}_{y},\hat{p}_{z}\}\)。</p>
+      <div class="key-terms">compatible observables (相容可观测量), simultaneous eigenstate (共同本征态), simultaneous diagonalization (同时对角化), CSCO (对易可观测量完全集), degeneracy (简并)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 4.A — 厄米算符的本征值实、本征态正交 Hermitian ⇒ Real Eigenvalues &amp; Orthogonal Eigenstates</h3>
+      <p class="step"><strong>步骤 1（实本征值）：</strong>设 \(\hat{Q}=\hat{Q}^{\dagger}\)、\(\hat{Q}|q\rangle=q|q\rangle\)。左乘 \(\langle q|\) 得 \(\langle q|\hat{Q}|q\rangle=q\langle q|q\rangle\)，故 \(q=\langle q|\hat{Q}|q\rangle/\langle q|q\rangle\)。</p>
+      <p class="step">取上式复共轭（用 \(\langle q|\hat{Q}|q\rangle^{*}=\langle q|\hat{Q}^{\dagger}|q\rangle=\langle q|\hat{Q}|q\rangle\)，因 \(\hat{Q}\) 厄米）：</p>
+      <div class="formula">\[ q^{*}=\frac{\langle q|\hat{Q}|q\rangle^{*}}{\langle q|q\rangle^{*}}=\frac{\langle q|\hat{Q}|q\rangle}{\langle q|q\rangle}=q\;\Rightarrow\;q\in\mathbb{R}\;\checkmark. \]</div>
+      <p class="step"><strong>步骤 2（正交性）：</strong>取两本征态 \(q_{m}\ne q_{n}\)。从 \(\hat{Q}|q_{n}\rangle=q_{n}|q_{n}\rangle\) 左乘 \(\langle q_{m}|\)：\(\langle q_{m}|\hat{Q}|q_{n}\rangle=q_{n}\langle q_{m}|q_{n}\rangle\)。</p>
+      <p class="step">从 \(\hat{Q}|q_{m}\rangle=q_{m}|q_{m}\rangle\) 取厄米共轭得 \(\langle q_{m}|\hat{Q}=q_{m}^{*}\langle q_{m}|=q_{m}\langle q_{m}|\)（用了 \(q_{m}\in\mathbb{R}\)）。右乘 \(|q_{n}\rangle\)：\(\langle q_{m}|\hat{Q}|q_{n}\rangle=q_{m}\langle q_{m}|q_{n}\rangle\)。</p>
+      <p class="step">两式相减：\((q_{n}-q_{m})\langle q_{m}|q_{n}\rangle=0\)。因 \(q_{n}\ne q_{m}\)，故 \(\langle q_{m}|q_{n}\rangle=0\;\checkmark\)。</p>
+      <p class="step"><strong>步骤 3（简并处理）：</strong>若 \(q_{m}=q_{n}\)（简并），可在该本征子空间内做 Gram–Schmidt 正交化得到正交基。故总可构造 \(\hat{Q}\) 的正交完备本征基——这就是任何厄米算符的「谱定理」。</p>
+
+      <h3>推导 4.B — Ehrenfest 定理 Deriving the Ehrenfest Theorem</h3>
+      <p class="step"><strong>步骤 1：</strong>由 \(\langle\hat{Q}\rangle(t)=\langle\psi(t)|\hat{Q}|\psi(t)\rangle\)，对 \(t\) 求导（设 \(\hat{Q}\) 不显含 \(t\) 先简化）：</p>
+      <div class="formula">\[ \dv{\langle\hat{Q}\rangle}{t}=\langle\partial_{t}\psi|\hat{Q}|\psi\rangle+\langle\psi|\hat{Q}|\partial_{t}\psi\rangle. \]</div>
+      <p class="step"><strong>步骤 2：</strong>Schrödinger 方程 \(i\hbar\,\partial_{t}|\psi\rangle=\hat{H}|\psi\rangle\) 给出 \(\partial_{t}|\psi\rangle=-\tfrac{i}{\hbar}\hat{H}|\psi\rangle\)；取厄米共轭（注意 \(\hat{H}=\hat{H}^{\dagger}\)）得 \(\partial_{t}\langle\psi|=+\tfrac{i}{\hbar}\langle\psi|\hat{H}\)。</p>
+      <p class="step"><strong>步骤 3：</strong>代回：</p>
+      <div class="formula">\[ \dv{\langle\hat{Q}\rangle}{t}=\frac{i}{\hbar}\langle\psi|\hat{H}\hat{Q}|\psi\rangle-\frac{i}{\hbar}\langle\psi|\hat{Q}\hat{H}|\psi\rangle=\frac{i}{\hbar}\bigl\langle[\hat{H},\hat{Q}]\bigr\rangle. \]</div>
+      <p class="step"><strong>步骤 4（恢复 \(\partial_{t}\hat{Q}\ne 0\)）：</strong>若 \(\hat{Q}\) 显含时间，多出一项 \(\langle\partial_{t}\hat{Q}\rangle\)。完整式：</p>
+      <div class="formula">\[ \boxed{\;\dv{\langle\hat{Q}\rangle}{t}=\frac{i}{\hbar}\bigl\langle[\hat{H},\hat{Q}]\bigr\rangle+\Bigl\langle\frac{\partial\hat{Q}}{\partial t}\Bigr\rangle\;}\;\checkmark \]</div>
+      <p class="step"><strong>步骤 5（ Newton 类比）：</strong>对 \(\hat{Q}=\hat{x}\)，用 \([\hat{x},\hat{H}]=[\hat{x},\hat{p}^{2}/2m]=\tfrac{1}{2m}(\hat{p}[\hat{x},\hat{p}]+[\hat{x},\hat{p}]\hat{p})=\tfrac{i\hbar}{m}\hat{p}\)：\(\dv{\langle\hat{x}\rangle}{t}=\tfrac{i}{\hbar}\cdot\tfrac{i\hbar}{m}\langle\hat{p}\rangle\cdot(-1)=\langle\hat{p}\rangle/m\)。对 \(\hat{Q}=\hat{p}\)，\([\hat{p},V(\hat{x})]=-i\hbar V'(\hat{x})\) 给出 \(\dv{\langle\hat{p}\rangle}{t}=-\langle V'(\hat{x})\rangle\)——Newton 第二定律的量子对应。</p>
+
+      <h3>推导 4.C — Robertson 不等式 Deriving the Generalized Uncertainty Relation</h3>
+      <p class="step"><strong>步骤 1（定义「中心化」算符）：</strong>设 \(\delta\hat{A}\equiv\hat{A}-\langle\hat{A}\rangle\)、\(\delta\hat{B}\equiv\hat{B}-\langle\hat{B}\rangle\)，则 \((\Delta A)^{2}=\langle(\delta\hat{A})^{2}\rangle\)、\((\Delta B)^{2}=\langle(\delta\hat{B})^{2}\rangle\)。</p>
+      <p class="step"><strong>步骤 2（Cauchy–Schwarz）：</strong>对任意态，\(|\langle f|g\rangle|^{2}\le\langle f|f\rangle\langle g|g\rangle\)。取 \( |f\rangle=\delta\hat{A}|\psi\rangle \)、\( |g\rangle=\delta\hat{B}|\psi\rangle \)：</p>
+      <div class="formula">\[ (\Delta A)^{2}(\Delta B)^{2}\ge|\langle\delta\hat{A}\,\delta\hat{B}\rangle|^{2}. \]</div>
+      <p class="step"><strong>步骤 3（拆出对易/反对易）：</strong>分解 \(\delta\hat{A}\delta\hat{B}=\tfrac12\{\delta\hat{A},\delta\hat{B}\}+\tfrac12[\delta\hat{A},\delta\hat{B}]\)。第一项（反对易）期望为实，第二项（对易子）期望为纯虚（厄米算符自洽）。两分量复数模平方 \(\ge\) 任一分量模平方：</p>
+      <div class="formula">\[ |\langle\delta\hat{A}\,\delta\hat{B}\rangle|^{2}\ge\bigl|\tfrac12\langle[\delta\hat{A},\delta\hat{B}]\rangle\bigr|^{2}=\tfrac14|\langle[\hat{A},\hat{B}]\rangle|^{2}. \]</div>
+      <p class="step"><strong>步骤 4：</strong>合并得 <strong>Robertson–Schrödinger 不等式</strong> \((\Delta A)^{2}(\Delta B)^{2}\ge\tfrac14|\langle[\hat{A},\hat{B}]\rangle|^{2}\)，开方得 \(\boxed{\Delta A\,\Delta B\ge\tfrac12|\langle[\hat{A},\hat{B}]\rangle|}\;\checkmark\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 计算 \([\hat{x}^{2},\hat{p}]\) 与 \([\hat{x}^{n},\hat{p}]\) Commutator of \(\hat{x}^{2}\) with \(\hat{p}\)</h4>
+        <p class="example-statement">用算符作用在任意检验函数 \(f(x)\) 上的方法计算 \([\hat{x}^{2},\hat{p}]\)，再推广到 \([\hat{x}^{n},\hat{p}]\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>记 \(\hat{x}\to x\)、\(\hat{p}\to -i\hbar\,\mathrm{d}/\mathrm{d}x\)，作用在 \(f(x)\) 上。</p>
+          <p class="step"><strong>(a) \([\hat{x}^{2},\hat{p}]f\)：</strong>先算 \(\hat{x}^{2}\hat{p}f=x^{2}\cdot(-i\hbar f')=-i\hbar x^{2}f'\)。再算 \(\hat{p}\hat{x}^{2}f=-i\hbar\,\mathrm{d}(x^{2}f)/\mathrm{d}x=-i\hbar(2xf+x^{2}f')\)。相减：</p>
+          <div class="formula">\[ [\hat{x}^{2},\hat{p}]f=-i\hbar x^{2}f'-\bigl[-i\hbar(2xf+x^{2}f')\bigr]=2i\hbar\,x\,f. \]</div>
+          <p class="step">因对任意 \(f\) 都成立，\(\boxed{[\hat{x}^{2},\hat{p}]=2i\hbar\,\hat{x}}\;\checkmark\)。</p>
+          <p class="step"><strong>(b) 推广 \([\hat{x}^{n},\hat{p}]\)：</strong>用 Leibniz 律 \([\hat{A}\hat{B},\hat{C}]=\hat{A}[\hat{B},\hat{C}]+[\hat{A},\hat{C}]\hat{B}\)，令 \(\hat{A}=\hat{x}\)、\(\hat{B}=\hat{x}^{n-1}\)、\(\hat{C}=\hat{p}\)：</p>
+          <div class="formula">\[ [\hat{x}^{n},\hat{p}]=\hat{x}[\hat{x}^{n-1},\hat{p}]+[\hat{x},\hat{p}]\hat{x}^{n-1}. \]</div>
+          <p class="step">设 \(I_{n}=[\hat{x}^{n},\hat{p}]\)，则 \(I_{n}=\hat{x}I_{n-1}+i\hbar\hat{x}^{n-1}\)，初值 \(I_{1}=i\hbar\)。归纳得 \(I_{n}=i\hbar n\hat{x}^{n-1}\)，即 \(\boxed{[\hat{x}^{n},\hat{p}]=i\hbar n\hat{x}^{n-1}}\)。这与 \([\hat{x},f(\hat{p})]=i\hbar f'(\hat{p})\) 自洽——对易子扮演「量子导数」的角色。</p>
+          <p class="step"><strong>(c) 数值校验：</strong>对谐振子基态 \(\psi_{0}(x)=(m\omega/\pi\hbar)^{1/4}e^{-m\omega x^{2}/2\hbar}\)，\(\langle\hat{x}\rangle=0\)、\(\langle\hat{x}^{2}\rangle=\hbar/(2m\omega)\)。计算 \(\langle[\hat{x}^{2},\hat{p}]\rangle=2i\hbar\langle\hat{x}\rangle=0\)——对易子期望为 0，故 \(\Delta x^{2}\,\Delta p\ge 0\)，对该态无约束（合理，因 \(\hat{x}^{2}\) 与 \(\hat{p}\) 在高斯态下并非彼此「最小」配对）。</p>
+          <p><span class="ans">答案：\([\hat{x}^{2},\hat{p}]=2i\hbar\hat{x}\)；一般 \([\hat{x}^{n},\hat{p}]=i\hbar n\hat{x}^{n-1}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 由 \([\hat{x},\hat{p}]=i\hbar\) 推导 \(\Delta x\,\Delta p\ge\hbar/2\) 并应用于电子定位 Deriving &amp; Applying the Heisenberg Relation</h4>
+        <p class="example-statement">(a) 用 Robertson 不等式导出 \(\Delta x\,\Delta p\ge\hbar/2\)。(b) 把电子限制到 \(\Delta x=1.0\,\mathrm{nm}\)（典型化学键尺度），求最小 \(\Delta p\)、对应 \(\Delta v\) 与 \(\Delta E_{\mathrm{kin}}\)。(c) 验证高斯波包 \(\psi(x)=(2\pi\sigma^{2})^{-1/4}e^{-x^{2}/4\sigma^{2}}\) 饱和（取等号）该不等式。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 推导：</strong>代入 \(\hat{A}=\hat{x}\)、\(\hat{B}=\hat{p}\)：\(\Delta x\,\Delta p\ge\tfrac12|\langle[\hat{x},\hat{p}]\rangle|=\tfrac12|i\hbar|=\boxed{\hbar/2}\)（数值 \(\hbar/2=5.273\times 10^{-35}\,\mathrm{J\,s}\)）。</p>
+          <p class="step"><strong>(b) 数值（\(\Delta x=1.0\,\mathrm{nm}=10^{-9}\,\mathrm{m}\)）：</strong></p>
+          <p class="step">\(\Delta p\ge\hbar/(2\Delta x)=1.055\times 10^{-34}/(2\times 10^{-9})=\mathbf{5.27\times 10^{-26}\,\mathrm{kg\,m/s}}\)。</p>
+          <p class="step">\(\Delta v=\Delta p/m_{e}=5.27\times 10^{-26}/9.11\times 10^{-31}=\mathbf{5.79\times 10^{4}\,\mathrm{m/s}}\)（约 58 km/s，远超化学键中经典电子速度量级）。</p>
+          <p class="step">对应最小动能（用 \(\langle p\rangle=0\) 时 \(\Delta p^{2}=\langle p^{2}\rangle\)）：\(\langle E_{\mathrm{kin}}\rangle=(\Delta p)^{2}/2m_{e}=(5.27\times 10^{-26})^{2}/(2\times 9.11\times 10^{-31})=\mathbf{1.53\times 10^{-21}\,\mathrm{J}=9.5\,\mathrm{meV}}\)。</p>
+          <p class="step">这是「局域化能量」——把电子关在 1 nm 内至少要付 ~10 meV 动能代价，与分子中电子费米能（几个 eV）同数量级，因而直接决定化学键长与原子尺度。</p>
+          <p class="step"><strong>(c) 高斯波包饱和：</strong>对 \(\psi(x)=(2\pi\sigma^{2})^{-1/4}e^{-x^{2}/4\sigma^{2}}\)，积分得 \(\langle x^{2}\rangle=\sigma^{2}\)、\(\langle p^{2}\rangle=\hbar^{2}/4\sigma^{2}\)。故 \(\Delta x=\sigma\)、\(\Delta p=\hbar/(2\sigma)\)、\(\Delta x\,\Delta p=\sigma\cdot\hbar/(2\sigma)=\hbar/2\) ✓——恰好取等号。这是为什么分子振动基态（谐振子高斯）是「能量最优局域态」。</p>
+          <p class="step"><strong>物理意义：</strong>饱和态只能是高斯；任何非高斯态都 \(\Delta x\,\Delta p>\hbar/2\)。如方阱基态 \(\psi\propto\cos(\pi x/L)\) 给出 \(\Delta x\,\Delta p\approx 0.568\,\hbar&gt;\hbar/2\)，多出的 ~14% 反映其形状的「非高斯性」。</p>
+          <p><span class="ans">答案：\(\Delta x\,\Delta p\ge\hbar/2\)；1 nm 内电子 \(\Delta p\ge 5.27\times 10^{-26}\,\mathrm{kg\,m/s}\)、\(\Delta v\ge 5.79\times 10^{4}\,\mathrm{m/s}\)、\(\langle E_{\mathrm{kin}}\rangle\ge 9.5\,\mathrm{meV}\)；高斯波包饱和。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 叠加态能量期望与涨落 Energy Expectation in a Superposition</h4>
+        <p class="example-statement">把一维谐振子（频率 \(\omega\)，能量本征态 \(|n\rangle\)、本征值 \(E_{n}=(n+\tfrac12)\hbar\omega\)）准备到叠加态 \( |\psi\rangle=\tfrac{1}{\sqrt{3}}|0\rangle+\sqrt{\tfrac{2}{3}}|1\rangle \)。取 \(\hbar\omega=1.50\,\mathrm{eV}\)（典型有机染料 \(\pi\!-\!\pi^{*}\) 电子跃迁量级）。求：(a) 测量能量的可能值与概率；(b) \(\langle\hat{H}\rangle\)；(c) \(\Delta H\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>归一化检验：\(|c_{0}|^{2}+|c_{1}|^{2}=\tfrac13+\tfrac23=1\) ✓。</p>
+          <p class="step"><strong>(a) 可能值与概率：</strong>\(E_{0}=\tfrac12\hbar\omega=\mathbf{0.75\,\mathrm{eV}}\)、\(E_{1}=\tfrac32\hbar\omega=\mathbf{2.25\,\mathrm{eV}}\)。概率 \(P(E_{0})=\tfrac13\)、\(P(E_{1})=\tfrac23\)。</p>
+          <p class="step"><strong>(b) 期望：</strong>用 bra–ket 与正交性 \(\langle m|n\rangle=\delta_{mn}\)：</p>
+          <div class="formula">\[ \langle\hat{H}\rangle=\bigl\langle\psi\bigl|\hat{H}\bigr|\psi\bigr\rangle=\sum_{n}|c_{n}|^{2}E_{n}=\tfrac13\cdot\tfrac12\hbar\omega+\tfrac23\cdot\tfrac32\hbar\omega=\tfrac{\hbar\omega}{6}+\hbar\omega=\tfrac{7\hbar\omega}{6}. \]</div>
+          <p class="step">数值：\(\langle\hat{H}\rangle=\tfrac{7}{6}\times 1.50=\mathbf{1.75\,\mathrm{eV}}\)。</p>
+          <p class="step"><strong>(c) 涨落：</strong>先算 \(\langle\hat{H}^{2}\rangle=\sum_{n}|c_{n}|^{2}E_{n}^{2}=\tfrac13(\tfrac{\hbar\omega}{2})^{2}+\tfrac23(\tfrac{3\hbar\omega}{2})^{2}=\tfrac{\hbar^{2}\omega^{2}}{12}+\tfrac{3\hbar^{2}\omega^{2}}{2}=\tfrac{19\hbar^{2}\omega^{2}}{12}\)。</p>
+          <p class="step">\((\Delta H)^{2}=\langle\hat{H}^{2}\rangle-\langle\hat{H}\rangle^{2}=\tfrac{19\hbar^{2}\omega^{2}}{12}-\tfrac{49\hbar^{2}\omega^{2}}{36}=\tfrac{(57-49)\hbar^{2}\omega^{2}}{36}=\tfrac{2\hbar^{2}\omega^{2}}{9}\)。</p>
+          <p class="step">\(\Delta H=\tfrac{\sqrt{2}}{3}\hbar\omega=\mathbf{0.707\,\mathrm{eV}}\)。</p>
+          <p class="step"><strong>物理：</strong>测量能量<strong>只能</strong>得 0.75 eV 或 2.25 eV 两值之一，永不取 1.75 eV——尽管 1.75 是平均值。这正是量子测量与经典统计的根本差异：经典随机变量可取均值，量子本征值离散。<strong>方差 \((\Delta H)^{2}\ne 0\)</strong> 体现该态不是 \(\hat{H}\) 本征态。</p>
+          <p class="step"><strong>核对：</strong>\(\sqrt{P_{0}P_{1}}(E_{1}-E_{0})=\sqrt{2/9}\cdot\hbar\omega=\tfrac{\sqrt{2}}{3}\hbar\omega=\Delta H\) ✓（伯努利型两能级涨落公式）。</p>
+          <p><span class="ans">答案：\(E_{0}=0.75\,\mathrm{eV},P_{0}=1/3\)；\(E_{1}=2.25\,\mathrm{eV},P_{1}=2/3\)；\(\langle\hat{H}\rangle=1.75\,\mathrm{eV}\)；\(\Delta H=0.707\,\mathrm{eV}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 Ehrenfest 定理对谐振子相干态的应用 Ehrenfest for a Harmonic-Oscillator Coherent State</h4>
+        <p class="example-statement">电子处于一维谐振子势 \(V=\tfrac12m\omega^{2}x^{2}\)（\(\omega=1.0\times 10^{15}\,\mathrm{rad/s}\)）中的<strong>相干态</strong>，初始期望 \(\langle\hat{x}\rangle(0)=x_{0}=0.50\,\text{Å}=5.0\times 10^{-11}\,\mathrm{m}\)、\(\langle\hat{p}\rangle(0)=0\)。(a) 用 Ehrenfest 定理求 \(\langle\hat{x}\rangle(t)\)、\(\langle\hat{p}\rangle(t)\)；(b) 计算振荡周期与最大群速度；(c) 检验是否回到经典 SHO 方程；(d) 对比 \(\langle V'(\hat{x})\rangle\) 与 \(V'(\langle\hat{x}\rangle)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) Ehrenfest 方程：</strong>由例 4.B 步骤 5：\(\dv{\langle\hat{x}\rangle}{t}=\langle\hat{p}\rangle/m_{e}\)、\(\dv{\langle\hat{p}\rangle}{t}=-m_{e}\omega^{2}\langle\hat{x}\rangle\)。合并：\(\mathrm{d}^{2}\langle\hat{x}\rangle/\mathrm{d}t^{2}=-\omega^{2}\langle\hat{x}\rangle\)——简谐运动方程。</p>
+          <p class="step">代入初值：\(\langle\hat{x}\rangle(t)=x_{0}\cos\omega t\)、\(\langle\hat{p}\rangle(t)=-m_{e}\omega x_{0}\sin\omega t\)。</p>
+          <p class="step"><strong>(b) 周期与速度：</strong>\(T=2\pi/\omega=2\pi/10^{15}=\mathbf{6.28\times 10^{-15}\,\mathrm{s}=6.28\,\mathrm{fs}}\)（飞秒，光学周期的量级）。</p>
+          <p class="step">最大群速度 \(v_{\max}=m_{e}\omega x_{0}/m_{e}=\omega x_{0}=10^{15}\times 5.0\times 10^{-11}=\mathbf{5.0\times 10^{4}\,\mathrm{m/s}}\)（50 km/s）。</p>
+          <p class="step">对应最大经典动能 \(K_{\max}=\tfrac12m_{e}v_{\max}^{2}=\tfrac12\times 9.11\times 10^{-31}\times(5.0\times 10^{4})^{2}=\mathbf{1.14\times 10^{-21}\,\mathrm{J}=7.1\,\mathrm{meV}}\)。</p>
+          <p class="step"><strong>(c) 经典 SHO：</strong>经典方程 \(m_{e}\ddot{x}_{\mathrm{cl}}=-m_{e}\omega^{2}x_{\mathrm{cl}}\) 与 Ehrenfest 方程<strong>同型</strong>。故 \(\langle\hat{x}\rangle(t)\) 完全跟随经典轨道 \(x_{\mathrm{cl}}(t)=x_{0}\cos\omega t\)——这就是「波包不扩散地跟随经典粒子」，是相干态的定义性特征。</p>
+          <p class="step"><strong>(d) \(\langle V'(\hat{x})\rangle\) vs \(V'(\langle\hat{x}\rangle)\)：</strong>\(V'(\hat{x})=m\omega^{2}\hat{x}\) 是<strong>线性</strong>算符，故 \(\langle V'(\hat{x})\rangle=m\omega^{2}\langle\hat{x}\rangle=V'(\langle\hat{x}\rangle)\) 完全相等——Ehrenfest 此时<strong>严格</strong>给出经典方程。</p>
+          <p class="step"><strong>对比非线性势（提醒）：</strong>若 \(V=\tfrac12kx^{2}+\lambda x^{4}\)，则 \(V'=kx+4\lambda x^{3}\)，\(\langle\hat{x}^{3}\rangle\ne\langle\hat{x}\rangle^{3}\)（除非 \(\Delta x=0\)）。波包宽度有限时 \(\langle V'\rangle\ne V'(\langle x\rangle)\)，量子修正出现。这正是经典极限 \(\Delta x\to 0\) 时经典力学恢复的精确含义。</p>
+          <p><span class="ans">答案：\(\langle\hat{x}\rangle(t)=x_{0}\cos\omega t\)；周期 6.28 fs；\(v_{\max}=5.0\times 10^{4}\,\mathrm{m/s}\)、\(K_{\max}=7.1\,\mathrm{meV}\)；谐振子下 Ehrenfest 严格等价经典 SHO。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 二能级算符的矩阵对角化 Diagonalizing a Two-Level Hamiltonian</h4>
+        <p class="example-statement">一个二能级系统（如被激光耦合的两个原子能级 \(|1\rangle,|2\rangle\)）的哈密顿量为 \(\hat{H}=E_{1}|1\rangle\langle 1|+E_{2}|2\rangle\langle 2|+V(|1\rangle\langle 2|+|2\rangle\langle 1|)\)，其中 \(V\in\mathbb{R}\) 是耦合（如偶极耦合）。取 \(E_{1}=0\)、\(E_{2}=\varepsilon=4.0\,\mathrm{eV}\)、\(V=1.0\,\mathrm{eV}\)。(a) 写出 \(\hat{H}\) 的 \(2\times 2\) 矩阵；(b) 求本征值 \(E_{\pm}\) 与归一化本征态 \(|+\rangle,|-\rangle\)；(c) 验证本征值实、本征态正交；(d) 解释「能级斥拒」(avoided crossing) 现象。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 矩阵表示：</strong>基 \(\{|1\rangle,|2\rangle\}\)（即 \(|1\rangle=(1,0)^{T}\)、\(|2\rangle=(0,1)^{T}\)）下，由 \(H_{mn}=\langle m|\hat{H}|n\rangle\)：</p>
+          <div class="formula">\[ H=\begin{pmatrix}E_{1} & V\\ V & E_{2}\end{pmatrix}=\begin{pmatrix}0 & 1.0\\ 1.0 & 4.0\end{pmatrix}\,\mathrm{eV}. \]</div>
+          <p class="step">注意 \(H_{12}=H_{21}=V\in\mathbb{R}\) ⇒ \(H=H^{\dagger}\) 厄米 ✓。</p>
+          <p class="step"><strong>(b) 本征值：</strong>解 \(\det(H-\lambda I)=0\)：</p>
+          <div class="formula">\[ (E_{1}-\lambda)(E_{2}-\lambda)-V^{2}=0\;\Rightarrow\;\lambda_{\pm}=\tfrac{E_{1}+E_{2}}{2}\pm\tfrac12\sqrt{(E_{2}-E_{1})^{2}+4V^{2}}. \]</div>
+          <p class="step">代入数字：\(\lambda_{\pm}=\tfrac{0+4}{2}\pm\tfrac12\sqrt{16+4}=2\pm\sqrt{5}\)。</p>
+          <p class="step">\(E_{+}=2+\sqrt{5}=\mathbf{4.236\,\mathrm{eV}}\)；\(E_{-}=2-\sqrt{5}=\mathbf{-0.236\,\mathrm{eV}}\)。</p>
+          <p class="step"><strong>(c) 本征态：</strong>对 \(E_{+}=2+\sqrt{5}\)，\((H-E_{+}I)\vec{v}=0\) 给出 \(-({2+\sqrt{5}})v_{1}+v_{2}=0\)，即 \(v_{2}=(2+\sqrt{5})v_{1}\)。归一化（\(v_{1}^{2}+v_{1}^{2}(2+\sqrt{5})^{2}=1\)）得 \(v_{1}=1/\sqrt{1+(2+\sqrt{5})^{2}}=1/\sqrt{18.94}=0.231\)，\(v_{2}=0.973\)。</p>
+          <p class="step">\(|+\rangle=0.231\,|1\rangle+0.973\,|2\rangle\)（主要在上能级 \(|2\rangle\)，但有 \(|1\rangle\) 成分）。</p>
+          <p class="step">对 \(E_{-}=2-\sqrt{5}\)：\(v_{2}=(2-\sqrt{5})v_{1}=-0.236\,v_{1}\)。归一化：\(v_{1}=0.973\)、\(v_{2}=-0.231\)。</p>
+          <p class="step">\(|-\rangle=0.973\,|1\rangle-0.231\,|2\rangle\)（主要在下能级 \(|1\rangle\)）。</p>
+          <p class="step"><strong>检验实性、正交：</strong>\(E_{\pm}\in\mathbb{R}\) ✓。内积 \(\langle+|-\rangle=(0.231)(0.973)+(0.973)(-0.231)=0.225-0.225=\mathbf{0}\) ✓。完备性 \(\langle+|+\rangle+\langle-|-\rangle=1+1\) 与 \(|+\rangle\langle+|+|-\rangle\langle-|=\hat{\mathbb{1}}\) 直接验证。</p>
+          <p class="step"><strong>(d) 能级斥拒 (avoided crossing)：</strong>不耦合时（\(V=0\)）能级为 \(\{0,\varepsilon\}\)——间隔恰好 \(\varepsilon=4.0\,\mathrm{eV}\)。耦合后能级为 \(\{-0.236,+4.236\}\)——间隔 \(\Delta E=4.472\,\mathrm{eV}=\sqrt{\varepsilon^{2}+4V^{2}}\)。下能级<strong>被压低</strong>到 \(E_{1}=0\) 以下，上能级<strong>被抬高</strong>，最小间隔 \(\Delta E_{\min}=2|V|=2.0\,\mathrm{eV}\) 出现在共振（\(\varepsilon=0\)）。这就是<strong>能级斥拒</strong>：耦合禁止两条能级交叉，永远留出至少 \(2V\) 的「量子缝隙」——Rabi 振荡（见仿真）正是系统在 \(|+\rangle,|-\rangle\) 之间拍的物理。</p>
+          <p><span class="ans">答案：\(H=\begin{pmatrix}0&1\\1&4\end{pmatrix}\mathrm{eV}\)；\(E_{\pm}=\{+4.236,-0.236\}\,\mathrm{eV}\)；\(|+\rangle=0.231|1\rangle+0.973|2\rangle\)、\(|-\rangle=0.973|1\rangle-0.231|2\rangle\)；正交 ✓；最小间隙 \(2V=2\,\mathrm{eV}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「任意算符都对应可观测量。」</strong>错。<strong>只有厄米算符 \(\hat{Q}=\hat{Q}^{\dagger}\)</strong> 才能对应可观测量——这是为了保证本征值实（测得数据是实数）。例：\(\hat{a}=\tfrac{1}{\sqrt{2}}(\hat{x}/x_{0}+i\hat{p}/\hbar\cdot x_{0})\)（谐振子湮灭算符）<strong>不</strong>厄米，本征值复，故不是可观测量；但 \(\hat{N}=\hat{a}^{\dagger}\hat{a}\) 厄米、本征值为非负整数，<strong>是</strong>可观测量（光子数）。</li>
+        <li><strong>「非对易可观测量可以共享本征态。」</strong>错。若 \([\hat{A},\hat{B}]\ne 0\)，<strong>不可能</strong>找到二者共同的完备本征基——由不确定性原理，没有态同时使 \(\Delta A=\Delta B=0\)。某些特殊态可能恰好使 \(\langle[\hat{A},\hat{B}]\rangle=0\)（如角动量 \([\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}\) 在 \(\hat{L}_{z}=0\) 态下），但这不代表两算符相容——只是该态偶然落于对易子的零本征值上。</li>
+        <li><strong>「测量只读出不改变系统。」</strong>这是经典直觉，量子上错。Born 规则给出概率 \(P=|c_{n}|^{2}\)，但测量后系统<strong>坍缩</strong>到对应本征态 \(|q_{n}\rangle\)，再次测量必得同 \(q_{n}\)。这就是为什么「双缝 + 测哪条缝」立刻破坏干涉图样：测量把电子从叠加态 \(\tfrac{1}{\sqrt{2}}(|\text{上}\rangle+|\text{下}\rangle)\) 投影到 \(|\text{上}\rangle\) 或 \(|\text{下}\rangle\)，相干性丢失。</li>
+        <li><strong>把 ket 当成 bra，或反之。</strong>两者数学对象不同：\( |\psi\rangle \) 是列矢量（\(\mathcal{H}\) 中元素），\( \langle\psi| \) 是行矢量（对偶空间 \(\mathcal{H}^{*}\) 中元素），二者由厄米共轭联系：\(\langle\psi|=(|\psi\rangle)^{\dagger}\)。只有 \(\langle\psi|\psi\rangle\)（数）有意义；\(|\psi\rangle|\psi\rangle\) 没定义（除非张量积）。混淆会得到错误的矩阵元顺序。</li>
+        <li><strong>认为 \(\Delta x\,\Delta p\ge\hbar/2\) 中 \(\hbar/2\) 是「测量精度极限」。</strong>错。这是量子态的<strong>内禀</strong>属性，与仪器精度无关——再完美的设备也无法绕过，因为 \(\hat{x}\) 与 \(\hat{p}\) 没有共同本征态。把它当作技术问题去「攻克」是范畴错误。</li>
+        <li><strong>把 Ehrenfest 定理等同于经典力学。</strong>半错。Ehrenfest 给出 \(m\ddot{\langle x\rangle}=-\langle V'(\hat{x})\rangle\)，而经典是 \(m\ddot{x}=-V'(x)\)。仅当 \(\langle V'(\hat{x})\rangle\approx V'(\langle\hat{x}\rangle)\)（势能线性、或波包远窄于势能变化尺度）时二者一致。否则量子修正重要（如双势阱隧穿、强非线性光学）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 验证 \([\hat{p},V(\hat{x})]=-i\hbar V'(\hat{x})\) General Commutator with a Function</summary>
+        <div class="hint">作用在检验函数 \(f(x)\) 上，用 Taylor 展开 \(V(x)=\sum v_{n}x^{n}\) 与例 4.1 的 \([\hat{x}^{n},\hat{p}]\) 结果。</div>
+        <div class="solution">
+          用 Taylor \(V(x)=\sum_{n}v_{n}x^{n}\)，由对易子双线性 \([\hat{p},V(\hat{x})]=\sum_{n}v_{n}[\hat{p},\hat{x}^{n}]=-\sum_{n}v_{n}[\hat{x}^{n},\hat{p}]\)。
+          <br>代入例 4.1：\([\hat{x}^{n},\hat{p}]=i\hbar n\hat{x}^{n-1}\)，故 \([\hat{p},V(\hat{x})]=-\sum_{n}v_{n}\cdot i\hbar n\hat{x}^{n-1}=-i\hbar\sum_{n}n v_{n}\hat{x}^{n-1}=-i\hbar V'(\hat{x})\;\checkmark\)。
+          <br>特例 \(V=\tfrac12m\omega^{2}x^{2}\)：\([\hat{p},V]=-i\hbar m\omega^{2}\hat{x}\)，用于 Ehrenfest 第二式 \(\dv{\langle\hat{p}\rangle}{t}=\tfrac{i}{\hbar}\langle[\hat{H},\hat{p}]\rangle=\tfrac{i}{\hbar}\langle[\tfrac12m\omega^{2}\hat{x}^{2},\hat{p}]\rangle=\tfrac{i}{\hbar}\cdot i\hbar m\omega^{2}\langle\hat{x}\rangle\cdot(-1)=-m\omega^{2}\langle\hat{x}\rangle\) ✓。 <span class="ans">答：\([\hat{p},V(\hat{x})]=-i\hbar V'(\hat{x})\)；幂函数 \([\hat{x}^{n},\hat{p}]=i\hbar n\hat{x}^{n-1}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 角动量对易关系与不确定性 Angular-Momentum Commutator</summary>
+        <div class="hint">用 \(\hat{L}_{i}=\epsilon_{ijk}\hat{x}_{j}\hat{p}_{k}\) 与 \([\hat{x}_{i},\hat{p}_{j}]=i\hbar\delta_{ij}\) 计算 \([\hat{L}_{x},\hat{L}_{y}]\)。</div>
+        <div class="solution">
+          \(\hat{L}_{x}=\hat{y}\hat{p}_{z}-\hat{z}\hat{p}_{y}\)、\(\hat{L}_{y}=\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z}\)。
+          <br>\([\hat{L}_{x},\hat{L}_{y}]=[\hat{y}\hat{p}_{z}-\hat{z}\hat{p}_{y},\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z}]\)
+          <br>展开（用 Leibniz 与 \([\hat{x}_{i},\hat{x}_{j}]=0\)、\([\hat{p}_{i},\hat{p}_{j}]=0\)、\([\hat{x}_{i},\hat{p}_{j}]=i\hbar\delta_{ij}\)）：
+          <br>大部分项消去，只剩 \(-\hat{y}[\hat{p}_{z},\hat{x}\hat{p}_{z}]\) 类与 \([\hat{z}\hat{p}_{y},\hat{z}\hat{p}_{x}]\) 类。具体：
+          <br>\([\hat{y}\hat{p}_{z},\hat{z}\hat{p}_{x}]=\hat{y}[\hat{p}_{z},\hat{z}]\hat{p}_{x}=\hat{y}\cdot(-i\hbar)\hat{p}_{x}=-i\hbar\hat{y}\hat{p}_{x}\)；
+          <br>\([\hat{z}\hat{p}_{y},\hat{x}\hat{p}_{z}]=\hat{x}\hat{p}_{y}[\hat{z},\hat{p}_{z}]=i\hbar\hat{x}\hat{p}_{y}\)（用 \([\hat{z},\hat{p}_{z}]=i\hbar\)）。
+          <br>合并：\([\hat{L}_{x},\hat{L}_{y}]=-(-i\hbar\hat{y}\hat{p}_{x})-(i\hbar\hat{x}\hat{p}_{y})\) … 仔细处理符号。
+          <br>标准结果：\(\boxed{[\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}}\)（及循环置换）。
+          <br>推论：\(\Delta L_{x}\,\Delta L_{y}\ge\tfrac12\hbar|\langle\hat{L}_{z}\rangle|\)。若 \(\hat{L}_{z}\) 测得非零，则 \(\hat{L}_{x},\hat{L}_{y}\) 不能同时确定——这就是为什么原子中电子角动量的三个分量只能确定一个（通常选 \(\hat{L}_{z}\)）+ 大小 \(\hat{L}^{2}\)。 <span class="ans">答：\([\hat{L}_{i},\hat{L}_{j}]=i\hbar\epsilon_{ijk}\hat{L}_{k}\)；\(\Delta L_{x}\,\Delta L_{y}\ge(\hbar/2)|\langle L_{z}\rangle|\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 自旋-1/2 在磁场中的演化（海森堡图景） Spin-1/2 in a Magnetic Field</summary>
+        <div class="hint">电子在 \(B=B_{0}\hat{z}\) 中 \(\hat{H}=-\gamma B_{0}\hat{S}_{z}=-\tfrac{\hbar\omega_{0}}{2}\hat{\sigma}_{z}\)，\(\omega_{0}=\gamma B_{0}\)。在海森堡图景下用 \(\dv{\hat{A}_{H}}{t}=\tfrac{i}{\hbar}[\hat{H},\hat{A}_{H}]\)。</div>
+        <div class="solution">
+          海森堡方程对 \(\hat{S}_{x,H}\)：\(\dv{\hat{S}_{x,H}}{t}=\tfrac{i}{\hbar}[-\gamma B_{0}\hat{S}_{z,H},\hat{S}_{x,H}]=\tfrac{i}{\hbar}(-\gamma B_{0})\cdot(-i\hbar\hat{S}_{y,H})=-\gamma B_{0}\hat{S}_{y,H}=-\omega_{0}\hat{S}_{y,H}\)（用 \([\hat{S}_{z},\hat{S}_{x}]=i\hbar\hat{S}_{y}\)）。
+          <br>类似 \(\dv{\hat{S}_{y,H}}{t}=\omega_{0}\hat{S}_{x,H}\)、\(\dv{\hat{S}_{z,H}}{t}=0\)。
+          <br>解：\(\hat{S}_{z,H}=\hat{S}_{z,S}\) 常数；\(\hat{S}_{x,H}(t)=\hat{S}_{x,S}\cos\omega_{0}t-\hat{S}_{y,S}\sin\omega_{0}t\)；\(\hat{S}_{y,H}(t)=\hat{S}_{x,S}\sin\omega_{0}t+\hat{S}_{y,S}\cos\omega_{0}t\)。
+          <br>即自旋矢量在 \(xy\) 平面内绕 \(z\) 轴<strong>拉莫尔进动</strong> (Larmor precession)，频率 \(\omega_{0}=\gamma B_{0}\)。
+          <br>数值：电子 \(g\simeq 2\)，\(\gamma=ge/(2m_{e})=1.76\times 10^{11}\,\mathrm{rad\,s^{-1}\,T^{-1}}\)。\(B_{0}=1.0\,\mathrm{T}\) ⇒ \(\omega_{0}=1.76\times 10^{11}\,\mathrm{rad/s}\)、\(f=\omega_{0}/2\pi=\mathbf{28.0\,\mathrm{GHz}}\)（X 波段 EPR 微波）。
+          <br>能级劈裂 \(\Delta E=\hbar\omega_{0}=1.055\times 10^{-34}\times 1.76\times 10^{11}=\mathbf{1.86\times 10^{-23}\,\mathrm{J}=0.116\,\mathrm{meV}}\)，对应温度 \(T=\Delta E/k_{B}=\mathbf{1.34\,\mathrm{K}}\)——说明室温 \(kT\gg\Delta E\)，自旋态高度混合；只有低温（液氦）下才能分辨。 <span class="ans">答：自旋以拉莫尔频率 \(\omega_{0}=\gamma B_{0}\) 绕 \(\vec{B}\) 进动；1 T 下电子 \(f=28.0\,\mathrm{GHz}\)、\(\Delta E=0.116\,\mathrm{meV}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 投影算符与恒等分解 Projectors &amp; the Resolution of Identity</summary>
+        <div class="hint">投影算符 \(\hat{P}_{n}=|n\rangle\langle n|\)，满足 \(\hat{P}_{n}^{2}=\hat{P}_{n}\)、\(\hat{P}_{n}^{\dagger}=\hat{P}_{n}\)。</div>
+        <div class="solution">
+          幂等性：\(\hat{P}_{n}^{2}=|n\rangle\langle n|n\rangle\langle n|=|n\rangle\cdot 1\cdot\langle n|=\hat{P}_{n}\)（用 \(\langle n|n\rangle=1\)）✓。
+          <br>厄米：\(\hat{P}_{n}^{\dagger}=(|n\rangle\langle n|)^{\dagger}=(\langle n|)^{\dagger}(|n\rangle)^{\dagger}=|n\rangle\langle n|=\hat{P}_{n}\) ✓。
+          <br>正交投影：\(\hat{P}_{m}\hat{P}_{n}=|m\rangle\langle m|n\rangle\langle n|=\delta_{mn}\hat{P}_{n}\)。
+          <br>恒等分解 \(\sum_{n}\hat{P}_{n}=\hat{\mathbb{1}}\)：作用在任意 \( |\psi\rangle \) 上，\(\sum_{n}\hat{P}_{n}|\psi\rangle=\sum_{n}|n\rangle\langle n|\psi\rangle=\sum_{n}c_{n}|n\rangle=|\psi\rangle\)（用展开假设）✓。
+          <br>应用：测量后态投影到 \(|n\rangle\) 写作 \( |\psi\rangle\to\hat{P}_{n}|\psi\rangle/\sqrt{\langle\psi|\hat{P}_{n}|\psi\rangle}=c_{n}|n\rangle/|c_{n}|\)。这就是「投影假设」的算符语言。 <span class="ans">答：\(\hat{P}_{n}=|n\rangle\langle n|\)，幂等、厄米、正交；\(\sum_{n}\hat{P}_{n}=\hat{\mathbb{1}}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. CSCO 与氢原子量子数 CSCO &amp; Hydrogen Quantum Numbers</summary>
+        <div class="hint">库仑势中电子的 \(\hat{H},\hat{L}^{2},\hat{L}_{z}\) 两两对易，但 \(\hat{L}_{x},\hat{L}_{y}\) 不与 \(\hat{L}_{z}\) 对易。</div>
+        <div class="solution">
+          \(\hat{H}=\hat{p}^{2}/2m-e^{2}/(4\pi\epsilon_{0}r)\) 球对称 ⇒ \([\hat{H},\hat{L}_{i}]=0\)（\(i=x,y,z\)）；\([\hat{L}^{2},\hat{L}_{z}]=0\)。故 \(\{\hat{H},\hat{L}^{2},\hat{L}_{z}\}\) 是一组 CSCO（对氢原子无简并时）。
+          <br>共同本征态 \(|n,l,m\rangle\)：\(E_{n}=-13.6/n^{2}\,\mathrm{eV}\)、\(L^{2}=\hbar^{2}l(l+1)\)、\(L_{z}=\hbar m\)，量子数 \(n=1,2,\dots\)、\(l=0,\dots,n-1\)、\(m=-l,\dots,+l\)。
+          <br>为什么 \(\hat{L}_{z}\) 与 \(\hat{L}_{x}\) 不能同时进 CSCO：\([\hat{L}_{x},\hat{L}_{z}]=-i\hbar\hat{L}_{y}\ne 0\)，由不确定性 \(\Delta L_{x}\,\Delta L_{z}\ge(\hbar/2)|\langle L_{y}\rangle|\)——不存在共同本征基。
+          <br>简并提示：氢原子的能级只依赖 \(n\)（库仑「偶然简并」），故 \(\{\hat{H},\hat{L}^{2},\hat{L}_{z}\}\) 对每个 \(|n,l,m\rangle\) 唯一（每组 \((n,l,m)\) 对应一个态）。但若考虑自旋，需加入 \(\hat{S}_{z}\)（或 \(\hat{J}_{z}\)）扩充为 CSCO。 <span class="ans">答：\(\{\hat{H},\hat{L}^{2},\hat{L}_{z}\}\) 是氢原子（无自旋）的 CSCO，量子数 \((n,l,m)\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>二能级 Rabi 振荡 Two-Level Rabi Oscillation。</strong>一个二能级原子（或自旋-1/2）被单色外场共振驱动，在 \(\{|1\rangle,|2\rangle\}\) 之间反复跃迁。<strong>左图</strong>：能级图，两个填充圆的大小正比于瞬时布居 \(P_{1}(t)\)、\(P_{2}(t)\)，中间绿色波纹是驱动场。<strong>右图</strong>：\(P_{2}(t)=(\Omega^{2}/\Omega_{R}^{2})\sin^{2}(\Omega_{R}t/2)\) 解析曲线（红实线），\(P_{1}=1-P_{2}\)（蓝虚线），红点为当前时刻。<strong>调节</strong> Rabi 频率 \(\Omega\)（耦合强度，正比于外场振幅）与失谐 \(\Delta=E_{2}-E_{1}-\hbar\omega_{\text{场}}\)。<strong>请观察：</strong>① \(\Delta=0\)（共振）：\(P_{2}^{\max}=1\)，布居<strong>完全翻转</strong>，周期 \(T_{R}=2\pi/\Omega\)。② \(\Delta\ne 0\)：\(P_{2}^{\max}=\Omega^{2}/\Omega_{R}^{2}&lt;1\)——只能部分翻转，振荡加快（有效频率 \(\Omega_{R}=\sqrt{\Omega^{2}+\Delta^{2}}\)）。③ 大失谐 \(\Delta\gg\Omega\)：几乎无翻转（能级被「解耦」），系统停在 \(|1\rangle\)——这就是「绝热」与交流斯塔克位移的物理。④ 例 4.5 的耦合 \(V\) 与这里的 \(\hbar\Omega/2\) 是同一物理量。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          var DEFAULTS = { Omega: 2.0, Delta: 0.0 };
+          var params = { Omega: DEFAULTS.Omega, Delta: DEFAULTS.Delta };
+          var T_MAX = 4 * Math.PI;          // sim-seconds shown on plot (~12.57 s)
+          var ANIM_SPEED = 1.5;             // playback speed of the moving marker
+
+          // analytical P2(t) for a two-level system in RWA
+          function P2(t) {
+            var Om = params.Omega, De = params.Delta;
+            var R = Math.sqrt(Om * Om + De * De);
+            if (R < 1e-6) return 0;
+            var s = Math.sin(R * t / 2);
+            return (Om * Om) / (R * R) * s * s;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { tAnim: 0 }; },
+            step: function (dt, t, s) {
+              s.tAnim += dt * ANIM_SPEED;
+              if (s.tAnim > T_MAX) s.tAnim -= T_MAX;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var Om = params.Omega, De = params.Delta;
+              var R = Math.sqrt(Om * Om + De * De);
+              var tNow = s.tAnim;
+              var p2Now = P2(tNow);
+              var p1Now = 1 - p2Now;
+
+              // ===== Header text =====
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('二能级 Rabi 振荡  Two-Level Rabi Oscillation', 16, 8);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillText('Ω = ' + Om.toFixed(2) + ' rad/s    Δ = ' + De.toFixed(2) +
+                           ' rad/s    Ω_R = √(Ω²+Δ²) = ' + R.toFixed(2) + ' rad/s', 16, 30);
+              ctx.fillText('t = ' + tNow.toFixed(2) + ' s    P₂ = ' + p2Now.toFixed(3) +
+                           '    P₁ = ' + p1Now.toFixed(3), 16, 50);
+              ctx.restore();
+
+              // ===== Left panel: level diagram =====
+              var pL_L = 16, pL_R = 240;
+              var y2 = 130, y1 = 290;
+              var lineL = pL_L + 30, lineR = pL_R - 10;
+
+              // energy axis vertical line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.0;
+              ctx.globalAlpha = 0.6;
+              ctx.beginPath(); ctx.moveTo(lineL - 12, y2 - 16); ctx.lineTo(lineL - 12, y1 + 16); ctx.stroke();
+              ctx.globalAlpha = 1;
+              // little arrow tip
+              ctx.beginPath();
+              ctx.moveTo(lineL - 12, y2 - 18);
+              ctx.lineTo(lineL - 16, y2 - 12);
+              ctx.lineTo(lineL - 8, y2 - 12);
+              ctx.closePath();
+              ctx.fillStyle = PS.colors.axis;
+              ctx.fill();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('E', lineL - 12, y2 - 26);
+              ctx.restore();
+
+              // |2> level line
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 2.0;
+              ctx.beginPath(); ctx.moveTo(lineL, y2); ctx.lineTo(lineR, y2); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(lineL, y1); ctx.lineTo(lineR, y1); ctx.stroke();
+              // labels
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('|2⟩  E₂', lineR + 4, y2);
+              ctx.fillText('|1⟩  E₁', lineR + 4, y1);
+              ctx.textAlign = 'right';
+              ctx.fillStyle = PS.colors.accent;
+              ctx.fillText('P₂ = ' + p2Now.toFixed(2), lineL - 16, y2 - 6);
+              ctx.fillStyle = PS.colors.primary;
+              ctx.fillText('P₁ = ' + p1Now.toFixed(2), lineL - 16, y1 + 12);
+              ctx.restore();
+
+              // population discs (area ∝ P)
+              var cx = (lineL + lineR) / 2;
+              var rMax = 26;
+              var r1 = Math.max(3, rMax * Math.sqrt(p1Now));
+              var r2 = Math.max(3, rMax * Math.sqrt(p2Now));
+              PS.drawCircle(ctx, cx, y1, r1, { fill: PS.colors.primary, stroke: PS.colors.axis, lineWidth: 1 });
+              PS.drawCircle(ctx, cx, y2, r2, { fill: PS.colors.accent,  stroke: PS.colors.axis, lineWidth: 1 });
+
+              // driving-field wavy arrow between levels (left side)
+              ctx.save();
+              var ax = cx - 60;
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.6;
+              // double arrow shaft
+              ctx.beginPath(); ctx.moveTo(ax, y1 - 10); ctx.lineTo(ax, y2 + 10); ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(ax, y2 + 10); ctx.lineTo(ax - 4, y2 + 16); ctx.lineTo(ax + 4, y2 + 16);
+              ctx.closePath(); ctx.fill();
+              ctx.beginPath();
+              ctx.moveTo(ax, y1 - 10); ctx.lineTo(ax - 4, y1 - 16); ctx.lineTo(ax + 4, y1 - 16);
+              ctx.closePath(); ctx.fill();
+              // sinusoidal oscillation representing the field, phase = ω*t
+              ctx.beginPath();
+              var yTop = y2 + 20, yBot = y1 - 20;
+              for (var i = 0; i <= 60; i++) {
+                var yy = yTop + (yBot - yTop) * i / 60;
+                var xx = ax + 18 * Math.sin(0.55 * (yy - yTop) + Om * tNow * 0.6);
+                if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+              }
+              ctx.stroke();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('驱动场 drive', ax, (y1 + y2) / 2);
+              ctx.fillText('ℏω', ax + 26, y1 + 30);
+              ctx.restore();
+
+              // ===== Right panel: P2(t) plot =====
+              var pl = 290, pr = W - 18, pt = 84, pb = H - 76;
+              // grid (horizontal)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.5;
+              ctx.lineWidth = 1;
+              for (var i = 0; i <= 4; i++) {
+                var yy = pb - (i / 4) * (pb - pt);
+                ctx.beginPath(); ctx.moveTo(pl, yy); ctx.lineTo(pr, yy); ctx.stroke();
+              }
+              ctx.restore();
+
+              // x-axis ticks (time)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.fillStyle = PS.colors.text;
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              var tStep = (T_MAX <= 8) ? 1 : 2;
+              for (var tt = 0; tt <= T_MAX + 0.01; tt += tStep) {
+                var xx = pl + (tt / T_MAX) * (pr - pl);
+                ctx.fillText(tt.toFixed(0), xx, pb + 4);
+                ctx.beginPath(); ctx.moveTo(xx, pb); ctx.lineTo(xx, pb + 3); ctx.stroke();
+              }
+              // y-axis ticks
+              ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+              for (var p = 0; p <= 1.001; p += 0.25) {
+                var yyy = pb - p * (pb - pt);
+                ctx.fillText(p.toFixed(2), pl - 4, yyy);
+              }
+              // axis frame
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(pl, pt); ctx.lineTo(pl, pb); ctx.lineTo(pr, pb);
+              ctx.stroke();
+              // axis titles
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('t  时间 (s)', (pl + pr) / 2, pb + 22);
+              ctx.save();
+              ctx.translate(pl - 34, (pt + pb) / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.fillText('布居 population', 0, 0);
+              ctx.restore();
+              ctx.restore();
+
+              // plot P1 (dashed faint) and P2 (solid bright)
+              function plotCurve(fn, color, lw, dash) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lw;
+                if (dash) ctx.setLineDash(dash);
+                ctx.beginPath();
+                var N = 500;
+                for (var i = 0; i <= N; i++) {
+                  var t = i / N * T_MAX;
+                  var p = fn(t);
+                  if (p < 0) p = 0; if (p > 1) p = 1;
+                  var xx = pl + (t / T_MAX) * (pr - pl);
+                  var yy = pb - p * (pb - pt);
+                  if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+                }
+                ctx.stroke();
+                ctx.restore();
+              }
+              plotCurve(function (t) { return 1 - P2(t); }, PS.colors.primary, 1.6, [6, 4]);
+              plotCurve(P2, PS.colors.accent, 2.6, null);
+
+              // current-time vertical guide + dot
+              var xNow = pl + (tNow / T_MAX) * (pr - pl);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([3, 3]);
+              ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(xNow, pt); ctx.lineTo(xNow, pb); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, xNow, pb - p2Now * (pb - pt), 5.5,
+                { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.5 });
+
+              // legend
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var lx = pr - 150, ly = pt + 6;
+              ctx.strokeStyle = PS.colors.accent; ctx.lineWidth = 2.6;
+              ctx.beginPath(); ctx.moveTo(lx, ly + 6); ctx.lineTo(lx + 22, ly + 6); ctx.stroke();
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('P₂(t) 上能级 |2⟩', lx + 28, ly);
+              ly += 18;
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 1.6;
+              ctx.setLineDash([5, 3]);
+              ctx.beginPath(); ctx.moveTo(lx, ly + 6); ctx.lineTo(lx + 22, ly + 6); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('P₁(t) 下能级 |1⟩', lx + 28, ly);
+              ly += 18;
+              PS.drawCircle(ctx, lx + 11, ly + 6, 4, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1 });
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('当前时刻 marker', lx + 28, ly);
+              ctx.restore();
+
+              // bottom: physics summary
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var contrast = (R > 1e-6) ? (Om * Om) / (R * R) : 0;
+              var onRes = Math.abs(De) < 0.05;
+              var msg;
+              if (onRes) {
+                msg = '★ 共振 resonance (Δ=0)：P₂(t)=sin²(Ωt/2)，最大布居翻转 P₂^max = 1';
+              } else if (Math.abs(De) > 5 * Om) {
+                msg = '★ 大失谐 off-resonance：P₂^max = Ω²/Ω_R² = ' + contrast.toFixed(3) +
+                      '（弱激发，绝热跟随 / 交流斯塔克位移区）';
+              } else {
+                msg = '★ 失谐 detuning：P₂^max = Ω²/Ω_R² = ' + contrast.toFixed(3) +
+                      ' < 1（部分翻转），有效频率 Ω_R = ' + R.toFixed(2);
+              }
+              ctx.fillText(msg, pl, H - 30);
+              var period = (R > 1e-6) ? (2 * Math.PI / R) : Infinity;
+              ctx.fillText('Rabi 周期 T_R = 2π/Ω_R = ' + (isFinite(period) ? period.toFixed(2) : '∞') +
+                           ' s    π-脉冲时间（P₂=1）t_π = π/Ω_R = ' +
+                           (isFinite(period) ? (period / 2).toFixed(2) : '∞') + ' s',
+                           pl, H - 14);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'Omega', label: 'Rabi 频率 Ω (rad/s)', min: 0.3, max: 4.0, step: 0.05, value: DEFAULTS.Omega },
+            { type: 'slider', key: 'Delta', label: '失谐 Δ (rad/s)',     min: -3.0, max: 3.0, step: 0.05, value: DEFAULTS.Delta },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('Omega', function (v) { params.Omega = v; });
+          ctl.on('Delta', function (v) { params.Delta = v; });
+          ctl.on('reset', function () {
+            // restore slider positions so the displayed values match DEFAULTS
+            var sliders = document.querySelectorAll('#controls-4 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.Omega);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.Delta);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>态矢量</strong>：\( |\psi\rangle\in\mathcal{H} \)，归一化 \(\langle\psi|\psi\rangle=1\)；位形表象下 \(\psi(x)=\langle x|\psi\rangle\)。</li>
+        <li><strong>可观测量 = 厄米算符</strong> \(\hat{Q}=\hat{Q}^{\dagger}\)；本征值实、不同本征态正交、本征基完备。</li>
+        <li><strong>本征值方程</strong> \(\hat{Q}|q_{n}\rangle=q_{n}|q_{n}\rangle\)；<strong>展开假设</strong> \( |\psi\rangle=\sum_{n}c_{n}|n\rangle \)，\(c_{n}=\langle n|\psi\rangle\)。</li>
+        <li><strong>期望值</strong> \(\langle\hat{Q}\rangle=\langle\psi|\hat{Q}|\psi\rangle\)；<strong>Born 概率</strong> \(P(q_{n})=|c_{n}|^{2}\)；<strong>测量坍缩</strong>到对应本征态。</li>
+        <li><strong>对易子</strong> \([A,B]=AB-BA\)；<strong>正则对易关系</strong> \([\hat{x},\hat{p}]=i\hbar\)。</li>
+        <li><strong>广义不确定性</strong>：\(\Delta A\,\Delta B\ge\tfrac12|\langle[A,B]\rangle|\)；特例 \(\Delta x\,\Delta p\ge\hbar/2\)（饱和态为高斯波包）。</li>
+        <li><strong>Ehrenfest 定理</strong>：\(\dv{\langle\hat{Q}\rangle}{t}=\tfrac{i}{\hbar}\langle[\hat{H},\hat{Q}]\rangle+\langle\partial_{t}\hat{Q}\rangle\)；对 \(\hat{x},\hat{p}\) 给出 Newton 类比 \(m\ddot{\langle x\rangle}=-\langle V'(\hat{x})\rangle\)。</li>
+        <li><strong>薛定谔图景</strong>：态演化、算符固定；<strong>海森堡图景</strong>：态固定、算符演化 \(\dv{\hat{A}_{H}}{t}=\tfrac{i}{\hbar}[\hat{H}_{H},\hat{A}_{H}]+(\partial_{t}\hat{A})_{H}\)。</li>
+        <li><strong>相容可观测量</strong>对易 \([\hat{A},\hat{B}]=0\) ⇔ 共同本征基 ⇔ \(\Delta A\,\Delta B\) 可同时为零；<strong>CSCO</strong> 唯一标记每个量子态。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\hat{Q}|q_{n}\rangle=q_{n}|q_{n}\rangle,\quad \langle\psi|\psi\rangle=1,\quad \langle\hat{Q}\rangle=\langle\psi|\hat{Q}|\psi\rangle,\quad P(q_{n})=|\langle q_{n}|\psi\rangle|^{2}\;} \]</div>
+      <div class="formula">\[ \boxed{\;[\hat{x},\hat{p}]=i\hbar,\qquad \Delta A\,\Delta B\ge\tfrac12\,\bigl|\langle[\hat{A},\hat{B}]\rangle\bigr|,\qquad \Delta x\,\Delta p\ge\frac{\hbar}{2}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\dv{\langle\hat{Q}\rangle}{t}=\frac{i}{\hbar}\bigl\langle[\hat{H},\hat{Q}]\bigr\rangle+\Bigl\langle\frac{\partial\hat{Q}}{\partial t}\Bigr\rangle,\qquad m\ddot{\langle x\rangle}=-\bigl\langle V'(\hat{x})\bigr\rangle\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

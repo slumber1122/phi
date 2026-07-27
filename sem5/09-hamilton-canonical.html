@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 哈密顿方程与正则变换 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第9章 · 高等经典力学 Advanced Classical Mechanics</p>
+      <h1>哈密顿方程与正则变换 <span class="en-title">Hamilton's Equations &amp; Canonical Transformations</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>拉格朗日框架以 \((q,\dot q)\) 为变量，给出 \(n\) 个二阶 E–L 方程。<strong>哈密顿力学</strong> (Hamiltonian mechanics) 做一次<strong>勒让德变换</strong> (Legendre transform)，把速度换成<strong>正则动量</strong> \(p_i\)，从而以 \((q,p)\) 为独立变量，把运动方程化为 \(2n\) 个<strong>一阶</strong>方程。这一变量替换表面平淡，后果深远：它把力学放进<strong>相空间</strong> (phase space)，揭示出隐藏的<strong>辛几何结构</strong> (symplectic structure)，让守恒律、可积性、统计力学、量子化都自然涌现。学完本章后，你将能够：</p>
+      <ul>
+        <li>用<strong>勒让德变换</strong>从 \(L(q,\dot q,t)\) 构造哈密顿量 \(H(q,p,t)=\sum_i p_i\dot q_i-L\)，并解释该变换为何可逆（Hessian 条件 \(\det(\partial^{2}L/\partial\dot q_i\partial\dot q_j)\neq 0\)）。</li>
+        <li>写出并求解<strong>哈密顿正则方程</strong> (Hamilton's canonical equations) \(\dot q_i=\pdv{H}{p_i}\)、\(\dot p_i=-\pdv{H}{q_i}\)；将它们组织为<strong>辛形式</strong> \(\dot{\vec z}=\Omega\,\nabla H\)，其中 \(\Omega=\begin{pmatrix}0&I\\-I&0\end{pmatrix}\)。</li>
+        <li>在相空间 \((q,p)\) 中识别<strong>轨线</strong> (trajectories)、<strong>不动点</strong> (fixed points)、<strong>分界线</strong> (separatrix)，并对简谐振子与单摆画出相图。</li>
+        <li>计算<strong>泊松括号</strong> (Poisson bracket) \(\{A,B\}=\sum_i\bigl(\pdv{A}{q_i}\pdv{B}{p_i}-\pdv{A}{p_i}\pdv{B}{q_i}\bigr)\)，并使用<strong>时间演化方程</strong> \(\dv{f}{t}=\{f,H\}+\pdv{f}{t}\) 统一表达守恒律。</li>
+        <li>用 \(\{f,H\}=0\) 判定 \(f\) 守恒，验证基本括号 \(\{q_i,p_j\}=\delta_{ij}\) 与雅可比恒等式；推导角动量代数 \(\{L_i,L_j\}=\epsilon_{ijk}L_k\)。</li>
+        <li>理解<strong>正则变换</strong> (canonical transformation)：保持泊松括号——等价地保持辛形式——的变量替换 \((q,p)\to(Q,P)\)；简要了解四种<strong>生成函数</strong> \(F_1,F_2,F_3,F_4\)。</li>
+        <li>把简谐振子化到<strong>作用量–角度变量</strong> (action-angle variables) \((J,\theta)\)，得到 \(H=\omega J\) 与周期运动；叙述并验证<strong>刘维尔定理</strong> (Liouville's theorem)：相空间体积在哈密顿流下守恒。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 勒让德变换——从 \((q,\dot q)\) 到 \((q,p)\)</h3>
+      <p>设拉格朗日量 \(L(q,\dot q,t)\)（多自由度时 \(q,\dot q\) 为矢量）。定义<strong>正则动量</strong> (canonical momentum)</p>
+      <div class="formula">\[ p_i\;\equiv\;\pdv{L}{\dot q_i} \]</div>
+      <p>若 Hessian \(W_{ij}\equiv\partial^{2}L/\partial\dot q_i\partial\dot q_j\) 非奇异（「超规则」hyperregular），则可逆地把 \(\dot q\) 解为 \(\dot q(q,p,t)\)。<strong>哈密顿量</strong>定义为 \(L\) 关于速度的<strong>勒让德变换</strong>：</p>
+      <div class="formula">\[ \boxed{\;H(q,p,t)\;=\;\sum_{i}p_i\,\dot q_i\;-\;L\bigl(q,\dot q(q,p,t),t\bigr)\;} \]</div>
+      <p>注意微分关系：取 \(dH=\sum_i (\dot q_i\,dp_i+p_i\,d\dot q_i)-dL\)，而 \(dL=\sum_i(\pdv{L}{q_i}dq_i+p_i\,d\dot q_i)+\pdv{L}{t}dt\)。含 \(d\dot q_i\) 的项 \(p_i\,d\dot q_i-p_i\,d\dot q_i\) 相消，剩下</p>
+      <div class="formula">\[ dH=\sum_i\Bigl(\dot q_i\,dp_i-\pdv{L}{q_i}dq_i\Bigr)-\pdv{L}{t}\,dt \]</div>
+      <p>于是得到一组<strong>对偶关系</strong>：</p>
+      <div class="formula">\[ \pdv{H}{p_i}=\dot q_i,\qquad \pdv{H}{q_i}=-\pdv{L}{q_i}=-\dv{}{t}\pdv{L}{\dot q_i}=-\dot p_i,\qquad \pdv{H}{t}=-\pdv{L}{t} \]</div>
+      <p>（中间用了 E–L 方程 \(\dv{}{t}(\pdv{L}{\dot q_i})=\pdv{L}{q_i}\)。）这就是<strong>哈密顿正则方程</strong> (Hamilton's canonical equations)：</p>
+      <div class="formula">\[ \boxed{\;\dot q_i=\pdv{H}{p_i},\qquad \dot p_i=-\pdv{H}{q_i}\quad (i=1,\dots,n)\;} \]</div>
+      <p>把 \(n\) 个二阶方程换成 \(2n\) 个对称、一阶的方程——表面是「换变量」，实际揭示了力学隐藏的<strong>辛结构</strong>。</p>
+      <div class="key-terms">Legendre transform (勒让德变换), canonical momentum \(p_i\) (正则动量), Hamiltonian \(H\) (哈密顿量), hyperregular (超规则)</div>
+
+      <h3>2. 辛形式——一组矩阵写尽全部力学</h3>
+      <p>把状态合并为 \(\vec z=(q_1,\dots,q_n,p_1,\dots,p_n)^{\top}\in\mathbb{R}^{2n}\)。定义 \(2n\times 2n\) <strong>辛矩阵</strong> (symplectic matrix)</p>
+      <div class="formula">\[ \Omega=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix},\qquad \Omega^{2}=-I,\quad \Omega^{\top}=-\Omega=\Omega^{-1} \]</div>
+      <p>哈密顿方程集中写成一条</p>
+      <div class="formula">\[ \boxed{\;\dot{\vec z}=\Omega\,\nabla_{\vec z}H\;} \]</div>
+      <p>对任意两函数 \(A(\vec z),B(\vec z)\)，<strong>泊松括号</strong> (Poisson bracket) 是双线性算子</p>
+      <div class="formula">\[ \{A,B\}\;\equiv\;\nabla A^{\top}\,\Omega\,\nabla B\;=\;\sum_{i=1}^{n}\Bigl(\pdv{A}{q_i}\pdv{B}{p_i}-\pdv{A}{p_i}\pdv{B}{q_i}\Bigr) \]</div>
+      <p>于是 \(\dot{\vec z}\) 的分量正是 \(\{z_\alpha,H\}\)。\(\Omega\) 编码了「位置-动量」之间的对偶配对：力学全部是辛几何 + 一个标量函数 \(H\)。<strong>辛结构是力学不变的几何骨架</strong>。</p>
+      <div class="key-terms">phase space (相空间), symplectic matrix \(\Omega\) (辛矩阵), Poisson bracket \(\{A,B\}\) (泊松括号)</div>
+
+      <h3>3. 相空间中的轨线——以 SHO 与摆为例</h3>
+      <p>哈密顿流 \(\dot{\vec z}=\Omega\nabla H\) 在 \(\mathbb{R}^{2n}\) 中确定一族<strong>轨线</strong> (trajectories)。重要事实：</p>
+      <ul>
+        <li>\(H\) 不显含 \(t\) 时，\(H(\vec z(t))=E\) 是常数（证明：\(\dv{H}{t}=\{H,H\}=0\)）。轨线躺在等能面 \(H=E\) 上。</li>
+        <li>对 1 自由度（2D 相空间），等能面是 1D 曲线，运动完全确定——可积。</li>
+        <li><strong>不动点</strong>满足 \(\nabla H=0\)：椭圆点（极小，stable，如 SHO 中心）和双曲点（鞍点，unstable，如摆在 \(\theta=\pi\) 处）。</li>
+        <li><strong>分界线</strong> (separatrix)：连接双曲点的特殊等能线，分隔不同拓扑的轨道（摆在 \(E=2m g\ell\) 处的「刚好到顶」分界）。</li>
+      </ul>
+      <p><strong>简谐振子</strong> SHO：\(H=p^{2}/(2m)+\tfrac12 m\omega^{2}x^{2}\)，等能线为椭圆 \(\tfrac{x^{2}}{2E/(m\omega^{2})}+\tfrac{p^{2}}{2mE}=1\)，半轴 \(A=\sqrt{2E/(m\omega^{2})}\)、\(m\omega A=\sqrt{2mE}\)。<strong>单摆</strong>：\(H=p_{\theta}^{2}/(2I)+m g\ell(1-\cos\theta)\)，\(I=m\ell^{2}\)。\(E<2m g\ell\) 时为天平动（libration，闭轨），\(E>2m g\ell\) 时为转动（rotation，开轨），\(E=2m g\ell\) 即分界线。</p>
+      <div class="key-terms">trajectory (轨线), fixed point (不动点), elliptic point (椭圆点), hyperbolic point (双曲点), separatrix (分界线), libration (天平动)</div>
+
+      <h3>4. 泊松括号——演化的代数骨架</h3>
+      <p>对任意相空间函数 \(f(q,p,t)\)，沿哈密顿流求全导数：</p>
+      <div class="formula">\[ \dv{f}{t}=\sum_i\Bigl(\pdv{f}{q_i}\dot q_i+\pdv{f}{p_i}\dot p_i\Bigr)+\pdv{f}{t}=\sum_i\Bigl(\pdv{f}{q_i}\pdv{H}{p_i}-\pdv{f}{p_i}\pdv{H}{q_i}\Bigr)+\pdv{f}{t} \]</div>
+      <div class="formula">\[ \boxed{\;\dv{f}{t}=\{f,H\}+\pdv{f}{t}\;} \]</div>
+      <p>泊松括号满足：(i) 反对称 \(\{A,B\}=-\{B,A\}\)；(ii) 双线性；(iii) <strong>莱布尼茨法则</strong> \(\{A,BC\}=\{A,B\}C+B\{A,C\}\)；(iv) <strong>雅可比恒等式</strong> \(\{A,\{B,C\}\}+\{B,\{C,A\}\}+\{C,\{A,B\}\}=0\)。后两条使相空间函数构成一个<strong>李代数</strong> (Lie algebra)。基本括号</p>
+      <div class="formula">\[ \{q_i,p_j\}=\delta_{ij},\qquad \{q_i,q_j\}=0,\qquad \{p_i,p_j\}=0 \]</div>
+      <p>把 \(f=q_i\) 与 \(f=p_i\) 代入演化方程，立刻复得哈密顿方程 \(\dot q_i=\{q_i,H\}\)、\(\dot p_i=\{p_i,H\}\)。<strong>括号即演化</strong>。</p>
+      <div class="key-terms">Jacobi identity (雅可比恒等式), Leibniz rule (莱布尼茨法则), Lie algebra (李代数), fundamental brackets (基本括号)</div>
+
+      <h3>5. 守恒律——\(\{f,H\}=0\) 的代数判据</h3>
+      <p>若 \(f\) 不显含 \(t\)，则 \(\dv{f}{t}=\{f,H\}\)。<strong>守恒</strong> ⇔ \(\{f,H\}=0\)。两个重要特例：</p>
+      <ul>
+        <li>\(\pdv{H}{t}=0\) ⇒ \(\dv{H}{t}=\{H,H\}=0\)，即能量守恒。</li>
+        <li>\(q_j\) 循环坐标（\(H\) 不显含 \(q_j\)）⇒ \(\dot p_j=-\pdv{H}{q_j}=0\)，\(p_j\) 守恒（与拉格朗日的诺特对应一致）。</li>
+      </ul>
+      <p>更深刻地，\(\{f,H\}=0\) ⇔ \(f\) 在哈密顿流下不变 ⇔ 由 \(f\) 生成的相空间流保持 \(H\) 不变。两个相互对易的守恒量（\(\{f,g\}=0\)）说明系统<strong>可积</strong> (Liouville integrable)——见作用量–角度一节。</p>
+      <p><strong>角动量代数</strong>：\(L_i=\epsilon_{ijk}r_j p_k\) 满足</p>
+      <div class="formula">\[ \{L_i,L_j\}=\epsilon_{ijk}L_k,\qquad \{L^{2},L_i\}=0 \]</div>
+      <p>这是 SO(3) 的李代数——在量子力学中变成对易子 \([L_i,L_j]=i\hbar\epsilon_{ijk}L_k\)。</p>
+      <div class="key-terms">conserved quantity (守恒量), cyclic coordinate (循环坐标), Liouville integrability (刘维尔可积性), angular momentum algebra (角动量代数)</div>
+
+      <h3>6. 正则变换——保持辛形式的变量替换</h3>
+      <p>考虑变量替换 \((q,p)\to(Q,P)\)，雅可比 \(M=\partial(Q,P)/\partial(q,p)\)。若 \(M\) 满足</p>
+      <div class="formula">\[ \boxed{\;M^{\top}\Omega M=\Omega\quad\text{（辛条件 symplectic condition）}\;} \]</div>
+      <p>则称该替换为<strong>正则变换</strong> (canonical transformation)。等价的判据有三：</p>
+      <ul>
+        <li><strong>保持基本泊松括号</strong>：\(\{Q_i,P_j\}=\delta_{ij}\)，\(\{Q_i,Q_j\}=\{P_i,P_j\}=0\)。</li>
+        <li><strong>保持辛 2-形式</strong>：\(\sum_i dp_i\wedge dq_i=\sum_i dP_i\wedge dQ_i\)。</li>
+        <li>\(\det M=1\)（辛条件取行列式给出，<em>必要而非充分</em>）。</li>
+      </ul>
+      <p>正则变换下，新变量 \((Q,P)\) 满足<strong>形式不变</strong>的哈密顿方程 \(\dot Q_i=\pdv{K}{P_i}\)、\(\dot P_i=-\pdv{K}{Q_i}\)，其中 \(K(Q,P,t)=H(q,p,t)+\pdv{F}{t}\)（差一个生成函数的时间导数）。<strong>非正则</strong>变换虽然可做坐标替换，但会破坏泊松括号结构，新变量不再满足哈密顿方程——典型陷阱。</p>
+      <div class="key-terms">canonical transformation (正则变换), symplectic condition (辛条件), Jacobian \(M\) (雅可比)</div>
+
+      <h3>7. 生成函数 \(F_1,F_2,F_3,F_4\)——构造正则变换的四种方式</h3>
+      <p>构造正则变换的实用方法：找一个<strong>生成函数</strong> (generating function)，依赖新旧变量的某种组合。四种类型（勒让德变换彼此关联）：</p>
+      <div class="formula">\[ \begin{aligned} F_1(q,Q,t)&:\quad p_i=\pdv{F_1}{q_i},\;\; P_i=-\pdv{F_1}{Q_i},\;\; K=H+\pdv{F_1}{t}\\ F_2(q,P,t)&:\quad p_i=\pdv{F_2}{q_i},\;\; Q_i=\pdv{F_2}{P_i},\;\; K=H+\pdv{F_2}{t}\\ F_3(p,Q,t)&:\quad q_i=-\pdv{F_3}{p_i},\;\; P_i=-\pdv{F_3}{Q_i},\;\; K=H+\pdv{F_3}{t}\\ F_4(p,P,t)&:\quad q_i=-\pdv{F_4}{p_i},\;\; Q_i=\pdv{F_4}{P_i},\;\; K=H+\pdv{F_4}{t} \end{aligned} \]</div>
+      <p>恒等变换由 \(F_2=q_i P_i\) 生成（验证：\(Q_i=\pdv{F_2}{P_i}=q_i\)、\(p_i=\pdv{F_2}{q_i}=P_i\)）。平移变换由 \(F_2=(q_i+a_i)P_i\) 生成；辛无穷小变换由 \(F_2=q_i P_i+\epsilon\,G(q,P)\) 生成，其中 \(G\) 即无穷小正则变换的生成元（如平移、旋转、时间演化本身由 \(G=H\) 生成）。</p>
+      <div class="key-terms">generating function (生成函数), infinitesimal canonical transformation (无穷小正则变换)</div>
+
+      <h3>8. 作用量–角度变量——周期运动的「正确坐标」</h3>
+      <p>对单自由度周期系统（SHO 或天平动摆），定义</p>
+      <div class="formula">\[ \boxed{\;J\;=\;\frac{1}{2\pi}\oint p\,dq\quad\text{（沿一条等能轨线积分）}\;} \]</div>
+      <p>常数 \(J\) 称<strong>作用量</strong> (action)。可证 \(J=J(H)\)（只依赖能量），与 \(H=H(J)\) 互为反函数。定义共轭角度 \(\theta\)，则 \((\theta,J)\) 是正则变量：\(\{\theta,J\}=1\)。新哈密顿量</p>
+      <div class="formula">\[ K(J)=H(J),\qquad \dot J=-\pdv{K}{\theta}=0,\qquad \dot\theta=\pdv{K}{J}\equiv\omega(J)=\text{const} \]</div>
+      <p>所以 \(J\) 守恒，\(\theta\) 匀速增长——运动在 \((\theta,J)\) 平面是水平直线。对 SHO：\(H=\omega J\)，所以 \(\dot\theta=\omega\)。<strong>多自由度可积系统</strong>有 \(n\) 个相互对易的 \(J_i\)，轨线在 \(n\)-环面上缠绕——这是 Arnold–Liouville 定理。</p>
+      <p>量子化条件 \(\oint p\,dq=nh\)（Bohr–Sommerfeld）即 \(J=n\hbar\)——作用量变量直接连向量子力学。</p>
+      <div class="key-terms">action variable \(J\) (作用量变量), angle variable \(\theta\) (角度变量), invariant torus (不变环面)</div>
+
+      <h3>9. 刘维尔定理——相空间流体不可压缩</h3>
+      <p>想象一组初始条件构成的「云」在相空间中演化。各点按哈密顿流运动：</p>
+      <div class="formula">\[ \dot{\vec z}=\vec V(\vec z),\qquad \vec V=(\dot q_1,\dots,\dot q_n,\dot p_1,\dots,\dot p_n) \]</div>
+      <p>云的<strong>散度</strong> (divergence) 是</p>
+      <div class="formula">\[ \nabla_{\vec z}\!\cdot\!\vec V=\sum_i\Bigl(\pdv{\dot q_i}{q_i}+\pdv{\dot p_i}{p_i}\Bigr)=\sum_i\Bigl(\pdv{^{2}H}{q_i\partial p_i}-\pdv{^{2}H}{p_i\partial q_i}\Bigr)=0 \]</div>
+      <p>（混合偏导交换对称。）<strong>哈密顿流散度为零</strong>。由散度定理，这意味着：</p>
+      <div class="formula">\[ \boxed{\;\text{刘维尔定理 Liouville's theorem: }\dv{}{t}\int_{\Omega_t}d^{2n}z=0\;} \]</div>
+      <p>即任一相空间区域的<strong>体积在演化下守恒</strong>。云可以剪切、拉伸、变形，但<strong>体积不变</strong>——像不可压缩流体。这是统计力学的基石（微正则系综的合理性），也是混沌的几何根源（拉伸必然伴随折叠）。注意：体积守恒不是「形状守恒」，更不是「能量守恒」——见误区 3。在辛矩阵层面，刘维尔定理就是 \(\det M=1\)，是辛条件的直接推论。</p>
+      <div class="key-terms">divergence-free flow (无散流), incompressible phase fluid (不可压缩相流体), Liouville's theorem (刘维尔定理)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从修正作用量原理到哈密顿方程 &amp; 刘维尔定理</h2>
+
+      <p>哈密顿方程可由一个<strong>修正的变分原理</strong>推出，而无需绕道 E–L 方程。把作用量用 \((q,p,t)\) 重写：</p>
+      <div class="formula">\[ S[q,p]\;=\;\int_{t_1}^{t_2}\!\Bigl[\sum_i p_i\dot q_i\;-\;H(q,p,t)\Bigr]dt \]</div>
+      <p>独立变分的变量现在是<strong>两组</strong>：\(q_i(t)\) 与 \(p_i(t)\)（注意：在哈密顿框架里 \(q\) 与 \(p\) 完全独立，见误区 4）。端点条件只固定 \(q_i(t_1),q_i(t_2)\)；\(p_i\) 在端点自由。</p>
+
+      <p><strong>第一步：变分</strong>。让 \(q_i\to q_i+\delta q_i\)、\(p_i\to p_i+\delta p_i\)：</p>
+      <div class="formula">\[ \delta S=\int_{t_1}^{t_2}\!\sum_i\Bigl[\delta p_i\,\dot q_i+p_i\,\delta\dot q_i-\pdv{H}{q_i}\delta q_i-\pdv{H}{p_i}\delta p_i\Bigr]dt \]</div>
+
+      <p><strong>第二步：分部积分</strong> \(p_i\,\delta\dot q_i=\dv{}{t}(p_i\delta q_i)-\dot p_i\delta q_i\)，端点项 \(\delta q_i(t_1)=\delta q_i(t_2)=0\) 消失：</p>
+      <div class="formula">\[ \delta S=\int_{t_1}^{t_2}\!\sum_i\Bigl[\bigl(\dot q_i-\pdv{H}{p_i}\bigr)\delta p_i-\bigl(\dot p_i+\pdv{H}{q_i}\bigr)\delta q_i\Bigr]dt \]</div>
+
+      <p><strong>第三步：基本引理</strong>。\(\delta q_i\) 与 \(\delta p_i\) 在内部各点独立任意，故两个括号必须分别零：</p>
+      <div class="formula">\[ \boxed{\;\dot q_i=\pdv{H}{p_i},\qquad \dot p_i=-\pdv{H}{q_i}\;} \]</div>
+      <p>从单条变分原理，同时给出两条方程。\(\square\)</p>
+
+      <p><strong>推论：刘维尔定理的代数证明</strong>。考虑相空间中无穷小区域 \(d^{2n}z=dq_1\cdots dq_n\,dp_1\cdots dp_n\)。经无穷小时间 \(dt\) 后，每点位移 \(\vec z\to\vec z+\vec V\,dt\)。新体积与旧体积之比即雅可比行列式：</p>
+      <div class="formula">\[ \frac{dV(t+dt)}{dV(t)}=\det\!\bigl(I+dt\,\nabla_{\vec z}\vec V\bigr)=1+dt\,\nabla_{\vec z}\!\cdot\!\vec V+O(dt^{2}) \]</div>
+      <p>而</p>
+      <div class="formula">\[ \nabla_{\vec z}\!\cdot\!\vec V=\sum_i\bigl(\pdv{\dot q_i}{q_i}+\pdv{\dot p_i}{p_i}\bigr)=\sum_i\bigl(\pdv{^{2}H}{q_i\partial p_i}-\pdv{^{2}H}{p_i\partial q_i}\bigr)=0 \]</div>
+      <p>（二阶混合偏导交换对称。）故 \(\dv{}{t}dV=0\)，任一区域体积守恒。<strong>刘维尔定理 = 哈密顿流散度为零</strong>。在辛语言里，演化算子的雅可比满足 \(M^{\top}\Omega M=\Omega\)，取行列式 \((\det M)^{2}=1\)，连续性给出 \(\det M=+1\)。\(\square\)</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 简谐振子的哈密顿量与方程 SHO — write H &amp; Hamilton's equations</h4>
+        <p class="example-statement">质量 \(m=0.50\,\unit{kg}\) 接到劲度 \(k=8.0\,\unit{N/m}\) 的弹簧上，振幅 \(A=0.20\,\unit{m}\)。从拉格朗日量 \(L=\tfrac12 m\dot x^{2}-\tfrac12 k x^{2}\) 出发：(a) 做勒让德变换写出 \(H(x,p)\)；(b) 写出哈密顿方程；(c) 求圆频率、周期与能量；(d) 描述相空间等能椭圆。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) <strong>正则动量</strong> \(p=\pdv{L}{\dot x}=m\dot x\)，可逆 \(\dot x=p/m\)。<strong>勒让德变换</strong>：</p>
+          <div class="formula">\[ H=p\dot x-L=p\cdot\frac{p}{m}-\Bigl[\tfrac12 m\Bigl(\frac{p}{m}\Bigr)^{2}-\tfrac12 k x^{2}\Bigr]=\frac{p^{2}}{2m}+\tfrac12 k x^{2} \]</div>
+          <p>对当前参数 \(m=0.50\,\unit{kg}\)、\(k=8.0\,\unit{N/m}\)：\(H=\dfrac{p^{2}}{1.0}+4.0\,x^{2}\,\unit{J}\)（\(p\) 以 \(\unit{kg\,m/s}\)、\(x\) 以 \(\unit{m}\) 计）。</p>
+          <p class="step">(b) <strong>哈密顿方程</strong>：</p>
+          <div class="formula">\[ \dot x=\pdv{H}{p}=\frac{p}{m},\qquad \dot p=-\pdv{H}{x}=-k x \]</div>
+          <p>消去 \(p\) 复得 \(m\ddot x=-k x\)，即 SHO 方程——内部自洽。</p>
+          <p class="step">(c) 圆频率 \(\omega=\sqrt{k/m}=\sqrt{8.0/0.50}=\sqrt{16}=4.00\,\unit{rad/s}\)；周期 <span class="ans">\(T=2\pi/\omega=\pi/2\approx 1.57\,\unit{s}\)</span>。能量取振幅处全为势能：</p>
+          <div class="formula">\[ E=\tfrac12 k A^{2}=\tfrac12(8.0)(0.20)^{2}=0.160\,\unit{J} \]</div>
+          <p class="step">(d) 等能椭圆 \(p^{2}/(2mE)+x^{2}/(2E/k)=1\)，即</p>
+          <div class="formula">\[ \frac{x^{2}}{(0.20)^{2}}+\frac{p^{2}}{(0.40)^{2}}=1 \]</div>
+          <p>半轴 \(A=0.20\,\unit{m}\)（\(x\) 方向）、\(B=m\omega A=(0.50)(4.0)(0.20)=0.40\,\unit{kg\,m/s}\)（\(p\) 方向）。<strong>椭圆面积</strong> \(\mathcal{A}=\pi A B=\pi(0.20)(0.40)=0.251\,\unit{J\,s}\)（注意单位 = 作用量）。下一例我们会看到这正是 \(2\pi J\)。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 单摆的哈密顿量与相图 Pendulum — Hamiltonian &amp; phase portrait</h4>
+        <p class="example-statement">理想平面摆：质量 \(m=0.30\,\unit{kg}\)，摆长 \(\ell=0.50\,\unit{m}\)，\(g=9.8\,\unit{m/s^{2}}\)。以摆角 \(\theta\)（从下方铅垂算起）为广义坐标。(a) 写出 \(H(\theta,p_\theta)\)；(b) 给出哈密顿方程；(c) 求分界线能量并据此区分三类轨道；(d) 求振幅 \(\theta_0=\pi/6\) 时的能量与小角度周期。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 拉格朗日量 \(L=\tfrac12 m\ell^{2}\dot\theta^{2}+m g\ell\cos\theta\)（取悬挂点为零势能，最低点势能为 \(-mg\ell\)）。正则动量</p>
+          <div class="formula">\[ p_\theta=\pdv{L}{\dot\theta}=m\ell^{2}\dot\theta\;\equiv\;I\dot\theta\quad(I=m\ell^{2}) \]</div>
+          <p>勒让德变换给出</p>
+          <div class="formula">\[ \boxed{\;H=\frac{p_\theta^{2}}{2m\ell^{2}}-m g\ell\cos\theta\;} \]</div>
+          <p>若改写为 \(H=p_\theta^{2}/(2I)+m g\ell(1-\cos\theta)-m g\ell\)，常数 \(-m g\ell\) 不影响运动，故可取 \(H'=p_\theta^{2}/(2I)+m g\ell(1-\cos\theta)\)，最低点 \(H'=0\)。</p>
+          <p class="step">(b) <strong>哈密顿方程</strong>：</p>
+          <div class="formula">\[ \dot\theta=\pdv{H}{p_\theta}=\frac{p_\theta}{m\ell^{2}},\qquad \dot p_\theta=-\pdv{H}{\theta}=-m g\ell\sin\theta \]</div>
+          <p>消去 \(p_\theta=m\ell^{2}\dot\theta\) 得 \(\ddot\theta=-(g/\ell)\sin\theta\)——单摆方程。</p>
+          <p class="step">(c) 转动惯量 \(I=m\ell^{2}=(0.30)(0.50)^{2}=0.075\,\unit{kg\,m^{2}}\)；\(m g\ell=(0.30)(9.8)(0.50)=1.47\,\unit{J}\)。<strong>分界线</strong>为经过上方不稳定平衡点 (\(\theta=\pi,p_\theta=0\)) 的等能线，对应</p>
+          <div class="formula">\[ E_{\text{sep}}=m g\ell(1-\cos\pi)=2m g\ell=2.94\,\unit{J} \]</div>
+          <p>三种轨道：(i) \(E<2m g\ell\)：天平动（来回摆动，闭轨）；(ii) \(E=2m g\ell\)：分界线（恰好转到顶，无限长时间到顶）；(iii) \(E>2m g\ell\)：转动（持续单向旋转）。\(\theta=\pi\) 处为双曲不动点；\(\theta=0\) 处为椭圆不动点。</p>
+          <p class="step">(d) \(\theta_0=\pi/6\) 时（在底部释放，无初速），<span class="ans">\(E=m g\ell(1-\cos\tfrac{\pi}{6})=1.47\times(1-0.866)=0.197\,\unit{J}\)</span>。小角度周期</p>
+          <div class="formula">\[ T_0=2\pi\sqrt{\ell/g}=2\pi\sqrt{0.50/9.8}=1.42\,\unit{s} \]</div>
+          <p>（精确周期含椭圆积分修正；对 \(\theta_0=\pi/6\) 修正系数 \(\approx 1+\theta_0^{2}/16+\cdots=1.004\)，差异约 0.4%。）</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 泊松括号基本计算 Poisson bracket computations</h4>
+        <p class="example-statement">单自由度，相空间 \((x,p)\)。(a) 验证 \(\{x,p\}=1\)；(b) 计算 \(\{x^{2},p^{2}\}\)；(c) 对 SHO \(H=p^{2}/(2m)+\tfrac12 m\omega^{2}x^{2}\)，计算 \(\{x,H\}\) 与 \(\{p,H\}\)，与哈密顿方程比较；(d) 计算 \(\{H,x^{2}\}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由定义 \(\{x,p\}=(\pdv{x}{x})(\pdv{p}{p})-(\pdv{x}{p})(\pdv{p}{x})=(1)(1)-(0)(0)=1\)。<span class="ans">\(\{x,p\}=1\)</span> ✔︎ 同理 \(\{p,x\}=-1\)。</p>
+          <p class="step">(b) <strong>用莱布尼茨法则</strong> \(\{fg,h\}=f\{g,h\}+\{f,h\}g\)：</p>
+          <div class="formula">\[ \{x^{2},p^{2}\}=x\{x,p^{2}\}+\{x,p^{2}\}x \]</div>
+          <p>而 \(\{x,p^{2}\}=\{x,p\}p+p\{x,p\}=p+p=2p\)。故 <span class="ans">\(\{x^{2},p^{2}\}=x\cdot 2p+2p\cdot x=4xp\)</span>。</p>
+          <p class="step">(c) \(\{x,H\}=(\pdv{x}{x})(\pdv{H}{p})-(\pdv{x}{p})(\pdv{H}{x})=\pdv{H}{p}=p/m\)，正是 \(\dot x\) ✔︎。\(\{p,H\}=(\pdv{p}{x})(\pdv{H}{p})-(\pdv{p}{p})(\pdv{H}{x})=0-1\cdot m\omega^{2}x=-m\omega^{2}x\)，正是 \(\dot p\) ✔︎。</p>
+          <p class="step">(d) 由反对称 \(\{H,x^{2}\}=-\{x^{2},H\}\)。用莱布尼茨：\(\{x^{2},H\}=x\{x,H\}+\{x,H\}x=2x\cdot(p/m)\)。故 <span class="ans">\(\{H,x^{2}\}=-2xp/m\)</span>。物理意义：\(\dv{(x^{2})}{t}=\{x^{2},H\}=2xp/m=2x\dot x\)，正是链式法则——泊松括号与对时间求导一致。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 SHO 的作用量–角度变换 Action-angle transform of the SHO</h4>
+        <p class="example-statement">对例 9.1 的 SHO，做正则变换到作用量–角度变量 \((\theta,J)\)：</p>
+        <div class="formula">\[ x=\sqrt{\frac{2J}{m\omega}}\sin\theta,\qquad p=\sqrt{2m\omega J}\cos\theta \]</div>
+        <p class="example-statement">(a) 验证该变换是正则的（雅可比辛条件 \(\det M=1\)）；(b) 把 \(H\) 表为 \(J\) 的函数；(c) 代入数据 \(m=0.50\,\unit{kg}\)、\(\omega=4.0\,\unit{rad/s}\)、\(E=0.160\,\unit{J}\)，求 \(J\) 与 \(\theta\) 的演化。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 计算雅可比行列式（即辛条件的 1D 版本）：</p>
+          <div class="formula">\[ \det\frac{\partial(x,p)}{\partial(\theta,J)}=\pdv{x}{\theta}\pdv{p}{J}-\pdv{x}{J}\pdv{p}{\theta} \]</div>
+          <p>各项：\(\pdv{x}{\theta}=\sqrt{2J/(m\omega)}\cos\theta\)，\(\pdv{x}{J}=\dfrac{1}{\sqrt{2Jm\omega}}\sin\theta\)，\(\pdv{p}{\theta}=-\sqrt{2m\omega J}\sin\theta\)，\(\pdv{p}{J}=\sqrt{m\omega/(2J)}\cos\theta\)。</p>
+          <div class="formula">\[ \det=\sqrt{\frac{2J}{m\omega}}\!\sqrt{\frac{m\omega}{2J}}\cos^{2}\theta-\frac{1}{\sqrt{2Jm\omega}}\!\sqrt{2m\omega J}\,(-\sin^{2}\theta) \]</div>
+          <div class="formula">\[ =\cos^{2}\theta+\sin^{2}\theta=1\;\;\checkmark \]</div>
+          <p>所以 \((\theta,J)\) 是正则变量：\(\{\theta,J\}=1\)。变换保持辛结构。</p>
+          <p class="step">(b) 代入 \(H\)：</p>
+          <div class="formula">\[ H=\frac{1}{2m}(2m\omega J\cos^{2}\theta)+\tfrac12 m\omega^{2}\!\cdot\!\frac{2J}{m\omega}\sin^{2}\theta=\omega J\cos^{2}\theta+\omega J\sin^{2}\theta \]</div>
+          <div class="formula">\[ \boxed{\;H(\theta,J)=\omega J\;} \]</div>
+          <p>新哈密顿量<strong>只依赖 \(J\)</strong>，\(\theta\) 是循环坐标——这就是「正确坐标」的威力。</p>
+          <p class="step">(c) 哈密顿方程：\(\dot J=-\pdv{H}{\theta}=0\)（\(J\) 守恒），\(\dot\theta=\pdv{H}{J}=\omega=4.0\,\unit{rad/s}\)（匀速）。由 \(E=\omega J\)：</p>
+          <p><span class="ans">\(J=E/\omega=0.160/4.0=0.040\,\unit{J\,s}\)</span>，\(\theta(t)=\theta_0+4.0\,t\,\unit{rad}\)。</p>
+          <p class="step"><strong>验证面积</strong>：相空间椭圆面积 \(\mathcal{A}=\pi A(m\omega A)=2\pi J\omega/\omega=2\pi J=0.251\,\unit{J\,s}\)。这正是例 9.1 算出的椭圆面积，且 <span class="ans">\(J=\mathcal{A}/(2\pi)=0.251/(2\pi)=0.040\,\unit{J\,s}\)</span> ✔︎。这是 \(J=\tfrac{1}{2\pi}\oint p\,dq\) 的几何意义。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 用泊松括号证明角动量守恒 Conservation via \(\{L_z,H\}=0\)</h4>
+        <p class="example-statement">二维中心力场中粒子，\(H=(p_x^{2}+p_y^{2})/(2m)+V(r)\)，\(r=\sqrt{x^{2}+y^{2}}\)。轨道角动量 \(L_z=x p_y-y p_x\)。(a) 计算 \(\{L_z,H\}\)；(b) 说明物理意义；(c) 用数值核验：取 \(m=1.0\,\unit{kg}\)、\(V(r)=\tfrac12 k r^{2}\)（二维谐振子，\(k=2.0\,\unit{N/m}\)），初态 \((x,y,p_x,p_y)=(0.30,0,0,0.60)\)，求 \(L_z\) 并验证守恒。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 用 \(\{f,g\}=(\pdv{f}{x})(\pdv{g}{p_x})+(\pdv{f}{y})(\pdv{g}{p_y})-(\pdv{f}{p_x})(\pdv{g}{x})-(\pdv{f}{p_y})(\pdv{g}{y})\)。</p>
+          <p>\(\pdv{L_z}{x}=p_y\)，\(\pdv{L_z}{y}=-p_x\)，\(\pdv{L_z}{p_x}=-y\)，\(\pdv{L_z}{p_y}=x\)。\(\pdv{H}{p_x}=p_x/m\)，\(\pdv{H}{p_y}=p_y/m\)，\(\pdv{H}{x}=\dv{V}{r}\cdot\dfrac{x}{r}\equiv V'(r)\dfrac{x}{r}\)，\(\pdv{H}{y}=V'(r)\dfrac{y}{r}\)。</p>
+          <div class="formula">\[ \{L_z,H\}=p_y\!\cdot\!\frac{p_x}{m}+(-p_x)\!\cdot\!\frac{p_y}{m}-(-y)\!\cdot\!V'\frac{x}{r}-x\!\cdot\!V'\frac{y}{r}=\frac{p_x p_y-p_x p_y}{m}+\frac{V'}{r}(yx-xy) \]</div>
+          <div class="formula">\[ \boxed{\;\{L_z,H\}=0\;} \]</div>
+          <p class="step">(b) 因 \(L_z\) 不显含 \(t\)，\(\dv{L_z}{t}=\{L_z,H\}=0\) ⇒ <strong>\(L_z\) 守恒</strong>。这正是诺特定理对旋转对称性的体现：\(V(r)\) 旋转不变 ⇒ 角动量守恒。注意：动能部分的「\(p_x p_y-p_x p_y\)」相消体现<strong>动量空间的各向同性</strong>；势能部分的「\(yx-xy\)」相消体现<strong>位形空间的各向同性</strong>。任一项失对称都会破坏守恒。</p>
+          <p class="step">(c) 初态 <span class="ans">\(L_z=x p_y-y p_x=(0.30)(0.60)-0=0.180\,\unit{kg\,m^{2}/s}\)</span>。</p>
+          <p>能量 \(E=\tfrac12 m(v_x^{2}+v_y^{2})+\tfrac12 k r^{2}=\tfrac12(1)(0.60)^{2}+\tfrac12(2.0)(0.30)^{2}=0.180+0.090=0.270\,\unit{J}\)。两方向独立谐振动（频率同为 \(\omega=\sqrt{k/m}=\sqrt 2=1.414\,\unit{rad/s}\)），运动为椭圆：</p>
+          <div class="formula">\[ x(t)=0.30\cos(\omega t),\qquad y(t)=0.42\sin(\omega t)\quad(\text{由 }v_y(0)=0.60) \]</div>
+          <p>角动量 \(L_z=x p_y-y p_x=m(x\dot y-y\dot x)\)。代入：\(\dot y=0.42\omega\cos\omega t\)，\(\dot x=-0.30\omega\sin\omega t\)，所以</p>
+          <div class="formula">\[ L_z=(1.0)\bigl[(0.30\cos\omega t)(0.42\omega\cos\omega t)-(0.42\sin\omega t)(-0.30\omega\sin\omega t)\bigr] \]</div>
+          <div class="formula">\[ =(1.0)(0.30)(0.42)(\omega)(\cos^{2}+\sin^{2})=(0.126)(1.414)=0.178\,\unit{kg\,m^{2}/s}\;\checkmark \]</div>
+          <p>与 \(0.180\) 的微小差异来自舍入（\(v_y(0)=0.60\) ⇒ 振幅 \(0.60/\omega=0.424\)，重算：\(L_z=(0.30)(0.424)(1.414)=0.180\,\unit{kg\,m^{2}/s}\) 完全一致 ✔︎）。<strong>角动量守恒意味着粒子在 \(xy\) 平面扫过的面积速率为常数</strong>（开普勒第二定律的同类）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.6 相空间面积 = 作用量 = \(2\pi J\) Phase-space area enclosed by an orbit</h4>
+        <p class="example-statement">例 9.1 中 SHO 的等能椭圆面积为 \(\mathcal{A}=2\pi E/\omega\)。(a) 用椭圆几何验证；(b) 直接计算 \(\oint p\,dx\)（沿一条等能轨线一圈）证明 \(\mathcal{A}=\oint p\,dq=2\pi J\)；(c) 与玻尔–索末菲量子化 \(\oint p\,dx=n h\) 联系，给出 \(E_n\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由例 9.1，椭圆半轴 \(A_x=\sqrt{2E/(m\omega^{2})}\)、\(B_p=\sqrt{2mE}\)，面积</p>
+          <div class="formula">\[ \mathcal{A}=\pi A_x B_p=\pi\sqrt{\frac{2E}{m\omega^{2}}}\sqrt{2mE}=\pi\sqrt{\frac{4E^{2}}{\omega^{2}}}=\frac{2\pi E}{\omega} \]</div>
+          <p class="step">(b) <strong>线积分法</strong>。沿椭圆 \(x=A_x\cos\phi\)、\(p=B_p\sin\phi\)，参数 \(\phi\) 从 \(0\) 到 \(2\pi\)：</p>
+          <div class="formula">\[ \oint p\,dx=\int_{0}^{2\pi}(B_p\sin\phi)(-A_x\sin\phi\,d\phi)=-A_x B_p\int_{0}^{2\pi}\sin^{2}\phi\,d\phi=-A_x B_p\cdot\pi \]</div>
+          <p>负号仅反映 \(\phi\) 增加时 \(x\) 减少的方向约定；取绝对值</p>
+          <div class="formula">\[ \bigl|\oint p\,dx\bigr|=\pi A_x B_p=\frac{2\pi E}{\omega}=\mathcal{A} \]</div>
+          <p><strong>作用量</strong></p>
+          <div class="formula">\[ \boxed{\;J=\frac{1}{2\pi}\oint p\,dx=\frac{E}{\omega}\;} \]</div>
+          <p>对例 9.1 数据：\(J=0.160/4.0=0.040\,\unit{J\,s}\) ✔︎（与例 9.4 一致）。</p>
+          <p class="step">(c) 玻尔–索末菲量子化：\(\oint p\,dx=n h=2\pi n\hbar\)，即 \(J=n\hbar\)。代入 \(E=\omega J\)：</p>
+          <div class="formula">\[ \boxed{\;E_n=n\hbar\omega,\qquad n=0,1,2,\dots\;} \]</div>
+          <p>这是旧量子论给出的 SHO 能级（与量子力学严格结果 \(E_n=(n+\tfrac12)\hbar\omega\) 差一个零点能 \(\tfrac12\hbar\omega\)，正是 WKB 改进所修复的项）。对 \(m=0.50\,\unit{kg}\)、\(\omega=4.0\,\unit{rad/s}\)：\(\hbar\omega=(1.055\times 10^{-34})(4.0)=4.22\times 10^{-34}\,\unit{J}\)，即相邻能级间隔 \(\Delta E=4.22\times 10^{-34}\,\unit{J}=2.63\times 10^{-15}\,\unit{eV}\)——宏观振子的能级间距小到完全无法分辨，经典连续极限合理。</p>
+          <p class="step"><strong>核心收获</strong>：作用量 \(J\) 同时具有 (i) <strong>几何</strong>意义（相空间面积 / \(2\pi\)）、(ii) <strong>动力学</strong>意义（哈密顿量的「正确」坐标）、(iii) <strong>量子化</strong>意义（量子数 \(\times\hbar\)）。哈密顿力学把这三者用一条公式缝合。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：以为 \(H=T+V\) 永远成立。</strong>仅在<strong>笛卡尔坐标 + 自然拉格朗日量</strong>（动能仅二次依赖速度、势不依赖速度）时 \(H=T+V\)。在转动坐标、加速系、或<strong>电磁场</strong>中：\(L=\tfrac12 m v^{2}-q\varphi+q\vec v\!\cdot\!\vec A\)，正则动量 \(\vec p=m\vec v+q\vec A\)，于是 \(H=\vec p\!\cdot\!\vec v-L=\tfrac12 m v^{2}+q\varphi\)——形式上仍等于「机械能 \(T+q\varphi\)」，但若错误地把 \(H\) 写成「\(p^{2}/(2m)+q\varphi\)」就丢了矢势，得出错的运动方程（正确的应是 \(H=(\vec p-q\vec A)^{2}/(2m)+q\varphi\)）。</li>
+        <li><strong>误区 2：混淆「正则变换」与「任意坐标替换」。</strong>正则变换必须<strong>保持泊松括号</strong>（即辛条件 \(M^{\top}\Omega M=\Omega\)）。并非所有可微双射都是正则的——例如 \((Q,P)=(q,2p)\) 不是正则的（\(\{Q,P\}=2\neq 1\)），新变量 \((Q,P)\) 不满足哈密顿方程；\(\det M=2\neq 1\)。<em>外形</em>变了不等于「不正则」（如 SHO → 作用量–角度外形完全不同，却正则）；<em>形式</em>不变才是关键。</li>
+        <li><strong>误区 3：把刘维尔定理理解为「形状不变」或「能量守恒」。</strong>刘维尔定理只说<strong>相空间体积</strong>守恒——云可以任意剪切、拉伸、扭曲（只要体积不变）。混沌系统里，初始小球会被拉伸成细长纤维（体积不变但形状变得不可辨认），这正是<strong>混合</strong> (mixing) 的几何。能量守恒是另一回事（\(\{H,H\}=0\)），是轨线被约束在等能面上；二者是独立的性质。</li>
+        <li><strong>误区 4：在哈密顿框架里仍把 \(p\) 当作 \(m\dot q\) 的从属量。</strong>哈密顿力学中 \(q\) 与 \(p\) 是<strong>完全独立</strong>的相空间坐标（变分原理里 \(\delta q\) 与 \(\delta p\) 独立）。\(p=m\dot q\) 只在笛卡尔 + 标准动能下成立；一般情况下（如电磁场中 \(\vec p=m\vec v+q\vec A\)，或转动坐标下含惯性项）\(p\neq m\dot q\)。<strong>正则动量是勒让德变换的产物，不是「质量乘速度」的同义词</strong>。</li>
+        <li><strong>误区 5：以为 \(\{f,H\}=0\) 就一定守恒。</strong>需要 \(f\) <strong>不显含 \(t\)</strong>。完整判据是 \(\dv{f}{t}=\{f,H\}+\pdv{f}{t}=0\)。例如含时系统中的能量本身 \(H(q,p,t)\)，虽然有 \(\{H,H\}=0\)，但若 \(\pdv{H}{t}\neq 0\) 则能量仍不守恒。显含时间的「运动积分」必须满足更强的条件 \(\{f,H\}=-\pdv{f}{t}\)。</li>
+        <li><strong>误区 6：混淆泊松括号 \(\{q,p\}=1\) 与对易子 \([q,p]=i\hbar\)。</strong>前者是经典相空间的代数结构（无量纲的实数），后者是量子力学算符代数（带 \(\hbar\) 量纲）。它们形式相似因为量子化把经典泊松括号映射为 \((1/i\hbar)\) 乘对易子：\(\{A,B\}_{\text{cl}}\to\tfrac{1}{i\hbar}[\hat A,\hat B]\)。但经典括号对易于乘法（\(c\)-数），量子括号对易子作用于态矢量——不可等同。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 自由落体的哈密顿量。质量 \(m=2.0\,\unit{kg}\) 的质点在均匀重力 \(g=9.8\,\unit{m/s^{2}}\) 中做一维运动（取 \(y\) 向上）。(a) 写 \(L\)、做勒让德变换得 \(H(y,p)\)；(b) 写哈密顿方程并验证复得 \(m\ddot y=-m g\)；(c) 画出相空间等能线，说明与 SHO 等能线椭圆的拓扑差异。</summary>
+        <div class="hint">\(L=\tfrac12 m\dot y^{2}-m g y\)。等能线 \(p^{2}/(2m)+mgy=E\) 是<strong>抛物线</strong>（在 \(y\) 上有下界 \(E/(mg)\)，\(p\) 双向无界）。</div>
+        <div class="solution">
+          <p>(a) \(p=m\dot y\)，\(H=p\dot y-L=p^{2}/(2m)+mgy\)。<strong>注意 \(H=T+V\)</strong>（笛卡尔坐标 + 标准势）。</p>
+          <p>(b) \(\dot y=\pdv{H}{p}=p/m\)，\(\dot p=-\pdv{H}{y}=-m g\)。结合：\(m\ddot y=-m g\) ✔︎。</p>
+          <p>(c) 等能线 \(p=\pm\sqrt{2m(E-mgy)}\)，在 \(y\le E/(mg)\) 时实，是两条关于 \(y\) 轴对称的抛物线弧——没有闭合（粒子达到最高点后返回，但相空间轨线<strong>不闭合</strong>，因为 \(\dot y\) 与 \(y\) 的关系不是周期性的）。对比 SHO 的闭合椭圆：周期运动 ↔ 闭合轨线 ↔ 等能面紧致。</p>
+          <p><span class="ans">\(H=p^{2}/(2m)+mgy\)；相空间等能线为抛物线，非闭合。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 角动量代数 \(\{L_i,L_j\}=\epsilon_{ijk}L_k\)。三维角动量 \(L_i=\epsilon_{ijk}r_j p_k\)。直接计算证明 \(\{L_x,L_y\}=L_z\)，并由此推导 \(\{L^{2},L_i\}=0\)（\(L^{2}=L_x^{2}+L_y^{2}+L_z^{2}\)）。</summary>
+        <div class="hint">先写出 \(L_x=y p_z-z p_y\)、\(L_y=z p_x-x p_z\)。用基本括号 \(\{r_i,p_j\}=\delta_{ij}\)、\(\{r_i,r_j\}=\{p_i,p_j\}=0\) 逐项展开，再用莱布尼茨法则。对 \(L^{2}\) 部分：\(\{L^{2},L_i\}=\sum_j\{L_j^{2},L_i\}=\sum_j 2L_j\{L_j,L_i\}\)。</div>
+        <div class="solution">
+          <p>\(L_x=y p_z-z p_y\)，\(L_y=z p_x-x p_z\)。计算 \(\{y p_z,L_y\}\) 等。利用莱布尼茨：\(\{y p_z,L_y\}=y\{p_z,L_y\}+\{y,L_y\}p_z\)。</p>
+          <p>\(\{p_z,L_y\}=\{p_z,z p_x-x p_z\}=\{p_z,z\}p_x+z\{p_z,p_x\}-\{p_z,x\}p_z-x\{p_z,p_z\}=(-1)\cdot p_x-0-0-0=-p_x\)。</p>
+          <p>\(\{y,L_y\}=\{y,z p_x-x p_z\}=\{y,z\}p_x+z\{y,p_x\}-\{y,x\}p_z-x\{y,p_z\}=0+0-0-0=0\)。所以 \(\{y p_z,L_y\}=y(-p_x)+0=-y p_x\)。</p>
+          <p>类似地 \(\{z p_y,L_y\}=\{z p_y,z p_x-x p_z\}=z\{p_y,z p_x\}-\{z p_y,x p_z\}\)。逐项算：\(\{p_y,z p_x\}=\{p_y,z\}p_x=0\)，\(\{p_y,x p_z\}=0\)；\(\{z,x p_z\}=x\{z,p_z\}=x\)。故 \(\{z p_y,L_y\}=z\cdot 0-p_y\cdot x=-x p_y\)。综合：</p>
+          <p>\(\{L_x,L_y\}=\{y p_z-z p_y,L_y\}=(-y p_x)-(-x p_y)=x p_y-y p_x=L_z\) ✔︎</p>
+          <p><span class="ans">\(\{L_x,L_y\}=L_z\)</span>（其他分量由循环置换得到：\(\{L_y,L_z\}=L_x\)，\(\{L_z,L_x\}=L_y\)）。</p>
+          <p><strong>\(\{L^{2},L_i\}\)</strong>：\(\{L^{2},L_i\}=\sum_j\{L_j^{2},L_i\}=\sum_j\bigl(L_j\{L_j,L_i\}+\{L_j,L_i\}L_j\bigr)=2\sum_j L_j\{L_j,L_i\}\)。代入上面的代数：对 \(i=z\)，\(\sum_j L_j\{L_j,L_z\}=L_x\{L_x,L_z\}+L_y\{L_y,L_z\}+L_z\{L_z,L_z\}=L_x(-L_y)+L_y(L_x)+0=0\) ✔︎。所以 <span class="ans">\(\{L^{2},L_i\}=0\)</span>，即 \(L^{2}\) 与每个分量都对易——可同时守恒（中心力场中 \(L^{2}\) 与 \(L_z\) 都守恒）。这正是量子力学 \([L^{2},L_i]=0\) 的经典对应。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 平移变换的生成函数。验证 \(F_2(q,P)=q P+a P\)（常数 \(a\)）生成的变换是 \(Q=q+a\)、\(p=P\)（即位置平移 \(a\)，动量不变）。再验证它确实保持泊松括号 \(\{Q,P\}=1\)。</summary>
+        <div class="hint">用 \(F_2\) 公式：\(p=\pdv{F_2}{q}\)、\(Q=\pdv{F_2}{P}\)。然后直接算 \(\{Q,P\}\)。</div>
+        <div class="solution">
+          <p>\(\pdv{F_2}{q}=P\) ⇒ \(p=P\)。\(\pdv{F_2}{P}=q+a\) ⇒ \(Q=q+a\)。所以 \((Q,P)=(q+a,p)\)——位置整体平移 \(a\)，动量不变。</p>
+          <p>\(\{Q,P\}=\{q+a,p\}=\{q,p\}+\{a,p\}=1+0=1\) ✔︎（常数与任何函数的泊松括号为零）。</p>
+          <p><span class="ans">\(Q=q+a,\;P=p\)；\(\{Q,P\}=1\)，正则。</span> 类似地，\(F_2'(q,P)=q P+q b\) 生成「动量平移」\((Q,P)=(q,p+b)\)。无穷小平移 (\(a\to\delta a\) 小) 的生成元是 \(G=p\)（位置平移）或 \(G=-q\)（动量平移）——动量是平移的生成元，这正是诺特定理「动量守恒 ↔ 平移对称」的辛表述。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 验证辛矩阵条件 ⇒ \(\det M=1\)。设 \(2n\times 2n\) 矩阵 \(M\) 满足辛条件 \(M^{\top}\Omega M=\Omega\)，\(\Omega=\begin{pmatrix}0&I\\-I&0\end{pmatrix}\)。(a) 取行列式证明 \((\det M)^{2}=1\)；(b) 用连续性论证为什么 \(\det M=+1\)（而非 \(-1\)）；(c) 对 1D 缩放变换 \((Q,P)=(\lambda q,\lambda^{-1}p)\) 验证它是正则的，计算 \(\det M\)。</summary>
+        <div class="hint">(a) \(\det(M^{\top}\Omega M)=\det M^{\top}\det\Omega\det M=\det\Omega\cdot(\det M)^{2}\)，应等于 \(\det\Omega\)。(b) 恒等变换 \(M=I\) 是正则的，\(\det I=1\)；正则变换集合是连通的。(c) \(\lambda\) 任意正数。</div>
+        <div class="solution">
+          <p>(a) \(\det(M^{\top}\Omega M)=\det\Omega\)。左边 \(=(\det M)(\det\Omega)(\det M)=\det\Omega\cdot(\det M)^{2}\)。故 \((\det M)^{2}=1\)，\(\det M=\pm 1\)。</p>
+          <p>(b) 恒等变换 \(M=I\) 满足辛条件，\(\det I=+1\)。正则变换构成连通李群 \(\mathrm{Sp}(2n,\mathbb{R})\)，行列式作为连续函数只能取 \(+1\)。所以 <span class="ans">\(\det M=+1\)</span>——这是刘维尔定理的代数根源。</p>
+          <p>(c) \(M=\begin{pmatrix}\lambda&0\\0&\lambda^{-1}\end{pmatrix}\)，\(\det M=\lambda\cdot\lambda^{-1}=1\) ✔︎。验证辛条件：</p>
+          <p>\(M^{\top}\Omega M=\begin{pmatrix}\lambda&0\\0&\lambda^{-1}\end{pmatrix}\begin{pmatrix}0&1\\-1&0\end{pmatrix}\begin{pmatrix}\lambda&0\\0&\lambda^{-1}\end{pmatrix}=\begin{pmatrix}0&\lambda\lambda^{-1}\\-\lambda^{-1}\lambda&0\end{pmatrix}=\begin{pmatrix}0&1\\-1&0\end{pmatrix}=\Omega\) ✔︎。</p>
+          <p>此变换在 SHO 中表示「\(q\) 拉伸、\(p\) 压缩」使等能椭圆改变外形但面积不变——形象地体现「形状可变，体积守恒」。<span class="ans">\(\det M=1\)，正则。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 单摆周期与作用量。对例 9.2 单摆（\(m=0.30\,\unit{kg}\)、\(\ell=0.50\,\unit{m}\)），振幅 \(\theta_0=\pi/3\)。(a) 写出作用量积分 \(J(E)=\tfrac{1}{2\pi}\oint p_\theta\,d\theta\) 的显式（含椭圆积分）；(b) 用小角度近似估计 \(J\)；(c) 由 \(J(E)\) 反推频率 \(\omega=\pdv{H}{J}\) 并与精确周期公式 \(T=4\sqrt{\ell/g}\,K(\sin(\theta_0/2))\)（\(K\) 为完全椭圆积分）比较。</summary>
+        <div class="hint">等能关系 \(E=m g\ell(1-\cos\theta_0)\)。在天平动区 \(\theta\in[-\theta_0,\theta_0]\)，\(p_\theta=\sqrt{2I\bigl(E-m g\ell(1-\cos\theta)\bigr)}\)。小角度近似 \(1-\cos\theta\approx\theta^{2}/2\)。</div>
+        <div class="solution">
+          <p>(a) \(E=m g\ell(1-\cos\theta_0)\)。\(p_\theta(\theta)=\sqrt{2I E-2I m g\ell(1-\cos\theta)}=\sqrt{2I m g\ell(\cos\theta-\cos\theta_0)}\)。</p>
+          <div class="formula">\[ J(E)=\frac{1}{2\pi}\cdot 2\int_{-\theta_0}^{\theta_0}\!\sqrt{2I m g\ell(\cos\theta-\cos\theta_0)}\,d\theta=\frac{1}{\pi}\int_{-\theta_0}^{\theta_0}\!\sqrt{2I m g\ell(\cos\theta-\cos\theta_0)}\,d\theta \]</div>
+          <p>用半角公式 \(\cos\theta-\cos\theta_0=2(\sin^{2}(\theta_0/2)-\sin^{2}(\theta/2))\)，并设 \(\sin(\theta/2)=\sin(\theta_0/2)\sin\phi=k\sin\phi\)（\(k=\sin(\theta_0/2)\)），化为标准椭圆积分形式：</p>
+          <div class="formula">\[ J(E)=\frac{8}{\pi}\sqrt{I m g\ell}\;E(k)\cdot\sin^{2}(\theta_0/2)\cdot\frac{1}{k}\cdot k=\frac{8}{\pi}\sqrt{m g\ell^{3}}\,E(k)\;\;(\text{含 }k=\sin(\theta_0/2)) \]</div>
+          <p>（\(E(k)\) 为第二类完全椭圆积分。）</p>
+          <p>(b) 小角度 \(\theta_0\to 0\) 时 \(E(k)\to\pi/2\)，\(J\to\frac{8}{\pi}\sqrt{m g\ell^{3}}\cdot\frac{\pi}{2}\cdot\frac{\theta_0^{2}}{4}=\sqrt{m g\ell^{3}}\,\theta_0^{2}\)。代入 \(m g\ell^{3}=(0.30)(9.8)(0.50)^{3}=0.3675\)，\(\sqrt{}=0.606\)，\(\theta_0^{2}=(\pi/3)^{2}=1.097\)，<span class="ans">\(J\approx 0.606\times 1.097=0.665\,\unit{J\,s}\)</span>（小角度估值）。</p>
+          <p>(c) 频率 \(\omega=\pdv{H}{J}=(\pdv{J}{H})^{-1}\)。在 SHO 极限 \(J=E/\omega_0\)（\(\omega_0=\sqrt{g/\ell}=4.43\,\unit{rad/s}\)），\(\omega=\omega_0=4.43\,\unit{rad/s}\)，周期 \(T_0=2\pi/\omega_0=1.42\,\unit{s}\)。精确公式 \(T=4\sqrt{\ell/g}\,K(k)\)：\(k=\sin(\pi/6)=0.5\)，\(K(0.5)=1.686\)，<span class="ans">\(T=4\sqrt{0.50/9.8}\times 1.686=1.42\times 1.186=1.52\,\unit{s}\)</span>，比小角度估值长 7%（振幅大 → 非线性软化 → 周期变长）。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：相空间流与刘维尔定理 Phase-Space Flow &amp; Liouville's Theorem</h2>
+      <p class="sim-desc">本仿真在相空间 \((q,p)\) 中显示两条互补的视觉证据。(i) <strong>背景等能线</strong>：一组不同能量 \(H\) 的轨线，构成相图（SHO 是同心椭圆；非线性摆有椭圆点、双曲点与分界线）。(ii) <strong>「色团」blob</strong>：一小块相空间区域（多边形顶点代表初始条件集合）按哈密顿流演化——会<strong>剪切、拉伸、扭曲</strong>，但<strong>面积守恒</strong>（刘维尔定理）。下方实时显示初始面积 \(A_0\) 与当前面积 \(A\)，相对偏差应在数值误差范围内。滑块调节能量 \(H\)（决定 blob 中心位置）与 blob 大小；按钮切换 SHO 与非线性摆，重置回初始位置。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="720" height="440"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var ctx = canvas.getContext('2d');
+          var W = canvas.width, H = canvas.height;
+
+          // Mode: 'sho' (m=1, ω=1, so H=(q²+p²)/2) or 'pend' (mgl=1, I=1, H=p²/2 + 1 - cos q).
+          var params = {
+            mode: 'sho',
+            energy: 0.5,
+            blobSize: 0.22
+          };
+
+          // Phase-space window (mode-dependent).
+          function qRange() { return params.mode === 'sho' ? 2.0 : Math.PI; }
+          function pRange() { return params.mode === 'sho' ? 2.0 : 3.0; }
+
+          var originX = W / 2, originY = H / 2;
+          function sx() { return (W - 80) / (2 * qRange()); }   // pixels per q unit
+          function sy() { return (H - 80) / (2 * pRange()); }   // pixels per p unit
+          function toX(q) { return originX + q * sx(); }
+          function toY(p) { return originY - p * sy(); }
+
+          // Hamiltonian and partial derivatives.
+          function ham(q, p) {
+            if (params.mode === 'sho') return 0.5 * (q * q + p * p);
+            return 0.5 * p * p + (1 - Math.cos(q));
+          }
+          function dHdq(q) { return params.mode === 'sho' ? q : Math.sin(q); }
+          function dHdp(p) { return p; }  // both modes have ∂H/∂p = p
+
+          // Hamilton's equations: q̇ = ∂H/∂p, ṗ = -∂H/∂q
+          function deriv(state) {
+            return [dHdp(state[1]), -dHdq(state[0])];
+          }
+
+          // Place blob center on energy contour, on p-axis: (0, p_c) with H(0, p_c)=E.
+          // SHO: p_c = √(2E); pendulum: p_c = √(2E) (since H(0,p)=p²/2).
+          function blobCenter() {
+            var E = Math.max(0.05, params.energy);
+            var pc = Math.sqrt(2 * E);
+            return [0, pc];
+          }
+
+          var N_BLOB = 72;
+          function makeBlob() {
+            var c = blobCenter();
+            var pts = [];
+            for (var i = 0; i < N_BLOB; i++) {
+              var a = (i / N_BLOB) * 2 * Math.PI;
+              // Slightly anisotropic initial shape to make shear visible even in SHO.
+              var dq = params.blobSize * Math.cos(a);
+              var dp = params.blobSize * 0.85 * Math.sin(a);
+              pts.push([c[0] + dq, c[1] + dp]);
+            }
+            return pts;
+          }
+
+          function polygonArea(pts) {
+            var s = 0;
+            for (var i = 0; i < pts.length; i++) {
+              var j = (i + 1) % pts.length;
+              s += pts[i][0] * pts[j][1] - pts[j][0] * pts[i][1];
+            }
+            return Math.abs(s) / 2;
+          }
+
+          function reinit(s) {
+            s.blob = makeBlob();
+            s.initialArea = polygonArea(s.blob);
+            s.t = 0;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return { blob: makeBlob(), initialArea: polygonArea(makeBlob()), t: 0 };
+            },
+            step: function (dt, t, s) {
+              // RK4 each blob point.
+              for (var i = 0; i < s.blob.length; i++) {
+                s.blob[i] = PS.integrate(deriv, s.blob[i], t, dt, 'rk4');
+              }
+              s.t += dt;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              var title = params.mode === 'sho'
+                ? '简谐振子相空间 SHO phase space (m = 1 kg, ω = 1 rad/s)'
+                : '非线性摆相空间 Pendulum phase space (mgl = 1, I = 1)';
+              PS.drawText(ctx, title, 14, 22, { font: '14px system-ui, sans-serif', color: C.text });
+
+              // Axes via grid (origin at canvas centre).
+              PS.drawGrid(ctx, { originX: originX, originY: originY, scale: sx(), step: 1 });
+              PS.drawText(ctx, params.mode === 'sho' ? 'q (m)' : 'θ (rad)',
+                          W - 60, originY + 16, { font: '12px system-ui, sans-serif', color: C.axis });
+              PS.drawText(ctx, 'p', originX + 8, 18, { font: '12px system-ui, sans-serif', color: C.axis });
+
+              // Background energy contours.
+              drawContours(ctx);
+
+              // Draw blob: filled polygon + vertices.
+              ctx.save();
+              ctx.fillStyle = 'rgba(37, 99, 235, 0.18)';
+              ctx.strokeStyle = C.accent;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              for (var i = 0; i < s.blob.length; i++) {
+                var px = toX(s.blob[i][0]);
+                var py = toY(s.blob[i][1]);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+              ctx.restore();
+              for (var k = 0; k < s.blob.length; k++) {
+                PS.drawCircle(ctx, toX(s.blob[k][0]), toY(s.blob[k][1]), 2, { fill: C.primary });
+              }
+
+              // Mark blob center (current "marker" point that started at center).
+              var c = blobCenter();
+              PS.drawCircle(ctx, toX(0), toY(0), 4, { fill: C.accent2 });
+
+              // Area readout.
+              var currentArea = polygonArea(s.blob);
+              var relDev = (currentArea / Math.max(1e-9, s.initialArea) - 1) * 100;
+              PS.drawText(ctx,
+                '初始面积 A₀ = ' + s.initialArea.toFixed(4) +
+                '    当前面积 A = ' + currentArea.toFixed(4) +
+                '    相对偏差 ' + (relDev >= 0 ? '+' : '') + relDev.toFixed(2) + '%',
+                14, H - 26, { font: '13px system-ui, sans-serif', color: C.text });
+              PS.drawText(ctx,
+                'Liouville: 面积守恒（数值误差 &lt; 1%）—— 形状可变，体积不变',
+                14, H - 10, { font: '12px system-ui, sans-serif', color: C.accent2 });
+            }
+          });
+
+          function drawContours(ctx) {
+            var C = PS.colors;
+            ctx.save();
+            ctx.lineWidth = 1;
+            if (params.mode === 'sho') {
+              var Es = [0.1, 0.3, 0.6, 1.0, 1.5, 2.0];
+              for (var i = 0; i < Es.length; i++) {
+                var r = Math.sqrt(2 * Es[i]);
+                ctx.strokeStyle = (Math.abs(Es[i] - params.energy) < 0.05) ? C.accent2 : C.grid;
+                ctx.globalAlpha = (Math.abs(Es[i] - params.energy) < 0.05) ? 0.9 : 0.5;
+                ctx.beginPath();
+                ctx.ellipse(toX(0), toY(0), r * sx(), r * sy(), 0, 0, 2 * Math.PI);
+                ctx.stroke();
+              }
+            } else {
+              var Es2 = [0.2, 0.6, 1.0, 1.5, 1.99, 2.0, 2.5, 3.5];
+              for (var k = 0; k < Es2.length; k++) {
+                var isSep = Math.abs(Es2[k] - 2.0) < 0.005;
+                var isMatch = Math.abs(Es2[k] - params.energy) < 0.05;
+                drawPendulumContour(ctx, Es2[k],
+                  isSep ? C.accent : (isMatch ? C.accent2 : C.grid),
+                  isSep || isMatch ? 0.95 : 0.5);
+              }
+            }
+            ctx.restore();
+          }
+
+          function drawPendulumContour(ctx, E, color, alpha) {
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = alpha;
+            ctx.lineWidth = (Math.abs(E - 2.0) < 0.005) ? 1.8 : 1;
+            var qmax = Math.PI;
+            if (E < 2) qmax = Math.acos(1 - E);
+            var branches = [+1, -1];
+            for (var b = 0; b < 2; b++) {
+              var sgn = branches[b];
+              ctx.beginPath();
+              var first = true;
+              for (var q = -qmax; q <= qmax + 1e-4; q += 0.015) {
+                var val = E - (1 - Math.cos(q));
+                if (val < 0) continue;
+                var p = sgn * Math.sqrt(val);
+                var x = toX(q), y = toY(p);
+                if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+            }
+            // For rotation (E > 2): also draw periodic copies outside [-π, π] for visual continuity
+            if (E > 2.0) {
+              for (var shift = -1; shift <= 1; shift += 2) {
+                for (var b2 = 0; b2 < 2; b2++) {
+                  var sgn2 = branches[b2];
+                  ctx.beginPath();
+                  var f = true;
+                  for (var q2 = -qmax; q2 <= qmax + 1e-4; q2 += 0.015) {
+                    var val2 = E - (1 - Math.cos(q2));
+                    var p2 = sgn2 * Math.sqrt(val2);
+                    var xx = toX(q2 + shift * 2 * Math.PI), yy = toY(p2);
+                    if (xx < -20 || xx > W + 20) continue;
+                    if (f) { ctx.moveTo(xx, yy); f = false; } else ctx.lineTo(xx, yy);
+                  }
+                  ctx.stroke();
+                }
+              }
+            }
+            ctx.globalAlpha = 1;
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'energy', label: '能量 E / H', min: 0.10, max: 2.50, step: 0.05, value: 0.50 },
+            { type: 'slider', key: 'blobSize', label: '色团大小 blob size', min: 0.08, max: 0.45, step: 0.02, value: 0.22 },
+            { type: 'button', key: 'sho',  label: '简谐振子 SHO' },
+            { type: 'button', key: 'pend', label: '非线性摆 Pendulum' },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('energy', function (v) { params.energy = v; reinit(sim.getState()); });
+          ctl.on('blobSize', function (v) { params.blobSize = v; reinit(sim.getState()); });
+          ctl.on('sho', function () {
+            params.mode = 'sho';
+            if (params.energy > 1.9) params.energy = 1.0;
+            reinit(sim.getState());
+          });
+          ctl.on('pend', function () {
+            params.mode = 'pend';
+            if (params.energy < 0.15) params.energy = 0.5;
+            reinit(sim.getState());
+          });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>哈密顿力学并不「更基本」于拉格朗日或牛顿力学——它们在物理上等价。它的价值在<strong>观点</strong>：把力学放进相空间，用辛几何与代数（泊松括号）替代具体的二阶微分方程，使<strong>守恒律</strong>、<strong>可积性</strong>、<strong>统计行为</strong>、<strong>量子化</strong>都有了自然的几何语言。</p>
+      <div class="formula">\[ \text{Legendre: }\;H(q,p,t)=\sum_i p_i\dot q_i-L,\quad p_i=\pdv{L}{\dot q_i} \]</div>
+      <div class="formula">\[ \text{Hamilton: }\;\dot q_i=\pdv{H}{p_i},\quad \dot p_i=-\pdv{H}{q_i}\;\iff\;\dot{\vec z}=\Omega\nabla H,\;\;\Omega=\begin{pmatrix}0&I\\-I&0\end{pmatrix} \]</div>
+      <div class="formula">\[ \text{Poisson: }\;\{A,B\}=\sum_i\Bigl(\pdv{A}{q_i}\pdv{B}{p_i}-\pdv{A}{p_i}\pdv{B}{q_i}\Bigr),\quad \{q_i,p_j\}=\delta_{ij},\quad \dv{f}{t}=\{f,H\}+\pdv{f}{t} \]</div>
+      <div class="formula">\[ \text{Conservation: }\;\pdv{H}{t}=0\Rightarrow H=E\;\text{守恒};\qquad \{f,H\}=0\Rightarrow f\;\text{守恒} \]</div>
+      <div class="formula">\[ \text{Canonical transformation }(q,p)\to(Q,P):\;M^{\top}\Omega M=\Omega\;\Leftrightarrow\;\{Q_i,P_j\}=\delta_{ij}\;\Rightarrow\;\det M=1 \]</div>
+      <div class="formula">\[ \text{Action-angle (periodic): }\;J=\frac{1}{2\pi}\oint p\,dq,\;\{\theta,J\}=1,\;H=H(J),\;\dot\theta=\omega(J)=\pdv{H}{J},\;\dot J=0 \]</div>
+      <div class="formula">\[ \text{Liouville: }\;\nabla_{\vec z}\!\cdot\!\vec V=\sum_i\Bigl(\pdv{^{2}H}{q_i\partial p_i}-\pdv{^{2}H}{p_i\partial q_i}\Bigr)=0\;\Rightarrow\;\dv{}{t}\!\int_{\Omega_t}d^{2n}z=0 \]</div>
+      <p><strong>核心收获</strong>：(1) 哈密顿力学的几何骨架是<strong>辛结构 \(\Omega\)</strong>，正则变换就是保持 \(\Omega\) 的变量替换；(2) 守恒律 = 泊松括号下与 \(H\) 对易；(3) 相空间体积在哈密顿流下守恒（刘维尔），这是统计力学与混沌的几何基础；(4) 作用量–角度变量是周期运动的「正确坐标」，直接通向量子化条件 \(J=n\hbar\)。这套语言是经典场论、统计物理、量子力学与量子场论的共同祖语。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

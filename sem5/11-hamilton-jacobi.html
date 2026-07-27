@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 哈密顿-雅可比方程 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第11章 · 高等经典力学 Advanced Classical Mechanics</p>
+      <h1>哈密顿-雅可比方程 <span class="en-title">Hamilton-Jacobi Theory</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>第 8 章把拉格朗日力学从「配方」提升到变分原理，第 10 章建立了哈密顿力学（相空间、正则方程、泊松括号）。<strong>本章是分析力学的顶峰</strong>：把求解运动方程的问题转化为求单个一阶偏微分方程——<strong>哈密顿-雅可比方程</strong> (Hamilton-Jacobi equation, HJ)——的<strong>完整积分</strong> (complete integral)。这一视角把动力学几何化为「波前」的传播，并直接通向<strong>作用-角变量</strong> (action-angle variables) 与<strong>量子力学</strong>。学完本章后，你将能够：</p>
+      <ul>
+        <li>写出<strong>哈密顿主函数</strong> \(S(q,t)\) (Hamilton's principal function)，并从「寻找一个让新哈密顿量 \(K\equiv 0\) 的正则变换」严格导出 HJ 方程 \(H(q,\partial S/\partial q,t)+\partial S/\partial t=0\)。</li>
+        <li>对<strong>不显含时间</strong>的 \(H\)，用分离变量 \(S(q,t)=W(q)-Et\) 把 HJ 化为<strong>不含时 HJ 方程</strong> \(H(q,\partial W/\partial q)=E\)，并理解特征函数 \(W\) 的几何意义（等作用面）。</li>
+        <li>解释什么是 HJ 方程的<strong>完整积分</strong> \(S(q,\alpha_{1},\dots,\alpha_{n},t)\)（含 \(n\) 个常数 \(\alpha_{i}\)），并用 \(\partial S/\partial\alpha_{i}=\beta_{i}\)（常数）解出运动 \(q(t)\)。</li>
+        <li>对周期运动定义<strong>作用变量</strong> \(J_{i}=\dfrac{1}{2\pi}\displaystyle\oint p_{i}\,dq_{i}\)，证明 \(J_{i}\) 是常数、共轭的<strong>角变量</strong> \(\theta_{i}\) 匀速前进 \(\dot\theta_{i}=\omega_{i}=\partial H/\partial J_{i}\)，并用它求频率。</li>
+        <li>用 HJ 方法求解<strong>自由粒子</strong>、<strong>谐振子</strong>（得到 \(J=E/\omega\)）与<strong>开普勒问题</strong>（分离变量、简并性）。</li>
+        <li>陈述 HJ 与量子力学的深刻联系：把 WKB 形式 \(\psi\propto e^{iS/\hbar}\) 代入薛定谔方程，在 \(\hbar\to 0\) 极限下严格回到 HJ 方程——\(S\) 是波函数的<strong>相位</strong>，经典力学是量子力学的<strong>短波极限</strong>。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 动机——把解 EOM 变成求一个偏微分方程</h3>
+      <p>哈密顿正则方程给出 \(2n\) 个一阶 ODE：\(\dot q_{i}=\partial H/\partial p_{i}\)，\(\dot p_{i}=-\partial H/\partial q_{i}\)。直接积分需要 \(2n\) 个运动常数。Hamilton 在 1834 年、Jacobi 在 1842 年各自发现：<strong>存在一个母函数 \(S(q,t)\)</strong>，使整个问题化归为<strong>一个</strong>一阶非线性偏微分方程。一旦找到它的「完整积分」，运动方程的解便可由求导与代数运算得到——这是经典力学最美的结论之一。</p>
+      <p>设我们做一次<strong>正则变换</strong> (canonical transformation) \((q,p)\to(Q,P)\)，用第二类母函数 \(F_{2}(q,P,t)\equiv S(q,P,t)\)（暂时记作依赖 \(P\) 的形式）。回顾：</p>
+      <div class="formula">\[ p_{i}=\frac{\partial S}{\partial q_{i}},\qquad Q_{i}=\frac{\partial S}{\partial P_{i}},\qquad K=H+\frac{\partial S}{\partial t} \]</div>
+      <p>这里 \(K(Q,P,t)\) 是新哈密顿量。<strong>关键想法</strong>：选 \(S\) 使得 \(K\equiv 0\)。则新变量满足 \(\dot Q_{i}=0,\dot P_{i}=0\)，即所有 \(Q_{i},P_{i}\) 都是<strong>常数</strong>。把新动量记作 \(P_{i}=\alpha_{i}\)、新坐标 \(Q_{i}=\beta_{i}\)（都是常数，由初始条件决定），则条件 \(K=0\) 写成：</p>
+      <div class="formula">\[ \boxed{\;H\!\left(q_{1},\dots,q_{n},\,\frac{\partial S}{\partial q_{1}},\dots,\frac{\partial S}{\partial q_{n}},\,t\right)+\frac{\partial S}{\partial t}=0\;} \]</div>
+      <p>这就是<strong>哈密顿-雅可比方程</strong> (Hamilton-Jacobi equation)。它是关于 \(S(q_{1},\dots,q_{n},\alpha_{1},\dots,\alpha_{n},t)\) 的一阶非线性 PDE。求得的 \(S\) 称为<strong>哈密顿主函数</strong> (Hamilton's principal function)。一旦解出 \(S\)，运动由</p>
+      <div class="formula">\[ \beta_{i}=\frac{\partial S}{\partial\alpha_{i}}\quad(i=1,\dots,n) \]</div>
+      <p>反解给出 \(q_{i}=q_{i}(\alpha,\beta,t)\)。常数 \(\alpha_{i},\beta_{i}\) 共 \(2n\) 个，由初始条件确定。<strong>解 ODE 的任务被转化为解 PDE 的任务</strong>——表面上更难，实际上 HJ 方程常常可分离变量，反而把难题化为一系列一维积分。</p>
+      <div class="key-terms">Hamilton's principal function \(S\) (哈密顿主函数), Hamilton-Jacobi equation (哈密顿-雅可比方程), canonical transformation (正则变换), complete integral (完整积分)</div>
+
+      <h3>2. 几何与变分的双重意义</h3>
+      <p>\(S(q,t)=\text{const}\) 在位形空间中定义一族<strong>等作用面</strong> (surfaces of constant action)。可以把它们想象成波前：随时间演化，这些面向前推进。HJ 方程正是这族面所满足的「程函方程」(eikonal equation)。<strong>粒子轨道处处与等作用面正交</strong>（因 \(p_{i}=\partial S/\partial q_{i}\) 是面的法向梯度），这与几何光学中「光线正交于波前」完全平行。这一类比是德布罗意 (de Broglie) 与薛定谔 (Schrödinger) 走向量子力学的<strong>概念跳板</strong>。</p>
+      <p>另一个等价视角：\(S\) 正是<strong>哈密顿作用量沿真实路径的值</strong>。即：对真实运动 \(q_{\text{cl}}(t)\)，</p>
+      <div class="formula">\[ S(q_{f},t_{f};\,q_{i},t_{i})\;=\;\int_{t_{i}}^{t_{f}}\!L\bigl(q_{\text{cl}}(t),\dot q_{\text{cl}}(t),t\bigr)\,dt \]</div>
+      <p>这里把端点 \((q_{i},t_{i})\)、\((q_{f},t_{f})\) 视为变量。在此视角下 \(p_{f}=\partial S/\partial q_{f}\)、\(H_{f}=-\partial S/\partial t_{f}\)，正是 HJ 方程的边界版。所以「主函数」既可视为母函数、也可视为<strong>作用量泛函的边界值函数</strong>——这两个定义一致。</p>
+      <div class="key-terms">surface of constant action (等作用面), eikonal analogy (程函类比), action as boundary value (作用量作为边值函数)</div>
+
+      <h3>3. 不显含时间的 H——分离 \(S=W-Et\)</h3>
+      <p>当 \(H\) 不显含 \(t\)（保守系统），能量 \(E\) 守恒。设</p>
+      <div class="formula">\[ S(q_{1},\dots,q_{n},t)\;=\;W(q_{1},\dots,q_{n})\;-\;E\,t \]</div>
+      <p>其中 \(W\) 称为<strong>哈密顿特征函数</strong> (Hamilton's characteristic function)。代入 HJ 方程，\(\partial S/\partial t=-E\) 给出<strong>不含时 HJ 方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;H\!\left(q_{1},\dots,q_{n},\,\frac{\partial W}{\partial q_{1}},\dots,\frac{\partial W}{\partial q_{n}}\right)=E\;} \]</div>
+      <p>这里 \(E\) 扮演 \(n\) 个常数 \(\alpha_{i}\) 之一（通常是 \(\alpha_{1}=E\)）。特征函数 \(W\) 与主函数的关系为 \(W=S+Et\)，几何上 \(W(q)=\text{const}\) 给出<strong>定态等作用面</strong>（不随时间变形，只整体推进）。</p>
+      <div class="key-terms">Hamilton's characteristic function \(W\) (特征函数), time-independent HJ (不含时 HJ 方程), separation of variables (分离变量法)</div>
+
+      <h3>4. 完整积分——为何要求「\(n\) 个独立常数」</h3>
+      <p>HJ 方程的通解是含 \(n\) 个<strong>独立</strong>可加常数 \(\alpha_{1},\dots,\alpha_{n}\) 的解 \(S(q,\alpha,t)\)（注意：纯加性常数 \(S_{0}\) 不算，因为它不改变 \(\partial S/\partial q\)，也不进入 \(\beta_{i}\)）。这样的解称为<strong>完整积分</strong> (complete integral)。判定条件是 Hessian 非退化：\(\det(\partial^{2}S/\partial q_{i}\partial\alpha_{j})\neq 0\)。</p>
+      <p>有了完整积分，运动方程的解由</p>
+      <div class="formula">\[ \beta_{i}=\frac{\partial S(q,\alpha,t)}{\partial\alpha_{i}}\quad\Longrightarrow\quad q_{i}=q_{i}(\alpha,\beta,t) \]</div>
+      <p>给出（Hessian 非退化保证了可反解）。这一过程把「\(2n\) 个 ODE 的初值问题」换成了「\(n\) 个偏微分方程的边值问题 + 代数反解」。这是 Hamilton 与 Jacobi 的核心贡献。</p>
+      <div class="key-terms">complete integral (完整积分), Hessian non-degeneracy (Hessian 非退化), constants of motion (运动常数)</div>
+
+      <h3>5. 作用-角变量——周期运动的利器</h3>
+      <p>对<strong>周期或拟周期</strong>系统，HJ 方法有一个特别简洁的形式。设系统有 \(n\) 个自由度且可分离变量，每个 \((q_{i},p_{i})\) 在相空间描绘闭合（或转动）曲线。定义<strong>作用变量</strong>：</p>
+      <div class="formula">\[ \boxed{\;J_{i}\;\equiv\;\frac{1}{2\pi}\oint_{\gamma_{i}}p_{i}\,dq_{i}\;} \]</div>
+      <p>积分沿一个完整周期回路 \(\gamma_{i}\)（其他坐标固定）。几何上 \(2\pi J_{i}\) 是第 \(i\) 个自由度相空间椭圆的<strong>面积</strong>。把 \(J_{i}\) 取作新动量（即上面的 \(\alpha_{i}\)），其共轭坐标 \(\theta_{i}\) 称为<strong>角变量</strong>。哈密顿量变为只依赖于 \(J\) 的函数：\(H=H(J_{1},\dots,J_{n})\)。于是：</p>
+      <div class="formula">\[ \dot J_{i}=-\frac{\partial H}{\partial\theta_{i}}=0\;\Rightarrow\;J_{i}=\text{const},\qquad \dot\theta_{i}=\frac{\partial H}{\partial J_{i}}\equiv\omega_{i}(J)=\text{const} \]</div>
+      <p>\(\theta_{i}(t)=\omega_{i}t+\theta_{i}(0)\)（模 \(2\pi\)）。<strong>频率由 \(\omega_{i}=\partial H/\partial J_{i}\) 直接给出</strong>——无需解任何 ODE。这正是作用-角变量法的威力。系统的运动是各自由度频率的叠加；若所有频率之比为有理数，轨道闭合（周期运动），否则是<strong>拟周期</strong> (quasiperiodic)，在环面上 densely 填满。</p>
+      <p><strong>绝热不变性</strong> (adiabatic invariance)：若系统参数 \(\lambda(t)\) 缓慢变化（变化时间 \(\gg\) 周期 \(2\pi/\omega\)），\(J\) 在演化中近似守恒。\(\Delta J\to 0\) 当变化时间 \(\to\infty\)。这给出了「为何摆长缓慢变化时 \(E/\omega\) 守恒」的深刻解释。</p>
+      <div class="key-terms">action variable \(J_{i}\) (作用变量), angle variable \(\theta_{i}\) (角变量), torus (环面), adiabatic invariant (绝热不变量)</div>
+
+      <h3>6. 与量子力学的桥梁——WKB 与 \(S\) 作为相位</h3>
+      <p>Hamilton 本人已意识到力学与光学的类似（「Hamilton 光学」）。1923–1926 年，德布罗意与薛定谔把这一类似推向物理实在：<strong>若粒子是波，其相位必为 \(S/\hbar\)</strong>。即写下<strong>WKB 形式</strong> (Wentzel-Kramers-Brillouin) 的波函数：</p>
+      <div class="formula">\[ \psi(q,t)\;=\;A(q,t)\,\exp\!\Bigl(\frac{i}{\hbar}S(q,t)\Bigr) \]</div>
+      <p>代入薛定谔方程 \(i\hbar\,\partial\psi/\partial t=\bigl[-\hbar^{2}/(2m)\nabla^{2}+V\bigr]\psi\)，按 \(\hbar\) 的幂次展开，领头阶（\(\hbar^{0}\)）严格给出 HJ 方程，次阶（\(\hbar^{1}\))给出振幅的输运方程。详见例 11.5。这就是<strong>「经典力学 = 量子力学的短波极限」</strong>的精确含义：当德布罗意波长 \(\lambda_{\text{dB}}=h/p\) 远小于势场变化的特征长度时，粒子轨道浮现，描述回归 HJ。</p>
+      <p>反过来，由经典作用量 \(S\)「量子化」可重建波函数——这是<strong>半经典量子化</strong> (semiclassical quantization) 的基础。<strong>Bohr-Sommerfeld 量子化条件</strong> \(\oint p\,dq=n h\)（即 \(J_{i}=n\hbar\)）正是把作用变量离散化，对一维势阱给出了与 Schrödinger 解一致（在大 \(n\) 极限下精确）的能级。</p>
+      <div class="key-terms">WKB approximation (WKB 近似), Bohr-Sommerfeld quantization (Bohr-Sommerfeld 量子化), eikonal limit (短波极限/程函极限), de Broglie wavelength (德布罗意波长)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从「让 \(K=0\) 的正则变换」到 HJ 方程</h2>
+      <p>本节严格证明 HJ 方程的来源——它是<strong>一个特殊正则变换</strong>（让新哈密顿量恒为零）的直接推论。</p>
+
+      <p class="step"><strong>步骤 1：回顾正则变换的第二类母函数。</strong>对 \(n\) 自由度系统，给定 \(F_{2}(q,P,t)\)，新旧变量的关系为</p>
+      <div class="formula">\[ p_{i}=\frac{\partial F_{2}}{\partial q_{i}},\qquad Q_{i}=\frac{\partial F_{2}}{\partial P_{i}},\qquad K=H+\frac{\partial F_{2}}{\partial t} \]</div>
+      <p>（前两式定义变换；第三式来自作用量 \(L\,dt=\sum p\,dq-H\,dt\) 与新作用量 \(\sum P\,dQ-K\,dt\) 相差全微分 \(dF_{2}\) 的要求。）</p>
+
+      <p class="step"><strong>步骤 2：施加条件 \(K\equiv 0\)。</strong>把母函数改记为 \(S(q,P,t)\)（理由很快清楚）。条件 \(K=0\) 给出</p>
+      <div class="formula">\[ H\!\left(q,\frac{\partial S}{\partial q},t\right)+\frac{\partial S}{\partial t}=0 \]</div>
+      <p>这就是 HJ 方程——一个关于 \(S\) 的<strong>一阶非线性 PDE</strong>。新动量 \(P_{i}\) 作为常数 \(\alpha_{i}\) 进入 \(S\)。</p>
+
+      <p class="step"><strong>步骤 3：证明 \(\partial S/\partial\alpha_{i}=\beta_{i}\) 给出运动。</strong>因 \(K=0\)，新坐标 \(Q_{i}\) 满足 \(\dot Q_{i}=\partial K/\partial P_{i}=0\)，所以 \(Q_{i}=\beta_{i}\)（常数）。但 \(Q_{i}=\partial S/\partial P_{i}=\partial S/\partial\alpha_{i}\)，故</p>
+      <div class="formula">\[ \frac{\partial S(q,\alpha,t)}{\partial\alpha_{i}}=\beta_{i},\qquad i=1,\dots,n \]</div>
+      <p>是 \(n\) 个隐式方程，解出 \(q_{i}=q_{i}(\alpha,\beta,t)\)。<strong>运动方程的解完全由 \(S\) 的导数给出</strong>。</p>
+
+      <p class="step"><strong>步骤 4：初始条件的适配。</strong>给定 \(q(t_{0})=q^{(0)},\,\dot q(t_{0})=v^{(0)}\)，先由 \(p^{(0)}=\partial L/\partial\dot q|_{t_{0}}\) 得到 \(p^{(0)}\)。常数 \(\alpha_{i},\beta_{i}\) 由 \(p^{(0)}_{j}=\partial S/\partial q_{j}|_{q^{(0)},t_{0}}\)（解 \(\alpha\)）与 \(\beta_{i}=\partial S/\partial\alpha_{i}|_{q^{(0)},t_{0}}\)（直接代入）唯一决定。</p>
+
+      <p class="step"><strong>步骤 5：\(S\) 作为作用量的边值函数。</strong>把真实路径作用量定义为端点的函数 \(S(q_{f},t_{f};q_{i},t_{i})\)。它的全微分（Hamilton-Jacobi 主方程的另一种形式）：</p>
+      <div class="formula">\[ dS=\sum_{i}p_{f,i}\,dq_{f,i}-H_{f}\,dt_{f}-\sum_{i}p_{i,i}\,dq_{i,i}+H_{i}\,dt_{i} \]</div>
+      <p>固定初值 \((q_{i},t_{i})\)，对 \((q_{f},t_{f})\) 求偏导得 \(p_{f,i}=\partial S/\partial q_{f,i}\)、\(\partial S/\partial t_{f}=-H_{f}\)，合并即 HJ 方程。这证明了「母函数视角」与「作用量边值视角」的等价性，是 HJ 方程的<strong>双重视角</strong>。</p>
+
+      <div class="key-terms">type-2 generating function \(F_{2}\) (第二类母函数), transformation to \(K=0\) (零哈密顿量变换), action as function of endpoints (作用量的端值表示)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 自由粒子的 HJ 解 Free particle via HJ</h4>
+        <p class="example-statement">一质量 \(m=2.0\,\mathrm{kg}\) 的自由粒子（\(V=0\)）沿 \(x\) 轴运动。已知 \(t=0\) 时位置 \(x_{0}=3.0\,\mathrm{m}\)、动量 \(p_{0}=4.0\,\mathrm{kg\,m/s}\)。用 HJ 方法求解：写出 \(S(x,E,t)\)，并由 \(\beta=\partial S/\partial E\) 解出 \(x(t)\)。验证能量 \(E\) 与常数 \(\beta\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>哈密顿量 \(H=p^{2}/(2m)\)。HJ 方程</p>
+          <div class="formula">\[ \frac{1}{2m}\!\left(\frac{\partial S}{\partial x}\right)^{2}+\frac{\partial S}{\partial t}=0 \]</div>
+          <p class="step">因 \(H\) 不显含 \(t\)，取 \(S(x,t)=W(x)-Et\)。代入：</p>
+          <div class="formula">\[ \frac{1}{2m}\!\left(\frac{dW}{dx}\right)^{2}=E\;\Longrightarrow\;\frac{dW}{dx}=\pm\sqrt{2mE} \]</div>
+          <p>取正号（向 \(+x\) 方向运动）：\(W(x)=\sqrt{2mE}\,x\)。所以</p>
+          <div class="formula">\[ S(x,E,t)\;=\;\sqrt{2mE}\,x\;-\;E\,t \]</div>
+          <p class="step"><strong>识别动量</strong>：\(p=\partial S/\partial x=\sqrt{2mE}\)。由初值 \(p_{0}=4.0\,\mathrm{kg\,m/s}\)，得</p>
+          <div class="formula">\[ E=\frac{p_{0}^{2}}{2m}=\frac{(4.0)^{2}}{2(2.0)}=4.0\,\mathrm{J} \]</div>
+          <p class="step"><strong>用 \(\beta=\partial S/\partial E\) 解运动</strong>：</p>
+          <div class="formula">\[ \beta=\frac{\partial S}{\partial E}=\frac{\sqrt{2m}}{2\sqrt{E}}\,x-t=\frac{m}{\sqrt{2mE}}\,x-t=\frac{m}{p}\,x-t \]</div>
+          <p>解出 \(x(t)=\dfrac{p}{m}(t+\beta)\)。代入 \(t=0\) 时 \(x=x_{0}\) 得 \(\beta=\dfrac{m x_{0}}{p}=\dfrac{(2.0)(3.0)}{4.0}=1.5\,\mathrm{s}\)。最终</p>
+          <div class="formula">\[ x(t)=\frac{4.0}{2.0}(t+1.5)=2.0\,t+3.0\;(\mathrm{m}) \]</div>
+          <p><span class="ans">\(x(t)=2.0\,t+3.0\,\mathrm{m}\)</span>，即匀速运动 \(v=p/m=2.0\,\mathrm{m/s}\)，与牛顿结果一致。验证：\(E=\tfrac12 mv^{2}=\tfrac12(2.0)(2.0)^{2}=4.0\,\mathrm{J}\) ✔︎；\(\beta=1.5\,\mathrm{s}\) 表示「时间为零之前 \(\beta\) 秒，粒子在原点」。</p>
+          <p class="step"><strong>几何解读</strong>：\(S=\text{const}\) 给出 \(x=(E\,t+\text{const})/\sqrt{2mE}\)——一族随时间向 \(+x\) 平移的「波前」（垂直于 \(x\) 轴的平面），传播速率 \(v_{\text{phase}}=E/p=p/(2m)=1.0\,\mathrm{m/s}\)。注意波前速率 <em>不等于</em> 粒子速率（这是质量均匀场中相速与群速的差异，量子化后变为德布罗意波的相速 \(c^{2}/v\)）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 谐振子的 HJ 与作用变量 \(J=E/\omega\) Harmonic oscillator</h4>
+        <p class="example-statement">一维谐振子 \(m=0.50\,\mathrm{kg}\)、\(k=8.0\,\mathrm{N/m}\)，振幅 \(A=0.10\,\mathrm{m}\)。(a) 写出 HJ 方程并求 \(W(x)\)；(b) 用相空间椭圆的面积计算作用变量 \(J\)，证明 \(J=E/\omega\)；(c) 由 \(H(J)=\omega J\) 求频率并与 \(\omega=\sqrt{k/m}\) 比对。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>哈密顿量 \(H=p^{2}/(2m)+\tfrac12 m\omega^{2}x^{2}\)，\(\omega=\sqrt{k/m}=\sqrt{8.0/0.50}=4.00\,\mathrm{rad/s}\)。不含时 HJ 方程</p>
+          <div class="formula">\[ \frac{1}{2m}\!\left(\frac{dW}{dx}\right)^{2}+\frac{1}{2}m\omega^{2}x^{2}=E \]</div>
+          <p>解出</p>
+          <div class="formula">\[ W(x)=\int^{x}\!\sqrt{2mE-m^{2}\omega^{2}x'^{2}}\,dx' \]</div>
+          <p>令 \(x'=A\sin\phi\)（\(A=\sqrt{2E/(m\omega^{2})}\) 为振幅），可积出（形式不必算完，因为下面用几何法更快）。主函数 \(S=W(x)-Et\)。</p>
+
+          <p class="step"><strong>(b) 几何法求 \(J\)。</strong>相空间轨道是椭圆：</p>
+          <div class="formula">\[ \frac{x^{2}}{A^{2}}+\frac{p^{2}}{(m\omega A)^{2}}=1,\qquad A=\sqrt{\frac{2E}{m\omega^{2}}},\quad B=m\omega A=\sqrt{2mE} \]</div>
+          <p>椭圆面积 \(\mathcal{A}=\pi A B=\pi\cdot\sqrt{2E/(m\omega^{2})}\cdot\sqrt{2mE}=\dfrac{2\pi E}{\omega}\)。作用变量</p>
+          <div class="formula">\[ J=\frac{1}{2\pi}\oint p\,dx=\frac{\mathcal{A}}{2\pi}=\frac{1}{2\pi}\cdot\frac{2\pi E}{\omega}=\frac{E}{\omega} \]</div>
+          <p>数值：\(E=\tfrac12 m\omega^{2}A^{2}=\tfrac12(0.50)(16.0)(0.010)=4.00\times10^{-2}\,\mathrm{J}=40\,\mathrm{mJ}\)；</p>
+          <p><span class="ans">\(J=E/\omega=0.040/4.00=1.00\times10^{-2}\,\mathrm{J\,s}=0.010\,\mathrm{kg\,m^{2}/s}\)</span>。注意 \(J\) 的量纲正是<strong>角动量</strong>的量纲（\([\text{action}]=[\text{energy}]\times[\text{time}]\)）。</p>
+
+          <p class="step"><strong>(c) 由 \(H(J)\) 求频率。</strong>把 \(H\) 用 \(J\) 表出：\(E=H(J)=\omega J\)，所以</p>
+          <div class="formula">\[ \omega_{\text{osc}}=\frac{\partial H}{\partial J}=\frac{\partial(\omega J)}{\partial J}=\omega=4.00\,\mathrm{rad/s} \]</div>
+          <p><span class="ans">\(\omega=4.00\,\mathrm{rad/s}\)，\(T=2\pi/\omega=1.571\,\mathrm{s}\)，\(f=0.637\,\mathrm{Hz}\)</span> ✔︎——与 \(\sqrt{k/m}\) 完全一致。<strong>关键点</strong>：在作用-角形式下，频率不是从解 EOM 得到的，而是「免费」由 \(H\) 对 \(J\) 求偏导得到。这正是该方法的实用价值。</p>
+
+          <p class="step"><strong>角变量</strong>：\(\theta=\omega t+\theta_{0}\) 随时间匀速前进。粒子位置与动量可参数化为</p>
+          <div class="formula">\[ x=\sqrt{\frac{2J}{m\omega}}\sin\theta,\qquad p=\sqrt{2m\omega J}\cos\theta \]</div>
+          <p>验证 \(x^{2}/A^{2}+p^{2}/B^{2}=\sin^{2}\theta+\cos^{2}\theta=1\)。下方仿真直观展示了 \((x,p)\) 椭圆与 \((J,\theta)\) 直线的等价性。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 谐振子的作用变量与绝热变化 Adiabatic invariance of \(J\)</h4>
+        <p class="example-statement">同上谐振子（\(m=0.50\,\mathrm{kg}\)，初始 \(\omega_{i}=4.00\,\mathrm{rad/s}\)，\(A_{i}=0.10\,\mathrm{m}\)）。现在让劲度系数在 \(T_{\text{ramp}}=60\,\mathrm{s}\) 内缓慢从 \(k_{i}=8.0\,\mathrm{N/m}\) 增加到 \(k_{f}=18.0\,\mathrm{N/m}\)（\(\omega_{f}=\sqrt{18.0/0.50}=6.00\,\mathrm{rad/s}\)）。用绝热不变性求末态振幅 \(A_{f}\) 与末态能量 \(E_{f}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>作用变量 \(J\) 在参数缓慢变化时近似守恒（绝热定理）。初始</p>
+          <div class="formula">\[ J=\frac{E_{i}}{\omega_{i}}=\frac{\tfrac12 m\omega_{i}^{2}A_{i}^{2}}{\omega_{i}}=\frac{1}{2}m\omega_{i}A_{i}^{2}=\frac{1}{2}(0.50)(4.00)(0.10)^{2}=1.00\times10^{-2}\,\mathrm{J\,s} \]</div>
+          <p class="step"><strong>条件</strong>：\(T_{\text{ramp}}=60\,\mathrm{s}\) 远大于振动周期 \(T_{\text{osc}}=2\pi/\omega\approx 1.5\,\mathrm{s}\)，比值 \(T_{\text{ramp}}/T_{\text{osc}}\approx 40\)，绝热近似良好（修正量 \(\sim T_{\text{osc}}/T_{\text{ramp}}\sim 2.5\%\)）。</p>
+          <p class="step"><strong>末态</strong>：\(J\) 守恒，所以 \(E_{f}=\omega_{f}J=(6.00)(1.00\times10^{-2})=6.00\times10^{-2}\,\mathrm{J}\)。再由 \(E_{f}=\tfrac12 m\omega_{f}^{2}A_{f}^{2}\)，</p>
+          <div class="formula">\[ A_{f}=\sqrt{\frac{2E_{f}}{m\omega_{f}^{2}}}=\sqrt{\frac{2(6.00\times10^{-2})}{(0.50)(36.0)}}=\sqrt{\frac{0.120}{18.0}}=\sqrt{0.00667} \]</div>
+          <p><span class="ans">\(A_{f}=8.16\times10^{-2}\,\mathrm{m}\)</span>。注意：\(k\) 增为 \(9/4\) 倍，振幅反而<strong>减小</strong>（\(\propto 1/\sqrt[4]{k}\)），能量<strong>增加</strong>（\(\propto\sqrt{k}\)）。这正是「把摆长缓慢缩短时振幅减小、频率与能量升高」的定量版本。</p>
+          <p class="step"><strong>核验</strong>：\(J_{f}=E_{f}/\omega_{f}=0.060/6.00=0.010\,\mathrm{J\,s}=J_{i}\) ✔︎。反之，若快速改变 \(k\)（碰撞式），\(J\) 不守恒，能量与振幅变化难以预测——这就是为何绝热不变量在等离子体物理、量子极限、粒子加速器设计中至关重要。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 开普勒问题的 HJ 分离变量 Kepler problem separation</h4>
+        <p class="example-statement">质量 \(m\) 的质点在引力势 \(V(r)=-k/r\)（\(k=GMm\)）中运动，能量 \(E<0\)（束缚椭圆轨道）。用球坐标 \((r,\theta,\phi)\)，写出 HJ 方程，做乘积分离 \(W=W_{r}(r)+W_{\theta}(\theta)+W_{\phi}(\phi)\)，识别三个作用变量 \(J_{r},J_{\theta},J_{\phi}\)，并陈述能级公式 \(E=E(J_{r},J_{\theta},J_{\phi})\) 与简并性。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>球坐标下哈密顿量（取 \(V=-k/r\)）：</p>
+          <div class="formula">\[ H=\frac{1}{2m}\!\left(p_{r}^{2}+\frac{p_{\theta}^{2}}{r^{2}}+\frac{p_{\phi}^{2}}{r^{2}\sin^{2}\theta}\right)-\frac{k}{r} \]</div>
+          <p class="step"><strong>HJ 方程</strong>（用 \(p_{i}\to\partial W/\partial q_{i}\)）：</p>
+          <div class="formula">\[ \frac{1}{2m}\!\left[\!\left(\frac{\partial W}{\partial r}\right)^{2}+\frac{1}{r^{2}}\!\left(\frac{\partial W}{\partial\theta}\right)^{2}+\frac{1}{r^{2}\sin^{2}\theta}\!\left(\frac{\partial W}{\partial\phi}\right)^{2}\right]-\frac{k}{r}=E \]</div>
+          <p class="step"><strong>分离</strong>。\(\phi\) 是循环坐标：\(\partial W/\partial\phi=p_{\phi}=\ell_{z}\)（常数，绕 \(z\) 轴角动量）。代入后，方程中只剩 \(\theta\) 通过 \((\partial W/\partial\theta)^{2}+\ell_{z}^{2}/\sin^{2}\theta\) 进入；这一项与 \(r\) 无关，必须等于常数，记为 \(\ell^{2}\)（总角动量平方）：</p>
+          <div class="formula">\[ \left(\frac{dW_{\theta}}{d\theta}\right)^{2}+\frac{\ell_{z}^{2}}{\sin^{2}\theta}=\ell^{2}\;\Longrightarrow\;W_{\theta}(\theta)=\int^{\theta}\!\sqrt{\ell^{2}-\frac{\ell_{z}^{2}}{\sin^{2}\theta'}}\,d\theta' \]</div>
+          <p>剩下的径向方程：</p>
+          <div class="formula">\[ \frac{1}{2m}\!\left[\!\left(\frac{dW_{r}}{dr}\right)^{2}+\frac{\ell^{2}}{r^{2}}\right]-\frac{k}{r}=E\;\Longrightarrow\;W_{r}(r)=\int^{r}\!\sqrt{2m\!\left(E+\frac{k}{r'}-\frac{\ell^{2}}{2mr'^{2}}\right)}\,dr' \]</div>
+          <p class="step"><strong>三个作用变量</strong>（标准结果，积分用留数法计算）：</p>
+          <div class="formula">\[ J_{\phi}=\frac{1}{2\pi}\oint p_{\phi}\,d\phi=\ell_{z} \]</div>
+          <div class="formula">\[ J_{\theta}=\frac{1}{2\pi}\oint p_{\theta}\,d\theta=\ell-|\ell_{z}| \]</div>
+          <div class="formula">\[ J_{r}=\frac{1}{2\pi}\oint p_{r}\,dr=-\ell+k\sqrt{\frac{m}{-2E}} \]</div>
+          <p>（要求 \(E<0\)，故 \(-2E>0\)。）</p>
+          <p class="step"><strong>能级公式</strong>。三式相加消去 \(\ell\)：</p>
+          <div class="formula">\[ J_{r}+J_{\theta}+J_{\phi}=k\sqrt{\frac{m}{-2E}}\;\Longrightarrow\;E=-\frac{mk^{2}}{2(J_{r}+J_{\theta}+J_{\phi})^{2}} \]</div>
+          <p class="step"><strong>简并性</strong>：\(E\) 只依赖<strong>和</strong> \(J_{r}+J_{\theta}+J_{\phi}\)，不依赖各项的相对大小！这意味着三个频率 \(\omega_{r}=\partial H/\partial J_{r}\)、\(\omega_{\theta}\)、\(\omega_{\phi}\) <em>全部相等</em>。所有运动周期相同 ⇒ 轨道闭合（椭圆）。这是 <strong>Bertrand 定理</strong>的一个体现：除谐振势 \(r^{2}\) 与开普勒势 \(1/r\) 外，没有任何势给出对所有束缚轨道都闭合的性质。</p>
+          <p class="step"><strong>数值示例</strong>。地球绕日：取地球质量 \(m=5.972\times10^{24}\,\mathrm{kg}\)，\(k=GM_{\odot}m=(6.674\times10^{-11})(1.989\times10^{30})(5.972\times10^{24})=7.93\times10^{44}\,\mathrm{J\,m}\)，半长轴 \(a=1.496\times10^{11}\,\mathrm{m}\)。<strong>总作用</strong>：由椭圆轨道 \(E=-k/(2a)\)，</p>
+          <div class="formula">\[ J_{r}+J_{\theta}+J_{\phi}=k\sqrt{\frac{m}{-2E}}=k\sqrt{\frac{m\,a}{k}}=\sqrt{mka} \]</div>
+          <div class="formula">\[ =\sqrt{(5.972\times10^{24})(7.93\times10^{44})(1.496\times10^{11})}=8.40\times10^{40}\,\mathrm{J\,s} \]</div>
+          <p>（量纲为 \([\text{能量}\cdot\text{时间}]=[\text{角动量}]\) ✔︎）。量子化此量（\(J_{\text{tot}}=n\hbar\)）给出 \(n\approx 7.96\times10^{74}\)——地球处在「主量子数」\(n\sim 10^{75}\) 的「态」上，这正是宏观尺度上经典近似精确的根源。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 WKB 极限：由 Schrödinger 到 HJ Recovering HJ from Schrödinger</h4>
+        <p class="example-statement">考虑一维含时薛定谔方程（质量 \(m\)、势能 \(V(x)\)）：</p>
+        <div class="formula">\[ i\hbar\frac{\partial\psi}{\partial t}=-\frac{\hbar^{2}}{2m}\frac{\partial^{2}\psi}{\partial x^{2}}+V(x)\psi \]</div>
+        <p class="example-statement">把波函数写成 WKB 形式 \(\psi(x,t)=A(x,t)\exp\!\bigl[iS(x,t)/\hbar\bigr]\)（其中 \(S,A\) 为实函数）。代入薛定谔方程，按 \(\hbar\) 的幂次分离实虚部，证明领头阶（\(\hbar^{0}\)）给出 HJ 方程，并写出次阶（\(\hbar^{1}\))的振幅输运方程。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>计算 \(\psi\) 的各阶导数。</p>
+          <div class="formula">\[ \frac{\partial\psi}{\partial t}=\left(\frac{\dot A}{A}+\frac{i}{\hbar}\frac{\partial S}{\partial t}\right)\psi \]</div>
+          <div class="formula">\[ \frac{\partial\psi}{\partial x}=\left(\frac{A'}{A}+\frac{i}{\hbar}S'\right)\psi \]</div>
+          <div class="formula">\[ \frac{\partial^{2}\psi}{\partial x^{2}}=\left[\frac{A''}{A}+2\frac{A'}{A}\frac{iS'}{\hbar}+\frac{i}{\hbar}S''-\frac{(S')^{2}}{\hbar^{2}}\right]\psi \]</div>
+          <p class="step"><strong>代入薛定谔方程</strong>，两端除以 \(\psi\)：</p>
+          <div class="formula">\[ i\hbar\!\left(\frac{\dot A}{A}+\frac{i}{\hbar}\dot S\right)=-\frac{\hbar^{2}}{2m}\!\left[\frac{A''}{A}+\frac{2iA'S'}{\hbar A}+\frac{iS''}{\hbar}-\frac{(S')^{2}}{\hbar^{2}}\right]+V \]</div>
+          <p>展开并按 \(\hbar\) 的幂次整理：</p>
+          <div class="formula">\[ -\dot S\;=\;\frac{(S')^{2}}{2m}+V\;-\;\frac{\hbar^{2}}{2m}\frac{A''}{A}\qquad(\text{实部},\,\hbar^{0}\text{ 与 }\hbar^{2}) \]</div>
+          <div class="formula">\[ \frac{\dot A}{A}+\frac{1}{2m}\!\left(2S'\frac{A'}{A}+S''\right)=0\qquad(\text{虚部},\,\hbar^{1}) \]</div>
+          <p class="step"><strong>领头阶</strong>（令 \(\hbar\to 0\)，量子修正项 \(\hbar^{2}A''/(2mA)\to 0\)）：</p>
+          <div class="formula">\[ \boxed{\;-\frac{\partial S}{\partial t}=\frac{1}{2m}\!\left(\frac{\partial S}{\partial x}\right)^{2}+V(x)=H\!\left(x,\frac{\partial S}{\partial x}\right)\;} \]</div>
+          <p>这正是<strong>哈密顿-雅可比方程</strong>！\(S\) 与经典主函数一致。量子修正是被丢掉的项 \(Q\equiv-\dfrac{\hbar^{2}}{2m}\dfrac{A''}{A}\)——称为<strong>量子势</strong> (quantum potential, Bohm 1952)：把它留在方程右边即得<strong>修正 HJ 方程</strong> \(-\partial S/\partial t=H+Q\)。它在波函数弯曲剧烈（\(A''\) 大）处显著，在缓变区域（宏观尺度）可忽略。</p>
+          <p class="step"><strong>振幅输运方程</strong>（\(\hbar^{1}\) 阶）：把虚部改写为</p>
+          <div class="formula">\[ \frac{\partial}{\partial t}\!\ln A+\frac{1}{2m}\frac{\partial}{\partial x}\!\bigl(2(\ln A)S'\bigr)+\frac{1}{2m}S''=0\;\Longrightarrow\;\frac{\partial A}{\partial t}+\frac{1}{2m}\frac{\partial}{\partial x}\!\bigl(S'\,A\bigr)+\frac{A\,S''}{2m}\cdot\frac{1}{1}\cdot\ldots \]</div>
+          <p>更简洁地，用 \(\rho=A^{2}\)（概率密度）：</p>
+          <div class="formula">\[ \frac{\partial\rho}{\partial t}+\frac{\partial}{\partial x}\!\left(\frac{S'}{m}\rho\right)=0 \]</div>
+          <p>这是<strong>连续性方程</strong>：粒子以「经典速度」\(v=S'/m=p/m\) 流动，概率局域守恒。换言之，量子粒子在短波极限下的「概率流」就是经典粒子的轨道流——这正是<strong>对应原理</strong> (correspondence principle) 的精确版本。</p>
+
+          <p class="step"><strong>数值检验量级</strong>。考虑电子（\(m=9.11\times10^{-31}\,\mathrm{kg}\)）在原子尺度（\(L\sim 10^{-10}\,\mathrm{m}\)）运动，动能 \(K\sim 10\,\mathrm{eV}=1.6\times10^{-18}\,\mathrm{J}\)。动量 \(p=\sqrt{2mK}=\sqrt{2(9.11\times10^{-31})(1.6\times10^{-18})}=1.71\times10^{-24}\,\mathrm{kg\,m/s}\)，德布罗意波长</p>
+          <div class="formula">\[ \lambda_{\text{dB}}=\frac{h}{p}=\frac{6.626\times10^{-34}}{1.71\times10^{-24}}=3.87\times10^{-10}\,\mathrm{m}\approx 4\,\mathrm{\AA} \]</div>
+          <p>与原子尺度 \(L\) <em>同量级</em>——所以原子中电子<strong>不</strong>满足短波极限，量子势不可忽略，必须用完整 Schrödinger 方程。反之，考虑 \(1\,\mathrm{g}\) 子弹、\(v=300\,\mathrm{m/s}\)：\(\lambda_{\text{dB}}=h/(mv)=6.626\times10^{-34}/(0.001\times 300)=2.2\times10^{-33}\,\mathrm{m}\)，比原子核还小 22 个量级，量子势完全可以忽略，经典力学精确成立。<strong>「经典 vs 量子」的分界就在德布罗意波长与系统特征尺度之比</strong>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区 1：以为 HJ 方程「总是可解」，因而比牛顿/拉格朗日方法更优。</strong>恰恰相反——HJ 是<strong>偏微分</strong>方程，求完整积分在大多数实际问题中<strong>极其困难</strong>，只在系统可<strong>分离变量</strong>时（如谐振子、有心力、谐振势、对称陀螺）才实用。对混沌系统（如三体或一般势中的双散射），HJ 的「全局解」几乎不可能求得。HJ 的价值在概念（量子化、绝热不变量、波-粒对应），而非「万能解法」。</li>
+        <li><strong>误区 2：把「作用量 \(S\)」当成单值函数。</strong>实际上 \(S\) 一般是<strong>多值</strong>的：经过每个焦散点 (caustic) 与每完整周期后，\(S\) 获得附加相移（如 \(\pi/2\) 的 Maslov 相位）。在 WKB 量子化中这些相移必须正确计入，否则能级公式会偏差——这就是为何精确 Bohr-Sommerfeld 量子化要加 \(n+1/2\) 而非 \(n\)。</li>
+        <li><strong>误区 3：对非周期运动或不可分离系统滥用作用-角变量。</strong>作用-角变量要求 (i) 周期或拟周期运动，且 (ii) HJ 方程在该坐标系下可<strong>完全分离</strong>。对开放轨道（散射）、混沌系统（如各向异性 open stadium）、或 KAM 系统中破裂的环面，\(J\) 没有意义。强行定义会得到错误的「频率」。</li>
+        <li><strong>误区 4：混淆「让 \(K=0\)」与「让 \(K\) 不显含 \(t\)」。</strong>后者（让 \(K\) 与时间无关）只需要 \(F_{2}\) 满足 \(\partial F_{2}/\partial t=-H_{\text{old}}\)（生成的新 \(H\) 仍是动量函数，给出运动积分）；前者（让 \(K\equiv 0\)）更强，要求 \(F_{2}\) 同时消去所有 \(\dot Q,\dot P\)——即 \(F_{2}=S\) 满足 HJ 方程。两者层次不同，混淆会出错。</li>
+        <li><strong>误区 5：把「\(S\) 是波函数相位」当作「\(S=\hbar\arg\psi\)」对所有量子态都成立。</strong>这只在<strong>单值、半经典</strong>（短波）极限下成立。一般量子态（叠加态、纠缠态、有限势阱中的隧穿区）波函数没有单一的「\(S\)」，量子势 \(-\hbar^{2}A''/(2mA)\) 与动能同量级，HJ 不再适用。「经典极限」是一个<strong>极限</strong>，不是一个等式。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 均匀重力场中竖直上抛——HJ 解。质量 \(m=0.50\,\mathrm{kg}\) 的球以初速 \(v_{0}=8.0\,\mathrm{m/s}\) 从地面 (\(y=0\)) 竖直上抛，重力 \(g=9.8\,\mathrm{m/s^{2}}\)。(a) 写出 HJ 方程；(b) 取 \(S(y,E,t)=W(y)-Et\)，求 \(W(y)\)；(c) 用 \(\beta=\partial S/\partial E\) 解出 \(y(t)\)。</summary>
+        <div class="hint">\(H=p^{2}/(2m)+mgy\)。\(dW/dy=\sqrt{2m(E-mgy)}\)，积分得 \(W=-\dfrac{2}{3mg}(2m)^{1/2}(E-mgy)^{3/2}\)（加常数）。然后 \(\partial S/\partial E=\) ……</div>
+        <div class="solution">
+          <p>(a) HJ：\(\dfrac{1}{2m}(dW/dy)^{2}+mgy=E\)。</p>
+          <p>(b) \(W(y)=-\dfrac{2\sqrt{2m}}{3mg}(E-mgy)^{3/2}\)（取积分下限为转折点 \(y_{\max}=E/(mg)\)，向地面方向累积）。</p>
+          <p>(c) \(\beta=\partial S/\partial E=-\dfrac{\sqrt{2m}}{mg}(E-mgy)^{1/2}-t\)。在 \(t=0\)、\(y=0\)、\(\dot y=v_{0}\)，能量 \(E=\tfrac12 mv_{0}^{2}=\tfrac12(0.50)(8.0)^{2}=16.0\,\mathrm{J}\)，所以 \(\beta=-\dfrac{\sqrt{2(0.50)}}{(0.50)(9.8)}\sqrt{16.0}=-\dfrac{4.0}{4.9}=-0.816\,\mathrm{s}\)。解 \(E-mgy=\dfrac{m^{2}g^{2}}{2m}(t+\beta)^{2}=\dfrac{mg^{2}}{2}(t+\beta)^{2}\)：</p>
+          <p><span class="ans">\(y(t)=v_{0}(t+\beta)+\tfrac12(-g)(t+\beta)^{2}=8.0(t-0.816)-4.9(t-0.816)^{2}\,\mathrm{m}\)</span>。等价于 \(y(t)=v_{0}t-\tfrac12 gt^{2}=8.0\,t-4.9\,t^{2}\,\mathrm{m}\)。落地（\(y=0\)）于 \(t=2v_{0}/g=1.63\,\mathrm{s}\)。HJ 方法给出了与牛顿法完全一致的结果，但展示了几何「波前」视角。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 二维各向同性谐振子的作用-角变量。考虑 \(H=\dfrac{1}{2m}(p_{x}^{2}+p_{y}^{2})+\dfrac12 m\omega^{2}(x^{2}+y^{2})\)（\(\omega\) 在两方向相同）。求两个作用变量 \(J_{x},J_{y}\)，写出 \(H(J_{x},J_{y})\)，并讨论系统是否简并（频率是否相等）。</summary>
+        <div class="hint">系统可分离：\(W=W_{x}(x)+W_{y}(y)\)。每个方向独立是一维谐振子，作用变量同例 11.2。</div>
+        <div class="solution">
+          <p>分离：\(W_{x}(x)=\int\sqrt{2mE_{x}-m^{2}\omega^{2}x^{2}}\,dx\)，\(W_{y}\) 类似，\(E_{x}+E_{y}=E\)。每方向作用变量</p>
+          <div class="formula">\[ J_{x}=\frac{E_{x}}{\omega},\qquad J_{y}=\frac{E_{y}}{\omega} \]</div>
+          <p>所以 \(E=E_{x}+E_{y}=\omega(J_{x}+J_{y})\)，即 <span class="ans">\(H(J_{x},J_{y})=\omega(J_{x}+J_{y})\)</span>。频率</p>
+          <div class="formula">\[ \omega_{x}=\frac{\partial H}{\partial J_{x}}=\omega,\qquad \omega_{y}=\frac{\partial H}{\partial J_{y}}=\omega \]</div>
+          <p>两者<strong>相等</strong>（简并）。所有轨道闭合（Lissajous 图形退化为椭圆或线段）。这是与开普勒问题并列的 Bertrand 定理另一实例。若引入微扰 \(H\to H+\epsilon J_{x}J_{y}\)（破坏简并），频率分裂 \(\omega_{x}\neq\omega_{y}\)，轨道变为非闭合 Lissajous 拟周期。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 一维无限深方势阱的 Bohr-Sommerfeld 量子化。宽 \(L=0.50\,\mathrm{nm}\) 的无限深方势阱中电子（\(m=9.11\times10^{-31}\,\mathrm{kg}\)）。用 Bohr-Sommerfeld 条件 \(J=n\hbar\)（即 \(\oint p\,dx=nh\)）求能级公式，并计算基态与第一激发态能量。</summary>
+        <div class="hint">阱内 \(V=0\)，动量大小恒为 \(p=\sqrt{2mE}\)。一个完整周期来回距离为 \(2L\)，故 \(\oint p\,dx=2Lp\)。</div>
+        <div class="solution">
+          <p>由 \(2Lp=nh\)：\(p_{n}=\dfrac{nh}{2L}=\dfrac{n\pi\hbar}{L}\)。能量</p>
+          <div class="formula">\[ E_{n}=\frac{p_{n}^{2}}{2m}=\frac{n^{2}h^{2}}{8mL^{2}}=\frac{n^{2}\pi^{2}\hbar^{2}}{2mL^{2}} \]</div>
+          <p>这<strong>正是</strong> Schrödinger 方程给出的精确能级！对无限深方势阱（边界处波函数强加节点），Bohr-Sommerfeld 给出精确结果而非近似。代入数值：</p>
+          <div class="formula">\[ E_{1}=\frac{(1)^{2}(6.626\times10^{-34})^{2}}{8(9.11\times10^{-31})(5.0\times10^{-10})^{2}}=\frac{4.39\times10^{-67}}{1.82\times10^{-47}}=2.41\times10^{-19}\,\mathrm{J}=1.51\,\mathrm{eV} \]</div>
+          <p><span class="ans">\(E_{1}=1.51\,\mathrm{eV}\)，\(E_{2}=4E_{1}=6.03\,\mathrm{eV}\)</span>。注意：对一般势（如有限深阱、谐振子），简单 \(J=n\hbar\) 会偏差半量子，正确公式是 \(J=(n+\tfrac12)\hbar\)（含 Maslov 修正），这正是 HJ 与 WKB 给出更精细的<strong>量子化规则</strong>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 二维自由粒子 HJ 的平面波解。质量 \(m\) 的二维自由粒子，\(H=(p_{x}^{2}+p_{y}^{2})/(2m)\)。设 \(S(x,y,t)=a_{x}x+a_{y}y-Et\)，求 \(E\) 与 \((a_{x},a_{y})\) 的关系；写出 \(\beta_{x}=\partial S/\partial a_{x}\)、\(\beta_{y}=\partial S/\partial a_{y}\)，并解出 \(x(t),y(t)\)。把结果与德布罗意平面波 \(e^{i(\vec k\cdot\vec r-\omega t)}\) 比较，求 \(\vec k\) 与 \(S\) 的关系。</summary>
+        <div class="hint">HJ 直接给出 \((a_{x}^{2}+a_{y}^{2})/(2m)=E\)。新动量即 \((a_{x},a_{y})=(p_{x},p_{y})\)。</div>
+        <div class="solution">
+          <p>HJ 代入：\(\dfrac{a_{x}^{2}+a_{y}^{2}}{2m}-E=0\)，即 \(E=\dfrac{a_{x}^{2}+a_{y}^{2}}{2m}\)。识别 \(a_{x}=p_{x}\)、\(a_{y}=p_{y}\)（动量分量）。</p>
+          <p>\(\beta_{x}=\partial S/\partial a_{x}=\dfrac{a_{x}}{m}t+x_{0}\)（其中常数 \(x_{0}\) 来自 \(\partial S/\partial a_{x}\) 中含 \(x\) 的项贡献），更准确地：\(\partial S/\partial a_{x}=x+(a_{x}/m)\cdot(-\partial Et/\partial E)\cdot(\partial E/\partial a_{x})/(\partial E/\partial a_{x})\cdots\) 直接由 \(S\) 形式：\(\partial S/\partial a_{x}=x+\dfrac{a_{x}}{m}\cdot\dfrac{\partial(-Et)}{\partial E}\cdot\dfrac{\partial E}{\partial a_{x}}\)，因 \(\partial E/\partial a_{x}=a_{x}/m\)，得</p>
+          <p>\(\beta_{x}=x-(a_{x}/m)t\;\Rightarrow\;x(t)=\beta_{x}+(a_{x}/m)t\)，类似 \(y(t)=\beta_{y}+(a_{y}/m)t\)。匀速直线运动，速度 \(\vec v=\vec p/m=(a_{x},a_{y})/m\)。</p>
+          <p><strong>与德布罗意波比较</strong>：\(\psi\propto e^{i(\vec k\cdot\vec r-\omega t)}=e^{iS/\hbar}\) 给出 <span class="ans">\(S=\hbar\vec k\cdot\vec r-\hbar\omega t\)，即 \(\vec p=\hbar\vec k\)，\(E=\hbar\omega\)</span>。这正是德布罗意关系！动量 = 波矢乘 \(\hbar\)，能量 = 频率乘 \(\hbar\)。HJ 主函数 \(S\) 就是<strong>波函数的相位（除以 \(\hbar\)）</strong>——量子力学的整个运动学就在这一等式里。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真：作用-角变量 Action-Angle Variables</h2>
+      <p class="sim-desc">一维谐振子的相空间。左面板：传统的 \((x,p)\) 相空间，轨道是椭圆（不同能量 → 不同椭圆，嵌套相套）。右面板：作用-角变量 \((J,\theta)\) 表示——每条椭圆变成一条<strong>水平直线</strong>（\(J=\text{const}\)），点以恒定角速度 \(\omega=\partial H/\partial J\) 沿线匀速前进，\(\theta\) 在 \(2\pi\) 处回卷。调节滑块改变质量 \(m\)、频率 \(\omega\)、作用 \(J\)（即能量），观察两面板中点的<strong>同步</strong>运动；点_RESET_ 让相位归零。注意：在 \((x,p)\) 中点速度随位置变化（椭圆顶点慢、过零快），但在 \((J,\theta)\) 中点速度恒定——这正是作用-角变量的优势。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="760" height="420"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+          var params = { m: 0.5, omega: 4.0, J: 0.010, theta0: 0.0 };
+
+          // Layout: split into two panels.
+          var leftCx = 190, leftCy = 210;        // (x,p) phase-space origin
+          var leftScaleX = 1100;                 // px per metre (x amplitude ~0.1 m -> ~110 px)
+          var leftScaleP = 55;                   // px per kg m/s (p amplitude ~0.2 -> ~11 px.. scale up)
+          var rightLeft = 410, rightRight = 740, rightTop = 60, rightBot = 360;
+
+          // Compute amplitude scales so the chosen orbit fits.
+          function amps() {
+            var J = params.J, m = params.m, w = params.omega;
+            var A = Math.sqrt(2 * J / (m * w));      // position amplitude
+            var B = Math.sqrt(2 * m * w * J);        // momentum amplitude
+            return { A: A, B: B };
+          }
+          function autoScales() {
+            // Scale so largest ellipse (J up to ~0.02) fits within ~150 px radius.
+            var Jmax = 0.025;
+            var Amax = Math.sqrt(2 * Jmax / (params.m * params.omega));
+            var Bmax = Math.sqrt(2 * params.m * params.omega * Jmax);
+            var sx = 150 / Math.max(Amax, 1e-9);
+            var sp = 150 / Math.max(Bmax, 1e-9);
+            return { sx: sx, sp: sp };
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return { theta: params.theta0, t: 0, tracePx: [], tracePj: [] };
+            },
+            step: function (dt, t, s) {
+              var w = params.omega;
+              s.theta = (s.theta + w * dt) % (2 * Math.PI);
+              if (s.theta < 0) s.theta += 2 * Math.PI;
+              s.t += dt;
+              // record traces (sample every ~30 ms)
+              if (s.tracePx.length === 0 || (t - s.tracePx[s.tracePx.length - 1].t) > 0.03) {
+                var a = amps();
+                var x = a.A * Math.sin(s.theta);
+                var p = a.B * Math.cos(s.theta);
+                s.tracePx.push({ t: t, x: x, p: p });
+                s.tracePj.push({ t: t, J: params.J, theta: s.theta });
+                if (s.tracePx.length > 240) { s.tracePx.shift(); s.tracePj.shift(); }
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+              var sc = autoScales();
+
+              // ---------------- Title & readout ----------------
+              PS.drawText(ctx, '谐振子 — 作用-角变量  Harmonic Oscillator: Action-Angle',
+                16, 24, { font: '15px system-ui, sans-serif', color: C.text });
+              var E = params.omega * params.J;
+              PS.drawText(ctx,
+                'm = ' + params.m.toFixed(2) + ' kg,   ω = ' + params.omega.toFixed(2) +
+                ' rad/s,   J = E/ω = ' + (E / params.omega).toFixed(4) +
+                ' J·s,   E = ωJ = ' + E.toFixed(4) + ' J',
+                16, 46, { font: '12px system-ui, sans-serif', color: C.text });
+
+              // ---------------- LEFT: (x,p) phase space ----------------
+              // axes
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(40, leftCy); ctx.lineTo(360, leftCy); ctx.stroke();   // x-axis
+              ctx.beginPath(); ctx.moveTo(leftCx, 40); ctx.lineTo(leftCx, 380); ctx.stroke();   // p-axis
+              PS.drawText(ctx, 'x (m)', 350, leftCy - 6, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'p (kg·m/s)', leftCx + 6, 50, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, '(x, p) 相空间', 60, 70,
+                { font: '13px system-ui, sans-serif', color: C.text });
+
+              // nested guide ellipses for several J values
+              var guideJ = [0.005, 0.010, 0.015, 0.020];
+              ctx.lineWidth = 1;
+              guideJ.forEach(function (Jg, idx) {
+                var Ag = Math.sqrt(2 * Jg / (params.m * params.omega));
+                var Bg = Math.sqrt(2 * params.m * params.omega * Jg);
+                ctx.strokeStyle = C.grid;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                for (var k = 0; k <= 64; k++) {
+                  var phi = (k / 64) * 2 * Math.PI;
+                  var xe = Ag * Math.sin(phi);
+                  var pe = Bg * Math.cos(phi);
+                  var pxx = leftCx + xe * sc.sx;
+                  var ppp = leftCy - pe * sc.sp;
+                  if (k === 0) ctx.moveTo(pxx, ppp); else ctx.lineTo(pxx, ppp);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+              });
+
+              // current orbit (solid)
+              var a = amps();
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 2;
+              ctx.beginPath();
+              for (var kk = 0; kk <= 128; kk++) {
+                var ph = (kk / 128) * 2 * Math.PI;
+                var xx = a.A * Math.sin(ph);
+                var pp = a.B * Math.cos(ph);
+                var px = leftCx + xx * sc.sx;
+                var py = leftCy - pp * sc.sp;
+                if (kk === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              // label its area = 2πJ
+              PS.drawText(ctx, 'Area = 2πJ', leftCx + 100, leftCy - 100,
+                { font: '12px system-ui', color: C.trace });
+
+              // trace
+              ctx.strokeStyle = C.primary; ctx.lineWidth = 1.5; ctx.globalAlpha = 0.5;
+              ctx.beginPath();
+              var firstT = true;
+              s.tracePx.forEach(function (pt) {
+                var px = leftCx + pt.x * sc.sx;
+                var py = leftCy - pt.p * sc.sp;
+                if (firstT) { ctx.moveTo(px, py); firstT = false; } else ctx.lineTo(px, py);
+              });
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+
+              // moving point
+              var curX = a.A * Math.sin(s.theta);
+              var curP = a.B * Math.cos(s.theta);
+              var dotX = leftCx + curX * sc.sx;
+              var dotP = leftCy - curP * sc.sp;
+              PS.drawCircle(ctx, dotX, dotP, 7, { fill: C.accent, stroke: C.text, lineWidth: 2 });
+              // velocity arrow (tangent to ellipse) — visualizes non-uniform speed
+              var vx = a.A * Math.cos(s.theta) * params.omega;   // dx/dt
+              var vp = -a.B * Math.sin(s.theta) * params.omega;  // dp/dt
+              PS.drawArrow(ctx, dotX, dotP, dotX + vx * sc.sx * 0.18, dotP - vp * sc.sp * 0.18,
+                C.accent2, 'v');
+
+              // ---------------- divider ----------------
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(400, 30); ctx.lineTo(400, 400); ctx.stroke();
+
+              // ---------------- RIGHT: (J, θ) action-angle ----------------
+              PS.drawText(ctx, '(J, θ) 作用-角空间', rightLeft, 70,
+                { font: '13px system-ui, sans-serif', color: C.text });
+              // axes: θ horizontal (0..2π), J vertical
+              var thetaX0 = rightLeft;             // θ = 0
+              var thetaX1 = rightRight;            // θ = 2π
+              var thetaS = (thetaX1 - thetaX0) / (2 * Math.PI);
+              var Jy0 = rightBot;                  // J = 0 at bottom
+              var Jy1 = rightTop;                  // J = 0.025 at top
+              var Jscale = (Jy0 - Jy1) / 0.025;
+              function thetaToX(th) { return thetaX0 + th * thetaS; }
+              function JtoY(Jv)    { return Jy0 - Jv * Jscale; }
+
+              // axis lines
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(thetaX0, Jy0); ctx.lineTo(thetaX1, Jy0); ctx.stroke(); // θ axis
+              ctx.beginPath(); ctx.moveTo(thetaX0, Jy0); ctx.lineTo(thetaX0, Jy1); ctx.stroke(); // J axis
+              // θ tick marks at 0, π/2, π, 3π/2, 2π
+              [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2, 2 * Math.PI].forEach(function (tk) {
+                var tx = thetaToX(tk);
+                ctx.beginPath(); ctx.moveTo(tx, Jy0); ctx.lineTo(tx, Jy0 + 5); ctx.stroke();
+                var lab = (tk === 0) ? '0' : (tk === Math.PI / 2) ? 'π/2' :
+                          (tk === Math.PI) ? 'π' : (tk === 3 * Math.PI / 2) ? '3π/2' : '2π';
+                PS.drawText(ctx, lab, tx - 6, Jy0 + 18,
+                  { font: '11px system-ui', color: C.text });
+              });
+              PS.drawText(ctx, 'θ →', thetaX1 - 18, Jy0 + 34,
+                { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'J ↑', thetaX0 - 28, Jy1 + 10,
+                { font: '12px system-ui', color: C.text });
+
+              // guide horizontal lines for several J
+              ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+              guideJ.forEach(function (Jg) {
+                var yy = JtoY(Jg);
+                ctx.strokeStyle = C.grid;
+                ctx.beginPath(); ctx.moveTo(thetaX0, yy); ctx.lineTo(thetaX1, yy); ctx.stroke();
+              });
+              ctx.setLineDash([]);
+
+              // current J horizontal line
+              var curJy = JtoY(params.J);
+              ctx.strokeStyle = C.trace; ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.moveTo(thetaX0, curJy); ctx.lineTo(thetaX1, curJy); ctx.stroke();
+              PS.drawText(ctx, 'J = ' + params.J.toFixed(4) + ' J·s (const!)',
+                thetaX1 - 160, curJy - 6,
+                { font: '12px system-ui', color: C.trace });
+
+              // trace in (J,θ) — wraps; for visualization, draw as moving dot only (line jumps)
+              // moving dot
+              var curThetaX = thetaToX(s.theta);
+              PS.drawCircle(ctx, curThetaX, curJy, 7,
+                { fill: C.accent, stroke: C.text, lineWidth: 2 });
+              // velocity arrow (horizontal only, constant magnitude = ω)
+              PS.drawArrow(ctx, curThetaX, curJy,
+                curThetaX + params.omega * thetaS * 0.15, curJy, C.accent2, 'ω');
+
+              // wrap indicator at θ = 2π
+              PS.drawText(ctx, 'θ wraps at 2π → 0', thetaX1 - 130, Jy1 + 24,
+                { font: '11px system-ui', color: C.accent2 });
+
+              // ---------------- bottom comparison readout ----------------
+              var bottomY = 395;
+              PS.drawText(ctx,
+                '左 Left:  椭圆上点速度非匀速 (顶点慢/过零快)   ' +
+                '|   右 Right:  水平线上点速度恒为 ω = ' + params.omega.toFixed(2) + ' rad/s',
+                16, bottomY, { font: '12px system-ui, sans-serif', color: C.text });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'm',      label: '质量 m (kg)',           min: 0.20, max: 2.00, step: 0.05, value: 0.50 },
+            { type: 'slider', key: 'omega',  label: '频率 ω (rad/s)',        min: 1.00, max: 8.00, step: 0.10, value: 4.00 },
+            { type: 'slider', key: 'J',      label: '作用 J (J·s)',          min: 0.002, max: 0.020, step: 0.001, value: 0.010 },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset (θ=0)' },
+          ]);
+          ctl.on('m',     function (v) { params.m = v; });
+          ctl.on('omega', function (v) { params.omega = v; });
+          ctl.on('J',     function (v) { params.J = v; });
+          ctl.on('reset', function () { sim.getState().theta = 0; sim.getState().tracePx = []; sim.getState().tracePj = []; sim.getState().t = 0; });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p><strong>哈密顿-雅可比理论</strong>把求解运动方程转化为求单个一阶偏微分方程——这是经典力学的「终极形式」。其概念价值远超实用计算：它把力学几何化为「等作用面的传播」，直接对应几何光学；它把周期运动化为作用-角变量，让频率「免费」出现；它为量子化提供了自然变量（\(J=n\hbar\)），并精确表达了「量子力学 → 经典力学」的短波极限。</p>
+      <div class="formula">\[ \text{Hamilton-Jacobi: }\;H\!\left(q,\frac{\partial S}{\partial q},t\right)+\frac{\partial S}{\partial t}=0\quad\text{(一阶非线性 PDE)} \]</div>
+      <div class="formula">\[ \text{Time-independent }H:\;S(q,t)=W(q)-Et,\quad H\!\left(q,\frac{\partial W}{\partial q}\right)=E \]</div>
+      <div class="formula">\[ \text{Complete integral: }\beta_{i}=\frac{\partial S}{\partial\alpha_{i}}\;\Longrightarrow\;q_{i}=q_{i}(\alpha,\beta,t)\;\text{(运动方程的解)} \]</div>
+      <div class="formula">\[ \text{Action-angle: }\;J_{i}=\frac{1}{2\pi}\oint p_{i}\,dq_{i},\quad H=H(J),\quad \dot J_{i}=0,\quad \dot\theta_{i}=\omega_{i}=\frac{\partial H}{\partial J_{i}} \]</div>
+      <div class="formula">\[ \text{Free particle: }S=\sqrt{2mE}\,x-Et,\;\;p=\sqrt{2mE},\;\;x=\frac{p}{m}(t+\beta) \]</div>
+      <div class="formula">\[ \text{Harmonic oscillator: }\;J=\frac{E}{\omega},\;H=\omega J,\;\omega=\frac{\partial H}{\partial J};\;\text{Kepler: }E=-\frac{mk^{2}}{2(J_{r}+J_{\theta}+J_{\phi})^{2}} \]</div>
+      <div class="formula">\[ \text{WKB / QM bridge: }\psi=Ae^{iS/\hbar}\;\xrightarrow{\hbar\to 0}\;-\frac{\partial S}{\partial t}=H\!\left(q,\frac{\partial S}{\partial q}\right)\;\text{(HJ 方程)} \]</div>
+      <div class="formula">\[ \text{Bohr-Sommerfeld: }\;J_{i}=n_{i}\hbar\;\text{(半经典量子化)},\quad \lambda_{\text{dB}}=h/p\;\text{(短波极限条件)} \]</div>
+      <p><strong>核心收获</strong>：经典力学可以写成「作用量 \(S\) 满足 HJ 方程」的形式；量子力学只是把 \(S\) 解释为波函数的相位（\(S/\hbar\)）。这一桥梁不是修辞，而是数学等价（WKB 极限）。分析力学的全部精华——拉格朗日量、哈密顿量、泊松括号、正则变换——在 HJ 方程中汇为一个简洁的偏微分方程，并在量子化、统计力学、场论中开枝散叶。本章完结了第五学期的分析力学主线；下一章（第 12 章）将进入经典场论与 Noether 定理的场论形式。</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

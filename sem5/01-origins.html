@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 量子力学起源 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第1章 · 量子力学 I Quantum Mechanics I</p>
+      <h1>量子力学起源 <span class="en-title">Origins of Quantum Mechanics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>说明 19 世纪末经典物理 (classical physics) 的三大实验危机——黑体辐射 (blackbody radiation)、光电效应 (photoelectric effect)、原子光谱 (atomic spectra)——为何无法用麦克斯韦电磁学与牛顿力学解释。</li>
+        <li>由普朗克能量子假设 \(E=N\,h\nu\)（Planck's quantum hypothesis, \(h=6.626\times10^{-34}\,\mathrm{J\,s}\)）导出黑体谱，解释它如何消除<strong>紫外灾难</strong> (ultraviolet catastrophe)。</li>
+        <li>应用爱因斯坦光子模型 (Einstein's photon model) 处理光电效应：\(K_{\max}=h\nu-\phi\)，求阈频 \(\nu_{0}=\phi/h\) 与截止波长 \(\lambda_{0}=hc/\phi\)。</li>
+        <li>计算康普顿散射 (Compton scattering) 的波长偏移 \(\Delta\lambda=(h/mc)(1-\cos\theta)\)，并由此说明光子携带动量 \(p=h/\lambda\)。</li>
+        <li>推导玻尔模型 (Bohr model) 的能级 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\) 与轨道半径 \(r_{n}=n^{2}a_{0}\)，用里德伯公式 (Rydberg formula) 预言氢光谱线。</li>
+        <li>由德布罗意关系 \(\lambda=h/p\) 求粒子的物质波波长，理解波粒二象性 (wave-particle duality)，并由戴维孙–革末实验 (Davisson–Germer) 加以印证。</li>
+        <li>辨析每个结果如何独立指向<strong>能量与角动量的量子化</strong> (quantization of energy and angular momentum)——从而为下一章薛定谔方程 (Schrödinger equation) 做好铺垫。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 经典物理的失败 The Failure of Classical Physics</h3>
+      <p>1900 年前后，经典力学 (classical mechanics)、电磁学 (electromagnetism)、热力学 (thermodynamics) 看似已经完备，但若干实验结果与经典理论给出<strong>尖锐矛盾</strong>：</p>
+      <ul>
+        <li><strong>黑体辐射 (blackbody radiation)：</strong> 任何经典统计（能量均分定理）都预言高温物体在短波（紫外）端辐射功率发散——所谓"紫外灾难" (UV catastrophe)；实验测得的谱却是一个有峰的有限曲线。</li>
+        <li><strong>光电效应 (photoelectric effect)：</strong> 经典波理论预言电子的动能应随光强增大、与频率无关；实验却显示动能只依赖频率，且存在截止频率——光再强也不出电子。</li>
+        <li><strong>原子光谱 (atomic spectra)：</strong> 经典电磁理论断言绕核旋转的电子会持续辐射电磁波、在 \(10^{-11}\,\mathrm{s}\) 内坠入原子核，且发射连续谱；实验显示原子稳定、发射离散的<strong>线状光谱</strong>。</li>
+        <li><strong>固体比热 (specific heat of solids)：</strong> 经典均分定理预言所有固体高温摩尔比热均为 \(3R\)（Dulong–Petit 定律），但低温下实测远低于此——表明低温下自由度被"冻结"。</li>
+      </ul>
+      <p>这些危机的共同根源是：<strong>经典物理允许能量连续取值</strong>，而自然界似乎只在离散的"量子"上交换能量。本章按历史顺序逐一展开。</p>
+      <div class="key-terms">classical physics (经典物理), blackbody radiation (黑体辐射), UV catastrophe (紫外灾难), photoelectric effect (光电效应), line spectrum (线状光谱)</div>
+
+      <h3>2. 黑体辐射与普朗克公式 Blackbody Radiation &amp; Planck's Law</h3>
+      <p>一个<strong>黑体</strong> (blackbody) 是吸收所有入射辐射、并按温度发射连续谱的理想物体（实验上用空腔上的小孔近似）。其<strong>光谱辐亮度</strong> (spectral radiance) \(B(\lambda,T)\) 定义为单位波长、单位立体角、单位面积所发出的功率。实验曲线：</p>
+      <ul>
+        <li>在长波段 \(B\propto\lambda^{-4}\)（与瑞利–金斯公式一致）；</li>
+        <li>在 \(\lambda=\lambda_{\max}\) 处出现峰值，温度升高时 \(\lambda_{\max}\) <strong>变短</strong>（Wien 位移定律）；</li>
+        <li>总辐射功率随温度急剧增大（Stefan–Boltzmann 定律 \(j^{\ast}=\sigma T^{4}\)）。</li>
+      </ul>
+      <p><strong>瑞利–金斯公式</strong> (Rayleigh–Jeans) 用经典能量均分给出每模式能量 \(kT\)，导得：</p>
+      <div class="formula">\[ B_{\text{RJ}}(\lambda,T)=\frac{2ckT}{\lambda^{4}} \]</div>
+      <p>它在长波段与实验吻合，但当 \(\lambda\to 0\) 时发散——<strong>紫外灾难</strong>。1900 年普朗克 (Max Planck) 发现，若假设腔壁振子的能量只能取离散值 \(E_{n}=n\,h\nu\)（\(n=0,1,2,\dots\)），并对玻尔兹曼分布求平均，每个模式的平均能量不再是 \(kT\)，而是：</p>
+      <div class="formula">\[ \langle E\rangle=\frac{h\nu}{e^{h\nu/kT}-1} \]</div>
+      <p>代入电磁模密度 \((8\pi/\lambda^{4})\,(\mathrm{d}\nu)\) 并换算到 \(B(\lambda,T)\)，即得<strong>普朗克公式</strong>：</p>
+      <div class="formula">\[ \boxed{\;B(\lambda,T)=\frac{2hc^{2}}{\lambda^{5}}\,\frac{1}{e^{hc/(\lambda kT)}-1}\;} \]</div>
+      <p>它在全部波长上与实验吻合。注意：当 \(h\nu\ll kT\)（低频/长波），\(e^{x}\approx 1+x\)，\(\langle E\rangle\to kT\)，回归 Rayleigh–Jeans；当 \(h\nu\gg kT\)，平均能量被指数压低，自动消除灾难。<strong>普朗克常数</strong> (Planck's constant) \(h=6.626\,070\,15\times10^{-34}\,\mathrm{J\,s}\)（2019 年 SI 精确值）就此进入物理。</p>
+      <p>对 \(B(\lambda,T)\) 求 \(\partial B/\partial\lambda=0\)，得峰值波长满足 \(hc/(\lambda_{\max}kT)\approx 4.965\)，即<strong>Wien 位移定律</strong> (Wien's displacement law)：</p>
+      <div class="formula">\[ \lambda_{\max}\,T=b,\qquad b=2.898\times10^{-3}\,\mathrm{m\,K} \]</div>
+      <p>对全波长积分，得<strong>Stefan–Boltzmann 定律</strong> (Stefan–Boltzmann law)：单位面积总辐射功率（辐射出射度，radiant exitance）</p>
+      <div class="formula">\[ j^{\ast}=\sigma T^{4},\qquad \sigma=5.670\times10^{-8}\,\mathrm{W\,m^{-2}\,K^{-4}} \]</div>
+      <div class="key-terms">Planck's constant \(h\) (普朗克常数), spectral radiance \(B(\lambda,T)\) (光谱辐亮度), Wien's displacement law (Wien 位移定律), Stefan–Boltzmann law (Stefan–Boltzmann 定律), Rayleigh–Jeans law (瑞利–金斯定律)</div>
+
+      <h3>3. 光电效应与光子 Photoelectric Effect &amp; the Photon</h3>
+      <p>金属中的<strong>电子</strong> (electron) 被束缚在金属内，至少需克服<strong>逸出功</strong> (work function) \(\phi\) 才能逃逸。1887 年赫兹发现：用光照射金属，发射电子（光电子 photoelectron）的<strong>最大动能</strong> \(K_{\max}\) 与光强无关，而与光的频率成线性关系；存在<strong>截止频率</strong> (threshold frequency) \(\nu_{0}\)，低于此频率无论光多强都没有光电子。经典波理论完全无法解释。</p>
+      <p>1905 年爱因斯坦 (Einstein) 大胆假设：光本身由能量为 \(E=h\nu\) 的<strong>光子</strong> (photon) 组成，光强对应光子数密度而非波振幅。一个光子把全部能量 \(h\nu\) 交给一个电子，电子消耗 \(\phi\) 离开金属，多余能量成为动能。由此得<strong>爱因斯坦光电方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;K_{\max}=h\nu-\phi\;}\qquad\text{或}\qquad K_{\max}=\frac{hc}{\lambda}-\phi \]</div>
+      <p>令 \(K_{\max}=0\) 得阈频 \(\nu_{0}=\phi/h\) 与截止波长 \(\lambda_{0}=hc/\phi\)。光强只决定每秒光子数（从而饱和光电流 \(I\propto\text{光强}\)），不改变单个电子的动能。爱因斯坦因此获 1921 年诺贝尔物理学奖。<strong>密立根实验</strong> (Millikan, 1916) 精确验证了 \(K_{\max}\)–\(\nu\) 直线，斜率正是 \(h\)。</p>
+      <div class="key-terms">photon (光子), work function \(\phi\) (逸出功/功函数), threshold frequency \(\nu_{0}\) (阈频/截止频率), photoelectron (光电子), Einstein's photoelectric equation (爱因斯坦光电方程)</div>
+
+      <h3>4. 康普顿散射与光子动量 Compton Scattering &amp; Photon Momentum</h3>
+      <p>如果光子是真正的粒子，它不仅带能量，还应带<strong>动量</strong>。由相对论能量–动量关系 \(E^{2}=(pc)^{2}+(m_{0}c^{2})^{2}\) 与光子静质量 \(m_{0}=0\)、能量 \(E=h\nu\)，得光子动量：</p>
+      <div class="formula">\[ p=\frac{E}{c}=\frac{h\nu}{c}=\frac{h}{\lambda} \]</div>
+      <p>1923 年康普顿 (Arthur Compton) 把 X 射线射向自由（或弱束缚）电子，测量散射光波长。结果：散射光波长相对入射光<strong>变长</strong>，且偏移量只依赖散射角 \(\theta\)，与靶物质无关。把散射当作<strong>光子–电子相对论弹性碰撞</strong>处理（能量守恒 + 动量守恒），他推出<strong>康普顿偏移</strong> (Compton shift)：</p>
+      <div class="formula">\[ \boxed{\;\Delta\lambda=\lambda'-\lambda=\frac{h}{m_{e}c}\,(1-\cos\theta)=\lambda_{\mathrm{C}}\,(1-\cos\theta)\;} \]</div>
+      <p>其中 <strong>电子康普顿波长</strong> \(\lambda_{\mathrm{C}}=h/(m_{e}c)=2.426\times10^{-12}\,\mathrm{m}=2.43\,\mathrm{pm}\)。在 \(\theta=180^{\circ}\)（背散射）时偏移最大，\(\Delta\lambda_{\max}=2\lambda_{\mathrm{C}}=4.86\,\mathrm{pm}\)。康普顿散射无可辩驳地证明<strong>光子携带动量</strong>，与光电效应一起确立了光的粒子性。</p>
+      <div class="key-terms">Compton scattering (康普顿散射), photon momentum \(p=h/\lambda\) (光子动量), Compton wavelength \(\lambda_{\mathrm{C}}\) (康普顿波长), elastic collision (弹性碰撞)</div>
+
+      <h3>5. 玻尔模型 Bohr Model of the Atom</h3>
+      <p>1913 年玻尔 (Niels Bohr) 为氢原子 (hydrogen atom) 提出半经典模型，假设：</p>
+      <ul>
+        <li>电子在库仑引力下做圆周轨道运动：\(m_{e}v^{2}/r=(1/4\pi\varepsilon_{0})\,e^{2}/r^{2}\)；</li>
+        <li>角动量<strong>量子化</strong> (quantized angular momentum)：\(L=m_{e}vr=n\hbar\)，\(n=1,2,3,\dots\)；</li>
+        <li>电子在轨道上不辐射；只在跃迁 \(n_{i}\to n_{f}\) 时发射/吸收光子，频率满足 \(h\nu=E_{i}-E_{f}\)。</li>
+      </ul>
+      <p>解得轨道半径与能级（推导见下节）：</p>
+      <div class="formula">\[ r_{n}=n^{2}a_{0},\qquad a_{0}=\frac{4\pi\varepsilon_{0}\hbar^{2}}{m_{e}e^{2}}=0.529\,\text{Å}=5.29\times10^{-11}\,\mathrm{m}\quad(\text{玻尔半径 Bohr radius}) \]</div>
+      <div class="formula">\[ \boxed{\;E_{n}=-\frac{13.6\,\mathrm{eV}}{n^{2}}\;}\qquad n=1,2,3,\dots \]</div>
+      <p>跃迁 \(n_{i}\to n_{f}\)（\(n_{i}>n_{f}\)）发射光子的波长由<strong>里德伯公式</strong> (Rydberg formula) 给出：</p>
+      <div class="formula">\[ \frac{1}{\lambda}=R_{\infty}\!\left(\frac{1}{n_{f}^{2}}-\frac{1}{n_{i}^{2}}\right),\qquad R_{\infty}=1.097\times10^{7}\,\mathrm{m^{-1}} \]</div>
+      <p>\(n_{f}=1\) 为 <strong>Lyman 系</strong>（紫外），\(n_{f}=2\) 为 <strong>Balmer 系</strong>（可见光），\(n_{f}=3\) 为 <strong>Paschen 系</strong>（红外）。玻尔模型精确重现了氢光谱所有已知线系，并预言了新的——这是量子化思想的<strong>第一个胜利</strong>。</p>
+      <div class="key-terms">Bohr radius \(a_{0}\) (玻尔半径), energy level (能级), Rydberg formula (里德伯公式), Lyman/Balmer/Paschen series (莱曼/巴耳末/帕邢线系), quantization (量子化)</div>
+
+      <h3>6. 德布罗意波与波粒二象性 de Broglie Waves &amp; Wave-Particle Duality</h3>
+      <p>1924 年德布罗意 (Louis de Broglie) 提出对称猜想：既然光波具有粒子性，<strong>实物粒子</strong>也应具有波动性。每个动量为 \(p\) 的粒子对应一种<strong>物质波</strong> (matter wave)，波长为：</p>
+      <div class="formula">\[ \boxed{\;\lambda=\frac{h}{p}=\frac{h}{mv}\;}\qquad\text{(de Broglie wavelength, 非相对论)} \]</div>
+      <p>对爱因斯坦关系 \(E=h\nu\) 与 \(p=h/\lambda\) 的对称写法为 \(E=\hbar\omega\)、\(p=\hbar k\)（\(k=2\pi/\lambda\)）。德布罗意进一步指出：把电子在玻尔轨道上看作<strong>驻波</strong> (standing wave)，要求周长容纳整数个波长 \(2\pi r=n\lambda\)，代入 \(\lambda=h/(m_{e}v)\) 即得 \(m_{e}vr=n\hbar\)——这正是玻尔<strong>凭空假设</strong>的角动量量子化条件！物理图像立刻自洽。</p>
+      <p>1927 年<strong>戴维孙–革末实验</strong> (Davisson–Germer) 把电子束射向镍单晶，观察到与 X 射线衍射类似的<strong>布拉格峰</strong> (Bragg peak)。测出的电子波长恰与德布罗意预言一致（约 \(0.165\,\mathrm{nm}\)），无可辩驳地证实了<strong>电子的波动性</strong>。同年 G. P. 汤姆孙独立地用电子穿过薄膜得到衍射环。波粒二象性 (wave-particle duality) 至此确立，量子力学的大门就此打开。</p>
+      <div class="key-terms">de Broglie wavelength (德布罗意波长), matter wave (物质波), wave-particle duality (波粒二象性), standing wave (驻波), Davisson–Germer experiment (戴维孙–革末实验)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 1.1：玻尔能级 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\)</h3>
+      <p>设电子（质量 \(m_{e}\)、电荷 \(-e\)）绕质子（电荷 \(+e\)）做半径为 \(r\)、速度 \(v\) 的圆周运动。</p>
+      <p class="step"><strong>步骤 1（牛顿第二定律 + 库仑力）：</strong> 法向方程给出</p>
+      <div class="formula">\[ \frac{m_{e}v^{2}}{r}=\frac{1}{4\pi\varepsilon_{0}}\frac{e^{2}}{r^{2}}\quad\Longrightarrow\quad m_{e}v^{2}r=\frac{e^{2}}{4\pi\varepsilon_{0}} \]</div>
+      <p class="step"><strong>步骤 2（角动量量子化）：</strong> 玻尔假设 \(L=m_{e}vr=n\hbar\)，故 \(v=n\hbar/(m_{e}r)\)。代入步骤 1：</p>
+      <div class="formula">\[ m_{e}\!\left(\frac{n\hbar}{m_{e}r}\right)^{2}\!r=\frac{n^{2}\hbar^{2}}{m_{e}r}=\frac{e^{2}}{4\pi\varepsilon_{0}}\quad\Longrightarrow\quad r_{n}=\frac{4\pi\varepsilon_{0}\hbar^{2}}{m_{e}e^{2}}\,n^{2}=n^{2}a_{0} \]</div>
+      <p class="step"><strong>步骤 3（动能）：</strong> 由步骤 1，\(K=\tfrac{1}{2}m_{e}v^{2}=\dfrac{1}{2}\dfrac{e^{2}}{4\pi\varepsilon_{0}r}\)。代入 \(r_{n}\)：</p>
+      <div class="formula">\[ K_{n}=\frac{1}{2}\frac{e^{2}}{4\pi\varepsilon_{0}n^{2}a_{0}} \]</div>
+      <p class="step"><strong>步骤 4（势能与总能）：</strong> 库仑势能 \(U_{n}=-\dfrac{e^{2}}{4\pi\varepsilon_{0}r_{n}}=-2K_{n}\)（维里定理自动满足）。总能：</p>
+      <div class="formula">\[ E_{n}=K_{n}+U_{n}=-K_{n}=-\frac{1}{2}\frac{e^{2}}{4\pi\varepsilon_{0}n^{2}a_{0}}=-\frac{m_{e}e^{4}}{2(4\pi\varepsilon_{0})^{2}\hbar^{2}}\cdot\frac{1}{n^{2}} \]</div>
+      <p class="step"><strong>步骤 5（代入数值）：</strong> 用 \(m_{e}=9.109\times10^{-31}\,\mathrm{kg}\)、\(e=1.602\times10^{-19}\,\mathrm{C}\)、\(\varepsilon_{0}=8.854\times10^{-12}\,\mathrm{F/m}\)、\(\hbar=1.055\times10^{-34}\,\mathrm{J\,s}\)：</p>
+      <div class="formula">\[ E_{1}=-\frac{(9.109\times10^{-31})(1.602\times10^{-19})^{4}}{2(4\pi\cdot8.854\times10^{-12})^{2}(1.055\times10^{-34})^{2}}=-2.18\times10^{-18}\,\mathrm{J} \]</div>
+      <p>换算成电子伏：\(E_{1}=-2.18\times10^{-18}/(1.602\times10^{-19})=-13.6\,\mathrm{eV}\)。所以：</p>
+      <div class="formula">\[ \boxed{\;E_{n}=-\frac{13.6\,\mathrm{eV}}{n^{2}},\qquad r_{n}=n^{2}a_{0},\qquad a_{0}=0.529\,\text{Å}\;} \]</div>
+
+      <h3>推导 1.2：康普顿偏移 \(\Delta\lambda=(h/m_{e}c)(1-\cos\theta)\)</h3>
+      <p>设入射光子能量 \(E=hc/\lambda\)、动量 \((h/\lambda)\hat{x}\)，电子初始静止（能量 \(m_{e}c^{2}\)、动量 0）。散射后光子能量 \(E'=hc/\lambda'\)、方向与入射方向成角 \(\theta\)，反冲电子能量 \(E_{e}\)、动量 \(\vec{p}_{e}\)。</p>
+      <p class="step"><strong>能量守恒：</strong> \(E+m_{e}c^{2}=E'+E_{e}\)，即 \(E_{e}-m_{e}c^{2}=E-E'\)（电子获得动能 \(K=E-E'\)）。</p>
+      <p class="step"><strong>动量守恒（\(x\) 分量）：</strong> \(\dfrac{h}{\lambda}=\dfrac{h}{\lambda'}\cos\theta+p_{e,x}\)。</p>
+      <p class="step"><strong>动量守恒（\(y\) 分量）：</strong> \(0=\dfrac{h}{\lambda'}\sin\theta-p_{e,y}\)（取散射光在 \(+\hat{y}\) 一侧）。两式平方相加：\(p_{e}^{2}=\left(\dfrac{h}{\lambda}\right)^{2}+\left(\dfrac{h}{\lambda'}\right)^{2}-2\dfrac{h^{2}}{\lambda\lambda'}\cos\theta\)。</p>
+      <p class="step"><strong>电子相对论能–动关系：</strong> \(E_{e}^{2}=(p_{e}c)^{2}+(m_{e}c^{2})^{2}\)，即 \((E+m_{e}c^{2}-E')^{2}-(p_{e}c)^{2}=(m_{e}c^{2})^{2}\)。展开并代入上述 \(p_{e}^{2}\)：</p>
+      <div class="formula">\[ 2m_{e}c^{2}(E-E')=EE'(1-\cos\theta)\cdot 2 \;/\; \text{整理}\;\Longrightarrow\; \frac{1}{E'}-\frac{1}{E}=\frac{1-\cos\theta}{m_{e}c^{2}} \]</div>
+      <p>用 \(E=hc/\lambda\)、\(E'=hc/\lambda'\)，得：</p>
+      <div class="formula">\[ \boxed{\;\lambda'-\lambda=\frac{h}{m_{e}c}(1-\cos\theta)\;} \]</div>
+      <p>这个结果只含基本常数 \(h,m_{e},c\)，与靶物质无关——正是康普顿实验所观测到的。</p>
+
+      <h3>推导 1.3：德布罗意驻波条件自动给出玻尔量子化</h3>
+      <p>把轨道电子看作沿圆周"缠绕"的驻波，要求绕行一周后相位自洽（首尾相干）：周长必须容纳整数个完整波长，否则波因相消干涉而消失：</p>
+      <div class="formula">\[ 2\pi r=n\lambda,\qquad n=1,2,3,\dots \]</div>
+      <p>代入德布罗意关系 \(\lambda=h/p=h/(m_{e}v)\)：</p>
+      <div class="formula">\[ 2\pi r=n\frac{h}{m_{e}v}\quad\Longrightarrow\quad m_{e}vr=n\frac{h}{2\pi}=n\hbar \]</div>
+      <p>这正是玻尔作为<strong>假设</strong>引入的 \(L=n\hbar\)。<strong>角动量量子化首次有了物理图像</strong>——它对应稳定驻波的存在条件。这一思想后来在薛定谔方程中被严格实现（球谐函数 + 径向节点条件）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1.1 光电效应：钠的阈频、截止波长与光电子动能</h4>
+        <p class="example-statement">钠 (Na) 的逸出功 \(\phi_{\text{Na}}=2.28\,\mathrm{eV}\)。用波长 \(\lambda=400\,\mathrm{nm}\)（紫光）照射钠表面。求：(a) 钠的阈频 \(\nu_{0}\) 与截止波长 \(\lambda_{0}\)；(b) 光电子的最大动能 \(K_{\max}\)（eV 与 J）；(c) 光电子的最大速率 \(v_{\max}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>已知：</strong> \(\phi=2.28\,\mathrm{eV}=2.28\times1.602\times10^{-19}=3.65\times10^{-19}\,\mathrm{J}\)；\(hc=1240\,\mathrm{eV\,nm}\)；\(m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)。</p>
+          <p class="step"><strong>(a) 阈频与截止波长：</strong> 由 \(h\nu_{0}=\phi\)：</p>
+          <div class="formula">\[ \nu_{0}=\frac{\phi}{h}=\frac{3.65\times10^{-19}}{6.626\times10^{-34}}=5.51\times10^{14}\,\mathrm{Hz} \]</div>
+          <div class="formula">\[ \lambda_{0}=\frac{c}{\nu_{0}}=\frac{3.00\times10^{8}}{5.51\times10^{14}}=5.44\times10^{-7}\,\mathrm{m}=544\,\mathrm{nm}\quad(\text{绿黄光}) \]</div>
+          <p class="step">校核：\(\lambda_{0}=hc/\phi=1240/2.28=544\,\mathrm{nm}\) ✓。波长长于 544 nm（红光、红外）的光无论多强都不能让钠发射光电子。</p>
+          <p class="step"><strong>(b) 入射光子能量：</strong></p>
+          <div class="formula">\[ E_{\text{光子}}=\frac{hc}{\lambda}=\frac{1240}{400}=3.10\,\mathrm{eV}=3.10\times1.602\times10^{-19}=4.97\times10^{-19}\,\mathrm{J} \]</div>
+          <p class="step">由爱因斯坦方程：</p>
+          <div class="formula">\[ K_{\max}=h\nu-\phi=3.10-2.28=0.82\,\mathrm{eV}=0.82\times1.602\times10^{-19}=1.31\times10^{-19}\,\mathrm{J} \]</div>
+          <p class="step"><strong>(c) 最大速率：</strong> 由 \(K_{\max}=\tfrac{1}{2}m_{e}v_{\max}^{2}\)：</p>
+          <div class="formula">\[ v_{\max}=\sqrt{\frac{2K_{\max}}{m_{e}}}=\sqrt{\frac{2(1.31\times10^{-19})}{9.11\times10^{-31}}}=\sqrt{2.88\times10^{11}}=5.37\times10^{5}\,\mathrm{m/s} \]</div>
+          <p class="step">约为光速的 \(0.18\%\)，可用非相对论近似（无需修正）。</p>
+          <p><span class="ans">\(\nu_{0}=5.51\times10^{14}\,\mathrm{Hz};\;\lambda_{0}=544\,\mathrm{nm};\;K_{\max}=0.82\,\mathrm{eV}=1.31\times10^{-19}\,\mathrm{J};\;v_{\max}=5.37\times10^{5}\,\mathrm{m/s}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 康普顿散射：波长偏移与散射光子能量</h4>
+        <p class="example-statement">波长 \(\lambda=0.0200\,\mathrm{nm}=20.0\,\mathrm{pm}\) 的 X 射线光子被自由电子散射，散射角 \(\theta=90^{\circ}\)。求：(a) 散射光子的波长偏移 \(\Delta\lambda\) 与新波长 \(\lambda'\)；(b) 入射光子与散射光子的能量 \(E\)、\(E'\)；(c) 反冲电子获得的动能 \(K_{e}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>已知：</strong> 电子康普顿波长 \(\lambda_{\mathrm{C}}=h/(m_{e}c)=2.426\times10^{-12}\,\mathrm{m}=2.43\,\mathrm{pm}\)；\(\cos 90^{\circ}=0\)；\(hc=1240\,\mathrm{eV\,nm}\)。</p>
+          <p class="step"><strong>(a) 康普顿偏移：</strong></p>
+          <div class="formula">\[ \Delta\lambda=\lambda_{\mathrm{C}}(1-\cos\theta)=2.43\,\mathrm{pm}\times(1-0)=2.43\,\mathrm{pm}=0.00243\,\mathrm{nm} \]</div>
+          <div class="formula">\[ \lambda'=\lambda+\Delta\lambda=20.00+2.43=22.43\,\mathrm{pm}=0.02243\,\mathrm{nm} \]</div>
+          <p class="step"><strong>(b) 光子能量：</strong> 由 \(E=hc/\lambda\)：</p>
+          <div class="formula">\[ E=\frac{1240}{0.0200}=62\,000\,\mathrm{eV}=62.0\,\mathrm{keV} \]</div>
+          <div class="formula">\[ E'=\frac{1240}{0.02243}=55\,300\,\mathrm{eV}=55.3\,\mathrm{keV} \]</div>
+          <p class="step"><strong>(c) 反冲电子动能：</strong> 由能量守恒 \(K_{e}=E-E'\)：</p>
+          <div class="formula">\[ K_{e}=62.0-55.3=6.7\,\mathrm{keV}=1.07\times10^{-15}\,\mathrm{J} \]</div>
+          <p class="step">说明：若改在 \(\theta=180^{\circ}\)（背散射）发生，偏移最大 \(\Delta\lambda_{\max}=2\lambda_{\mathrm{C}}=4.86\,\mathrm{pm}\)，散射光子能量降至 \(E'_{\min}=1240/0.0249=49.8\,\mathrm{keV}\)，电子带走 \(12.2\,\mathrm{keV}\) 动能。<strong>可见光的 \(\lambda\sim500\,\mathrm{nm}\) 上同样有此偏移，但 \(\Delta\lambda/\lambda\sim10^{-5}\)，实验上无法分辨</strong>——这就是为什么康普顿散射要用短波长的 X 射线。</p>
+          <p><span class="ans">\(\Delta\lambda=2.43\,\mathrm{pm};\;\lambda'=22.43\,\mathrm{pm};\;E=62.0\,\mathrm{keV};\;E'=55.3\,\mathrm{keV};\;K_{e}=6.7\,\mathrm{keV}\)</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 玻尔能级与氢的 Balmer-α 谱线</h4>
+        <p class="example-statement">氢原子中电子从 \(n_{i}=3\) 跃迁到 \(n_{f}=2\)。(a) 用能级公式 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\) 计算发射光子能量；(b) 求光子波长并与里德伯公式交叉验证；(c) 这是哪一条谱线，位于什么颜色？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 能级差：</strong></p>
+          <div class="formula">\[ E_{3}=-\frac{13.6}{9}=-1.51\,\mathrm{eV},\qquad E_{2}=-\frac{13.6}{4}=-3.40\,\mathrm{eV} \]</div>
+          <div class="formula">\[ \Delta E=E_{3}-E_{2}=-1.51-(-3.40)=1.89\,\mathrm{eV} \]</div>
+          <p class="step"><strong>(b) 波长：</strong> 由 \(\Delta E=hc/\lambda\)：</p>
+          <div class="formula">\[ \lambda=\frac{hc}{\Delta E}=\frac{1240\,\mathrm{eV\,nm}}{1.89\,\mathrm{eV}}=656\,\mathrm{nm} \]</div>
+          <p class="step"><strong>用里德伯公式交叉验证：</strong></p>
+          <div class="formula">\[ \frac{1}{\lambda}=R_{\infty}\!\left(\frac{1}{2^{2}}-\frac{1}{3^{2}}\right)=1.097\times10^{7}\!\left(\frac{1}{4}-\frac{1}{9}\right)=1.097\times10^{7}\times\frac{5}{36}=1.524\times10^{6}\,\mathrm{m^{-1}} \]</div>
+          <div class="formula">\[ \lambda=\frac{1}{1.524\times10^{6}}=6.56\times10^{-7}\,\mathrm{m}=656\,\mathrm{nm}\quad\checkmark \]</div>
+          <p class="step"><strong>(c) 物理意义：</strong> 这是 Balmer 系的第一条线（\(n_{f}=2,n_{i}=3\)），记作 \(\mathrm{H}\alpha\)，波长 \(656\,\mathrm{nm}\) 处于<strong>红色</strong>。它是太阳光谱、星云光谱中最显著的特征线之一（氢离子区 H II region 的红色即源于此）。整个 Balmer 系（\(n_{f}=2,n_{i}=3,4,5,\dots\)）位于可见光范围：\(\mathrm{H}\alpha=656\)、\(\mathrm{H}\beta=486\)、\(\mathrm{H}\gamma=434\)、\(\mathrm{H}\delta=410\,\mathrm{nm}\)……向 \(364.6\,\mathrm{nm}\) 收敛。</p>
+          <p><span class="ans">\(\Delta E=1.89\,\mathrm{eV};\;\lambda=656\,\mathrm{nm}\)（红色 \(\mathrm{H}\alpha\) 线）</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 电子的德布罗意波长（典型电子衍射实验）</h4>
+        <p class="example-statement">在戴维孙–革末型实验中，电子被加速电压 \(V=100\,\mathrm{V}\) 加速（动能 \(K=eV=100\,\mathrm{eV}\)，明显非相对论）。求：(a) 电子的动量 \(p\)；(b) 电子的德布罗意波长 \(\lambda\)；(c) 与镍晶面间距 \(d\approx 0.215\,\mathrm{nm}\) 比较是否会发生可观测衍射。</p>
+        <div class="example-solution">
+          <p class="step"><strong>已知：</strong> \(K=100\,\mathrm{eV}=100\times1.602\times10^{-19}=1.602\times10^{-17}\,\mathrm{J}\)，\(m_{e}=9.11\times10^{-31}\,\mathrm{kg}\)，\(h=6.626\times10^{-34}\,\mathrm{J\,s}\)。</p>
+          <p class="step"><strong>(a) 动量：</strong> 由 \(K=p^{2}/(2m_{e})\)：</p>
+          <div class="formula">\[ p=\sqrt{2m_{e}K}=\sqrt{2(9.11\times10^{-31})(1.602\times10^{-17})}=\sqrt{2.92\times10^{-47}}=5.40\times10^{-24}\,\mathrm{kg\,m/s} \]</div>
+          <p class="step"><strong>(b) 德布罗意波长：</strong></p>
+          <div class="formula">\[ \lambda=\frac{h}{p}=\frac{6.626\times10^{-34}}{5.40\times10^{-24}}=1.23\times10^{-10}\,\mathrm{m}=0.123\,\mathrm{nm}=1.23\,\text{Å} \]</div>
+          <p class="step"><strong>捷径公式：</strong> 对非相对论电子（加速电压 \(V\)，单位伏特），常用</p>
+          <div class="formula">\[ \lambda(\text{Å})\approx\frac{12.27}{\sqrt{V(\text{volt})}}\;\;\Longrightarrow\;\;\lambda=\frac{12.27}{\sqrt{100}}=1.23\,\text{Å}\quad\checkmark \]</div>
+          <p class="step"><strong>(c) 与镍晶面比较：</strong> \(\lambda=0.123\,\mathrm{nm}\) 与 \(d\approx0.215\,\mathrm{nm}\) 同数量级，<strong>布拉格条件</strong> \(2d\sin\theta=n\lambda\) 可满足：一级衍射峰出现在 \(\sin\theta=\lambda/(2d)=0.123/(2\times0.215)=0.286\)，即 \(\theta\approx16.6^{\circ}\)。这正是 Davisson–Germer 在 1927 年观测到的衍射峰位置，定量印证德布罗意假说。</p>
+          <p><span class="ans">\(p=5.40\times10^{-24}\,\mathrm{kg\,m/s};\;\lambda=0.123\,\mathrm{nm}=1.23\,\text{Å}\)；\(\lambda\sim d\)，衍射可观测</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 由波长求光子能量（跨越电磁波谱）</h4>
+        <p class="example-statement">计算下列三种光子的能量（eV 与 J）并指出对应物理过程：(a) 绿色 LED \(\lambda=530\,\mathrm{nm}\)；(b) FM 无线电 \(\lambda=3.00\,\mathrm{m}\)；(c) 硬 X 射线 \(\lambda=0.0100\,\mathrm{nm}=10.0\,\mathrm{pm}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>已知：</strong> \(hc=1240\,\mathrm{eV\,nm}=1.986\times10^{-25}\,\mathrm{J\,m}\)，\(1\,\mathrm{eV}=1.602\times10^{-19}\,\mathrm{J}\)。统一公式：\(E=hc/\lambda\)。</p>
+          <p class="step"><strong>(a) 绿色 LED，\(\lambda=530\,\mathrm{nm}=5.30\times10^{-7}\,\mathrm{m}\)：</strong></p>
+          <div class="formula">\[ E=\frac{1240}{530}=2.34\,\mathrm{eV}=2.34\times1.602\times10^{-19}=3.75\times10^{-19}\,\mathrm{J} \]</div>
+          <p>频率 \(f=c/\lambda=3.00\times10^{8}/5.30\times10^{-7}=5.66\times10^{14}\,\mathrm{Hz}\)。这能量正好覆盖半导体 InGaN 的带隙 (~2.4 eV)，对应蓝绿 LED 的发光跃迁。</p>
+          <p class="step"><strong>(b) FM 无线电，\(\lambda=3.00\,\mathrm{m}\)，\(f=100\,\mathrm{MHz}\)：</strong></p>
+          <div class="formula">\[ E=\frac{1.986\times10^{-25}}{3.00}=6.62\times10^{-26}\,\mathrm{J}=4.13\times10^{-7}\,\mathrm{eV} \]</div>
+          <p>能量极小（比室温热能 \(kT\approx0.026\,\mathrm{eV}\) 小约 6 万倍），单个光子无法直接探测；FM 接收机靠\(10^{15}\) 量级的光子集体激发天线中的共振电流。这是<strong>经典波动描述仍然准确</strong>的领域。</p>
+          <p class="step"><strong>(c) 硬 X 射线，\(\lambda=0.0100\,\mathrm{nm}=1.00\times10^{-11}\,\mathrm{m}\)：</strong></p>
+          <div class="formula">\[ E=\frac{1240}{0.0100}=124\,000\,\mathrm{eV}=124\,\mathrm{keV}=1.99\times10^{-14}\,\mathrm{J} \]</div>
+          <p>这一能量远大于典型原子内层电子结合能（\(1\text{–}100\,\mathrm{keV}\)），能电离内壳层电子并产生强生物损伤，也适合做 X 射线衍射晶体学（如 Rosalind Franklin 的 DNA 衍射图 \(\lambda\approx0.15\,\mathrm{nm}\)）。</p>
+          <p><span class="ans">(a) \(2.34\,\mathrm{eV}=3.75\times10^{-19}\,\mathrm{J}\)；(b) \(4.13\times10^{-7}\,\mathrm{eV}=6.62\times10^{-26}\,\mathrm{J}\)；(c) \(124\,\mathrm{keV}=1.99\times10^{-14}\,\mathrm{J}\)</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>光电效应不能由经典波动理论解释。</strong> 一个常见错误是认为"强光等于高能量"。经典波的"能量"由振幅平方决定，把电子看作被波推动，则 \(K_{\max}\) 应随光强线性增大、与频率无关——这都与实验相悖。<strong>只有把光视为光子流、且每个光子能量 \(h\nu\)</strong>，才能解释阈频与 \(K_{\max}=h\nu-\phi\) 的线性关系。注意：光强只改变每秒光子数（饱和电流），不改变单个光子的能量。</li>
+        <li><strong>玻尔模型是半经典、半量子的"权宜之计"。</strong> 角动量量子化 \(L=n\hbar\) 在玻尔那里是<strong>假设</strong>而非推导；电子仍走经典圆轨道，却不辐射（与电动力学矛盾）。玻尔模型无法处理氦原子、无法预言谱线强度与精细结构。它真正的价值在于：(i) 第一次给出正确能级；(ii) 在德布罗意驻波解释下，量子化条件有了物理图像；(iii) 为后续薛定谔方程铺路。不要把它当作"真相"，而应视作通往量子力学的过渡工具。</li>
+        <li><strong>德布罗意波长 \(\lambda=h/p\) 在宏观尺度小到不可测。</strong> 一颗 \(1\,\mathrm{g}\)、\(v=400\,\mathrm{m/s}\) 的子弹：\(p=0.40\,\mathrm{kg\,m/s}\)，\(\lambda=6.626\times10^{-34}/0.40=1.7\times10^{-33}\,\mathrm{m}\)，比原子核 (\(\sim10^{-15}\,\mathrm{m}\)) 还小 18 个量级，<strong>永远</strong>看不到衍射。<strong>只有质量极小（电子、原子、分子）且速度不太高时，\(\lambda\) 才进入可测范围</strong>。同样，对同一粒子，速度越大 → 动量越大 → 波长越短；不要把"\(\lambda\)"与"波振幅"或"粒子大小"混为一谈。</li>
+        <li><strong>康普顿散射需要 X 射线，不是可见光。</strong> 康普顿偏移 \(\Delta\lambda\) 只依赖散射角，对 500 nm 的可见光同样存在（最大 \(4.86\,\mathrm{pm}\)），但 \(\Delta\lambda/\lambda\sim10^{-5}\) 远低于光谱仪分辨率。<strong>选 X 射线是为了让 \(\Delta\lambda\) 相对 \(\lambda\) 足够大</strong>，并非因为可见光不发生散射。</li>
+        <li><strong>把 \(E=h\nu\) 套用到有质量的粒子。</strong> \(E=h\nu\) 与 \(p=h/\lambda\) 对<strong>光子</strong>成立（\(m_{0}=0\)、\(E=pc\)）；对实物粒子要用 \(E=\hbar\omega\)、\(p=\hbar k\)（其中 \(E\) 为总相对论能量，\(E^{2}=(pc)^{2}+(m_{0}c^{2})^{2}\)）。若问电子的"频率"，单说 \(E/h\) 严格意义上指其物质波的频率，对应总能量；动能则需用 \(K=E-m_{0}c^{2}\)。学生常误把 \(h\nu\) 当作实物粒子的"动能"。</li>
+        <li><strong>Wien 位移定律有"两种 \(b\)"。</strong> \(B(\lambda,T)\) 形式的峰值满足 \(\lambda_{\max}T=b_{\lambda}=2.898\times10^{-3}\,\mathrm{m\,K}\)；若改写为 \(B(\nu,T)\)（按频率分布），峰值频率满足 \(\nu_{\max}/T=b'_{\nu}\)，对应不同的常数。不要把 \(\lambda_{\max}=c/\nu_{\max}\) 简单换算——两种分布的峰值不是同一光子。本章及仿真中只用 \(B(\lambda,T)\) 形式。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 铯的光电效应：铯 (Cs) 有常用金属中最低的逸出功 \(\phi_{\text{Cs}}=2.14\,\mathrm{eV}\)。(a) 求截止波长 \(\lambda_{0}\)（nm）；(b) 用 \(\lambda=400\,\mathrm{nm}\) 紫光照射时，求 \(K_{\max}\)（eV）与 \(v_{\max}\)（m/s）；(c) 若把光强加倍，\(K_{\max}\) 与饱和电流分别如何变化？</summary>
+        <div class="hint">用 \(\lambda_{0}=hc/\phi\)、\(K_{\max}=hc/\lambda-\phi\)、\(v_{\max}=\sqrt{2K_{\max}/m_{e}}\)。光强只影响光子数。</div>
+        <div class="solution">(a) \(\lambda_{0}=1240/2.14=579\,\mathrm{nm}\)（黄绿光）。<br>(b) \(E_{\text{光子}}=1240/400=3.10\,\mathrm{eV}\)；\(K_{\max}=3.10-2.14=0.96\,\mathrm{eV}=1.54\times10^{-19}\,\mathrm{J}\)；\(v_{\max}=\sqrt{2(1.54\times10^{-19})/(9.11\times10^{-31})}=\sqrt{3.38\times10^{11}}=5.81\times10^{5}\,\mathrm{m/s}\)。<br>(c) 加倍光强 → 光子数加倍 → 饱和电流 \(I\) 加倍；但单个光子能量 \(h\nu\) 不变，故 \(K_{\max}\) <strong>不变</strong>。<br><span class="ans">\(\lambda_{0}=579\,\mathrm{nm};\;K_{\max}=0.96\,\mathrm{eV};\;v_{\max}=5.81\times10^{5}\,\mathrm{m/s}\)；光强加倍：\(K_{\max}\) 不变，\(I\) 加倍</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 康普顿背散射：波长 \(\lambda=0.0300\,\mathrm{nm}=30.0\,\mathrm{pm}\) 的 \(\gamma\) 光子在 \(\theta=180^{\circ}\)（背散射）被电子偏折。求 \(\Delta\lambda\)、散射光子能量 \(E'\)、反冲电子动能 \(K_{e}\)。</summary>
+        <div class="hint">背散射时 \(1-\cos 180^{\circ}=2\)，故 \(\Delta\lambda=2\lambda_{\mathrm{C}}\)。</div>
+        <div class="solution">\(\Delta\lambda=2\lambda_{\mathrm{C}}=2(2.426\,\mathrm{pm})=4.85\,\mathrm{pm}=0.00485\,\mathrm{nm}\)。<br>\(\lambda'=30.00+4.85=34.85\,\mathrm{pm}=0.03485\,\mathrm{nm}\)。<br>\(E=1240/0.0300=41.3\,\mathrm{keV}\)；\(E'=1240/0.03485=35.6\,\mathrm{keV}\)。<br>\(K_{e}=E-E'=41.3-35.6=5.7\,\mathrm{keV}\)。<br><span class="ans">\(\Delta\lambda=4.85\,\mathrm{pm};\;E'=35.6\,\mathrm{keV};\;K_{e}=5.7\,\mathrm{keV}\)</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 氢的 Lyman-α 线：求氢原子从 \(n_{i}=2\) 跃迁到 \(n_{f}=1\)（Lyman 系第一条）发射光子的能量与波长。它位于电磁波谱的哪个区域？为什么大气中的臭氧层会强烈吸收它？</summary>
+        <div class="hint">\(E_{1}=-13.6\,\mathrm{eV}\)，\(E_{2}=-3.40\,\mathrm{eV}\)。Lyman 系都在 \(n_{f}=1\)，紫外区。</div>
+        <div class="solution">\(\Delta E=E_{2}-E_{1}=-3.40-(-13.6)=10.2\,\mathrm{eV}\)。<br>\(\lambda=hc/\Delta E=1240/10.2=121.6\,\mathrm{nm}\)。<br>用里德伯公式交叉验证：\(1/\lambda=R_{\infty}(1/1-1/4)=1.097\times10^{7}\times 0.75=8.23\times10^{6}\,\mathrm{m^{-1}}\)，\(\lambda=121.5\,\mathrm{nm}\) ✓。<br>这是<strong>紫外</strong>（vacuum UV, &lt; 200 nm），电离能 \(10.2\,\mathrm{eV}\) 远超 O–O 键能（~5 eV），会被臭氧层强烈吸收并引发光化学反应——这正是臭氧层保护地球生命免受短波紫外伤害的关键波段之一。<br><span class="ans">\(\Delta E=10.2\,\mathrm{eV};\;\lambda=121.6\,\mathrm{nm}\)（真空紫外 Lyman-α）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 棒球与电子的德布罗意波长对比：一颗 \(m=145\,\mathrm{g}\)、\(v=40.0\,\mathrm{m/s}\)（约 90 mph 快球）的棒球；一个 \(K=1.00\,\mathrm{MeV}\)（已接近相对论）的电子。分别计算 \(\lambda\)，并说明其相对论修正是否必要。</summary>
+        <div class="hint">棒球显然非相对论：\(\lambda=h/(mv)\)。1 MeV 电子远超静能 \(m_{e}c^{2}=511\,\mathrm{keV}\)，需相对论：\(E_{\text{总}}=K+m_{e}c^{2}\)，\(pc=\sqrt{E_{\text{总}}^{2}-(m_{e}c^{2})^{2}}\)。</div>
+        <div class="solution"><strong>棒球：</strong> \(p=mv=0.145\times40.0=5.80\,\mathrm{kg\,m/s}\)；\(\lambda=h/p=6.626\times10^{-34}/5.80=1.14\times10^{-34}\,\mathrm{m}\)。比普朗克长度 (\(\sim10^{-35}\,\mathrm{m}\)) 大不了多少，<strong>永远不可观测</strong>。<br><strong>1 MeV 电子：</strong> 总能量 \(E=K+m_{e}c^{2}=1.00+0.511=1.511\,\mathrm{MeV}\)。<br>\(pc=\sqrt{E^{2}-(m_{e}c^{2})^{2}}=\sqrt{1.511^{2}-0.511^{2}}\,\mathrm{MeV}=\sqrt{2.283-0.261}=\sqrt{2.022}=1.422\,\mathrm{MeV}\)。<br>\(\lambda=hc/(pc)=(1240\,\mathrm{eV\,nm})/(1.422\times10^{6}\,\mathrm{eV})=8.72\times10^{-4}\,\mathrm{nm}=8.72\times10^{-13}\,\mathrm{m}=0.872\,\mathrm{pm}\)。<br><strong>非相对论校核：</strong> 若用 \(\lambda=h/\sqrt{2m_{e}K}\)，得 \(h/\sqrt{2(9.11\times10^{-31})(1.602\times10^{-13})}=h/\sqrt{2.92\times10^{-43}}=6.626\times10^{-34}/(5.40\times10^{-22})=1.23\times10^{-12}\,\mathrm{m}\)，比相对论结果大 40%——<strong>相对论修正必不可少</strong>。<br><span class="ans">棒球：\(\lambda=1.14\times10^{-34}\,\mathrm{m}\)（不可测）；1 MeV 电子：\(\lambda=0.872\,\mathrm{pm}\)（须用相对论）</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 太阳表面温度估计：太阳光谱的峰值波长约为 \(\lambda_{\max}=502\,\mathrm{nm}\)（绿光）。用 Wien 位移定律估算太阳表面温度。再用 Stefan–Boltzmann 定律求其单位面积辐射功率，并与地表面太阳常数 \(S=1360\,\mathrm{W/m^{2}}\)（在 1 AU 处）通过几何衰减交叉验证。</summary>
+        <div class="hint">\(T=b/\lambda_{\max}\)；\(j^{\ast}=\sigma T^{4}\)；地球处功率衰减因子为 \((R_{\odot}/1\,\mathrm{AU})^{2}\)，太阳半径 \(R_{\odot}=6.96\times10^{8}\,\mathrm{m}\)，1 AU \(=1.496\times10^{11}\,\mathrm{m}\)。</div>
+        <div class="solution">Wien 定律：\(T=b/\lambda_{\max}=2.898\times10^{-3}/(502\times10^{-9})=5773\,\mathrm{K}\)（标准值 \(5778\,\mathrm{K}\)）。<br>Stefan–Boltzmann：\(j^{\ast}=\sigma T^{4}=(5.670\times10^{-8})(5778)^{4}=6.32\times10^{7}\,\mathrm{W/m^{2}}\)。<br>太阳总光度 \(L=4\pi R_{\odot}^{2}\cdot j^{\ast}=4\pi(6.96\times10^{8})^{2}(6.32\times10^{7})=3.84\times10^{26}\,\mathrm{W}\)。<br>扩散到 1 AU 球面：\(S=L/[4\pi(1\,\mathrm{AU})^{2}]=3.84\times10^{26}/[4\pi(1.496\times10^{11})^{2}]=1362\,\mathrm{W/m^{2}}\) ✓ 与实测 \(1360\,\mathrm{W/m^{2}}\) 吻合。<br><span class="ans">\(T\approx5778\,\mathrm{K};\;j^{\ast}=6.32\times10^{7}\,\mathrm{W/m^{2}};\;S=1362\,\mathrm{W/m^{2}}\)（与实测吻合）</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">黑体辐射谱 (blackbody spectrum)：拖动<strong>温度滑块</strong> T，观察普朗克分布 \(B(\lambda,T)=\dfrac{2hc^{2}}{\lambda^{5}}\dfrac{1}{e^{hc/(\lambda kT)}-1}\) 的形态。曲线的<strong>峰值</strong>（红点）按 Wien 位移定律 \(\lambda_{\max}=b/T\) 随 T 增大而向短波移动；曲线下面积（总辐射出射度 \(j^{\ast}=\sigma T^{4}\)）随 T 急剧增大。勾选"显示 Rayleigh–Jeans"以叠加经典理论的虚线谱——它在短波端<strong>发散</strong>（紫外灾难）。仿真坐标自动随 T 缩放：x 轴范围 \([0,\,4\lambda_{\max}]\)；y 轴按当前峰值定标。背景彩色条带标示 400–700 nm 可见光范围。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="760" height="440"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          // ---- Physical constants (SI; 2019 exact values where defined) ----
+          var H_PLANCK = 6.62607015e-34;          // J·s
+          var C_LIGHT  = 2.99792458e8;             // m/s
+          var K_B      = 1.380649e-23;             // J/K
+          var SIGMA    = 5.670374419e-8;           // W·m⁻²·K⁻⁴  (Stefan–Boltzmann)
+          var B_WIEN   = 2.897771955e-3;           // m·K  (Wien displacement for B(λ,T) form)
+
+          // ---- Planck & Rayleigh–Jeans spectral radiance B(λ,T) -----------
+          // returns W·sr⁻¹·m⁻³ (per unit wavelength)
+          function planck(lam, T) {
+            var x = (H_PLANCK * C_LIGHT) / (lam * K_B * T);
+            if (x > 700) { return 0; }             // avoid overflow in exp
+            var ex = Math.exp(x);
+            return (2 * H_PLANCK * C_LIGHT * C_LIGHT) /
+                   (Math.pow(lam, 5) * (ex - 1));
+          }
+          function rayleighJeans(lam, T) {
+            return (2 * C_LIGHT * K_B * T) / Math.pow(lam, 4);
+          }
+
+          // ---- Plot area ---------------------------------------------------
+          var PAD = { left: 70, right: 28, top: 78, bottom: 60 };
+          var plot = {
+            x0: PAD.left,            x1: W - PAD.right,
+            y1: PAD.top,             y0: H - PAD.bottom,   // y0 (bottom) larger pixel
+          };
+
+          var params = { T: 5778, showRJ: true };
+
+          function lamPeakM(T) { return B_WIEN / T; }            // m
+          function xMaxM(T)    { return 4 * lamPeakM(T); }       // m  (auto-scaling x-range)
+
+          function lamToPx(lam, xMax) {
+            return plot.x0 + (lam / xMax) * (plot.x1 - plot.x0);
+          }
+          function bToPx(b, bMax) {
+            var frac = b / bMax;
+            if (frac > 1.08) frac = 1.08;
+            return plot.y0 - frac * (plot.y0 - plot.y1);
+          }
+
+          function drawAxes(ctx, T, xMax) {
+            // x = 0 baseline and y = 0 baseline
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(plot.x0, plot.y0);
+            ctx.lineTo(plot.x1 + 10, plot.y0);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(plot.x0, plot.y0);
+            ctx.lineTo(plot.x0, plot.y1 - 10);
+            ctx.stroke();
+            ctx.restore();
+
+            // x ticks in μm
+            var nTicks = 5, i;
+            for (i = 0; i <= nTicks; i++) {
+              var frac = i / nTicks;
+              var lam_um = frac * xMax * 1e6;
+              var px = plot.x0 + frac * (plot.x1 - plot.x0);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(px, plot.y0); ctx.lineTo(px, plot.y0 + 5);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, lam_um.toFixed(2), px, plot.y0 + 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+            }
+            PS.drawText(ctx, '波长 λ (μm)  wavelength',
+              (plot.x0 + plot.x1) / 2, plot.y0 + 40,
+              { font: '12px system-ui', color: PS.colors.text, align: 'center' });
+
+            // y label
+            PS.drawText(ctx, '光谱辐亮度 B(λ,T)  (相对单位, arb. units)',
+              plot.x0, plot.y1 - 16,
+              { font: '11px system-ui', color: PS.colors.text });
+          }
+
+          function drawVisibleBand(ctx, xMax) {
+            var lo = 400e-9, hi = 700e-9;
+            var xlo = lamToPx(lo, xMax), xhi = lamToPx(hi, xMax);
+            if (xhi - xlo < 6) return;            // too narrow to display
+            ctx.save();
+            // rainbow band along bottom strip of plot
+            var colors = ['#9b59ff', '#4d6bff', '#3aa655', '#f1d647', '#e89527', '#d63b3b'];
+            var bandW = (xhi - xlo) / colors.length;
+            for (var i = 0; i < colors.length; i++) {
+              ctx.fillStyle = colors[i];
+              ctx.globalAlpha = 0.55;
+              ctx.fillRect(xlo + i * bandW, plot.y0 - 4, bandW + 0.6, 4);
+            }
+            ctx.globalAlpha = 1.0;
+            PS.drawText(ctx, '可见光 visible (400–700 nm)',
+              (xlo + xhi) / 2, plot.y0 - 10,
+              { font: '10px system-ui', color: PS.colors.text, align: 'center' });
+            ctx.restore();
+          }
+
+          function drawCurve(ctx, fn, T, xMax, bMax, color, opts) {
+            opts = opts || {};
+            var N = 360, i;
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = opts.lineWidth || 2.2;
+            ctx.globalAlpha = opts.alpha != null ? opts.alpha : 1.0;
+            if (opts.dash) ctx.setLineDash(opts.dash);
+            ctx.beginPath();
+            var started = false, prevPy = null;
+            for (i = 1; i <= N; i++) {
+              var lam = (i / N) * xMax;
+              var b = fn(lam, T);
+              if (!isFinite(b) || b <= 0) continue;
+              if (opts.clipMax && b > opts.clipMax) {
+                // RJ diverges near λ→0: stop tracing once it leaves plot
+                if (prevPy !== null && prevPy < plot.y1 + 4) {
+                  // off-top already; break path
+                  ctx.stroke();
+                  ctx.beginPath();
+                  prevPy = null;
+                  started = false;
+                }
+                continue;
+              }
+              var px = lamToPx(lam, xMax);
+              var py = bToPx(b, bMax);
+              if (!started) { ctx.moveTo(px, py); started = true; }
+              else          { ctx.lineTo(px, py); }
+              prevPy = py;
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var T = params.T;
+              var lp = lamPeakM(T);
+              var bPeak = planck(lp, T);
+              var bMax = bPeak * 1.18;            // y-axis range headroom
+              var xMax = xMaxM(T);
+
+              drawVisibleBand(ctx, xMax);
+              drawAxes(ctx, T, xMax);
+
+              // ---- Rayleigh–Jeans (faint dashed) ---------------------------
+              if (params.showRJ) {
+                drawCurve(ctx, rayleighJeans, T, xMax, bMax, PS.colors.accent2,
+                  { alpha: 0.65, lineWidth: 1.6, dash: [6, 4], clipMax: bMax * 1.05 });
+              }
+
+              // ---- Planck --------------------------------------------------
+              drawCurve(ctx, planck, T, xMax, bMax, PS.colors.primary,
+                { lineWidth: 2.6 });
+
+              // ---- Peak marker (Wien) --------------------------------------
+              var peakX = lamToPx(lp, xMax);
+              var peakY = bToPx(bPeak, bMax);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.setLineDash([4, 4]);
+              ctx.lineWidth = 1.1;
+              ctx.globalAlpha = 0.75;
+              ctx.beginPath();
+              ctx.moveTo(peakX, peakY); ctx.lineTo(peakX, plot.y0);
+              ctx.moveTo(peakX, peakY); ctx.lineTo(plot.x0, peakY);
+              ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, peakX, peakY, 4.5,
+                { fill: PS.colors.accent, stroke: '#fff', lineWidth: 1.5 });
+              PS.drawText(ctx, 'λ_max  peak', peakX + 8, peakY - 8,
+                { font: 'bold 11px system-ui', color: PS.colors.accent });
+
+              // ---- Readout panel (top-left of canvas, above plot) ----------
+              var rx = 14, ry = 16;
+              var power = SIGMA * Math.pow(T, 4);            // W/m²
+              var lamPeakNm = lp * 1e9;
+              PS.drawText(ctx, '物理量 Physical readout (SI):', rx, ry,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'T = ' + T.toFixed(0) + ' K', rx, ry + 18,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx,
+                'λ_max = b/T = ' + lamPeakNm.toFixed(0) + ' nm   (Wien)',
+                rx + 130, ry + 18,
+                { font: '12px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx,
+                'j* = σT⁴ = ' + power.toExponential(2) + ' W/m²   (Stefan–Boltzmann)',
+                rx, ry + 36,
+                { font: '12px system-ui', color: PS.colors.primary });
+
+              // ---- Legend (top-right) --------------------------------------
+              var lx = W - 230, ly = ry;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.primary; ctx.lineWidth = 2.6;
+              ctx.beginPath();
+              ctx.moveTo(lx, ly); ctx.lineTo(lx + 26, ly); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'Planck 普朗克', lx + 32, ly + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2; ctx.lineWidth = 1.6;
+              ctx.setLineDash([6, 4]);
+              ctx.beginPath();
+              ctx.moveTo(lx + 130, ly); ctx.lineTo(lx + 156, ly); ctx.stroke();
+              ctx.restore();
+              PS.drawText(ctx, 'Rayleigh–Jeans', lx + 162, ly + 4,
+                { font: '11px system-ui', color: PS.colors.text });
+
+              // ---- Title (bottom-right) ------------------------------------
+              PS.drawText(ctx,
+                '黑体辐射谱  Blackbody spectrum  B(λ,T)',
+                W - 14, H - 10,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'T',      label: '温度 T (K)',                              min: 1000, max: 9000, step: 50,  value: 5778 },
+            { type: 'toggle', key: 'showRJ', label: '显示 Rayleigh–Jeans（紫外灾难 UV catastrophe）', value: true },
+            { type: 'button', key: 'sun',    label: '☀ 太阳 Sun (5778 K)' },
+            { type: 'button', key: 'reset',  label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('T',      function (v) { params.T = v; });
+          ctl.on('showRJ', function (v) { params.showRJ = v; });
+          ctl.on('sun',    function ()  { params.T = 5778;
+                                           ctl.set('T', 5778); });
+          ctl.on('reset',  function ()  { params.T = 5778; params.showRJ = true;
+                                           ctl.set('T', 5778);
+                                           sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>19 世纪末的经典物理无法解释黑体辐射、光电效应与原子线状光谱——三者共同指向<strong>能量的量子化</strong>。</li>
+        <li><strong>普朗克公式</strong> \(B(\lambda,T)=\dfrac{2hc^{2}}{\lambda^{5}}\!\left(e^{hc/(\lambda kT)}-1\right)^{-1}\) 由振子能量 \(E_{n}=nh\nu\) 假设导出，消除紫外灾难；长波极限回归 Rayleigh–Jeans \(B_{\text{RJ}}=2ckT/\lambda^{4}\)。</li>
+        <li>Wien 位移定律 \(\lambda_{\max}T=b=2.898\times10^{-3}\,\mathrm{m\,K}\)；Stefan–Boltzmann 定律 \(j^{\ast}=\sigma T^{4}\)，\(\sigma=5.670\times10^{-8}\,\mathrm{W\,m^{-2}\,K^{-4}}\)。</li>
+        <li>爱因斯坦光电方程 \(K_{\max}=h\nu-\phi\)；阈频 \(\nu_{0}=\phi/h\)，截止波长 \(\lambda_{0}=hc/\phi\)。光子能量 \(E=h\nu=hc/\lambda\)，常用 \(hc=1240\,\mathrm{eV\,nm}\)。</li>
+        <li>康普顿散射 \(\Delta\lambda=\dfrac{h}{m_{e}c}(1-\cos\theta)=\lambda_{\mathrm{C}}(1-\cos\theta)\)，\(\lambda_{\mathrm{C}}=2.426\,\mathrm{pm}\)。证明光子携带动量 \(p=h/\lambda\)。</li>
+        <li>玻尔模型：角动量 \(L=n\hbar\)；半径 \(r_{n}=n^{2}a_{0}\)，\(a_{0}=0.529\,\text{Å}\)；能级 \(E_{n}=-13.6\,\mathrm{eV}/n^{2}\)；里德伯公式 \(1/\lambda=R_{\infty}(1/n_{f}^{2}-1/n_{i}^{2})\)，\(R_{\infty}=1.097\times10^{7}\,\mathrm{m^{-1}}\)。</li>
+        <li>德布罗意波 \(\lambda=h/p\)：把电子轨道看作驻波 \(2\pi r=n\lambda\) 自动给出玻尔量子化。Davisson–Germer 电子衍射（\(\lambda\approx0.165\,\mathrm{nm}\)）证实波粒二象性。</li>
+        <li>每个结果都独立指出"经典连续"图景的失效：黑体→能量量子化；光电→光的粒子性；原子光谱→角动量量子化；电子衍射→粒子的波动性。这是量子力学（下一章薛定谔方程）的物理动机。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;E=h\nu=\frac{hc}{\lambda},\;\;p=\frac{h}{\lambda},\;\;K_{\max}=h\nu-\phi,\;\;\Delta\lambda=\frac{h}{m_{e}c}(1-\cos\theta),\;\;E_{n}=-\frac{13.6\,\mathrm{eV}}{n^{2}},\;\;\lambda=\frac{h}{p}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

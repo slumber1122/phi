@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 一维势场问题 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第3章 · 量子力学 I Quantum Mechanics I</p>
+      <h1>一维势场问题 <span class="en-title">1D Potential Problems</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>对<strong>一维无限深方势阱</strong> (infinite square well) \(V(x)=0\) 于 \(0<x<L\)、\(\infty\) 否则，从边界条件 \(\psi(0)=\psi(L)=0\) 出发<strong>严格求解</strong>定态 Schrödinger 方程，得到量子化能级 \(E_{n}=n^{2}\pi^{2}\hbar^{2}/(2mL^{2})\) 与归一化本征函数 \(\psi_{n}(x)=\sqrt{2/L}\,\sin(n\pi x/L)\)。</li>
+        <li>解释为何<strong>束缚态边界条件自然导致能量量子化</strong> (energy quantization)，并区分束缚态 (bound states，离散谱 discrete spectrum) 与自由态 (scattering states，连续谱 continuous spectrum)。</li>
+        <li>定性画出<strong>有限深方势阱</strong> (finite square well) 的束缚态波函数——阱内正弦、阱外指数衰减——并估计束缚态数目。</li>
+        <li>对<strong>势阶</strong> (potential step) 计算 \(E>V_{0}\) 时的反射系数 \(R\) 与透射系数 \(T\)，验证 \(R+T=1\)；说明 \(E<V_{0}\) 时虽然 \(R=1\)，但波函数仍<strong>渗入</strong>经典禁区形成隐失波 (evanescent wave)。</li>
+        <li>计算矩形 <strong>势垒隧穿</strong> (barrier tunneling) 的透射概率 \(T\approx e^{-2\kappa a}\)，\(\kappa=\sqrt{2m(V_{0}-E)}/\hbar\)；解释为何这一现象在经典力学中<strong>根本不可能</strong>发生。</li>
+        <li>写出<strong>量子谐振子</strong> (quantum harmonic oscillator, QHO) 的能级 \(E_{n}=(n+\tfrac12)\hbar\omega\) 与零点能 (zero-point energy) \(\tfrac12\hbar\omega\)，理解波函数由 Hermite 多项式构成并具有确定的<strong>宇称</strong> (parity)。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <p>本章我们专攻<strong>一维</strong>定态 Schrödinger 方程 (time-independent Schrödinger equation, TISE)</p>
+      <div class="formula">\[ -\frac{\hbar^{2}}{2m}\,\frac{d^{2}\psi(x)}{dx^{2}}+V(x)\,\psi(x)=E\,\psi(x), \]</div>
+      <p>其中 \(V(x)\) 是各种「势场」(potential)。一维看似简单，却已包含量子力学的两大标志性现象——<strong>能量量子化</strong>与<strong>势垒隧穿</strong>——且所有结论可直接推广到三维。我们将依次考察四种典型势场：无限深方势阱、有限深方势阱、势阶 / 势垒，以及抛物势（谐振子）。</p>
+
+      <h3>1. 无限深方势阱 The Infinite Square Well ("Particle in a Box")</h3>
+      <p>最简单而又最典型的束缚体系。粒子被刚性限制在长度 \(L\) 的区间内：</p>
+      <div class="formula">\[ V(x)=\begin{cases}0,&0\lt x\lt L,\\ \infty,&\text{其他.}\end{cases} \]</div>
+      <p>在阱外 \(V=\infty\)，粒子出现的概率必须为零，故 \(\psi(x)=0\) 于 \(x\le0\) 或 \(x\ge L\)。在阱内 \(V=0\)，TISE 化为</p>
+      <div class="formula">\[ \frac{d^{2}\psi}{dx^{2}}=-\frac{2mE}{\hbar^{2}}\psi\equiv -k^{2}\psi,\qquad k\equiv\frac{\sqrt{2mE}}{\hbar}. \]</div>
+      <p>通解为正弦 / 余弦叠加：\(\psi(x)=A\sin(kx)+B\cos(kx)\)。<strong>边界条件</strong> (boundary conditions) 给出：</p>
+      <ul>
+        <li>\(\psi(0)=0\Rightarrow B=0\)（余弦项消失）。</li>
+        <li>\(\psi(L)=0\Rightarrow A\sin(kL)=0\)。若 \(A=0\) 得平庸零解，故必须 \(\sin(kL)=0\)，即
+          <div class="formula">\[ kL=n\pi,\quad n=1,2,3,\dots \]</div>
+        </li>
+      </ul>
+      <p>因此波数被<strong>量子化</strong> (quantized)：\(k_{n}=n\pi/L\)，对应能级</p>
+      <div class="formula">\[ \boxed{\;E_{n}=\frac{\hbar^{2}k_{n}^{2}}{2m}=\frac{n^{2}\pi^{2}\hbar^{2}}{2mL^{2}}=\frac{n^{2}h^{2}}{8mL^{2}},\qquad n=1,2,3,\dots\;} \]</div>
+      <p>由归一化 \(\int_{0}^{L}|\psi_{n}|^{2}\,dx=1\) 得 \(A=\sqrt{2/L}\)。故归一化本征函数</p>
+      <div class="formula">\[ \boxed{\;\psi_{n}(x)=\sqrt{\frac{2}{L}}\,\sin\!\left(\frac{n\pi x}{L}\right),\quad 0\lt x\lt L\quad(\text{否则 }0).\;} \]</div>
+      <p><strong>几个要点：</strong></p>
+      <ul>
+        <li><em>量子数 \(n\) 从 1 开始</em>，不是 0（\(n=0\) 给出 \(\psi\equiv0\)，没有粒子）。</li>
+        <li>最低能级 \(E_{1}>0\)——粒子即便在「基态」(ground state) 仍有非零动能。这是<strong>不确定性原理</strong>的体现：粒子被限制在 \(\Delta x\sim L\) 内，必有 \(\Delta p\gtrsim\hbar/L\)，故 \(E\sim(\Delta p)^{2}/2m\sim\hbar^{2}/(2mL^{2})\)。</li>
+        <li>能级随 \(n^{2}\) 增长，相邻能级间距 \(\Delta E_{n}=E_{n+1}-E_{n}=(2n+1)E_{1}\) 随 \(n\) 增大。</li>
+        <li>\(\psi_{n}\) 的<strong>节点数</strong> (nodes) 为 \(n-1\)（不包括端点）——节点越多，动能越大。</li>
+        <li>\(\psi_{n}\) 具有<strong>确定的宇称</strong>（关于阱中心 \(x=L/2\) 对称或反对称）：\(n\) 奇 → 关于中心对称，\(n\) 偶 → 关于中心反对称。</li>
+      </ul>
+      <div class="key-terms">infinite square well (无限深方势阱), particle in a box (盒中粒子), boundary condition (边界条件), quantization (量子化), ground state (基态), node (节点), parity (宇称)</div>
+
+      <h3>2. 有限深方势阱 The Finite Square Well (Qualitative)</h3>
+      <p>把阱壁从无限高降到有限高度 \(V_{0}\)：\(V(x)=-V_{0}\) 于 \(|x|<a\)，否则 \(V=0\)（取阱底为势能零点）。设粒子能量 \(-V_{0}<E<0\) 为<strong>束缚态</strong>。</p>
+      <p>经典图像：粒子在阱内来回弹跳，永远被囚禁。量子图像：</p>
+      <ul>
+        <li><strong>阱内</strong> (\(|x|<a\))：\(E-V_{0}<0\)？不——是 \(E+V_{0}>0\)，TISE 给出振荡解 \(\psi\sim\cos(kx)\) 或 \(\sin(kx)\)，其中 \(k=\sqrt{2m(E+V_{0})}/\hbar\)。</li>
+        <li><strong>阱外</strong> (\(|x|>a\))：\(E<0=V\)，TISE 给出 \(\psi\sim e^{\mp\kappa x}\)，\(\kappa=\sqrt{-2mE}/\hbar\)。<strong>波函数在阱外指数衰减但不为零</strong>——粒子以非零概率出现在「经典禁区」！这部分称为<strong>隐失尾</strong> (evanescent tail)。</li>
+        <li>在 \(x=\pm a\) 处，\(\psi\) 与 \(d\psi/dx\) 都必须<strong>连续</strong>（否则 \(d^{2}\psi/dx^{2}\) 出现 δ-峰，与有限势不符）。把这组条件与阱内 / 阱外形式匹配，便得到一组<strong>超越方程</strong> (transcendental equations)，其解（当它们存在时）就是离散能级。</li>
+      </ul>
+      <p><strong>关键定性结论：</strong></p>
+      <ul>
+        <li>对任意 \(V_{0}>0\)、任意宽度 \(2a\)，有限深方势阱<strong>至少有一个束缚态</strong>（在 1D 中总是偶宇称的基态）。</li>
+        <li>束缚态数目有限，大致正比于 \(L\sqrt{2mV_{0}}/\hbar\)。深阱 / 重粒子 / 宽阱 → 更多束缚态。</li>
+        <li>阱越深，基态越接近无限深阱的结果；阱很浅时，仅有一个能量很接近 0 的束缚态，波函数大半在阱外。</li>
+      </ul>
+      <div class="key-terms">finite square well (有限深方势阱), bound state (束缚态), evanescent tail (隐失尾), transcendental equation (超越方程), continuity condition (连续性条件)</div>
+
+      <h3>3. 势阶：反射与透射 Potential Step (\(E>V_{0}\))</h3>
+      <p>势能在 \(x=0\) 处阶跃：</p>
+      <div class="formula">\[ V(x)=\begin{cases}0,&x<0,\\ V_{0},&x\ge0.\end{cases} \]</div>
+      <p>考虑粒子从左侧入射，能量 \(E>V_{0}\)。经典上粒子必定越过阶跃（只是减速）。量子上，它在 \(x=0\) 处部分反射、部分透射。</p>
+      <p>设入射波 \(\psi_{\text{inc}}=Ae^{ikx}\)、反射波 \(\psi_{\text{ref}}=Be^{-ikx}\)（左侧 \(k=\sqrt{2mE}/\hbar\)），透射波 \(\psi_{\text{trans}}=Ce^{ik'x}\)（右侧 \(k'=\sqrt{2m(E-V_{0})}/\hbar\)）。由 \(x=0\) 处 \(\psi\) 与 \(\psi'\) 连续：</p>
+      <div class="formula">\[ A+B=C,\qquad ik(A-B)=ik'C \;\Longrightarrow\; \frac{B}{A}=\frac{k-k'}{k+k'},\quad \frac{C}{A}=\frac{2k}{k+k'}. \]</div>
+      <p>注意透射波与反射波<strong>波数不同</strong>（\(k'\ne k\)），故概率流 \(j=(\hbar/m)\,\mathrm{Im}(\psi^{*}\psi')\) 也不同。<strong>反射系数</strong> (reflection coefficient) 与<strong>透射系数</strong> (transmission coefficient) 定义为反射 / 透射概率流与入射概率流之比：</p>
+      <div class="formula">\[ \boxed{\;R=\left|\frac{B}{A}\right|^{2}=\left(\frac{k-k'}{k+k'}\right)^{2},\qquad T=\frac{k'}{k}\left|\frac{C}{A}\right|^{2}=\frac{4kk'}{(k+k')^{2}},\qquad R+T=1.\;} \]</div>
+      <p>可见即便 \(E>V_{0}\)，仍有 \(R>0\)——粒子有非零概率被「向上阶跃」反射，这在经典力学中绝不可能。当 \(E\to\infty\) 时 \(k'\to k\)，\(R\to0\)，回到经典极限。</p>
+      <p>当 \(E<V_{0}\) 时，\(k'\) 变为虚数，右侧解变为 \(e^{-\kappa x}\)（隐失波），\(R=1\)——粒子<strong>必定被全反射</strong>，但波函数仍渗入 \(x>0\) 区域一段距离 \(\sim1/\kappa\)。</p>
+      <div class="key-terms">potential step (势阶), incident/reflected/transmitted wave (入射 / 反射 / 透射波), reflection coefficient \(R\) (反射系数), transmission coefficient \(T\) (透射系数), probability current \(j\) (概率流)</div>
+
+      <h3>4. 势垒隧穿 Barrier Tunneling</h3>
+      <p>把阶跃换成有限宽度的<strong>矩形势垒</strong> (rectangular barrier)：\(V(x)=V_{0}\) 于 \(0<x<a\)，否则 \(V=0\)。设入射粒子能量 \(E<V_{0}\)。</p>
+      <p>经典结论：粒子无法越过势垒，\(T=0\)。<strong>量子结论</strong>：由于波函数在势垒内呈指数衰减 \(e^{-\kappa x}\)（\(\kappa=\sqrt{2m(V_{0}-E)}/\hbar\)），只要势垒宽度 \(a\) 有限，衰减不完全，粒子就有非零概率出现在势垒另一侧！这就是著名的<strong>量子隧穿</strong> (quantum tunneling)。</p>
+      <div class="formula">\[ \boxed{\;T\approx e^{-2\kappa a},\qquad \kappa=\frac{\sqrt{2m(V_{0}-E)}}{\hbar}\quad(\text{厚垒近似, thick-barrier limit}).\;} \]</div>
+      <p>更精确的形式为 \(T=\bigl[1+\tfrac{V_{0}^{2}\sinh^{2}(\kappa a)}{4E(V_{0}-E)}\bigr]^{-1}\)；当 \(\kappa a\gg1\) 时主导项就是 \(e^{-2\kappa a}\)。透射概率对 \(a\)、\(m\)、\(V_{0}-E\) <strong>极其敏感</strong>——典型每增加 \(1\,\unit{nm}\) 厚度，\(T\) 减少几个数量级。</p>
+      <p>物理意义与实例：</p>
+      <ul>
+        <li><strong>经典物理禁止隧穿</strong>：在 \(E<V_{0}\) 区域粒子动能为负，\(p=\sqrt{2m(E-V)}\) 为虚数，粒子根本无法存在；经典粒子撞到势垒必定反弹。</li>
+        <li>量子力学中，粒子由波函数描写；波函数「渗」过禁区，正像光波在玻璃内全反射时仍有一隐失波渗出表面。</li>
+        <li>实例：\(\alpha\) 衰变（Gamow 理论）、扫描隧道显微镜 (STM)、太阳核聚变（质子穿透 Coulomb 势垒）、半导体隧道二极管、DNA 中质子隧穿诱导突变。</li>
+      </ul>
+      <div class="key-terms">rectangular barrier (矩形势垒), quantum tunneling (量子隧穿), evanescent wave (隐失波), thick-barrier approximation (厚垒近似), transmission \(T\) (透射概率)</div>
+
+      <h3>5. 量子谐振子 The Quantum Harmonic Oscillator</h3>
+      <p>抛物势 \(V(x)=\tfrac12 m\omega^{2}x^{2}\)——任何势场在稳定平衡点附近都可近似为抛物势（Taylor 展开），故谐振子在物理学中地位极为特殊。TISE 为</p>
+      <div class="formula">\[ -\frac{\hbar^{2}}{2m}\frac{d^{2}\psi}{dx^{2}}+\frac12 m\omega^{2}x^{2}\psi=E\psi. \]</div>
+      <p>要求 \(\psi\) 在 \(|x|\to\infty\) 处平方可积（不能爆炸），能量被量子化为</p>
+      <div class="formula">\[ \boxed{\;E_{n}=\Bigl(n+\tfrac12\Bigr)\hbar\omega,\qquad n=0,1,2,\dots\;} \]</div>
+      <p>注意几个关键特征：</p>
+      <ul>
+        <li><strong>零点能</strong> (zero-point energy) \(E_{0}=\tfrac12\hbar\omega\)：基态能量不为零！这是不确定性原理的必然结果：粒子被束缚在 \(\Delta x\sim\sqrt{\hbar/(m\omega)}\) 内，必有 \(\Delta p\ne0\)，动能不能为零。</li>
+        <li>能级<strong>等间距</strong> \(\hbar\omega\)，不像方势阱那样间距随 \(n^{2}\) 增长。这是谐振子的特征「谱」。</li>
+        <li>本征函数由 <strong>Hermite 多项式</strong> \(H_{n}\) 构成：
+          <div class="formula">\[ \psi_{n}(x)=\left(\frac{m\omega}{\pi\hbar}\right)^{1/4}\frac{1}{\sqrt{2^{n}n!}}\,H_{n}(\xi)\,e^{-\xi^{2}/2},\qquad \xi\equiv x\sqrt{\frac{m\omega}{\hbar}}. \]</div>
+          前几个：\(H_{0}=1\)、\(H_{1}=2\xi\)、\(H_{2}=4\xi^{2}-2\)。</li>
+        <li><strong>宇称对称性</strong>：因为 \(V(-x)=V(x)\)，所有本征态具有确定宇称——\(\psi_{n}(-x)=(-1)^{n}\psi_{n}(x)\)：偶 \(n\) → 偶宇称 (even parity)；奇 \(n\) → 奇宇称 (odd parity)。这是「对称势 → 宇称是好量子数」这一普遍原理的实例。</li>
+        <li>与无限深阱对比：阱外 \(V\) 不是 \(\infty\) 而是 \(\infty\) 渐增，波函数在经典折返点外指数衰减，类似有限阱但分布更广。</li>
+      </ul>
+      <p>谐振子在二级量子化、固体比热（声子）、量子光学（光子）中都扮演核心角色。</p>
+      <div class="key-terms">quantum harmonic oscillator (量子谐振子), zero-point energy (零点能), Hermite polynomial (Hermite 多项式), equipspacing (等间距), parity symmetry (宇称对称性), classical turning point (经典折返点)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导：从边界条件到无限深阱能级 From Boundary Conditions to \(E_{n}\)</h2>
+      <p>下面把第 1 节的步骤串成一条完整推导。考虑阱内 \(0<x<L\) 的 TISE：</p>
+      <div class="formula">\[ \frac{d^{2}\psi}{dx^{2}}+\frac{2mE}{\hbar^{2}}\psi=0. \]</div>
+      <p><strong>步骤 1：通解。</strong>对 \(E>0\)，定义 \(k=\sqrt{2mE}/\hbar>0\)，方程化为 \(\psi''+k^{2}\psi=0\)，通解为</p>
+      <div class="formula">\[ \psi(x)=A\sin(kx)+B\cos(kx). \]</div>
+      <p><strong>步骤 2：边界条件。</strong>在 \(x=0\) 与 \(x=L\) 处势能无穷大，粒子不能进入阱外，故 \(\psi(0)=\psi(L)=0\)。</p>
+      <ul>
+        <li>\(\psi(0)=A\sin0+B\cos0=B\Rightarrow B=0\)。</li>
+        <li>\(\psi(L)=A\sin(kL)=0\)。欲得非平庸解 (\(A\ne0\))，须 \(\sin(kL)=0\)，即
+          \[ kL=n\pi,\qquad n=1,2,3,\dots \]
+          （\(n=0\) 给出 \(k=0\Rightarrow\psi\equiv0\)，无意义；负 \(n\) 与正 \(n\) 给出相同波函数乘以 \(-1\)，故舍去）。</li>
+      </ul>
+      <p><strong>步骤 3：能级。</strong>由 \(k_{n}=n\pi/L\) 反推能量：</p>
+      <div class="formula">\[ E_{n}=\frac{\hbar^{2}k_{n}^{2}}{2m}=\frac{n^{2}\pi^{2}\hbar^{2}}{2mL^{2}},\qquad n=1,2,3,\dots \]</div>
+      <p>这就是<strong>量子化条件</strong>：只有取离散 \(n\) 值，TISE 的解才满足物理边界条件。注意「量子化」并非人为假设，而是<strong>边界条件 + 波函数单值有界</strong>的自然结果。</p>
+      <p><strong>步骤 4：归一化。</strong>\(\psi_{n}(x)=A\sin(n\pi x/L)\)，由 \(\int_{0}^{L}|\psi_{n}|^{2}\,dx=1\)：</p>
+      <div class="formula">\[ A^{2}\int_{0}^{L}\sin^{2}\!\left(\frac{n\pi x}{L}\right)dx=A^{2}\cdot\frac{L}{2}=1\;\Longrightarrow\;A=\sqrt{\frac{2}{L}}. \]</div>
+      <p>故 <strong>\(\psi_{n}(x)=\sqrt{2/L}\,\sin(n\pi x/L)\)</strong>，能级与波函数一并求得。</p>
+      <p><strong>步骤 5：正交性。</strong>用 \(\int_{0}^{L}\sin(n\pi x/L)\sin(m\pi x/L)\,dx=\tfrac{L}{2}\delta_{nm}\) 立得 \(\int_{0}^{L}\psi_{n}^{*}\psi_{m}\,dx=\delta_{nm}\)——本征态构成<strong>正交归一完备基</strong> (orthonormal basis)。这是任何量子态都可按 \(\psi_{n}\) 展开的数学基础。</p>
+      <div class="key-terms">boundary condition (边界条件), normalization (归一化), orthonormal basis (正交归一基), quantization condition (量子化条件)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 无限深阱中电子的能级与跃迁波长 Electron in a Quantum Well</h4>
+        <p class="example-statement">把一个电子（\(m=9.11\times10^{-31}\,\unit{kg}\)）束缚在宽度 \(L=0.50\,\unit{nm}\) 的一维无限深方势阱中（这是典型半导体「量子点」的尺度）。求：(a) 基态能 \(E_{1}\)（以 J 和 eV 表示）；(b) \(n=2\to n=1\) 跃迁所发光子的波长 \(\lambda\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 直接代入 \(E_{1}=\pi^{2}\hbar^{2}/(2mL^{2})\)。先算分子：\(\hbar=1.055\times10^{-34}\,\unit{J\cdot s}\)，\(\hbar^{2}=1.113\times10^{-68}\)，\(\pi^{2}\hbar^{2}=9.870\times1.113\times10^{-68}=1.098\times10^{-67}\,\unit{J^{2}\cdot s^{2}}\)。</p>
+          <p class="step">分母：\(2mL^{2}=2\times(9.11\times10^{-31})\times(0.50\times10^{-9})^{2}=2\times9.11\times10^{-31}\times2.5\times10^{-19}=4.555\times10^{-49}\,\unit{kg\cdot m^{2}}\)。</p>
+          <p class="step">所以
+            \[ E_{1}=\frac{1.098\times10^{-67}}{4.555\times10^{-49}}=2.41\times10^{-19}\,\unit{J}. \]</p>
+          <p class="step">换算为电子伏特：\(E_{1}=2.41\times10^{-19}/1.602\times10^{-19}=1.50\,\unit{eV}\)。</p>
+          <p class="step">(b) 由 \(E_{n}=n^{2}E_{1}\)：\(E_{2}=4E_{1}=6.02\,\unit{eV}\)，故
+            \[ \Delta E=E_{2}-E_{1}=3E_{1}=4.51\,\unit{eV}. \]</p>
+          <p class="step">光子波长 \(\lambda=hc/\Delta E\)。用便利公式 \(hc=1240\,\unit{eV\cdot nm}\)：
+            \[ \lambda=\frac{1240}{4.51}=275\,\unit{nm}\quad(\text{紫外}). \]</p>
+          <p>这一波长落在紫外区，说明 nm 尺度的「盒」束缚电子时，其能级间距恰好对应可见 / 紫外光子——这正是量子点发光 (quantum-dot fluorescence) 与半导体激光的物理基础。把 \(L\) 加大到 \(5\,\unit{nm}\)，\(E_{1}\) 减小到 \(1/100\)，即 \(0.015\,\unit{eV}\)，跃迁进入远红外——这就是「调节尺寸可调发光颜色」的原理。<span class="ans">答案：\(E_{1}=2.41\times10^{-19}\,\unit{J}=1.50\,\unit{eV}\)；跃迁光子 \(\lambda\approx275\,\unit{nm}\)（紫外）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 电子穿越势垒的隧穿概率 Electron Tunneling Through a Barrier</h4>
+        <p class="example-statement">一个能量 \(E=1.0\,\unit{eV}\) 的电子迎面撞上一高度 \(V_{0}=2.0\,\unit{eV}\)、宽度 \(a=0.50\,\unit{nm}\) 的矩形势垒。用厚垒近似 \(T\approx e^{-2\kappa a}\) 估计其透射概率，并对比 \(a=0.10\,\unit{nm}\) 与 \(a=1.0\,\unit{nm}\) 两种情形。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先算衰减常数 \(\kappa=\sqrt{2m(V_{0}-E)}/\hbar\)。势垒高度差 \(V_{0}-E=1.0\,\unit{eV}=1.602\times10^{-19}\,\unit{J}\)。</p>
+          <p class="step">分子：\(2m(V_{0}-E)=2\times(9.11\times10^{-31})\times(1.602\times10^{-19})=2.919\times10^{-49}\,\unit{kg^{2}\cdot m^{2}/s^{2}}\)（注：单位 \(\unit{kg\cdot J}=\unit{kg^{2}m^{2}/s^{2}}\)）。
+            \[ \sqrt{2m(V_{0}-E)}=\sqrt{2.919\times10^{-49}}=5.40\times10^{-25}\,\unit{kg\cdot m/s}. \]</p>
+          <p class="step">除以 \(\hbar\)：
+            \[ \kappa=\frac{5.40\times10^{-25}}{1.055\times10^{-34}}=5.12\times10^{9}\,\unit{m^{-1}}. \]</p>
+          <p class="step"><strong>\(a=0.50\,\unit{nm}\)</strong>：\(2\kappa a=2\times(5.12\times10^{9})\times(0.50\times10^{-9})=5.12\)，故
+            \[ T\approx e^{-5.12}=5.9\times10^{-3}\approx0.6\%. \]</p>
+          <p class="step"><strong>\(a=0.10\,\unit{nm}\)</strong>：\(2\kappa a=1.02\)，\(T\approx e^{-1.02}=0.36\)（约 36%，近似已接近边界但仍可见）。</p>
+          <p class="step"><strong>\(a=1.0\,\unit{nm}\)</strong>：\(2\kappa a=10.2\)，\(T\approx e^{-10.2}=3.7\times10^{-5}\)（约 \(0.004\%\)）。</p>
+          <p>从 \(0.10\,\unit{nm}\) 到 \(1.0\,\unit{nm}\)，势垒宽度只增 10 倍，透射概率却下降了约 \(10^{4}\) 倍——这是指数敏感性。STM 正是利用这一敏感性：探针高度每变 \(0.1\,\unit{nm}\)，隧道电流改变约一个量级，故能达到原子级分辨。<em>经典物理预言</em> \(E<V_{0}\) 时 \(T=0\)，电子绝不可能穿越；实验测得非零电流，便是量子力学成立的直接证据。<span class="ans">答案：\(a=0.50\,\unit{nm}\Rightarrow T\approx5.9\times10^{-3}\)（约 0.6%）；\(a=0.10\,\unit{nm}\Rightarrow T\approx0.36\)；\(a=1.0\,\unit{nm}\Rightarrow T\approx3.7\times10^{-5}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 量子谐振子能级与零点能 QHO Energy Levels</h4>
+        <p class="example-statement">把一个电子束缚在频率 \(\omega=1.0\times10^{15}\,\unit{rad/s}\) 的一维抛物势 \(V=\tfrac12 m\omega^{2}x^{2}\) 中。(a) 求等效弹簧常数 \(k\) 与零点能 \(E_{0}\)（以 J 和 eV 表示）；(b) 写出 \(E_{0},E_{1},E_{2},E_{3}\)；(c) 求 \(n=2\to n=1\) 跃迁光子波长；(d) 经典折返点 \(x_{\text{tp}}\)（基态）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 弹簧常数 \(k=m\omega^{2}=(9.11\times10^{-31})(1.0\times10^{15})^{2}=9.11\times10^{-1}\,\unit{N/m}=0.91\,\unit{N/m}\)。零点能
+            \[ E_{0}=\tfrac12\hbar\omega=\tfrac12(1.055\times10^{-34})(1.0\times10^{15})=5.28\times10^{-20}\,\unit{J}=0.330\,\unit{eV}. \]</p>
+          <p class="step">(b) 等间距 \(\hbar\omega=1.055\times10^{-34}\times10^{15}=1.055\times10^{-19}\,\unit{J}=0.659\,\unit{eV}\)。故
+            \[ E_{0}=0.330\,\unit{eV},\quad E_{1}=\tfrac32\hbar\omega=0.988\,\unit{eV},\quad E_{2}=\tfrac52\hbar\omega=1.647\,\unit{eV},\quad E_{3}=\tfrac72\hbar\omega=2.306\,\unit{eV}. \]</p>
+          <p class="step">(c) \(\Delta E=E_{2}-E_{1}=\hbar\omega=0.659\,\unit{eV}\)（任意相邻跃迁均同此值）。
+            \[ \lambda=\frac{hc}{\Delta E}=\frac{1240}{0.659}=1882\,\unit{nm}\quad(\text{近红外}). \]</p>
+          <p class="step">(d) 经典折返点由 \(E_{0}=\tfrac12 m\omega^{2}x_{\text{tp}}^{2}\) 解出：
+            \[ x_{\text{tp}}=\sqrt{\frac{2E_{0}}{m\omega^{2}}}=\sqrt{\frac{\hbar}{m\omega}}=\sqrt{\frac{1.055\times10^{-34}}{(9.11\times10^{-31})(1.0\times10^{15})}}=\sqrt{\frac{1.055\times10^{-34}}{9.11\times10^{-16}}}. \]</p>
+          <p class="step">分母 \(=9.11\times10^{-16}\)，比值 \(=1.16\times10^{-19}\)，开方：\(x_{\text{tp}}=3.4\times10^{-10}\,\unit{m}=0.34\,\unit{nm}\)。注意在量子力学中，波函数在 \(|x|>x_{\text{tp}}\) 处并不为零，而是按 \(e^{-\xi^{2}/2}\) 高斯衰减——粒子可出现在经典禁区（再次违背经典物理）。</p>
+          <p>对照：典型的化学键振动（如 \(\mathrm{CO}\)）\(\hbar\omega\approx0.27\,\unit{eV}\)，跃迁波长 \(\sim 4.6\,\unit{\mu m}\)（中红外），这正是红外光谱学的能标。<span class="ans">答案：\(k=0.91\,\unit{N/m}\)，\(E_{0}=5.28\times10^{-20}\,\unit{J}=0.330\,\unit{eV}\)；\(E_{0},E_{1},E_{2},E_{3}=0.330,\,0.988,\,1.647,\,2.306\,\unit{eV}\)；\(\lambda=1882\,\unit{nm}\)；\(x_{\text{tp}}\approx0.34\,\unit{nm}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 有限深方势阱的束缚态数目 Number of Bound States</h4>
+        <p class="example-statement">一维对称有限深方势阱 \(V(x)=-V_{0}\) 于 \(|x|<a\)、\(V=0\) 否则，其中 \(V_{0}=10.0\,\unit{eV}\)、\(a=0.25\,\unit{nm}\)（阱宽 \(L=2a=0.50\,\unit{nm}\)）。束缚电子的束缚态数目是多少？至少给出一个偶宇称和一个奇宇称态的存在判据。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>定义参数
+            \[ z_{0}\equiv\frac{a}{\hbar}\sqrt{2mV_{0}}. \]</p>
+          <p class="step">先算 \(\sqrt{2mV_{0}}=\sqrt{2\times(9.11\times10^{-31})\times(5.0\times1.602\times10^{-19})}=\sqrt{2.919\times10^{-48}}=1.71\times10^{-24}\,\unit{kg\cdot m/s}\)。</p>
+          <p class="step">\(z_{0}=(0.25\times10^{-9})\times(1.71\times10^{-24})/(1.055\times10^{-34})=(4.275\times10^{-34})/(1.055\times10^{-34})=4.05\)。</p>
+          <p class="step"><strong>束缚态判据</strong>（推导略，源自 \(x=\pm a\) 处 \(\psi,\psi'\) 匹配）：</p>
+          <ul>
+            <li>偶宇称态：\(\sqrt{z_{0}^{2}-z^{2}}=z\tan z\)，解 \(z\in(0,z_{0})\)。每当 \(z_{0}>(n-\tfrac12)\pi\)（\(n=1,2,\dots\)）就有一个偶态。</li>
+            <li>奇宇称态：\(\sqrt{z_{0}^{2}-z^{2}}=-z\cot z\)。每当 \(z_{0}>n\pi\) 就有一个奇态。</li>
+          </ul>
+          <p class="step">总束缚态数大致为 \(N\approx\lfloor 2z_{0}/\pi\rfloor+1\)。代入 \(2z_{0}/\pi=8.10/3.14=2.58\)，故 \(\lfloor\cdot\rfloor=2\)，\(N\approx3\)。</p>
+          <p class="step"><strong>逐个判据：</strong>偶态存在条件 \(z_{0}>(n-\tfrac12)\pi\)：\(n=1\Rightarrow\pi/2=1.57<4.05\) ✓；\(n=2\Rightarrow3\pi/2=4.71>4.05\) ✗。故 1 个偶态。奇态存在条件 \(z_{0}>n\pi\)：\(n=1\Rightarrow\pi=3.14<4.05\) ✓；\(n=2\Rightarrow2\pi=6.28>4.05\) ✗。故 1 个奇态。</p>
+          <p class="step">合计：<strong>2 个束缚态</strong>（基态偶宇称、第一激发态奇宇称）。\(N\approx3\) 的近似公式在 \(z_{0}\) 接近阈值时偏多 1，这是已知边界情形。注意任意 \(V_{0}>0\) 都至少有 1 个束缚态。</p>
+          <p>对比：把深度加倍到 \(V_{0}=20\,\unit{eV}\)（同宽度），\(z_{0}\) 翻倍至 \(8.1\)，束缚态数变成 5 个；当 \(z_{0}\to\infty\)（即无限深阱），束缚态数 \(\to\infty\)，回到无限深阱的离散谱。<span class="ans">答案：\(z_{0}=4.05\)；2 个束缚态（1 偶 + 1 奇）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 势阶的反射与透射系数 Step \(R\) and \(T\)</h4>
+        <p class="example-statement">一个能量 \(E=4.0\,\unit{eV}\) 的电子从左侧入射到 \(V_{0}=1.0\,\unit{eV}\) 的势阶上。求反射系数 \(R\)、透射系数 \(T\)，并验证 \(R+T=1\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(k=\sqrt{2mE}/\hbar\)、\(k'=\sqrt{2m(E-V_{0})}/\hbar\)，得比值
+            \[ \frac{k'}{k}=\sqrt{\frac{E-V_{0}}{E}}=\sqrt{\frac{3.0}{4.0}}=\sqrt{0.75}=0.866. \]</p>
+          <p class="step">反射振幅比 \(r=(k-k')/(k+k')=(1-0.866)/(1+0.866)=0.134/1.866=0.0718\)。</p>
+          <p class="step">反射系数
+            \[ R=r^{2}=(0.0718)^{2}=5.16\times10^{-3}\approx0.52\%. \]</p>
+          <p class="step">透射系数（注意带 \(k'/k\) 因子！）：
+            \[ T=\frac{4kk'}{(k+k')^{2}}=\frac{4(k'/k)}{(1+k'/k)^{2}}=\frac{4\times0.866}{(1.866)^{2}}=\frac{3.464}{3.482}=0.9948\approx99.48\%. \]</p>
+          <p class="step">验证：\(R+T=0.0052+0.9948=1.000\;\checkmark\)。</p>
+          <p>即便 \(E\) 是 \(V_{0}\) 的 4 倍，仍有约 0.5% 概率被「向上阶跃」反射——经典力学完全不允许这一现象。当 \(E\to V_{0}^{+}\)（即 \(k'\to0\)），\(R\to1\)：粒子几乎全反射，恰如光线从光密介质掠入射。事实上令 \(k=n_{1}\omega/c\)、\(k'=n_{2}\omega/c\)，\(R=((n_{1}-n_{2})/(n_{1}+n_{2}))^{2}\) 正是 Fresnel 公式——量子与光学同构。<span class="ans">答案：\(R=5.16\times10^{-3}\approx0.52\%\)，\(T\approx99.48\%\)，\(R+T=1\) ✓。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把量子数 \(n\) 从 0 起算。</strong>无限深阱 \(n=1,2,3,\dots\)，<em>没有 \(n=0\) 态</em>（\(n=0\) 给出 \(\psi\equiv0\)，没有粒子）。量子谐振子则不同，\(n=0,1,2,\dots\) 是允许的，基态就是 \(n=0\)，对应零点能 \(\tfrac12\hbar\omega\)。两套编号不要混淆。</li>
+        <li><strong>误认为基态能量为零。</strong>所有束缚势的基态能量都高于经典最小值——无限深阱 \(E_{1}>0\)、谐振子 \(E_{0}=\tfrac12\hbar\omega>0\)。这是<strong>不确定性原理</strong> \(\Delta x\Delta p\gtrsim\hbar/2\) 强加的：粒子被囚禁 \(\Delta x\) 有限，必有 \(\Delta p\ne0\)、动能不为零。把粒子「冻到 \(T=0\)」也不能让 \(E=0\)。</li>
+        <li><strong>混淆束缚态（离散）与散射态（连续）。</strong>当 \(E\) 高于势场在无穷远的值时，粒子可逃逸到无穷远，能量任意取值——<em>不量子化</em>。只有当 \(E\) 小于无穷远势能（束缚），才得到离散能级。说「能量量子化」时要分清是哪种情形。</li>
+        <li><strong>认为隧穿违反能量守恒。</strong>隧穿中能量完全守恒：入射 \(E=\)透射 \(E\)，<em>动能 + 势能</em> 之和不变。在 \(E<V_{0}\) 区域，粒子<em>动能的经典值</em>会为负，但量子力学里动能算符的<em>期望值</em>为正——「负动能」并不出现在测量结果中。势垒两侧的能量分布才是关键，不是粒子在垒内「借」能量。</li>
+        <li><strong>忘记势阶的透射系数有 \(k'/k\) 因子。</strong>常见错误：直接把 \(|C/A|^{2}\) 当作 \(T\)。但概率流 \(j\propto k|A|^{2}\)，透射侧波数不同，故 \(T=(k'/k)|C/A|^{2}\)。少除这个因子会让 \(R+T\ne1\)，破坏概率守恒——一旦发现 \(R+T\ne1\)，多半就是这个错误。</li>
+        <li><strong>用裸 \(T=|t|^{2}\) 给厚垒公式。</strong>正确的厚垒近似 \(T\approx e^{-2\kappa a}\) <em>略去</em>的是数量级为 1 的前因子 \(16E(V_{0}-E)/V_{0}^{2}\)。当 \(\kappa a\gg1\) 时这是合理的；但若 \(\kappa a\lesssim1\)（势垒薄或 \(E\) 接近 \(V_{0}\)），略去前因子会显著高估或低估 \(T\)，必须用完整公式 \(T=[1+V_{0}^{2}\sinh^{2}(\kappa a)/(4E(V_{0}-E))]^{-1}\)。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 一个质子（\(m_{p}=1.67\times10^{-27}\,\unit{kg}\)）束缚在 \(L=10\,\unit{fm}=1.0\times10^{-14}\,\unit{m}\) 的无限深方势阱中（粗略模拟原子核）。求 \(E_{1}\)（以 MeV 表示）与 \(E_{2}\)。(\(1\,\unit{MeV}=1.602\times10^{-13}\,\unit{J}\))</summary>
+        <div class="hint">用 \(E_{n}=n^{2}\pi^{2}\hbar^{2}/(2mL^{2})\)。</div>
+        <div class="solution">\(E_{1}=\pi^{2}(1.055\times10^{-34})^{2}/[2\times(1.67\times10^{-27})\times(1.0\times10^{-14})^{2}]\)。
+          分子 \(=9.870\times1.113\times10^{-68}=1.098\times10^{-67}\)。
+          分母 \(=2\times1.67\times10^{-27}\times10^{-28}=3.34\times10^{-55}\)。
+          \(E_{1}=1.098\times10^{-67}/3.34\times10^{-55}=3.29\times10^{-13}\,\unit{J}=2.05\,\unit{MeV}\)。
+          \(E_{2}=4E_{1}=8.2\,\unit{MeV}\)。
+          <span class="ans">\(E_{1}\approx2.05\,\unit{MeV}\)，\(E_{2}\approx8.2\,\unit{MeV}\)（典型核物理能标）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 一维无限深阱中粒子处于态 \(\psi(x)=A\sin(\pi x/L)\sin(2\pi x/L)\)（\(0<x<L\)）。归一化 \(A\)，并把 \(\psi\) 展开为本征态 \(\psi_{n}\) 的叠加，求测得 \(E_{1}\) 与 \(E_{3}\) 的概率。</summary>
+        <div class="hint">用积化和差：\(\sin\alpha\sin\beta=\tfrac12[\cos(\alpha-\beta)-\cos(\alpha+\beta)]\)；再化为正弦。</div>
+        <div class="solution">由积化和差 \(\sin(\pi x/L)\sin(2\pi x/L)=\tfrac12[\cos(\pi x/L)-\cos(3\pi x/L)]\)。再注意 \(\cos(n\pi x/L)=\sin(n\pi x/L+\pi/2)\)，但更直接的方法是直接对 \(\psi=A\sin(\pi x/L)\sin(2\pi x/L)\) 归一化：
+          \(\int_{0}^{L}\sin^{2}(\pi x/L)\sin^{2}(2\pi x/L)dx=L/4\)（用积化和差积分），故 \(A=2/\sqrt{L}\)。
+          系数 \(c_{n}=\int_{0}^{L}\psi_{n}(x)\psi(x)\,dx\)。代入 \(\psi_{1}=\sqrt{2/L}\sin(\pi x/L)\)、\(\psi_{3}=\sqrt{2/L}\sin(3\pi x/L)\)：
+          积化和差把 \(\psi\) 写成 \(\tfrac{A}{2}[\cos(\pi x/L)-\cos(3\pi x/L)]\)，再化为正弦：\(\cos(\pi x/L)=\sin(\pi x/L+\pi/2)\) 不便；更简洁是直接计算 \(c_{1}\)、\(c_{3}\)：
+          \[ c_{1}=\frac{A\sqrt{2}}{\sqrt{L}}\int_{0}^{L}\sin^{2}(\pi x/L)\sin(2\pi x/L)\,dx=\frac{2\sqrt{2}}{L}\cdot\frac{4L}{9\pi}=\frac{8\sqrt{2}}{9\pi}. \]
+          类似 \(c_{3}=\frac{2\sqrt{2}}{L}\int_{0}^{L}\sin(\pi x/L)\sin(2\pi x/L)\sin(3\pi x/L)dx\)。用积化和差 \(\sin(\pi x/L)\sin(3\pi x/L)=\tfrac12[\cos(2\pi x/L)-\cos(4\pi x/L)]\)，乘 \(\sin(2\pi x/L)\) 再积分，奇偶性使两项给出 \(\tfrac{L}{2}\cdot\tfrac{2}{2\pi}\) 等，最终 \(c_{3}=\dfrac{8\sqrt{2}}{9\pi}\)。
+          \(|c_{1}|^{2}=|c_{3}|^{2}=(8\sqrt{2}/9\pi)^{2}=128/81\pi^{2}\approx0.161\)。其余分量在 \(E_{2}\) 上（无）和其他更高态，可由完备性 \(\sum|c_{n}|^{2}=1\) 验证。
+          <span class="ans">\(A=2/\sqrt{L}\)；测得 \(E_{1}\) 与 \(E_{3}\) 的概率均约 \(0.161\)（约 16%），其余概率在更高 \(n\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 把例 3.3 中谐振子的 \(\omega\) 改为 \(\omega=2.0\times10^{14}\,\unit{rad/s}\)（典型分子振动）。求零点能（eV）、\(n=3\to n=2\) 跃迁光子波长，并说明跃迁波长是否依赖 \(n\)。</summary>
+        <div class="hint">谐振子能级等间距 \(\hbar\omega\)，相邻跃迁波长与 \(n\) 无关。</div>
+        <div class="solution">\(\hbar\omega=(1.055\times10^{-34})(2.0\times10^{14})=2.11\times10^{-20}\,\unit{J}=0.132\,\unit{eV}\)。零点能 \(E_{0}=\tfrac12\hbar\omega=0.066\,\unit{eV}\)。
+          \(E_{3}-E_{2}=\hbar\omega=0.132\,\unit{eV}\)，\(\lambda=1240/0.132=9394\,\unit{nm}=9.4\,\unit{\mu m}\)（中红外）。
+          因能级等间距，任意 \(n\to n-1\) 跃迁波长都相同——这是谐振子谱「单一谱线」的特征（实验上观察到额外谱线说明非简谐修正）。
+          <span class="ans">\(E_{0}\approx0.066\,\unit{eV}\)；\(\lambda\approx9.4\,\unit{\mu m}\)；与 \(n\) 无关。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 一个能量 \(E=5.0\,\unit{eV}\) 的电子迎面撞上 \(V_{0}=2.0\,\unit{eV}\) 的势阶。求 \(R\) 与 \(T\)，并验证 \(R+T=1\)。</summary>
+        <div class="hint">\(k'/k=\sqrt{(E-V_{0})/E}\)，\(R=((k-k')/(k+k'))^{2}\)，\(T=4kk'/(k+k')^{2}\)。</div>
+        <div class="solution">\(k'/k=\sqrt{3/5}=\sqrt{0.6}=0.775\)。
+          \(r=(1-0.775)/(1+0.775)=0.225/1.775=0.127\)。
+          \(R=r^{2}=0.0160=1.6\%\)。
+          \(T=4\times0.775/(1.775)^{2}=3.098/3.151=0.984=98.4\%\)。
+          \(R+T=0.016+0.984=1.000\;\checkmark\)。
+          <span class="ans">\(R\approx1.6\%\)，\(T\approx98.4\%\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5.（挑战）利用不确定性原理 \(\Delta x\Delta p\gtrsim\hbar/2\) 估计无限深方势阱基态能量 \(E_{1}\)，并与精确值 \(\pi^{2}\hbar^{2}/(2mL^{2})\) 比较。</summary>
+        <div class="hint">取 \(\Delta x\sim L/2\)（基态在阱内分布的均方根宽度），\(\Delta p\sim\hbar/(2\Delta x)\)，\(E\sim(\Delta p)^{2}/2m\)。</div>
+        <div class="solution">取 \(\Delta x\approx L/2\)（也可取 \(L\)，差数量级 1 的因子）：
+          \(\Delta p\gtrsim\hbar/(2\Delta x)=\hbar/L\)。
+          \(E_{1}\sim(\Delta p)^{2}/2m=\hbar^{2}/(2mL^{2})\)。
+          精确值 \(E_{1}=\pi^{2}\hbar^{2}/(2mL^{2})\approx9.87\,\hbar^{2}/(2mL^{2})\)。
+          估值与精确值差一个因子 \(\pi^{2}\approx9.87\)——不确定性原理只能给数量级，无法替代严格求解。但它定性解释了 \(E_{1}\propto\hbar^{2}/(mL^{2})\) 这一依赖关系：<em>阱越窄、粒子越重，零点能越大</em>。
+          <span class="ans">估值 \(E_{1}\sim\hbar^{2}/(2mL^{2})\)，与精确值 \(\pi^{2}\hbar^{2}/(2mL^{2})\) 差因子 \(\pi^{2}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>6.（挑战）证明无限深方势阱的波函数 \(\psi_{n}(x)=\sqrt{2/L}\sin(n\pi x/L)\) 关于阱中心 \(x=L/2\) 具有「奇 / 偶」对称性：当 \(n\) 为奇数，\(\psi_{n}\) 关于中心对称；当 \(n\) 为偶数，反对称。并由此说明为何 \(n\) 是好量子数。</summary>
+        <div class="hint">作代换 \(x=L/2+u\)，用 \(\sin(n\pi(L/2+u)/L)=\sin(n\pi/2+n\pi u/L)\)。</div>
+        <div class="solution">令 \(x=L/2+u\)。
+          \(\psi_{n}(L/2+u)=\sqrt{2/L}\sin(n\pi/2+n\pi u/L)\)。
+          当 \(n\) 偶，\(n\pi/2\) 是 \(\pi\) 的整数倍，\(\sin(n\pi/2+\theta)=\pm\sin\theta\)，故 \(\psi_{n}(L/2+u)=\pm\sqrt{2/L}\sin(n\pi u/L)\)，是 \(u\) 的奇函数 → 关于中心反对称。
+          当 \(n\) 奇，\(n\pi/2\) 是 \(\pi/2\) 的奇数倍，\(\sin(n\pi/2+\theta)=\pm\cos\theta\)，故 \(\psi_{n}(L/2+u)=\pm\sqrt{2/L}\cos(n\pi u/L)\)，是 \(u\) 的偶函数 → 关于中心对称。
+          因 \(V(L/2+u)=V(L/2-u)\)（阱关于中心对称），宇称算符 \(\hat{P}\) 与 \(\hat{H}\) 对易，\([\hat{H},\hat{P}]=0\)，故 \(\psi_{n}\) 可同时取能量与宇称两个好量子数。能量简并时（一维束缚态无简并）只用 \(n\) 标记即可。
+          <span class="ans">证毕：\(n\) 奇 → 中心对称；\(n\) 偶 → 中心反对称。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>盒中粒子 Particle in a Box。</strong>一维无限深方势阱（阱宽 \(L\)），调节量子数滑块 \(n=1\sim5\)，画面同时显示阱形、能级阶梯（\(E_{n}\propto n^{2}\)）、本征函数 \(\psi_{n}(x)\)（带时间演化相位 \(\cos(E_{n}t/\hbar)\) 以呈现「驻波振荡」）以及概率密度 \(|\psi_{n}(x)|^{2}\)。用<strong>切换</strong>按钮在「\(\psi\) 与 \(|\psi|^{2}\) 双图」和「仅 \(|\psi|^{2}\) 填充图」之间切换。注意 \(\psi_{n}\) 的节点数为 \(n-1\)，且 \(|\psi_{n}|^{2}\) 始终非负。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // --- layout (pixels) ----------------------------------------------
+          // Well spans 0 < x < L horizontally; E axis points up.
+          var X0 = 80;            // left wall x-position (pixels)
+          var WELL_W = 440;       // well width in pixels = L
+          var X1 = X0 + WELL_W;
+          var VTOP = 40;          // top of plot
+          var VBOT = 340;         // bottom (V=0 line)
+          var PLOT_H = VBOT - VTOP;
+          // Highest level drawn = n=5  → E5 = 25 E1. Give a little headroom.
+          var EMAX = 25 * 1.1;
+
+          var params = { n: 2, showBoth: true };
+
+          function eLevel(n) { return n * n; }  // in units of E1
+
+          // value of psi_n(x) for 0<=x<=1 (x normalized to L)
+          function psiAt(n, u) {
+            return Math.sqrt(2) * Math.sin(n * Math.PI * u);
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var n = params.n;
+              var t = s.t;
+
+              // --- draw walls + well interior -------------------------------
+              ctx.save();
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 3;
+              // left & right infinite walls (drawn tall)
+              ctx.beginPath();
+              ctx.moveTo(X0, VTOP - 10); ctx.lineTo(X0, VBOT + 10);
+              ctx.moveTo(X1, VTOP - 10); ctx.lineTo(X1, VBOT + 10);
+              ctx.stroke();
+              // hatch outside walls to suggest V = infinity
+              ctx.lineWidth = 1;
+              ctx.globalAlpha = 0.35;
+              ctx.strokeStyle = PS.colors.axis;
+              for (var y = VTOP - 10; y < VBOT + 12; y += 8) {
+                ctx.beginPath(); ctx.moveTo(X0 - 16, y + 8); ctx.lineTo(X0, y); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(X1, y); ctx.lineTo(X1 + 16, y + 8); ctx.stroke();
+              }
+              ctx.globalAlpha = 1;
+              // V = 0 floor
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(X0, VBOT); ctx.lineTo(X1, VBOT); ctx.stroke();
+              ctx.restore();
+
+              // --- axis labels ---------------------------------------------
+              PS.drawText(ctx, 'V = ∞', X0 - 14, VTOP - 16,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+              PS.drawText(ctx, 'V = ∞', X1 + 14, VTOP - 16,
+                { font: '11px system-ui', color: PS.colors.text, align: 'left' });
+              PS.drawText(ctx, 'x = 0', X0, VBOT + 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, 'x = L', X1, VBOT + 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              PS.drawText(ctx, '阱内 V = 0', (X0 + X1) / 2, VBOT + 18,
+                { font: '11px system-ui', color: PS.colors.text, align: 'center' });
+              // y axis label (energy)
+              PS.drawText(ctx, '能量 E (单位 E₁)', X0 - 50, VTOP,
+                { font: '11px system-ui', color: PS.colors.text, align: 'left' });
+
+              // --- draw all 5 energy levels (faint), highlight current -------
+              var nCur = n;
+              for (var k = 1; k <= 5; k++) {
+                var Ek = eLevel(k);
+                var yk = VBOT - (Ek / EMAX) * PLOT_H;
+                var isCur = (k === nCur);
+                ctx.save();
+                ctx.strokeStyle = isCur ? PS.colors.accent : PS.colors.grid;
+                ctx.lineWidth = isCur ? 2.2 : 1;
+                ctx.globalAlpha = isCur ? 1 : 0.6;
+                if (!isCur) ctx.setLineDash([4, 4]);
+                ctx.beginPath(); ctx.moveTo(X0, yk); ctx.lineTo(X1, yk); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, 'E_' + k + ' = ' + Ek + ' E₁', X1 + 8, yk + 4,
+                  { font: '11px system-ui',
+                    color: isCur ? PS.colors.accent : PS.colors.text });
+              }
+
+              // --- title ----------------------------------------------------
+              PS.drawText(ctx, '盒中粒子  Particle in a Box   ψ_n(x) = √(2/L) sin(nπx/L)',
+                X0, 22, { font: 'bold 13px system-ui', color: PS.colors.text });
+
+              // --- draw psi_n and |psi_n|^2 anchored at y = E_n -------------
+              var En = eLevel(nCur);
+              var yEn = VBOT - (En / EMAX) * PLOT_H;
+              // time-dependent phase: stationary state oscillates as cos(E_n t / hbar)
+              var phase = Math.cos(En * t * 0.8);
+
+              // vertical scale for plotting psi (and psi^2) inside the well
+              // maximum of |psi_n| is sqrt(2); maximum of |psi_n|^2 is 2.
+              var PSI_SCALE = 26;   // pixels per unit of psi
+              var PROB_SCALE = 18;  // pixels per unit of |psi|^2
+
+              var NPTS = 220;
+              // Build arrays
+              var xsArr = [], psiArr = [], probArr = [];
+              for (var i = 0; i <= NPTS; i++) {
+                var u = i / NPTS;
+                var xx = X0 + u * WELL_W;
+                var p = psiAt(nCur, u);  // real
+                xsArr.push(xx); psiArr.push(p); probArr.push(p * p);
+              }
+
+              // --- optional: filled |psi|^2 under the E_n line --------------
+              if (!params.showBoth) {
+                ctx.save();
+                ctx.globalAlpha = 0.35;
+                ctx.fillStyle = PS.colors.accent2;
+                ctx.beginPath();
+                ctx.moveTo(X0, yEn);
+                for (var i = 0; i <= NPTS; i++) ctx.lineTo(xsArr[i], yEn - probArr[i] * PROB_SCALE);
+                ctx.lineTo(X1, yEn);
+                ctx.closePath(); ctx.fill();
+                ctx.restore();
+                // outline
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (var i = 0; i <= NPTS; i++) {
+                  var y = yEn - probArr[i] * PROB_SCALE;
+                  if (i === 0) ctx.moveTo(xsArr[i], y); else ctx.lineTo(xsArr[i], y);
+                }
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, '|ψ_' + nCur + '(x)|²', X0 + 8, yEn - 4,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+              } else {
+                // --- draw psi_n(x) as oscillating curve, axis at yEn --------
+                // baseline (the E_n level) acts as zero of psi
+                ctx.save();
+                ctx.strokeStyle = PS.colors.primary;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (var i = 0; i <= NPTS; i++) {
+                  var y = yEn - psiArr[i] * phase * PSI_SCALE;
+                  if (i === 0) ctx.moveTo(xsArr[i], y); else ctx.lineTo(xsArr[i], y);
+                }
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, 'ψ_' + nCur + '(x,t)', X0 + 8, yEn - 1.8 * PSI_SCALE - 4,
+                  { font: 'bold 12px system-ui', color: PS.colors.primary });
+
+                // --- draw |psi_n|^2 above, anchored higher ----------------
+                var yProbBase = yEn - 60;  // baseline for prob curve
+                ctx.save();
+                ctx.globalAlpha = 0.30;
+                ctx.fillStyle = PS.colors.accent2;
+                ctx.beginPath();
+                ctx.moveTo(X0, yProbBase);
+                for (var i = 0; i <= NPTS; i++) ctx.lineTo(xsArr[i], yProbBase - probArr[i] * PROB_SCALE);
+                ctx.lineTo(X1, yProbBase);
+                ctx.closePath(); ctx.fill();
+                ctx.restore();
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(X0, yProbBase); ctx.lineTo(X1, yProbBase); ctx.stroke();
+                ctx.restore();
+                ctx.save();
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (var i = 0; i <= NPTS; i++) {
+                  var y = yProbBase - probArr[i] * PROB_SCALE;
+                  if (i === 0) ctx.moveTo(xsArr[i], y); else ctx.lineTo(xsArr[i], y);
+                }
+                ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, '|ψ_' + nCur + '(x)|²', X0 + 8, yProbBase - 2 * PROB_SCALE - 4,
+                  { font: 'bold 12px system-ui', color: PS.colors.accent2 });
+              }
+
+              // --- readout panel --------------------------------------------
+              var rx = 16, ry = VTOP + 8;
+              PS.drawText(ctx, '当前态 Current state', rx, ry,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              var lines = [
+                ['n = ' + nCur, PS.colors.accent],
+                ['E_n = n² E₁ = ' + En + ' E₁', PS.colors.accent],
+                ['节点数 nodes = n − 1 = ' + (nCur - 1), PS.colors.primary],
+                ['宇称 parity: ' + (nCur % 2 === 1 ? '关于中心对称 (even)' : '关于中心反对称 (odd)'), PS.colors.text],
+              ];
+              for (var i = 0; i < lines.length; i++) {
+                PS.drawText(ctx, lines[i][0], rx, ry + 22 + i * 18,
+                  { font: '12px system-ui', color: lines[i][1] });
+              }
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'n', label: '量子数 n', min: 1, max: 5, step: 1, value: 2 },
+            { type: 'toggle', key: 'showBoth', label: '同时显示 ψ 与 |ψ|²  (off=仅 |ψ|²)', value: true },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('n', function (v) { params.n = v; });
+          ctl.on('showBoth', function (v) { params.showBoth = v; });
+          ctl.on('reset', function () { params.n = 2; params.showBoth = true; sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>一维定态 Schrödinger 方程</strong> \(-\tfrac{\hbar^{2}}{2m}\psi''+V\psi=E\psi\)。在每段 \(V=\)const 区域内为正弦 / 余弦（\(E>V\)）或指数衰减（\(E<V\)）；在 \(V\) 不连续处 \(\psi\) 与 \(\psi'\) 连续（\(V\) 有 δ 奇异时 \(\psi'\) 跃变）。</li>
+        <li><strong>无限深方势阱</strong>（\(0<x<L\)）：边界条件 \(\psi(0)=\psi(L)=0\) 直接给出量子化 \(k_{n}=n\pi/L\)，能级 \(E_{n}=n^{2}\pi^{2}\hbar^{2}/(2mL^{2})=n^{2}h^{2}/(8mL^{2})\)，归一化 \(\psi_{n}=\sqrt{2/L}\sin(n\pi x/L)\)，\(n=1,2,3,\dots\)。基态 \(E_{1}>0\)。</li>
+        <li><strong>有限深方势阱</strong>：阱内正弦、阱外指数衰减；至少有一个束缚态；束缚态数目有限。\(\int\!|\psi|^{2}\) 在阱外不为零（粒子出现在经典禁区）。</li>
+        <li><strong>势阶</strong>（\(E>V_{0}\)）：\(R=((k-k')/(k+k'))^{2}\)，\(T=4kk'/(k+k')^{2}\)，\(R+T=1\)，其中 \(k=\sqrt{2mE}/\hbar\)、\(k'=\sqrt{2m(E-V_{0})}/\hbar\)。\(E<V_{0}\)：\(R=1\) 但有隐失波渗入。</li>
+        <li><strong>矩形势垒隧穿</strong>（\(E<V_{0}\)，宽 \(a\)）：\(T\approx e^{-2\kappa a}\)，\(\kappa=\sqrt{2m(V_{0}-E)}/\hbar\)。<em>经典物理禁止</em>，量子力学允许。</li>
+        <li><strong>量子谐振子</strong>：\(E_{n}=(n+\tfrac12)\hbar\omega\)，\(n=0,1,2,\dots\)，等间距 \(\hbar\omega\)，零点能 \(E_{0}=\tfrac12\hbar\omega\)。波函数 \(H_{n}(\xi)e^{-\xi^{2}/2}\)，\(\xi=x\sqrt{m\omega/\hbar}\)；宇称 \((-1)^{n}\)。</li>
+        <li><strong>关键判据</strong>：束缚态 → 离散谱；散射态 → 连续谱。零点能是不确定性原理的必然结果。势对称 → 宇称是好量子数。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\begin{aligned} &\text{无限阱: }&&E_{n}=\frac{n^{2}\pi^{2}\hbar^{2}}{2mL^{2}},\;\psi_{n}=\sqrt{\tfrac{2}{L}}\sin\!\tfrac{n\pi x}{L},\;n=1,2,\dots\\ &\text{势阶: }&&R=\Big(\tfrac{k-k'}{k+k'}\Big)^{2},\;T=\tfrac{4kk'}{(k+k')^{2}},\;R+T=1\\ &\text{势垒: }&&T\approx e^{-2\kappa a},\;\kappa=\tfrac{\sqrt{2m(V_{0}-E)}}{\hbar}\\ &\text{谐振子: }&&E_{n}=\Big(n+\tfrac12\Big)\hbar\omega,\;\psi_{n}\propto H_{n}(\xi)e^{-\xi^{2}/2},\;\xi=x\sqrt{\tfrac{m\omega}{\hbar}} \end{aligned}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 角动量 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第五学期 · 第5章 · 量子力学 I Quantum Mechanics I</p>
+      <h1>角动量 <span class="en-title">Angular Momentum</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>用位置与动量算符写出<strong>轨道角动量算符</strong> (orbital angular momentum operator) \(\hat{\vec{L}}=\hat{\vec{r}}\times\hat{\vec{p}}\) 及其分量 \(\hat{L}_{x},\hat{L}_{y},\hat{L}_{z}\)、平方 \(\hat{L}^{2}=\hat{L}_{x}^{2}+\hat{L}_{y}^{2}+\hat{L}_{z}^{2}\)。</li>
+        <li>推导并运用<strong>角动量对易关系</strong> \([\hat{L}_{i},\hat{L}_{j}]=i\hbar\,\epsilon_{ijk}\hat{L}_{k}\)；说明为何 \(\hat{L}_{x},\hat{L}_{y},\hat{L}_{z}\) <strong>不能</strong>同时对角化，而 \(\hat{L}^{2}\) 与其中<strong>任意一个</strong>分量（习惯取 \(\hat{L}_{z}\)）可以。</li>
+        <li>解出 \(\hat{L}^{2}\) 与 \(\hat{L}_{z}\) 的<strong>共同本征值</strong> (simultaneous eigenvalues) \(L^{2}=\hbar^{2}\ell(\ell+1)\)、\(L_{z}=m\hbar\)，量子数 \(\ell=0,1,2,\dots\)、\(m=-\ell,\dots,+\ell\)。</li>
+        <li>识别<strong>球谐函数</strong> \(Y_{\ell}^{m}(\theta,\phi)\) 为 \(\hat{L}^{2}\) 与 \(\hat{L}_{z}\) 的共同本征函数；指出 \(s\)（\(\ell=0\)，球形）、\(p\)（\(\ell=1\)，双瓣）、\(d\)（\(\ell=2\)，四叶草）等轨道形状。</li>
+        <li>运用<strong>升降算符</strong> (ladder operators) \(\hat{L}_{\pm}=\hat{L}_{x}\pm i\hat{L}_{y}\) 推导 \(\hat{L}_{\pm}Y_{\ell}^{m}\propto Y_{\ell}^{m\pm 1}\)，并在 \(m\) 态之间「上下台阶」。</li>
+        <li>把三维球对称势中的 Schrödinger 方程分离变量，写出<strong>角度部分</strong>由 \(\hat{L}^{2}Y_{\ell}^{m}=\hbar^{2}\ell(\ell+1)Y_{\ell}^{m}\) 决定。</li>
+        <li>用<strong>半经典矢量模型</strong> (vector model) 描绘 \(\vec{L}\)：长度 \(\hbar\sqrt{\ell(\ell+1)}\)、\(z\) 分量 \(m\hbar\)、绕 \(z\) 轴「进动」；解释为何 \(|\vec{L}|&gt;L_{z}\)（矢量永不完全对齐 \(z\) 轴）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 经典角动量与量子算符 Classical Angular Momentum &amp; the Quantum Operator</h3>
+      <p>经典力学中，相对原点的<strong>角动量</strong> (angular momentum) 定义为 \(\vec{L}=\vec{r}\times\vec{p}\)，三分量 \((L_{x},L_{y},L_{z})\) 是相空间中可同时精确取值的函数。量子力学把这些量提升为<strong>算符</strong>：\(\hat{\vec{r}}\)、\(\hat{\vec{p}}\) 满足正则对易 \([\hat{x}_{i},\hat{p}_{j}]=i\hbar\delta_{ij}\)，于是轨道角动量算符定义为</p>
+      <div class="formula">\[ \hat{\vec{L}}\equiv\hat{\vec{r}}\times\hat{\vec{p}},\qquad \hat{L}_{i}=\sum_{j,k}\epsilon_{ijk}\,\hat{x}_{j}\hat{p}_{k}, \]</div>
+      <p>其中 \(\epsilon_{ijk}\) 是 Levi-Civita 全反对称张量（\(\epsilon_{xyz}=+1\)，交换两指标变号）。具体地：</p>
+      <div class="formula">\[ \hat{L}_{x}=\hat{y}\hat{p}_{z}-\hat{z}\hat{p}_{y},\quad \hat{L}_{y}=\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z},\quad \hat{L}_{z}=\hat{x}\hat{p}_{y}-\hat{y}\hat{p}_{x}. \]</div>
+      <p>角动量的<strong>大小平方</strong>算符定义为</p>
+      <div class="formula">\[ \hat{L}^{2}\equiv\hat{L}_{x}^{2}+\hat{L}_{y}^{2}+\hat{L}_{z}^{2}. \]</div>
+      <p>在球坐标 \((r,\theta,\phi)\) 下（\(x=r\sin\theta\cos\phi\)、\(y=r\sin\theta\sin\phi\)、\(z=r\cos\theta\)），最常用的是 \(\hat{L}_{z}\) 与 \(\hat{L}^{2}\)：</p>
+      <div class="formula">\[ \hat{L}_{z}=-i\hbar\,\frac{\partial}{\partial\phi},\qquad \hat{L}^{2}=-\hbar^{2}\!\left[\frac{1}{\sin\theta}\,\frac{\partial}{\partial\theta}\!\left(\sin\theta\,\frac{\partial}{\partial\theta}\right)+\frac{1}{\sin^{2}\theta}\,\frac{\partial^{2}}{\partial\phi^{2}}\right]. \]</div>
+      <p>注意：\(\hat{L}_{i}\) <strong>不显含</strong> \(r\)，只对角度作用——所以角动量本质上是关于「方向」的可观测量，与径向自由度完全分离。</p>
+      <div class="key-terms">orbital angular momentum (轨道角动量), Levi-Civita symbol (Levi-Civita 张量), magnitude-squared operator \(\hat{L}^{2}\) (大小平方算符), spherical coordinates (球坐标)</div>
+
+      <h3>2. 角动量对易关系 Angular-Momentum Commutation Relations</h3>
+      <p>把 \(\hat{L}_{i}\) 的定义代入对易子并用 \([\hat{x}_{j},\hat{p}_{k}]=i\hbar\delta_{jk}\)，得角动量算符的<strong>基本对易关系</strong>（推导见例 5.1）：</p>
+      <div class="formula">\[ \boxed{\;[\hat{L}_{i},\hat{L}_{j}]=i\hbar\,\epsilon_{ijk}\hat{L}_{k}\;} \]</div>
+      <p>三个等价的循环形式（\(x\to y\to z\to x\)）：</p>
+      <div class="formula">\[ [\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z},\qquad [\hat{L}_{y},\hat{L}_{z}]=i\hbar\hat{L}_{x},\qquad [\hat{L}_{z},\hat{L}_{x}]=i\hbar\hat{L}_{y}. \]</div>
+      <p>这一结构有两条关键推论：</p>
+      <ul>
+        <li><strong>三个分量不可同时对角化</strong>：因 \([\hat{L}_{x},\hat{L}_{y}]\ne 0\)，不存在由 \((L_{x},L_{y},L_{z})\) 同时标记的完备本征基。由 Robertson 不等式 \(\Delta L_{x}\,\Delta L_{y}\ge\tfrac12\hbar|\langle\hat{L}_{z}\rangle|\)——除非 \(\langle\hat{L}_{z}\rangle=0\)，否则无法同时精确测两个分量。</li>
+        <li><strong>\(\hat{L}^{2}\) 与任一分量对易</strong>（推导见例 5.1 后半）：</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;[\hat{L}^{2},\hat{L}_{i}]=0\quad(i=x,y,z)\;} \]</div>
+      <p>因此 <strong>\(\hat{L}^{2}\) 与某一分量（习惯取 \(\hat{L}_{z}\)）可以同时对角化</strong>，二者构成角动量问题的 CSCO（对易可观测量完全集）。共同本征态用 \(| \ell,m\rangle\) 标记：</p>
+      <div class="formula">\[ \hat{L}^{2}\,|\ell,m\rangle=\hbar^{2}\ell(\ell+1)\,|\ell,m\rangle,\qquad \hat{L}_{z}\,|\ell,m\rangle=m\hbar\,|\ell,m\rangle. \]</div>
+      <div class="key-terms">angular-momentum commutation relation (角动量对易关系), simultaneous diagonalization (同时对角化), CSCO (对易可观测量完全集), quantum numbers \(\ell,m\) (量子数 \(\ell,m\))</div>
+
+      <h3>3. 本征值量子化 — \(\ell\) 与 \(m\) 的整数阶 Quantization of \(\ell\) and \(m\)</h3>
+      <p>本征值方程 \(\hat{L}^{2}|\ell,m\rangle=\hbar^{2}\ell(\ell+1)|\ell,m\rangle\) 与 \(\hat{L}_{z}|\ell,m\rangle=m\hbar|\ell,m\rangle\) 中，量子数只能取</p>
+      <div class="formula">\[ \boxed{\;\ell=0,1,2,3,\dots\quad(\text{非负整数}),\qquad m=-\ell,-\ell+1,\dots,\ell-1,\ell\quad(\text{共 }2\ell+1\text{ 个值})\;} \]</div>
+      <p>这些值的来源是<strong>升降算符</strong> (ladder operators) 论证（见推导 5.A）：定义 \(\hat{L}_{\pm}\equiv\hat{L}_{x}\pm i\hat{L}_{y}\)，则</p>
+      <div class="formula">\[ \hat{L}_{\pm}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m\pm 1)}\;|\ell,m\pm 1\rangle. \]</div>
+      <p>\(\hat{L}_{+}\) 把 \(m\) 升 1、\(\hat{L}_{-}\) 把 \(m\) 降 1。但因 \(\hat{L}^{2}=\hat{L}_{z}^{2}+\tfrac12(\hat{L}_{+}\hat{L}_{-}+\hat{L}_{-}\hat{L}_{+})\) 隐含 \(|m|\le\sqrt{\ell(\ell+1)}\)，链必须终止于 \(m_{\max}=\ell\) 与 \(m_{\min}=-\ell\)，且 \(\ell(\ell+1)-m_{\max}(m_{\max}+1)=0\) 要求 \(\ell\) 为非负整数（或对自旋为半整数，本章只讨论轨道角动量，故 \(\ell\) 为整数）。</p>
+      <div class="formula">\[ \text{对给定 }\ell\text{ 的简并度}=\sum_{m=-\ell}^{\ell}1=2\ell+1. \]</div>
+      <div class="key-terms">ladder operators (升降算符), raising/lowering (升/降), maximum/minimum \(m\) (最大/最小 \(m\)), degeneracy \(2\ell+1\) (简并度 \(2\ell+1\))</div>
+
+      <h3>4. 球谐函数 Spherical Harmonics</h3>
+      <p>角动量算符只对角度作用，故本征函数只依赖 \((\theta,\phi)\)。在位形表象中，\(\hat{L}^{2}\) 与 \(\hat{L}_{z}\) 的共同本征函数记为 \(Y_{\ell}^{m}(\theta,\phi)\)，称为<strong>球谐函数</strong> (spherical harmonics)：</p>
+      <div class="formula">\[ \hat{L}^{2}Y_{\ell}^{m}=\hbar^{2}\ell(\ell+1)Y_{\ell}^{m},\qquad \hat{L}_{z}Y_{\ell}^{m}=m\hbar Y_{\ell}^{m},\qquad \int_{0}^{2\pi}\!\!\int_{0}^{\pi}|Y_{\ell}^{m}|^{2}\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\phi=1. \]</div>
+      <p>球谐函数的标准形式（\(N_{\ell m}\) 为归一化常数）：</p>
+      <div class="formula">\[ Y_{\ell}^{m}(\theta,\phi)=N_{\ell m}\,P_{\ell}^{|m|}(\cos\theta)\,e^{im\phi},\qquad N_{\ell m}=(-1)^{m}\sqrt{\frac{2\ell+1}{4\pi}\,\frac{(\ell-|m|)!}{(\ell+|m|)!}}, \]</div>
+      <p>其中 \(P_{\ell}^{|m|}\) 是连带 Legendre 多项式。前几个最重要：</p>
+      <div class="formula">\[ \begin{aligned} Y_{0}^{0}&=\frac{1}{\sqrt{4\pi}},\\[2pt] Y_{1}^{0}&=\sqrt{\frac{3}{4\pi}}\cos\theta,\quad &Y_{1}^{\pm 1}&=\mp\sqrt{\frac{3}{8\pi}}\sin\theta\,e^{\pm i\phi},\\[2pt] Y_{2}^{0}&=\sqrt{\frac{5}{16\pi}}(3\cos^{2}\theta-1),\quad &Y_{2}^{\pm 2}&=\sqrt{\frac{15}{32\pi}}\sin^{2}\theta\,e^{\pm 2i\phi}. \end{aligned} \]</div>
+      <ul>
+        <li>\(\ell=0\)（\(s\) 轨道）：\(Y_{0}^{0}\) 是<strong>常数</strong>，\(|Y_{0}^{0}|^{2}=1/(4\pi)\) 与方向无关——球对称。简并度 \(2\ell+1=1\)。</li>
+        <li>\(\ell=1\)（\(p\) 轨道）：3 个态 \(m=-1,0,+1\)。 \(|Y_{1}^{0}|^{2}\propto\cos^{2}\theta\) 沿 \(z\) 轴双瓣；\(|Y_{1}^{\pm 1}|^{2}\propto\sin^{2}\theta\) 沿赤道环。</li>
+        <li>\(\ell=2\)（\(d\) 轨道）：5 个态 \(m=-2,\dots,+2\)。 \(|Y_{2}^{0}|^{2}\propto(3\cos^{2}\theta-1)^{2}\) 哑铃四瓣；\(|Y_{2}^{\pm 2}|^{2}\propto\sin^{4}\theta\) 赤道双瓣。</li>
+      </ul>
+      <div class="key-terms">spherical harmonics \(Y_{\ell}^{m}\) (球谐函数), associated Legendre polynomials (连带 Legendre 多项式), \(s/p/d\) orbitals (\(s/p/d\) 轨道), angular probability distribution \(|Y|^{2}\) (角向概率分布)</div>
+
+      <h3>5. 升降算符 Ladder Operators — 在 \(m\) 之间「上下台阶」</h3>
+      <p>升降算符 \(\hat{L}_{\pm}=\hat{L}_{x}\pm i\hat{L}_{y}\) 是<strong>非厄米</strong>算符（\(\hat{L}_{+}^{\dagger}=\hat{L}_{-}\)），但极具用——它们在 \(| \ell,m\rangle\) 之间只升/降 \(m\) 一步。可证明的关键对易式：</p>
+      <div class="formula">\[ [\hat{L}_{z},\hat{L}_{\pm}]=\pm\hbar\hat{L}_{\pm},\qquad [\hat{L}^{2},\hat{L}_{\pm}]=0,\qquad \hat{L}_{+}\hat{L}_{-}=\hat{L}^{2}-\hat{L}_{z}^{2}+\hbar\hat{L}_{z},\quad \hat{L}_{-}\hat{L}_{+}=\hat{L}^{2}-\hat{L}_{z}^{2}-\hbar\hat{L}_{z}. \]</div>
+      <p>作用在本征态上：</p>
+      <div class="formula">\[ \boxed{\;\hat{L}_{\pm}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m\pm 1)}\;|\ell,m\pm 1\rangle\;} \]</div>
+      <p>当 \(m=\ell\) 时 \(\hat{L}_{+}|\ell,\ell\rangle=0\)（链终止于顶端）；当 \(m=-\ell\) 时 \(\hat{L}_{-}|\ell,-\ell\rangle=0\)（链终止于底端）。这就是为什么「最高 \(m\) 等于 \(\ell\)」的物理根源——这是<strong>推导 5.A</strong> 的核心论证。</p>
+      <div class="key-terms">ladder operators (升降算符), top/bottom of ladder (阶梯顶/底), \(\hat{L}_{+}\hat{L}_{-}\) factorization (因式分解)</div>
+
+      <h3>6. 球坐标下 Schrödinger 方程的角向分离 Angular Separation of Schrödinger's Equation</h3>
+      <p>考虑球对称势 \(V(\vec{r})=V(r)\)（如库仑势 \(-e^{2}/(4\pi\epsilon_{0}r)\)、三维谐振子 \(\tfrac12m\omega^{2}r^{2}\)）中单粒子的<strong>定态 Schrödinger 方程</strong>：</p>
+      <div class="formula">\[ \hat{H}\psi=-\frac{\hbar^{2}}{2m}\nabla^{2}\psi+V(r)\psi=E\psi. \]</div>
+      <p>球坐标下的 Laplacian \(\nabla^{2}=\frac{1}{r^{2}}\frac{\partial}{\partial r}(r^{2}\frac{\partial}{\partial r})-\frac{1}{\hbar^{2}r^{2}}\hat{L}^{2}\)。代入并<strong>分离变量</strong> \(\psi(r,\theta,\phi)=R(r)\,Y_{\ell}^{m}(\theta,\phi)\)，因 \(\hat{L}^{2}Y_{\ell}^{m}=\hbar^{2}\ell(\ell+1)Y_{\ell}^{m}\)，得到<strong>径向方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;-\frac{\hbar^{2}}{2m}\frac{1}{r^{2}}\frac{\mathrm{d}}{\mathrm{d}r}\!\left(r^{2}\frac{\mathrm{d}R}{\mathrm{d}r}\right)+\left[V(r)+\frac{\hbar^{2}\ell(\ell+1)}{2mr^{2}}\right]R=ER\;} \]</div>
+      <p>角度部分已被 \(Y_{\ell}^{m}\) 「吸收」。这里 \(\hbar^{2}\ell(\ell+1)/(2mr^{2})\) 是<strong>离心势</strong> (centrifugal barrier)，相当于经典力学中的「有效势」——它把不同 \(\ell\) 的径向问题解耦。这就是为什么氢原子的能级与波函数按 \((n,\ell,m)\) 自然组织：\(\ell\) 来自角向、\(m\) 来自 \(\hat{L}_{z}\)。</p>
+      <div class="key-terms">central potential (中心势/球对称势), Laplacian in spherical coordinates (球坐标 Laplacian), radial equation (径向方程), centrifugal barrier (离心势), separation of variables (分离变量)</div>
+
+      <h3>7. 半经典矢量模型 The Vector Model</h3>
+      <p>一个直观但<strong>半经典</strong>的图像：把 \(\vec{L}\) 画成一根「长度 \(\hbar\sqrt{\ell(\ell+1)}\)、\(z\) 分量 \(m\hbar\)」的矢量，绕 \(z\) 轴进动，方位角 \(\phi\) 完全不确定（与 \([\hat{L}_{z},\hat{L}_{\phi}]\) 型论证一致，但 \(L_{x},L_{y}\) 不能与 \(L_{z}\) 同时确定）。</p>
+      <div class="formula">\[ |\vec{L}|=\hbar\sqrt{\ell(\ell+1)},\qquad L_{z}=m\hbar,\qquad \theta_{L}=\arccos\!\left(\frac{m}{\sqrt{\ell(\ell+1)}}\right). \]</div>
+      <p>关键观察：因 \(\ell(\ell+1)&gt;\ell^{2}\ge m^{2}\)（除 \(\ell=0\) 外），总有 \(|\vec{L}|&gt;L_{z}\)，即<strong>矢量永不完全对齐 \(z\) 轴</strong>。最大 \(m=\ell\) 时也只取到 \(L_{z}/|\vec{L}|=\ell/\sqrt{\ell(\ell+1)}&lt;1\)。这是 \([\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}\ne 0\) 的几何体现——若 \(\vec{L}\) 完全沿 \(z\)，则三个分量同时确定（\(L_{x}=L_{y}=0\)、\(L_{z}=|\vec{L}|\)），违反不确定性原理。半角 \(\theta_{L}\) 永不为零（除 \(\ell=0\)，那里 \(\vec{L}\) 本身为零）。</p>
+      <div class="key-terms">vector model (矢量模型), precession around \(z\) (绕 \(z\) 进动), space quantization (空间量子化), cone half-angle \(\theta_{L}\) (锥半角)</div>
+
+      <h3>角动量代数小结</h3>
+      <p>以上 7 节建立了角动量的完整代数结构：算符定义 → 对易关系 → \(\hat{L}^{2}\) 与 \(\hat{L}_{z}\) 同时对角化 → 本征值 \(\hbar^{2}\ell(\ell+1)\) 与 \(m\hbar\) → 球谐函数 \(Y_{\ell}^{m}\) → 升降算符 → 矢量模型。这套结构对自旋（第 6 章）同样适用，只需把「整数 \(\ell\)」放宽为「整数或半整数」。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 5.A — 由升降算符导出本征值量子化 Eigenvalue Quantization from Ladder Operators</h3>
+      <p class="step"><strong>步骤 1（\([\hat{L}^{2},\hat{L}_{z}]=0\) ⇒ 共同本征态）：</strong>设 \(\hat{L}^{2}|\ell,m\rangle=\lambda|\ell,m\rangle\)、\(\hat{L}_{z}|\ell,m\rangle=m\hbar|\ell,m\rangle\)。记 \(\lambda=\hbar^{2}L\)，\(L\ge 0\)（因 \(\langle\hat{L}^{2}\rangle=\langle\hat{L}_{x}^{2}\rangle+\langle\hat{L}_{y}^{2}\rangle+\langle\hat{L}_{z}^{2}\rangle\ge 0\)）。</p>
+      <p class="step"><strong>步骤 2（升降算符移位 \(m\)）：</strong>由 \([\hat{L}_{z},\hat{L}_{\pm}]=\pm\hbar\hat{L}_{\pm}\)（用 \([\hat{L}_{z},\hat{L}_{x}]=i\hbar\hat{L}_{y}\)、\([\hat{L}_{z},\hat{L}_{y}]=-i\hbar\hat{L}_{x}\) 直接验证）：</p>
+      <div class="formula">\[ \hat{L}_{z}(\hat{L}_{\pm}|\ell,m\rangle)=(\hat{L}_{\pm}\hat{L}_{z}\pm\hbar\hat{L}_{\pm})|\ell,m\rangle=(m\pm 1)\hbar\,(\hat{L}_{\pm}|\ell,m\rangle). \]</div>
+      <p class="step">即 \(\hat{L}_{\pm}|\ell,m\rangle\) 仍是 \(\hat{L}_{z}\) 本征态、本征值 \((m\pm 1)\hbar\)（若非零）。</p>
+      <p class="step"><strong>步骤 3（链必须终止）：</strong>\([\hat{L}^{2},\hat{L}_{\pm}]=0\)，故 \(\hat{L}_{\pm}\) 不改 \(\ell\)。但 \(L\ge m^{2}\)（\(\hat{L}^{2}-\hat{L}_{z}^{2}=\hat{L}_{x}^{2}+\hat{L}_{y}^{2}\ge 0\)），故 \(|m|\) 有上界——链终止于 \(m_{\max}=\ell\) 与 \(m_{\min}=-\ell\)。</p>
+      <p class="step"><strong>步骤 4（顶端条件定 \(L\)）：</strong>\(\hat{L}_{+}|\ell,\ell\rangle=0\)（否则产生 \(m=\ell+1\)）。用 \(\hat{L}_{-}\hat{L}_{+}=\hat{L}^{2}-\hat{L}_{z}^{2}-\hbar\hat{L}_{z}\)：</p>
+      <div class="formula">\[ 0=\langle\ell,\ell|\hat{L}_{-}\hat{L}_{+}|\ell,\ell\rangle=\hbar^{2}L-\hbar^{2}\ell^{2}-\hbar^{2}\ell=\hbar^{2}(L-\ell^{2}-\ell)\Rightarrow L=\ell(\ell+1). \]</div>
+      <p class="step"><strong>步骤 5（\(m\) 步长 = 1 ⇒ \(\ell\) 整数）：</strong>\(\hat{L}_{\pm}\) 每次移 1，从 \(-\ell\) 到 \(+\ell\) 需整数步——\(2\ell\in\mathbb{Z}_{\ge 0}\)。轨道角动量进一步要求波函数单值性（\(2\pi\) 转动不变），强制 \(\ell\in\{0,1,2,\dots\}\)；自旋允许半整数。</p>
+      <div class="formula">\[ \boxed{\;\lambda=\hbar^{2}\ell(\ell+1),\quad m=-\ell,\dots,+\ell,\quad \ell=0,1,2,\dots\;}\;\checkmark \]</div>
+
+      <h3>推导 5.B — 球谐函数作为 \(\hat{L}^{2},\hat{L}_{z}\) 共同本征函数 Spherical Harmonics</h3>
+      <p class="step"><strong>步骤 1（\(\hat{L}_{z}\) 方程）：</strong>球坐标下 \(\hat{L}_{z}=-i\hbar\,\partial_{\phi}\)。本征方程 \(-i\hbar\,\partial_{\phi}\Phi=m\hbar\Phi\) 给出 \(\Phi(\phi)=e^{im\phi}/\sqrt{2\pi}\)。单值性 \(\Phi(\phi+2\pi)=\Phi(\phi)\) ⇒ \(m\in\mathbb{Z}\)。</p>
+      <p class="step"><strong>步骤 2（\(\hat{L}^{2}\) 方程）：</strong>设 \(Y=\Theta(\theta)\Phi(\phi)\)，代入 \(\hat{L}^{2}Y=\hbar^{2}\ell(\ell+1)Y\)，分离变量得 \(\Theta\) 满足连带 Legendre 方程。其有界解为 \(P_{\ell}^{|m|}(\cos\theta)\)，要求 \(\ell\ge|m|\)、\(\ell\in\mathbb{Z}_{\ge 0}\)。</p>
+      <p class="step"><strong>步骤 3（归一化与相位约定）：</strong>合并并按 Condon–Shortley 约定：</p>
+      <div class="formula">\[ Y_{\ell}^{m}(\theta,\phi)=(-1)^{m}\sqrt{\frac{2\ell+1}{4\pi}\frac{(\ell-|m|)!}{(\ell+|m|)!}}\,P_{\ell}^{|m|}(\cos\theta)\,e^{im\phi},\qquad \int|Y_{\ell}^{m}|^{2}\,\mathrm{d}\Omega=1. \]</div>
+      <p class="step">球谐函数构成球面 \(S^{2}\) 上的完备正交基：\(\int Y_{\ell}^{m*}Y_{\ell'}^{m'}\,\mathrm{d}\Omega=\delta_{\ell\ell'}\delta_{mm'}\)。任意平方可积的角度函数都可展为 \(\sum_{\ell,m}a_{\ell m}Y_{\ell}^{m}\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 计算 \([\hat{L}_{x},\hat{L}_{y}]\) 与 \([\hat{L}^{2},\hat{L}_{z}]\) Commutator Algebra</h4>
+        <p class="example-statement">由 \(\hat{L}_{x}=\hat{y}\hat{p}_{z}-\hat{z}\hat{p}_{y}\)、\(\hat{L}_{y}=\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z}\) 与 \([\hat{x}_{i},\hat{p}_{j}]=i\hbar\delta_{ij}\)、\([\hat{x}_{i},\hat{x}_{j}]=[\hat{p}_{i},\hat{p}_{j}]=0\)，直接计算 \([\hat{L}_{x},\hat{L}_{y}]\)；再证明 \([\hat{L}^{2},\hat{L}_{z}]=0\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) \([\hat{L}_{x},\hat{L}_{y}]\)：</strong>用 Leibniz 律 \([\hat{A}\hat{B},\hat{C}\hat{D}]=\hat{A}[\hat{B},\hat{C}]\hat{D}+\hat{A}\hat{C}[\hat{B},\hat{D}]+[\hat{A},\hat{C}]\hat{D}\hat{B}+\hat{C}[\hat{A},\hat{D}]\hat{B}\)：</p>
+          <p class="step">\([\hat{L}_{x},\hat{L}_{y}]=[\hat{y}\hat{p}_{z}-\hat{z}\hat{p}_{y},\,\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z}]\)。展开四项，几乎所有项含 \([\hat{x}_{i},\hat{x}_{j}]\) 或 \([\hat{p}_{i},\hat{p}_{j}]\) 而为零，仅 \([\hat{y}\hat{p}_{z},\hat{z}\hat{p}_{x}]\) 与 \([\hat{z}\hat{p}_{y},\hat{x}\hat{p}_{z}]\) 中含 \([\hat{p}_{z},\hat{z}]\)、\([\hat{z},\hat{p}_{z}]\) 而非零：</p>
+          <p class="step">\([\hat{y}\hat{p}_{z},\hat{z}\hat{p}_{x}]=\hat{y}[\hat{p}_{z},\hat{z}]\hat{p}_{x}=\hat{y}(-i\hbar)\hat{p}_{x}=-i\hbar\hat{y}\hat{p}_{x}\)；</p>
+          <p class="step">\([\hat{z}\hat{p}_{y},\hat{x}\hat{p}_{z}]=\hat{x}[\hat{z},\hat{p}_{z}]\hat{p}_{y}=\hat{x}(i\hbar)\hat{p}_{y}=i\hbar\hat{x}\hat{p}_{y}\)。</p>
+          <p class="step">合并（注意外层符号：\([\hat{L}_{x},\hat{L}_{y}]=[\hat{y}\hat{p}_{z},\hat{z}\hat{p}_{x}]-[\hat{y}\hat{p}_{z},\hat{x}\hat{p}_{z}]-[\hat{z}\hat{p}_{y},\hat{z}\hat{p}_{x}]+[\hat{z}\hat{p}_{y},\hat{x}\hat{p}_{z}]\)；第二、三项为零）：</p>
+          <div class="formula">\[ [\hat{L}_{x},\hat{L}_{y}]=-i\hbar\hat{y}\hat{p}_{x}+i\hbar\hat{x}\hat{p}_{y}=i\hbar(\hat{x}\hat{p}_{y}-\hat{y}\hat{p}_{x})=i\hbar\hat{L}_{z}\;\checkmark. \]</div>
+          <p class="step"><strong>(b) \([\hat{L}^{2},\hat{L}_{z}]\)：</strong>\(\hat{L}^{2}=\hat{L}_{x}^{2}+\hat{L}_{y}^{2}+\hat{L}_{z}^{2}\)。用 \([\hat{A}^{2},\hat{C}]=\hat{A}[\hat{A},\hat{C}]+[\hat{A},\hat{C}]\hat{A}\)：</p>
+          <p class="step">\([\hat{L}_{x}^{2},\hat{L}_{z}]=\hat{L}_{x}[\hat{L}_{x},\hat{L}_{z}]+[\hat{L}_{x},\hat{L}_{z}]\hat{L}_{x}=\hat{L}_{x}(-i\hbar\hat{L}_{y})+(-i\hbar\hat{L}_{y})\hat{L}_{x}=-i\hbar(\hat{L}_{x}\hat{L}_{y}+\hat{L}_{y}\hat{L}_{x})\)。</p>
+          <p class="step">类似 \([\hat{L}_{y}^{2},\hat{L}_{z}]=\hat{L}_{y}[\hat{L}_{y},\hat{L}_{z}]+[\hat{L}_{y},\hat{L}_{z}]\hat{L}_{y}=\hat{L}_{y}(i\hbar\hat{L}_{x})+(i\hbar\hat{L}_{x})\hat{L}_{y}=i\hbar(\hat{L}_{y}\hat{L}_{x}+\hat{L}_{x}\hat{L}_{y})\)。</p>
+          <p class="step">两式相加（\([\hat{L}_{z}^{2},\hat{L}_{z}]=0\) 显然）：</p>
+          <div class="formula">\[ [\hat{L}^{2},\hat{L}_{z}]=-i\hbar(\hat{L}_{x}\hat{L}_{y}+\hat{L}_{y}\hat{L}_{x})+i\hbar(\hat{L}_{y}\hat{L}_{x}+\hat{L}_{x}\hat{L}_{y})=0\;\checkmark. \]</div>
+          <p class="step">由对称性同样 \([\hat{L}^{2},\hat{L}_{x}]=[\hat{L}^{2},\hat{L}_{y}]=0\)。这就是为什么 \(\hat{L}^{2}\) 可以与<strong>任意一个</strong>分量同时对角化（构成 CSCO），但三个分量之间互不对易。</p>
+          <p><span class="ans">答案：\([\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}\)（及循环置换）；\([\hat{L}^{2},\hat{L}_{i}]=0\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 给定 \(\ell,m\) 求 \(L^{2}\)、\(L_{z}\) 与 \(|\vec{L}|\) Eigenvalues for \(\ell=2\)</h4>
+        <p class="example-statement">一个电子处于氢原子 \(3d\) 态（\(n=3,\ell=2,m=+1\)）。求：(a) \(L^{2}\) 与 \(L_{z}\) 的本征值（数值，单位 \(\hbar^{2}\) 与 \(\hbar\)）；(b) \(|\vec{L}|=\hbar\sqrt{\ell(\ell+1)}\)；(c) 矢量与 \(z\) 轴的半角 \(\theta_{L}\)；(d) 解释为何 \(L_{z}&lt;|\vec{L}|\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 本征值：</strong>\(L^{2}=\hbar^{2}\ell(\ell+1)=\hbar^{2}\cdot 2\cdot 3=\mathbf{6\hbar^{2}}\)；\(L_{z}=m\hbar=\mathbf{+\hbar}\)。</p>
+          <p class="step"><strong>(b) 矢量大小：</strong>\(|\vec{L}|=\hbar\sqrt{\ell(\ell+1)}=\hbar\sqrt{6}\approx\mathbf{2.449\hbar}\)。</p>
+          <p class="step"><strong>(c) 半角：</strong>\(\cos\theta_{L}=L_{z}/|\vec{L}|=1/\sqrt{6}\approx 0.408\)，故 \(\theta_{L}=\arccos(0.408)\approx\mathbf{65.9^{\circ}}\)。</p>
+          <p class="step"><strong>(d) 为何 \(L_{z}&lt;|\vec{L}|\)：</strong>若 \(\vec{L}\) 完全沿 \(z\)，则三个分量同时确定（\(L_{x}=L_{y}=0\)、\(L_{z}=|\vec{L}|\)），违反 \(\Delta L_{x}\,\Delta L_{y}\ge(\hbar/2)|\langle\hat{L}_{z}\rangle|\)。具体地，最大 \(m=\ell=2\) 时 \(L_{z}=2\hbar\)，而 \(|\vec{L}|=\sqrt{6}\hbar\approx 2.449\hbar\)，差额 \(\sqrt{\hat{L}_{x}^{2}+\hat{L}_{y}^{2}}=\hbar\sqrt{6-4}=\sqrt{2}\hbar\) 必须残留在 \(x,y\) 分量的不确定涨落中。</p>
+          <p class="step"><strong>(e) 数值（SI 单位）：</strong>\(\hbar=1.055\times 10^{-34}\,\mathrm{J\,s}\)。故 \(L^{2}=6\hbar^{2}=6.68\times 10^{-68}\,\mathrm{J^{2}\,s^{2}}\)、\(|\vec{L}|=2.58\times 10^{-34}\,\mathrm{J\,s}\)、\(L_{z}=1.055\times 10^{-34}\,\mathrm{J\,s}\)。这些是原子尺度的极小角动量——但完全决定了电子云形状（\(d\) 轨道四叶草）。</p>
+          <p><span class="ans">答案：\(L^{2}=6\hbar^{2}\)；\(L_{z}=+\hbar\)；\(|\vec{L}|=\sqrt{6}\hbar\approx 2.449\hbar\)；\(\theta_{L}\approx 65.9^{\circ}\)；\(L_{z}&lt;|\vec{L}|\) 因三分量不对易。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 用 \(\hat{L}_{\pm}\) 在 \(m\) 阶梯上行走 Stepping with Ladder Operators</h4>
+        <p class="example-statement">设 \(\ell=2\)。(a) 用 \(\hat{L}_{+}\) 从 \(|2,-2\rangle\) 走到 \(|2,+2\rangle\)，依次计算每步的系数；(b) 验证 \(\hat{L}_{+}|2,+2\rangle=0\)（链顶）；(c) 计算 \(\hat{L}_{-}\hat{L}_{+}\) 在 \(|2,0\rangle\) 的本征值。</p>
+        <div class="example-solution">
+          <p class="step"><strong>公式：</strong>\(\hat{L}_{\pm}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m\pm 1)}\,|\ell,m\pm 1\rangle\)。取 \(\ell=2\)，根号内 \(6-m(m\pm 1)\)。</p>
+          <p class="step"><strong>(a) 升 \(m\) 五步：</strong></p>
+          <p class="step">\(\bullet\;\hat{L}_{+}|2,-2\rangle=\hbar\sqrt{6-(-2)(-1)}|2,-1\rangle=\hbar\sqrt{4}|2,-1\rangle=\mathbf{2\hbar}|2,-1\rangle\)。</p>
+          <p class="step">\(\bullet\;\hat{L}_{+}|2,-1\rangle=\hbar\sqrt{6-(-1)(0)}|2,0\rangle=\hbar\sqrt{6}|2,0\rangle\approx\mathbf{2.449\hbar}|2,0\rangle\)。</p>
+          <p class="step">\(\bullet\;\hat{L}_{+}|2,0\rangle=\hbar\sqrt{6-0}|2,+1\rangle=\hbar\sqrt{6}|2,+1\rangle\approx\mathbf{2.449\hbar}|2,+1\rangle\)。</p>
+          <p class="step">\(\bullet\;\hat{L}_{+}|2,+1\rangle=\hbar\sqrt{6-1\cdot 2}|2,+2\rangle=\hbar\sqrt{4}|2,+2\rangle=\mathbf{2\hbar}|2,+2\rangle\)。</p>
+          <p class="step"><strong>(b) 链顶：</strong>\(\hat{L}_{+}|2,+2\rangle=\hbar\sqrt{6-2\cdot 3}|2,+3\rangle=\hbar\sqrt{0}|2,+3\rangle=\mathbf{0}\;\checkmark\)（因 \(\sqrt{6-6}=0\)）。这保证不会出现 \(m=+3\) 的态——\(\ell\) 严格界定 \(|m|\)。</p>
+          <p class="step"><strong>(c) \(\hat{L}_{-}\hat{L}_{+}\) 在 \(|2,0\rangle\)：</strong>用恒等式 \(\hat{L}_{-}\hat{L}_{+}=\hat{L}^{2}-\hat{L}_{z}^{2}-\hbar\hat{L}_{z}\)。在 \(|2,0\rangle\) 上：\(\hat{L}^{2}\to 6\hbar^{2}\)、\(\hat{L}_{z}\to 0\)。故本征值 \(=6\hbar^{2}-0-0=\mathbf{6\hbar^{2}}\)。</p>
+          <p class="step"><strong>交叉验证：</strong>\(\langle 2,0|\hat{L}_{-}\hat{L}_{+}|2,0\rangle=\langle\hat{L}_{+}(2,0)|\hat{L}_{+}(2,0)\rangle=(\hbar\sqrt{6})^{2}\langle 2,1|2,1\rangle=6\hbar^{2}\cdot 1=6\hbar^{2}\) ✓。</p>
+          <p class="step"><strong>物理：</strong>\(\hat{L}_{-}\hat{L}_{+}\)（与 \(\hat{L}_{+}\hat{L}_{-}\)）的非负本征值给出了 \(\hat{L}^{2}-\hat{L}_{z}^{2}\) 即「横向角动量平方」的可测量大小。它们是推导 5.A 中「链终止」论证的核心。</p>
+          <p><span class="ans">答案：升链系数 \(2\hbar,\sqrt{6}\hbar,\sqrt{6}\hbar,2\hbar\)；\(\hat{L}_{+}|2,+2\rangle=0\)；\(\hat{L}_{-}\hat{L}_{+}|2,0\rangle=6\hbar^{2}|2,0\rangle\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 简并度计数与「空间量子化」 Degeneracy Counting &amp; Space Quantization</h4>
+        <p class="example-statement">(a) 对 \(\ell=0,1,2,3,4\)，列出允许的 \(m\) 值并验证简并度 \(g_{\ell}=2\ell+1\)；(b) 氢原子 \(n=3\) 壳层的总角向简并度（对所有 \(\ell\)）是多少？(c) 经典角动量可指向任意方向；量子情形下「空间量子化」允许的方向数。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) \(m\) 列表：</strong></p>
+          <ul>
+            <li>\(\ell=0\)（\(s\)）：\(m=0\)；\(g_{0}=1\)。</li>
+            <li>\(\ell=1\)（\(p\)）：\(m=-1,0,+1\)；\(g_{1}=3\)。</li>
+            <li>\(\ell=2\)（\(d\)）：\(m=-2,-1,0,+1,+2\)；\(g_{2}=5\)。</li>
+            <li>\(\ell=3\)（\(f\)）：\(m=-3,\dots,+3\)；\(g_{3}=7\)。</li>
+            <li>\(\ell=4\)（\(g\)）：\(m=-4,\dots,+4\)；\(g_{4}=9\)。</li>
+          </ul>
+          <p class="step">通项 \(g_{\ell}=2\ell+1\) ✓。</p>
+          <p class="step"><strong>(b) 氢原子 \(n=3\) 壳层简并度：</strong>氢原子允许 \(\ell=0,1,\dots,n-1\)，故 \(n=3\) 时 \(\ell\in\{0,1,2\}\)。每个 \(\ell\) 有 \(2\ell+1\) 个 \(m\)：</p>
+          <div class="formula">\[ g_{n=3}=\sum_{\ell=0}^{2}(2\ell+1)=1+3+5=\mathbf{9}. \]</div>
+          <p class="step">这就是氢原子 \(n=3\) 壳层（不计自旋）的简并度（与 \(n^{2}=9\) 一致——氢原子的「偶然」库仑简并使能级只依赖 \(n\)）。计入自旋 \(s=\tfrac12\)（每个态双重）后总简并度 \(2n^{2}=\mathbf{18}\)。</p>
+          <p class="step"><strong>(c) 空间量子化：</strong>经典角动量可指向任意方向（连续无限多）；量子角动量只允许 \(2\ell+1\) 个离散方向（每个对应一个 \(m\)）。这是「空间量子化」(space quantization)——Otto Stern 与 Walther Gerlach 1922 年的银原子束实验首次直接观测到（虽然他们当时测的是自旋 \(s=\tfrac12\)，只有 2 个方向，但原理相同）。</p>
+          <p class="step"><strong>(d) 经典极限：</strong>当 \(\ell\to\infty\)（宏观物体，如 \(\ell\sim 10^{30}\)），\(g_{\ell}=2\ell+1\) 极大，相邻 \(m\) 间隔 \(\hbar\) 远小于 \(|\vec{L}|\)，方向分布近似连续——经典力学恢复。</p>
+          <p><span class="ans">答案：\(g_{\ell}=2\ell+1\)（\(1,3,5,7,9\) for \(\ell=0,\dots,4\)）；\(n=3\) 总简并度 \(=9\)（计自旋 \(=18\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 \(\hat{L}_{z}\) 在 \(Y_{1}^{0}\) 与 \(Y_{1}^{+1}\) 上的作用（含数值）\(\hat{L}_{z}\) Acting on \(p\)-Orbitals</h4>
+        <p class="example-statement">三维 \(p\) 轨道波函数为 \(Y_{1}^{0}=\sqrt{3/(4\pi)}\cos\theta\) 与 \(Y_{1}^{+1}=-\sqrt{3/(8\pi)}\sin\theta\,e^{i\phi}\)。(a) 验证它们是 \(\hat{L}_{z}\) 与 \(\hat{L}^{2}\) 的本征函数并给出本征值；(b) 计算 \(\hat{L}_{+}Y_{1}^{0}\)（用 \(\hat{L}_{+}=\hbar e^{i\phi}(\partial_{\theta}+i\cot\theta\,\partial_{\phi})\)）；(c) 给出 \(|Y_{1}^{0}|^{2}\) 沿 \(z\) 轴（\(\theta=0\)）与赤道（\(\theta=\pi/2\)）的取值，说明 \(p_{z}\) 轨道的「哑铃」形状。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 本征值检验：</strong>\(\hat{L}_{z}=-i\hbar\,\partial_{\phi}\)。</p>
+          <p class="step">对 \(Y_{1}^{0}\)（不含 \(\phi\)）：\(\hat{L}_{z}Y_{1}^{0}=-i\hbar\,\partial_{\phi}Y_{1}^{0}=0\cdot Y_{1}^{0}\)。本征值 \(m\hbar=0\) ⇒ \(m=0\) ✓。</p>
+          <p class="step">对 \(Y_{1}^{+1}\)：\(\hat{L}_{z}Y_{1}^{+1}=-i\hbar\,\partial_{\phi}[-\sqrt{3/(8\pi)}\sin\theta\,e^{i\phi}]=-i\hbar\cdot i\cdot Y_{1}^{+1}=+\hbar Y_{1}^{+1}\)。本征值 \(+\hbar\) ⇒ \(m=+1\) ✓。</p>
+          <p class="step">\(\hat{L}^{2}\)：两态都属 \(\ell=1\)，故 \(\hat{L}^{2}Y_{1}^{m}=\hbar^{2}\cdot 1\cdot 2\,Y_{1}^{m}=\mathbf{2\hbar^{2}}\,Y_{1}^{m}\) ✓。</p>
+          <p class="step"><strong>(b) \(\hat{L}_{+}Y_{1}^{0}\)：</strong>球坐标下 \(\hat{L}_{+}=\hbar e^{i\phi}(\partial_{\theta}+i\cot\theta\,\partial_{\phi})\)。作用在 \(Y_{1}^{0}=\sqrt{3/(4\pi)}\cos\theta\) 上（\(\partial_{\phi}Y_{1}^{0}=0\)）：</p>
+          <div class="formula">\[ \hat{L}_{+}Y_{1}^{0}=\hbar e^{i\phi}\,\partial_{\theta}[\sqrt{3/(4\pi)}\cos\theta]=\hbar e^{i\phi}\sqrt{3/(4\pi)}(-\sin\theta). \]</div>
+          <p class="step">与 \(Y_{1}^{+1}=-\sqrt{3/(8\pi)}\sin\theta\,e^{i\phi}\) 比较：上式 \(=\hbar\sqrt{3/(4\pi)}(-\sin\theta)e^{i\phi}=\hbar\sqrt{2}\cdot[-\sqrt{3/(8\pi)}\sin\theta\,e^{i\phi}]=\mathbf{\hbar\sqrt{2}}\,Y_{1}^{+1}\) ✓。</p>
+          <p class="step">与公式 \(\hat{L}_{+}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m+1)}|\ell,m+1\rangle=\hbar\sqrt{2-0}|1,1\rangle=\hbar\sqrt{2}|1,+1\rangle\) 一致 ✓。</p>
+          <p class="step"><strong>(c) \(p_{z}\) 轨道形状：</strong>\(|Y_{1}^{0}|^{2}=(3/(4\pi))\cos^{2}\theta\)。</p>
+          <p class="step">\(\bullet\) 沿 \(z\) 轴（\(\theta=0\)）：\(|Y_{1}^{0}|^{2}=3/(4\pi)\approx\mathbf{0.239}\)（最大）。</p>
+          <p class="step">\(\bullet\) 沿赤道（\(\theta=\pi/2\)）：\(|Y_{1}^{0}|^{2}=0\)（节点）。</p>
+          <p class="step">即概率密度沿 \(+z\) 与 \(-z\) 双瓣、赤道为零——典型的 \(p_{z}\)「哑铃」。相比之下，\(|Y_{1}^{+1}|^{2}=(3/(8\pi))\sin^{2}\theta\) 沿赤道最大、两极为零，是「环状」分布（实部组合 \(p_{x}\propto(Y_{1}^{-1}-Y_{1}^{+1})/\sqrt{2}\)、\(p_{y}\propto(Y_{1}^{-1}+Y_{1}^{+1})/(i\sqrt{2})\) 给出沿 \(x,y\) 的哑铃）。</p>
+          <p class="step"><strong>SI 数值：</strong>若电子在氢原子 \(2p\) 态（\(n=2,\ell=1\)），\(L^{2}=2\hbar^{2}=2.23\times 10^{-68}\,\mathrm{J^{2}\,s^{2}}\)，\(|\vec{L}|=\sqrt{2}\hbar=1.49\times 10^{-34}\,\mathrm{J\,s}\)。</p>
+          <p><span class="ans">答案：\(Y_{1}^{0}\to m=0,\ell(\ell+1)=2\)；\(Y_{1}^{+1}\to m=+1,\ell(\ell+1)=2\)；\(\hat{L}_{+}Y_{1}^{0}=\hbar\sqrt{2}Y_{1}^{+1}\)；\(|Y_{1}^{0}|^{2}\) 沿 \(z\) 最大 \(3/(4\pi)\)、赤道为 0。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「三个角动量分量可以同时确定。」</strong>错。由 \([\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}\ne 0\)，Robertson 不等式给出 \(\Delta L_{x}\,\Delta L_{y}\ge(\hbar/2)|\langle\hat{L}_{z}\rangle|\)。所以最多只能同时精确知道<strong>\(\hat{L}^{2}\) 与一个分量</strong>（通常是 \(\hat{L}_{z}\)），第三个量必带涨落。这正是为什么原子的量子态用 \((\ell,m)\) 而不是 \((L_{x},L_{y},L_{z})\) 标记。</li>
+        <li><strong>「\(\vec{L}\) 可以沿 \(z\) 轴完全对齐。」</strong>错。即使取最大 \(m=\ell\)，\(|\vec{L}|=\hbar\sqrt{\ell(\ell+1)}&gt;\ell\hbar=L_{z}\)。矢量永远偏离 \(z\) 轴一个最小半角 \(\theta_{\min}=\arccos\sqrt{\ell/(\ell+1)}\)（\(\ell\to\infty\) 时趋于 0，恢复经典极限）。这是测不准原理的几何表现——若 \(\vec{L}\) 完全沿 \(z\)，则 \(L_{x}=L_{y}=0\) 与 \(L_{z}=|\vec{L}|\) 同时确定，违反上述不等式。</li>
+        <li><strong>把 \(m\) 当成连续变量。</strong>错。\(m\) 是<strong>量子化</strong>的整数（轨道角动量），取 \(-\ell,-\ell+1,\dots,+\ell\)，共 \(2\ell+1\) 个离散值。Stern–Gerlach 实验直接观测到这种离散性（银原子束分裂成 2 条，对应 \(s=\tfrac12\) 自旋；轨道情形类似但分裂成 \(2\ell+1\) 条）。</li>
+        <li><strong>认为 \(|m|\) 可以超过 \(\ell\)。</strong>错。链终止论证（推导 5.A）严格给出 \(|m|\le\ell\)。若试图用 \(\hat{L}_{+}\) 把 \(m=\ell\) 再升一次，得到 \(\hat{L}_{+}|\ell,\ell\rangle=0\)（系数平方根 \(\ell(\ell+1)-\ell(\ell+1)=0\)）。物理上这意味着「\(m\) 已达上限，没有更高 \(m\) 态」。</li>
+        <li><strong>混淆 \(\hat{L}^{2}\) 的本征值 \(\hbar^{2}\ell(\ell+1)\) 与经典大小平方 \((\ell\hbar)^{2}\)。</strong>错。量子本征值是 \(\ell(\ell+1)\) 而非 \(\ell^{2}\)——多出的 \(\ell\) 来自 \(\hat{L}_{x},\hat{L}_{y}\) 的零点涨落（\(\langle\hat{L}_{x}^{2}\rangle+\langle\hat{L}_{y}^{2}\rangle=\ell\hbar^{2}\)）。这一项保证 \(|\vec{L}|&gt;L_{z}\)，是纯粹的量子效应，经典极限 \(\ell\to\infty\) 下相对差 \(1/\ell\to 0\)。</li>
+        <li><strong>把 \(\hat{L}_{\pm}\) 当成可观测量。</strong>错。\(\hat{L}_{\pm}^{\dagger}=\hat{L}_{\mp}\ne\hat{L}_{\pm}\)（非厄米），本征值复（事实上它没有正规本征态，只移位 \(m\)）。所以 \(\hat{L}_{\pm}\) 不是物理可观测量，只是计算工具——但其模方 \(\hat{L}_{\pm}^{\dagger}\hat{L}_{\pm}=\hat{L}_{\mp}\hat{L}_{\pm}\) 是厄米、半正定，对应可测的「横向角动量平方」。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 验证 \([\hat{L}_{y},\hat{L}_{z}]=i\hbar\hat{L}_{x}\) 与 \([\hat{L}_{z},\hat{L}_{x}]=i\hbar\hat{L}_{y}\) Cyclic Commutators</summary>
+        <div class="hint">用例 5.1 的方法：把 \(\hat{L}_{i}\) 展开为 \(\hat{x},\hat{p}\)，应用 Leibniz 律与 \([\hat{x}_{i},\hat{p}_{j}]=i\hbar\delta_{ij}\)。或用对称性：循环置换 \(x\to y\to z\to x\)。</div>
+        <div class="solution">
+          方法一（直接展开）：\([\hat{L}_{y},\hat{L}_{z}]=[\hat{z}\hat{p}_{x}-\hat{x}\hat{p}_{z},\,\hat{x}\hat{p}_{y}-\hat{y}\hat{p}_{x}]\)。展开后大部分项含 \([\hat{x}_{i},\hat{x}_{j}]\) 或 \([\hat{p}_{i},\hat{p}_{j}]\) 为零。仅 \([\hat{z}\hat{p}_{x},\hat{x}\hat{p}_{y}]\) 含 \([\hat{p}_{x},\hat{x}]\)、\([\hat{x}\hat{p}_{z},\hat{y}\hat{p}_{x}]\) 含 \([\hat{p}_{z},\hat{y}]=0\)（不对）——更仔细：
+          <br>\([\hat{z}\hat{p}_{x},\hat{x}\hat{p}_{y}]=\hat{z}[\hat{p}_{x},\hat{x}]\hat{p}_{y}=\hat{z}(-i\hbar)\hat{p}_{y}=-i\hbar\hat{z}\hat{p}_{y}\)；
+          <br>\([\hat{x}\hat{p}_{z},\hat{y}\hat{p}_{x}]=\hat{x}\hat{y}[\hat{p}_{z},\hat{p}_{x}]=0\)（动量分量彼此对易）。
+          <br>合并：\([\hat{L}_{y},\hat{L}_{z}]=0-(-i\hbar\hat{z}\hat{p}_{y})-0+i\hbar\hat{x}\hat{p}_{y}\dots\) 仔细处理符号后得 \([\hat{L}_{y},\hat{L}_{z}]=i\hbar(\hat{z}\hat{p}_{x}\?-\dots)\)。最稳妥用循环置换：由 \([\hat{L}_{x},\hat{L}_{y}]=i\hbar\hat{L}_{z}\) 把 \(x\to y,y\to z,z\to x\) ⇒ \([\hat{L}_{y},\hat{L}_{z}]=i\hbar\hat{L}_{x}\) ✓；再置换一次 ⇒ \([\hat{L}_{z},\hat{L}_{x}]=i\hbar\hat{L}_{y}\) ✓。
+          <br>紧凑形式：\([\hat{L}_{i},\hat{L}_{j}]=i\hbar\sum_{k}\epsilon_{ijk}\hat{L}_{k}\)。 <span class="ans">答：\([\hat{L}_{y},\hat{L}_{z}]=i\hbar\hat{L}_{x}\)、\([\hat{L}_{z},\hat{L}_{x}]=i\hbar\hat{L}_{y}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. \(\ell=3\) 的简并度与 \(|\vec{L}|\) Degeneracy &amp; Magnitudes for \(\ell=3\)</summary>
+        <div class="hint">用 \(g_{\ell}=2\ell+1\)、\(|\vec{L}|=\hbar\sqrt{\ell(\ell+1)}\)、\(L_{z}=m\hbar\)。</div>
+        <div class="solution">
+          \(\ell=3\)（\(f\) 轨道）：\(m=-3,-2,-1,0,+1,+2,+3\)，共 \(g_{3}=2\cdot 3+1=\mathbf{7}\) 个态。
+          <br>\(L^{2}=\hbar^{2}\ell(\ell+1)=\hbar^{2}\cdot 3\cdot 4=\mathbf{12\hbar^{2}}\)。
+          <br>\(|\vec{L}|=\hbar\sqrt{12}=\mathbf{2\sqrt{3}\hbar}\approx 3.464\hbar\)。
+          <br>最大 \(L_{z}=3\hbar\)；半角 \(\theta_{\min}=\arccos(3/\sqrt{12})=\arccos(\sqrt{3}/2)=\mathbf{30^{\circ}}\)。
+          <br>SI：\(\hbar=1.055\times 10^{-34}\,\mathrm{J\,s}\)，故 \(L^{2}=1.34\times 10^{-67}\,\mathrm{J^{2}\,s^{2}}\)、\(|\vec{L}|=3.65\times 10^{-34}\,\mathrm{J\,s}\)。 <span class="ans">答：\(g_{3}=7\)；\(L^{2}=12\hbar^{2}\)；\(|\vec{L}|=2\sqrt{3}\hbar\)；\(\theta_{\min}=30^{\circ}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 升降算符从 \(|3,-1\rangle\) 升两步 Ladder Climb</summary>
+        <div class="hint">\(\hat{L}_{+}^{2}|\ell,m\rangle\) 用两次 \(\hat{L}_{+}\)，每次重新评估系数。</div>
+        <div class="solution">
+          \(\hat{L}_{+}|3,-1\rangle=\hbar\sqrt{3\cdot 4-(-1)\cdot 0}|3,0\rangle=\hbar\sqrt{12}|3,0\rangle=2\sqrt{3}\hbar\,|3,0\rangle\)。
+          <br>再升一次：\(\hat{L}_{+}|3,0\rangle=\hbar\sqrt{12-0}|3,+1\rangle=2\sqrt{3}\hbar\,|3,+1\rangle\)。
+          <br>合并：\(\hat{L}_{+}^{2}|3,-1\rangle=(2\sqrt{3}\hbar)^{2}|3,+1\rangle=\mathbf{12\hbar^{2}}|3,+1\rangle\)。
+          <br>核对：从 \(m=-1\) 升两步到 \(m=+1\)，系数乘积 \(12\hbar^{2}\) 量纲为 \((\hbar)^{2}\) ✓（因为 \(\hat{L}_{+}^{2}\) 本身量纲是 \(\hbar^{2}\)）。 <span class="ans">答：\(\hat{L}_{+}^{2}|3,-1\rangle=12\hbar^{2}|3,+1\rangle\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 球谐函数正交归一化 Orthogonality of Spherical Harmonics</summary>
+        <div class="hint">用 \(Y_{0}^{0}=1/\sqrt{4\pi}\) 与 \(Y_{1}^{0}=\sqrt{3/(4\pi)}\cos\theta\)，验证 \(\int|Y_{0}^{0}|^{2}\,\mathrm{d}\Omega=1\)、\(\int|Y_{1}^{0}|^{2}\,\mathrm{d}\Omega=1\)、\(\int Y_{0}^{0*}Y_{1}^{0}\,\mathrm{d}\Omega=0\)。</div>
+        <div class="solution">
+          \(\mathrm{d}\Omega=\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\phi\)，\(\int\mathrm{d}\Omega=4\pi\)。
+          <br>\(\int|Y_{0}^{0}|^{2}\,\mathrm{d}\Omega=(1/(4\pi))\cdot 4\pi=\mathbf{1}\) ✓。
+          <br>\(\int|Y_{1}^{0}|^{2}\,\mathrm{d}\Omega=(3/(4\pi))\int_{0}^{2\pi}\mathrm{d}\phi\int_{0}^{\pi}\cos^{2}\theta\sin\theta\,\mathrm{d}\theta=(3/(4\pi))\cdot 2\pi\cdot[{-\cos^{3}\theta/3}]_{0}^{\pi}=(3/(4\pi))\cdot 2\pi\cdot(2/3)=\mathbf{1}\) ✓。
+          <br>正交性：\(\int Y_{0}^{0*}Y_{1}^{0}\,\mathrm{d}\Omega=(1/\sqrt{4\pi})\sqrt{3/(4\pi)}\int_{0}^{2\pi}\mathrm{d}\phi\int_{0}^{\pi}\cos\theta\sin\theta\,\mathrm{d}\theta\)。换元 \(u=\cos\theta\)：\(\int_{1}^{-1}u\,(-\mathrm{d}u)=0\)（奇函数对称积分）⇒ \(\mathbf{0}\) ✓。
+          <br>这印证球谐函数是球面上的正交归一基。 <span class="ans">答：三个积分分别为 \(1,1,0\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 氢原子 \(3d\) 态的角向形状 Shape of a \(3d\) Orbital</summary>
+        <div class="hint">\(Y_{2}^{0}=\sqrt{5/(16\pi)}(3\cos^{2}\theta-1)\)，节点在 \(\cos^{2}\theta=1/3\)。</div>
+        <div class="solution">
+          \(|Y_{2}^{0}|^{2}=(5/(16\pi))(3\cos^{2}\theta-1)^{2}\)。
+          <br>\(\bullet\) 沿 \(z\) 轴（\(\theta=0\)）：\((3-1)^{2}=4\)，\(|Y_{2}^{0}|^{2}=5/(4\pi)\approx 0.398\)（最大）。
+          <br>\(\bullet\) 节点（\(\cos\theta=\pm 1/\sqrt{3}\)，即 \(\theta\approx 54.7^{\circ},125.3^{\circ}\)，「魔角」）：\(|Y_{2}^{0}|^{2}=0\)。
+          <br>\(\bullet\) 沿赤道（\(\theta=\pi/2\)）：\((0-1)^{2}=1\)，\(|Y_{2}^{0}|^{2}=5/(16\pi)\approx 0.0995\)。
+          <br>形状：两个沿 \(z\) 的大瓣（正符号），中间夹一个赤道环（反符号），呈「哑铃+环」结构——经典 \(d_{z^{2}}\) 轨道形状。
+          <br>对比 \(|Y_{2}^{+2}|^{2}=(15/(32\pi))\sin^{4}\theta\)：赤道双瓣、两极为零，是 \(d_{x^{2}-y^{2}}\) 或 \(d_{xy}\) 形状（取决于实部组合）。
+          <br>化学意义：过渡金属（Fe、Cu）的 \(3d\) 电子云形状决定配位化学（八面体、四面体晶体场劈裂），是配位场理论的基础。 <span class="ans">答：\(3d_{z^{2}}\) 沿 \(z\) 最大 \(5/(4\pi)\)、节点在魔角 \(54.7^{\circ}\)、赤道 \(5/(16\pi)\)。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>球谐函数可视化 Spherical Harmonics Visualizer。</strong>选择量子数 \((\ell,m)\)，观察角向概率分布 \(|Y_{\ell}^{m}(\theta,\phi)|^{2}\)。<strong>左图</strong>：3D 网格图（绕 \(z\) 轴缓慢自转），红/蓝表示 \(Y\) 的正/负相位（注意 \(|Y|^{2}\) 总是 \(\ge 0\)，但相位决定化学键方向）。<strong>右图</strong>：\(xz\)-平面截面（极坐标 \(r=|Y|^{2}\)），是教科书常见的「轨道形状」图。<strong>请观察：</strong>① \(\ell=0\)（\(s\)）：球形对称，无节点。② \(\ell=1,m=0\)（\(p_{z}\)）：沿 \(z\) 双瓣；\(|m|=1\)（\(p_{x},p_{y}\)：赤道环。③ \(\ell=2\)（\(d\)）：四叶草或哑铃+环，节点数 \(=\ell\)。④ 节面（\(|Y|=0\) 的 \(\theta\)）总数 \(=\ell\)，与 \(|m|\) 无关。⑤ 简并度 \(2\ell+1\)：用 m+/m− 按钮在 \(-\ell\le m\le+\ell\) 间切换。特征：\(|Y|^{2}\) 与 \(\phi\) 无关（轴对称），但 \(Y\) 的相位 \(e^{im\phi}\) 决定实空间方向。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="760" height="460"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+
+          // ============ math: associated Legendre & spherical harmonics ============
+          function factorial(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return f; }
+          // Associated Legendre P_l^|m|(x) with Condon–Shortley phase
+          function legendreP(l, m, x) {
+            m = Math.abs(m);
+            if (m > l) return 0;
+            var pmm = 1;
+            if (m > 0) {
+              var somx2 = Math.sqrt(Math.max(0, 1 - x * x));
+              var fact = 1;
+              for (var i = 1; i <= m; i++) { pmm *= -fact * somx2; fact += 2; }
+            }
+            if (l === m) return pmm;
+            var pmmp1 = x * (2 * m + 1) * pmm;
+            for (var n = m + 2; n <= l; n++) {
+              var pll = (x * (2 * n - 1) * pmmp1 - (n + m - 1) * pmm) / (n - m);
+              pmm = pmmp1; pmmp1 = pll;
+            }
+            return pmmp1;
+          }
+          // returns {r2[ith], sign[ith], max2} for |Y_lm|^2 sampled on nTh+1 theta points
+          function buildRadial(l, m, nTh) {
+            var mabs = Math.abs(m);
+            var norm2 = (2 * l + 1) / (4 * Math.PI) * factorial(l - mabs) / factorial(l + mabs);
+            var r2 = [], sg = [], max2 = 0;
+            for (var i = 0; i <= nTh; i++) {
+              var th = i / nTh * Math.PI;
+              var P = legendreP(l, mabs, Math.cos(th));
+              var v = norm2 * P * P;
+              r2.push(v); sg.push(P >= 0 ? 1 : -1);
+              if (v > max2) max2 = v;
+            }
+            if (max2 < 1e-12) max2 = 1;
+            for (var i = 0; i <= nTh; i++) r2[i] /= max2; // normalize to peak=1
+            return { r2: r2, sg: sg };
+          }
+
+          // ============ state ============
+          var DEFAULTS = { l: 1, m: 0, spin: true };
+          var params = { l: DEFAULTS.l, m: DEFAULTS.m, spin: DEFAULTS.spin };
+          var viewAzim = 0.6;
+          var pitch = 0.42;
+          var N_TH = 48, N_PH = 48;
+          var STEP_PH = 4; // draw every 4th longitude
+          var STEP_TH = 4; // draw every 4th latitude
+
+          // ============ 3D projection ============
+          function project(x, y, z, azim, pit, cx, cy, scale) {
+            var ca = Math.cos(azim), sa = Math.sin(azim);
+            var x1 = x * ca - y * sa;
+            var y1 = x * sa + y * ca;
+            var z1 = z;
+            var cp = Math.cos(pit), sp = Math.sin(pit);
+            var sh = x1;
+            var sv = z1 * cp - y1 * sp;
+            var d = y1 * cp + z1 * sp; // depth, larger = closer
+            return { x: cx + scale * sh, y: cy - scale * sv, d: d };
+          }
+
+          // ============ drawing the 3D wireframe ============
+          function draw3D(ctx, l, m, azim, pit, cx, cy, scale) {
+            var rad = buildRadial(l, m, N_TH);
+            // sample vertices
+            var proj = [];
+            for (var i = 0; i <= N_TH; i++) {
+              var row = [];
+              var th = i / N_TH * Math.PI;
+              var r = rad.r2[i];
+              var st = Math.sin(th), ct = Math.cos(th);
+              for (var j = 0; j <= N_PH; j++) {
+                var ph = j / N_PH * 2 * Math.PI;
+                var x = r * st * Math.cos(ph);
+                var y = r * st * Math.sin(ph);
+                var z = r * ct;
+                row.push(project(x, y, z, azim, pit, cx, cy, scale));
+              }
+              proj.push(row);
+            }
+            // segments
+            var segs = [];
+            // longitudes (constant phi, vary theta)
+            for (var j = 0; j < N_PH; j += STEP_PH) {
+              for (var i = 0; i < N_TH; i++) {
+                var a = proj[i][j], b = proj[i + 1][j];
+                if (rad.r2[i] < 0.01 && rad.r2[i + 1] < 0.01) continue;
+                segs.push({ ax: a.x, ay: a.y, bx: b.x, by: b.y, d: (a.d + b.d) / 2, sign: rad.sg[i] });
+              }
+            }
+            // latitudes (constant theta, vary phi)
+            for (var i = STEP_TH; i < N_TH; i += STEP_TH) {
+              if (rad.r2[i] < 0.01) continue;
+              for (var j = 0; j < N_PH; j++) {
+                var a = proj[i][j], b = proj[i][j + 1];
+                segs.push({ ax: a.x, ay: a.y, bx: b.x, by: b.y, d: (a.d + b.d) / 2, sign: rad.sg[i] });
+              }
+            }
+            // sort back-to-front
+            segs.sort(function (a, b) { return a.d - b.d; });
+            // find depth range
+            var dmin = +Infinity, dmax = -Infinity;
+            for (var k = 0; k < segs.length; k++) {
+              if (segs[k].d < dmin) dmin = segs[k].d;
+              if (segs[k].d > dmax) dmax = segs[k].d;
+            }
+            var drange = Math.max(1e-6, dmax - dmin);
+            // draw
+            for (var k = 0; k < segs.length; k++) {
+              var s = segs[k];
+              var depthNorm = (s.d - dmin) / drange; // 0 (back) .. 1 (front)
+              var alpha = 0.18 + 0.65 * depthNorm;
+              var lw = 1.0 + 0.6 * depthNorm;
+              var color = s.sign > 0 ? PS.colors.accent : PS.colors.primary;
+              ctx.save();
+              ctx.globalAlpha = alpha;
+              ctx.strokeStyle = color;
+              ctx.lineWidth = lw;
+              ctx.beginPath(); ctx.moveTo(s.ax, s.ay); ctx.lineTo(s.bx, s.by); ctx.stroke();
+              ctx.restore();
+            }
+          }
+
+          // ============ 2D polar cross-section (xz-plane) ============
+          function draw2D(ctx, l, m, cx, cy, scale) {
+            // axes
+            ctx.save();
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath(); ctx.moveTo(cx - scale - 12, cy); ctx.lineTo(cx + scale + 12, cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx, cy + scale + 12); ctx.lineTo(cx, cy - scale - 12); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            // unit-sphere reference
+            ctx.strokeStyle = PS.colors.grid;
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(cx, cy, scale, 0, 2 * Math.PI); ctx.stroke();
+            ctx.restore();
+            // axis labels
+            ctx.save();
+            ctx.font = '12px system-ui, sans-serif';
+            ctx.fillStyle = PS.colors.text;
+            ctx.textAlign = 'center';
+            ctx.fillText('z', cx, cy - scale - 18);
+            ctx.textAlign = 'left';
+            ctx.fillText('x', cx + scale + 16, cy + 4);
+            ctx.restore();
+
+            // sample |Y|^2 in xz-plane (phi=0)
+            var nSm = 240;
+            var rad = buildRadial(l, m, nSm);
+            // build closed curve points (positive-z half then negative half), fill per sign
+            var posPts = [], negPts = [];
+            for (var i = 0; i <= nSm; i++) {
+              var th = i / nSm * Math.PI;
+              var r = rad.r2[i];
+              var px = cx + scale * r * Math.sin(th);
+              var py = cy - scale * r * Math.cos(th);
+              if (rad.sg[i] > 0) posPts.push({ x: px, y: py }); else negPts.push({ x: px, y: py });
+            }
+            // also mirror across z-axis (xz-plane has y=0; the curve is symmetric)
+            // The cross-section in xz-plane: x = r sinθ, z = r cosθ (θ from 0..π covers +x side);
+            // mirror to -x side by reflecting x.
+            function drawHalf(pts, color) {
+              if (pts.length < 2) return;
+              ctx.save();
+              ctx.fillStyle = color;
+              ctx.globalAlpha = 0.35;
+              ctx.strokeStyle = color;
+              ctx.lineWidth = 1.8;
+              ctx.globalAlpha = 1;
+              // stroke the right half
+              ctx.beginPath();
+              ctx.moveTo(pts[0].x, pts[0].y);
+              for (var k = 1; k < pts.length; k++) ctx.lineTo(pts[k].x, pts[k].y);
+              ctx.stroke();
+              // mirrored left half
+              ctx.beginPath();
+              ctx.moveTo(2 * cx - pts[0].x, pts[0].y);
+              for (var k = 1; k < pts.length; k++) ctx.lineTo(2 * cx - pts[k].x, pts[k].y);
+              ctx.stroke();
+              ctx.restore();
+            }
+            // split positive/negative contiguous arcs, fill each
+            // simpler: walk i, build runs of same sign, fill each run as a polygon with the z-axis
+            var i = 0;
+            while (i <= nSm) {
+              var sgn = rad.sg[i];
+              var run = [];
+              while (i <= nSm && rad.sg[i] === sgn) {
+                var th = i / nSm * Math.PI;
+                var r = rad.r2[i];
+                run.push({ x: cx + scale * r * Math.sin(th), y: cy - scale * r * Math.cos(th), th: th, r: r });
+                i++;
+              }
+              if (run.length < 2) continue;
+              var color = sgn > 0 ? PS.colors.accent : PS.colors.primary;
+              // fill polygon: right-half arc + z-axis return; then mirror
+              ctx.save();
+              ctx.fillStyle = color;
+              ctx.globalAlpha = 0.32;
+              ctx.beginPath();
+              ctx.moveTo(run[0].x, run[0].y);
+              for (var k = 1; k < run.length; k++) ctx.lineTo(run[k].x, run[k].y);
+              ctx.closePath();
+              ctx.fill();
+              ctx.beginPath();
+              ctx.moveTo(2 * cx - run[0].x, run[0].y);
+              for (var k = 1; k < run.length; k++) ctx.lineTo(2 * cx - run[k].x, run[k].y);
+              ctx.closePath();
+              ctx.fill();
+              ctx.restore();
+              // outline
+              ctx.save();
+              ctx.strokeStyle = color;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(run[0].x, run[0].y);
+              for (var k = 1; k < run.length; k++) ctx.lineTo(run[k].x, run[k].y);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(2 * cx - run[0].x, run[0].y);
+              for (var k = 1; k < run.length; k++) ctx.lineTo(2 * cx - run[k].x, run[k].y);
+              ctx.stroke();
+              ctx.restore();
+            }
+          }
+
+          // ============ simulation loop ============
+          var sim = PS.createSim(canvas, {
+            state: function () { return {}; },
+            step: function (dt, t, s) {
+              if (params.spin) viewAzim += dt * 0.5;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var l = params.l, m = params.m;
+              var mabs = Math.abs(m);
+
+              // ===== Header =====
+              ctx.save();
+              ctx.font = 'bold 14px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var name = orbitalName(l, m);
+              ctx.fillText('球谐函数  Spherical Harmonic  Y_' + l + '^' + m + '  —  ' + name, 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              var L2 = l * (l + 1);
+              var Lmag = Math.sqrt(l * (l + 1));
+              var ratio = (mabs <= l && l > 0) ? (m / Math.sqrt(l * (l + 1))) : (l === 0 ? 0 : 0);
+              var thetaL = (l > 0) ? (Math.acos(Math.max(-1, Math.min(1, m / Math.sqrt(l * (l + 1))))) * 180 / Math.PI).toFixed(1) : '—';
+              ctx.fillText('L² = ' + L2 + ' ℏ²    L_z = ' + m + ' ℏ    |L⃗| = √' + L2 + ' ℏ ≈ ' + Lmag.toFixed(3) + ' ℏ', 14, 32);
+              ctx.fillText('简并度 degeneracy 2ℓ+1 = ' + (2 * l + 1) + '    节面数 #nodes = ℓ = ' + l +
+                           (l > 0 ? ('    θ_L = ' + thetaL + '°') : ''), 14, 50);
+              ctx.restore();
+
+              // ===== Left panel: 3D wireframe =====
+              var cx3 = 235, cy3 = 250, sc3 = 145;
+              // frame
+              ctx.save();
+              ctx.strokeStyle = PS.colors.border || PS.colors.grid;
+              ctx.globalAlpha = 0.4;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(14, 78, 442, 366);
+              ctx.restore();
+              draw3D(ctx, l, m, viewAzim, pitch, cx3, cy3, sc3);
+              // z-axis indicator on 3D
+              ctx.save();
+              var zTop = project(0, 0, 1.15, viewAzim, pitch, cx3, cy3, sc3);
+              var zBot = project(0, 0, -1.15, viewAzim, pitch, cx3, cy3, sc3);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.globalAlpha = 0.55;
+              ctx.lineWidth = 1.2;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath(); ctx.moveTo(zBot.x, zBot.y); ctx.lineTo(zTop.x, zTop.y); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.fillStyle = PS.colors.axis;
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('z', zTop.x + 2, zTop.y - 4);
+              ctx.restore();
+              // panel caption
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('3D 角向概率分布 (自转中)', cx3, 78 + 366 - 14);
+              ctx.restore();
+
+              // ===== Right panel: 2D cross-section + info =====
+              var cx2 = 590, cy2 = 235, sc2 = 115;
+              ctx.save();
+              ctx.strokeStyle = PS.colors.border || PS.colors.grid;
+              ctx.globalAlpha = 0.4;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(474, 78, 272, 232);
+              ctx.restore();
+              draw2D(ctx, l, m, cx2, cy2, sc2);
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'center';
+              ctx.fillText('xz-截面 |Y|²', cx2, 78 + 232 - 14);
+              ctx.restore();
+
+              // info table below 2D
+              ctx.save();
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              var ix = 484, iy = 326;
+              ctx.fillText('• 红 red : Y > 0      蓝 blue : Y < 0', ix, iy);
+              ctx.fillText('• |Y|² 与 φ 无关 (轴对称)', ix, iy + 18);
+              ctx.fillText('• m 量子化 m = ' + (-l) + ',…,' + l + ' (共 ' + (2 * l + 1) + ' 个)', ix, iy + 36);
+              ctx.fillText('• L_z / |L⃗| = ' + (l > 0 ? (m / Math.sqrt(l * (l + 1))).toFixed(3) : '—') +
+                           (l > 0 ? '   < 1  ⇒  L⃗ 不沿 z 轴' : '   (ℓ=0: L⃗ = 0)'), ix, iy + 54);
+              ctx.fillText('• 最大 |m| = ℓ = ' + l + '  ⇒  链终止', ix, iy + 72);
+              ctx.restore();
+
+              // legend bottom
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.globalAlpha = 0.85;
+              ctx.fillText('提示：调 ℓ 看 s/p/d/f 形状；按 m± 在简并态间切换；切到 ℓ=0 看球形对称。', 14, H - 18);
+              ctx.restore();
+            },
+          });
+
+          function orbitalName(l, m) {
+            var names = ['s', 'p', 'd', 'f', 'g'];
+            var nm = (l < names.length) ? names[l] : ('l=' + l);
+            if (l === 0) return nm + ' 轨道 (球形 sphere)';
+            if (m === 0) return nm + '_z 轨道';
+            if (Math.abs(m) === 1) return nm + '_{x,y} 轨道';
+            if (Math.abs(m) === 2) return nm + '_{xy,x²-y²} 轨道';
+            return nm + ' (|m|=' + Math.abs(m) + ')';
+          }
+
+          // ============ controls ============
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'l', label: '量子数 ℓ', min: 0, max: 4, step: 1, value: DEFAULTS.l },
+            { type: 'button', key: 'mDown', label: 'm  −' },
+            { type: 'button', key: 'mUp', label: 'm  +' },
+            { type: 'toggle', key: 'spin', label: '自转 spin', value: DEFAULTS.spin },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('l', function (v) {
+            params.l = v;
+            // clamp m
+            if (params.m > params.l) params.m = params.l;
+            if (params.m < -params.l) params.m = -params.l;
+          });
+          ctl.on('mDown', function () {
+            if (params.m > -params.l) { params.m -= 1; }
+          });
+          ctl.on('mUp', function () {
+            if (params.m < params.l) { params.m += 1; }
+          });
+          ctl.on('spin', function (v) { params.spin = v; });
+          ctl.on('reset', function () {
+            // restore ℓ slider position
+            var sliders = document.querySelectorAll('#controls-5 input[type=range]');
+            if (sliders[0]) {
+              sliders[0].value = String(DEFAULTS.l);
+              sliders[0].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            params.m = DEFAULTS.m;
+            params.spin = DEFAULTS.spin;
+            var toggles = document.querySelectorAll('#controls-5 input[type=checkbox]');
+            if (toggles[0] && toggles[0].checked !== DEFAULTS.spin) {
+              toggles[0].click();
+            }
+            viewAzim = 0.6;
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>轨道角动量算符</strong> \(\hat{\vec{L}}=\hat{\vec{r}}\times\hat{\vec{p}}\)，分量 \(\hat{L}_{i}=\epsilon_{ijk}\hat{x}_{j}\hat{p}_{k}\)；平方 \(\hat{L}^{2}=\hat{L}_{x}^{2}+\hat{L}_{y}^{2}+\hat{L}_{z}^{2}\)。</li>
+        <li><strong>基本对易关系</strong> \([\hat{L}_{i},\hat{L}_{j}]=i\hbar\epsilon_{ijk}\hat{L}_{k}\) —— 三分量不可同时对角化。</li>
+        <li><strong>\(\hat{L}^{2}\) 与任一分量对易</strong>：\([\hat{L}^{2},\hat{L}_{i}]=0\)，故 \(\{\hat{L}^{2},\hat{L}_{z}\}\) 构成 CSCO。</li>
+        <li><strong>本征值</strong>：\(\hat{L}^{2}|\ell,m\rangle=\hbar^{2}\ell(\ell+1)|\ell,m\rangle\)、\(\hat{L}_{z}|\ell,m\rangle=m\hbar|\ell,m\rangle\)；\(\ell=0,1,2,\dots\)、\(m=-\ell,\dots,+\ell\)（共 \(2\ell+1\) 个）。</li>
+        <li><strong>球谐函数</strong> \(Y_{\ell}^{m}(\theta,\phi)\) 是 \(\hat{L}^{2},\hat{L}_{z}\) 的共同本征函数，给出 \(s/p/d/f\) 轨道形状；\(|Y_{\ell}^{m}|^{2}\) 轴对称（与 \(\phi\) 无关）。</li>
+        <li><strong>升降算符</strong> \(\hat{L}_{\pm}=\hat{L}_{x}\pm i\hat{L}_{y}\)：\(\hat{L}_{\pm}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m\pm 1)}|\ell,m\pm 1\rangle\)，链终止于 \(m=\pm\ell\)。</li>
+        <li><strong>球坐标分离变量</strong>：\(\psi=R(r)Y_{\ell}^{m}\)，径向方程中含<strong>离心势</strong> \(\hbar^{2}\ell(\ell+1)/(2mr^{2})\)。</li>
+        <li><strong>矢量模型</strong>：\(|\vec{L}|=\hbar\sqrt{\ell(\ell+1)}&gt;L_{z}=m\hbar\)，矢量永不完全沿 \(z\) 轴（除 \(\ell=0\)）。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\hat{\vec{L}}=\hat{\vec{r}}\times\hat{\vec{p}},\qquad [\hat{L}_{i},\hat{L}_{j}]=i\hbar\,\epsilon_{ijk}\hat{L}_{k},\qquad [\hat{L}^{2},\hat{L}_{i}]=0\;} \]</div>
+      <div class="formula">\[ \boxed{\;\hat{L}^{2}|\ell,m\rangle=\hbar^{2}\ell(\ell+1)|\ell,m\rangle,\quad \hat{L}_{z}|\ell,m\rangle=m\hbar|\ell,m\rangle,\quad \ell\in\mathbb{Z}_{\ge 0},\;m=-\ell,\dots,+\ell\;} \]</div>
+      <div class="formula">\[ \boxed{\;\hat{L}_{\pm}|\ell,m\rangle=\hbar\sqrt{\ell(\ell+1)-m(m\pm 1)}\;|\ell,m\pm 1\rangle,\qquad \hat{L}^{2}Y_{\ell}^{m}=\hbar^{2}\ell(\ell+1)Y_{\ell}^{m}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

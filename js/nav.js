@@ -125,6 +125,27 @@
         ]},
       ],
     },
+    {
+      name: '第五学期 · 量子力学 I + 高等经典力学 Quantum I + Adv. Classical',
+      parts: [
+        { name: '量子力学 I Quantum Mechanics I', items: [
+          { url: 'sem5/01-origins.html', title: '量子力学起源', en: 'Origins of QM' },
+          { url: 'sem5/02-schrodinger.html', title: '波函数与薛定谔方程', en: 'Wave Function & Schrödinger Eq.' },
+          { url: 'sem5/03-1d.html', title: '一维势场问题', en: '1D Potential Problems' },
+          { url: 'sem5/04-formalism.html', title: '量子力学形式体系', en: 'QM Formalism' },
+          { url: 'sem5/05-angular.html', title: '角动量', en: 'Angular Momentum' },
+          { url: 'sem5/06-hydrogen.html', title: '氢原子', en: 'Hydrogen Atom' },
+          { url: 'sem5/07-spin.html', title: '自旋', en: 'Spin' },
+        ]},
+        { name: '高等经典力学 Advanced Classical Mechanics', items: [
+          { url: 'sem5/08-lagrangian-adv.html', title: '拉格朗日力学（深化）', en: 'Lagrangian (Advanced)' },
+          { url: 'sem5/09-hamilton-canonical.html', title: '哈密顿方程与正则变换', en: "Hamilton's Eqs & Canonical Transforms" },
+          { url: 'sem5/10-rigid-body.html', title: '刚体动力学', en: 'Rigid Body Dynamics' },
+          { url: 'sem5/11-hamilton-jacobi.html', title: '哈密顿-雅可比方程', en: 'Hamilton-Jacobi' },
+          { url: 'sem5/12-perturbation.html', title: '经典微扰与 KAM', en: 'Classical Perturbation & KAM' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }
