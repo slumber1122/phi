@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 J · 我们如何看到形状与距离 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 J · Appendix J · 成像、对比与深度 Imaging, Contrast &amp; Depth</p>
+      <h1>我们如何看到形状与距离 <span class="en-title">How We See Form &amp; Depth</span></h1>
+    </header>
+
+    <p class="lead">看到"绿色的草的<strong>形状</strong>"和判断"它离我多<strong>远</strong>"，是两套不同的解码：形状靠视网膜上光的<strong>空间分布（对比/边缘）</strong>，距离靠大脑从一堆<strong>深度线索</strong>（尤其是双眼视差）推断。两者都依赖光——<strong>没有光子就没有图像，也就没有形状与距离</strong>。注意：看到形状不是因为"边缘是白光"，恰恰相反，<strong>全白的均匀视野（白化 whiteout）里你什么形状都看不到</strong>。Form comes from spatial contrast in the retinal image; depth is inferred, mostly from binocular disparity.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>说明眼睛如何成像：角膜+晶状体把场景投影成视网膜上的倒立实像。</li>
+        <li>解释<strong>形状来自对比/边缘</strong>，而非"白边"；侧抑制与 V1 边缘检测；无差异即无形。</li>
+        <li>推导角大小 \(\theta\approx h/d\) 与双眼视差 \(\Delta\theta\approx b(1/d_{\text{近}}-1/d_{\text{远}})\)。</li>
+        <li>列举深度线索：双眼视差（stereopsis）+ 单眼线索（遮挡、大小、运动视差、透视、纹理、空气透视、光影、调焦、辐辏）。</li>
+        <li>理解距离是大脑<strong>推断</strong>的，不是直接"测"的。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= SHAPE -->
+    <section class="core-concepts">
+      <h2>📖 一、怎么看到"形状"</h2>
+
+      <h3>① 透镜成像：把世界投影到视网膜</h3>
+      <p>角膜与晶状体组成一组会聚透镜，把外界每个方向来的光聚焦到视网膜上对应的点，形成一个<strong>倒立的实像 (real, inverted image)</strong>。所以草的形状，被投影成了视网膜上一个二维的<strong>光强/颜色分布</strong>。眼睛就像一台相机：瞳孔=光圈，晶状体=镜头，视网膜=感光底片。</p>
+      <div class="formula">\[ \frac{1}{f}=\frac{1}{d_o}+\frac{1}{d_i},\qquad \text{像高}\;\propto\;\frac{\text{物高}}{d_o}\;\;(\text{角大小}\;\theta\approx h/d_o) \]</div>
+
+      <h3>② 形状来自对比 / 边缘，不是"白边"</h3>
+      <p>草和旁边的土、路反射的光不同 → 视网膜上相邻区域有<strong>亮度或颜色的突变</strong>，这就是<strong>边缘 (edge)</strong>。视网膜神经节细胞和初级视皮层 (V1) 的神经元靠<strong>侧抑制 (lateral inhibition)</strong> 专门对边缘响应最强（一个细胞被照亮时抑制邻居，使边界处信号被放大）。大脑把这些边缘连起来 → 认出形状。</p>
+      <div class="note"><strong>关键纠正：</strong>看到形状不是因为边缘是"白光"。<strong>有差异才有形状</strong>——全黑（无光子）看不到，全白且均匀（无差异，如浓雾"白化 whiteout"）也看不到。你之所以看到草的轮廓，是因为草与背景之间存在<strong>亮度/颜色差异</strong>；这个差异越大，边缘越清晰。差异为零时，形状消失。</div>
+      <div class="key-terms">real image (实像), contrast (对比度), edge (边缘), lateral inhibition (侧抑制), V1 (初级视皮层), whiteout (白化)</div>
+    </section>
+
+    <!-- ============================================================= DEPTH -->
+    <section class="core-concepts">
+      <h2>📖 二、怎么判断"距离 / 深度"</h2>
+      <p>距离不是直接测量的，是大脑从两类线索<strong>推断</strong>出来的：</p>
+
+      <h3>双眼线索 — 双眼视差 (binocular disparity / stereopsis)</h3>
+      <p>两眼相距约 \(b\approx6.5\,\unit{cm}\)，看到的两幅图略有不同。大脑融合它们，由<strong>视差</strong>解出深度。对一近一远两个物体，相对视差</p>
+      <div class="formula">\[ \Delta\theta \approx b\!\left(\frac{1}{d_{\text{近}}}-\frac{1}{d_{\text{远}}}\right)\quad(\text{弧度}) \]</div>
+      <p>近物在左右眼视网膜上的相对位置会<strong>反转</strong>（见下方仿真）——这正是大脑最强的深度信号。人眼视差检测阈值约 \(10''\)（10 角秒），超过几百米视差低于阈值，就难以靠它判距。3D 电影/VR 就是给两眼喂两幅视差图。</p>
+
+      <h3>单眼线索 — 一只眼也能判距</h3>
+      <ul>
+        <li><strong>遮挡 (occlusion)</strong>：挡住别人的更近。</li>
+        <li><strong>相对大小 (relative size)</strong>：已知大小的物体，看起来越小越远。</li>
+        <li><strong>运动视差 (motion parallax)</strong>：走动/摇头时，近物反向移动、远物同向移动。</li>
+        <li><strong>线性透视 (linear perspective)</strong>：铁轨、道路向远方汇聚。</li>
+        <li><strong>纹理梯度 (texture gradient)</strong>：远处纹理更密更细。</li>
+        <li><strong>空气透视 (aerial perspective)</strong>：远处因散射发灰发蓝（附录 H 的散射！）。</li>
+        <li><strong>光影 (shading/shadow)</strong>：明暗分布给出立体感。</li>
+        <li><strong>调焦 (accommodation)</strong> 与 <strong>辐辏 (convergence)</strong>：晶状体对焦距离、两眼向内会聚角——仅近距离有效。</li>
+      </ul>
+      <div class="note"><strong>没有光就判不了距：</strong>所有线索都依赖视网膜上的图像；黑暗中无图像 → 无视差、无遮挡、无大小、无透视 → 无法判距。</div>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <p class="step"><strong>角大小。</strong>高 \(h\) 的物体在距离 \(d\) 处的张角 \(\theta\approx h/d\)（小角近似）。故同高物体越远越小——这是"相对大小"线索的来源。</p>
+      <p class="step"><strong>双眼视差。</strong>两眼基线 \(b\)。一个正前方、距离 \(d\) 的物体，每只眼需向内会聚 \(\alpha\approx(b/2)/d\)。两个不同距离 \(d_1,d_2\) 物体的<strong>相对视差</strong> \(\Delta\theta=\alpha_1-\alpha_2\approx(b/2)(1/d_1-1/d_2)\)，或以两眼计 \(\approx b(1/d_1-1/d_2)\)。\(\Delta\theta\) 越大，深度感越强；低于阈值 \(\sim10''\) 则无立体感。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+      <article class="example">
+        <h4>例 1　草的角大小</h4>
+        <p class="example-statement">高 \(h=10\,\unit{cm}\) 的草叶，在 \(d=2\,\unit{m}\) 处。张角多大？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\theta\approx h/d=0.10/2=0.05\,\unit{rad}=2.9^{\circ}\)。</p>
+          <p><span class="ans">\(\theta\approx0.05\,\unit{rad}\approx2.9^{\circ}\)。</span></p>
+        </div>
+      </article>
+      <article class="example">
+        <h4>例 2　近物 vs 远物的视差</h4>
+        <p class="example-statement">\(b=6.5\,\unit{cm}\)。近物 \(d_1=50\,\unit{cm}\)、远物 \(d_2=500\,\unit{cm}\)。相对视差多少角秒？能否被察觉（阈值 \(10''\)）？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>\(\Delta\theta=b(1/d_1-1/d_2)=0.065\,(1/0.50-1/5.00)=0.065\,(2.00-0.20)=0.065\times1.80=0.117\,\unit{rad}\)。</p>
+          <p class="step">换算角秒：\(0.117\times(180/\pi)\times3600=0.117\times206265\approx24100''\approx6.7^{\circ}\)。</p>
+          <p><span class="ans">\(\Delta\theta\approx2.4\times10^{4}''\)，远超阈值 → 立体感极强（近物明显"跳出"）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"看到形状是因为边缘是白光。"<br>纠正：是<strong>对比/差异</strong>，不是白。全白均匀（白化）反而看不到任何形状。</li>
+        <li><strong>误区：</strong>"距离是眼睛直接测出来的。"<br>纠正：距离是大脑从视差等线索<strong>推断</strong>的；没有直接"测距仪"。</li>
+        <li><strong>误区：</strong>"闭一只眼就看不出远近。"<br>纠正：单眼线索（遮挡、大小、透视、运动视差…）仍可判距；只是精度不如双眼视差。</li>
+        <li><strong>误区：</strong>"越亮看得越清。"<br>纠正：看清形状靠<strong>对比度</strong>，不是绝对亮度；暗但高对比（如夜空中的月亮）仍清晰，亮但无对比（白化）则看不见。</li>
+        <li><strong>误区：</strong>"视网膜上的像是正立的。"<br>纠正：是<strong>倒立</strong>实像；大脑在后天处理中把它"正"过来。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 一物高 \(2\,\unit{m}\)、距离 \(100\,\unit{m}\)，角大小多少？若距离加倍，像在视网膜上多大？</summary>
+        <div class="hint">\(\theta\approx h/d\)；像高 \(\propto\theta\)。</div>
+        <div class="solution">\(\theta=2/100=0.02\,\unit{rad}=1.15^{\circ}\)。距离加倍 → 角大小减半 → 视网膜像减半。<span class="ans">\(\theta\approx0.02\,\unit{rad}\)；像减半。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 为什么伸手够近处物体时双眼视差最有用，而望远处山峦主要靠单眼线索？</summary>
+        <div class="solution">近物视差大（\(\Delta\theta\propto1/d\)）→ stereopsis 精度高；远物视差低于阈值 \(\sim10''\) → 双眼线索失效，转而靠透视、空气透视、遮挡等单眼线索。<span class="ans">近靠视差，远靠单眼线索。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. （概念）为什么浓雾"白化"里人会完全失去方向、看不出形状？</summary>
+        <div class="solution">雾使各方向光均匀散射、充满视野，视网膜上各处亮度近乎相同 → <strong>对比度为零</strong> → 无边缘 → 无形状；同时空气透视饱和、遮挡线索失效 → 失去距离感。<span class="ans">对比归零 → 无边缘无形；深度线索失效。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation：形状 &amp; 距离</h2>
+      <p class="sim-desc"><strong>上半（形状）：</strong>一片绿叶在土色背景上。拖 <strong>对比度 contrast</strong> → 当差异归零，叶子"消失"（无形）。<strong>下半（距离）：</strong>双眼 + 左右两条视网膜条。绿色=近物、灰色=远物；注意<strong>左眼</strong>条里近点在远点之<strong>右</strong>，而<strong>右眼</strong>条里近点在远点之<strong>左</strong>——这个<strong>反转</strong>就是视差。拖 <strong>近物距离</strong>：越近，两条里近-远分得越开（视差越大）。</p>
+      <div class="sim-container">
+        <canvas id="sim-form" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-form"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-form');
+        var W = canvas.width, H = canvas.height;
+        var params = { C: 1, Dn: 60 };
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        var TAN = [176, 156, 96], GREEN = [80, 150, 58];
+
+        var sim = PS.createSim(canvas, {
+          state: function () { return {}; },
+          step: function () {},
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var Cc = PS.colors;
+
+            // ============ TOP PANEL: shape from contrast ============
+            var px0 = 30, px1 = 610, py0 = 30, py1 = 150;
+            // background (tan)
+            ctx.fillStyle = 'rgb(' + TAN.join(',') + ')';
+            ctx.fillRect(px0, py0, px1 - px0, py1 - py0);
+            // leaf color = lerp(tan -> green, C)
+            var g = [Math.round(lerp(TAN[0], GREEN[0], params.C)),
+                     Math.round(lerp(TAN[1], GREEN[1], params.C)),
+                     Math.round(lerp(TAN[2], GREEN[2], params.C))];
+            var leafCol = 'rgb(' + g.join(',') + ')';
+            // leaf shape (rounded blade) centered
+            ctx.fillStyle = leafCol;
+            roundRect(ctx, 297, py0 + 12, 26, py1 - py0 - 24, 8); ctx.fill();
+            // edge highlight: stronger with contrast
+            ctx.strokeStyle = Cc.accent; ctx.globalAlpha = params.C * 0.9; ctx.lineWidth = 2;
+            roundRect(ctx, 297, py0 + 12, 26, py1 - py0 - 24, 8); ctx.stroke(); ctx.globalAlpha = 1;
+            ctx.strokeStyle = Cc.axis; ctx.lineWidth = 1; ctx.strokeRect(px0, py0, px1 - px0, py1 - py0);
+            PS.drawText(ctx, '形状来自对比 shape from contrast   |   contrast C = ' + params.C.toFixed(2) +
+              (params.C < 0.04 ? '   → 叶子消失：无差异即无形！' : ''), px0, py0 - 8, { font: '10px monospace', color: Cc.text });
+
+            // ============ BOTTOM PANEL: depth from disparity ============
+            var by0 = 180;
+            // eyes
+            var eL = [260, by0 + 8], eR = [380, by0 + 8];
+            // scene dots: near (slider), far (fixed)
+            var nearY = by0 + 30 + (params.Dn - 30) / (400 - 30) * 38;   // 230..268
+            var farY = by0 + 95;                                          // 275
+            var midX = 320;
+            // sightlines (faint)
+            ctx.strokeStyle = Cc.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.7;
+            [[eL, midX, nearY], [eL, midX, farY], [eR, midX, nearY], [eR, midX, farY]].forEach(function (l) {
+              ctx.beginPath(); ctx.moveTo(l[0][0], l[0][1]); ctx.lineTo(l[1], l[2]); ctx.stroke();
+            });
+            ctx.globalAlpha = 1;
+            // eyes
+            PS.drawCircle(ctx, eL[0], eL[1], 8, { fill: Cc.text }); PS.drawCircle(ctx, eR[0], eR[1], 8, { fill: Cc.text });
+            PS.drawText(ctx, 'L', eL[0], eL[1] + 3, { font: '9px monospace', color: Cc.bg, align: 'center' });
+            PS.drawText(ctx, 'R', eR[0], eR[1] + 3, { font: '9px monospace', color: Cc.bg, align: 'center' });
+            PS.drawText(ctx, '瞳距 b≈6.5 cm', 320, by0 - 4, { font: '9px monospace', color: Cc.text, align: 'center' });
+            // dots
+            PS.drawCircle(ctx, midX, nearY, 6, { fill: Cc.accent });      // near = accent
+            PS.drawCircle(ctx, midX, farY, 5, { fill: Cc.axis });         // far = gray
+            PS.drawText(ctx, '近 near', midX + 12, nearY + 3, { font: '9px monospace', color: Cc.text });
+            PS.drawText(ctx, '远 far', midX + 12, farY + 3, { font: '9px monospace', color: Cc.text });
+
+            // retina strips
+            var b = 6.5, Dfar = 600, P = 420;
+            var offN = P * (b / 2) / params.Dn, offF = P * (b / 2) / Dfar;
+            var lc = 140, rc = 500, sy = 348, sh = 16;
+            // left strip
+            ctx.fillStyle = Cc.bg; ctx.strokeStyle = Cc.axis; ctx.lineWidth = 1;
+            ctx.fillRect(40, sy, 200, sh); ctx.strokeRect(40, sy, 200, sh);
+            tick(ctx, lc + offN, sy, sh, Cc.accent);    // near (right of far in L)
+            tick(ctx, lc + offF, sy, sh, Cc.axis);
+            PS.drawText(ctx, '左眼视网膜 L retina', 140, sy + sh + 12, { font: '9px monospace', color: Cc.text, align: 'center' });
+            // right strip
+            ctx.fillStyle = Cc.bg; ctx.fillRect(400, sy, 200, sh); ctx.strokeRect(400, sy, 200, sh);
+            tick(ctx, rc - offN, sy, sh, Cc.accent);    // near (left of far in R)
+            tick(ctx, rc - offF, sy, sh, Cc.axis);
+            PS.drawText(ctx, '右眼视网膜 R retina', 500, sy + sh + 12, { font: '9px monospace', color: Cc.text, align: 'center' });
+            // center reference
+            ctx.strokeStyle = Cc.grid; ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(lc, sy - 3); ctx.lineTo(lc, sy + sh + 3); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(rc, sy - 3); ctx.lineTo(rc, sy + sh + 3); ctx.stroke(); ctx.setLineDash([]);
+
+            // disparity readout
+            var disp = b * (1 / params.Dn - 1 / Dfar) * 206265;   // arcsec
+            var note = disp > 10 ? '→ 立体感强，大脑解出深度' : '→ 视差低于阈值，难判距';
+            PS.drawText(ctx, '双眼视差 disparity ≈ ' + Math.round(disp) + '″  (阈值 ~10″)  ' + note, 30, 392, { font: '10px monospace', color: Cc.text });
+
+            function roundRect(c, x, y, w, h, r) {
+              c.beginPath();
+              c.moveTo(x + r, y); c.lineTo(x + w - r, y); c.arcTo(x + w, y, x + w, y + r, r);
+              c.lineTo(x + w, y + h - r); c.arcTo(x + w, y + h, x + w - r, y + h, r);
+              c.lineTo(x + r, y + h); c.arcTo(x, y + h, x, y + h - r, r);
+              c.lineTo(x, y + r); c.arcTo(x, y, x + r, y, r); c.closePath();
+            }
+            function tick(c, x, y, h, col) {
+              c.strokeStyle = col; c.lineWidth = 3;
+              c.beginPath(); c.moveTo(x, y - 3); c.lineTo(x, y + h + 3); c.stroke();
+            }
+          }
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-form'), [
+          { type: 'slider', key: 'C', label: '对比度 contrast (上半形状)', min: 0, max: 1, step: 0.02, value: 1 },
+          { type: 'slider', key: 'Dn', label: '近物距离 near distance (cm)', min: 30, max: 400, step: 5, value: 60 },
+        ]);
+        ctl.on('C', function (v) { params.C = v; });
+        ctl.on('Dn', function (v) { params.Dn = v; });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>形状 = 视网膜图像中光的<strong>空间对比/边缘</strong>（透镜成像 + 侧抑制/V1 边缘检测）；无差异即无形（白化里看不到形状）。</li>
+        <li>距离是大脑<strong>推断</strong>的：双眼视差 \(\Delta\theta\approx b(1/d_1-1/d_2)\) 是最强线索（阈值 \(\sim10''\)）；单眼线索（遮挡/大小/视差/透视/纹理/空气/光影/调焦/辐辏）补充。</li>
+        <li>没有光 → 无图像 → 无形状、无距离。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\theta\approx\frac{h}{d},\quad \Delta\theta_{\text{视差}}\approx b\!\left(\frac{1}{d_1}-\frac{1}{d_2}\right),\quad \text{形状}\propto\text{对比}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

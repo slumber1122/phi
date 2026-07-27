@@ -223,6 +223,7 @@
           { url: 'appendix/michelson-morley.html', title: '迈克尔逊–莫雷实验', en: 'Michelson–Morley Experiment', ref: true },
           { url: 'appendix/photon-production.html', title: '光子的产生', en: 'How Photons Are Produced', ref: true },
           { url: 'appendix/how-we-see-color.html', title: '我们如何看到颜色', en: 'How We See Color', ref: true },
+          { url: 'appendix/how-we-see-form.html', title: '我们如何看到形状与距离', en: 'How We See Form & Depth', ref: true },
         ]},
       ],
     },
