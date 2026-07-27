@@ -25,8 +25,15 @@ window.MathJax = {
 };
 
 (function () {
+  // Load MathJax from the LOCAL vendored copy (js/vendor/mathjax/tex-svg.js),
+  // not a CDN — a slow/unreachable CDN (jsdelivr is erratic in CN) leaves math
+  // stuck as raw \( ... \) until it finally returns. Self-hosted = fast + offline.
+  // Resolve the path relative to THIS script (js/math-config.js) so it works at
+  // any page depth (root index.html or a chapter subdir).
+  var me = document.currentScript;
+  var base = me && me.src ? me.src.replace(/[^/]*$/, '') : ''; // → .../js/
   var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js';
+  s.src = base + 'vendor/mathjax/tex-svg.js';
   s.async = true;
   document.head.appendChild(s);
 })();
