@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第9章 · 等离子体物理基础 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="9">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第9章 · 等离子体物理 Plasma Physics</p>
+      <h1>等离子体物理基础 <span class="en-title">Foundations of Plasma Physics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>说明<strong>等离子体 (plasma)</strong> 作为<strong>物质第四态 (fourth state of matter)</strong> 的判据——一团<strong>电离气体 (ionized gas)</strong>，由自由的<strong>离子 (ions)</strong> 与<strong>电子 (electrons)</strong> 组成、宏观上保持<strong>准中性 (quasi-neutrality)</strong>，并满足 <strong>德拜长度远小于体系尺寸</strong>（\(\lambda_{D}\ll L\)）且 <strong>德拜球内粒子数巨大</strong>（\(N_{D}=n\lambda_{D}^{3}\gg1\)）这两个定量条件。</li>
+        <li>从 <strong>Poisson–Boltzmann 方程</strong> 严格推出<strong>德拜屏蔽 (Debye shielding)</strong> 与<strong>汤川势 (Yukawa potential)</strong> \(\varphi(r)=\dfrac{Q}{4\pi\varepsilon_{0}r}\,e^{-r/\lambda_{D}}\)，解释试探电荷为何在几个 \(\lambda_{D}\) 之外“看不见”；记住<strong>德拜长度</strong> \(\lambda_{D}=\sqrt{\varepsilon_{0}kT/(ne^{2})}\)。</li>
+        <li>推导并应用<strong>等离子体频率 (plasma frequency)</strong> \(\omega_{p}=\sqrt{ne^{2}/(\varepsilon_{0}m_{e})}\)：它是电子海整体的固有振荡，<em>与温度无关</em>；由此解释<strong>金属的紫外反射</strong>、<strong>电离层无线电截止 (ionospheric cutoff)</strong> 等现象。</li>
+        <li>计算磁场中带电粒子的<strong>拉莫尔半径 (Larmor / gyro-radius)</strong> \(r_{L}=mv_{\perp}/(|q|B)\) 与<strong>回旋频率 (cyclotron frequency)</strong> \(\omega_{c}=|q|B/m\)，并导出粒子的<strong>漂移 (drift)</strong>——特别是<strong>E×B 漂移</strong>（与电荷、质量均无关）和<strong>梯度-B 漂移</strong>（正比于 \(v_{\perp}^{2}\)，反号于电荷）。</li>
+        <li>对任何离子化气体判断它<strong>是否</strong>算等离子体：用 \(N_{D}=n\lambda_{D}^{3}\gg1\) 与 \(\lambda_{D}\ll L\) 两把尺子，并说明<strong>集体行为 (collective behavior)</strong> 为何取代二元碰撞成为主导。</li>
+        <li>描述<strong>磁流体力学 (magnetohydrodynamics, MHD)</strong> 单流体图像，写出理想 MHD 的关键方程（含<strong>磁冻结 (flux freezing)</strong>），并认识从霓虹灯、电离层、太阳日冕到核聚变堆的等离子体实例。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 物质第四态 — 什么是等离子体？The Fourth State of Matter</h3>
+      <p>给固体加热，晶格瓦解成液体；继续加热，液体蒸发为气体；再继续加热（或施加强电场、高能辐射），气体分子或原子的<strong>外层电子被剥离</strong>，得到一团自由的电子与离子混合物——这就是<strong>等离子体</strong>。它由 Tonks 与 Langmuir (1928) 命名（“πλάσμα”，希腊语“形成之物”），是宇宙中<strong>最常见的物质形态</strong>：可见宇宙的 <strong>99% 以上</strong>（恒星内部、星际介质、星际气体、吸积盘……）都处于等离子态。地球上较少见，但霓虹灯、日光灯、电弧、电离层、核聚变实验、闪电、火焰中高温部分都是等离子体。</p>
+      <p>但<strong>“被电离”并不等于“是等离子体”</strong>。一杯盐水有离子，却不是等离子体；本生灯火焰 (<span class="example-statement">\(T\sim 2000\,\mathrm{K}\)</span>，电离度极低) 也只是“弱电离气体”，不满足等离子体判据。真正的等离子体要满足两条定量判据（见下文第 7 节）：<strong>(i) 德拜长度远小于体系尺寸</strong>、<strong>(ii) 德拜球内粒子数远大于 1</strong>。这两条共同保证等离子体由<strong>集体电磁行为</strong>主导，而非中性气体的二元碰撞。</p>
+      <div class="formula">\[ \boxed{\;\text{等离子体}=\text{电离}+\text{准中性}+\text{集体行为}\;\Longleftrightarrow\;\lambda_{D}\ll L\;\text{且}\;N_{D}\gg1\;} \]</div>
+
+      <h3>2. 准中性 Quasi-neutrality</h3>
+      <p>等离子体内电子电荷密度 \( -en_{e}\) 与离子电荷密度 \(+Zen_{i}\) 几乎完全抵消。这里“几乎”是一个关键词。在远大于 \(\lambda_{D}\) 的尺度上：</p>
+      <div class="formula">\[ \sum_{s}q_{s}\,n_{s}=Zen_{i}-en_{e}\approx 0\qquad(|\vec x|\gg\lambda_{D}) \]</div>
+      <p>但<strong>在德拜长度以内的尺度上</strong>，电荷分离不仅允许，而且<strong>正是等离子体的本质</strong>——德拜屏蔽、等离子体振荡、双层面 (double layer)、朗缪尔波都靠它实现。把等离子体当作“处处精确中性”会丢掉它最有趣的物理。我们将在第 5 节例题里量化这种“准”——典型的电荷失衡只有 \(10^{-6}\) 量级。</p>
+      <p>另一点易被忽略：准中性使<strong>电场</strong>在等离子体内部很弱（被屏蔽），但<strong>磁场</strong>可以贯穿其中——这也是为何磁约束聚变用磁场而非电场“装”住等离子体。</p>
+
+      <h3>3. 德拜屏蔽与德拜长度 Debye Shielding and the Debye Length</h3>
+      <p>把一个正的<strong>试探电荷 (test charge)</strong> \(Q\) 放入等离子体。它会吸引周围的电子、排斥离子。电子很快在 \(Q\) 周围聚集形成一层“屏蔽云”，使远处看不到 \(Q\) 的电场——这就是<strong>德拜屏蔽</strong>。电子云的特征厚度由热运动动能 \(kT\) 与静电势能 \(e^{2}/4\pi\varepsilon_{0}r\) 的竞争决定：</p>
+      <div class="formula">\[ \boxed{\;\lambda_{D}=\sqrt{\dfrac{\varepsilon_{0}\,kT_{e}}{n_{e}e^{2}}}\;} \]</div>
+      <p>多温度情形 \(\lambda_{D}^{-2}=\lambda_{De}^{-2}+\lambda_{Di}^{-2}\)（电子、离子各自贡献）。代入数值（电子、\(T\) 用 \(\mathrm{eV}\) 表示时 \(\lambda_{D}\approx 743\,\mathrm{\mu m}\sqrt{T_{\mathrm{eV}}/n_{\mathrm{[m^{-3}]}}}\)）可知：高密度、低温 → \(\lambda_{D}\) 小（屏蔽强）；低密度、高温 → \(\lambda_{D}\) 大（屏蔽弱）。在第 6 节例题里我们会看到，核聚变等离子体中 \(\lambda_{D}\sim 10^{-4}\,\mathrm{m}\)，而电离层中 \(\lambda_{D}\sim 10^{-3}\,\mathrm{m}\)。</p>
+      <p>屏蔽后的电势不再是裸库仑势 \(1/r\)，而是<strong>汤川势</strong>：</p>
+      <div class="formula">\[ \boxed{\;\varphi(r)=\dfrac{Q}{4\pi\varepsilon_{0}\,r}\,e^{-r/\lambda_{D}}\quad\text{(Yukawa / screened Coulomb)}\;} \]</div>
+      <p>在 \(r\ll\lambda_{D}\) 处它近似裸库仑势；在 \(r\gg\lambda_{D}\) 处指数衰减，试探电荷被“埋”在电子云里看不见。这种“长程相互作用被介质有效短程化”的图像，后来被汤川秀树 (1935) 借用到核力中预言了 \(\pi\) 介子（因此得名 <em>Yukawa potential</em>）。</p>
+
+      <h3>4. 等离子体频率 — 电子海的固有振荡 The Plasma Frequency</h3>
+      <p>设想把一团均匀等离子体中的所有电子相对于离子整体向右挪一小段 \(x\)。这就在两侧的端面出现面电荷密度 \(\pm enx\)，板内出现均匀电场 \(E=nex/\varepsilon_{0}\)。每个电子受回复力 \(F=-eE=-(ne^{2}/\varepsilon_{0})x\)，这正是劲度系数为 \(ne^{2}/\varepsilon_{0}\) 的简谐振动！其固有频率即<strong>等离子体频率</strong>：</p>
+      <div class="formula">\[ \boxed{\;\omega_{p}=\sqrt{\dfrac{n_{e}e^{2}}{\varepsilon_{0}m_{e}}}\,,\qquad f_{p}=\dfrac{\omega_{p}}{2\pi}\approx 8.98\,\mathrm{Hz}\sqrt{n_{e,\mathrm{[m^{-3}]}}}\;} \]</div>
+      <p><strong>关键点：</strong>\(\omega_{p}\) 与温度无关！它只依赖于密度（以及 \(e,\varepsilon_{0},m_{e}\)）。原因是：回复力 \(\propto nx\)，惯性 \(\propto m_{e}\)，二者都与 \(T\) 无关。热运动只决定振荡的衰减率（朗道阻尼），不决定频率。频率小于 \(\omega_{p}\) 的电磁波无法在等离子体中传播——这就是<strong>截止 (cutoff)</strong>。电离层 \(f_{p}\sim 10\,\mathrm{MHz}\)，所以低于 \(10\,\mathrm{MHz}\) 的 AM 广播会被反射回地面（短波电台“越洋”就是这么实现的），而高于 \(100\,\mathrm{MHz}\) 的 FM、卫星信号穿出电离层。金属中 \(n_{e}\sim 10^{29}\,\mathrm{m^{-3}}\)，对应 \(f_{p}\sim 10^{15}\!-\!10^{16}\,\mathrm{Hz}\)（紫外），可见光频率更低被反射——这是金属<strong>反光的物理本质</strong>，而非简单的“自由电子图像”。</p>
+
+      <h3>5. 磁场中的回旋运动 — 拉莫尔半径 Cyclotron Motion &amp; Larmor Radius</h3>
+      <p>恒定均匀磁场 \(\vec B=B\hat z\) 中，洛伦兹力 \(\vec F=q\vec v\times\vec B\) 只对垂直分量 \(v_{\perp}\) 产生作用，做圆周运动；平行分量 \(v_{\parallel}\) 不受力，做匀速直线。结果是<strong>螺旋线 (helix)</strong>。圆周运动满足 \(m\omega_{c}^{2}r_{L}=|q|v_{\perp}B\)，故</p>
+      <div class="formula">\[ \omega_{c}=\dfrac{|q|B}{m}\quad(\text{cyclotron / gyro frequency}),\qquad r_{L}=\dfrac{mv_{\perp}}{|q|B}\quad(\text{Larmor / gyro radius}) \]</div>
+      <p>取热运动典型速度 \(v_{\perp}\sim\sqrt{2kT/m}\)，则 \(r_{L}=\sqrt{2mkT}/(|q|B)\)。电子比离子轻得多，因此同一温度同一磁场下 \(r_{Le}/r_{Li}=\sqrt{m_{e}/m_{i}}\sim 1/43\)（氢等离子体）——电子紧紧绕磁力线转小圈，离子转大圈。这一事实是<strong>磁约束聚变</strong>的基石：磁场能把电子牢牢“粘”在磁力线上，间接通过准中性也把离子留住。</p>
+      <p>符号上：正电荷在 \(\vec B\) 方向看是<strong>顺时针</strong>，负电荷<strong>逆时针</strong>。在画图与判断电流方向时这是个常见坑。</p>
+
+      <h3>6. 粒子漂移 — E×B 与 grad-B Particle Drifts</h3>
+      <p>磁力线即使完全均匀，加入其它小幅力 \(\vec F\)（来自外加电场、磁场不均匀、曲率、重力……）也会让导引中心 (guiding center) 缓慢<strong>漂移</strong>。一般结果：</p>
+      <div class="formula">\[ \vec v_{F}=\dfrac{\vec F\times\vec B}{qB^{2}} \]</div>
+      <p><strong>E×B 漂移</strong>：取 \(\vec F=q\vec E\)，则</p>
+      <div class="formula">\[ \boxed{\;\vec v_{E}=\dfrac{\vec E\times\vec B}{B^{2}}\quad(\text{对所有粒子相同！})\;} \]</div>
+      <p>这是等离子体物理最优雅的结果之一：<strong>\(\vec v_{E}\) 与电荷 \(q\) 和质量 \(m\) 都无关</strong>——电子和离子一起以同样的速度漂移。因此 E×B 漂移<strong>不</strong>造成电荷分离，<strong>不</strong>产生电流（在共动参考系中）。这是为什么荧光灯、霍尔推进器、磁约束装置中可以用 \(\vec E\times\vec B\) 驱动整体流动而不会撕开等离子体。</p>
+      <p><strong>梯度-B 漂移</strong>：磁场不均匀（例如向弱场方向缓慢减弱），磁矩守恒给粒子一个等效力 \(\vec F=-\mu\nabla B\)，其中磁矩 \(\mu=mv_{\perp}^{2}/(2B)\) 是绝热不变量。代入得</p>
+      <div class="formula">\[ \vec v_{\nabla B}=\pm\dfrac{m v_{\perp}^{2}}{2\,|q|\,B^{3}}\,(\vec B\times\nabla B) \]</div>
+      <p>这次正负号保留，<strong>离子与电子反向漂移</strong>——这就<strong>会</strong>产生电流（环形磁场装置中的“环形漂移电流”）。它也正比于 \(v_{\perp}^{2}\)，所以“热”粒子漂得快。还有相关的<strong>曲率漂移</strong> (curvature drift) 形式类似。所有这些漂移都比回旋运动慢得多，但在长时间尺度上决定等离子体的宏观运动。</p>
+
+      <h3>7. 等离子体判据 — 德拜球与等离子体参数 The Plasma Parameter</h3>
+      <p>我们把所有判据归纳为三条：</p>
+      <div class="formula">\[ \boxed{\;\text{(i)}\;\lambda_{D}\ll L,\qquad\text{(ii)}\;N_{D}=\dfrac{4\pi}{3}\,n\,\lambda_{D}^{3}\gg1,\qquad\text{(iii)}\;\omega_{p}\tau_{\mathrm{coll}}\gg1\;} \]</div>
+      <p>其中 \(L\) 是体系尺寸，\(\tau_{\mathrm{coll}}\) 是与中性粒子的碰撞时间。<strong>(i)</strong> 保证准中性在体系内部成立；<strong>(ii)</strong> 保证德拜球内有足够多粒子，使“屏蔽”是<strong>统计平均的集体行为</strong>而非几个粒子的二元过程；<strong>(iii)</strong> 保证粒子在两次中性碰撞之间能完成多次等离子体振荡。三个条件同时成立，才能称为等离子体。</p>
+      <p>把 \(\lambda_{D}^{2}=\varepsilon_{0}kT/(ne^{2})\) 代入 \(N_{D}\)：</p>
+      <div class="formula">\[ N_{D}=\dfrac{4\pi}{3}\,\dfrac{(\varepsilon_{0}kT)^{3/2}}{n^{1/2}e^{3}}\;\propto\;\dfrac{T^{3/2}}{n^{1/2}} \]</div>
+      <p>所以<strong>低密度、高温</strong>的等离子体最容易满足 \(N_{D}\gg1\)。这是为什么宇宙等离子体（星际介质 \(n\sim10^{6}\,\mathrm{m^{-3}}\)）即使极稀也明显是等离子体。</p>
+
+      <h3>8. 磁流体力学 — 单流体图像 Magnetohydrodynamics (MHD)</h3>
+      <p>当特征尺度 \(\gg\lambda_{D}\)、特征时间 \(\gg1/\omega_{p}\) 时，可以把电子和离子“混在一起”当作单一的<strong>导电流体</strong>。这就是 <strong>MHD</strong>，由 Alfvén (1942) 系统化。理想 MHD 方程组（用 SI）：</p>
+      <div class="formula">\[ \begin{aligned}&\text{质量守恒:}&\partial_{t}\rho+\nabla\!\cdot\!(\rho\vec v)&=0,\\\\&\text{动量:}&\rho\,\dfrac{d\vec v}{dt}&=\vec J\times\vec B-\nabla p,\\\\&\text{欧姆定律(理想):}&\vec E+\vec v\times\vec B&=0,\\\\&\text{法拉第:}&\partial_{t}\vec B&=-\nabla\times\vec E=\nabla\times(\vec v\times\vec B),\\\\&\text{能量(绝热):}&\dfrac{d}{dt}\!\left(p\rho^{-\gamma}\right)&=0,\qquad\vec J=\dfrac{1}{\mu_{0}}\nabla\times\vec B.\end{aligned} \]</div>
+      <p>第 4 式是<strong>磁感应方程</strong>。在理想 MHD (\(\vec E+\vec v\times\vec B=0\)) 中，磁力线<strong>冻结</strong>在流体里 (Alfvén 定理)：<em>每根磁力线两端所连的流体元永远跟着它走</em>。这解释了太阳黑子、日珥、磁重联爆发、地球磁层亚暴等。MHD 是天体物理、聚变工程、液态金属电磁泵的通用宏观语言；但它在小尺度（动力学尺度、动理学尺度）失效——那时必须回到粒子图像（Vlasov / Fokker–Planck）。</p>
+
+      <h3>9. 等离子体实例 Plasma Around Us</h3>
+      <ul>
+        <li><strong>电离层 (ionosphere)</strong>：地球高空 60–1000 km，太阳紫外电离稀薄大气，\(n\sim10^{10}\!-\!10^{12}\,\mathrm{m^{-3}}\)、\(T\sim 10^{3}\,\mathrm{K}\)（约 0.1 eV）；\(f_{p}\sim 3\!-\!10\,\mathrm{MHz}\) 决定短波通讯窗口。</li>
+        <li><strong>核聚变等离子体 (fusion plasma)</strong>：托卡马克 (tokamak) 中 \(T\sim 10^{8}\,\mathrm{K}\)（约 10 keV）、\(n\sim 10^{20}\,\mathrm{m^{-3}}\)、\(B\sim 5\,\mathrm{T}\)。ITER 目标是 \(Q=P_{\mathrm{fus}}/P_{\mathrm{heat}}>10\)。</li>
+        <li><strong>恒星 (stars)</strong>：太阳核心 \(T\sim 1.5\times10^{7}\,\mathrm{K}\)、密度 \(>10^{5}\,\mathrm{kg/m^{3}}\)，整个恒星内部都是等离子体；日冕 (corona) \(T\sim 10^{6}\,\mathrm{K}\) 但稀薄 (\(n\sim10^{15}\,\mathrm{m^{-3}}\))。</li>
+        <li><strong>霓虹灯 / 荧光灯 (neon signs, fluorescent lamps)</strong>：低气压放电，电子温度 ~1–2 eV、电离度仅 \(10^{-4}\!-\!10^{-6}\)，<em>弱电离</em>等离子体；这是地球上最日常的等离子体例子。</li>
+        <li><strong>星际介质 (ISM) 与太阳风 (solar wind)</strong>：\(n\sim10^{6}\,\mathrm{m^{-3}}\)、\(T\sim 10^{4}\,\mathrm{K}\)，但 \(N_{D}\sim10^{9}\)，是宇宙中最典型的等离子体。</li>
+      </ul>
+      <div class="key-terms">plasma (等离子体), fourth state of matter (物质第四态), ionized gas (电离气体), quasi-neutrality (准中性), Debye shielding (德拜屏蔽), Debye length \(\lambda_{D}\) (德拜长度), Yukawa / screened Coulomb potential (汤川势 / 屏蔽库仑势), plasma frequency \(\omega_{p}\) (等离子体频率), ionospheric cutoff (电离层截止), cyclotron / gyro frequency \(\omega_{c}\) (回旋频率), Larmor / gyro radius \(r_{L}\) (拉莫尔半径), guiding center (导引中心), E×B drift (E×B 漂移), grad-B drift (梯度-B 漂移), magnetic moment \(\mu\) (磁矩), adiabatic invariant (绝热不变量), plasma parameter \(N_{D}=n\lambda_{D}^{3}\) (等离子体参数), Debye sphere (德拜球), collective behavior (集体行为), magnetohydrodynamics MHD (磁流体力学), ideal Ohm's law (理想欧姆定律), flux freezing (磁冻结), Boltzmann relation \(n_{e}\propto e^{e\varphi/kT}\) (玻尔兹曼关系), tokamak (托卡马克), Langmuir (朗缪尔)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 从 Poisson–Boltzmann 到汤川势</h2>
+      <p>下面严格推导德拜屏蔽与汤川势。设试探电荷 \(Q\) 位于原点；远场电子与单电荷离子数密度均为 \(n_{\infty}\)（即准中性），两成分温度 \(T_{e}=T_{i}=T\)。电子处于热平衡，遵循<strong>玻尔兹曼关系</strong>：</p>
+      <div class="formula">\[ n_{e}(r)=n_{\infty}\,\exp\!\Big(+\dfrac{e\varphi(r)}{kT}\Big),\qquad n_{i}(r)=n_{\infty}\,\exp\!\Big(-\dfrac{e\varphi(r)}{kT}\Big) \]</div>
+      <p>（电子带负电，势能 \(-e\varphi\)，正 \(\varphi\) 处势能低、聚集；离子反之。）代入泊松方程（\(r\neq0\)，无点电荷）：</p>
+      <div class="formula">\[ \nabla^{2}\varphi=-\dfrac{\rho}{\varepsilon_{0}}=-\dfrac{e\,(n_{i}-n_{e})}{\varepsilon_{0}}=+\dfrac{e\,n_{\infty}}{\varepsilon_{0}}\Big[\,e^{+e\varphi/kT}-e^{-e\varphi/kT}\,\Big] \]</div>
+      <p>这是非线性 <em>Poisson–Boltzmann</em> 方程。在等离子体中通常 \(\varphi\) 弱（\(e\varphi/kT\ll1\)，因 \(\lambda_{D}\) 内粒子很多，单粒子势能被集体分摊），可线性化 \(e^{\pm x}\approx1\pm x\)：</p>
+      <div class="formula">\[ \nabla^{2}\varphi\approx\dfrac{2n_{\infty}e^{2}}{\varepsilon_{0}kT}\,\varphi\equiv\dfrac{\varphi}{\lambda_{D}^{2}},\qquad\lambda_{D}\equiv\sqrt{\dfrac{\varepsilon_{0}kT}{2n_{\infty}e^{2}}} \]</div>
+      <p>（电子、离子同温；若 \(T_{e}\neq T_{i}\)，由两指数的泰勒展开得 \(1/\lambda_{D}^{2}=ne^{2}/\varepsilon_{0}\,(1/kT_{e}+1/kT_{i})\)；若离子冷 \(T_{i}\ll T_{e}\) 就回到本章正文的 \(\lambda_{D}=\sqrt{\varepsilon_{0}kT_{e}/(ne^{2})}\)。）</p>
+      <p>球对称解 \(\nabla^{2}\varphi=\varphi/\lambda_{D}^{2}\)，边界条件 \(r\to\infty,\varphi\to0\) 以及 \(r\to0\) 时趋近库仑势（试探电荷的近场未被屏蔽），得到：</p>
+      <div class="formula">\[ \boxed{\;\varphi(r)=\dfrac{Q}{4\pi\varepsilon_{0}\,r}\,e^{-r/\lambda_{D}}\;} \]</div>
+      <p><strong>验证：</strong>(i) 当 \(r\ll\lambda_{D}\)，\(e^{-r/\lambda_{D}}\to1\)，回到裸库仑势；(ii) 当 \(r\gg\lambda_{D}\)，指数衰减使 \(\varphi\) 远小于 \(1/r\)，试探电荷被“埋”在屏蔽云里；(iii) 总屏蔽电荷 \(\int_{0}^{\infty}\rho(r)\,4\pi r^{2}\,dr=-Q\)，正好抵消试探电荷（在等离子体里电场没有“漏出”到无穷远——区别于真空）。</p>
+      <p><strong>等离子体频率的另一推导：</strong>对均匀等离子体做小幅电荷分离振荡 \(\delta n_{e}=n_{0}-n_{e}\)，连续性方程 \(\partial_{t}\delta n_{e}+n_{0}\nabla\!\cdot\!\vec v_{e}=0\)；欧姆/动量 \(m_{e}\partial_{t}\vec v_{e}=-e\vec E\)；泊松 \(\nabla\!\cdot\!\vec E=-e\delta n_{e}/\varepsilon_{0}\)。消去 \(\vec v_{e},\vec E\)：\(\partial_{t}^{2}\delta n_{e}+(n_{0}e^{2}/\varepsilon_{0}m_{e})\delta n_{e}=0\)，得 \(\omega_{p}^{2}=n_{0}e^{2}/\varepsilon_{0}m_{e}\)。这是<strong>纵振荡</strong>（朗缪尔波在 \(k\to0\) 极限）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 9.1 聚变等离子体与电离层的德拜长度</h4>
+        <p class="example-statement">(a) 核聚变托卡马克中 \(T=10\,\mathrm{keV}\)、电子密度 \(n=10^{20}\,\mathrm{m^{-3}}\)。求德拜长度 \(\lambda_{D}\)，并与反应堆尺寸 \(L\sim1\,\mathrm{m}\) 比较。(b) 地球电离层 F 层 \(T=1000\,\mathrm{K}\)、\(n=10^{12}\,\mathrm{m^{-3}}\)，再求 \(\lambda_{D}\)，与电离层厚度 \(\sim10^{5}\,\mathrm{m}\) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>把 \(T\) 化为焦耳：\(kT=10^{4}\times1.602\times10^{-19}=1.602\times10^{-15}\,\mathrm{J}\)。代入</p>
+          <div class="formula">\[ \lambda_{D}^{2}=\dfrac{\varepsilon_{0}kT}{ne^{2}}=\dfrac{(8.854\times10^{-12})(1.602\times10^{-15})}{(10^{20})(1.602\times10^{-19})^{2}}=\dfrac{1.418\times10^{-26}}{2.566\times10^{-18}}=5.53\times10^{-9}\,\mathrm{m^{2}} \]</div>
+          <p>\(\lambda_{D}=\sqrt{5.53\times10^{-9}}=7.43\times10^{-5}\,\mathrm{m}\approx\boxed{74\,\mathrm{\mu m}}\)。与 \(L\sim1\,\mathrm{m}\) 比较：\(\lambda_{D}/L\sim7\times10^{-5}\)，反应堆宏观尺寸内能维持极好的准中性。<strong>这正是磁约束聚变得以存在的几何前提</strong>——粒子在远大于 \(\lambda_{D}\) 的尺度上整体服从磁流体力学。</p>
+          <p class="step"><strong>解 (b)：</strong>\(kT=(1.381\times10^{-23})(1000)=1.381\times10^{-20}\,\mathrm{J}\approx0.086\,\mathrm{eV}\)。</p>
+          <div class="formula">\[ \lambda_{D}^{2}=\dfrac{(8.854\times10^{-12})(1.381\times10^{-20})}{(10^{12})(1.602\times10^{-19})^{2}}=\dfrac{1.223\times10^{-31}}{2.566\times10^{-26}}=4.77\times10^{-6}\,\mathrm{m^{2}} \]</div>
+          <p>\(\lambda_{D}=\sqrt{4.77\times10^{-6}}=2.18\times10^{-3}\,\mathrm{m}\approx\boxed{2.2\,\mathrm{mm}}\)。与电离层厚度 \(L\sim10^{5}\,\mathrm{m}\) 相比 \(\lambda_{D}/L\sim2\times10^{-8}\)，准中性极好。注意：电离层 \(T\) 比聚变等离子体低 \(10^{4}\) 倍，但 \(n\) 也低 \(10^{8}\) 倍——结果 \(\lambda_{D}\) 反而更大（因为 \(\lambda_{D}\propto\sqrt{T/n}\)），但仍远小于系统尺寸，<em>仍</em>是合格等离子体。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.2 等离子体频率与电波截止 — 金属反光 &amp; 电离层反射</h4>
+        <p class="example-statement">(a) 铜的传导电子密度 \(n_{e}=8.5\times10^{28}\,\mathrm{m^{-3}}\)。求 \(f_{p}\) 与对应波长 \(\lambda_{\mathrm{cut}}\)，解释为何可见光被反射而紫外光透过。(b) 电离层 F 层峰值密度 \(n_{e}=10^{12}\,\mathrm{m^{-3}}\)，求 \(f_{p}\) 与截止波长，解释 AM 与 FM 通讯差异。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)：</strong>用 \(\omega_{p}=\sqrt{n_{e}e^{2}/(\varepsilon_{0}m_{e})}\)：</p>
+          <div class="formula">\[ \omega_{p}^{2}=\dfrac{(8.5\times10^{28})(1.602\times10^{-19})^{2}}{(8.854\times10^{-12})(9.109\times10^{-31})}=\dfrac{2.181\times10^{-9}}{8.066\times10^{-42}}=2.70\times10^{32}\,\mathrm{s^{-2}} \]</div>
+          <p>\(\omega_{p}=1.64\times10^{16}\,\mathrm{rad/s}\)，\(f_{p}=\omega_{p}/2\pi=\boxed{2.6\times10^{15}\,\mathrm{Hz}}\)。对应真空中波长</p>
+          <div class="formula">\[ \lambda_{\mathrm{cut}}=\dfrac{c}{f_{p}}=\dfrac{3.0\times10^{8}}{2.6\times10^{15}}=1.15\times10^{-7}\,\mathrm{m}=\boxed{115\,\mathrm{nm}\;\text{(紫外)}\;} \]</div>
+          <p>可见光 (\(f\sim5\times10^{14}\,\mathrm{Hz}&lt;f_{p}\)) 不能在铜内传播，电子海集体振荡把它<strong>反射</strong>（这是金属反光的物理本质！）。而 \(f&gt;f_{p}\) 的紫外、X 射线 (\(\lambda&lt;115\,\mathrm{nm}\)) 能透过——这就是为什么 X 射线可用于金属探伤、紫外光可用于光电子能谱 (UPS)。</p>
+          <p class="step"><strong>解 (b)：</strong>代入 \(n_{e}=10^{12}\,\mathrm{m^{-3}}\)：</p>
+          <div class="formula">\[ \omega_{p}^{2}=\dfrac{(10^{12})(1.602\times10^{-19})^{2}}{(8.854\times10^{-12})(9.109\times10^{-31})}=\dfrac{2.566\times10^{-26}}{8.066\times10^{-42}}=3.18\times10^{15}\,\mathrm{s^{-2}} \]</div>
+          <p>\(\omega_{p}=5.64\times10^{7}\,\mathrm{rad/s}\)，\(f_{p}=\omega_{p}/2\pi=\boxed{8.97\times10^{6}\,\mathrm{Hz}\approx9\,\mathrm{MHz}}\)。截止波长</p>
+          <div class="formula">\[ \lambda_{\mathrm{cut}}=\dfrac{3.0\times10^{8}}{8.97\times10^{6}}=33.4\,\mathrm{m} \]</div>
+          <p>所以中波广播 (\(f\sim1\,\mathrm{MHz}\)，\(\lambda\sim300\,\mathrm{m}\))、短波 (\(f\sim10\!-\!30\,\mathrm{MHz}\)，接近截止) 被<strong>反射回地面</strong>——这是历史上跨洋通讯的主渠道。FM 广播 (\(f\sim100\,\mathrm{MHz}\))、卫星通信 (GHz) 频率高于 \(f_{p}\)，能<strong>穿透</strong>电离层到达卫星。这是 \(\omega_{p}\) 这一纯粹等离子体常数直接支配现代通讯工程的最好例证。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.3 托卡马克中质子与电子的拉莫尔半径</h4>
+        <p class="example-statement">托卡马克磁场 \(B=5\,\mathrm{T}\)；氢等离子体温度 \(T=10\,\mathrm{keV}\)（电子与质子同温）。求质子、电子的热速率 \(v_{\perp}\)、回旋频率 \(f_{c}\) 和拉莫尔半径 \(r_{L}\)。装置小半径 \(a\sim1\,\mathrm{m}\)，问磁化是否足够强？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>取 \(v_{\perp}=\sqrt{2kT/m}\)（即横向动能 \(\tfrac12mv_{\perp}^{2}=kT\)），\(kT=1.602\times10^{-15}\,\mathrm{J}\)。</p>
+          <p class="step"><strong>(i) 质子</strong> \(m_{p}=1.673\times10^{-27}\,\mathrm{kg}\)：</p>
+          <div class="formula">\[ v_{\perp,p}=\sqrt{\dfrac{2(1.602\times10^{-15})}{1.673\times10^{-27}}}=\sqrt{1.915\times10^{12}}=1.38\times10^{6}\,\mathrm{m/s} \]</div>
+          <div class="formula">\[ f_{c,p}=\dfrac{eB}{2\pi m_{p}}=\dfrac{(1.602\times10^{-19})(5)}{2\pi(1.673\times10^{-27})}=7.62\times10^{7}\,\mathrm{Hz}\approx\boxed{76\,\mathrm{MHz}} \]</div>
+          <div class="formula">\[ r_{L,p}=\dfrac{m_{p}v_{\perp,p}}{eB}=\dfrac{(1.673\times10^{-27})(1.38\times10^{6})}{(1.602\times10^{-19})(5)}=2.89\times10^{-3}\,\mathrm{m}\approx\boxed{2.9\,\mathrm{mm}} \]</div>
+          <p class="step"><strong>(ii) 电子</strong> \(m_{e}=9.109\times10^{-31}\,\mathrm{kg}\)：</p>
+          <div class="formula">\[ v_{\perp,e}=\sqrt{\dfrac{2(1.602\times10^{-15})}{9.109\times10^{-31}}}=\sqrt{3.517\times10^{15}}=5.93\times10^{7}\,\mathrm{m/s}\;(\approx0.20c) \]</div>
+          <div class="formula">\[ f_{c,e}=\dfrac{eB}{2\pi m_{e}}=\dfrac{(1.602\times10^{-19})(5)}{2\pi(9.109\times10^{-31})}=1.40\times10^{11}\,\mathrm{Hz}\approx\boxed{140\,\mathrm{GHz}} \]</div>
+          <div class="formula">\[ r_{L,e}=\dfrac{m_{e}v_{\perp,e}}{eB}=\dfrac{(9.109\times10^{-31})(5.93\times10^{7})}{(1.602\times10^{-19})(5)}=6.74\times10^{-5}\,\mathrm{m}\approx\boxed{67\,\mathrm{\mu m}} \]</div>
+          <p class="step"><strong>磁化判据：</strong>\(r_{L,p}/a\sim3\times10^{-3}\)、\(r_{L,e}/a\sim7\times10^{-5}\)，两种粒子的拉莫尔半径都远小于装置尺寸——磁化极强，磁力线几乎是粒子的“轨道”。这正是为什么 \(5\,\mathrm{T}\) 的强磁场能把 \(10^{8}\,\mathrm{K}\) 的等离子体“装”在真空室里（粒子沿磁力线作螺旋，只在端面损失）。注意 \(f_{c,e}=140\,\mathrm{GHz}\) 正是 ITER 电子回旋共振加热 (ECRH) 的工作频率；\(f_{c,p}=76\,\mathrm{MHz}\) 是离子回旋加热 (ICRH) 频段——这些工程数字直接由本章公式 \(\omega_{c}=|q|B/m\) 给出。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.4 验证准中性 — 允许的电荷失衡</h4>
+        <p class="example-statement">在聚变等离子体（同例 9.1）中，如果体积 \(L^{3}\)，\(L=1\,\mathrm{m}\)，存在 \(1\%\) 的电子-离子密度差 \(|n_{e}-Zn_{i}|/n=10^{-2}\)，相应的静电能密度与热压 \(\sim nkT\) 相比如何？准中性“准”到什么程度？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>电荷失衡密度 \(\rho_{\mathrm{ch}}=e\,\delta n=(1.602\times10^{-19})(10^{-2})(10^{20})=1.602\times10^{-1}=0.160\,\mathrm{C/m^{3}}\)。Poisson 方程 \(\nabla^{2}\varphi=-\rho_{\mathrm{ch}}/\varepsilon_{0}\)，尺度法估计 \(|\varphi|\sim\rho_{\mathrm{ch}}L^{2}/\varepsilon_{0}\)，电场 \(E\sim\rho_{\mathrm{ch}}L/\varepsilon_{0}\)：</p>
+          <div class="formula">\[ E\sim\dfrac{(0.160)(1)}{8.854\times10^{-12}}=1.81\times10^{10}\,\mathrm{V/m},\qquad u_{E}=\tfrac12\varepsilon_{0}E^{2}=1.45\times10^{9}\,\mathrm{J/m^{3}} \]</div>
+          <p>对照热压能密度：</p>
+          <div class="formula">\[ u_{\mathrm{th}}\sim nkT=(10^{20})(1.602\times10^{-15})=1.602\times10^{5}\,\mathrm{J/m^{3}} \]</div>
+          <p>\(u_{E}/u_{\mathrm{th}}\sim9\times10^{3}\)！静电能比热能大约<strong>四个数量级</strong>——这在平衡态下完全<strong>不可能</strong>发生，巨大的电场会把过剩电荷瞬间排开。把 Poisson–Boltzmann 线性化结果 \(e\varphi/kT\sim1\) 当作上限，反推允许失衡：在尺度 \(L\) 上 \(|n_{e}-n_{i}|/n\lesssim(\lambda_{D}/L)^{2}\)，对聚变等离子体</p>
+          <div class="formula">\[ \dfrac{|\delta n|}{n}\lesssim\Big(\dfrac{\lambda_{D}}{L}\Big)^{2}=\Big(\dfrac{7.4\times10^{-5}}{1}\Big)^{2}=5.5\times10^{-9}\;\;\Longrightarrow\;\;\delta n/n\lesssim10^{-8} \]</div>
+          <p>所以宏观上电子与离子密度相等到了 \(10^{-8}\) 量级——这就是“准中性”的量化含义。前述 \(1\%\) 失衡会在约 \(10^{-9}\,\mathrm{s}\) 内被等离子体振荡电流抹平。</p>
+          <p><span class="ans">允许失衡 \(\delta n/n\lesssim(\lambda_{D}/L)^{2}\sim10^{-8}\)；宏观上严格准中性，仅在 \(\lambda_{D}\) 尺度内允许电荷分离。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 9.5 德拜球粒子数与等离子体判据</h4>
+        <p class="example-statement">对例 9.1 中的聚变等离子体和电离层，分别计算 \(N_{D}=\dfrac{4\pi}{3}n\lambda_{D}^{3}\)，验证 \(N_{D}\gg1\)。再对一盏霓虹灯（电子密度 \(n_{e}\sim10^{18}\,\mathrm{m^{-3}}\)、电子温度 \(T_{e}\sim 2\,\mathrm{eV}\)、放电区半径 \(L\sim10^{-2}\,\mathrm{m}\)）做同样计算，判断它是否为合格等离子体。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) 聚变：</strong>\(n=10^{20}\,\mathrm{m^{-3}}\)、\(\lambda_{D}=7.43\times10^{-5}\,\mathrm{m}\)：</p>
+          <div class="formula">\[ N_{D}=\dfrac{4\pi}{3}(10^{20})(7.43\times10^{-5})^{3}=4.189\times10^{20}\times4.10\times10^{-13}=1.72\times10^{8} \]</div>
+          <p>\(N_{D}\sim10^{8}\gg1\)。<strong>判据 (i)</strong> \(\lambda_{D}/L=7.4\times10^{-5}\ll1\)，<strong>(ii)</strong> \(N_{D}\sim10^{8}\gg1\)——两个都轻松通过，是教科书级等离子体。</p>
+          <p class="step"><strong>解 (b) 电离层：</strong>\(n=10^{12}\,\mathrm{m^{-3}}\)、\(\lambda_{D}=2.18\times10^{-3}\,\mathrm{m}\)：</p>
+          <div class="formula">\[ N_{D}=\dfrac{4\pi}{3}(10^{12})(2.18\times10^{-3})^{3}=4.189\times10^{12}\times1.04\times10^{-8}=4.36\times10^{4}\gg1 \]</div>
+          <p>仍然 \(N_{D}\gg1\)（虽比聚变小四个量级），且 \(\lambda_{D}/L\sim10^{-8}\)，电离层毫无疑问是等离子体。</p>
+          <p class="step"><strong>解 (c) 霓虹灯：</strong>放电区典型的电子密度 \(n_{e}=10^{18}\,\mathrm{m^{-3}}\)（中性气体密度 \(\sim10^{25}\,\mathrm{m^{-3}}\)，故电离度仅 \(\sim10^{-7}\)，是<strong>弱电离等离子体</strong>）、\(T_{e}=2\,\mathrm{eV}=3.204\times10^{-19}\,\mathrm{J}\)、\(L=10^{-2}\,\mathrm{m}\)：</p>
+          <div class="formula">\[ \lambda_{D}=\sqrt{\dfrac{(8.854\times10^{-12})(3.204\times10^{-19})}{(10^{18})(1.602\times10^{-19})^{2}}}=\sqrt{\dfrac{2.837\times10^{-30}}{2.566\times10^{-20}}}=\sqrt{1.106\times10^{-10}}=1.05\times10^{-5}\,\mathrm{m}=10.5\,\mathrm{\mu m} \]</div>
+          <div class="formula">\[ N_{D}=\dfrac{4\pi}{3}(10^{18})(1.05\times10^{-5})^{3}=4.189\times10^{18}\times1.16\times10^{-15}=4.87\times10^{3} \]</div>
+          <p>\(N_{D}\sim4.9\times10^{3}\gg1\)、\(\lambda_{D}/L\sim1.05\times10^{-3}\ll1\)。<strong>霓虹灯放电区</strong>是合格等离子体（即使<em>电离度仅 \(10^{-7}\)</em>，<strong>电离部分</strong>仍满足两条判据）。这是工程上最容易接触到的等离子体之一。</p>
+          <p class="step"><strong>反例（非等离子体）：</strong>蜡烛火焰中 \(T\sim2000\,\mathrm{K}\)、离子密度 \(n_{\mathrm{ion}}\sim10^{16}\,\mathrm{m^{-3}}\)、中性气体 \(n_{\mathrm{neutral}}\sim10^{25}\,\mathrm{m^{-3}}\)。即使前两条判据勉强成立，<strong>(iii)</strong> \(\omega_{p}\tau_{\mathrm{coll}}\) 因电子与中性粒子频繁碰撞（\(\tau_{\mathrm{coll}}\sim10^{-10}\,\mathrm{s}\) 远长于 \(\omega_{p}^{-1}\sim10^{-11}\,\mathrm{s}\)）而 \(\sim0.1\ll1\)——电子在两次中性碰撞之间来不及完成一次等离子体振荡，集体行为被碰撞摧毁。<strong>火焰严格不是等离子体</strong>，仅是弱电离气体。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>“凡是电离气体就是等离子体”</strong>：错。本生灯火焰、蜡烛火焰、稀弱电离的气体虽有离子，但 \(\omega_{p}\tau_{\mathrm{coll}}\ll1\)（频繁的中性碰撞打断集体振荡），或者 \(N_{D}\) 太小，集体行为无法压倒二元碰撞。务必用三条判据（\(\lambda_{D}\ll L\)、\(N_{D}\gg1\)、\(\omega_{p}\tau_{\mathrm{coll}}\gg1\)）逐项验证，<em>不要</em>只看“是否有自由电子”。</li>
+        <li><strong>把“准中性”当作“处处精确中性”</strong>：错。准中性只在<strong>宏观尺度</strong>（\(\gg\lambda_{D}\)）成立；<strong>在 \(\lambda_{D}\) 及更小尺度上</strong>，电荷分离不仅存在而且必不可少——正是它产生了德拜屏蔽、等离子体振荡、双层面、朗缪尔波。如果你在 \(\lambda_{D}\) 尺度内仍坚持 \(n_{e}=Zn_{i}\)，就等于<strong>抹掉了等离子体最关键的物理</strong>。允许失衡的量化上限是 \(|\delta n|/n\sim(\lambda_{D}/L)^{2}\)（见例 9.4）。</li>
+        <li><strong>用理想气体的“二元碰撞”图景理解等离子体</strong>：错。因为 \(N_{D}\gg1\)，<strong>许多粒子同时</strong>对每个试探电荷施加平均场作用——这是<strong>集体行为</strong>，而非库仑二元碰撞。把等离子体当作“带电的中性气体”去做玻尔兹曼方程就会丢掉德拜屏蔽、朗道阻尼、束流不稳定性等所有<strong>等离子体特有</strong>现象。德拜屏蔽的“屏蔽半径”恰恰是集体平均效应胜过二元碰撞的特征长度。</li>
+        <li><strong>以为 \(\omega_{p}\) 依赖温度</strong>：错。\(\omega_{p}=\sqrt{ne^{2}/(\varepsilon_{0}m_{e}}\) <strong>与温度完全无关</strong>，只依赖密度。温度只决定朗道阻尼率、热速度、德拜长度，但<strong>不</strong>改变振荡频率本身。这是为什么电离层（\(T\sim10^{3}\,\mathrm{K}\)）和金属（\(T\sim300\,\mathrm{K}\)）有截然不同的物理环境，但 \(f_{p}\) 公式完全一样。</li>
+        <li><strong>“E×B 漂移会让电子和离子分开”</strong>：恰恰相反！\(\vec v_{E}=\vec E\times\vec B/B^{2}\) <strong>与电荷 \(q\)、质量 \(m\) 都无关</strong>，电子和离子<strong>一起</strong>漂移——不产生电流、不引起电荷分离。这是 E×B 漂移最反直觉的优雅性质。<strong>梯度-B 漂移</strong>和<strong>曲率漂移</strong>才与电荷符号有关，会形成电流（如托卡马克中的环形漂移电流），不要把二者混为一谈。</li>
+        <li><strong>混淆 \(\omega_{p}\)（电子）与离子等离子体频率</strong>：本章公式 \(\omega_{p}=\sqrt{ne^{2}/\varepsilon_{0}m_{e}}\) 是<strong>电子</strong>的；离子因质量大得多，\(\omega_{pi}=\sqrt{nZ^{2}e^{2}/\varepsilon_{0}m_{i}}\) 小 \(\sqrt{m_{e}/m_{i}}\sim1/43\) 倍（氢）。低频现象（如离子声波、双流不稳定性离子分支）由 \(\omega_{pi}\) 控制。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （太阳风是否算等离子体？）太阳风平均 \(n=5\,\mathrm{cm^{-3}}=5\times10^{6}\,\mathrm{m^{-3}}\)、\(T=10\,\mathrm{eV}\)、特征尺度 \(L\sim1\,\mathrm{AU}=1.5\times10^{11}\,\mathrm{m}\)。求 \(\lambda_{D}\)、\(N_{D}\)、\(\omega_{p}\)，并判断是否满足等离子体判据。</summary>
+        <div class="hint">\(\lambda_{D}=\sqrt{\varepsilon_{0}kT/(ne^{2})}\)，\(T\) 要先换算成焦耳；\(\omega_{p}=\sqrt{ne^{2}/(\varepsilon_{0}m_{e})}\)。</div>
+        <div class="solution">
+          <p>\(kT=10\times1.602\times10^{-19}=1.602\times10^{-18}\,\mathrm{J}\)。</p>
+          <p>\(\lambda_{D}^{2}=\dfrac{(8.854\times10^{-12})(1.602\times10^{-18})}{(5\times10^{6})(1.602\times10^{-19})^{2}}=\dfrac{1.418\times10^{-29}}{1.283\times10^{-31}}=110.5\,\mathrm{m^{2}}\)，\(\lambda_{D}=10.5\,\mathrm{m}\)。</p>
+          <p>\(N_{D}=\dfrac{4\pi}{3}(5\times10^{6})(10.5)^{3}=2.42\times10^{10}\gg1\)。\(\omega_{p}^{2}=\dfrac{(5\times10^{6})(1.602\times10^{-19})^{2}}{(8.854\times10^{-12})(9.109\times10^{-31})}=\dfrac{1.283\times10^{-31}}{8.066\times10^{-42}}=1.59\times10^{10}\,\mathrm{s^{-2}}\)，\(\omega_{p}=1.26\times10^{5}\,\mathrm{rad/s}\)，\(f_{p}=\omega_{p}/2\pi=2.0\times10^{4}\,\mathrm{Hz}=20\,\mathrm{kHz}\)。</p>
+          <p>\(\lambda_{D}/L\sim10.5/1.5\times10^{11}=7\times10^{-11}\ll1\)。<strong>三判据全部满足</strong>，太阳风是非常理想的等离子体（虽极稀薄，\(f_{p}\) 仅 \(20\,\mathrm{kHz}\)，落在音频范围）。</p>
+          <p><span class="ans">\(\lambda_{D}\approx10.5\,\mathrm{m}\)；\(N_{D}\approx2.4\times10^{10}\)；\(f_{p}\approx20\,\mathrm{kHz}\)。太阳风是合格等离子体。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （金属传导电子密度）实验测得某金属的等离子体截止波长 \(\lambda_{\mathrm{cut}}=160\,\mathrm{nm}\)。求传导电子密度 \(n_{e}\)，并与铜 (\(8.5\times10^{28}\,\mathrm{m^{-3}}\)) 比较。</summary>
+        <div class="hint">\(f_{p}=c/\lambda_{\mathrm{cut}}\)，\(\omega_{p}=2\pi f_{p}\)，\(n_{e}=\varepsilon_{0}m_{e}\omega_{p}^{2}/e^{2}\)。</div>
+        <div class="solution">
+          <p>\(f_{p}=3.0\times10^{8}/(1.6\times10^{-7})=1.875\times10^{15}\,\mathrm{Hz}\)，\(\omega_{p}=2\pi f_{p}=1.178\times10^{16}\,\mathrm{rad/s}\)。</p>
+          <p>\(n_{e}=\dfrac{(8.854\times10^{-12})(9.109\times10^{-31})(1.178\times10^{16})^{2}}{(1.602\times10^{-19})^{2}}=\dfrac{1.118\times10^{-9}}{2.566\times10^{-38}}=4.36\times10^{28}\,\mathrm{m^{-3}}\)。</p>
+          <p>比铜略低（约为铜的 \(1/2\)），与铝 (\(n_{e}\approx6\times10^{28}\,\mathrm{m^{-3}}\)) 接近。这给出了一个简单方法：测金属的紫外吸收边即可推断电子密度，无需知道晶格结构。</p>
+          <p><span class="ans">\(n_{e}\approx4.4\times10^{28}\,\mathrm{m^{-3}}\)（介于铜和钠之间）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （太阳日冕）日冕 \(T=10^{6}\,\mathrm{K}\)、\(n=10^{15}\,\mathrm{m^{-3}}\)、磁场 \(B=10^{-4}\,\mathrm{T}\)（\(1\,\mathrm{G}\)）。(a) 求 \(\lambda_{D}\)、\(f_{p}\)；(b) 求质子的拉莫尔半径（取 \(v_{\perp}=\sqrt{2kT/m_{p}}\)）；(c) 解释为何日冕等离子体能被磁场结构化（黑子、日珥）。</summary>
+        <div class="hint">把 \(T\) 换成 eV：\(kT_{\mathrm{eV}}=T_{\mathrm{K}}/(1.16\times10^{4})\)；回旋运动 \(r_{L}=mv_{\perp}/(eB)\)。</div>
+        <div class="solution">
+          <p>(a) \(T=10^{6}\,\mathrm{K}\Rightarrow kT=86\,\mathrm{eV}=1.38\times10^{-17}\,\mathrm{J}\)。 \(\lambda_{D}=\sqrt{\dfrac{(8.854\times10^{-12})(1.38\times10^{-17})}{(10^{15})(1.602\times10^{-19})^{2}}}=2.18\times10^{-3}\,\mathrm{m}\approx2.2\,\mathrm{mm}\)。 \(\omega_{p}=\sqrt{3.18\times10^{18}}=1.78\times10^{9}\,\mathrm{rad/s}\)，\(f_{p}=284\,\mathrm{MHz}\)（射电波段，对应日冕射电观测）。</p>
+          <p>(b) \(v_{\perp,p}=\sqrt{\dfrac{2(1.38\times10^{-17})}{1.673\times10^{-27}}}=1.28\times10^{5}\,\mathrm{m/s}\)。\(r_{L,p}=\dfrac{(1.673\times10^{-27})(1.28\times10^{5})}{(1.602\times10^{-19})(10^{-4})}=13.4\,\mathrm{m}\)。</p>
+          <p>(c) 日珥尺度 \(\sim10^{7}\!-\!10^{8}\,\mathrm{m}\)，\(r_{L}/L\sim10^{-7}\)，磁场把粒子牢牢缚在磁力线上。MHD 磁冻结图像下，磁场结构（环、拱）就决定物质分布——这就是太阳大气被磁结构化的原因。</p>
+          <p><span class="ans">\(\lambda_{D}\approx2.2\,\mathrm{mm}\)；\(f_{p}\approx284\,\mathrm{MHz}\)；\(r_{L,p}\approx13\,\mathrm{m}\)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （E×B 漂移的“无电荷分离”）证明：在均匀 \(\vec B\) 中加均匀电场 \(\vec E\perp\vec B\)，导引中心漂移 \(\vec v_{E}=\vec E\times\vec B/B^{2}\) 与粒子电荷、质量无关。一质子和一电子在同一 \(\vec E,\vec B\) 下，谁漂得快？</summary>
+        <div class="hint">令 \(\vec v=\vec v_{E}+\vec v_{\text{gyro}}\)，让 \(m\,d\vec v_{\text{gyro}}/dt=q\vec v_{\text{gyro}}\times\vec B\)。要求 \(\vec E+\vec v_{E}\times\vec B=0\)。</div>
+        <div class="solution">
+          <p>运动方程 \(m\,d\vec v/dt=q(\vec E+\vec v\times\vec B)\)。把速度分解为常矢量 \(\vec v_{E}\) 加回旋分量：\(\vec v=\vec v_{E}+\vec u\)。代入：\(m\,d\vec u/dt=q(\vec E+\vec v_{E}\times\vec B)+q\vec u\times\vec B\)。要使 \(\vec u\) 仍纯回旋，第一括号必须为零：\(\vec E+\vec v_{E}\times\vec B=0\)。用 \(\vec B\) 叉乘：\(\vec E\times\vec B+(\vec v_{E}\times\vec B)\times\vec B=0\)。由三重积 \((\vec v_{E}\times\vec B)\times\vec B=\vec B(\vec v_{E}\!\cdot\!\vec B)-\vec v_{E}B^{2}=-\vec v_{E}B^{2}\)（取横向）。故 \(\vec E\times\vec B-\vec v_{E}B^{2}=0\)，即 \(\vec v_{E}=\vec E\times\vec B/B^{2}\)。</p>
+          <p><strong>该结果不出现 \(m\) 或 \(q\)</strong>——所以质子和电子<strong>同速</strong>漂移。这是为什么 E×B 漂移不产生电流：两种粒子一起走，没有相对运动。</p>
+          <p><span class="ans">\(\vec v_{E}=\vec E\times\vec B/B^{2}\)；质子与电子漂得一样快。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （星际介质的等离子体性）星际介质 (ISM) 温中性区：\(n\sim10^{6}\,\mathrm{m^{-3}}\)、\(T\sim10^{4}\,\mathrm{K}\)、典型尺度 \(L\sim1\,\mathrm{pc}=3.1\times10^{16}\,\mathrm{m}\)。求 \(\lambda_{D}\)、\(N_{D}\)、\(f_{p}\)，并算 \(\lambda_{D}/L\)。讨论 ISM 在多大程度上是“理想”等离子体。</summary>
+        <div class="hint">\(T_{\mathrm{K}}\) 换 eV：\(kT_{\mathrm{eV}}=T_{\mathrm{K}}\times8.617\times10^{-5}\)；\(\lambda_{D}\propto\sqrt{T/n}\)。</div>
+        <div class="solution">
+          <p>\(T=10^{4}\,\mathrm{K}\Rightarrow kT=0.86\,\mathrm{eV}=1.38\times10^{-19}\,\mathrm{J}\)。</p>
+          <p>\(\lambda_{D}=\sqrt{\dfrac{(8.854\times10^{-12})(1.38\times10^{-19})}{(10^{6})(1.602\times10^{-19})^{2}}}=\sqrt{\dfrac{1.22\times10^{-30}}{2.57\times10^{-32}}}=\sqrt{47.6}=6.9\,\mathrm{m}\)。</p>
+          <p>\(N_{D}=\dfrac{4\pi}{3}(10^{6})(6.9)^{3}=1.38\times10^{9}\gg1\)。\(f_{p}=\dfrac{1}{2\pi}\sqrt{\dfrac{(10^{6})(1.602\times10^{-19})^{2}}{(8.854\times10^{-12})(9.109\times10^{-31})}}=8.97\times10^{3}\,\mathrm{Hz}\)。</p>
+          <p>\(\lambda_{D}/L\sim6.9/3.1\times10^{16}=2.2\times10^{-16}\)！宇宙中没有任何已知等离子体的准中性比 ISM 更好。哪怕粒子数密度只有 \(10^{6}\,\mathrm{m^{-3}}\)（每立方米才几个粒子），它仍是极理想的等离子体——这是为什么宇宙学-天体物理几乎处处用 MHD。</p>
+          <p><span class="ans">\(\lambda_{D}\approx6.9\,\mathrm{m}\)；\(N_{D}\approx1.4\times10^{9}\)；\(f_{p}\approx9\,\mathrm{kHz}\)；\(\lambda_{D}/L\sim10^{-16}\)。ISM 是理想等离子体。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 德拜屏蔽 Debye Shielding</h2>
+      <p class="sim-desc">一个正的试探电荷 \(+Q\) 被放入等离子体中（左图）。自由电子被它吸引、聚集在其周围形成屏蔽云；离子被排斥。<strong>净电势</strong> \(\varphi(r)\) 不再是裸库仑势 \(1/r\)，而是按 <strong>汤川势</strong> \(e^{-r/\lambda_{D}}/r\) 指数衰减（右图，蓝线）。调节密度 \(n\) 与温度 \(T\)，观察 \(\lambda_{D}\) 与屏蔽曲线的变化：高 \(n\)、低 \(T\) → \(\lambda_{D}\) 小、屏蔽强（Yukawa 远低于 Coulomb）；低 \(n\)、高 \(T\) → \(\lambda_{D}\) 大、屏蔽弱（两曲线靠近）。</p>
+      <div class="sim-container">
+        <canvas id="sim-9" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-9"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-9');
+          var W = canvas.width, H = canvas.height;
+
+          /* physical constants (SI) */
+          var eps0 = 8.854e-12;
+          var eE   = 1.602e-19;     // elementary charge
+          var me   = 9.109e-31;
+
+          /* slider state */
+          var params = {
+            logN: 17.0,             // log10(n / m^-3)
+            TeV: 10.0               // temperature (eV)
+          };
+          function getN()  { return Math.pow(10, params.logN); }
+          function getTJ() { return params.TeV * eE; }
+          function lambdaD_m() { return Math.sqrt(eps0 * getTJ() / (getN() * eE * eE)); }
+
+          /* layout */
+          var CLOUD_X0 = 20,  CLOUD_Y0 = 50,  CLOUD_W = 320, CLOUD_H = 320;
+          var CX = CLOUD_X0 + CLOUD_W/2, CY = CLOUD_Y0 + CLOUD_H/2;
+          var PX_PER_LAM = 55;        // 1 lambda_D = 55 px in cloud view
+          var PLOT_X0 = 370, PLOT_Y0 = 50, PLOT_W = 250, PLOT_H = 290;
+          var R_MIN_UM = 5, R_MAX_UM = 500;
+          var Q_test = 1e-15;         // test charge (C)
+
+          function newState() {
+            var parts = [];
+            var N = 240;
+            for (var i = 0; i < N; i++) {
+              var ang = Math.random() * 6.2832;
+              var r0  = 0.6 + 2.6 * Math.random();   // in units of lambda_D
+              parts.push({
+                x: r0 * Math.cos(ang),               // dimensionless position (units of lambda_D)
+                y: r0 * Math.sin(ang),
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5
+              });
+            }
+            return { parts: parts };
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return newState(); },
+            step: function (dt, t, s) {
+              /* integrate electron motion in DIMENSIONLESS units:
+                 length in lambda_D, time in 1/omega_p. Each electron feels
+                 (1) attraction toward test charge via screened Yukawa force,
+                 (2) random thermal kick, (3) mild damping. */
+              var dtau = dt * 2.5;                  // advance dimensionless time
+              var A = 0.9;                          // attraction strength (tuned)
+              var B = 1.6;                          // thermal noise strength
+              var C = 0.18;                         // damping
+              for (var i = 0; i < s.parts.length; i++) {
+                var p = s.parts[i];
+                var dx = -p.x, dy = -p.y;
+                var r2 = p.x*p.x + p.y*p.y + 0.04;  // softening
+                var r  = Math.sqrt(r2);
+                var screen = Math.exp(-r);
+                var fmag = A * screen * (1/r2 + 1/r);
+                var fx = fmag * dx/r + (Math.random() - 0.5) * B - C * p.vx;
+                var fy = fmag * dy/r + (Math.random() - 0.5) * B - C * p.vy;
+                p.vx += fx * dtau;
+                p.vy += fy * dtau;
+                p.x  += p.vx * dtau;
+                p.y  += p.vy * dtau;
+                /* boundary at r = 3 (reflect) */
+                var rr = Math.sqrt(p.x*p.x + p.y*p.y);
+                if (rr > 3) {
+                  var nrm = 3 / rr;
+                  p.x *= nrm; p.y *= nrm;
+                  var vn = p.vx * p.x / 3 + p.vy * p.y / 3;
+                  p.vx -= 2 * vn * p.x / 3;
+                  p.vy -= 2 * vn * p.y / 3;
+                }
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var lam_m = lambdaD_m();
+              var lam_um = lam_m * 1e6;
+
+              /* ===== Cloud panel ===== */
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(CLOUD_X0, CLOUD_Y0, CLOUD_W, CLOUD_H);
+              /* lambda_D reference circle */
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.lineWidth = 1.6;
+              ctx.setLineDash([5, 4]);
+              ctx.beginPath();
+              ctx.arc(CX, CY, PX_PER_LAM, 0, 6.2832);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              /* 2 lambda_D circle (faint) */
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.35;
+              ctx.setLineDash([2, 4]);
+              ctx.beginPath();
+              ctx.arc(CX, CY, 2 * PX_PER_LAM, 0, 6.2832);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+              /* test charge */
+              PS.drawCircle(ctx, CX, CY, 9, { fill: PS.colors.accent, stroke: PS.colors.text, lineWidth: 1.5 });
+              PS.drawText(ctx, '+Q', CX, CY + 1, { color: '#fff', align: 'center', baseline: 'middle', font: 'bold 12px sans-serif' });
+              /* electrons */
+              for (var i = 0; i < s.parts.length; i++) {
+                var p = s.parts[i];
+                var px = CX + p.x * PX_PER_LAM;
+                var py = CY + p.y * PX_PER_LAM;
+                PS.drawCircle(ctx, px, py, 2.3, { fill: PS.colors.primary });
+              }
+              /* labels */
+              PS.drawText(ctx, 'Particle view (positions in units of λ_D)', CLOUD_X0, CLOUD_Y0 - 18, { color: PS.colors.text, font: 'bold 12px sans-serif' });
+              PS.drawText(ctx, 'Blue: electrons; Red +Q: test charge', CLOUD_X0, CLOUD_Y0 - 4, { color: PS.colors.text, font: '11px sans-serif' });
+              PS.drawText(ctx, 'λ_D = ' + lam_um.toFixed(2) + ' μm   (green circle = 1 λ_D)', CLOUD_X0, CLOUD_Y0 + CLOUD_H + 16, { color: PS.colors.accent2, font: 'bold 12px sans-serif' });
+              PS.drawText(ctx, 'n = ' + getN().toExponential(2) + ' m⁻³,  T = ' + params.TeV.toFixed(1) + ' eV', CLOUD_X0, CLOUD_Y0 + CLOUD_H + 32, { color: PS.colors.text, font: '11px sans-serif' });
+              PS.drawText(ctx, 'Electrons cluster within ~1 λ_D; beyond, the test charge is screened.', CLOUD_X0, CLOUD_Y0 + CLOUD_H + 48, { color: PS.colors.text, font: '11px sans-serif' });
+
+              /* ===== Potential plot ===== */
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(PLOT_X0, PLOT_Y0, PLOT_W, PLOT_H);
+              var phiMax = Q_test / (4 * Math.PI * eps0 * R_MIN_UM * 1e-6);
+              /* bare Coulomb (red) */
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              for (var k = 0; k <= 120; k++) {
+                var r_um = R_MIN_UM + (R_MAX_UM - R_MIN_UM) * k / 120;
+                var r_m  = r_um * 1e-6;
+                var phi  = Q_test / (4 * Math.PI * eps0 * r_m);
+                var px = PLOT_X0 + (r_um / R_MAX_UM) * PLOT_W;
+                var py = PLOT_Y0 + PLOT_H - (phi / phiMax) * PLOT_H;
+                if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              /* Yukawa (blue) */
+              ctx.strokeStyle = PS.colors.primary;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              for (var k = 0; k <= 120; k++) {
+                var r_um = R_MIN_UM + (R_MAX_UM - R_MIN_UM) * k / 120;
+                var r_m  = r_um * 1e-6;
+                var phi  = Q_test / (4 * Math.PI * eps0 * r_m) * Math.exp(-r_m / lam_m);
+                var py_n = Math.max(phi / phiMax, 0);
+                var px = PLOT_X0 + (r_um / R_MAX_UM) * PLOT_W;
+                var py = PLOT_Y0 + PLOT_H - py_n * PLOT_H;
+                if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              /* lambda_D vertical marker */
+              var lamFrac = lam_um / R_MAX_UM;
+              if (lamFrac > 0.01 && lamFrac < 1) {
+                ctx.strokeStyle = PS.colors.accent2;
+                ctx.setLineDash([3, 3]);
+                ctx.lineWidth = 1.2;
+                var lamPx = PLOT_X0 + lamFrac * PLOT_W;
+                ctx.beginPath();
+                ctx.moveTo(lamPx, PLOT_Y0);
+                ctx.lineTo(lamPx, PLOT_Y0 + PLOT_H);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                PS.drawText(ctx, 'λ_D', lamPx + 4, PLOT_Y0 + 12, { color: PS.colors.accent2, font: 'bold 11px sans-serif' });
+              }
+              /* axes labels & ticks */
+              PS.drawText(ctx, 'Screened potential φ(r)  (Q = 10⁻¹⁵ C)', PLOT_X0, PLOT_Y0 - 18, { color: PS.colors.text, font: 'bold 12px sans-serif' });
+              PS.drawText(ctx, 'r (μm)', PLOT_X0 + PLOT_W / 2 - 14, PLOT_Y0 + PLOT_H + 16, { color: PS.colors.text, font: '12px sans-serif' });
+              PS.drawText(ctx, 'φ (V)', PLOT_X0 - 30, PLOT_Y0 - 4, { color: PS.colors.text, font: '12px sans-serif' });
+              for (var tk = 0; tk <= 5; tk++) {
+                var ru = (R_MAX_UM / 5) * tk;
+                var px = PLOT_X0 + (ru / R_MAX_UM) * PLOT_W;
+                ctx.strokeStyle = PS.colors.axis;
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(px, PLOT_Y0 + PLOT_H); ctx.lineTo(px, PLOT_Y0 + PLOT_H + 4); ctx.stroke();
+                PS.drawText(ctx, ru.toFixed(0), px, PLOT_Y0 + PLOT_H + 13, { align: 'center', color: PS.colors.text, font: '10px sans-serif' });
+              }
+              /* legend */
+              PS.drawText(ctx, '— bare Coulomb 1/r', PLOT_X0 + 12, PLOT_Y0 + 16, { color: PS.colors.accent, font: 'bold 11px sans-serif' });
+              PS.drawText(ctx, '— Yukawa e^(-r/λ_D)/r', PLOT_X0 + 12, PLOT_Y0 + 32, { color: PS.colors.primary, font: 'bold 11px sans-serif' });
+              PS.drawText(ctx, 'Beyond ~3 λ_D, φ is essentially zero.', PLOT_X0 + 8, PLOT_Y0 + PLOT_H - 14, { color: PS.colors.text, font: '11px sans-serif' });
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-9'), [
+            { type: 'slider', key: 'logN', label: 'log₁₀ n  (m⁻³)', min: 16, max: 18, step: 0.1, value: 17.0 },
+            { type: 'slider', key: 'TeV',  label: 'T  (eV)',            min: 1,  max: 100, step: 1,   value: 10 },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('logN', function (v) { params.logN = v; });
+          ctl.on('TeV',  function (v) { params.TeV  = v; });
+          ctl.on('reset', function () { sim.reset(); });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>等离子体 = 物质第四态</strong>：电离气体 + 准中性 + 集体行为。三条定量判据：<strong>(i)</strong> \(\lambda_{D}\ll L\)、<strong>(ii)</strong> \(N_{D}=n\lambda_{D}^{3}\gg1\)、<strong>(iii)</strong> \(\omega_{p}\tau_{\mathrm{coll}}\gg1\)。三者同时满足才是等离子体；火焰、盐水等不是。</li>
+        <li><strong>准中性</strong>只在宏观尺度 \(\gg\lambda_{D}\) 上成立；\(\lambda_{D}\) 尺度内允许电荷分离，这是德拜屏蔽、等离子体振荡的物理来源。允许失衡 \(|\delta n|/n\sim(\lambda_{D}/L)^{2}\)。</li>
+        <li><strong>德拜屏蔽</strong>：试探电荷在等离子体中被电子云屏蔽，电势为<strong>汤川势</strong> \(\varphi(r)=\dfrac{Q}{4\pi\varepsilon_{0}r}e^{-r/\lambda_{D}}\)。德拜长度 \(\lambda_{D}=\sqrt{\varepsilon_{0}kT/(ne^{2})}\)（高 \(n\)、低 \(T\) → 强屏蔽）。</li>
+        <li><strong>等离子体频率</strong> \(\omega_{p}=\sqrt{ne^{2}/(\varepsilon_{0}m_{e})}\)：电子海的固有振荡，<strong>与温度无关</strong>。频率 \(\omega&lt;\omega_{p}\) 的电磁波无法传播 → 金属反光（紫外截止）、电离层反射 AM 短波。</li>
+        <li><strong>回旋运动</strong>：磁场中带电粒子做螺旋，\(\omega_{c}=|q|B/m\)、\(r_{L}=mv_{\perp}/(|q|B)\)。电子圈小、离子圈大；磁约束聚变靠此把粒子缚在磁力线上。</li>
+        <li><strong>粒子漂移</strong>：E×B 漂移 \(\vec v_{E}=\vec E\times\vec B/B^{2}\) <em>与电荷、质量无关</em>，不产生电流；grad-B 漂移 \(\propto v_{\perp}^{2}\)、离子电子反向，会产生电流。</li>
+        <li><strong>磁流体力学 (MHD)</strong>：单流体理想图像，磁感应方程 \(\partial_{t}\vec B=\nabla\times(\vec v\times\vec B)\) 给出<strong>磁冻结</strong>——磁力线随流体一起运动，解释太阳大气结构、地球磁层。</li>
+        <li><strong>等离子体无处不在</strong>：电离层、霓虹灯、托卡马克、恒星、星际介质；可见宇宙 &gt;99% 物质处于等离子态。</li>
+      </ul>
+      <div class="formula">\[ \lambda_{D}=\sqrt{\dfrac{\varepsilon_{0}kT_{e}}{n_{e}e^{2}}}\;,\qquad \omega_{p}=\sqrt{\dfrac{n_{e}e^{2}}{\varepsilon_{0}m_{e}}}\;,\qquad N_{D}=\dfrac{4\pi}{3}\,n\,\lambda_{D}^{3}\gg1 \]</div>
+      <div class="formula">\[ \varphi(r)=\dfrac{Q}{4\pi\varepsilon_{0}\,r}\,e^{-r/\lambda_{D}}\quad\text{(Yukawa)},\qquad \omega_{c}=\dfrac{|q|B}{m},\qquad r_{L}=\dfrac{mv_{\perp}}{|q|B} \]</div>
+      <div class="formula">\[ \vec v_{E}=\dfrac{\vec E\times\vec B}{B^{2}}\;\;\text{(charge-independent)},\qquad \vec v_{\nabla B}=\pm\dfrac{mv_{\perp}^{2}}{2|q|B^{3}}\,(\vec B\times\nabla B) \]</div>
+      <div class="formula">\[ \text{Ideal MHD: }\;\vec E+\vec v\times\vec B=0,\;\;\partial_{t}\vec B=\nabla\times(\vec v\times\vec B),\;\;\rho\dfrac{d\vec v}{dt}=\vec J\times\vec B-\nabla p \]</div>
+      <div class="formula">\[ \text{数值快速估算: }\;f_{p}\approx 8.98\,\mathrm{Hz}\sqrt{n_{\mathrm{[m^{-3}]}}}\;,\quad \lambda_{D}\approx 743\,\mathrm{\mu m}\sqrt{T_{\mathrm{[eV]}}/n_{\mathrm{[m^{-3}]}}}\;,\quad f_{ce}\approx 28\,\mathrm{GHz}\times B_{\mathrm{[T]}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

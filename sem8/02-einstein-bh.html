@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2章 · 爱因斯坦方程与黑洞 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="2">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第2章 · 广义相对论 General Relativity</p>
+      <h1>爱因斯坦方程与黑洞 <span class="en-title">Einstein's Equations &amp; Black Holes</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>写出<strong>爱因斯坦场方程 (Einstein field equations)</strong> \(G_{\mu\nu}+\Lambda g_{\mu\nu}=\dfrac{8\pi G}{c^{4}}T_{\mu\nu}\)，说明每一项的物理意义：“物质-能量告诉时空如何弯曲，弯曲的时空告诉物质如何运动。”</li>
+        <li>对理想流体写出<strong>能量-动量张量 (energy-momentum tensor)</strong> \(T_{\mu\nu}\)，理解 \(T_{00}\) 是能量密度、\(T_{ij}\) 是动量流与应力；指出真空方程 \(T_{\mu\nu}=0\) 的解即爱因斯坦真空方程 \(R_{\mu\nu}=0\)。</li>
+        <li>说明<strong>宇宙学常数 (cosmological constant)</strong> \(\Lambda\) 的角色：它代表一种均匀的真空能量密度，主导宇宙的加速膨胀。</li>
+        <li>对球对称非旋转质量写出<strong>施瓦茨希尔德度规 (Schwarzschild metric)</strong>，识别事件视界 \(r_{s}=2GM/c^{2}\) 与奇点 \(r=0\)。</li>
+        <li>计算<strong>引力时间膨胀 (gravitational time dilation)</strong> \(d\tau=\sqrt{1-r_{s}/r}\,dt\)，定量处理 GPS 卫星钟修正。</li>
+        <li>解释<strong>黑洞 (black hole)</strong> 的形成、视界、奇点与无毛定理 (no-hair theorem)：黑洞只保留质量、电荷、角动量三个参数。</li>
+        <li>描述<strong>光子球 (photon sphere)</strong> \(r=1.5\,r_{s}\) 与最内稳定圆轨道 (ISCO) \(r=3\,r_{s}\)，区分被捕获与被偏折的光线；简要了解旋转的 Kerr 黑洞。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 引力即几何：等价原理与时空弯曲 Gravity as Geometry</h3>
+      <p>1907 年，爱因斯坦在专利局思考“若一个观测者自由下落，他就感觉不到自己的重量”，提出<strong>等效原理 (equivalence principle)</strong>：在足够小的区域内，引力场与加速参考系<strong>局域不可区分</strong>。由此他认识到，牛顿意义上的“引力”其实并不存在——粒子之所以“下落”，是因为质量-能量使<strong>时空本身弯曲</strong>，而粒子沿弯曲时空中的直线（测地线，geodesic）运动。惠勒 (Wheeler) 的箴言概括了广义相对论 (General Relativity, GR) 的全部：</p>
+      <div class="formula">\[ \text{“时空告诉物质如何运动；物质告诉时空如何弯曲。”}\quad\text{(Wheeler)} \]</div>
+      <p>狭义相对论 (SR) 把空间与时间统一为闵可夫斯基时空；广义相对论进一步把它<strong>弯曲</strong>。弯曲由度规张量 \(g_{\mu\nu}(x)\) 描述——它是时空几何的“势函数”，10 个独立分量（对称 \(4\times 4\) 矩阵）。</p>
+
+      <h3>2. 爱因斯坦场方程 The Einstein Field Equations</h3>
+      <p>经过 1907–1915 年八年的探索，爱因斯坦写下了决定时空几何的方程：</p>
+      <div class="formula">\[ \boxed{\;G_{\mu\nu}+\Lambda\,g_{\mu\nu}=\frac{8\pi G}{c^{4}}\,T_{\mu\nu}\;} \]</div>
+      <p>各符号意义：</p>
+      <ul>
+        <li><strong>\(G_{\mu\nu}=R_{\mu\nu}-\tfrac{1}{2}R\,g_{\mu\nu}\)</strong> 是<strong>爱因斯坦张量 (Einstein tensor)</strong>，由黎曼曲率张量 \(R^{\rho}{}_{\sigma\mu\nu}\) 缩并而成，量度时空在每一点的弯曲程度。它自动满足<strong>比安基恒等式</strong> \(\nabla_{\mu}G^{\mu\nu}=0\)，这蕴含了局域能量-动量守恒 \(\nabla_{\mu}T^{\mu\nu}=0\)。</li>
+        <li><strong>\(\Lambda\)</strong> 是<strong>宇宙学常数 (cosmological constant)</strong>，量纲为 \(\mathrm{length^{-2}}\)。它代表与度规成正比的“真空曲率”——即使 \(T_{\mu\nu}=0\)，时空仍可有均匀的内在弯曲。现代宇宙学测得 \(\Lambda\approx 1.1\times 10^{-52}\,\mathrm{m^{-2}}\)，对应宇宙的加速膨胀（暗能量）。</li>
+        <li><strong>\(T_{\mu\nu}\)</strong> 是<strong>能量-动量张量 (energy-momentum tensor)</strong>，时空所有物质、辐射、压强的源。</li>
+        <li>系数 \(\dfrac{8\pi G}{c^{4}}\) 把“物质单位”转换为“曲率单位”。它极小：\(8\pi G/c^{4}\approx 2.1\times 10^{-43}\,\mathrm{N^{-1}}\)，所以普通密度产生的曲率微乎其微——这就是引力比其他三种基本力弱得多的几何根源。</li>
+      </ul>
+      <p>这是 10 个二阶非线性偏微分方程组，一般无解析解。但具有足够对称性的情形（球对称、宇宙学、轴对称等）可解。本章聚焦最重要的解——施瓦茨希尔德黑洞。</p>
+
+      <h3>3. 能量-动量张量 \(T_{\mu\nu}\) The Energy-Momentum Tensor</h3>
+      <p>\(T_{\mu\nu}\) 是所有“源”的统一描述。对理想流体（无粘、各向同性），取度规符号 \((+,-,-,-)\) 与 \(u^{\mu}u_{\mu}=c^{2}\)：</p>
+      <div class="formula">\[ T_{\mu\nu}=\frac{1}{c^{2}}(\rho+p)\,u_{\mu}u_{\nu}-p\,g_{\mu\nu} \]</div>
+      <p>其中 \(\rho\) 是<strong>能量密度</strong>（单位 \(\mathrm{J/m^{3}}\)，含静止质量能 \(mc^{2}\)）、\(p\) 是压强、\(u^{\mu}\) 是流体四速度。在流体静止系中 \(u^{\mu}=(c,\vec{0})\)，代入得：</p>
+      <div class="formula">\[ T_{\mu\nu}\xrightarrow{\text{rest}}\begin{pmatrix}\rho & 0 & 0 & 0\\ 0 & p & 0 & 0\\ 0 & 0 & p & 0\\ 0 & 0 & 0 & p\end{pmatrix} \]</div>
+      <p>即 \(T_{00}=\rho\) 是能量密度，\(T_{ii}=p\) 是各向同性压强。<strong>“无压尘埃” (dust, \(p=0\))</strong> 是松散粒子云的模型：\(T_{\mu\nu}=\rho\,u_{\mu}u_{\nu}/c^{2}\)，它描述星系大尺度结构、星周吸积盘外围等。<strong>电磁场</strong>的 \(T_{\mu\nu}\) 由麦克斯韦张量构成，是光与黑洞相互作用（例 2.4 的光线偏折）的源。</p>
+      <p>真空 \(T_{\mu\nu}=0\)（且 \(\Lambda=0\)）时，场方程退化为 \(R_{\mu\nu}=0\)，<strong>里奇张量为零但黎曼曲率不必为零</strong>——施瓦茨希尔德外部解正属于此情形：太阳或黑洞外部时空。</p>
+
+      <h3>4. 球对称真空解：施瓦茨希尔德度规 The Schwarzschild Metric</h3>
+      <p>1915 年底，就在爱因斯坦发表场方程不到一个月，正在俄国前线服役的德国天文学家施瓦茨希尔德 (Karl Schwarzschild) 求出了第一个非平凡精确解：一个质量为 \(M\)、球对称、非旋转、外部为真空的时空。用球坐标 \((t,r,\theta,\phi)\) 与 \(r_{s}\equiv 2GM/c^{2}\)：</p>
+      <div class="formula">\[ \mathrm{d}s^{2}=\left(1-\frac{r_{s}}{r}\right)c^{2}\,\mathrm{d}t^{2}-\left(1-\frac{r_{s}}{r}\right)^{-1}\mathrm{d}r^{2}-r^{2}\!\left(\mathrm{d}\theta^{2}+\sin^{2}\theta\,\mathrm{d}\phi^{2}\right) \]</div>
+      <ul>
+        <li><strong>球面项</strong> \(r^{2}\mathrm{d}\Omega^{2}\) 与平直时空相同；所以 \(r\) 仍是“环绕面积除以 \(4\pi\) 再开方”的面积半径：\(A=4\pi r^{2}\)。</li>
+        <li><strong>时间分量</strong> \(g_{00}=1-r_{s}/r\) 在 \(r\to\infty\) 时趋于 1，与狭义相对论的闵可夫斯基度规衔接（“渐近平直”）。</li>
+        <li>当 \(r\gg r_{s}\)（弱场），\(g_{00}\approx 1-2|\Phi|/c^{2}\) 其中 \(\Phi=-GM/r\) 是牛顿引力势（见推导 A）。</li>
+        <li><strong>毕尔霍夫定理 (Birkhoff's theorem)</strong>：真空球对称解必是施瓦茨希尔德度规（含可能的宇宙学常数修正）。即使中央天体在径向脉动，外部度规不变——广义相对论中的“无单极辐射”。</li>
+      </ul>
+
+      <h3>5. 引力时间膨胀与红移 Gravitational Time Dilation &amp; Redshift</h3>
+      <p>固定在 \(r\) 处的静止观测者 (\(\mathrm{d}r=\mathrm{d}\theta=\mathrm{d}\phi=0\)) 测得的<strong>固有时</strong> \(d\tau\) 与坐标时 \(dt\) 的关系：</p>
+      <div class="formula">\[ \mathrm{d}s^{2}=c^{2}\,\mathrm{d}\tau^{2}=\left(1-\frac{r_{s}}{r}\right)c^{2}\,\mathrm{d}t^{2}\quad\Longrightarrow\quad \mathrm{d}\tau=\sqrt{1-\frac{r_{s}}{r}}\;\mathrm{d}t \]</div>
+      <p>由于 \(1-r_{s}/r&lt;1\)，<strong>静止于强引力区（小 \(r\)）的钟走得比远处的钟慢</strong>。在地球表面 (\(r=R_{\oplus}\))、太阳表面 (\(r=R_{\odot}\))、白矮星表面，效应依次为 \(\sim 10^{-9},\,\sim 10^{-6},\,\sim 10^{-4}\)。比较两半径处的钟：</p>
+      <div class="formula">\[ \frac{\mathrm{d}\tau_{1}}{\mathrm{d}\tau_{2}}=\sqrt{\frac{1-r_{s}/r_{1}}{1-r_{s}/r_{2}}} \]</div>
+      <p>光从 \(r_{e}\) 处发出、被 \(r_{o}\) 处接收，频率比：</p>
+      <div class="formula">\[ \frac{\nu_{o}}{\nu_{e}}=\sqrt{\frac{1-r_{s}/r_{e}}{1-r_{s}/r_{o}}} \]</div>
+      <p>从大质量天体表面逃逸到无穷远的光 (\(r_{o}\to\infty\))：\(\nu_{\infty}/\nu_{e}=\sqrt{1-r_{s}/r_{e}}&lt;1\)——<strong>引力红移 (gravitational redshift)</strong>。这是 GR 三大经典检验之一（另两个是光线偏折与水星近日点进动，见典型例题 2.3、2.4）。</p>
+
+      <h3>6. 事件视界与施瓦茨希尔德半径 Event Horizon &amp; Schwarzschild Radius</h3>
+      <p>当 \(r=r_{s}\equiv 2GM/c^{2}\)，度规分量 \(g_{00}\to 0\) 与 \(g_{rr}\to\infty\)。半径</p>
+      <div class="formula">\[ \boxed{\;r_{s}=\frac{2GM}{c^{2}}\;} \]</div>
+      <p>叫<strong>施瓦茨希尔德半径 (Schwarzschild radius)</strong>。这个球面是<strong>事件视界 (event horizon)</strong>——时空的一种因果边界：<strong>任何从 \(r&lt;r_{s}\) 内部发出的信号（包括光）都无法到达外部的观测者</strong>。视界之内的区域就是<strong>黑洞 (black hole)</strong>。</p>
+      <p>对常见质量：</p>
+      <ul>
+        <li>太阳：\(r_{s,\odot}\approx 2.95\,\mathrm{km}\)（而太阳实际半径 \(6.96\times 10^{5}\,\mathrm{km}\)，故太阳远非黑洞）。</li>
+        <li>地球：\(r_{s,\oplus}\approx 8.87\,\mathrm{mm}\)（约一枚硬币大小）。</li>
+        <li>10 倍太阳质量恒星黑洞：\(r_{s}\approx 29.5\,\mathrm{km}\)。</li>
+        <li>每增加一份太阳质量，\(r_{s}\) 增加 \(2.95\,\mathrm{km}\)——视界半径<strong>正比于质量</strong> \(M\)，而非 \(M^{1/3}\)（普通物体那样）。</li>
+      </ul>
+
+      <h3>7. 黑洞：形成、奇点、无毛定理 Black Holes: Formation, Singularity, No-Hair</h3>
+      <p><strong>形成</strong>：当一颗大质量恒星 (\(\gtrsim 25\,M_{\odot}\)) 耗尽核燃料，热核反应再也无法抵抗自身引力，核心向内坍缩。若核心残留物质量超过中子星托尔曼-奥本海默-沃尔科夫 (TOV) 极限 (\(\sim 2\text{–}3\,M_{\odot}\))，没有任何已知物理力能阻止坍缩——核心直接缩进自己的视界内部，形成<strong>恒星质量黑洞</strong>。星系中心还存在 \(10^{6}\text{–}10^{10}\,M_{\odot}\) 的<strong>超大质量黑洞 (SMBH)</strong>（如银河系中心的 Sgr A*，\(M\approx 4\times 10^{6}\,M_{\odot}\)），起源尚有争议。</p>
+      <p><strong>奇点 (singularity)</strong>：把施瓦茨希尔德度规延伸到 \(r\to 0\)，曲率不变量（如 Kretschner 标量 \(K=R_{\alpha\beta\mu\nu}R^{\alpha\beta\mu\nu}\propto 1/r^{6}\)）发散。在那里，时空“几何”本身失效——经典 GR 不能预测奇点之后的事件，这是<strong>宇宙审查假说 (cosmic censorship)</strong> 所设想的：奇点永远被视界隐藏，外部观测者看不到。</p>
+      <p><strong>无毛定理 (no-hair theorem)</strong>：复杂的坍缩初始条件（山脊、磁场、不规则分布）会以引力波辐射出去，<strong>稳态的施瓦茨希尔德/克尔/克尔-纽曼黑洞完全由三个参数决定</strong>：</p>
+      <div class="formula">\[ \text{黑洞} \;\Longleftrightarrow\; (M,\;Q,\;J) \quad\text{即质量、电荷、角动量} \]</div>
+      <p>“黑洞没有毛发”——它不保留形成历史的其他细节。这是黑洞热力学和信息悖论研究的起点。</p>
+
+      <h3>8. 光子球与黑洞附近的轨道 Photon Sphere &amp; Orbits Near a BH</h3>
+      <p>在 Schwarzschild 时空中，光线 (零测地线) 满足轨道方程（\(u\equiv 1/r\)）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}^{2}u}{\mathrm{d}\phi^{2}}+u=\frac{3}{2}\,r_{s}\,u^{2} \]</div>
+      <p>（推导见典型例题 2.4 的引言。）该方程有一个<strong>不稳定圆轨道</strong>解：\(u=2/(3r_{s})\)，即</p>
+      <div class="formula">\[ \boxed{\;r_{\text{ph}}=\tfrac{3}{2}\,r_{s}=\frac{3GM}{c^{2}}\quad\text{(光子球 photon sphere)}\;} \]</div>
+      <p>在 \(r=r_{\text{ph}}\) 处，光可以绕黑洞做圆周运动（虽然不稳定，稍微扰动就逸散或落入）。这就是黑洞<strong>阴影 (shadow)</strong> 的成因，事件视界望远镜 (EHT) 2019 年拍下的 M87* 与 2022 年拍下的 Sgr A* 图像中清晰可见。</p>
+      <p>对<strong>有质量粒子</strong>，圆轨道的<strong>最内稳定圆轨道 (ISCO)</strong>：</p>
+      <div class="formula">\[ r_{\text{ISCO}}=3\,r_{s}=\frac{6GM}{c^{2}} \]</div>
+      <p>在 ISCO 处的<strong>局域圆周速度</strong>为 \(v_{\text{ISCO}}=c/\sqrt{6}\cdot\sqrt{2}=c/2\)（推导见例 2.5）；光子球处则达 \(v=c\)。ISCO 是吸积盘 (accretion disk) 的内边缘，物质在此释放引力束缚能，效率可达 \(5.7\%\) 的静止质量能（远高于核聚变 \(0.7\%\)）——这是类星体 (quasar) 能量来源的关键。</p>
+      <p>临界冲击参数 (critical impact parameter)：远来的光子若冲击参数小于</p>
+      <div class="formula">\[ b_{c}=\frac{3\sqrt{3}}{2}\,r_{s}\approx 2.598\,r_{s} \]</div>
+      <p>就被黑洞<strong>捕获</strong>；大于 \(b_{c}\) 则被偏折后逃逸。仿真中你会清晰看到这一分界。</p>
+
+      <h3>9. 旋转黑洞：Kerr 解 Brief Note on Rotating (Kerr) Black Holes</h3>
+      <p>真实的天体黑洞几乎都在旋转，对应 1963 年 Kerr 求得的<strong>轴对称真空解</strong>。引入比角动量 \(a=J/(Mc)\)（长度量纲），视界位置移到</p>
+      <div class="formula">\[ r_{+}=\frac{r_{s}}{2}+\sqrt{\left(\frac{r_{s}}{2}\right)^{2}-a^{2}\,} \]</div>
+      <p>当 \(a=0\) 退化为 Schwarzschild 的 \(r_{s}\)；当 \(a\to r_{s}/2\)（<strong>极端克尔</strong>）视界缩小到 \(r_{s}/2\)，且 ISCO 也移到 \(r_{s}/2\)（顺旋方向）。视界之外还有一层椭球状的<strong>静界 (ergosphere)</strong>，在那里<strong>时空本身被黑洞拖着旋转</strong>（参考系拖曳，frame dragging / Lense-Thirring 效应）——任何观测者都无法保持静止，但理论上可以通过<strong>彭罗斯过程 (Penrose process)</strong> 从旋转黑洞抽取能量（这是某些类星体喷流的能量机制）。Kerr 度规的具体形式较为复杂，本章不再展开。</p>
+
+      <div class="key-terms">equivalence principle (等效原理), geodesic (测地线), metric tensor (度规张量), Einstein field equations (爱因斯坦场方程), Einstein tensor \(G_{\mu\nu}\) (爱因斯坦张量), Ricci tensor / scalar \(R_{\mu\nu},R\) (里奇张量/标量), cosmological constant \(\Lambda\) (宇宙学常数), energy-momentum tensor \(T_{\mu\nu}\) (能量-动量张量), perfect fluid (理想流体), Schwarzschild metric (施瓦茨希尔德度规), Schwarzschild radius \(r_{s}\) (施瓦茨希尔德半径), event horizon (事件视界), gravitational time dilation (引力时间膨胀), gravitational redshift (引力红移), singularity (奇点), cosmic censorship (宇宙审查假说), no-hair theorem (无毛定理), photon sphere (光子球), ISCO (最内稳定圆轨道), critical impact parameter (临界冲击参数), accretion disk (吸积盘), Kerr black hole (克尔黑洞), ergosphere (能层/静界), frame dragging (参考系拖曳), Penrose process (彭罗斯过程)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：场方程的牛顿极限——为何系数是 \(8\pi G/c^{4}\)</h3>
+      <p>在弱场（\(r_{s}/r\ll 1\)）、慢运动（\(v\ll c\)）、压强可略 (\(p\ll\rho c^{2}\)) 的极限下，GR 必须退化为牛顿引力。把度规写成</p>
+      <div class="formula">\[ g_{00}=1+\frac{2\Phi(r)}{c^{2}},\qquad g_{ij}\approx -\delta_{ij} \]</div>
+      <p>其中 \(\Phi\) 是牛顿势（\(\Phi=-GM/r\)，满足泊松方程 \(\nabla^{2}\Phi=4\pi G\rho\)）。对非相对论物质 \(T_{00}\approx\rho c^{2}\)，其余分量小。<strong>00 分量</strong>的爱因斯坦张量在弱场下：</p>
+      <div class="formula">\[ G_{00}\approx \frac{2\nabla^{2}\Phi}{c^{2}} \]</div>
+      <p>（推导省略：从 \(R_{00}\approx \nabla^{2}\Phi/c^{2}\) 与 \(R\approx 2\nabla^{2}\Phi/c^{2}\)，得 \(G_{00}=R_{00}-\tfrac{1}{2}g_{00}R\approx \nabla^{2}\Phi/c^{2}+\nabla^{2}\Phi/c^{2}=2\nabla^{2}\Phi/c^{2}\)。）代入场方程（暂令 \(\Lambda=0\)）：</p>
+      <div class="formula">\[ \frac{2\nabla^{2}\Phi}{c^{2}}=\frac{8\pi G}{c^{4}}\,T_{00}=\frac{8\pi G}{c^{4}}\,(\rho c^{2})=\frac{8\pi G\rho}{c^{2}} \]</div>
+      <p>两边乘以 \(c^{2}/2\)：</p>
+      <div class="formula">\[ \boxed{\;\nabla^{2}\Phi=4\pi G\rho\;} \]</div>
+      <p>这正是<strong>泊松方程</strong>——牛顿引力的全部内容。这一对照<strong>唯一确定了</strong>场方程右边的系数 \(8\pi G/c^{4}\)；任何别的系数都不能在牛顿极限下还原泊松方程。注意：\(\Lambda g_{00}\) 项在牛顿极限下相当于在泊松方程中加入一个均匀“排斥性”源 \(\Lambda c^{2}/(4\pi G)\cdot\rho\) 不依赖于 \(\rho\) 的常数——正是暗能量在宇宙学尺度起主导、在太阳系内可略的原因。</p>
+
+      <h3>推导 B：从 \(g_{00}\) 到引力时间膨胀</h3>
+      <p>施瓦茨希尔德度规中静止观测者 (\(\mathrm{d}r=\mathrm{d}\theta=\mathrm{d}\phi=0\)) 的<strong>原时</strong>：</p>
+      <div class="formula">\[ \mathrm{d}s^{2}=c^{2}\,\mathrm{d}\tau^{2}=g_{00}\,c^{2}\,\mathrm{d}t^{2}=\left(1-\frac{r_{s}}{r}\right)c^{2}\,\mathrm{d}t^{2} \]</div>
+      <p>开方：</p>
+      <div class="formula">\[ \mathrm{d}\tau=\sqrt{1-\frac{r_{s}}{r}}\;\mathrm{d}t \]</div>
+      <p>由于坐标时 \(t\) 是“无穷远处观测者的钟”（在那里 \(g_{00}\to 1\)，\(\mathrm{d}\tau_{\infty}=\mathrm{d}t\)）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}\tau(r)}{\mathrm{d}\tau_{\infty}}=\sqrt{1-\frac{r_{s}}{r}} \]</div>
+      <p>因此<strong>同一过程在引力越强的地方（\(r\) 越小）耗时越长的固有时</strong>。在弱场展开 \(\sqrt{1-r_{s}/r}\approx 1-\frac{r_{s}}{2r}=1-\frac{GM}{rc^{2}}=1+\Phi/c^{2}\)：</p>
+      <div class="formula">\[ \frac{\mathrm{d}\tau_{1}-\mathrm{d}\tau_{2}}{\mathrm{d}\tau}\;\approx\;\frac{\Phi_{1}-\Phi_{2}}{c^{2}} \]</div>
+      <p>这就是 GPS 修正（例 2.2）的依据：\(\Phi_{\text{GPS}}-\Phi_{\text{地面}}&gt;0\)，故卫星钟快。\(\mathrm{d}\tau\) 在 \(r\to r_{s}\) 时趋于零——时间膨胀发散，远处观测者看到下落物体“冻结”在视界上（见<strong>陷阱 3</strong>）。</p>
+
+      <h3>推导 C：光线偏折——等效原理 vs 完整 GR（历史性的 \(2\times\) 因子）</h3>
+      <p><strong>(i) 等效原理估算法 (Einstein 1911)</strong>。利用推导 B 的弱场时间膨胀：在引力势 \(\Phi\) 中，坐标时 \(dt\) 与固有时 \(d\tau\) 满足 \(d\tau\approx(1+\Phi/c^{2})dt\)。光的频率 \(\nu\propto 1/\mathrm{d}\tau\)，所以从 \(r_{e}\) 到 \(r_{o}=\infty\) 的频率比 \(\nu_{\infty}/\nu_{e}=1+\Phi(r_{e})/c^{2}\)。频率联系能量 \(E=h\nu\)，由 \(E=pc\)（光子）知动量也变。把波前看成以坐标速度 \(c'=c(1+\Phi/c^{2})=c(1-r_{s}/2r)\) 传播的“折射介质”，<strong>不同 \(r\) 处 \(c'\) 不同</strong>，类似大气折射，用 Huygens 原理得到偏折角</p>
+      <div class="formula">\[ \delta_{\text{EP}}=\frac{r_{s}}{b}=\frac{2GM}{c^{2}b} \]</div>
+      <p>对擦过太阳边缘的光 (\(b\approx R_{\odot}\))：\(\delta_{\text{EP}}\approx 0.875''\)。<strong>但这只是真正值的一半。</strong></p>
+      <p><strong>(ii) 完整 GR 估值 (Einstein 1915)</strong>。施瓦茨希尔德度规还有<strong>径向空间弯曲</strong>：\(\mathrm{d}\ell_{r}=\mathrm{d}r/\sqrt{1-r_{s}/r}&gt;\mathrm{d}r\)。这“拉长”了径向距离，使光线在途经太阳时<strong>额外</strong>被偏折，恰好再贡献一份 \(r_{s}/b\)。完整结果：</p>
+      <div class="formula">\[ \boxed{\;\delta_{\text{GR}}=\frac{4GM}{c^{2}b}=\frac{2r_{s}}{b}}\quad\text{（沿渐近方向的总偏折）}\; \]</div>
+      <p>对擦过太阳边缘：\(\delta_{\text{GR}}\approx 1.75''\)，恰为等效原理估值的两倍。<strong>1919 年爱丁顿 (Eddington) 日食远征</strong>测得 \(1.6\text{–}2.0''\) 区间，宣告广义相对论胜出。注意：完整推导须积分第 8 节的光线轨道方程 \(\mathrm{d}^{2}u/\mathrm{d}\phi^{2}+u=\tfrac{3}{2}r_{s}u^{2}\)（这是本章仿真的核心方程）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 2.1 三种质量的施瓦茨希尔德半径</h4>
+        <p class="example-statement">分别计算下列质量的施瓦茨希尔德半径：(a) 太阳 \(M_{\odot}=1.989\times 10^{30}\,\mathrm{kg}\)；(b) 地球 \(M_{\oplus}=5.972\times 10^{24}\,\mathrm{kg}\)；(c) 一个 10 倍太阳质量的恒星黑洞。取 \(G=6.674\times 10^{-11}\,\mathrm{N\,m^{2}/kg^{2}}\)、\(c=2.998\times 10^{8}\,\mathrm{m/s}\)，并将结果与天体的实际半径作比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先把常数合并：\(2G/c^{2}=2(6.674\times 10^{-11})/(2.998\times 10^{8})^{2}=1.3348\times 10^{-10}/8.988\times 10^{16}=1.485\times 10^{-27}\,\mathrm{m/kg}\)。所以</p>
+          <div class="formula">\[ r_{s}=1.485\times 10^{-27}\,\mathrm{(m/kg)}\times M \]</div>
+          <p class="step"><strong>(a) 太阳：</strong></p>
+          <div class="formula">\[ r_{s,\odot}=(1.485\times 10^{-27})(1.989\times 10^{30})=2.954\times 10^{3}\,\mathrm{m}=2.95\,\mathrm{km} \]</div>
+          <p>对比 \(R_{\odot}=6.96\times 10^{5}\,\mathrm{km}\)，比值 \(r_{s,\odot}/R_{\odot}=4.24\times 10^{-6}\)：太阳“挤进”自己视界需要现半径的 \(4\times 10^{-6}\) 倍，远非黑洞。</p>
+          <p class="step"><strong>(b) 地球：</strong></p>
+          <div class="formula">\[ r_{s,\oplus}=(1.485\times 10^{-27})(5.972\times 10^{24})=8.87\times 10^{-3}\,\mathrm{m}=8.87\,\mathrm{mm} \]</div>
+          <p>对比 \(R_{\oplus}=6371\,\mathrm{km}\)，比值 \(1.39\times 10^{-9}\)：把地球压成黑洞需把全部质量塞进一枚硬币大小。</p>
+          <p class="step"><strong>(c) \(10\,M_{\odot}\) 恒星黑洞：</strong></p>
+          <div class="formula">\[ r_{s}=10\times r_{s,\odot}=29.5\,\mathrm{km} \]</div>
+          <p class="step"><strong>注意线性：</strong>\(r_{s}\propto M\)，每加 \(1\,M_{\odot}\) 半径增加 \(2.95\,\mathrm{km}\)。这与普通物体半径 \(R\propto M^{1/3}\)（恒定密度下）截然不同——黑洞平均密度 \(\rho\sim M/r_{s}^{3}\propto 1/M^{2}\) 随质量<strong>减小</strong>（超大质量黑洞的平均密度甚至低于水！）。</p>
+          <p><span class="ans">\(r_{s,\odot}=2.95\,\mathrm{km}\)，\(r_{s,\oplus}=8.87\,\mathrm{mm}\)，\(r_{s}(10\,M_{\odot})=29.5\,\mathrm{km}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.2 GPS 卫星钟的引力修正</h4>
+        <p class="example-statement">GPS 卫星在距地心 \(r_{\text{sat}}=26\,571\,\mathrm{km}\) 的圆轨道上运行（高度 \(h=20\,200\,\mathrm{km}\)，地球半径 \(R_{\oplus}=6371\,\mathrm{km}\))。地面钟与卫星钟的<strong>引力时间膨胀</strong>差率是多少？一天累积多少微秒？若不修正，对应的距离误差是多少？取 \(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^{3}/s^{2}}\)、\(c=2.998\times 10^{8}\,\mathrm{m/s}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>在弱场下，由推导 B 的 \(\mathrm{d}\tau\approx(1+\Phi/c^{2})\mathrm{d}t\)（\(\Phi=-GM/r\)），两处钟的<strong>相对时率</strong>差：</p>
+          <div class="formula">\[ \frac{\dot\tau_{\text{sat}}-\dot\tau_{\text{ground}}}{\mathrm{d}t}\;\approx\;\frac{\Phi_{\text{sat}}-\Phi_{\text{ground}}}{c^{2}} \;=\;\frac{GM_{\oplus}}{c^{2}}\!\left(\frac{1}{R_{\oplus}}-\frac{1}{r_{\text{sat}}}\right) \]</div>
+          <p class="step">计算括号内：\(1/R_{\oplus}=1.570\times 10^{-7}\,\mathrm{m^{-1}}\)，\(1/r_{\text{sat}}=3.764\times 10^{-8}\,\mathrm{m^{-1}}\)，差 \(1.194\times 10^{-7}\,\mathrm{m^{-1}}\)。</p>
+          <div class="formula">\[ \frac{GM_{\oplus}}{c^{2}}=\frac{3.986\times 10^{14}}{(2.998\times 10^{8})^{2}}=\frac{3.986\times 10^{14}}{8.988\times 10^{16}}=4.434\times 10^{-3}\,\mathrm{m} \]</div>
+          <p class="step">（注：这恰好是地球的“施瓦茨希尔德半径”的一半，即 \(r_{s,\oplus}/2\)。）相乘：</p>
+          <div class="formula">\[ \frac{\Delta\dot\tau}{\mathrm{d}t}=(4.434\times 10^{-3})(1.194\times 10^{-7})=5.29\times 10^{-10} \]</div>
+          <p class="step">即<strong>卫星钟每秒比地面钟快 \(5.29\times 10^{-10}\) 秒</strong>（在引力意义上）。一天 (\(86\,400\,\mathrm{s}\)) 累积：</p>
+          <div class="formula">\[ \Delta\tau_{\text{grav}}=(5.29\times 10^{-10})(8.64\times 10^{4}\,\mathrm{s})=4.57\times 10^{-5}\,\mathrm{s}=45.7\,\mu\mathrm{s/day} \]</div>
+          <p class="step"><strong>距离误差</strong>（光速乘累积时差）：</p>
+          <div class="formula">\[ \Delta x=c\,\Delta\tau=(2.998\times 10^{8})(4.57\times 10^{-5})=1.37\times 10^{4}\,\mathrm{m}=13.7\,\mathrm{km/day} \]</div>
+          <p class="step"><strong>狭义相对论修正</strong>：卫星轨道速率 \(v=\sqrt{GM_{\oplus}/r_{\text{sat}}}=3.87\,\mathrm{km/s}\)，SR 使动钟变慢 \(\Delta\dot\tau_{\text{SR}}/dt\approx -v^{2}/(2c^{2})=-8.34\times 10^{-11}\)，每天 \(-7.2\,\mu\mathrm{s}\)。两项抵消后净 \(+38.5\,\mu\mathrm{s/day}\)（\(\approx 11.5\,\mathrm{km/day}\)）。GPS 卫星发射前<strong>必须</strong>把钟率调低 \(38.5\,\mu\mathrm{s/day}\) 对应的份额，否则定位在分钟级失效。</p>
+          <p><span class="ans">引力部分 \(+45.7\,\mu\mathrm{s/day}\)（\(\approx 13.7\,\mathrm{km/day}\)）；扣除 SR 后净 \(+38.5\,\mu\mathrm{s/day}\)。GPS 必须修正，否则每天漂移十余公里</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.3 水星近日点的反常进动</h4>
+        <p class="example-statement">水星轨道半长轴 \(a=5.79\times 10^{10}\,\mathrm{m}\)、偏心率 \(e=0.2056\)、周期 \(T=87.97\,\mathrm{day}\)。求 GR 预言的每世纪近日点进动角，并与观测值 \(43''/\mathrm{century}\) 对照。取 \(GM_{\odot}=1.327\times 10^{20}\,\mathrm{m^{3}/s^{2}}\)、\(c=2.998\times 10^{8}\,\mathrm{m/s}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对近 Kepler 轨道，GR 修正使每圈近日点额外前进：</p>
+          <div class="formula">\[ \Delta\phi_{\text{per orbit}}=\frac{6\pi GM_{\odot}}{c^{2}\,a(1-e^{2})} \]</div>
+          <p class="step">先算 \(1-e^{2}=1-0.04227=0.9577\)；分母：</p>
+          <div class="formula">\[ a(1-e^{2})=(5.79\times 10^{10})(0.9577)=5.545\times 10^{10}\,\mathrm{m} \]</div>
+          <p class="step">分子：\(6\pi GM_{\odot}/c^{2}=6\pi(1.327\times 10^{20})/(8.988\times 10^{16})=6\pi(1.476\times 10^{3})=2.782\times 10^{4}\,\mathrm{m}\)。注意 \(GM_{\odot}/c^{2}=1.476\,\mathrm{km}=r_{s,\odot}/2\)。</p>
+          <p class="step">相除：</p>
+          <div class="formula">\[ \Delta\phi=\frac{2.782\times 10^{4}}{5.545\times 10^{10}}=5.02\times 10^{-7}\,\mathrm{rad/orbit} \]</div>
+          <p class="step">换算成角秒（\(1\,\mathrm{rad}=206\,265''\)）：</p>
+          <div class="formula">\[ \Delta\phi=(5.02\times 10^{-7})(206\,265)=0.1035''/\text{orbit} \]</div>
+          <p class="step">水星每世纪公转次数：\(N=100\times 365.25/87.97=415.2\)。总进动：</p>
+          <div class="formula">\[ \Delta\phi_{\text{century}}=(0.1035)(415.2)=43.0''/\mathrm{century} \]</div>
+          <p class="step">与勒维耶 (Le Verrier, 1859) 的观测残差 \(43''\pm 0.5''/\mathrm{century}\)（在剔除其他行星的牛顿扰动之后）<strong>完全吻合</strong>。这是 GR 的第一项定量胜利，也是爱因斯坦 1915 年 equations 最先解释的现象。</p>
+          <p><span class="ans">\(\Delta\phi\approx 0.1035''/\text{orbit}\)，合计 \(\approx 43.0''/\mathrm{century}\)，与观测相符</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.4 擦过太阳边缘的光线偏折</h4>
+        <p class="example-statement">一束遥远恒星的光擦过太阳边缘到达地球。计算 GR 预言的偏折角，并对比牛顿（等效原理）估算。取 \(r_{s,\odot}=2.95\,\mathrm{km}\)、太阳半径 \(R_{\odot}=6.96\times 10^{8}\,\mathrm{m}\)、\(1\,\mathrm{rad}=206\,265''\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对擦边光，冲击参数 \(b\approx R_{\odot}\)。GR 公式（推导 C）：</p>
+          <div class="formula">\[ \delta_{\text{GR}}=\frac{4GM_{\odot}}{c^{2}b}=\frac{2r_{s,\odot}}{b}\approx\frac{2r_{s,\odot}}{R_{\odot}} \]</div>
+          <p class="step">代入：</p>
+          <div class="formula">\[ \delta_{\text{GR}}=\frac{2(2.954\times 10^{3}\,\mathrm{m})}{6.96\times 10^{8}\,\mathrm{m}}=\frac{5.908\times 10^{3}}{6.96\times 10^{8}}=8.49\times 10^{-6}\,\mathrm{rad} \]</div>
+          <p class="step">换算角秒：</p>
+          <div class="formula">\[ \delta_{\text{GR}}=(8.49\times 10^{-6})(206\,265)=1.75'' \]</div>
+          <p class="step"><strong>对比牛顿/等效原理估算</strong> \(\delta_{\text{EP}}=r_{s,\odot}/R_{\odot}=0.875''\)（恰好为一半）。<strong>1919 年 5 月 29 日日食远征</strong>，爱丁顿与戴森测得 Príncipe 岛值 \(1.61''\pm 0.30''\)、Sobral 值 \(1.98''\pm 0.12''\)，加权 \(1.75''\pm 0.15''\)——确认了 GR 的 \(2\times\) 因子预言，新闻头条宣称“科学革命：宇宙新理论，牛顿观念被推翻”。</p>
+          <p class="step">现代甚长基线干涉 (VLBI) 对遥远类星体射电波的测量给出 \(1.75''\times(1\pm 10^{-4})\)，与 GR 一致到 \(10^{-4}\) 量级。</p>
+          <p><span class="ans">\(\delta_{\text{GR}}=1.75''\)（牛顿等效原理仅 \(0.875''\)，恰为一半）</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2.5 ISCO 处的轨道速度与最内圆轨道</h4>
+        <p class="example-statement">施瓦茨希尔德时空中圆轨道的<strong>局域轨道速度</strong>（由静止观测者测量）为 \(v(r)=c\sqrt{\dfrac{r_{s}}{2(r-r_{s})}}\)。求 (a) ISCO \(r=3r_{s}\) 处的 \(v\)；(b) 光子球 \(r=1.5r_{s}\) 处的 \(v\)；(c) \(r\to r_{s}^{+}\) 时 \(v\to ?\)。并讨论物理意义。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由给定的 \(v(r)\) 公式（来自静止观测者测量的局域时空分解）。</p>
+          <p class="step"><strong>(a) ISCO 处：</strong></p>
+          <div class="formula">\[ v(3r_{s})=c\sqrt{\frac{r_{s}}{2(3r_{s}-r_{s})}}=c\sqrt{\frac{r_{s}}{4r_{s}}}=c\sqrt{\tfrac{1}{4}}=\frac{c}{2} \]</div>
+          <p class="step"><strong>(b) 光子球处：</strong></p>
+          <div class="formula">\[ v(1.5r_{s})=c\sqrt{\frac{r_{s}}{2(1.5r_{s}-r_{s})}}=c\sqrt{\frac{r_{s}}{r_{s}}}=c \]</div>
+          <p class="step">这正说明光子球是<strong>光速圆轨道</strong>所在，与第 8 节用零测地线求出的 \(r_{\text{ph}}=1.5r_{s}\) 一致。</p>
+          <p class="step"><strong>(c) 视界附近：</strong>当 \(r\to r_{s}^{+}\)，分母 \(2(r-r_{s})\to 0^{+}\)，故 \(v\to c\)。在视界处任何圆轨道都需要光速——而有质量粒子不可能达到光速，所以<strong>视界附近不存在有质量的圆轨道</strong>。</p>
+          <p class="step"><strong>物理意义：</strong>ISCO (\(3r_{s}\)) 把稳定区与不稳定区分开：\(r&gt;3r_{s}\) 圆轨道稳定，\(1.5r_{s}&lt;r&lt;3r_{s}\) 仅有不稳定圆轨道，\(r_{s}&lt;r&lt;1.5r_{s}\) 无任何圆轨道（粒子必落入或逸出）。吸积盘的内边缘恰在 ISCO；物质在落到 ISCO 之前已把约 \(5.7\%\) 的静止质量能辐射出去（效率 \(\eta=1-\sqrt{1-2/3}\approx 0.057\)），这是类星体与 X 射线双星如此明亮的根源。</p>
+          <p><span class="ans">(a) \(v_{\text{ISCO}}=c/2\)；(b) \(v(r_{\text{ph}})=c\)；(c) \(r\to r_{s}^{+}\) 时 \(v\to c\)（视界附近无有质量圆轨道）</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>事件视界之内“什么也逃不掉”，不限于光。</strong>错误说法：“黑洞吞噬光是因为引力太强、光速逃不出。”更准确的表述：视界是<strong>因果边界</strong>，未来光锥在 \(r&lt;r_{s}\) 内部完全朝向 \(r=0\)，<strong>任何</strong>未来指向的测地线（粒子或光）都只能向中心。这不是“引力太大”，而是<strong>几何上未来方向本身就指向内部</strong>。</li>
+        <li><strong>\(r_{s}\propto M\)，不是 \(M^{1/3}\)。</strong>把黑洞当成“密度不变的球”是错的：恒定密度球 \(R\propto M^{1/3}\)；而视界半径正比于质量。因此黑洞<strong>越大越稀</strong>：超大质量黑洞（\(10^{9}\,M_{\odot}\)）的平均密度比水还低。</li>
+        <li><strong>时间膨胀在视界处发散，但<strong>仅对外部观测者</strong>。</strong>远处观测者看到下落物体的固有时被“冻结”在 \(r=r_{s}\)（\(\mathrm{d}\tau\to 0\)），物体看似永远到不了视界。但<strong>下落者自己</strong>的固有时并不发散——他有限时间内穿过视界并到达奇点（视界处没有真正的局部奇异性；对自由下落观测者而言视界是寻常的）。</li>
+        <li><strong>施瓦茨希尔德度规仅适用于非旋转球对称质量。</strong>不要把 Schwarzschild 公式直接套到旋转天体（地球、Kerr 黑洞）或非球对称坍缩。旋转黑洞的视界更小、且有能层；其外部的轨道、红移、偏折也略有不同（Kerr 度规）。</li>
+        <li><strong>奇点不可见，不可触碰。</strong>由于宇宙审查假说，施瓦茨希尔德的 \(r=0\) 奇点被视界永远遮挡——外部观测者不能“看到”或“靠近”奇点而不穿过视界。若裸奇点存在，会破坏因果预测；目前观测未发现裸奇点。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 超大质量黑洞的视界：Sgr A* 的质量约 \(4\times 10^{6}\,M_{\odot}\)。求它的施瓦茨希尔德半径，并与水星轨道半长轴 \(a=5.79\times 10^{10}\,\mathrm{m}\) 比较。</summary>
+        <div class="hint">\(r_{s}=2GM/c^{2}\)；用例 2.1 的 \(r_{s,\odot}=2.95\,\mathrm{km}\) 线性外推：\(r_{s}=4\times 10^{6}\times r_{s,\odot}\)。</div>
+        <div class="solution">
+          <p>\(r_{s}=4\times 10^{6}\times 2.954\times 10^{3}\,\mathrm{m}=1.18\times 10^{10}\,\mathrm{m}\)。</p>
+          <p>\(a_{\text{Mercury}}=5.79\times 10^{10}\,\mathrm{m}\)，比值 \(r_{s}/a\approx 0.20\)——Sgr A* 的视界<strong>比水星轨道小 5 倍</strong>，但仍比太阳大 17 倍。</p>
+          <p>光子球：\(r_{\text{ph}}=1.5r_{s}=1.77\times 10^{10}\,\mathrm{m}\)；ISCO：\(3r_{s}=3.55\times 10^{10}\,\mathrm{m}\)（仍在水星轨道之内）。事件视界望远镜拍到的“阴影”半径约 \(5 r_{s}\)，恰对应光线绕 \(b_c\approx 2.6r_{s}\) 的渐近轨迹。</p>
+          <p><span class="ans">\(r_{s}\approx 1.18\times 10^{10}\,\mathrm{m}\approx 0.20\,a_{\text{Mercury}}\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 太阳表面的引力红移：在太阳表面 (\(R_{\odot}=6.96\times 10^{8}\,\mathrm{m}\)) 与远处 (\(r\to\infty\)) 之间，光的频率相对变化是多少？一年内累积的时间差是多少秒？取 \(r_{s,\odot}=2.95\,\mathrm{km}\)。</summary>
+        <div class="hint">\(\nu_{\infty}/\nu_{e}=\sqrt{1-r_{s}/R_{\odot}}\approx 1-r_{s}/(2R_{\odot})\)。一年 \(=3.156\times 10^{7}\,\mathrm{s}\)。</div>
+        <div class="solution">
+          <p>\(r_{s,\odot}/R_{\odot}=2.954\times 10^{3}/6.96\times 10^{8}=4.24\times 10^{-6}\)。</p>
+          <p>\(\nu_{\infty}/\nu_{e}=\sqrt{1-4.24\times 10^{-6}}\approx 1-2.12\times 10^{-6}\)。</p>
+          <p>频率降低 \(2.12\,\mathrm{ppm}\)；太阳上的钟比远处的钟每秒慢 \(2.12\times 10^{-6}\,\mathrm{s}\)。一年累积：</p>
+          <p>\(\Delta\tau=(2.12\times 10^{-6})(3.156\times 10^{7})=66.9\,\mathrm{s}\)。</p>
+          <p><span class="ans">频率降低 \(2.12\,\mathrm{ppm}\)；一年累积约 \(66.9\,\mathrm{s}\)</span>。（这是太阳光谱线“引力红移”的来源，1960 年庞德-雷布卡实验在地球上用穆斯堡尔效应首次直接测量了同类效应。）</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 视界处的“冻结错觉”：远处观测者看一个粒子从 \(r_{0}=2r_{s}\) 自由下落到 \(r\to r_{s}\)，所需的<strong>坐标时</strong> \(t\) 是有限的还是无穷的？下落者自己测量的<strong>固有时</strong> \(\tau\) 呢？</summary>
+        <div class="hint">径向自由落体的固有时与“牛顿自由落体”近似一致；而坐标时 \(t\) 由 \(\mathrm{d}t=\mathrm{d}\tau/\sqrt{1-r_{s}/r}\) 给出，在 \(r\to r_{s}\) 时发散。</div>
+        <div class="solution">
+          <p><strong>固有时</strong>（下落者感觉）：从 \(r_{0}=2r_{s}\) 自由落体到 \(r=r_{s}\) 仅需</p>
+          <p>\(\Delta\tau\approx\frac{2}{3c}\!\left(\sqrt{r_{0}^{3}-r_{s}^{3}}\big/r_{s}^{1/2}\right)\approx \frac{2}{3c\sqrt{r_{s}}}(2r_{s})^{3/2}=\frac{2\cdot 2\sqrt{2}}{3}r_{s}/c\approx 1.89\,r_{s}/c\)，有限。</p>
+          <p>对 \(10\,M_{\odot}\) 黑洞（\(r_{s}=29.5\,\mathrm{km}\)），\(\Delta\tau\approx 1.89\times 2.95\times 10^{4}/3.0\times 10^{8}\approx 1.9\times 10^{-4}\,\mathrm{s}=0.19\,\mathrm{ms}\)，瞬息之间穿过视界。</p>
+          <p><strong>坐标时</strong>（远处观测者时钟）：由于 \(\mathrm{d}t=\mathrm{d}\tau/\sqrt{1-r_{s}/r}\)，当 \(r\to r_{s}^{+}\) 时分母 \(\to 0\)，\(\mathrm{d}t\to\infty\)。形式上 \(t\to\infty\)——粒子“冻结”在视界上，光信号越来越红移、越来越暗。<strong>两种视角都对</strong>，只是观测者不同（这是<strong>陷阱 3</strong> 的来源）。</p>
+          <p><span class="ans">下落者固有时有限（约 \(1.9\,r_{s}/c\)）；远处坐标时无穷（“冻结”效应）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 临界冲击参数与捕获截面：求使光子刚好被施瓦茨希尔德黑洞捕获的最大冲击参数 \(b_{c}\)（用 \(r_{s}\) 表示）。若把黑洞视作一个“吸收球”，其几何截面 \(\sigma=\pi b_{c}^{2}\) 比几何面积 \(\pi r_{s}^{2}\) 大多少倍？</summary>
+        <div class="hint">\(b_{c}\) 由光子球处的不稳定圆轨道定出，结果 \(b_{c}=\dfrac{3\sqrt{3}}{2}\,r_{s}\)。</div>
+        <div class="solution">
+          <p>\(b_{c}=\dfrac{3\sqrt{3}}{2}\,r_{s}\approx 2.598\,r_{s}\)。</p>
+          <p>截面比：</p>
+          <p>\(\dfrac{\sigma}{\pi r_{s}^{2}}=\dfrac{b_{c}^{2}}{r_{s}^{2}}=\left(\dfrac{3\sqrt{3}}{2}\right)^{2}=\dfrac{27}{4}=6.75\)。</p>
+          <p>黑洞的<strong>光学捕获截面是几何截面的 6.75 倍</strong>——引力把光“聚焦”进来，相当于黑洞看起来比它的实际尺寸大 \(\sqrt{6.75}\approx 2.6\) 倍。这也是 EHT 阴影半径约为 \(5r_{s}\)（\(=2b_{c}\)）的原因。</p>
+          <p><span class="ans">\(b_{c}\approx 2.598\,r_{s}\)；\(\sigma/\pi r_{s}^{2}=27/4=6.75\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 类星体吸积效率：物质从无穷远落到 ISCO (\(3r_{s}\)) 释放的引力束缚能为 \(\Delta E=(1-\sqrt{1-2/3})\,mc^{2}\approx 0.057\,mc^{2}\)。一颗 \(1\,M_{\odot}\) 的物质每年落入一个 \(10^{8}\,M_{\odot}\) 黑洞，求该类星体的光度。把它与银河系总光度 \(\sim 5\times 10^{36}\,\mathrm{W}\) 比较。</summary>
+        <div class="hint">功率 \(=\dot{M}c^{2}\times\eta\)，其中 \(\eta\approx 0.057\)。\(\dot{M}=1\,M_{\odot}/\mathrm{yr}=1.989\times 10^{30}\,\mathrm{kg}/(3.156\times 10^{7}\,\mathrm{s})\)。</div>
+        <div class="solution">
+          <p>\(\dot{M}=1.989\times 10^{30}/3.156\times 10^{7}=6.30\times 10^{22}\,\mathrm{kg/s}\)。</p>
+          <p>\(L=\eta\dot{M}c^{2}=0.0572\times(6.30\times 10^{22})\times(8.988\times 10^{16})\)。</p>
+          <p>\(=0.0572\times 5.66\times 10^{39}=3.24\times 10^{38}\,\mathrm{W}\)。</p>
+          <p>对比银河系 \(5\times 10^{36}\,\mathrm{W}\)，比值 \(L_{\text{QSO}}/L_{\text{MW}}\approx 65\)——<strong>一个类星体比整个银河系还要亮 60 多倍</strong>，而能源仅是每年一太阳质量的气体落入黑洞。这就是为什么类星体能在可观测宇宙边缘被发现。</p>
+          <p>注：核聚变效率仅 \(0.007\)，类星体效率是其 8 倍以上——引力是宇宙中最高效的“发动机”。</p>
+          <p><span class="ans">\(L\approx 3.2\times 10^{38}\,\mathrm{W}\)，约比银河系亮 65 倍</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 黑洞与光线弯曲 Black Hole / Light Bending</h2>
+      <p class="sim-desc">远处一束平行光从左方射向位于画面中央的<strong>施瓦茨希尔德黑洞</strong>。光线服从精确的零测地线轨道方程 \(\mathrm{d}^{2}u/\mathrm{d}\phi^{2}+u=\tfrac{3}{2}r_{s}u^{2}\)（\(u=1/r\)），用 RK4 数值积分。调节 <strong>BH 质量 M</strong>（改变视界半径 \(r_{s}\)，单位为像素）或 <strong>冲击参数 b</strong>（高亮光线的偏移距离）即可看到：\(b&lt;b_{c}\approx 2.6\,r_{s}\) 的光线被<strong>捕获</strong>（红色，坠入视界）；\(b&gt;b_{c}\) 的光线被偏折后逃逸（蓝色）。背景的灰色扇形展示了一系列不同 \(b\) 的光线（捕获为暗红、逃逸为暗灰），帮助你直观感受临界冲击参数 <span style="color:#dc2626">\(b_{c}=\tfrac{3\sqrt{3}}{2}r_{s}\)</span> 这一<strong>光子球</strong>的几何角色。绿色虚线圈是光子球 \(r=1.5\,r_{s}\)，黑色实心圆是事件视界 \(r=r_{s}\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-2" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-2"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-2');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2;   // BH at canvas centre
+
+          var DEFAULT = { rs: 30, b: 95 };
+          var params = { rs: DEFAULT.rs, b: DEFAULT.b };
+
+          /* --------------------------------------------------------- geodesic */
+          // Orbit equation for a Schwarzschild null geodesic:
+          //   d^2u/dphi^2 + u = (3/2) rs u^2,  with u = 1/r (pixels^-1).
+          // Photon starts far away at phi ~ pi (left), moving in +x with impact b.
+          //   u0   = sin(phi0)/b        (small, since phi0 ~ pi)
+          //   u'0  = cos(phi0)/b        (~ -1/b)
+          // Integrate phi decreasing; stop at horizon (captured) or at u<=0/phi wrap.
+          function integrateRay(b, rs) {
+            if (b < 0.5) b = 0.5;
+            var phi0 = Math.PI - 0.015;
+            var u = Math.sin(phi0) / b;
+            var w = Math.cos(phi0) / b;
+            var phi = phi0;
+            var dphi = -0.004;            // step in phi
+            var pts = [];
+            var captured = false;
+            var nMax = 7000;
+            var i;
+            for (i = 0; i < nMax; i++) {
+              // RK4 step in (u, w) with phi as independent variable
+              var k1u = w,                 k1w = -u + 1.5 * rs * u * u;
+              var u2 = u + 0.5*dphi*k1u,   w2 = w + 0.5*dphi*k1w;
+              var k2u = w2,                k2w = -u2 + 1.5 * rs * u2 * u2;
+              var u3 = u + 0.5*dphi*k2u,   w3 = w + 0.5*dphi*k2w;
+              var k3u = w3,                k3w = -u3 + 1.5 * rs * u3 * u3;
+              var u4 = u + dphi*k3u,       w4 = w + dphi*k3w;
+              var k4u = w4,                k4w = -u4 + 1.5 * rs * u4 * u4;
+              u += dphi*(k1u + 2*k2u + 2*k3u + k4u)/6;
+              w += dphi*(k1w + 2*k2w + 2*k3w + k4w)/6;
+              phi += dphi;
+              if (u <= 1e-7) {                  // escaped to r -> infinity
+                break;
+              }
+              var r = 1/u;
+              if (r < rs * 1.02) { captured = true; break; }   // crossed horizon
+              pts.push([r*Math.cos(phi), r*Math.sin(phi)]);
+              if (phi < -6*Math.PI) break;     // up to ~3 loops, then give up
+            }
+            return { pts: pts, captured: captured, b: b, rs: rs, phiOut: phi };
+          }
+
+          /* --------------------------------------------------------- (re)compute */
+          // Background fan of rays at fixed b/rs ratios + the highlighted ray.
+          var fanRatios = [0.55, 1.1, 1.7, 2.25, 2.65, 3.5, 5.0];
+          var fan = [];
+          var main = null;
+          function recompute() {
+            fan = fanRatios.map(function (c) {
+              return integrateRay(c * params.rs, params.rs);
+            });
+            main = integrateRay(params.b, params.rs);
+          }
+          recompute();
+
+          /* --------------------------------------------------------- draw a ray */
+          function drawRay(ctx, traj, color, headIdx, lineWidth, alpha) {
+            var pts = traj.pts;
+            var n = pts.length;
+            if (n === 0) return;
+            var tailLen = 75;
+            var i0 = Math.max(0, headIdx - tailLen);
+            var ie = Math.min(headIdx, n - 1);
+            if (ie < i0) return;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            var p0 = pts[i0];
+            ctx.moveTo(CX + p0[0], CY - p0[1]);
+            for (var i = i0 + 1; i <= ie; i++) {
+              var p = pts[i];
+              ctx.lineTo(CX + p[0], CY - p[1]);
+            }
+            ctx.stroke();
+            // head dot
+            if (!traj.captured || headIdx < n - 1) {
+              var ph = pts[ie];
+              PS.drawCircle(ctx, CX + ph[0], CY - ph[1], 3.2, { fill: color });
+            }
+            ctx.restore();
+          }
+
+          /* --------------------------------------------------------- sim */
+          var sim = PS.createSim(canvas, {
+            state: function () { return { phase: 0 }; },
+            step: function (dt, t, s) {
+              s.phase += dt * 0.32;          // speed of "photon head"
+              if (s.phase > 1.7) s.phase = 0; // allow tails to fade past end, then loop
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              var rs = params.rs;
+
+              // photon sphere (dashed green)
+              ctx.save();
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.globalAlpha = 0.55;
+              ctx.setLineDash([5, 4]);
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.arc(CX, CY, 1.5 * rs, 0, Math.PI * 2);
+              ctx.stroke();
+              ctx.restore();
+
+              // event horizon (black filled, red rim)
+              PS.drawCircle(ctx, CX, CY, rs, { fill: '#000000', stroke: PS.colors.accent, lineWidth: 2 });
+
+              // incoming-direction arrow (subtle)
+              PS.drawText(ctx, 'incoming light →', 14, CY + 4,
+                { font: 'italic 12px system-ui', color: PS.colors.text });
+
+              // longest trajectory governs animation timing
+              var maxLen = 0;
+              for (var i = 0; i < fan.length; i++) maxLen = Math.max(maxLen, fan[i].pts.length);
+              maxLen = Math.max(maxLen, main.pts.length);
+              var headIdx = Math.floor(s.phase * maxLen);
+
+              // fan (faint, colour by fate)
+              for (var j = 0; j < fan.length; j++) {
+                var fcol = fan[j].captured ? PS.colors.accent : PS.colors.text;
+                drawRay(ctx, fan[j], fcol, headIdx, 1.1, 0.30);
+              }
+
+              // highlighted main ray (bright)
+              var mcol = main.captured ? PS.colors.accent : PS.colors.primary;
+              drawRay(ctx, main, mcol, headIdx, 2.4, 1.0);
+
+              // labels
+              PS.drawText(ctx, 'r = r_s  (event horizon)', CX + rs + 8, CY + rs + 4,
+                { font: '11px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, 'r = 1.5 r_s  (photon sphere)', CX + 1.5*rs + 8, CY - 1.5*rs + 14,
+                { font: '11px system-ui', color: PS.colors.accent2 });
+
+              /* HUD */
+              var bc = (3*Math.sqrt(3)/2) * rs;          // critical impact parameter
+              var status, statusColor;
+              if (main.captured) {
+                status = 'CAPTURED  掷入视界';
+                statusColor = PS.colors.accent;
+              } else {
+                status = 'DEFLECTED & ESCAPED  偏折后逃逸';
+                statusColor = PS.colors.primary;
+              }
+
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 280, 116);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 280, 116);
+              ctx.restore();
+
+              var brs = (params.b / rs);
+              var hud = [
+                ['r_s = ' + rs.toFixed(0) + ' px   (slider: BH mass M)', PS.colors.text, false],
+                ['b  = ' + params.b.toFixed(0) + ' px   (highlighted ray)', PS.colors.text, false],
+                ['b / r_s = ' + brs.toFixed(2) + '     b_c = 2.60 r_s', PS.colors.text, false],
+                [main.captured
+                   ? 'b < b_c  →  captured'
+                   : 'b > b_c  →  escapes', statusColor, true],
+                [status, statusColor, true],
+              ];
+              for (var k = 0; k < hud.length; k++) {
+                var r = hud[k];
+                PS.drawText(ctx, r[0], 16, 28 + k*17,
+                  { font: (r[2] ? 'bold ' : '') + '12px system-ui', color: r[1] });
+              }
+
+              // legend bottom-right
+              PS.drawText(ctx,
+                'grey/red fan: 7 rays at b = 0.55...5.0 r_s   ·   dashed: photon sphere',
+                W - 12, H - 10,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          /* --------------------------------------------------------- controls */
+          var ctl = PS.makeControls(document.getElementById('controls-2'), [
+            { type: 'slider', key: 'rs', label: 'BH 质量 M (r_s 像素)', min: 12, max: 60, step: 1, value: DEFAULT.rs },
+            { type: 'slider', key: 'b',  label: '冲击参数 b (像素)',     min: 8,  max: 220, step: 1, value: DEFAULT.b },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('rs', function (v) { params.rs = v; recompute(); });
+          ctl.on('b',  function (v) { params.b  = v; recompute(); });
+          ctl.on('reset', function () {
+            params.rs = DEFAULT.rs; params.b = DEFAULT.b;
+            // sync sliders so UI matches the diagram
+            var box = document.getElementById('controls-2');
+            var inputs = box.querySelectorAll('input[type=range]');
+            var spans  = box.querySelectorAll('.ctrl-value');
+            var vals = [DEFAULT.rs, DEFAULT.b];
+            for (var i = 0; i < inputs.length; i++) {
+              inputs[i].value = vals[i];
+              if (spans[i]) spans[i].textContent = vals[i].toFixed(0);
+            }
+            recompute();
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>等效原理：局域内引力与加速度不可区分；GR 把引力解释为<strong>时空弯曲</strong>。</li>
+        <li>爱因斯坦场方程 \(G_{\mu\nu}+\Lambda g_{\mu\nu}=\dfrac{8\pi G}{c^{4}}T_{\mu\nu}\)：左边是几何（\(G_{\mu\nu}\) 曲率 + \(\Lambda\) 真空能量），右边是物质-能量。</li>
+        <li>系数 \(8\pi G/c^{4}\) 由<strong>牛顿极限</strong> \(\nabla^{2}\Phi=4\pi G\rho\) 唯一确定。</li>
+        <li>\(T_{\mu\nu}\) 对理想流体：\(T_{\mu\nu}=(\rho+p)u_{\mu}u_{\nu}/c^{2}-p\,g_{\mu\nu}\)；静止系中 \(T_{00}=\rho\)、\(T_{ii}=p\)。</li>
+        <li>施瓦茨希尔德度规（球对称真空解）：\(\mathrm{d}s^{2}=(1-r_{s}/r)c^{2}\mathrm{d}t^{2}-(1-r_{s}/r)^{-1}\mathrm{d}r^{2}-r^{2}\mathrm{d}\Omega^{2}\)，\(r_{s}=2GM/c^{2}\)。</li>
+        <li>引力时间膨胀：\(d\tau=\sqrt{1-r_{s}/r}\,dt\)；引力红移：\(\nu_{o}/\nu_{e}=\sqrt{(1-r_{s}/r_{e})/(1-r_{s}/r_{o})}\)。</li>
+        <li>事件视界 \(r=r_{s}\) 是因果边界；其内任何信号不能逃出。视界半径 \(r_{s}\propto M\)。</li>
+        <li>无毛定理：稳态黑洞仅由 \((M,Q,J)\) 决定；奇点由视界遮蔽（宇宙审查）。</li>
+        <li>光子球 \(r_{\text{ph}}=1.5\,r_{s}\)（光速不稳定圆轨道）；ISCO \(=3\,r_{s}\)（\(v=c/2\)，吸积盘内边缘）。</li>
+        <li>临界冲击参数 \(b_{c}=\tfrac{3\sqrt{3}}{2}r_{s}\approx 2.6\,r_{s}\)；光线偏折 \(\delta=4GM/(c^{2}b)\)（GR 是牛顿/等效原理估值的 2 倍）。</li>
+        <li>旋转黑洞由 Kerr 解描述：视界更小、有能层（参考系拖曳）、可经彭罗斯过程抽取能量。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\;G_{\mu\nu}+\Lambda g_{\mu\nu}=\frac{8\pi G}{c^{4}}T_{\mu\nu},\quad r_{s}=\frac{2GM}{c^{2}},\quad \mathrm{d}\tau=\sqrt{1-\frac{r_{s}}{r}}\,\mathrm{d}t,\quad r_{\text{ph}}=\frac{3}{2}r_{s},\quad r_{\text{ISCO}}=3r_{s},\quad b_{c}=\frac{3\sqrt{3}}{2}r_{s},\quad \delta_{\text{light}}=\frac{4GM}{c^{2}b},\quad \Delta\phi_{\text{Mercury}}=\frac{6\pi GM}{c^{2}a(1-e^{2})}\;} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

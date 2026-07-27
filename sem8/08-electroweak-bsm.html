@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第8章 · 电弱统一与超出标准模型 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="8">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第8章 · 量子场论 Quantum Field Theory</p>
+      <h1>电弱统一与超出标准模型 <span class="en-title">Electroweak Unification &amp; Beyond the Standard Model</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够写出<strong>电弱统一理论</strong> (electroweak theory, Glashow–Weinberg–Salam) 的规范群 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \)，列出对应的规范玻色子 \( W^{1,2,3}_\mu \)（弱同位旋，耦合 \( g \)）与 \( B_\mu \)（弱超荷，耦合 \( g' \)），并阐明左手费米子构成 \( \mathrm{SU}(2) \) 双星、右手费米子为单星的手征结构。</li>
+        <li>能够运用<strong>自发对称性破缺</strong> (spontaneous symmetry breaking) 与 <strong>Higgs 机制</strong>推导 \( W^\pm \)、\( Z^0 \) 获得质量而光子保持无质量：从 \( |D_\mu\Phi|^2 \) 推出 \( m_W=gv/2 \)、\( m_Z=v\sqrt{g^2+g'^2}/2 \)、\( m_\gamma=0 \)，其中 Higgs 真空期望值 \( v\approx 246\,\mathrm{GeV} \)。</li>
+        <li>能够使用 <strong>Weinberg 角</strong> \( \theta_W \)（\( \sin^2\theta_W\approx 0.231 \)）写出光子/\( Z \) 的混合矩阵 \( A_\mu=\sin\theta_W W^3_\mu+\cos\theta_W B_\mu \)、\( Z_\mu=\cos\theta_W W^3_\mu-\sin\theta_W B_\mu \)，并验证关系 \( \cos\theta_W=m_W/m_Z \)。</li>
+        <li>能够通过 <strong>Yukawa 耦合</strong> \( \mathcal{L}_Y=-y_f\bar\psi_L\Phi\psi_R+\mathrm{h.c.} \) 解释费米子质量起源 \( m_f=y_f v/\sqrt{2} \)，计算顶夸克 \( y_t\approx 1 \) 与电子 \( y_e\approx 3\times 10^{-6} \)，并理解夸克/轻子质量谱跨越 6 个数量级的层级问题。</li>
+        <li>能够论述<strong>超出标准模型</strong> (Beyond the Standard Model, BSM) 的物理动机：等级/自然性问题、大统一理论 (GUT) 的规范耦合统一、超对称 (SUSY) 抵消二次发散、seesaw 机制的中微子质量、暗物质候选者 (dark matter candidates) 与弦论 (string theory) 简介。</li>
+        <li>能够用真实数值估算 GUT 统一标度 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \) 与质子衰变寿命下限 \( \tau_p\gtrsim 10^{34}\,\mathrm{yr} \)，并说明为何最小 SU(5) 已被实验排除、而 SUSY GUT 仍在窗口内。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为何要统一？ Why Unify?</h3>
+      <p>费米 (Fermi) 的弱相互作用四费米接触理论 \( \mathcal{L}_{\mathrm{Fermi}}=-(G_F/\sqrt{2})\,(\bar\psi\gamma^\mu(1-\gamma^5)\psi)^2 \) 是不可重整化的低能有效理论。算树图过程 \( \nu_\mu+e^-\to\mu^-+\nu_e \) 的截面，由费米常数 \( G_F=1.166\times 10^{-5}\,\mathrm{GeV}^{-2} \) 决定：</p>
+      <div class="formula">\[ \sigma \sim G_F^2\,s\;\xrightarrow[s\to\pi/\sqrt{G_F}\,\sim\, (300\,\mathrm{GeV})^2]{}\;\sigma\sim 4\pi \]</div>
+      <p>当质心能量 \( \sqrt{s}\gtrsim 300\,\mathrm{GeV} \)，截面超过<strong>幺正极限</strong> \( 4\pi/s \)，破坏概率守恒。这说明 Fermi 理论在 \( \sim 300\,\mathrm{GeV} \) 以上必失效，必须由<strong>有质量的矢量玻色子</strong> \( W^\pm \) 交换代替点相互作用。但规范玻色子原本应当无质量（规范不变性禁止显式质量项 \( m^2 W_\mu W^\mu \)！）——这就需要 <strong>Higgs 机制</strong>。同时，电磁 (EM) 与弱相互作用在低能下表现完全不同（电磁长程、弱短程），但在高能下它们其实是<strong>同一个规范群</strong>的两个因子——这就是 Glashow、Weinberg、Salam (1961–1968) 的电弱统一（1979 Nobel）。</p>
+
+      <h3>2. 规范群与粒子内容 Gauge Group &amp; Particle Content</h3>
+      <p>电弱理论的规范群为 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \)：</p>
+      <ul>
+        <li><strong>\( \mathrm{SU}(2)_L \)</strong>（弱同位旋，weak isospin）：耦合常数 \( g \)，三个规范玻色子 \( W^1_\mu, W^2_\mu, W^3_\mu \)。下标 \( L \) 强调它<strong>只作用在左手场</strong>。</li>
+        <li><strong>\( \mathrm{U}(1)_Y \)</strong>（弱超荷，weak hypercharge）：耦合常数 \( g' \)，一个规范玻色子 \( B_\mu \)。</li>
+      </ul>
+      <p>费米子按手征 (chirality) 排成表示：</p>
+      <div class="formula">\[ Q_L=\begin{pmatrix}u_L\\\\ d_L\end{pmatrix},\quad L_L=\begin{pmatrix}\nu_L\\\\ e_L\end{pmatrix}\quad(\mathrm{SU}(2)\,\text{双星}),\qquad u_R,\ d_R,\ e_R\quad(\mathrm{SU}(2)\,\text{单星}) \]</div>
+      <p>注意标准模型中<strong>没有</strong>右手中微子 \( \nu_R \)（最小模型）。电荷与同位旋第三分量、超荷的关系由 Gell-Mann–Nishijima 公式给出：</p>
+      <div class="formula">\[ Q=T^3+\frac{Y}{2}\quad\Longrightarrow\quad Q_{u_L}=\tfrac{1}{2}+\tfrac{1}{6}=+\tfrac{2}{3},\quad Q_{e_L}=-\tfrac{1}{2}-\tfrac{1}{2}=-1 \]</div>
+      <p>这自动给出正确的夸克/轻子电荷。<strong>Higgs 双星</strong> \( \Phi \) 是 \( \mathrm{SU}(2) \) 双星、\( Y=1 \)：</p>
+      <div class="formula">\[ \Phi=\begin{pmatrix}\phi^+\\\\ \phi^0\end{pmatrix},\qquad Q_{\phi^0}=T^3+\tfrac{Y}{2}=-\tfrac{1}{2}+\tfrac{1}{2}=0\;\Rightarrow\;\text{中性，可在真空中取非零期望值}. \]</div>
+      <div class="key-terms">gauge group (规范群), weak isospin (弱同位旋 \( T \)), weak hypercharge (弱超荷 \( Y \)), chiral representation (手征表示), Higgs doublet (Higgs 双星)</div>
+
+      <h3>3. 电弱拉氏量 The Electroweak Lagrangian</h3>
+      <p>用协变导数 (covariant derivative) 一字并肩写出全部相互作用：</p>
+      <div class="formula">\[ D_\mu=\partial_\mu-ig\,\frac{\tau^a}{2}\,W^a_\mu-ig'\,\frac{Y}{2}\,B_\mu \]</div>
+      <p>完整的电弱拉氏量：</p>
+      <div class="formula">\[ \mathcal{L}_{\mathrm{EW}}=\underbrace{-\tfrac{1}{4}W^a_{\mu\nu}W^{a\mu\nu}-\tfrac{1}{4}B_{\mu\nu}B^{\mu\nu}}_{\text{规范场动能}}+\underbrace{\bar\psi\,i\gamma^\mu D_\mu\,\psi}_{\text{费米子}}+\underbrace{(D_\mu\Phi)^\dagger(D^\mu\Phi)}_{\text{Higgs 动能}}-\underbrace{V(\Phi)}_{\text{Higgs 势}}+\underbrace{\mathcal{L}_{\mathrm{Yukawa}}}_{\text{费米子质量}} \]</div>
+      <p>其中场强张量 \( W^a_{\mu\nu}=\partial_\mu W^a_\nu-\partial_\nu W^a_\mu+g\,\epsilon^{abc}W^b_\mu W^c_\nu \)（含非阿贝尔自相互作用，\( W \) 玻色子之间会散射 \( W \)），\( B_{\mu\nu}=\partial_\mu B_\nu-\partial_\nu B_\mu \)（阿贝尔，无自相互作用）。这一行拉氏量<strong>在 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 下完全不变</strong>。</p>
+
+      <h3>4. 自发对称性破缺与 Higgs 势 Spontaneous Symmetry Breaking &amp; the Higgs Potential</h3>
+      <p>取 Higgs 势为（\( \lambda>0, \mu^2>0 \)）：</p>
+      <div class="formula">\[ \boxed{\;V(\Phi)=-\mu^2\,\Phi^\dagger\Phi+\lambda\,(\Phi^\dagger\Phi)^2\;} \]</div>
+      <p>这是著名的「墨西哥帽」(Mexican-hat) 势。极小值由 \( \mathrm{d}V/\mathrm{d}(\Phi^\dagger\Phi)=0 \) 给出：</p>
+      <div class="formula">\[ -\mu^2+2\lambda\,\Phi^\dagger\Phi=0\quad\Longrightarrow\quad \langle\Phi^\dagger\Phi\rangle=\frac{\mu^2}{2\lambda} \]</div>
+      <p>选取真空（规范固定后）：</p>
+      <div class="formula">\[ \langle\Phi\rangle=\frac{1}{\sqrt{2}}\begin{pmatrix}0\\\\ v\end{pmatrix},\qquad v=\frac{\mu}{\sqrt{\lambda}}\approx 246\,\mathrm{GeV}\quad\text{(Higgs VEV)} \]</div>
+      <p>真空选取了一个方向！原 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 对称性被<strong>自发破缺</strong>为剩余的 \( \mathrm{U}(1)_{\mathrm{em}} \)（由电荷 \( Q=T^3+Y/2 \) 生成，\( \langle\Phi\rangle \) 在其下中性）。Goldstone 定理告诉我们，对称性破缺 \( G\to H \) 产生 \( \dim G-\dim H=4-1=3 \) 个无质量 <strong>Goldstone 玻色子</strong>。在定域规范理论中，这 3 个 Goldstone 玻色子被规范玻色子 \( W^\pm \)、\( Z \)「吃掉」(eaten) 成为它们的纵向极化态，使它们获得质量；剩下一个实标量自由度就是物理上的<strong>Higgs 玻色子</strong> \( h \)。把 \( \Phi \) 参数化为：</p>
+      <div class="formula">\[ \Phi(x)=\frac{1}{\sqrt{2}}\,e^{i\pi^a(x)\tau^a/v}\begin{pmatrix}0\\\\ v+h(x)\end{pmatrix},\qquad \pi^{1,2,3}=\text{Goldstone},\ h=\text{Higgs} \]</div>
+      <p>在<strong>幺正规范</strong> (unitary gauge) \( \pi^a\to 0 \) 下，\( \Phi\to(0,(v+h)/\sqrt{2})^T \)，只剩 \( h \)。</p>
+      <div class="key-terms">spontaneous symmetry breaking (自发对称性破缺), Higgs potential (Higgs 势), Higgs VEV (Higgs 真空期望值 \( v \)), Goldstone boson (Goldstone 玻色子), unitary gauge (幺正规范)</div>
+
+      <h3>5. \( W \)、\( Z \) 质量与 Weinberg 角 Boson Masses &amp; the Weinberg Angle</h3>
+      <p>把 \( \langle\Phi\rangle \) 代入 Higgs 动能项 \( (D_\mu\Phi)^\dagger(D^\mu\Phi) \)，并把 \( W^1, W^2 \) 组合成带电的 \( W^\pm=(W^1\mp i W^2)/\sqrt{2} \)，\( W^3 \)、\( B \) 旋转角 \( \theta_W \) 得中性组合：</p>
+      <div class="formula">\[ \begin{aligned} A_\mu &= \sin\theta_W\,W^3_\mu+\cos\theta_W\,B_\mu &&\text{(光子 photon, 无质量)} \\\\ Z_\mu &= \cos\theta_W\,W^3_\mu-\sin\theta_W\,B_\mu &&\text{(Z 玻色子, 有质量)} \end{aligned} \]</div>
+      <p>其中 <strong>Weinberg 角</strong> (weak mixing angle)：</p>
+      <div class="formula">\[ \tan\theta_W=\frac{g'}{g},\qquad \sin\theta_W=\frac{g'}{\sqrt{g^2+g'^2}},\qquad \cos\theta_W=\frac{g}{\sqrt{g^2+g'^2}} \]</div>
+      <p>代入动能项即得<strong>玻色子质量</strong>：</p>
+      <div class="formula">\[ \boxed{\;m_W=\frac{gv}{2},\qquad m_Z=\frac{v\sqrt{g^2+g'^2}}{2}=\frac{m_W}{\cos\theta_W},\qquad m_\gamma=0\;} \]</div>
+      <p>实验值 \( m_W=80.4\,\mathrm{GeV} \)、\( m_Z=91.2\,\mathrm{GeV} \) 给出 \( \cos\theta_W=m_W/m_Z=0.882 \)，即 \( \sin^2\theta_W=1-0.882^2=0.223 \)；经辐射修正后的精确值为 \( \sin^2\theta_W^{\overline{\mathrm{MS}}}(m_Z)=0.23122\pm 0.00003 \)。注意光子是<strong>无破缺</strong>的混合态——这正是 EM 仍为长程力的原因。</p>
+      <div class="key-terms">Weinberg angle (Weinberg 角 \( \theta_W \), weak mixing angle), photon (光子 \( \gamma \)), Z boson (\( Z \) 玻色子), charged current (带电流), neutral current (中性流)</div>
+
+      <h3>6. Yukawa 耦合与费米子质量 Yukawa Couplings &amp; Fermion Masses</h3>
+      <p>费米子质量来自 Yukawa 耦合：</p>
+      <div class="formula">\[ \mathcal{L}_Y=-y_e\,\bar L_L\Phi e_R-y_d\,\bar Q_L\Phi d_R-y_u\,\bar Q_L\tilde\Phi u_R+\mathrm{h.c.},\qquad \tilde\Phi=i\tau^2\Phi^* \]</div>
+      <p>（\( \tilde\Phi \) 是电荷共轭的 Higgs 双星，使上型夸克也获得质量。）代入 \( \langle\Phi\rangle=(0,v/\sqrt{2})^T \)：</p>
+      <div class="formula">\[ \mathcal{L}_Y\to -\frac{y_f v}{\sqrt{2}}\,\bar f f\cdot\Bigl(1+\frac{h}{v}\Bigr)\quad\Longrightarrow\quad \boxed{\;m_f=\frac{y_f v}{\sqrt{2}}\;} \]</div>
+      <p>顶夸克 \( y_t=\sqrt{2}\cdot 173/246\approx 0.994\approx 1 \)（与耦合常数为 1 同量级！），电子 \( y_e=\sqrt{2}\cdot 0.511\times 10^{-3}/246\approx 2.9\times 10^{-6} \)。Yukawa 耦合跨越<strong>6 个数量级</strong>，这种巨大「风味层级」(flavor hierarchy) 标准模型本身完全无法解释，是 BSM 物理的核心谜题。</p>
+
+      <h3>7. Higgs 玻色子的发现 Discovery of the Higgs Boson</h3>
+      <p>把势在极小值附近展开，得到 Higgs 玻色子 \( h \) 的质量：</p>
+      <div class="formula">\[ m_H^2=\frac{\mathrm{d}^2 V}{\mathrm{d}h^2}\bigg|_{h=0}=2\mu^2=2\lambda v^2\quad\Longrightarrow\quad m_H=\sqrt{2\lambda}\,v \]</div>
+      <p>注意 \( m_H \) <strong>不能由对称性预言</strong>（\( \lambda \) 是自由参数），只能等实验测量。<strong>2012 年 7 月 4 日</strong>，CERN 的 ATLAS 与 CMS 实验组宣布在 LHC（\( \sqrt{s}=7\!-\!8\,\mathrm{TeV} \)）发现一个新玻色子，主要通过 \( h\to\gamma\gamma \)、\( h\to ZZ^*\to 4\ell \)、\( h\to WW^* \) 通道，质量 \( m_H\approx 125.1\,\mathrm{GeV} \)，自旋宇称 \( 0^{++} \)，与标准模型 Higgs 一致（2013 Nobel 物理学奖授予 Englert 与 Higgs）。截至 2024 年，所有耦合（\( t\bar t h \)、\( \tau\tau \)、\( bb \)、\( \mu\mu \)、\( ZZ \)）测量均与 SM 偏差不超过 \( \sim 10\% \)，但精度仍待提高。</p>
+      <div class="key-terms">Higgs boson (Higgs 玻色子 \( h \)), LHC (大型强子对撞机), ATLAS / CMS (实验组), spin-0 scalar (自旋 0 标量)</div>
+
+      <h3>8. 超出标准模型 Beyond the Standard Model (BSM)</h3>
+      <p>标准模型极其成功（所有粒子物理实验都与之吻合），但有<strong>五大未解之谜</strong>指向新物理：</p>
+      <ol>
+        <li><strong>等级/自然性问题</strong> (hierarchy / naturalness problem)：Higgs 质量的圈图修正 \( \delta m_H^2\sim \Lambda^2/(16\pi^2) \)。若截断 \( \Lambda\sim M_{\mathrm{Pl}}\sim 10^{19}\,\mathrm{GeV} \)，则 \( \delta m_H^2\sim 10^{34}\,\mathrm{GeV}^2 \)，而实测 \( m_H^2\approx 1.6\times 10^4\,\mathrm{GeV}^2 \)——需要把裸质量与修正<strong>抵消到 30 位有效数字</strong>。这种极端微调 (fine-tuning) 是否物理？SUSY（每玻色子有一费米超伙伴，圈图相消）是主要解决方案。</li>
+        <li><strong>大统一理论</strong> (Grand Unified Theories, GUTs)：Georgi–Glashow SU(5) (1974) 将 \( \mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1) \) 嵌入单一简单群，预言超重 \( X, Y \) 规范玻色子。三个规范耦合在 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \) 处近似交于一点（SUSY GUT 给出更精确的统一）。</li>
+        <li><strong>超对称</strong> (Supersymmetry, SUSY)：玻色子↔费米子对称，每个粒子有超伙伴 (superpartner)：\( \tilde q, \tilde\ell, \tilde W, \tilde H, \tilde g \)。自动消除二次发散，把 Higgs 质量保护到 \( \delta m_H^2\sim m_{\mathrm{SUSY}}^2 \)。最轻超中性子 (neutralino) 是天然暗物质候选者。但 LHC Run-2 尚未发现超伙伴，下限 \( m_{\tilde g}\gtrsim 2.3\,\mathrm{TeV} \)，使最小 SUSY 受压。</li>
+        <li><strong>中微子质量与 seesaw</strong>：中微子振荡实验（Super-K, SNO, KamLAND）证明 \( m_\nu\neq 0 \)，\( \Delta m^2_{\mathrm{atm}}\approx 2.5\times 10^{-3}\,\mathrm{eV}^2 \)。最小 SM 不允许 \( \nu_R \)。引入右手中微子 \( N_R \) 与 Majorana 质量 \( M_R \)，则<strong>seesaw 公式</strong>给轻中微子质量：</li>
+      </ol>
+      <div class="formula">\[ m_\nu\simeq\frac{m_D^2}{M_R}\sim\frac{(174\,\mathrm{GeV})^2}{10^{15}\,\mathrm{GeV}}\approx 0.03\,\mathrm{eV}\;\checkmark \]</div>
+      <p>这是新物理在 \( M_R\sim 10^{14\text{–}15}\,\mathrm{GeV} \) 处的间接证据，与 GUT 标度吻合。</p>
+      <ol start="5">
+        <li><strong>暗物质与弦论</strong> (Dark Matter &amp; String Theory)：宇宙学观测（Planck）给出 \( \Omega_{\mathrm{DM}}\approx 0.265 \)，是非重子、非发光物质。弱相互作用大质量粒子 (WIMPs)、轴子 (axions)、原初黑洞都是候选。弦论 (string theory) 用一维弦代替点粒子，自然包容量子引力与额外维，预言时空维数 \( D=10 \) 或 11，但目前无可检验的实验预言。</li>
+      </ol>
+      <div class="key-terms">hierarchy problem (等级问题), fine-tuning (微调), Grand Unified Theory (大统一理论 GUT), supersymmetry (超对称 SUSY), neutralino (中性子), seesaw mechanism (跷跷板机制), dark matter (暗物质), string theory (弦论)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 由协变导数导出 \( m_W \)、\( m_Z \)、\( m_\gamma \)</h2>
+      <p><strong>目标：</strong>从 \( (D_\mu\Phi)^\dagger(D^\mu\Phi) \) 出发，证明 Higgs VEV 自动产生 \( W^\pm \)、\( Z \) 的质量项，并保证光子无质量。</p>
+      <p class="step"><strong>步骤 1.</strong> 在幺正规范下取 \( \langle\Phi\rangle=(0,v/\sqrt{2})^T \)，\( v=\mu/\sqrt{\lambda} \)。计算规范场作用（\( \partial_\mu\langle\Phi\rangle=0 \)）：</p>
+      <div class="formula">\[ D_\mu\langle\Phi\rangle=-i\Bigl(\frac{g}{2}\tau^a W^a_\mu+\frac{g'}{2}B_\mu\Bigr)\langle\Phi\rangle \]</div>
+      <p class="step"><strong>步骤 2.</strong> 分别用 Pauli 矩阵 \( \tau^1, \tau^2, \tau^3 \) 作用：</p>
+      <div class="formula">\[ \tau^1\langle\Phi\rangle=\frac{1}{\sqrt{2}}\begin{pmatrix}v\\\\ 0\end{pmatrix},\quad \tau^2\langle\Phi\rangle=\frac{1}{\sqrt{2}}\begin{pmatrix}-iv\\\\ 0\end{pmatrix},\quad \tau^3\langle\Phi\rangle=\frac{1}{\sqrt{2}}\begin{pmatrix}0\\\\ -v\end{pmatrix} \]</div>
+      <p>因此 \( (g/2)(\tau^1 W^1+\tau^2 W^2)\langle\Phi\rangle=(gv/2\sqrt{2})(W^1-iW^2,\,0)^T \)。定义带电玻色子：</p>
+      <div class="formula">\[ W^\pm_\mu=\frac{W^1_\mu\mp iW^2_\mu}{\sqrt{2}}\quad\Longrightarrow\quad W^+W^-=\tfrac{1}{2}\bigl[(W^1)^2+(W^2)^2\bigr] \]</div>
+      <p class="step"><strong>步骤 3.</strong> 第一分量给出：</p>
+      <div class="formula">\[ \bigl|\text{first component}\bigr|^2=\frac{g^2v^2}{8}\bigl[(W^1)^2+(W^2)^2\bigr]=\frac{g^2v^2}{4}\,W^+_\mu W^{-\mu}\equiv m_W^2\,W^+_\mu W^{-\mu} \]</div>
+      <p>故 <strong>\( m_W=gv/2 \)</strong>。第二分量中，\( \tau^3 \) 与单位阵（超荷部分 \( Y=1 \)）线性组合：</p>
+      <div class="formula">\[ \text{second comp.}=\frac{-v}{2\sqrt{2}}\bigl(g W^3_\mu-g'B_\mu\bigr)\quad\Longrightarrow\quad \frac{v^2}{8}(gW^3-g'B)^2=\frac{v^2(g^2+g'^2)}{8}\,Z_\mu Z^\mu\equiv\frac{1}{2}m_Z^2 Z_\mu Z^\mu \]</div>
+      <p class="step"><strong>步骤 4.</strong> 旋转定义 \( Z_\mu=(gW^3_\mu-g'B_\mu)/\sqrt{g^2+g'^2}=\cos\theta_W W^3_\mu-\sin\theta_W B_\mu \)，正交组合 \( A_\mu=(g'W^3_\mu+gB_\mu)/\sqrt{g^2+g'^2}=\sin\theta_W W^3_\mu+\cos\theta_W B_\mu \) 完全不出现在动能项中——即 <strong>\( m_\gamma=0 \)</strong>！同时：</p>
+      <div class="formula">\[ \boxed{\;m_Z=\frac{v\sqrt{g^2+g'^2}}{2}\;\Longrightarrow\;\frac{m_W}{m_Z}=\frac{g}{\sqrt{g^2+g'^2}}=\cos\theta_W\;} \]</div>
+      <p class="step"><strong>步骤 5.</strong> \( \Phi \) 原有 4 个实自由度。SSB 后 3 个 Goldstone \( \pi^{1,2,3} \) 通过规范变换消去（幺正规范），成为 \( W^\pm \)、\( Z \) 的纵向极化（每个有质量矢量玻色子有 3 个极化态：2 横向 + 1 纵向；无质量光子只有 2 个横向）。原本 \( W^1, W^2, W^3, B \) 共 8 个极化自由度，破缺后 \( W^\pm \)（2×3=6）+ \( Z \)（3）+ \( \gamma \)（2）= 11？不对——其实是 \( 4 \) 个原规范玻色子 \( \times 2 \) 极化 = 8，加上 3 个被吃的 Goldstone 共 11，分配为 \( W^+, W^-, Z \) 各 3 极化 (9) + \( \gamma \) 2 极化 (2) = 11；多出 3 正是吃掉的 Goldstone。<strong>剩余的第 4 个实 Higgs 自由度就是物理 Higgs 玻色子 \( h \)，\( m_H^2=2\mu^2 \)</strong>。这一推导完整演示了「规范对称性自发破缺＝有质量矢量玻色子」的奇迹。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 8.1 由 \( G_F \) 推出 \( v \)、\( g \)、\( m_W \) From \( G_F \) to \( v \), \( g \), \( m_W \)</h4>
+        <p class="example-statement">μ子衰变 \( \mu^-\to e^-+\bar\nu_e+\nu_\mu \) 在低能下由 Fermi 常数描述：\( G_F/\sqrt{2}=g^2/(8m_W^2)=1/(2v^2) \)。已知 \( G_F=1.166\,378\,7\times 10^{-5}\,\mathrm{GeV}^{-2} \)、\( \sin^2\theta_W=0.231 \)、\( \alpha_{\mathrm{em}}^{-1}(m_Z)\approx 128 \)，求 \( v \)、\( g \)、\( m_W \)、\( m_Z \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（1）由 \( G_F/\sqrt{2}=1/(2v^2) \)，</p>
+          <p>\[ v^2=\frac{1}{\sqrt{2}\,G_F}=\frac{1}{1.414\,21\times 1.166\,38\times 10^{-5}}=\frac{1}{1.649\,4\times 10^{-5}}=6.063\times 10^4\,\mathrm{GeV}^2 \]</p>
+          <p>\[ v=\sqrt{6.063\times 10^4}=246.2\,\mathrm{GeV}\;\checkmark \]</p>
+          <p class="step">（2）由 \( e=g\sin\theta_W \) 与 \( e^2=4\pi\alpha_{\mathrm{em}} \)，\( e=\sqrt{4\pi/128}=\sqrt{0.098\,17}=0.313 \)。</p>
+          <p>\[ g=\frac{e}{\sin\theta_W}=\frac{0.313}{\sqrt{0.231}}=\frac{0.313}{0.480\,6}=0.651 \]</p>
+          <p class="step">（3）\( m_W=gv/2=0.651\times 246.2/2=80.1\,\mathrm{GeV} \)（实测 PDG 值 \( 80.379\,\mathrm{GeV} \)，差 \( 0.3\% \)，源于树图近似）。</p>
+          <p class="step">（4）\( m_Z=m_W/\cos\theta_W=80.1/\sqrt{1-0.231}=80.1/0.877=91.3\,\mathrm{GeV} \)（实测 \( 91.187\,6\,\mathrm{GeV} \)）。</p>
+          <p><span class="ans">\( v=246.2\,\mathrm{GeV} \)、\( g=0.651 \)、\( m_W=80.1\,\mathrm{GeV} \)、\( m_Z=91.3\,\mathrm{GeV} \)。注意全部由低能可观测量 \( G_F \)、\( \alpha_{\mathrm{em}} \)、\( \sin^2\theta_W \) 预言，且与 LEP/Tevatron/LHC 直接测量一致。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.2 Weinberg 角与光子/\( Z \) 混合 Weinberg Angle &amp; Photon/Z Mixing</h4>
+        <p class="example-statement">已知实测 \( m_W=80.379\,\mathrm{GeV} \)、\( m_Z=91.187\,6\,\mathrm{GeV} \)。（a）求树图 \( \sin^2\theta_W \)；（b）写出 \( A_\mu \)、\( Z_\mu \) 关于 \( W^3_\mu \)、\( B_\mu \) 的显式数值展开；（c）说明光子「主要」是哪个原始规范场。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（a）由 \( \cos\theta_W=m_W/m_Z \)，</p>
+          <p>\[ \cos\theta_W=\frac{80.379}{91.187\,6}=0.881\,48,\qquad \sin\theta_W=\sqrt{1-0.881\,48^2}=\sqrt{1-0.777\,01}=0.472\,22 \]</p>
+          <p>\[ \sin^2\theta_W=0.223\,20\;\text{(tree level from masses)} \]</p>
+          <p>（经圈图辐射修正与 \( \overline{\mathrm{MS}} \) 重整化方案后，PDG 给出 \( \sin^2\theta_W^{\overline{\mathrm{MS}}}=0.231\,22 \)。差异来自圈图贡献，是电弱理论高精度检验的关键之一。）</p>
+          <p class="step">（b）代入混合矩阵：</p>
+          <p>\[ A_\mu=0.472\,22\,W^3_\mu+0.881\,48\,B_\mu,\qquad Z_\mu=0.881\,48\,W^3_\mu-0.472\,22\,B_\mu \]</p>
+          <p class="step">（c）光子的系数 \( (\sin\theta_W,\cos\theta_W)=(0.472,0.881) \)，即<strong>主要成分是超荷玻色子 \( B_\mu \)（\( 88\% \)），少量 \( W^3 \)（\( 47\% \)）</strong>。注意两分量平方和为 1（正交变换）。\( Z \) 则相反——主要来自弱同位旋 \( W^3 \)（\( 88\% \)），少量 \( B \)。</p>
+          <p>这种混合把「理论的两个原始规范场 \( W^3, B \)」与「实验看到的光子、\( Z \)」联系起来。光子是<strong>无破缺</strong>的 \( \mathrm{U}(1)_{\mathrm{em}} \) 规范玻色子，所以保持无质量；\( Z \) 是<strong>有质量</strong>的混合态。</p>
+          <p><span class="ans">\( \sin^2\theta_W=0.223 \)（树图质量比）；\( A=0.472\,W^3+0.881\,B \)（光子主要来自超荷）；\( Z=0.881\,W^3-0.472\,B \)（\( Z \) 主要来自弱同位旋）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.3 Yukawa 耦合：顶夸克与电子 Yukawa Couplings: Top &amp; Electron</h4>
+        <p class="example-statement">取 \( v=246\,\mathrm{GeV} \)。计算顶夸克（\( m_t=172.8\,\mathrm{GeV} \)、底夸克（\( m_b=4.18\,\mathrm{GeV} \)）、电子（\( m_e=0.510\,999\,\mathrm{MeV} \)）的 Yukawa 耦合，并讨论其物理意义。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \( m_f=y_f v/\sqrt{2} \)，</p>
+          <p>\[ y_t=\frac{\sqrt{2}\,m_t}{v}=\frac{1.414\,21\times 172.8}{246}=\frac{244\,375}{246}=0.993 \]</p>
+          <p>\[ y_b=\frac{\sqrt{2}\,m_b}{v}=\frac{1.414\,21\times 4.18}{246}=\frac{5.911}{246}=0.024\,0 \]</p>
+          <p>\[ y_e=\frac{\sqrt{2}\,m_e}{v}=\frac{1.414\,21\times 0.510\,999\times 10^{-3}}{246}=\frac{7.225\times 10^{-4}}{246}=2.94\times 10^{-6} \]</p>
+          <p class="step"><strong>物理意义：</strong></p>
+          <ul>
+            <li>\( y_t\approx 1 \)：顶夸克与 Higgs 的耦合是<strong>最强</strong>的汤川耦合，几乎等于规范耦合的量级。这正是顶夸克对 Higgs 性质（如 \( h\to\gamma\gamma \) 圈图）、电弱真空稳定性（\( m_H=125\,\mathrm{GeV} \) 让真空恰好亚稳）影响巨大的原因。</li>
+            <li>\( y_t/y_b=0.993/0.024\approx 41 \)：上下型夸克质量比约 40，与 CKM 矩阵元 \( |V_{tb}|\approx 1 \) 共同体现第三代的特殊性。</li>
+            <li>\( y_t/y_e\approx 3.4\times 10^5 \)：跨越 5.5 个数量级！<strong>标准模型完全无法解释</strong>为何电子如此轻。BSM 解释包括风味对称 (flavor symmetry)、额外维局域化 (extra-dimensional localization)、辐射层级 (radiative hierarchy) 等。</li>
+          </ul>
+          <p><span class="ans">\( y_t=0.993 \)、\( y_b=0.024 \)、\( y_e=2.94\times 10^{-6} \)。Yukawa 耦合谱跨越 6 个数量级——SM 最大未解之谜。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.4 GUT 统一标度估计 GUT Unification Scale Estimate</h4>
+        <p class="example-statement">标准模型三个规范耦合 \( \alpha_1, \alpha_2, \alpha_3 \)（GUT 归一化下 \( \alpha_1=(5/3)g'^2/(4\pi) \)）随能量跑动。在 \( m_Z \) 处实测 \( \alpha_{\mathrm{em}}^{-1}=127.5 \)、\( \sin^2\theta_W=0.231 \)、\( \alpha_s=0.118 \)。一圈 \( \beta \) 函数系数（\( \mathrm{d}\alpha_i^{-1}/\mathrm{d}\ln\mu=-b_i/(2\pi) \)）：\( (b_1,b_2,b_3)=(41/10,\,-19/6,\,-7) \)。求 \( \alpha_2 \) 与 \( \alpha_3 \) 在何处相交（粗估 \( M_{\mathrm{GUT}} \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（1）初值（GUT 归一化）：</p>
+          <p>\[ \alpha_1^{-1}(m_Z)=\tfrac{3}{5}\cos^2\theta_W\,\alpha_{\mathrm{em}}^{-1}=\tfrac{3}{5}\times 0.769\times 127.5=58.9 \]</p>
+          <p>\[ \alpha_2^{-1}(m_Z)=\sin^2\theta_W\,\alpha_{\mathrm{em}}^{-1}=0.231\times 127.5=29.5 \]</p>
+          <p>\[ \alpha_3^{-1}(m_Z)=\alpha_s^{-1}=\frac{1}{0.118}=8.47 \]</p>
+          <p class="step">（2）一圈跑动方程：</p>
+          <p>\[ \alpha_i^{-1}(M)=\alpha_i^{-1}(m_Z)-\frac{b_i}{2\pi}\ln\!\frac{M}{m_Z} \]</p>
+          <p class="step">（3）求 \( \alpha_2(M)=\alpha_3(M) \)：</p>
+          <p>\[ 29.5-\frac{-19/6}{2\pi}\ln\frac{M}{m_Z}=8.47-\frac{-7}{2\pi}\ln\frac{M}{m_Z} \]</p>
+          <p>\[ 29.5+\frac{19/6}{6.283}\ln\frac{M}{m_Z}=8.47+\frac{7}{6.283}\ln\frac{M}{m_Z} \]</p>
+          <p>\[ 29.5+0.504\,\ln\frac{M}{m_Z}=8.47+1.114\,\ln\frac{M}{m_Z} \]</p>
+          <p>\[ 21.0=0.610\,\ln\frac{M}{m_Z}\quad\Longrightarrow\quad \ln\frac{M}{m_Z}=\frac{21.0}{0.610}=34.5 \]</p>
+          <p>\[ \frac{M}{m_Z}=e^{34.5}=9.9\times 10^{14}\quad\Longrightarrow\quad M=91.2\,\mathrm{GeV}\times 9.9\times 10^{14}=9.0\times 10^{16}\,\mathrm{GeV} \]</p>
+          <p class="step">（4）校验 \( \alpha_1 \)：在 \( M=9\times 10^{16}\,\mathrm{GeV} \)，</p>
+          <p>\[ \alpha_1^{-1}(M)=58.9-\frac{4.1}{6.283}\times 34.5=58.9-22.5=36.4 \]</p>
+          <p>而 \( \alpha_2^{-1}(M)=29.5+0.504\times 34.5=29.5+17.4=46.9 \)。\( \alpha_1^{-1}=36.4 \) 与 \( \alpha_2^{-1}=46.9 \) 相差较大——<strong>三线在最小 SM 下不完全交于一点</strong>，形成小三角形。引入 SUSY（\( b_i=(33/5,1,-3) \)）后三线在 \( M_{\mathrm{GUT}}\approx 2\times 10^{16}\,\mathrm{GeV} \) 精确相交——这是 SUSY GUT 的关键论据。</p>
+          <p><span class="ans">一圈 SM 给出 \( \alpha_2\!-\!\alpha_3 \) 交点 \( M\approx 10^{17}\,\mathrm{GeV} \)；考虑两圈与 SUSY 修正后 \( M_{\mathrm{GUT}}\approx 2\times 10^{16}\,\mathrm{GeV} \)，统一耦合 \( \alpha_{\mathrm{GUT}}^{-1}\approx 24 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 8.5 质子衰变寿命下限 Proton Decay Lifetime Bound</h4>
+        <p class="example-statement">GUT 中的重 \( X, Y \) 规范玻色子交换诱导量纲 6 算符 \( (qqql)/M_X^2 \)，使质子衰变（如 \( p\to e^+\pi^0 \)）。衰变宽度 \( \Gamma_p\sim\alpha_{\mathrm{GUT}}^2 m_p^5/M_X^4 \)。取 \( M_X=M_{\mathrm{GUT}}=10^{16}\,\mathrm{GeV} \)、\( \alpha_{\mathrm{GUT}}=1/25 \)、\( m_p=0.938\,\mathrm{GeV} \)，估算 \( \tau_p \)。与 Super-K 实验下限 \( \tau_p(p\to e^+\pi^0)&gt;2.4\times 10^{34}\,\mathrm{yr} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>寿命 \( \tau_p=1/\Gamma_p \)。</p>
+          <p>\[ \tau_p\sim\frac{M_X^4}{\alpha_{\mathrm{GUT}}^2\,m_p^5}=\frac{(10^{16})^4}{(1/25)^2(0.938)^5}\,\mathrm{GeV}^{-1}=\frac{10^{64}}{1.6\times 10^{-3}\times 0.727}\,\mathrm{GeV}^{-1} \]</p>
+          <p>\[ =\frac{10^{64}}{1.16\times 10^{-3}}=8.6\times 10^{66}\,\mathrm{GeV}^{-1} \]</p>
+          <p class="step">换算为秒：\( \hbar=6.582\times 10^{-25}\,\mathrm{GeV\,s} \)，</p>
+          <p>\[ \tau_p=8.6\times 10^{66}\times 6.582\times 10^{-25}\,\mathrm{s}=5.66\times 10^{42}\,\mathrm{s} \]</p>
+          <p class="step">换算为年（\( 1\,\mathrm{yr}=3.156\times 10^7\,\mathrm{s} \)）：</p>
+          <p>\[ \tau_p=\frac{5.66\times 10^{42}}{3.156\times 10^7}=1.79\times 10^{35}\,\mathrm{yr} \]</p>
+          <p class="step"><strong>结论：</strong>对 \( M_X=10^{16}\,\mathrm{GeV} \)，\( \tau_p\sim 10^{35}\,\mathrm{yr} \)，恰高于 Super-K 下限 \( 2.4\times 10^{34}\,\mathrm{yr} \)——SUSY GUT 仍在窗口内但已被推到边缘。最小（非 SUSY）SU(5) 预言 \( M_X\sim 10^{15}\,\mathrm{GeV} \)，则</p>
+          <p>\[ \tau_p\sim 10^{35}\times\Bigl(\frac{10^{15}}{10^{16}}\Bigr)^4=10^{35}\times 10^{-4}=10^{31}\,\mathrm{yr}\;\ll\;10^{34}\,\mathrm{yr} \]</p>
+          <p>——明显<strong>已被实验排除</strong>（除非引入重大修改）。这就是为何 1980 年代首次 IMB/Kamiokande 质子衰变搜寻把非 SUSY SU(5) 否决掉的原因。</p>
+          <p><span class="ans">\( \tau_p\sim 10^{35}\,\mathrm{yr} \)（对 \( M_X=10^{16}\,\mathrm{GeV} \)）；最小 SU(5)（\( M_X\sim 10^{15}\,\mathrm{GeV} \)）预言 \( \tau_p\sim 10^{31}\,\mathrm{yr} \)，已被 Super-K 排除。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「Higgs 机制打破了规范对称性」——错。</strong>把 <em>Elitzur 定理</em>翻译成大白话：定域规范对称性是<strong>冗余描述</strong>，不能被「物理地」破缺。<strong>拉氏量 \( \mathcal{L}_{\mathrm{EW}} \) 始终完全对称</strong>——\( V(\Phi)=-\mu^2|\Phi|^2+\lambda|\Phi|^4 \) 只依赖于 \( |\Phi|^2 \)，在 \( \mathrm{SU}(2)\times\mathrm{U}(1) \) 下严格不变。真正发生的是<strong>真空 \( \langle\Phi\rangle \)</strong> 选取了一个特定方向（即「自发」破缺），就像一根倒立的针在底部某方向倒下——针的方程仍是旋转对称的，只是它的解（位置）不对称。所以「Higgs 给对称性破缺一个柔和的实现」(realization of symmetry breaking)，而非<strong>显式</strong>破坏对称性。</li>
+        <li><strong>「光子就是 \( B_\mu \)（超荷玻色子）」——错。</strong>光子是<strong>无破缺</strong>的混合态 \( A_\mu=\sin\theta_W W^3_\mu+\cos\theta_W B_\mu\approx 0.472\,W^3+0.881\,B \)。它是<strong>剩余 \( \mathrm{U}(1)_{\mathrm{em}} \) 对称性</strong>对应的规范玻色子，生成元是 \( Q=T^3+Y/2 \)，而非纯超荷 \( Y \)。若误以为光子 \( =B \)，就无法理解为何 EM 耦合是 \( e=g\sin\theta_W=g'\cos\theta_W \)，也无法算对 \( Z\to f\bar f \) 的耦合。</li>
+        <li><strong>「Higgs 给所有粒子质量」——大错。</strong>Higgs 机制只给 <strong>\( W^\pm \)、\( Z \)</strong> 与基本费米子（\( e, \mu, q, \ldots \)）质量。<strong>质子/中子质量的 \( \sim 99\% \)</strong>（\( m_p\approx 938\,\mathrm{MeV} \)）来自 <strong>QCD 强相互作用结合能</strong>——胶子场能与价夸克动能（\( E^2-p^2 \)），由 \( \Lambda_{\mathrm{QCD}}\sim 200\,\mathrm{MeV} \) 设定。把所有夸克质量设为 0，质子质量几乎不变（\( \sim 880\,\mathrm{MeV} \)）。Higgs 贡献的 \( u, d \) 夸克质量之和仅约 \( 10\,\mathrm{MeV} \)，占 \( m_p \) 的 1%。所以「质量起源」这个说法在 QCD 占主导时是误导性的。</li>
+        <li><strong>「3 个 Goldstone 玻色子是可观测的物理粒子」——错。</strong>在<strong>定域</strong>规范理论中，Goldstone 模式被相应的规范玻色子「吃掉」，变成它们的纵向极化态。它们不出现在物理谱中——既不会在探测器中看到独立的标量粒子叫「Goldstone」。可观测的标量只有<strong>一个</strong> Higgs \( h \)。这一对比：在<strong>整体</strong>对称性自发破缺（如手征对称破缺、超流 He-3）中 Goldstone 是真实粒子（π 介子、声子），但规范理论把它们吸收了。</li>
+        <li><strong>「等级问题只是美学问题，不必在意」——非也。</strong>它是一个真实的<strong>理论不一致性</strong>：量子修正 \( \delta m_H^2\sim\Lambda^2/(16\pi^2) \) 把 Higgs 质量拉向截断 \( \Lambda \)。若 \( \Lambda\sim M_{\mathrm{Pl}} \)，需要裸参数与修正抵消到 \( 10^{-34} \) 精度。自然性原理 (naturalness, 't Hooft) 要求小参数应有对称性解释，而非任意微调。SUSY、复合 Higgs (composite Higgs)、额外维都是为解决此问题。LHC 没找到 SUSY 是<strong>真实令人困惑</strong>的事实，重新激发了「微调是否可接受」的争论。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （由 \( G_F \) 求 \( v \)）已知 \( G_F=1.166\,38\times 10^{-5}\,\mathrm{GeV}^{-2} \)。证明 \( v=(\sqrt{2}G_F)^{-1/2} \) 并算出数值（GeV）。</summary>
+        <div class="hint">μ子衰变宽度 \( \Gamma(\mu\to e\bar\nu_e\nu_\mu)=G_F^2 m_\mu^5/(192\pi^3) \)，与 \( W \) 交换图比较得 \( G_F/\sqrt{2}=g^2/(8m_W^2)=1/(2v^2) \)。</div>
+        <div class="solution">
+          <p>由 \( G_F/\sqrt{2}=1/(2v^2) \)，\( v^2=1/(\sqrt{2}G_F) \)，</p>
+          <p>\( v=(\sqrt{2}G_F)^{-1/2}=(1.414\,21\times 1.166\,38\times 10^{-5})^{-1/2}=(1.649\,4\times 10^{-5})^{-1/2} \)。</p>
+          <p>\( v=1/\sqrt{1.649\,4\times 10^{-5}}=1/(4.061\times 10^{-3})=246.2\,\mathrm{GeV} \)。<span class="ans">\( v\approx 246\,\mathrm{GeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （质量比给 \( \theta_W \)）已知 PDG 实测值 \( m_W=80.379\,\mathrm{GeV} \)、\( m_Z=91.187\,6\,\mathrm{GeV} \)。求树图 \( \sin^2\theta_W \)，与 \( \overline{\mathrm{MS}} \) 跑动值 \( 0.231\,22 \) 比较并解释差异。</summary>
+        <div class="hint">\( \cos\theta_W=m_W/m_Z \)，\( \sin^2\theta_W=1-(m_W/m_Z)^2 \)。</div>
+        <div class="solution">
+          <p>\( (m_W/m_Z)^2=(80.379/91.187\,6)^2=(0.881\,48)^2=0.777\,01 \)。</p>
+          <p>\( \sin^2\theta_W=1-0.777\,01=0.222\,99 \)。</p>
+          <p>与 \( \overline{\mathrm{MS}} \) 值 \( 0.231\,22 \) 相差 \( 0.008\,2 \)（\( 3.6\% \)）。差异源于：（i）树图公式忽略了圈图辐射修正（顶夸克圈、\( W \)、\( Z \) 真空极化）；（ii）\( \overline{\mathrm{MS}} \) 是在 \( \mu=m_Z \) 处的跑动耦合，含所有圈图重整化。<span class="ans">\( \sin^2\theta_W^{\mathrm{tree}}=0.223 \)（vs \( \overline{\mathrm{MS}}\ 0.231 \)）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （Higgs 自耦合常数）由 \( m_H=125.25\,\mathrm{GeV} \)、\( v=246\,\mathrm{GeV} \) 求 \( \lambda \) 与 \( \mu \)。验证关系 \( m_H^2=2\mu^2=2\lambda v^2 \)。</summary>
+        <div class="hint">\( V=-\mu^2|\Phi|^2+\lambda|\Phi|^4 \)，\( v^2=\mu^2/\lambda \)，\( m_H^2=2\mu^2 \)。</div>
+        <div class="solution">
+          <p>由 \( m_H^2=2\lambda v^2 \)：\( \lambda=m_H^2/(2v^2)=(125.25)^2/[2\times(246)^2]=15\,687/[2\times 60\,516]=15\,687/121\,032=0.129\,6 \)。</p>
+          <p>由 \( v^2=\mu^2/\lambda \)：\( \mu^2=\lambda v^2=0.129\,6\times 60\,516=7\,843\,\mathrm{GeV}^2 \)，\( \mu=88.6\,\mathrm{GeV} \)。</p>
+          <p>校验：\( 2\mu^2=2\times 7\,843=15\,686\,\mathrm{GeV}^2 \)，\( m_H=\sqrt{15\,686}=125.2\,\mathrm{GeV}\;\checkmark \)。</p>
+          <p>\( V \) 在极小值处：\( V(v)=-\mu^4/(4\lambda)=-(7\,843)^2/(4\times 0.129\,6)=-6.15\times 10^7/0.518=-1.19\times 10^8\,\mathrm{GeV}^4 \)。<span class="ans">\( \lambda\approx 0.130 \)、\( \mu\approx 89\,\mathrm{GeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （Seesaw 中微子质量）假设 Dirac 质量 \( m_D=y_t v/\sqrt{2}\approx 173\,\mathrm{GeV} \)（即中微子与顶夸克相同 Yukawa）。若 \( m_{\nu}\approx 0.05\,\mathrm{eV} \)（大气中微子振荡标度），求 Majorana 质量 \( M_R \)。这是否与 GUT 标度一致？</summary>
+        <div class="hint">\( m_\nu\simeq m_D^2/M_R \)，故 \( M_R=m_D^2/m_\nu \)。注意单位换算 \( 1\,\mathrm{GeV}=10^9\,\mathrm{eV} \)。</div>
+        <div class="solution">
+          <p>\( M_R=m_D^2/m_\nu=(173)^2/(0.05\times 10^{-9})\,\mathrm{GeV}=29\,929/(5\times 10^{-11})\,\mathrm{GeV}=5.99\times 10^{14}\,\mathrm{GeV} \)。</p>
+          <p>\( M_R\approx 6\times 10^{14}\,\mathrm{GeV} \)——恰与 GUT 标度 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \) 同量级！这种「巧合」强烈提示右手中微子是 GUT 标度的物理，且 seesaw 是中微子质量的自然解释。</p>
+          <p>反向验证：若取 \( M_R=10^{15}\,\mathrm{GeV} \)、\( m_D=174\,\mathrm{GeV} \)，则 \( m_\nu=m_D^2/M_R=(174)^2/10^{15}\,\mathrm{GeV}=30\,276/10^{15}\,\mathrm{GeV}=3.03\times 10^{-11}\,\mathrm{GeV}=3.03\times 10^{-11}\times 10^9\,\mathrm{eV}=0.030\,\mathrm{eV} \)，恰与大气中微子振荡标度 \( \sqrt{\Delta m^2_{\mathrm{atm}}}\approx 0.05\,\mathrm{eV} \) 吻合。<span class="ans">\( M_R\approx 6\times 10^{14}\,\mathrm{GeV} \)——与 GUT 标度一致，是 seesaw 的有力佐证。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （GUT 质子衰变）若 Super-K 给出 \( \tau_p/B(p\to e^+\pi^0)&gt;2.4\times 10^{34}\,\mathrm{yr} \)，对应 \( M_X \)（重 GUT 玻色子质量）下限是多少？取 \( \alpha_{\mathrm{GUT}}=1/25 \)、\( m_p=0.938\,\mathrm{GeV} \)、\( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)。</summary>
+        <div class="hint">先算 \( \tau_p=2.4\times 10^{34}\,\mathrm{yr}=7.6\times 10^{41}\,\mathrm{s}=1.16\times 10^{66}\,\mathrm{GeV}^{-1} \)，解 \( M_X \)。</div>
+        <div class="solution">
+          <p>\( \tau_p=2.4\times 10^{34}\times 3.156\times 10^7=7.57\times 10^{41}\,\mathrm{s} \)；换算：\( \tau_p=7.57\times 10^{41}/(6.582\times 10^{-25})=1.15\times 10^{66}\,\mathrm{GeV}^{-1} \)。</p>
+          <p>\( M_X^4=\alpha_{\mathrm{GUT}}^2\,m_p^5\,\tau_p=(1/25)^2\times(0.938)^5\times 1.15\times 10^{66}=1.6\times 10^{-3}\times 0.726\times 1.15\times 10^{66}=1.34\times 10^{63}\,\mathrm{GeV}^4 \)。</p>
+          <p>\( M_X=(1.34\times 10^{63})^{1/4}=(1.34)^{1/4}\times 10^{63/4}=1.076\times 10^{15.75}=1.076\times 5.62\times 10^{15}=6.0\times 10^{15}\,\mathrm{GeV} \)。</p>
+          <p>所以重 GUT 玻色子质量必须 \( M_X\gtrsim 6\times 10^{15}\,\mathrm{GeV} \)——恰在 GUT 标度窗口（\( 10^{15\text{–}16}\,\mathrm{GeV} \)），与 SUSY GUT 预言一致；排除最小（非 SUSY）SU(5) 的 \( M_X\sim 10^{15}\,\mathrm{GeV} \)。<span class="ans">\( M_X\gtrsim 6\times 10^{15}\,\mathrm{GeV} \)。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>Higgs 势（墨西哥帽）Higgs Potential (Mexican Hat).</strong> 左图绘制势 \( V(\phi)=-\mu^2|\phi|^2+\lambda|\phi|^4 \) 沿径向 \( r=|\phi| \) 的截面——一条「双井」曲线，极小在 <strong>\( r_{\min}=\mu/\sqrt{2\lambda} \)</strong>（<span style="color:var(--sim-accent2);">绿点</span>），对应标准模型 VEV 参数 \( v_{\mathrm{SM}}=\sqrt{2}\,r_{\min}=\mu/\sqrt{\lambda}\approx 246\,\mathrm{GeV} \)。<strong>Higgs 模式</strong>（<span style="color:var(--sim-primary);">蓝色</span>）是径向小振动，恢复力来自曲率 \( m_H^2=2\mu^2 \)，故<strong>有质量</strong>；<strong>Goldstone 模式</strong>（<span style="color:var(--sim-accent);">红色</span>）沿方位角方向运动，势完全平坦（V=const）→ <strong>无质量</strong>。右侧插图把势画成 3D 帽的俯视图：连续真空族构成半径 \( r_{\min} \) 的环；任意选取其中一个真空方向即「自发破缺」对称性。调节 <strong>\( \mu^2 \)</strong>（势深）与 <strong>\( \lambda \)</strong>（陡度），观察 \( r_{\min} \)、\( v_{\mathrm{SM}} \)、\( m_H^2=2\mu^2 \) 如何变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-8" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-8"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-8');
+          var W = canvas.width, H = canvas.height;
+
+          var params = {
+            mu2: 1.00,        // μ² (in display units)
+            lambda: 0.50,     // λ
+            mode: 'higgs',    // 'higgs' or 'goldstone'
+          };
+
+          // Plot region (left)
+          var plotX0 = 56, plotY0 = 60, plotW = 380, plotH = 290;
+          // Inset (top-down brim) region (right)
+          var insetCX = 510, insetCY = 180, insetR = 70;
+
+          function V_at(r) { return -params.mu2 * r * r + params.lambda * r * r * r * r; }
+          function v_vev() { return Math.sqrt(params.mu2 / (2 * params.lambda)); }   // |<φ>| = μ/√(2λ)
+          function V_min() { var v = v_vev(); return V_at(v); }                        // -μ⁴/(4λ)
+          function mH2() { return 2 * params.mu2; }                                    // Higgs mass²
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0, theta: 0 }; },
+            step: function (dt, t, s) {
+              s.t += dt;
+              if (params.mode === 'goldstone') {
+                s.theta += dt * 1.2;   // rad/s, free azimuthal drift (massless mode)
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ---- dynamic scaling so the curve always fits ----
+              var v = v_vev();
+              var r_max = 1.7 * v;                       // show up to 1.7 v
+              var Vmin = V_min();
+              var absVmin = Math.max(1e-6, Math.abs(Vmin));
+              var V_lo = Vmin - 0.25 * absVmin;          // a bit below the minimum
+              var V_hi = 0.45 * absVmin;                 // a bit above zero
+
+              function mapX(r) { return plotX0 + (r / r_max) * plotW; }
+              function mapY(Vv) {
+                var frac = (Vv - V_lo) / (V_hi - V_lo);
+                return plotY0 + plotH - frac * plotH;
+              }
+              var y0line = mapY(0);   // V=0 axis height
+
+              // ---- titles & readout ----
+              PS.drawText(ctx,
+                'Higgs 势 Higgs Potential  V(φ) = −μ²|φ|² + λ|φ|⁴',
+                W / 2, 18,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx,
+                'μ² = ' + params.mu2.toFixed(2) +
+                '    λ = ' + params.lambda.toFixed(2) +
+                '    r_min = μ/√(2λ) = ' + v.toFixed(2) +
+                '    v_SM = √2·r_min = ' + (v * Math.SQRT2).toFixed(2) +
+                '    m_H² = 2μ² = ' + mH2().toFixed(2),
+                W / 2, 38,
+                { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ---- axes ----
+              PS.drawArrow(ctx, plotX0, plotY0 + plotH, plotX0, plotY0 - 5, C.axis);
+              PS.drawArrow(ctx, plotX0 - 4, y0line, plotX0 + plotW + 12, y0line, C.axis);
+              PS.drawText(ctx, 'r = |φ|', plotX0 + plotW + 16, y0line + 5, { font: '12px system-ui', color: C.text });
+              PS.drawText(ctx, 'V', plotX0 - 20, plotY0 - 2, { font: 'italic 12px serif', color: C.text });
+
+              // ---- V(r) curve (clipped) ----
+              ctx.save();
+              ctx.beginPath();
+              ctx.rect(plotX0 - 2, plotY0 - 5, plotW + 4, plotH + 7);
+              ctx.clip();
+              ctx.strokeStyle = C.primary;
+              ctx.lineWidth = 2.5;
+              ctx.beginPath();
+              var N = 160;
+              for (var i = 0; i <= N; i++) {
+                var r = (i / N) * r_max;
+                var Vv = V_at(r);
+                var px = mapX(r), py = mapY(Vv);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- minimum marker ----
+              var vx = mapX(v), vy = mapY(Vmin);
+              ctx.save();
+              ctx.strokeStyle = C.accent2;
+              ctx.setLineDash([5, 5]);
+              ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(vx, y0line); ctx.lineTo(vx, vy); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, vy); ctx.lineTo(vx, vy); ctx.stroke();
+              ctx.restore();
+              PS.drawCircle(ctx, vx, vy, 5, { fill: C.accent2, stroke: '#ffffff', lineWidth: 1.5 });
+              PS.drawText(ctx, 'r_min = μ/√(2λ)', vx + 8, vy + 16,
+                { font: 'bold 11px system-ui', color: C.accent2 });
+              PS.drawText(ctx, 'VEV (vacuum)', vx + 8, vy + 30,
+                { font: '10px system-ui', color: C.accent2 });
+
+              // ---- animated field point + mode arrows ----
+              var ballColor = params.mode === 'higgs' ? C.primary : C.accent;
+              var r_now;
+              if (params.mode === 'higgs') {
+                // radial oscillation about v: r(t) = v + A sin(m_H t)
+                var omega = Math.sqrt(Math.max(1e-6, mH2()));
+                var amp = 0.30 * v;
+                r_now = Math.max(0.02, v + amp * Math.sin(omega * s.t));
+                // radial arrows
+                var ax = 22;
+                PS.drawArrow(ctx, vx - ax, vy, vx + ax, vy, C.primary);
+                PS.drawText(ctx, '径向 radial → Higgs (m_H² = 2μ²)',
+                  vx + 30, vy + 50, { font: 'bold 11px system-ui', color: C.primary });
+              } else {
+                r_now = v;
+                PS.drawText(ctx, 'Goldstone: 沿 θ 方向 V = const → m = 0 (无质量)',
+                  plotX0 + 18, plotY0 + 16, { font: 'bold 11px system-ui', color: C.accent });
+              }
+              PS.drawCircle(ctx, mapX(r_now), mapY(V_at(r_now)), 7,
+                { fill: ballColor, stroke: '#ffffff', lineWidth: 2 });
+
+              // ---- inset: top-down view of Mexican-hat brim ----
+              ctx.save();
+              // box around inset
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.strokeRect(insetCX - insetR - 18, insetCY - insetR - 22,
+                2 * insetR + 36, 2 * insetR + 50);
+              // axes
+              PS.drawArrow(ctx, insetCX - insetR - 10, insetCY, insetCX + insetR + 10, insetCY, C.axis);
+              PS.drawArrow(ctx, insetCX, insetCY + insetR + 10, insetCX, insetCY - insetR - 10, C.axis);
+              PS.drawText(ctx, 'Re φ', insetCX + insetR + 14, insetCY + 4, { font: '10px system-ui', color: C.text });
+              PS.drawText(ctx, 'Im φ', insetCX - 8, insetCY - insetR - 14, { font: '10px system-ui', color: C.text });
+              // brim circle = locus of vacua
+              ctx.strokeStyle = C.accent2; ctx.lineWidth = 2.0;
+              ctx.beginPath(); ctx.arc(insetCX, insetCY, insetR, 0, 2 * Math.PI); ctx.stroke();
+              PS.drawCircle(ctx, insetCX, insetCY, 2, { fill: C.text });
+              // field point on brim
+              var bx = insetCX + insetR * Math.cos(s.theta);
+              var by = insetCY - insetR * Math.sin(s.theta);
+              PS.drawCircle(ctx, bx, by, 6, { fill: ballColor, stroke: '#ffffff', lineWidth: 1.5 });
+              // arrow showing instantaneous motion direction (tangent = Goldstone direction)
+              if (params.mode === 'goldstone') {
+                var tx = -Math.sin(s.theta), ty = -Math.cos(s.theta);
+                PS.drawArrow(ctx, bx, by, bx + 18 * tx, by + 18 * ty, C.accent);
+              } else {
+                // Higgs mode: radial arrow (in or out)
+                var rx = Math.cos(s.theta), ry = -Math.sin(s.theta);
+                var sign = Math.sin(Math.sqrt(mH2()) * s.t) >= 0 ? 1 : -1;
+                PS.drawArrow(ctx, bx, by, bx + sign * 16 * rx, by + sign * 16 * ry, C.primary);
+              }
+              PS.drawText(ctx, 'Mexican-hat brim', insetCX, insetCY + insetR + 18,
+                { font: 'bold 10px system-ui', color: C.accent2, align: 'center' });
+              PS.drawText(ctx, '(连续真空族 continuum of vacua)', insetCX, insetCY + insetR + 32,
+                { font: '9px system-ui', color: C.text, align: 'center' });
+              ctx.restore();
+
+              // ---- legend ----
+              ctx.save();
+              ctx.font = '11px system-ui';
+              var legY = H - 14;
+              ctx.fillStyle = C.primary; ctx.fillText('●', plotX0, legY);
+              ctx.fillStyle = C.text; ctx.fillText('Higgs 径向 (massive, m²=2μ²)', plotX0 + 12, legY);
+              ctx.fillStyle = C.accent; ctx.fillText('●', plotX0 + 200, legY);
+              ctx.fillStyle = C.text; ctx.fillText('Goldstone 方位角 (massless, m=0)', plotX0 + 212, legY);
+              ctx.restore();
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-8'), [
+            { type: 'slider', key: 'mu2', label: 'μ² (势深 depth)', min: 0.30, max: 2.00, step: 0.05, value: 1.00 },
+            { type: 'slider', key: 'lambda', label: 'λ (陡度 steepness)', min: 0.10, max: 1.50, step: 0.05, value: 0.50 },
+            { type: 'button', key: 'mode', label: '切换 Higgs ↔ Goldstone 模式' },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('mu2', function (val) { params.mu2 = val; });
+          ctl.on('lambda', function (val) { params.lambda = val; });
+          ctl.on('mode', function () {
+            params.mode = params.mode === 'higgs' ? 'goldstone' : 'higgs';
+          });
+          ctl.on('reset', function () {
+            params.mu2 = 1.00;
+            params.lambda = 0.50;
+            params.mode = 'higgs';
+            var sliders = document.querySelectorAll('#controls-8 input[type=range]');
+            if (sliders[0]) sliders[0].value = 1.00;
+            if (sliders[1]) sliders[1].value = 0.50;
+            var vals = document.querySelectorAll('#controls-8 .ctrl-value');
+            if (vals[0]) vals[0].textContent = '1.00';
+            if (vals[1]) vals[1].textContent = '0.50';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>电弱统一</strong>（Glashow–Weinberg–Salam, 1979 Nobel）：电磁与弱相互作用是 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 规范理论。规范玻色子 \( W^{1,2,3} \)（耦合 \( g \)）、\( B \)（耦合 \( g' \)）；费米子左手双星、右手单星。</li>
+        <li><strong>Higgs 机制</strong>：势 \( V(\Phi)=-\mu^2|\Phi|^2+\lambda|\Phi|^4 \)（墨西哥帽）的真空 \( \langle\Phi\rangle=(0,v/\sqrt{2})^T \)，\( v\approx 246\,\mathrm{GeV} \)，自发破缺 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y\to\mathrm{U}(1)_{\mathrm{em}} \)。拉氏量本身<strong>仍完全对称</strong>，破缺的是真空。</li>
+        <li><strong>玻色子质量</strong>：\( m_W=gv/2\approx 80.4\,\mathrm{GeV} \)、\( m_Z=v\sqrt{g^2+g'^2}/2\approx 91.2\,\mathrm{GeV} \)、\( m_\gamma=0 \)。3 个 Goldstone 被 \( W^\pm, Z \) 吃掉成为纵向极化；剩 1 个自由度是 Higgs 玻色子 \( h \)，\( m_H^2=2\mu^2=2\lambda v^2 \)。</li>
+        <li><strong>Weinberg 角</strong>：\( \tan\theta_W=g'/g \)、\( \cos\theta_W=m_W/m_Z \)、\( \sin^2\theta_W\approx 0.231 \)。光子 \( A=\sin\theta_W W^3+\cos\theta_W B \)（无破缺混合态），\( Z=\cos\theta_W W^3-\sin\theta_W B \)。</li>
+        <li><strong>费米子质量</strong>：Yukawa \( \mathcal{L}_Y=-y_f\bar\psi_L\Phi\psi_R+\mathrm{h.c.} \) → \( m_f=y_f v/\sqrt{2} \)。\( y_t\approx 1 \)、\( y_e\approx 3\times 10^{-6} \)，跨 6 个数量级——SM 无法解释。</li>
+        <li><strong>Higgs 发现</strong>：2012 年 LHC ATLAS/CMS 测得 \( m_H\approx 125.1\,\mathrm{GeV} \)，自旋 \( 0^{++} \)，与 SM 一致（2013 Nobel）。</li>
+        <li><strong>BSM 动机</strong>：等级问题（\( \delta m_H^2\sim\Lambda^2/16\pi^2 \)）；GUT 规范统一 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \)；SUSY 抵消二次发散；seesaw \( m_\nu\sim m_D^2/M_R\sim 0.03\,\mathrm{eV} \)（\( M_R\sim 10^{15}\,\mathrm{GeV} \)）；暗物质（\( \Omega_{\mathrm{DM}}\approx 0.27 \)）；弦论包含量子引力。</li>
+        <li><strong>质子衰变</strong>：GUT 玻色子交换诱导 \( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)。Super-K 下限 \( \tau_p&gt;2.4\times 10^{34}\,\mathrm{yr} \) → \( M_X\gtrsim 10^{16}\,\mathrm{GeV} \)，排除最小 SU(5)。</li>
+      </ul>
+      <div class="formula">\[ \mathcal{L}_{\mathrm{EW}}=-\tfrac{1}{4}W^a_{\mu\nu}W^{a\mu\nu}-\tfrac{1}{4}B_{\mu\nu}B^{\mu\nu}+\bar\psi\,i\gamma^\mu D_\mu\psi+(D_\mu\Phi)^\dagger(D^\mu\Phi)-V(\Phi)+\mathcal{L}_Y \]</div>
+      <div class="formula">\[ D_\mu=\partial_\mu-ig\,\tfrac{\tau^a}{2}W^a_\mu-ig'\,\tfrac{Y}{2}B_\mu,\qquad Q=T^3+\tfrac{Y}{2},\qquad V(\Phi)=-\mu^2\Phi^\dagger\Phi+\lambda(\Phi^\dagger\Phi)^2 \]</div>
+      <div class="formula">\[ \langle\Phi\rangle=\frac{1}{\sqrt{2}}\binom{0}{v},\quad v=\frac{\mu}{\sqrt{\lambda}}\approx 246\,\mathrm{GeV},\qquad m_W=\frac{gv}{2},\quad m_Z=\frac{v\sqrt{g^2+g'^2}}{2}=\frac{m_W}{\cos\theta_W},\quad m_\gamma=0 \]</div>
+      <div class="formula">\[ \tan\theta_W=\frac{g'}{g},\quad \sin^2\theta_W\approx 0.231,\quad A_\mu=\sin\theta_W W^3_\mu+\cos\theta_W B_\mu,\quad Z_\mu=\cos\theta_W W^3_\mu-\sin\theta_W B_\mu \]</div>
+      <div class="formula">\[ m_f=\frac{y_f v}{\sqrt{2}},\quad m_H^2=2\mu^2=2\lambda v^2,\quad m_\nu\simeq\frac{m_D^2}{M_R}\sim\frac{(170\,\mathrm{GeV})^2}{10^{15}\,\mathrm{GeV}}\approx 0.03\,\mathrm{eV} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

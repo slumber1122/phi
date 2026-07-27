@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 · 等效原理与时空几何 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第1章 · 广义相对论 General Relativity</p>
+      <h1>等效原理与时空几何 <span class="en-title">Equivalence Principle &amp; Spacetime Geometry</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你将能够：</p>
+      <ul>
+        <li>陈述<strong>弱等效原理</strong> (weak equivalence principle, WEP)——<strong>自由下落普适性</strong> (universality of free fall)：在同样引力场中所有检验粒子的加速度与其成分、质量无关；写出 <strong>Eötvös 比值</strong> \(\eta=2|a_1-a_2|/|a_1+a_2|\) 与当前实验上界 \(\eta\lesssim 10^{-15}\)。</li>
+        <li>区分<strong>弱</strong>、<strong>爱因斯坦</strong> (EEP) 与<strong>强等效原理</strong> (SEP)：EEP = WEP + <strong>局部洛伦兹不变性</strong> (local Lorentz invariance) + <strong>局部位置不变性</strong> (local position invariance)；SEP 进一步把<strong>自引力天体</strong>也纳入其中。</li>
+        <li>解释为什么广义相对论里<strong>引力不是力</strong>而是<strong>时空几何的弯曲</strong> (curvature of spacetime)；自由下落系局部等价于无引力的狭义相对论惯性系。</li>
+        <li>用<strong>度规张量</strong> (metric tensor) \(g_{\mu\nu}\) 与<strong>原时</strong> (proper time) 关系式 \(c^{2}\,\mathrm{d}\tau^{2}=g_{\mu\nu}\,\mathrm{d}x^{\mu}\,\mathrm{d}x^{\nu}\) 计算任意世界线的原时；回顾狭义相对论的<strong>闵可夫斯基度规</strong> (Minkowski metric) \(\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\)。</li>
+        <li>从<strong>原时极值</strong> \(\delta\!\int\!\mathrm{d}\tau=0\) 推导<strong>测地线方程</strong> (geodesic equation) \(\dv[2]{x^{\mu}}{\tau}+\Gamma^{\mu}_{\;\alpha\beta}\dv{x^{\alpha}}{\tau}\dv{x^{\beta}}{\tau}=0\)，并说明它就是<strong>牛顿第一定律在弯曲时空的推广</strong>。</li>
+        <li>用<strong>黎曼曲率张量</strong> (Riemann tensor) 解释<strong>潮汐力</strong> (tidal forces) 是曲率的可观测表现：\(\Delta a^{i}=-R^{i}_{\;0j0}\,\Delta x^{j}\,c^{2}\)；指出潮汐效应<strong>不能</strong>通过任何坐标变换消除。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+      <h3>1. 弱等效原理：自由下落普适性 The Weak Equivalence Principle (WEP)</h3>
+      <p><strong>弱等效原理</strong> (weak equivalence principle, WEP) 又称 <strong>Universality of Free Fall</strong> (自由下落普适性)：在相同引力场中，<strong>任何</strong>检验粒子（无论成分、质量、内部结构）的加速度都相同。伽利略传说中比萨斜塔的实验、牛顿的单摆实验、Eötvös 1908 年的扭秤实验，直至 2017 年 <strong>MICROSCOPE</strong> 卫星，都证实了下式定义的 <strong>Eötvös 比值</strong>极小：</p>
+      <div class="formula">\[ \boxed{\;\eta\;\equiv\;2\,\frac{|a_1-a_2|}{|a_1+a_2|}\;\lesssim\;10^{-15}\quad\text{(MICROSCOPE 2017, Ti vs Pt)}\;} \]</div>
+      <p>意思是：钛与铂在地球引力场中下落的加速度之差小于百亿亿分之一。这强烈提示——<strong>引力质量</strong> \(m_g\)（出现在 \(F_g=m_g g\) 中）与<strong>惯性质量</strong> \(m_i\)（出现在 \(F=m_i a\) 中）严格相等：\(m_g=m_i\)。这一点不能由牛顿理论解释，它是<strong>广义相对论的实验基石</strong>。</p>
+      <p><strong>等效原理的另一种表述</strong>（爱因斯坦称之为「我最快乐的想法」）：一个在均匀引力场中<strong>自由下落</strong>的密封舱里的观察者，<strong>感觉不到引力</strong>——舱内所有物体相对舱体都漂浮着，与外太空中无引力的惯性系<strong>局部无法区分</strong> (locally indistinguishable)。</p>
+      <div class="key-terms">weak equivalence principle (弱等效原理), universality of free fall (自由下落普适性), Eötvös ratio \(\eta\) (Eötvös 比值), gravitational mass \(m_g\) vs inertial mass \(m_i\) (引力质量与惯性质量)</div>
+
+      <h3>2. 爱因斯坦与强等效原理 The Einstein &amp; Strong Equivalence Principles</h3>
+      <p>WEP 只谈<strong>力学</strong>。爱因斯坦把它<strong>推广到全部物理</strong>（电磁、核力……），给出：</p>
+      <ul>
+        <li><strong>爱因斯坦等效原理</strong> (Einstein Equivalence Principle, EEP)：在引力场中任一点<strong>局部</strong>地总能找到一个<strong>自由下落的局部惯性系</strong> (local inertial frame, LIF)，在其中<strong>一切非引力物理定律</strong>都取其狭义相对论形式。等价地：EEP = WEP + <strong>局部洛伦兹不变性</strong> (local Lorentz invariance, LLI——实验室取向/速度不影响局部实验) + <strong>局部位置不变性</strong> (local position invariance, LPI——谱线引力频移 \(\Delta\nu/\nu\) 与发射体种类无关)。</li>
+        <li><strong>强等效原理</strong> (Strong Equivalence Principle, SEP)：把<strong>自引力天体</strong>（恒星、黑洞）也包含在「下落普适」中。SEP 是广义相对论独有的（其他引力理论如 Brans–Dicke 通常违反 SEP）。脉冲双星 PSR J0348+0432 等观测检验了 SEP。</li>
+      </ul>
+      <p>本章主要讨论 EEP。<strong>关键点</strong>：等效是<strong>局部的</strong>——只在一点（严格说是无穷小邻域）成立。延展区域内必出现<strong>潮汐效应</strong>（第 9 节），它是真正的引力几何信号，无法消除。</p>
+      <div class="key-terms">Einstein Equivalence Principle EEP (爱因斯坦等效原理), Strong Equivalence Principle SEP (强等效原理), local inertial frame LIF (局部惯性系), local Lorentz invariance LLI (局部洛伦兹不变性), local position invariance LPI (局部位置不变性)</div>
+
+      <h3>3. 引力不是力，是时空几何 Gravity = Spacetime Geometry, Not a Force</h3>
+      <p>等效原理的深刻推论：既然自由下落可以局部「消除」引力，引力就<strong>不能</strong>是牛顿意义上的「力」——你总不能通过换参考系就把电磁力或摩擦力变没。<strong>引力的本质是时空几何的弯曲</strong>：粒子在弯曲时空中走「直」的路径（<strong>测地线</strong>），看上去却被我们这些坐标观察者解读为「被引力拉弯」。</p>
+      <p>类比：地球表面是二维球面（弯曲）。两架沿「直线」飞行的飞机（在各自局部看是直的，即沿<strong>大圆</strong> great circle 飞行），从赤道同一点出发、向北平行飞行，最终会在北极<strong>汇合</strong>——它们之间的距离随时间减小。从「平」的地图（墨卡托投影）上看，仿佛两机受了一个相互吸引的「力」；实际上根本没有力，它们各自沿球面几何上的「直线」走，是<strong>曲面本身的曲率</strong>让它们汇合。引力对物体轨迹的作用与此完全类似。</p>
+      <p>所以广义相对论的纲领：<strong>物质告诉时空如何弯曲；弯曲的时空告诉物质如何运动</strong>（Wheeler）。本章只讨论后者——给定时空几何（度规），粒子如何运动。下章再讨论前者（爱因斯坦方程）。</p>
+      <div class="key-terms">geometry not force (几何而非力), geodesic (测地线), great circle (大圆), embedding diagram (嵌入图), Wheeler's slogan (惠勒纲领)</div>
+
+      <h3>4. 度规张量与原时 The Metric Tensor \(g_{\mu\nu}\) &amp; Proper Time</h3>
+      <p>时空中<strong>一切</strong>距离信息都编码在一个对称的 \(4\times4\) 张量——<strong>度规张量</strong> \(g_{\mu\nu}=g_{\nu\mu}\)（metric tensor）里。它给出<strong>原时</strong> (proper time, 检验粒子自身时钟所记录的时间)：</p>
+      <div class="formula">\[ \boxed{\;c^{2}\,\mathrm{d}\tau^{2}\;=\;g_{\mu\nu}\,\mathrm{d}x^{\mu}\,\mathrm{d}x^{\nu}\;=\;g_{\mu\nu}\,\dv{x^{\mu}}{\lambda}\dv{x^{\nu}}{\lambda}\,\mathrm{d}\lambda^{2}\;} \]</div>
+      <p>采用 <strong>mostly-minus</strong> 符号差 \((+,-,-,-)\)：类时世界线（粒子）\(\mathrm{d}\tau^{2}>0\)，类光（光子）\(\mathrm{d}\tau=0\)，类空 \(\mathrm{d}\tau^{2}<0\)。一条世界线 \(x^{\mu}(\lambda)\) 的<strong>累计原时</strong>是</p>
+      <div class="formula">\[ \tau_{AB}\;=\;\int_{A}^{B}\mathrm{d}\tau\;=\;\frac{1}{c}\int_{\lambda_A}^{\lambda_B}\!\sqrt{\,g_{\mu\nu}\,\dot x^{\mu}\dot x^{\nu}\,}\;\mathrm{d}\lambda. \]</div>
+      <p><strong>度规就是广义相对论的「引力势」</strong>：\(g_{\mu\nu}\) 在每点的取值告诉你该处时空的几何（间隔的尺与钟）。自由粒子选择使原时<strong>取极值</strong>（通常极大值）的路径——这就是测地线（第 7 节）。</p>
+      <p><strong>度规分量依赖坐标系</strong>：同一个时空，用不同坐标（球面、笛卡尔、各向同性、自由下落……）写出来的 \(g_{\mu\nu}\) 形式不同，但时空几何本身不变（坐标规范自由度）。</p>
+      <div class="key-terms">metric tensor \(g_{\mu\nu}\) (度规张量), proper time \(\tau\) (原时), line element \(\mathrm{d}s^{2}\) (线元), mostly-minus signature (mostly-minus 符号差), coordinate freedom (坐标自由度)</div>
+
+      <h3>5. 闵可夫斯基度规（狭义相对论回顾）Review: Minkowski Metric (Special Relativity)</h3>
+      <p>无引力（或局部惯性系下）时空是<strong>平直的</strong>，度规为<strong>闵可夫斯基度规</strong> (Minkowski metric)：在笛卡尔坐标 \((ct,x,y,z)\) 下</p>
+      <div class="formula">\[ \boxed{\;\mathrm{d}s^{2}\;=\;c^{2}\mathrm{d}t^{2}-\mathrm{d}x^{2}-\mathrm{d}y^{2}-\mathrm{d}z^{2}\;=\;\eta_{\mu\nu}\,\mathrm{d}x^{\mu}\mathrm{d}x^{\nu},\qquad \eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\;} \]</div>
+      <p>对应<strong>洛伦兹变换</strong> (Lorentz transformation) 保持 \(\eta_{\mu\nu}\) 形式不变。沿速度 \(\vec{v}\) 运动的粒子，原时与坐标时关系为<strong>时间膨胀</strong>：</p>
+      <div class="formula">\[ \mathrm{d}\tau\;=\;\sqrt{1-\dfrac{v^{2}}{c^{2}}}\;\mathrm{d}t\;\equiv\;\frac{\mathrm{d}t}{\gamma},\qquad \gamma=\frac{1}{\sqrt{1-v^{2}/c^{2}}}. \]</div>
+      <p>闵可夫斯基时空中两点之间的<strong>测地线是直线</strong> \(x^{\mu}(\tau)=u^{\mu}\tau+x_0^{\mu}\)（\(u^{\mu}\) 是四速，常矢量），相应于<strong>匀速直线运动</strong>——正是牛顿第一定律。所以狭义相对论是广义相对论在「无曲率」极限下的特例。</p>
+      <p><strong>注意</strong>：用球坐标写闵可夫斯基度规（描述平直时空）时形式复杂：\(\mathrm{d}s^{2}=c^{2}\mathrm{d}t^{2}-\mathrm{d}r^{2}-r^{2}\mathrm{d}\theta^{2}-r^{2}\sin^{2}\!\theta\,\mathrm{d}\phi^{2}\)。度规分量随 \(r\) 变化，<strong>但时空仍平直</strong>（曲率张量为零）——这是「坐标非平凡但时空平直」的典型例子（详见第 10 节）。</p>
+      <div class="key-terms">Minkowski metric \(\eta_{\mu\nu}\) (闵可夫斯基度规), flat spacetime (平直时空), Lorentz transformation (洛伦兹变换), time dilation \(\gamma\) (时间膨胀), special relativity review (狭义相对论回顾)</div>
+
+      <h3>6. 弯曲时空一例：施瓦氏度规 A First Curved Example: Schwarzschild Metric</h3>
+      <p>球对称、无转动、无电荷的质量 \(M\)（如太阳、地球外）外部的时空由<strong>施瓦氏度规</strong> (Schwarzschild metric, 1916) 描述：</p>
+      <div class="formula">\[ \boxed{\;\mathrm{d}s^{2}\;=\;\Bigl(1-\dfrac{r_s}{r}\Bigr)c^{2}\mathrm{d}t^{2}\;-\;\Bigl(1-\dfrac{r_s}{r}\Bigr)^{-1}\!\mathrm{d}r^{2}\;-\;r^{2}\mathrm{d}\Omega^{2},\qquad r_s=\dfrac{2GM}{c^{2}}\;} \]</div>
+      <p>其中 \(\mathrm{d}\Omega^{2}=\mathrm{d}\theta^{2}+\sin^{2}\!\theta\,\mathrm{d}\phi^{2}\)，而 \(r_s=2GM/c^{2}\) 是<strong>施瓦氏半径</strong> (Schwarzschild radius)，对应黑洞的视界。对地球 \(r_s\approx 8.87\,\mathrm{mm}\)，对太阳 \(r_s\approx 2.95\,\mathrm{km}\)。\(\sqrt{1-r_s/r}\) 因子告诉我们：在 \(r\) 处的<strong>坐标钟</strong> \(t\) 与<strong>原时</strong> \(\tau\) 不同步——靠近 \(M\) 的钟走得慢（<strong>引力红移</strong>）。本章只把施瓦氏度规作为示例；下章会从爱因斯坦方程推导它。</p>
+      <div class="key-terms">Schwarzschild metric (施瓦氏度规), Schwarzschild radius \(r_s=2GM/c^{2}\) (施瓦氏半径), gravitational time dilation (引力时间膨胀), event horizon (事件视界)</div>
+
+      <h3>7. 测地线：弯曲时空中的「直线」Geodesics: Straightest Paths in Curved Spacetime</h3>
+      <p>自由粒子（不受非引力作用）的世界线使原时<strong>取极值</strong> \(\delta\!\int\mathrm{d}\tau=0\)。变分给出<strong>测地线方程</strong> (geodesic equation)：</p>
+      <div class="formula">\[ \boxed{\;\dv[2]{x^{\mu}}{\tau}+\Gamma^{\mu}_{\;\alpha\beta}\,\dv{x^{\alpha}}{\tau}\dv{x^{\beta}}{\tau}=0\;} \]</div>
+      <p>其中 <strong>克里斯托费尔符号</strong> (Christoffel symbols / 连络系数) 完全由度规及其导数决定：</p>
+      <div class="formula">\[ \Gamma^{\mu}_{\;\alpha\beta}\;=\;\frac{1}{2}\,g^{\mu\nu}\Bigl(\partial_{\alpha}g_{\beta\nu}+\partial_{\beta}g_{\alpha\nu}-\partial_{\nu}g_{\alpha\beta}\Bigr). \]</div>
+      <p><strong>测地线方程的几何意义</strong>：粒子在每个局部惯性系里都<strong>瞬时地匀速直线运动</strong>，但从一点到另一点把所有这些局部「直」段拼起来，在弯曲时空中就形成了曲线。这正是「<strong>最直的可能路径</strong>」(straightest possible path) 的含义——它<span style="text-decoration: underline">局部</span>看是直的，<span style="text-decoration: underline">整体</span>看却是弯的。地球绕太阳公转就是这样的测地线：地球并未被任何「力」拉住，它只是在弯曲时空中沿测地线自由下落，那个测地线恰好是闭合的椭圆。</p>
+      <div class="key-terms">geodesic equation (测地线方程), Christoffel symbols \(\Gamma^{\mu}_{\;\alpha\beta}\) (克里斯托费尔符号), connection coefficients (连络系数), straightest possible path (最直路径)</div>
+
+      <h3>8. 测地线 = 牛顿第一定律的推广 Geodesic as Generalization of Newton's 1st Law</h3>
+      <p>牛顿第一定律：「不受力的粒子做匀速直线运动」——平直时空中测地线方程的解。弯曲时空中，「不受力的粒子」沿测地线走，而测地线在曲率存在时<strong>表现为曲线</strong>。所以测地线方程就是<strong>把牛顿第一定律推广到弯曲时空</strong>。在弱场、低速极限下（见推导 1.B），测地线方程退化为牛顿第二定律：</p>
+      <div class="formula">\[ \dv[2]{\vec{x}}{t}\;=\;-\vec{\nabla}\Phi\quad\Longleftrightarrow\quad\vec{F}=m\vec{a}\quad(\Phi=\text{牛顿引力势}). \]</div>
+      <p>这表明：<strong>「引力 = 时空曲率」在弱场下重现牛顿引力</strong>，而在强场、高速下给出可观测的修正（水星近日点进动、光线偏折、引力波……，下两章详谈）。</p>
+      <div class="key-terms">Newton's first law (牛顿第一定律), Newtonian limit (牛顿极限), weak-field slow-motion (弱场低速)</div>
+
+      <h3>9. 潮汐力：曲率的指纹 Tidal Forces — The Fingerprint of Curvature</h3>
+      <p>等效原理告诉我们：在<strong>一点</strong>可以选自由下落系消除引力。<strong>但</strong>在<strong>延展</strong>区域（即使很小），不同位置的「下落方向」并不一致——这就是<strong>潮汐效应</strong>。考察一束最初静止、彼此相近的自由下落检验粒子。在平直时空中它们永远保持相对静止；在弯曲时空中它们的相对距离随时间变化——相对加速度正比于<strong>黎曼曲率张量</strong> (Riemann curvature tensor) \(R^{\mu}_{\;\nu\alpha\beta}\)：</p>
+      <div class="formula">\[ \boxed{\;\Delta a^{i}\;=\;-c^{2}\,R^{i}_{\;0j0}\,\Delta x^{j}\quad(i,j=1,2,3)\;} \]</div>
+      <p>这是<strong>测地偏移方程</strong> (geodesic deviation equation) 的非相对论极限。<strong>关键点</strong>：</p>
+      <ul>
+        <li>潮汐效应是<strong>内禀曲率</strong>的可观测表现，<strong>不能</strong>通过任何坐标变换消除（不像「引力」本身可被自由下落消除）。</li>
+        <li>对球对称质量 \(M\) 的牛顿极限：径向方向被<strong>拉伸</strong>（\(\Delta a_r=+2GM\,\Delta r/r^{3}\)），横向被<strong>挤压</strong>（\(\Delta a_\perp=-GM\,\Delta r/r^{3}\)）。这就是月球对地球海洋的潮汐隆起的成因（两个隆起：朝月一侧 + 背月一侧）。</li>
+        <li>测量一束检验粒子的相对加速度，就能<strong>探测曲率</strong>——这是「无引力（局部）但有曲率（整体）」的最佳判据。</li>
+      </ul>
+      <div class="key-terms">tidal force (潮汐力), Riemann curvature tensor \(R^{\mu}_{\;\nu\alpha\beta}\) (黎曼曲率张量), geodesic deviation (测地偏移), intrinsic curvature (内禀曲率)</div>
+
+      <h3>10. 坐标选择与规范自由度 Coordinate Choices &amp; Gauge Freedom</h3>
+      <p>广义相对论是<strong>广义协变</strong> (general covariance) 的：物理结果与坐标选择无关，但具体计算中合理选坐标能极大简化问题。常见坐标选择：</p>
+      <ul>
+        <li><strong>施瓦氏坐标</strong> \((t,r,\theta,\phi)\)：球对称问题自然选择；\(r\) 是这样定义的「面积半径」，使 \(4\pi r^{2}\) 等于球面积。在视界附近有坐标奇点（不是物理奇点）。</li>
+        <li><strong>各向同性坐标</strong> (isotropic coordinates)：把三个空间分量尺度统一，便于讨论宇宙学。</li>
+        <li><strong>局部惯性系</strong> (local inertial frame, LIF)：在某点把度规化为 \(\eta_{\mu\nu}\)、克里斯托费尔符号为零——等效原理的数学实现。只在<strong>该点</strong>有效，二阶导（曲率）无法消除。</li>
+        <li><strong>自由下落 / 共动坐标</strong> (comoving coordinates)：随检验粒子一起下落，沿其世界线局部像闵可夫斯基。</li>
+      </ul>
+      <p><strong>重要</strong>：「度规分量是位置的函数」\(\neq\)「时空弯曲」。判断是否真有曲率要用<strong>黎曼张量</strong>（度规的<strong>二阶</strong>导数组合）。球坐标下的平直时空度规有非平凡 \(g_{\mu\nu}(r)\)，但 \(R^{\mu}_{\;\nu\alpha\beta}\equiv0\)。</p>
+      <div class="key-terms">general covariance (广义协变), Schwarzschild coordinates (施瓦氏坐标), isotropic coordinates (各向同性坐标), local inertial frame LIF (局部惯性系), coordinate singularity vs physical singularity (坐标奇点与物理奇点)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <h3>推导 1.A — 从原时极值导出测地线方程 Geodesic Equation from Extremal Proper Time</h3>
+      <p class="step"><strong>步骤 1（作用量）：</strong>粒子的世界线 \(x^{\mu}(\lambda)\) 的累计原时为</p>
+      <div class="formula">\[ \tau_{AB}=\frac{1}{c}\int_{\lambda_A}^{\lambda_B}\!L\,\mathrm{d}\lambda,\qquad L\equiv\sqrt{g_{\alpha\beta}\,\dot x^{\alpha}\dot x^{\beta}},\qquad \dot x^{\mu}\equiv\dv{x^{\mu}}{\lambda}. \]</div>
+      <p class="step"><strong>步骤 2（欧拉–拉格朗日方程）：</strong>原时极值 \(\delta\!\int L\,\mathrm{d}\lambda=0\) 给出欧拉–拉格朗日方程</p>
+      <div class="formula">\[ \dv{}{\lambda}\Bigl(\frac{\partial L}{\partial\dot x^{\mu}}\Bigr)-\frac{\partial L}{\partial x^{\mu}}=0. \]</div>
+      <p class="step"><strong>步骤 3（以原时本身为参数）：</strong>取 \(\lambda=\tau\)（对类时测地线总可以），则 \(g_{\alpha\beta}\dot x^{\alpha}\dot x^{\beta}=c^{2}\) 是常数（沿世界线）。计算偏导：</p>
+      <div class="formula">\[ \frac{\partial L}{\partial\dot x^{\mu}}=\frac{1}{2L}\cdot 2\,g_{\mu\beta}\dot x^{\beta}=\frac{g_{\mu\beta}\dot x^{\beta}}{L},\qquad \frac{\partial L}{\partial x^{\mu}}=\frac{1}{2L}\,(\partial_{\mu}g_{\alpha\beta})\,\dot x^{\alpha}\dot x^{\beta}. \]</div>
+      <p class="step"><strong>步骤 4（代入化简）：</strong>代入 E–L 方程并两边乘 \(L\)：</p>
+      <div class="formula">\[ \dv{}{\tau}\bigl(g_{\mu\beta}\dot x^{\beta}\bigr)-\frac{1}{2}(\partial_{\mu}g_{\alpha\beta})\dot x^{\alpha}\dot x^{\beta}=0. \]</div>
+      <p class="step">展开第一项：\(g_{\mu\beta}\ddot x^{\beta}+(\partial_{\gamma}g_{\mu\beta})\dot x^{\gamma}\dot x^{\beta}-\tfrac{1}{2}(\partial_{\mu}g_{\alpha\beta})\dot x^{\alpha}\dot x^{\beta}=0\)。把 \(\dot x^{\beta}\) 写成 \(\dv{x^{\beta}}{\tau}\)，并利用度规对称性合并 \(\dot x^{\alpha}\dot x^{\beta}\) 项（中括号内 \(\alpha,\beta\) 对称）：</p>
+      <div class="formula">\[ g_{\mu\beta}\,\ddot x^{\beta}+\frac{1}{2}\bigl(\partial_{\alpha}g_{\mu\beta}+\partial_{\beta}g_{\mu\alpha}-\partial_{\mu}g_{\alpha\beta}\bigr)\dot x^{\alpha}\dot x^{\beta}=0. \]</div>
+      <p class="step"><strong>步骤 5（升指标得测地线方程）：</strong>两边乘逆度规 \(g^{\mu\nu}\) 求和，并利用 \(g^{\mu\nu}g_{\mu\beta}=\delta^{\nu}_{\;\beta}\)：</p>
+      <div class="formula">\[ \boxed{\;\ddot x^{\nu}+\underbrace{\frac{1}{2}g^{\nu\mu}\bigl(\partial_{\alpha}g_{\mu\beta}+\partial_{\beta}g_{\mu\alpha}-\partial_{\mu}g_{\alpha\beta}\bigr)}_{\displaystyle\Gamma^{\nu}_{\;\alpha\beta}}\dot x^{\alpha}\dot x^{\beta}=0\quad\Longleftrightarrow\quad \dv[2]{x^{\nu}}{\tau}+\Gamma^{\nu}_{\;\alpha\beta}\dv{x^{\alpha}}{\tau}\dv{x^{\beta}}{\tau}=0.\;} \]</div>
+      <p class="step">这正是<strong>测地线方程</strong>，且同时给出<strong>克里斯托费尔符号</strong>的表达式。注意 \(\Gamma^{\nu}_{\;\alpha\beta}\) 是度规<strong>一阶</strong>导数的组合，而曲率（黎曼张量）含<strong>二阶</strong>导数——故克里斯托费尔符号本身可被局部坐标变换消除（局部惯性系），而曲率不能。</p>
+
+      <h3>推导 1.B — 牛顿极限：测地线方程 → 牛顿第二定律 Newtonian Limit of the Geodesic Equation</h3>
+      <p class="step"><strong>步骤 1（弱场低速假设）：</strong>取静态弱场度规 \(g_{00}=-(1+2\Phi/c^{2})\)（符号差 \(-,+,+,+\)，本章正文用 \((+,-,-,-)\)，等价讨论；此处为与传统教材一致采用 mostly-plus）……</p>
+      <p class="step">为避免符号混淆，采用本章统一的 mostly-minus 符号差 \((+,-,-,-)\)。设粒子低速 \(\dv{x^{i}}{\tau}\ll c\dv{t}{\tau}\)，所以测地线方程中 \(\alpha=\beta=0\) 项主导：</p>
+      <div class="formula">\[ \dv[2]{x^{\mu}}{\tau}\;\approx\;-\Gamma^{\mu}_{\;00}\Bigl(\dv{x^{0}}{\tau}\Bigr)^{2}=-\Gamma^{\mu}_{\;00}\,c^{2}\Bigl(\dv{t}{\tau}\Bigr)^{2}. \]</div>
+      <p class="step"><strong>步骤 2（度规的弱场形式）：</strong>取 \(g_{00}=1+2\Phi/c^{2}\)（\(|\Phi|/c^{2}\ll1\)），空间分量近似 \(g_{ij}\approx-\delta_{ij}\)。则 \(\Gamma^{i}_{\;00}=\tfrac{1}{2}g^{ij}(-\partial_{j}g_{00})=-\tfrac{1}{2}\delta^{ij}\partial_{j}(1+2\Phi/c^{2})=-\partial_{i}\Phi/c^{2}\)（用到 \(g^{ij}\approx-\delta^{ij}\)，符号：\(-\delta^{ij}\cdot(-\partial_{j}(2\Phi/c^{2}))\cdot\tfrac{1}{2}=\partial_{i}\Phi/c^{2}\)……</p>
+      <p class="step"><strong>步骤 3（小心符号）：</strong>仔细：\(g_{ij}=-\delta_{ij}\Rightarrow g^{ij}=-\delta^{ij}\)。代入公式：\(\Gamma^{i}_{\;00}=\tfrac{1}{2}g^{i\nu}(\partial_{0}g_{0\nu}+\partial_{0}g_{0\nu}-\partial_{\nu}g_{00})\)。静态 \(\partial_{0}=0\)，所以 \(\Gamma^{i}_{\;00}=-\tfrac{1}{2}g^{ij}\partial_{j}g_{00}=-\tfrac{1}{2}(-\delta^{ij})(2\partial_{j}\Phi/c^{2})=+\partial_{i}\Phi/c^{2}\)。</p>
+      <p class="step"><strong>步骤 4（代入）：</strong>空间分量方程：</p>
+      <div class="formula">\[ \dv[2]{x^{i}}{\tau}\;\approx\;-\Gamma^{i}_{\;00}\,c^{2}\Bigl(\dv{t}{\tau}\Bigr)^{2}\;=\;-\partial_{i}\Phi\,\Bigl(\dv{t}{\tau}\Bigr)^{2}. \]</div>
+      <p class="step">低速下 \(\dv{t}{\tau}\to 1\)，左边 \(\dv[2]{x^{i}}{\tau}\to\dv[2]{x^{i}}{t}\)。故</p>
+      <div class="formula">\[ \boxed{\;\dv[2]{\vec{x}}{t}\;=\;-\vec{\nabla}\Phi\quad\Longleftrightarrow\quad m\,\ddot{\vec{x}}=-m\,\vec{\nabla}\Phi=\vec{F}_{\text{Newton}}\;} \]</div>
+      <p class="step"><strong>步骤 5（结论）：</strong>测地线方程在弱场低速极限下精确<strong>还原牛顿第二定律加牛顿引力</strong>。两个要点：(1) 引力势 \(\Phi\) 编码在度规的时间分量 \(g_{00}=1+2\Phi/c^{2}\) 中——「时间弯曲」主导了日常引力（苹果下落、行星公转）；(2) 空间曲率（\(g_{ij}\) 偏离 \(-\delta_{ij}\)）贡献小，但对光线偏折有可观测效应（下章）。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+      <article class="example">
+        <h4>例 1.1 Eötvös 比值：MICROSCOPE 卫星检验 The Eötvös Ratio (MICROSCOPE Test)</h4>
+        <p class="example-statement">MICROSCOPE 卫星（2017 年发表）用一对 Ti/Pt 检验质量在地球轨道上做自由下落，测量它们的相对加速度。结果给 \(\eta_{\text{Ti,Pt}}=(1.0\pm 9.1_{\text{stat}}\pm 8.9_{\text{syst}})\times 10^{-15}\)。设在地球轨道高度 \(r=7.0\times 10^{6}\,\mathrm{m}\) 处，地球引力给两质量的共同加速度 \(a_{\text{Earth}}=GM_{\oplus}/r^{2}\)。(a) 求该处 \(a_{\text{Earth}}\)。(b) 把 \(\eta=10^{-15}\) 翻译成「Ti 与 Pt 加速度之差 \(|a_{\text{Ti}}-a_{\text{Pt}}|\)」(c) 这种差异比什么更小？给一个尺度感的对照。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 地球引力加速度：</strong>\(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^{3}/s^{2}}\)。</p>
+          <div class="formula">\[ a_{\text{Earth}}=\frac{GM_{\oplus}}{r^{2}}=\frac{3.986\times 10^{14}}{(7.0\times 10^{6})^{2}}=\frac{3.986\times 10^{14}}{4.90\times 10^{13}}=\mathbf{8.13\,\mathrm{m/s^{2}}}. \]</div>
+          <p class="step"><strong>(b) 翻译为加速度差：</strong>由 \(\eta\) 定义（\(a_1\approx a_2\)，\(a_1+a_2\approx 2a\)）：</p>
+          <div class="formula">\[ |a_{\text{Ti}}-a_{\text{Pt}}|\;\approx\;\eta\cdot a_{\text{Earth}}=10^{-15}\times 8.13=\mathbf{8.1\times 10^{-15}\,\mathrm{m/s^{2}}}. \]</div>
+          <p class="step"><strong>(c) 尺度感：</strong>这个加速度差相当于一颗原本静止的检验质量<strong>自由下落整整一年</strong>（\(T=3.16\times 10^{7}\,\mathrm{s}\)）后，Ti 比 Pt 多走的距离</p>
+          <div class="formula">\[ \Delta x=\tfrac{1}{2}\,\Delta a\,T^{2}=\tfrac{1}{2}(8.1\times 10^{-15})(3.16\times 10^{7})^{2}\,\mathrm{m}=\tfrac{1}{2}(8.1\times 10^{-15})(10^{15})\,\mathrm{m}\approx\mathbf{4\,\mathrm{m}}. \]</div>
+          <p class="step">即在「最严格的检验」下，Ti 和 Pt 一年内下落距离之差还<strong>不到一层楼的高度</strong>——而它们各自（按牛顿匀加速估算）<strong>一年内下落</strong>约 \(\tfrac{1}{2}\cdot 8.13\cdot(3.16\times 10^{7})^{2}\approx 4.1\times 10^{15}\,\mathrm{m}\approx 0.43\,\mathrm{光年}\)。这个比值 \(4\,\mathrm{m}/(0.43\,\mathrm{光年})\sim 10^{-15}\) 正是 \(\eta\) 的大小，也是「引力质量 = 惯性质量」的精度——<strong>现代物理学中最精确的实验事实之一</strong>。</p>
+          <p><span class="ans">答案：(a) \(a_{\text{Earth}}=8.13\,\mathrm{m/s^{2}}\)；(b) \(|\Delta a|\approx 8\times 10^{-15}\,\mathrm{m/s^{2}}\)；(c) 一年下落差 \(\sim 4\,\mathrm{m}\)，比 4 光年的总下落距离小 \(10^{-16}\) 倍。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.2 引力红移：Pound–Rebka 实验 Gravitational Redshift (Pound–Rebka)</h4>
+        <p class="example-statement">1960 年 Pound 与 Rebka 在哈佛 Jefferson 实验室塔顶 (\(H=22.5\,\mathrm{m}\)) 用 ⁵⁷Fe 的 \(14.4137\,\mathrm{keV}\) Mössbauer \(\gamma\) 射线做实验：底部发射、顶部吸收（或反之），通过控制源的多普勒速度来补偿引力频移。\(g=9.81\,\mathrm{m/s^{2}}\)，\(c=2.998\times 10^{8}\,\mathrm{m/s}\)。(a) 用等效原理推导光子从底到顶的<strong>分数频移</strong> \(\Delta\nu/\nu\)。(b) 计算数值。(c) 求补偿所需的多普勒速度 \(v\) 并与 Mössbauer 自然线宽对应的速度比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 等效原理推导：</strong>把光子视为能量 \(E=h\nu\)、等效质量 \(m_{\text{eff}}=E/c^{2}=h\nu/c^{2}\) 的粒子。从底升到顶 \(H\) 需克服引力做功 \(m_{\text{eff}}\,gH\)，能量减少：</p>
+          <div class="formula">\[ \Delta E=-m_{\text{eff}}\,gH=-\frac{h\nu}{c^{2}}\,gH\quad\Rightarrow\quad\frac{\Delta\nu}{\nu}=\frac{\Delta E}{E}=-\frac{gH}{c^{2}}. \]</div>
+          <p class="step">负号表示光子向上传播时频率<strong>降低（红移）</strong>。也可从施瓦氏度规 \(g_{00}=1-r_s/r\) 严格得到：\(\nu(r)\propto\sqrt{g_{00}}\)，弱场下 \(\Delta\nu/\nu=\Delta\Phi/c^{2}=-gH/c^{2}\)。两者一致——这就是<strong>局部位置不变性 (LPI)</strong> 的可观测检验。</p>
+          <p class="step"><strong>(b) 数值：</strong></p>
+          <div class="formula">\[ \frac{\Delta\nu}{\nu}=-\frac{gH}{c^{2}}=-\frac{(9.81)(22.5)}{(2.998\times 10^{8})^{2}}=-\frac{220.7}{8.988\times 10^{16}}=\mathbf{-2.46\times 10^{-15}}. \]</div>
+          <p class="step"><strong>(c) 多普勒补偿速度：</strong>把放射源以小速度 \(v\) 朝吸收体方向移动，产生一阶多普勒频移 \(\Delta\nu/\nu=v/c\)。令 \(v/c=gH/c^{2}\)：</p>
+          <div class="formula">\[ v=\frac{gH}{c}=\frac{220.7}{2.998\times 10^{8}}=7.36\times 10^{-7}\,\mathrm{m/s}=\mathbf{0.74\,\mu\mathrm{m/s}}. \]</div>
+          <p class="step"><strong>对照 Mössbauer 自然线宽：</strong>⁵⁷Fe 激发态寿命 \(\tau\approx 1.4\times 10^{-7}\,\mathrm{s}\)，自然线宽 \(\Gamma=\hbar/\tau\approx 4.7\times 10^{-9}\,\mathrm{eV}\)。对应速度宽度 \(\Gamma_v/c=\Gamma/E=4.7\times 10^{-9}/14413.7=3.3\times 10^{-13}\)，即 \(\Gamma_v\approx 98\,\mathrm{\mu m/s}\)。引力位移对应的 \(v=0.74\,\mathrm{\mu m/s}\) 仅是线宽的 \(\sim 1/130\)。Pound–Rebka 通过对完整共振曲线的扫描与积分，1960 年测得结果符合预期至 \((\pm 10)\%\)；1965 年 Pound–Snider 改进到 \((\pm 1)\%\)；现代 H/maser 实验已达 \(10^{-4}\) 量级。</p>
+          <p><span class="ans">答案：(a) \(\Delta\nu/\nu=-gH/c^{2}\)；(b) \(-2.46\times 10^{-15}\)；(c) 补偿速度 \(v\approx 0.74\,\mathrm{\mu m/s}\)（线宽的 \(\sim 1/130\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.3 用度规计算原时：双生子「旅行」Proper Time from the Metric (Twin Travel)</h4>
+        <p class="example-statement">用闵可夫斯基度规 \(\mathrm{d}s^{2}=c^{2}\mathrm{d}t^{2}-\mathrm{d}x^{2}\) 直接计算两根世界线的原时。事件 A：\((t,x)=(0,0)\)；事件 B：\((t,x)=(10\,\mathrm{y},0)\)（坐标时 10 年）。观察者 Alice 静止在 \(x=0\)。观察者 Bob 以 \(v=+0.6c\) 走 5 年（坐标时）到 \((5\,\mathrm{y},3\,\mathrm{ly})\)（注意 \(0.6c\times 5\,\mathrm{y}=3\,\mathrm{ly}\)），瞬间反向，再以 \(v=-0.6c\) 走 5 年回到 B。求：(a) Alice 的原时 \(\tau_A\)。(b) Bob 的原时 \(\tau_B\)（沿每段折线用度规积分）。(c) 两人重逢时的<strong>年龄差</strong>。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) Alice：</strong>静止 → \(\mathrm{d}x=0\)，所以 \(c^{2}\mathrm{d}\tau^{2}=c^{2}\mathrm{d}t^{2}-0\)，\(\mathrm{d}\tau=\mathrm{d}t\)。</p>
+          <div class="formula">\[ \tau_A=\int_{0}^{10\,\mathrm{y}}\mathrm{d}t=\mathbf{10\,\mathrm{y}}. \]</div>
+          <p class="step"><strong>(b) Bob 第一段（\(v=+0.6c\)）：</strong>\(\mathrm{d}x=0.6c\,\mathrm{d}t\)。</p>
+          <div class="formula">\[ c^{2}\mathrm{d}\tau^{2}=c^{2}\mathrm{d}t^{2}-(0.6c\,\mathrm{d}t)^{2}=c^{2}\mathrm{d}t^{2}(1-0.36)=c^{2}\mathrm{d}t^{2}\cdot 0.64. \]</div>
+          <div class="formula">\[ \mathrm{d}\tau=\mathrm{d}t\,\sqrt{0.64}=0.8\,\mathrm{d}t.\quad\Rightarrow\quad \Delta\tau_{B,\text{去}}=0.8\times 5\,\mathrm{y}=\mathbf{4\,\mathrm{y}}. \]</div>
+          <p class="step"><strong>第二段（\(v=-0.6c\)）：</strong>\(\mathrm{d}x=-0.6c\,\mathrm{d}t\)，平方后相同：\(\Delta\tau_{B,\text{回}}=0.8\times 5=4\,\mathrm{y}\)。</p>
+          <div class="formula">\[ \tau_B=\Delta\tau_{B,\text{去}}+\Delta\tau_{B,\text{回}}=4\,\mathrm{y}+4\,\mathrm{y}=\mathbf{8\,\mathrm{y}}. \]</div>
+          <p class="step"><strong>(c) 年龄差：</strong>两人从同一事件 A 出发、在事件 B 重逢。Alice 老 10 岁，Bob 老 8 岁。<strong>Bob 年轻了 2 岁</strong>。</p>
+          <p class="step"><strong>关键观察：</strong>两根世界线连接<strong>同样</strong>的两个事件，但原时<strong>不同</strong>——原时是<strong>世界线的函数</strong>，不是端点的函数。Alice 的世界线（直线，匀速 = 0）是闵可夫斯基时空的<strong>测地线</strong>，对应<strong>极大原时</strong>。Bob 的折线（非测地线）原时较小。这与「欧氏几何里直线是最短」恰好<strong>相反</strong>——闵可夫斯基时空中直线（测地线）给出原时<strong>极大值</strong>（这是洛伦兹符号差的结果）。注意：Bob 的瞬间反向需要<strong>加速</strong>，所以两兄弟的运动学<strong>不对称</strong>——这就是「双生子佯谬」并不矛盾的原因。</p>
+          <p><span class="ans">答案：(a) \(\tau_A=10\,\mathrm{y}\)；(b) \(\tau_B=8\,\mathrm{y}\)；(c) Bob 比 Alice 年轻 2 岁。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.4 球面上的测地线：北京—旧金山大圆距离 Geodesic on a Sphere (Great Circle)</h4>
+        <p class="example-statement">把地球视为半径 \(R=6371\,\mathrm{km}\) 的理想球面（暂时忽略赤道隆起）。两城市：北京 \((\lambda_1=116.4^{\circ}\mathrm{E},\,\varphi_1=39.9^{\circ}\mathrm{N})\)，旧金山 \((\lambda_2=122.4^{\circ}\mathrm{W},\,\varphi_2=37.8^{\circ}\mathrm{N})\)。球面度规 \(\mathrm{d}s^{2}=R^{2}\mathrm{d}\varphi^{2}+R^{2}\cos^{2}\!\varphi\,\mathrm{d}\lambda^{2}\)。(a) 写出球面上的测地线方程并说明大圆 (great circle) 是其解。(b) 用<strong>球面余弦定理</strong> \(\cos\Delta\sigma=\sin\varphi_1\sin\varphi_2+\cos\varphi_1\cos\varphi_2\cos(\Delta\lambda)\) 计算北京—旧金山大圆的<strong>角距</strong> \(\Delta\sigma\) 与<strong>飞行距离</strong> \(L=R\,\Delta\sigma\)。(c) 若错误地按「同纬度航线」（沿 \(\varphi=39^{\circ}\mathrm{N}\) 纬线）飞，需要多远的距离？比大圆远多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 测地线方程 → 大圆：</strong>变分 \(\delta\!\int\mathrm{d}s=0\)（球面度规）给出测地线方程。几何上等价于：测地线是「过球心平面与球面的交线」，即<strong>大圆</strong>（半径为 \(R\) 的圆）。<strong>纬线</strong>（除赤道外）半径 \(R\cos\varphi<R\)，是<strong>小圆</strong>，<strong>不是</strong>测地线——沿纬线飞需要持续改变航向（被「力」拉离直线），所以不是最短路径。</p>
+          <p class="step"><strong>(b) 大圆角距与距离：</strong>\(\Delta\lambda=116.4^{\circ}-(-122.4^{\circ})=238.8^{\circ}\)。</p>
+          <div class="formula">\[ \cos\Delta\sigma=\sin 39.9^{\circ}\sin 37.8^{\circ}+\cos 39.9^{\circ}\cos 37.8^{\circ}\cos 238.8^{\circ}. \]</div>
+          <div class="formula">\[ =(0.6414)(0.6129)+(0.7672)(0.7902)(-0.5210)=0.3932-0.3157=\mathbf{0.0775}. \]</div>
+          <div class="formula">\[ \Delta\sigma=\arccos(0.0775)=1.4932\,\mathrm{rad}=85.56^{\circ}. \]</div>
+          <div class="formula">\[ L=R\,\Delta\sigma=6371\times 1.4932=\mathbf{9512\,\mathrm{km}}. \]</div>
+          <p class="step"><strong>(c) 沿纬度 39°N 的「纬线」距离：</strong>纬线半径 \(R_\varphi=R\cos 39^{\circ}=6371\times 0.7771=4950\,\mathrm{km}\)。但两城市不在同一纬度（39.9°N 与 37.8°N），先把旧金山「搬到」39°N 上做粗略估计：纬线上的经度差仍为 238.8°，但绕纬线时只能走 \(\le 360^{\circ}\) 的弧。最短纬线弧角 \(=360^{\circ}-238.8^{\circ}=121.2^{\circ}\)（往东飞经欧洲）。距离：</p>
+          <div class="formula">\[ L_{\text{纬线}}=R_\varphi\times(121.2^{\circ}\times\pi/180)=4950\times 2.115=\mathbf{10470\,\mathrm{km}}. \]</div>
+          <p class="step">比大圆远 \(10470-9512=\mathbf{958\,\mathrm{km}}\)，即多飞约 10%。这就是<strong>洲际航班总沿大圆航线</strong>的原因——节省燃料与时间。<strong>注意</strong>大圆的最高纬度（顶点）约为 \(61^{\circ}\mathrm{N}\)（深入西伯利亚/北极圈附近），尽管两城市都在 \(38^{\circ}\mathrm{N}\) 附近——这印证「球面上两点最短路径向上凸向极区」。</p>
+          <p><span class="ans">答案：(a) 测地线 = 大圆 ✓；(b) 大圆距离 \(L\approx 9510\,\mathrm{km}\)；(c) 纬线粗估 \(10470\,\mathrm{km}\)，比大圆远约 \(960\,\mathrm{km}\)（\(\sim 10\%\)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 1.5 自由下落实验室中的潮汐加速度 Tidal Acceleration in a Freely-Falling Lab</h4>
+        <p class="example-statement">国际空间站 (ISS) 在地球表面上方 \(h=400\,\mathrm{km}\) 做近似自由下落（圆轨道），半径 \(r=R_{\oplus}+h=6371+400=6771\,\mathrm{km}\)。舱内一个 \(L=2.0\,\mathrm{m}\) 的实验装置，沿<strong>径向</strong>（指向地心方向）摆放。求：(a) 装置<strong>两端</strong>的潮汐加速度差 \(\Delta a_r\)（径向拉伸）。(b) 若装置改为沿<strong>横向</strong>（垂直于径向）摆放，潮汐加速度 \(\Delta a_\perp\)（横向压缩）。(c) 站在<strong>地球表面静止</strong>（不是自由下落）的相同 2 m 装置上的潮汐加速度（作对照）。已知 \(GM_{\oplus}=3.986\times 10^{14}\,\mathrm{m^{3}\!,s^{-2}}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 径向潮汐（ISS 高度）：</strong>由 \(a_r=-GM/r^{2}\)，对 \(r\) 求导：\(\dv{a_r}{r}=+2GM/r^{3}\)。两端距离差 \(\Delta r=L=2\,\mathrm{m}\)，相对加速度</p>
+          <div class="formula">\[ \Delta a_r=\dv{a_r}{r}\,\Delta r=\frac{2GM}{r^{3}}\,L=\frac{2(3.986\times 10^{14})(2.0)}{(6.771\times 10^{6})^{3}}. \]</div>
+          <div class="formula">\[ (6.771)^{3}=310.3\Rightarrow (6.771\times 10^{6})^{3}=3.103\times 10^{20}. \]</div>
+          <div class="formula">\[ \Delta a_r=\frac{1.594\times 10^{15}}{3.103\times 10^{20}}=\mathbf{5.14\times 10^{-6}\,\mathrm{m/s^{2}}}=5.1\,\mathrm{\mu m/s^{2}}. \]</div>
+          <p class="step">这是<strong>拉伸</strong>（远离地心的那一端比靠近地心的那一端下落得慢，相对而言装置被「拉长」）。注意 ISS 整体加速度 \(a=GM/r^{2}=8.70\,\mathrm{m/s^{2}}\)，潮汐仅是其 \(6\times 10^{-7}\) 倍——所以 ISS 内的宇航员确实几乎「无重力」，但 2 m 装置两端有 \(\sim 5\,\mathrm{\mu m/s^{2}}\) 的相对拉伸，是<strong>真实存在</strong>且<strong>无法通过自由下落消除</strong>的曲率信号。</p>
+          <p class="step"><strong>(b) 横向潮汐（ISS 高度）：</strong>横向（切向）方向的引力分量把粒子<strong>向中心轴拉回</strong>。简单推导（在过中心的平面内取两个横向邻居，离中心轴距离 \(b\)，到 \(M\) 距离 \(\sqrt{r^{2}+b^{2}}\)，方向偏角 \(\sim b/r\)）：</p>
+          <div class="formula">\[ \Delta a_\perp=-\frac{GM}{r^{3}}\,b\quad\Rightarrow\quad\text{对两端 }b=L=2\,\mathrm{m}\text{，}\;\;|\Delta a_\perp|=\frac{GM}{r^{3}}\,L=\frac{\Delta a_r}{2}=\mathbf{2.57\times 10^{-6}\,\mathrm{m/s^{2}}}. \]</div>
+          <p class="step">横向是<strong>压缩</strong>（两端向中间轴靠拢），大小是径向拉伸的<strong>一半</strong>。三个主方向（一径向 + 两横向）合起来，潮汐张量的<strong>迹为零</strong> \(\mathrm{tr}\,\mathcal{R}=0\)（这是真空爱因斯坦方程 \(R_{\mu\nu}=0\) 的体现，见下章）。</p>
+          <p class="step"><strong>(c) 地球表面（\(r=R_{\oplus}=6.371\times 10^{6}\,\mathrm{m}\)）：</strong>注意——站在地面<strong>不是自由下落</strong>，地面支撑力把整个人托起。但<strong>潮汐张量</strong>只依赖 \(r\) 与 \(M\)，与参考系无关：</p>
+          <div class="formula">\[ \Delta a_r^{\text{地面}}=\frac{2GM}{R_{\oplus}^{3}}\,L=\frac{2(3.986\times 10^{14})(2.0)}{(6.371\times 10^{6})^{3}}=\frac{1.594\times 10^{15}}{2.585\times 10^{20}}=\mathbf{6.16\times 10^{-6}\,\mathrm{m/s^{2}}}. \]</div>
+          <p class="step">仅比 ISS 处大 20%（因为 \(r\) 只差 6%）。\(\Delta a_\perp^{\text{地面}}=-3.08\times 10^{-6}\,\mathrm{m/s^{2}}\)。<strong>思考</strong>：2 m 高的人站在地面上，头比脚受到的地球引力略小（差 \(6\,\mathrm{\mu m/s^{2}}\)）——这就是为什么「直立时身高略被引力拉长」（实测效应约 \(\sim 10\) 微米量级，被血液循环等其他效应掩盖）。</p>
+          <p><span class="ans">答案：(a) ISS 处径向 \(\Delta a_r=+5.1\,\mathrm{\mu m/s^{2}}\)（拉伸）；(b) 横向 \(\Delta a_\perp=-2.6\,\mathrm{\mu m/s^{2}}\)（压缩，半大小）；(c) 地面 \(\Delta a_r=+6.2\,\mathrm{\mu m/s^{2}}\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把「等效原理」当作可以全局消除引力。</strong>等效原理是<strong>局部</strong>的——严格意义下只在<strong>一个点</strong>上成立（实用地说，是在一个其线度远小于引力特征尺度的区域）。延展区域里不同点的「下落方向」不一致，必然出现潮汐效应，<strong>没有任何坐标变换</strong>能把它们同时消除。地球的潮汐（海水隆起）就是直接证据：你坐在自由下落的太空舱里仍能感受到自己被沿径向<strong>拉长</strong>、横向<strong>挤压</strong>。所以「等效原理允许我们局部把引力变没」≠「引力到处都是几何假象」。</li>
+        <li><strong>把引力当作「一种力」可以屏蔽或抵消。</strong>广义相对论中引力不是力（不存在「引力屏蔽」材料，不存在「反引力」装置）。所有物质（包括光子）都沿测地线运动；你不能把飞船「挂」在引力场之外——你只能持续加速抵抗自由下落（火箭推动）才能保持静止。把引力重新写成「几何」并不是哲学修饰，而是<strong>可观测</strong>的事实：例如光子（无静质量、对电磁力不响应）也参与「下落」（光线被太阳偏折 1.75″），这只能用「光子沿测地线走」来解释。</li>
+        <li><strong>把度规分量随位置变化等同于时空有曲率。</strong>度规 \(g_{\mu\nu}\) 的<strong>一阶导数</strong>（克里斯托费尔符号 \(\Gamma\)）总可以通过坐标变换局部消去（局部惯性系）。真正的曲率是<strong>黎曼张量</strong> \(R^{\mu}_{\;\nu\alpha\beta}\)，由度规的<strong>二阶导数</strong>组合而成。<strong>判据</strong>：球坐标下写闵可夫斯基度规 \(\mathrm{d}s^{2}=c^{2}\mathrm{d}t^{2}-\mathrm{d}r^{2}-r^{2}\mathrm{d}\theta^{2}-r^{2}\sin^{2}\!\theta\,\mathrm{d}\phi^{2}\) 看似 \(g_{\theta\theta}=r^{2}\)、\(g_{\phi\phi}=r^{2}\sin^{2}\!\theta\) 都随坐标变化，但 \(R^{\mu}_{\;\nu\alpha\beta}\equiv 0\)——时空<strong>平直</strong>，只是坐标「弯」。<strong>反例</strong>：圆柱面也是「外在嵌入弯曲但内禀平直」（可铺平成一张纸）。</li>
+        <li><strong>混淆「坐标光速」与「真光速」。</strong>坐标量 \(\dv{\ell}{t}\)（其中 \(\mathrm{d}\ell\) 是坐标距离）在曲率时空中可以不是 \(c\)——例如施瓦氏度规中径向坐标光速 \(\dv{r}{t}=\pm c(1-r_s/r)\)，在视界处趋于零。<strong>但</strong>任何局部惯性系中测得的光速总是 \(c\)（局部洛伦兹不变性）。不要因为「光逃不出黑洞」就误以为「光在那里变慢了」——是<strong>时空几何本身</strong>（视界处的光锥朝 \(r\) 减小方向倾斜）让向外的类光测地线无法逃到 \(r=\infty\)。</li>
+        <li><strong>把「橡胶膜」类比当作字面解释。</strong>橡胶膜模型（重球压膜，小球绕轨）是非常有用的<strong>嵌入图</strong> (embedding diagram)：它把弯曲空间切片可视化。但它有<strong>两个误导</strong>：(1) 模型中「小球被向膜底拉」依赖外部的地球引力——这是用引力解释引力，循环论证；(2) 模型只展示<strong>空间</strong>曲率，但广义相对论中粒子运动主要受<strong>时空</strong>度规（特别是 \(g_{00}\) 时间分量）支配。真正的物理通过度规 \(g_{\mu\nu}(x)\) 与测地线方程计算；橡胶膜只是<strong>直觉辅助</strong>。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 太阳与地球的施瓦氏半径 Schwarzschild Radii of Sun &amp; Earth</summary>
+        <div class="hint">\(r_s=2GM/c^{2}\)。\(M_{\odot}=1.989\times 10^{30}\,\mathrm{kg}\)，\(M_{\oplus}=5.972\times 10^{24}\,\mathrm{kg}\)，\(G=6.674\times 10^{-11}\,\mathrm{N\,m^{2}\!,kg^{-2}}\)，\(c=2.998\times 10^{8}\,\mathrm{m/s}\)。</div>
+        <div class="solution">
+          太阳：\(r_{s,\odot}=\dfrac{2(6.674\times 10^{-11})(1.989\times 10^{30})}{(2.998\times 10^{8})^{2}}=\dfrac{2.654\times 10^{20}}{8.988\times 10^{16}}=\mathbf{2.95\,\mathrm{km}}\)。
+          <br>地球：\(r_{s,\oplus}=\dfrac{2(6.674\times 10^{-11})(5.972\times 10^{24})}{(2.998\times 10^{8})^{2}}=\dfrac{7.971\times 10^{14}}{8.988\times 10^{16}}=\mathbf{8.87\,\mathrm{mm}}\)。
+          <br>对照：太阳半径 \(R_{\odot}=6.96\times 10^{5}\,\mathrm{km}\)，\(r_{s,\odot}/R_{\odot}\sim 4\times 10^{-6}\)（弱场）；中子星 \(r_s/R\sim 0.3\)（强场）；黑洞 \(r_s=R\)（视界即表面）。
+          <br><strong>思考：</strong>如果把太阳压缩到 2.95 km 半径以内（不改变其质量），它会变成黑洞——光也无法逃出。 <span class="ans">答：\(r_{s,\odot}\approx 2.95\,\mathrm{km}\)；\(r_{s,\oplus}\approx 8.87\,\mathrm{mm}\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 中子星表面的引力红移 Redshift from a Neutron Star Surface</summary>
+        <div class="hint">施瓦氏度规下静态观察者测得的光子频率 \(\nu(r)\propto\sqrt{g_{00}(r)}=\sqrt{1-r_s/r}\)。中子星 \(M=1.4\,M_{\odot}\)、半径 \(R=10\,\mathrm{km}\)。</div>
+        <div class="solution">
+          \(r_s=2.95\,\mathrm{km}\times 1.4=4.13\,\mathrm{km}\)，\(r_s/R=0.413\)（强场）。
+          <br>红移因子：\(\sqrt{1-r_s/R}=\sqrt{1-0.413}=\sqrt{0.587}=0.766\)。
+          <br>从表面发出的光子到达无穷远观察者时频率变为 \(\nu_{\infty}=0.766\,\nu_{\text{em}}\)，即<strong>红移 \(z=1/0.766-1=0.305\)</strong>（波长增加 30%）。
+          <br>能量减少：\(E_{\infty}/E_{\text{em}}=0.766\)，每光子损失约 23% 能量。
+          <br><strong>对照</strong>：太阳表面 \(r_s/R_{\odot}=4\times 10^{-6}\)，红移 \(z\approx 2\times 10^{-6}\)（极小，需要谱线 Doppler 补偿测）；白矮星 \(z\sim 10^{-4}\)；中子星 \(z\sim 0.1{-}0.3\)；黑洞视界 \(z\to\infty\)。
+          <br><strong>思考：</strong>当发射体位于视界 \(R=r_s\)，\(\sqrt{1-r_s/R}\to 0\)，频率红移到零——光「无法」从视界逃出。 <span class="ans">答：红移因子 \(0.766\)，分数红移 \(z\approx 0.305\)。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 2D 球面上纬线不是测地线 A Parallel of Latitude is NOT a Geodesic</summary>
+        <div class="hint">用球面度规 \(\mathrm{d}s^{2}=R^{2}\mathrm{d}\theta^{2}+R^{2}\sin^{2}\!\theta\,\mathrm{d}\phi^{2}\)。考察固定纬度 \(\theta=\theta_0\)、\(\dv{\theta}{s}=0\)、\(\dv{\phi}{s}=1/(R\sin\theta_0)\) 的曲线，代入测地线方程，验证除 \(\theta_0=\pi/2\)（赤道）外都不满足。</div>
+        <div class="solution">
+          两条测地线方程（拉格朗日量 \(L=\tfrac{1}{2}(R^{2}\dot\theta^{2}+R^{2}\sin^{2}\!\theta\,\dot\phi^{2})\)，仿射参数为弧长 \(s\)）：
+          <br>(i) \(\ddot\theta-\sin\theta\cos\theta\,\dot\phi^{2}=0\)；
+          <br>(ii) \(\dv{}{s}(\sin^{2}\!\theta\,\dot\phi)=0\)。
+          <br>沿纬线 \(\theta=\theta_0\)：\(\dot\theta=0,\;\ddot\theta=0\)，但 \(\dot\phi=\) 常数 \(\ne 0\)。
+          <br>代入 (i)：\(0-\sin\theta_0\cos\theta_0\,\dot\phi^{2}=0\)。除 \(\sin\theta_0=0\)（极点）或 \(\cos\theta_0=0\)（\(\theta_0=\pi/2\)，赤道），方程<strong>不成立</strong>。
+          <br><strong>结论：</strong>球面上唯一作为测地线的「纬线」是<strong>赤道（大圆）</strong>。其他纬线（如北回归线、北京所在的 39°N）都<strong>不是测地线</strong>——沿纬线匀速航行的飞机必须不断向南（向赤道）调整航向，否则会被「甩出」纬线。这就是上一节例 1.4 中沿纬度航线不是最短路径的数学原因。
+          <br><strong>思考：</strong>这恰好类比弯曲时空中的「自由下落」——沿测地线不需要任何力，偏离测地线才需要力。 <span class="ans">答：除赤道外所有纬线都不是测地线（方程 (i) 不满足）。</span>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 月球对地球的潮汐力（拉伸海洋）Lunar Tides on Earth</summary>
+        <div class="hint">月球质量 \(M_{\text{月}}=7.35\times 10^{22}\,\mathrm{kg}\)，到地球距离 \(d=3.84\times 10^{8}\,\mathrm{m}\)。计算月球引力在地球表面（\(R_{\oplus}=6.37\times 10^{6}\,\mathrm{m}\)）最近月点和与月心连线垂直方向上的潮汐加速度，并对比地球自身引力 \(g=9.81\,\mathrm{m/s^{2}}\)。</div>
+        <div class="solution">
+          径向（朝月一侧，潮汐拉伸）：\(\Delta a_r=2GM_{\text{月}}R_{\oplus}/d^{3}\)。
+          <br>\(d^{3}=(3.84\times 10^{8})^{3}=5.66\times 10^{25}\,\mathrm{m^{3}}\)。
+          <br>\(\Delta a_r=\dfrac{2(6.674\times 10^{-11})(7.35\times 10^{22})(6.37\times 10^{6})}{5.66\times 10^{25}}=\dfrac{6.25\times 10^{19}}{5.66\times 10^{25}}=\mathbf{1.10\times 10^{-6}\,\mathrm{m/s^{2}}}\)。
+          <br>横向（地球两端与月心连线垂直的方向，潮汐压缩）：\(\Delta a_\perp=-\tfrac{1}{2}\Delta a_r=-\mathbf{0.55\times 10^{-6}\,\mathrm{m/s^{2}}}\)。
+          <br>对比 \(g\)：\(\Delta a_r/g\approx 1.1\times 10^{-7}\)，月球潮汐只有地球自引力的千万分之一。
+          <br>但海水（自由流体）对这一微小差异极敏感：每秒钟被「拉长」\(\tfrac{1}{2}(1.1\times 10^{-6})(1)^{2}\approx 0.5\,\mathrm{\mu m}\)，几小时下来就是<strong>米级</strong>的海面隆起——这就是<strong>潮汐</strong>。一日两次涨潮（地球自转把每个海岸带入两个隆起带：一朝月、一背月）。
+          <br><strong>注</strong>：太阳对地球的潮汐 (\(\sim 0.5\times 10^{-6}\,\mathrm{m/s^{2}}\)）约为月球的一半（虽然太阳质量大，但距离远得多，潮汐 \(\propto M/d^{3}\)）。朔望大潮（日月叠加）和上下弦小潮（部分抵消）就是由此而来。 <span class="ans">答：月球潮汐 \(\sim 1.1\,\mathrm{\mu m/s^{2}}\)（约 \(g\) 的千万分之一）。</span>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>弯曲时空 — 橡胶膜嵌入图 Curved Spacetime: Rubber-Sheet Embedding.</strong> 一个可调质量的中心天体在二维空间切片上「压」出一个凹陷（红色网格），凹陷深度按 \(\Phi(r)=-GM/r\) 缩放可视化。一颗粒子（绿点）在该中心引力下运动，轨迹（紫色拖尾）即为<strong>弱场测地线</strong>（牛顿极限）。<strong>滑块</strong>：中心质量 \(M\)、初始切向速度 \(v_0\)、发射角 \(\alpha\)（0°=纯切向，90°=纯径向）、方位角与仰角（手动旋转）。<strong>观察要点</strong>：(1) 增大 \(M\)，凹陷变深、轨道弯曲加剧；(2) 当 \(v_0=\sqrt{GM/r_0}\)（圆周速度）时轨道闭合为圆；(3) \(v_0=\sqrt{2GM/r_0}\)（逃逸速度）时轨道开放为抛物线；(4) 能量 \(E=v^{2}/2-GM/r\) 与角动量 \(L=r\times v\) 实时显示，判定束缚/非束缚。<strong>注意</strong>：嵌入图只是<strong>直觉辅助</strong>，真正的运动通过度规与测地线方程计算；橡胶膜类比本身有循环论证（见误区 5）。</p>
+      <div class="sim-container">
+        <canvas id="sim-1" width="640" height="460"></canvas>
+        <div class="sim-controls" id="controls-1"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-1');
+          var W = canvas.width, H = canvas.height;
+
+          // Physical scale: G=1, distances in grid units, time in √(r³/GM) units.
+          var G = 1.0;
+          var R0 = 6.0;           // launch radius (fixed)
+          var SOFT = 0.4;         // softening to avoid r→0 singularity in visual
+          var DEPTH_K = 0.22;     // visual depth scaling (purely cosmetic)
+
+          var DEFAULTS = { M: 14, v0: 1.35, alphaDeg: 90, az: 0.55, el: 0.95, showTrace: true, autoRotate: true };
+          var params = { M: DEFAULTS.M, v0: DEFAULTS.v0, alpha: DEFAULTS.alphaDeg * Math.PI / 180,
+                         az: DEFAULTS.az, el: DEFAULTS.el, showTrace: DEFAULTS.showTrace, autoRotate: DEFAULTS.autoRotate };
+
+          // ---- 3D projection: rotate (x,y,z) by az around z-axis, then el around x-axis; orthographic ----
+          function project(x, y, z, az, el, scale, cx, cy) {
+            var ca = Math.cos(az), sa = Math.sin(az);
+            var x1 = ca * x - sa * y;
+            var y1 = sa * x + ca * y;
+            var z1 = z;
+            var ce = Math.cos(el), se = Math.sin(el);
+            var y2 = ce * y1 - se * z1;
+            var z2 = se * y1 + ce * z1;
+            return { x: cx + scale * x1, y: cy - scale * y2, depth: z2 };
+          }
+
+          // Rubber-sheet depth (positive = downward). Newtonian potential Φ = -GM/r.
+          // Visualize z = -Φ scaled (so well points down). Softened to avoid divergence.
+          function sheetZ(x, y, M) {
+            var r = Math.hypot(x, y);
+            return -DEPTH_K * M / (r + SOFT);
+          }
+
+          // Build grid lines (array of polylines in physical coords)
+          var GRID_EXT = 10, GRID_N = 20;
+          var gridLines = [];
+          for (var i = 0; i <= GRID_N; i++) {
+            var u = -GRID_EXT + 2 * GRID_EXT * i / GRID_N;
+            var lineX = [], lineY = [];
+            for (var j = 0; j <= GRID_N; j++) {
+              var v = -GRID_EXT + 2 * GRID_EXT * j / GRID_N;
+              lineX.push([u, v]);
+              lineY.push([v, u]);
+            }
+            gridLines.push(lineX);
+            gridLines.push(lineY);
+          }
+
+          function drawSheet(ctx, M, az, el, scale, cx, cy) {
+            // draw grid lines; segments deeper than viewer (z2 small) drawn fainter
+            ctx.save();
+            ctx.lineWidth = 1.0;
+            gridLines.forEach(function (line, idx) {
+              for (var k = 0; k < line.length - 1; k++) {
+                var p0 = line[k], p1 = line[k + 1];
+                var r0 = Math.hypot(p0[0], p0[1]);
+                var r1 = Math.hypot(p1[0], p1[1]);
+                // skip segments inside event horizon disk for clarity
+                var z0 = sheetZ(p0[0], p0[1], M);
+                var z1 = sheetZ(p1[0], p1[1], M);
+                var pr0 = project(p0[0], p0[1], z0, az, el, scale, cx, cy);
+                var pr1 = project(p1[0], p1[1], z1, az, el, scale, cx, cy);
+                var avgDepth = (pr0.depth + pr1.depth) / 2;
+                var alpha = 0.25 + 0.55 * Math.max(0, Math.min(1, (avgDepth + 8) / 16));
+                // color shift toward accent near the well
+                var ravg = 0.5 * (r0 + r1);
+                var near = Math.max(0, 1 - ravg / 4);
+                ctx.globalAlpha = alpha;
+                ctx.strokeStyle = (idx % 2 === 0) ? PS.colors.grid : PS.colors.grid;
+                // tint color by mixing with accent when near mass
+                ctx.beginPath();
+                ctx.moveTo(pr0.x, pr0.y);
+                ctx.lineTo(pr1.x, pr1.y);
+                ctx.stroke();
+              }
+            });
+            ctx.globalAlpha = 1;
+            ctx.restore();
+
+            // draw circular "equipotential" rings on the sheet to highlight the well
+            ctx.save();
+            for (var ringR = 1; ringR <= 8; ringR += 1) {
+              var segs = 56;
+              ctx.beginPath();
+              for (var s = 0; s <= segs; s++) {
+                var ang = 2 * Math.PI * s / segs;
+                var rx = ringR * Math.cos(ang), ry = ringR * Math.sin(ang);
+                var z = sheetZ(rx, ry, M);
+                var p = project(rx, ry, z, az, el, scale, cx, cy);
+                if (s === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+              }
+              ctx.closePath();
+              ctx.globalAlpha = 0.18 + 0.25 * Math.max(0, 1 - ringR / 5);
+              ctx.strokeStyle = PS.colors.accent;
+              ctx.lineWidth = 0.9;
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            ctx.restore();
+          }
+
+          function drawCentralMass(ctx, M, az, el, scale, cx, cy) {
+            // event-horizon-like disk marker: radius = 2GM/c² analog (here c=1, so r_s = 2M but we soften visually)
+            var rsVis = Math.max(0.35, Math.min(2.5, 0.18 * M));
+            // shadow ellipse on z=0 plane
+            var segs = 36;
+            ctx.save();
+            ctx.beginPath();
+            for (var s = 0; s <= segs; s++) {
+              var ang = 2 * Math.PI * s / segs;
+              var rx = rsVis * Math.cos(ang), ry = rsVis * Math.sin(ang);
+              var z = sheetZ(rx, ry, M);
+              var p = project(rx, ry, z, az, el, scale, cx, cy);
+              if (s === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = PS.colors.accent;
+            ctx.globalAlpha = 0.85;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.restore();
+            // label
+            var labelP = project(0, 0, sheetZ(0, 0, M), az, el, scale, cx, cy);
+            PS.drawText(ctx, 'M = ' + M.toFixed(1), labelP.x + 14, labelP.y - 6,
+                        { font: 'bold 12px system-ui, sans-serif', color: PS.colors.accent });
+          }
+
+          // ---- physics: Newtonian central-force integrator (RK4). State: [x, y, vx, vy]. ----
+          function deriv(state) {
+            var x = state[0], y = state[1], vx = state[2], vy = state[3];
+            var r2 = x * x + y * y + SOFT * SOFT;
+            var r = Math.sqrt(r2);
+            var a = -G * params.M / r2;        // acceleration magnitude (per unit mass)
+            return [vx, vy, a * x / r, a * y / r];
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              // launch from (R0, 0) with speed v0 at angle α from radial direction
+              var v = params.v0, a = params.alpha;
+              var vx = v * Math.cos(a), vy = v * Math.sin(a);
+              return { s: [R0, 0, vx, vy], trail: [], t: 0 };
+            },
+            step: function (dt, t, st) {
+              // substep for accuracy near perihelion
+              var nSub = 4, h = dt / nSub;
+              for (var i = 0; i < nSub; i++) {
+                st.s = PS.integrate(deriv, st.s, st.t, h, 'rk4');
+                st.t += h;
+              }
+              st.trail.push([st.s[0], st.s[1]]);
+              if (st.trail.length > 1400) st.trail.shift();
+              if (params.autoRotate) params.az += dt * 0.18;
+            },
+            draw: function (ctx, st, env) {
+              PS.clear(ctx);
+              var cx = W / 2 - 70, cy = H / 2 + 50, scale = 22;
+
+              drawSheet(ctx, params.M, params.az, params.el, scale, cx, cy);
+
+              // trace
+              if (params.showTrace && st.trail.length > 1) {
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                ctx.strokeStyle = PS.colors.trace;
+                ctx.globalAlpha = 0.85;
+                ctx.beginPath();
+                var lastDrawn = null;
+                for (var k = 0; k < st.trail.length; k++) {
+                  var pt = st.trail[k];
+                  var z = sheetZ(pt[0], pt[1], params.M);
+                  var p = project(pt[0], pt[1], z, params.az, params.el, scale, cx, cy);
+                  if (k === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.restore();
+              }
+
+              drawCentralMass(ctx, params.M, params.az, params.el, scale, cx, cy);
+
+              // test particle
+              var x = st.s[0], y = st.s[1], vx = st.s[2], vy = st.s[3];
+              var zP = sheetZ(x, y, params.M);
+              var pP = project(x, y, zP + 0.18, params.az, params.el, scale, cx, cy);
+              PS.drawCircle(ctx, pP.x, pP.y, 6.5, { fill: PS.colors.accent2, stroke: 'rgba(255,255,255,0.7)', lineWidth: 1.5 });
+              // velocity arrow on the sheet (top-down, projected)
+              var vEnd = project(x + 0.45 * vx, y + 0.45 * vy, zP + 0.18, params.az, params.el, scale, cx, cy);
+              PS.drawArrow(ctx, pP.x, pP.y, vEnd.x, vEnd.y, PS.colors.primary);
+
+              // header
+              ctx.save();
+              ctx.font = 'bold 15px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('弯曲时空（橡胶膜类比）— Rubber-Sheet Spacetime', 14, 10);
+              ctx.font = '12px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText('Rubber-sheet embedding of Φ(r) = −GM/r; particle orbits the well.', 14, 30);
+              ctx.restore();
+
+              // orbital readout panel
+              var r = Math.hypot(x, y);
+              var speed = Math.hypot(vx, vy);
+              var E = 0.5 * speed * speed - G * params.M / Math.sqrt(r * r + SOFT * SOFT);
+              var L = x * vy - y * vx;
+              var vCirc = Math.sqrt(G * params.M / R0);
+              var vEsc = Math.sqrt(2) * vCirc;
+              var e = (E < 0) ? Math.sqrt(Math.max(0, 1 + 2 * E * L * L / Math.pow(G * params.M, 2))) : NaN;
+              var orbitType = E < -1e-4 ? (Math.abs(e) < 0.02 ? '圆 orbit' : '椭圆 ellipse')
+                           : Math.abs(E) < 1e-4 ? '抛物 parabola'
+                           : '双曲 hyperbola';
+
+              var panelX = W - 198, panelY = 64, panelW = 180;
+              ctx.save();
+              ctx.globalAlpha = 0.45;
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(panelX - 8, panelY - 16, panelW + 16, 268);
+              ctx.restore();
+
+              function line(yy, label, val, valColor) {
+                ctx.save();
+                ctx.font = '11.5px system-ui, sans-serif';
+                ctx.fillStyle = PS.colors.text;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, panelX, yy);
+                ctx.font = 'bold 12px ui-monospace, Menlo, monospace';
+                ctx.fillStyle = valColor || PS.colors.text;
+                ctx.textAlign = 'right';
+                ctx.fillText(val, panelX + panelW - 4, yy);
+                ctx.restore();
+              }
+
+              ctx.save();
+              ctx.font = 'bold 12.5px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('轨道参数 Orbit', panelX, panelY);
+              ctx.restore();
+              var yy = panelY + 22;
+              line(yy, '中心质量 M', params.M.toFixed(1), PS.colors.accent); yy += 19;
+              line(yy, '半径 r', r.toFixed(2)); yy += 19;
+              line(yy, '速率 v', speed.toFixed(3), PS.colors.primary); yy += 19;
+              line(yy, '能量 E', E.toFixed(3), (E < 0 ? PS.colors.accent2 : PS.colors.accent)); yy += 19;
+              line(yy, '角动量 L', L.toFixed(3)); yy += 19;
+              line(yy, '偏心率 e', isNaN(e) ? '—' : e.toFixed(3)); yy += 19;
+              line(yy, '类型', orbitType, PS.colors.trace); yy += 22;
+              line(yy, 'v_圆 (r₀)', vCirc.toFixed(3), PS.colors.accent2); yy += 19;
+              line(yy, 'v_逃逸 (r₀)', vEsc.toFixed(3), PS.colors.accent); yy += 19;
+              line(yy, 'v / v_逃逸', (speed / vEsc).toFixed(3)); yy += 22;
+
+              // quick tip
+              ctx.save();
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+              ctx.fillText('提示 Hints', panelX, yy);
+              ctx.restore();
+              yy += 15;
+              ctx.save();
+              ctx.font = '10.5px system-ui, sans-serif';
+              ctx.fillStyle = PS.colors.text;
+              ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+              ctx.fillText('• v = v_圆 → 圆轨道', panelX, yy); yy += 13;
+              ctx.fillText('• v ≥ v_逃逸 → 飞离', panelX, yy); yy += 13;
+              ctx.fillText('• 关自动旋转后可手动转', panelX, yy);
+              ctx.restore();
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-1'), [
+            { type: 'slider', key: 'M',    label: '中心质量 M',         min: 2,  max: 40, step: 0.5, value: DEFAULTS.M },
+            { type: 'slider', key: 'v0',   label: '初速率 v₀',          min: 0.3,max: 4.5,step: 0.05,value: DEFAULTS.v0 },
+            { type: 'slider', key: 'alpha',label: '发射角 α (°) [90=切向]', min: 0, max: 180, step: 1, value: DEFAULTS.alphaDeg },
+            { type: 'toggle', key: 'showTrace', label: '显示轨迹 Trace', value: DEFAULTS.showTrace },
+            { type: 'toggle', key: 'autoRotate', label: '自动旋转 Auto-rotate', value: DEFAULTS.autoRotate },
+            { type: 'slider', key: 'az',   label: '方位角 Azimuth (°)', min: 0,  max: 360, step: 1, value: Math.round(DEFAULTS.az * 180 / Math.PI) },
+            { type: 'slider', key: 'el',   label: '仰角 Elevation (°)', min: 10, max: 85,  step: 1, value: Math.round(DEFAULTS.el * 180 / Math.PI) },
+            { type: 'button', key: 'reset',label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('M',    function (v) { params.M = v; });
+          ctl.on('v0',   function (v) { params.v0 = v; });
+          ctl.on('alpha',function (v) { params.alpha = v * Math.PI / 180; });
+          ctl.on('showTrace',  function (v) { params.showTrace = v; });
+          ctl.on('autoRotate', function (v) { params.autoRotate = v; });
+          ctl.on('az',   function (v) { params.az = v * Math.PI / 180; });
+          ctl.on('el',   function (v) { params.el = v * Math.PI / 180; });
+          ctl.on('reset', function () {
+            var sliders = document.querySelectorAll('#controls-1 input[type=range]');
+            function setSlider(input, value) {
+              input.value = String(value);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            // M, v0, alpha, az, el — 5 sliders in order
+            if (sliders[0]) setSlider(sliders[0], DEFAULTS.M);
+            if (sliders[1]) setSlider(sliders[1], DEFAULTS.v0);
+            if (sliders[2]) setSlider(sliders[2], DEFAULTS.alphaDeg);
+            if (sliders[3]) setSlider(sliders[3], Math.round(DEFAULTS.az * 180 / Math.PI));
+            if (sliders[4]) setSlider(sliders[4], Math.round(DEFAULTS.el * 180 / Math.PI));
+            var toggles = document.querySelectorAll('#controls-1 input[type=checkbox]');
+            if (toggles[0]) { toggles[0].checked = DEFAULTS.showTrace; toggles[0].dispatchEvent(new Event('change', { bubbles: true })); }
+            if (toggles[1]) { toggles[1].checked = DEFAULTS.autoRotate; toggles[1].dispatchEvent(new Event('change', { bubbles: true })); }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>弱等效原理 (WEP)</strong>：所有检验粒子在引力场中下落的加速度相同（\(m_g=m_i\)）；Eötvös 比值 \(\eta\lesssim 10^{-15}\)。<strong>爱因斯坦等效原理 (EEP)</strong> = WEP + 局部洛伦兹不变性 + 局部位置不变性，断言：<strong>任一点都存在局部惯性系，其中一切非引力物理取狭义相对论形式</strong>。<strong>强等效原理 (SEP)</strong> 进一步涵盖自引力天体。</li>
+        <li><strong>引力 = 时空几何</strong>：不是一种力，而是时空的弯曲；自由粒子沿测地线运动。等效原理是<strong>局部</strong>的——延展区域必出现<strong>潮汐效应</strong>（曲率的指纹），不可消除。</li>
+        <li><strong>度规张量 \(g_{\mu\nu}\)</strong> 是广义相对论的「引力势」。<strong>原时</strong>由线元给出：\(c^{2}\mathrm{d}\tau^{2}=g_{\mu\nu}\mathrm{d}x^{\mu}\mathrm{d}x^{\nu}\)。闵可夫斯基度规 \(\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\) 描述平直时空（狭义相对论）。</li>
+        <li><strong>测地线方程</strong>（从原时极值变分导出）：\(\dv[2]{x^{\mu}}{\tau}+\Gamma^{\mu}_{\;\alpha\beta}\dv{x^{\alpha}}{\tau}\dv{x^{\beta}}{\tau}=0\)，其中 \(\Gamma^{\mu}_{\;\alpha\beta}=\tfrac{1}{2}g^{\mu\nu}(\partial_{\alpha}g_{\beta\nu}+\partial_{\beta}g_{\alpha\nu}-\partial_{\nu}g_{\alpha\beta})\)。它是<strong>牛顿第一定律在弯曲时空的推广</strong>。</li>
+        <li><strong>牛顿极限</strong>：弱场低速下 \(g_{00}=1+2\Phi/c^{2}\)，测地线方程退化为 \(\ddot{\vec{x}}=-\vec{\nabla}\Phi\)（牛顿第二定律加牛顿引力）。「时间弯曲」主导了日常引力。</li>
+        <li><strong>潮汐力 = 曲率</strong>：\(\Delta a^{i}=-c^{2}R^{i}_{\;0j0}\Delta x^{j}\)。径向被拉伸（\(+2GM\Delta r/r^{3}\)），横向被压缩（\(-GM\Delta r/r^{3}\)），是引力场<strong>不可消除</strong>的内禀信号。</li>
+        <li><strong>坐标自由度</strong>：广义协变；坐标分量变化 \(\neq\) 曲率。曲率由黎曼张量（度规二阶导数的组合）判定，可在局部惯性系中令 \(\Gamma=0\) 但不能消除 \(R\)。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;\eta\;\equiv\;2\,\frac{|a_1-a_2|}{|a_1+a_2|}\;\lesssim\;10^{-15},\qquad m_g=m_i\;} \]</div>
+      <div class="formula">\[ \boxed{\;c^{2}\,\mathrm{d}\tau^{2}\;=\;g_{\mu\nu}\,\mathrm{d}x^{\mu}\,\mathrm{d}x^{\nu},\qquad \eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)\;} \]</div>
+      <div class="formula">\[ \boxed{\;\mathrm{d}s^{2}=\Bigl(1-\dfrac{r_s}{r}\Bigr)c^{2}\mathrm{d}t^{2}-\Bigl(1-\dfrac{r_s}{r}\Bigr)^{-1}\!\mathrm{d}r^{2}-r^{2}\mathrm{d}\Omega^{2},\quad r_s=\dfrac{2GM}{c^{2}}\;} \]</div>
+      <div class="formula">\[ \boxed{\;\dv[2]{x^{\mu}}{\tau}+\Gamma^{\mu}_{\;\alpha\beta}\,\dv{x^{\alpha}}{\tau}\dv{x^{\beta}}{\tau}=0,\qquad \Gamma^{\mu}_{\;\alpha\beta}=\tfrac{1}{2}g^{\mu\nu}\bigl(\partial_{\alpha}g_{\beta\nu}+\partial_{\beta}g_{\alpha\nu}-\partial_{\nu}g_{\alpha\beta}\bigr)\;} \]</div>
+      <div class="formula">\[ \boxed{\;\dv[2]{\vec{x}}{t}=-\vec{\nabla}\Phi\;\;(\text{Newtonian limit, }g_{00}=1+2\Phi/c^{2})\;} \]</div>
+      <div class="formula">\[ \boxed{\;\Delta a^{i}=-c^{2}R^{i}_{\;0j0}\,\Delta x^{j};\qquad \Delta a_r=+\dfrac{2GM}{r^{3}}\,\Delta r,\quad \Delta a_\perp=-\dfrac{GM}{r^{3}}\,\Delta r\;} \]</div>
+      <div class="formula">\[ \boxed{\;\frac{\Delta\nu}{\nu}=-\frac{gH}{c^{2}}\quad(\text{引力红移, Pound–Rebka})\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

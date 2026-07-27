@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第11章 · 统一理论与量子引力 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="11">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第11章 · 前沿专题 Frontiers</p>
+      <h1>统一理论与量子引力 <span class="en-title">Unification &amp; Quantum Gravity</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够阐述物理学<strong>统一</strong> (unification) 的历史脉络：麦克斯韦统一电与磁 (1865)、电弱统一 (Glashow–Weinberg–Salam, 1961–1968)、大统一理论 (Grand Unified Theories, GUTs) 试图把 \( \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 嵌入单一简单群（如 SU(5) 或 SO(10)）；并说明统一是<strong>依赖于能标</strong> (scale-dependent) 的现象。</li>
+        <li>能够运用<strong>一圈重整化群方程</strong> (one-loop renormalization group equations) 推导三个规范耦合 \( \alpha_1,\alpha_2,\alpha_3 \) 的跑动 (running couplings) 公式 \( \alpha_i^{-1}(\mu)=\alpha_i^{-1}(\mu_0)-(b_i/2\pi)\ln(\mu/\mu_0) \)，并用真实数值验证它们在 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \) 处近似（但最小 SM 下不完全）交汇；超对称 (SUSY) 改善这一汇聚。</li>
+        <li>能够用<strong>普朗克尺度</strong> (Planck scale) 的定义式 \( l_P=\sqrt{\hbar G/c^3}\approx 1.616\times 10^{-35}\,\mathrm{m} \)、\( t_P=\sqrt{\hbar G/c^5}\approx 5.39\times 10^{-44}\,\mathrm{s} \)、\( E_P=\sqrt{\hbar c^5/G}\approx 1.22\times 10^{19}\,\mathrm{GeV} \) 做量纲分析，说明在此能标下<strong>引力必须量子化</strong>。</li>
+        <li>能够论述<strong>量子引力问题</strong> (quantum gravity problem)：广义相对论 (smooth geometry) 与量子力学 (quantized fields) 在 \( E\sim E_P \) 处的数学结构不相容；微扰量子引力不可重整化（耦合 \( G \) 有负质量维数）。</li>
+        <li>能够简述两大候选理论——<strong>弦论</strong> (string theory：粒子作为振动弦，自然包含自旋 2 引力子，需要 10 或 11 维时空) 与<strong>圈量子引力</strong> (Loop Quantum Gravity, LQG：时空在普朗克尺度离散)——以及<strong>全息原理</strong> (holographic principle) 与 AdS/CFT 对偶。</li>
+        <li>能够估算 GUT 预言的<strong>质子衰变</strong> (proton decay) 寿命 \( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)，与 Super-KamioKande 实验下限 \( \tau_p>2.4\times 10^{34}\,\mathrm{yr} \) 比较，理解为何最小 SU(5) 被排除；并说明额外维 (extra dimensions) 如何可能降低基本普朗克能标。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 统一的历史与动机 The Quest for Unification</h3>
+      <p>物理学的核心驱动力之一是<strong>用更少的原理解释更多现象</strong>。已知自然界有<strong>四种基本力</strong> (four fundamental forces)：</p>
+      <div class="formula">\[ \begin{array}{c|c|c|c} \text{力 Force} & \text{相对强度 Relative} & \text{力程 Range} & \text{规范玻色子 Mediator} \\\\ \hline \text{强 Strong} & 1 & \sim 10^{-15}\,\mathrm{m} & \text{胶子 }g\,(8) \\\\ \text{电磁 EM} & 10^{-2} & \infty & \text{光子 }\gamma \\\\ \text{弱 Weak} & 10^{-6} & \sim 10^{-18}\,\mathrm{m} & W^\pm, Z \\\\ \text{引力 Gravity} & 10^{-39} & \infty & \text{引力子? }g_{\mu\nu}\,\text{(spin 2)} \end{array} \]</div>
+      <p>统一的历史进程：</p>
+      <ul>
+        <li><strong>1865 — 麦克斯韦</strong>：电 + 磁 + 光 → <strong>电动力学</strong>。</li>
+        <li><strong>1967 — 电弱统一</strong> (Electroweak unification, Glashow/Weinberg/Salam, 1979 Nobel)：电磁 + 弱相互作用是 \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 规范理论的两个方面，通过 Higgs 机制破缺到 \( \mathrm{U}(1)_{\mathrm{em}} \)。</li>
+        <li><strong>1974 — 大统一</strong> (Grand Unified Theory, Georgi–Glashow SU(5))：试图把 \( \mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 嵌入<strong>单一简单李群</strong> (single simple Lie group)，预言在高能下强、弱、电磁三种力本质相同。</li>
+        <li><strong>未来 — 量子引力 / 一切理论</strong> (Theory of Everything, TOE)：把引力也纳入统一框架，达到 \( E\sim E_P\sim 10^{19}\,\mathrm{GeV} \)。</li>
+      </ul>
+      <p>注意：电弱「统一」仅在 \( E\gg m_W\sim 80\,\mathrm{GeV} \) 时显现（弱力与电磁的耦合趋于相同强度）；低能下由于 Higgs 破缺它们看起来差别巨大。<strong>统一是能量标度依赖的现象，而非低能下的视觉相似。</strong></p>
+      <div class="key-terms">unification (统一), four fundamental forces (四种基本力), electroweak unification (电弱统一), Grand Unified Theory (大统一理论 GUT), Theory of Everything (一切理论 TOE)</div>
+
+      <h3>2. 大统一理论 Grand Unified Theories (GUTs)</h3>
+      <p>Georgi–Glashow 的<strong>最小 SU(5) 模型</strong> (1974) 将整个标准模型规范群嵌入：</p>
+      <div class="formula">\[ \mathrm{SU}(5)\;\supset\;\mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \]</div>
+      <p>SU(5) 是<strong>秩 4</strong>的简单群 (simple group)，有 24 个生成元，对应 24 个规范玻色子。其中 12 个是 SM 已知粒子（8 个胶子 + \( W^{1,2,3} \) + \( B \)），剩下 <strong>12 个新的超重规范玻色子</strong> \( X, Y \)（称为 leptoquark gauge bosons，把夸克转化为轻子）。每代费米子被装入 SU(5) 表示：</p>
+      <div class="formula">\[ \bar{\mathbf{5}}=\begin{pmatrix}d_R^c\\\\ d_R^c\\\\ d_R^c\\\\ e_L\\\\ \nu_e\end{pmatrix},\qquad \mathbf{10}=\frac{1}{\sqrt{2}}\begin{pmatrix}0 & u_R^c & -u_R^c & u_L & d_L\\\\ -u_R^c & 0 & u_R^c & u_L & d_L\\\\ u_R^c & -u_R^c & 0 & u_L & d_L\\\\ -u_L & -u_L & -u_L & 0 & e_R^c\\\\ -d_L & -d_L & -d_L & -e_R^c & 0\end{pmatrix} \]</div>
+      <p>SU(5) 通过另一个 Higgs 表示（adjoint \( \mathbf{24} \)）破缺到 SM：\( \mathrm{SU}(5)\xrightarrow{\langle\Phi_{\mathbf{24}}\rangle\sim M_{\mathrm{GUT}}}\mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1) \)。这赋予 \( X, Y \) 玻色子质量 \( M_X\sim M_{\mathrm{GUT}} \)。其余 SU(2) Higgs \( \mathbf{5} \) 在电弱标度破缺（\( v=246\,\mathrm{GeV} \)）。<strong>统一的关键预言</strong>：</p>
+      <ol>
+        <li><strong>规范耦合统一</strong> (coupling unification)：在 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \)，三个耦合收敛到单一值 \( \alpha_{\mathrm{GUT}}\approx 1/25 \)。</li>
+        <li><strong>电荷量子化</strong> (charge quantization)：\( Q_p+Q_e=0 \)（质子电荷 + 电子电荷 = 0）在 SU(5) 中<strong>自动</strong>成立（解释为何 \( |Q_e|=|Q_p|/3 \)）。</li>
+        <li><strong>质子衰变</strong> (proton decay)：\( X, Y \) 玻色子交换诱导 \( p\to e^+\pi^0 \) 等模式，\( \tau_p\sim 10^{31\text{–}35}\,\mathrm{yr} \)。</li>
+      </ol>
+      <p>其它 GUT 候选：<strong>SO(10)</strong>（含右手中微子，自然容纳 seesaw）、<strong>\( E_6 \)</strong>（弦论启发）、<strong> flipped SU(5)</strong>。SUSY GUT（最小超对称标准模型 MSSM 的 \( \beta \) 函数）给出更精确的统一，这是 SUSY 的关键 phenomenological 卖点。</p>
+      <div class="key-terms">simple Lie group (简单李群), SU(5) (Georgi–Glashow 模型), leptoquark gauge boson (轻子夸克玻色子 \( X, Y \)), charge quantization (电荷量子化), running coupling (跑动耦合), MSSM (最小超对称标准模型)</div>
+
+      <h3>3. 规范耦合的跑动与统一 Running Couplings &amp; Unification</h3>
+      <p>标准模型三个规范耦合 \( \alpha_i=g_i^2/(4\pi) \)（\( i=1,2,3 \) 对应 \( \mathrm{U}(1), \mathrm{SU}(2), \mathrm{SU}(3) \)；GUT 归一化 \( \alpha_1=(5/3)g'^2/(4\pi) \)）随能标<strong>跑动</strong>。重整化群方程（一圈近似）：</p>
+      <div class="formula">\[ \frac{\mathrm{d}\alpha_i^{-1}}{\mathrm{d}\ln\mu}=-\frac{b_i}{2\pi},\qquad \alpha_i^{-1}(\mu)=\alpha_i^{-1}(\mu_0)-\frac{b_i}{2\pi}\ln\!\frac{\mu}{\mu_0} \]</div>
+      <p>其中 \( b_i \) 由粒子内容决定。最小 SM 一圈系数（GUT 归一化）：</p>
+      <div class="formula">\[ (b_1,b_2,b_3)_{\mathrm{SM}}=\Bigl(\tfrac{41}{10},\,-\tfrac{19}{6},\,-7\Bigr) \]</div>
+      <p>注意 \( b_3<0 \)（QCD 渐近自由 asygymptotic freedom，\( \alpha_s \) 在高能减小，\( \alpha_s^{-1} \) 增大）；\( b_1>0 \)（\( \mathrm{U}(1) \) 反屏蔽，\( \alpha_1^{-1} \) 减小）。代入 \( m_Z \) 处的实测初值 \( \alpha_{\mathrm{em}}^{-1}=127.95 \)、\( \sin^2\theta_W=0.23122 \)、\( \alpha_s=0.1181 \)：</p>
+      <div class="formula">\[ \alpha_1^{-1}(m_Z)\approx 59.0,\qquad \alpha_2^{-1}(m_Z)\approx 29.6,\qquad \alpha_3^{-1}(m_Z)\approx 8.47 \]</div>
+      <p>三条直线斜率不同，会在高能处<strong>近似</strong>交汇。然而最小 SM 下三条线<strong>不完全交于一点</strong>，形成一个细三角形（详见例 11.3）。引入 SUSY（\( b_i=(33/5,1,-3) \)）后三线在 \( M_{\mathrm{GUT}}\approx 2\times 10^{16}\,\mathrm{GeV} \) 精确相交于 \( \alpha_{\mathrm{GUT}}^{-1}\approx 24 \)——这是支持 SUSY GUT 的有力（但非决定性）论据。</p>
+
+      <h3>4. 普朗克尺度 The Planck Scale</h3>
+      <p>从一个简单的量纲问题出发：把三个基本常数 \( \hbar \)（量子）、\( G \)（引力）、\( c \)（相对论）组合出长度、时间、质量量纲。在自然单位制（\( \hbar=c=1 \)）中，\( G \) 的量纲是 \( [\mathrm{mass}]^{-2} \)（因 \( Gm^2 \) 是能量量纲）。定义<strong>普朗克质量</strong>：</p>
+      <div class="formula">\[ M_P\equiv\sqrt{\frac{\hbar c}{G}}\approx 2.176\times 10^{-8}\,\mathrm{kg}=1.221\times 10^{19}\,\mathrm{GeV}/c^2 \]</div>
+      <p>恢复量纲得到三大量：</p>
+      <div class="formula">\[ \boxed{\;l_P=\sqrt{\frac{\hbar G}{c^3}}\approx 1.616\times 10^{-35}\,\mathrm{m},\qquad t_P=\sqrt{\frac{\hbar G}{c^5}}\approx 5.39\times 10^{-44}\,\mathrm{s},\qquad E_P=M_P c^2\approx 1.22\times 10^{19}\,\mathrm{GeV}\;} \]</div>
+      <p>这是物理学中<strong>最极端的尺度</strong>：\( l_P \) 比质子半径小 20 个数量级，\( t_P \) 比任何已知过程短 30 个数量级，\( E_P \) 比 LHC 大 15 个数量级。<strong>物理意义</strong>：在能量 \( E\sim E_P \)，引力的有效无量纲耦合 \( \alpha_G(E)\sim (E/E_P)^2\sim 1 \)，即<strong>引力变得和其它力一样强</strong>，必须量子化。低能下 \( \alpha_G\ll 1 \)，引力才显得「弱」。</p>
+      <p>注意：有时使用<strong>约化普朗克质量</strong> \( \bar{M}_P=M_P/\sqrt{8\pi}\approx 2.4\times 10^{18}\,\mathrm{GeV} \)，它把 Einstein–Hilbert 作用量 \( S=\frac{\bar{M}_P^2}{2}\int\!\sqrt{-g}\,R\,\mathrm{d}^4x \) 写成无 \( 8\pi \) 因子的形式。</p>
+      <div class="key-terms">Planck length (普朗克长度 \( l_P \)), Planck time (普朗克时间 \( t_P \)), Planck mass / energy (普朗克质量/能量 \( M_P, E_P \)), reduced Planck mass (约化普朗克质量 \( \bar{M}_P \)), natural units (自然单位制)</div>
+
+      <h3>5. 量子引力问题 The Quantum Gravity Problem</h3>
+      <p>广义相对论 (Einstein 1915) 把时空几何描述为<strong>光滑的洛伦兹流形</strong> \( (M,g_{\mu\nu}) \)，度规满足 Einstein 方程 \( G_{\mu\nu}=8\pi G\,T_{\mu\nu}/c^4 \)。量子场论则把物质场描述为<strong>在固定背景上的算子值分布</strong>。两套框架在 \( E\sim E_P \) 处直接冲突：</p>
+      <ul>
+        <li><strong>微扰量子引力不可重整化</strong> (perturbative non-renormalizability)：把度规展开 \( g_{\mu\nu}=\eta_{\mu\nu}+\kappa h_{\mu\nu} \)，\( \kappa=\sqrt{32\pi G} \) 有<strong>负质量维度</strong>（\( [\kappa]=-1 \)）。每个圈图带来 \( \kappa^2 E^2\sim (E/E_P)^2 \) 因子，越高的圈图发散越严重，需要<strong>无穷多个</strong>独立的反项 (counterterms) 抵消——不可重整化。</li>
+        <li><strong>背景无关性</strong> (background independence)：在 GR 中度规本身是动力学变量，不能像 QFT 那样先选定一个背景度规再做微扰。如何写一个<strong>背景无关的量子理论</strong>是概念性挑战。</li>
+        <li><strong>时间的本质</strong> (problem of time)：在量子力学中时间是外部参数；在 GR 中时间是动力学变量。量子引力中「什么是时间」变得模糊（Wheeler–DeWitt 方程 \( \hat{H}\Psi=0 \) 显示哈密顿量为零）。</li>
+        <li><strong>黑洞信息悖论</strong> (black hole information paradox)：Hawking 辐射 (1975) 似乎破坏量子力学的么正性 (unitarity)。</li>
+      </ul>
+      <p>因此量子引力绝非「把引力子加进标准模型」那么简单——它触及时间、空间、因果性的根本。一个<strong>完整、自洽、且经实验验证</strong>的量子引力理论至今<strong>尚未建立</strong>。</p>
+      <div class="key-terms">perturbative non-renormalizability (微扰不可重整化), background independence (背景无关性), problem of time (时间问题), Wheeler–DeWitt equation (Wheeler–DeWitt 方程), black hole information paradox (黑洞信息悖论)</div>
+
+      <h3>6. 候选理论一：弦论 Candidate I — String Theory</h3>
+      <p>弦论 (string theory) 把点粒子替换为<strong>一维延展客体</strong> (1-D extended object)——闭合或开放的弦。不同粒子是弦的不同振动模式 (vibrational modes)，就如小提琴的不同弦振动产生不同音符。<strong>关键性质</strong>：</p>
+      <ul>
+        <li><strong>自然包含引力子</strong> (graviton)：闭弦 (closed string) 总包含一个自旋 2、无质量的模式，正是引力子。这是弦论最大的<strong>自动</strong>成就——不必人为引入引力。</li>
+        <li><strong>额外维</strong> (extra dimensions)：自洽的玻色弦论需要 \( D=26 \) 维，超弦 (superstring) 需要 \( D=10 \) 维，M-理论 \( D=11 \)。多出的维度被<strong>紧致化</strong> (compactified) 在小尺度流形上（如 6 维 Calabi–Yau 流形）。</li>
+        <li><strong>弦长度</strong> \( \ell_s=\sqrt{\alpha'} \)，其中 \( \alpha' \) 是 Regge 斜率；通常 \( \ell_s\sim l_P \)，但弱耦合下可能更大。</li>
+        <li><strong>超对称</strong>：超弦（Type I, IIA, IIB, HE, HO 五种微扰弦论）在 10 维中需要时空超对称才自洽。</li>
+        <li><strong>统一所有力</strong>：在 \( E\sim M_s \)（弦标度），规范相互作用与引力是同一弦物理的不同方面。</li>
+      </ul>
+      <p><strong>挑战</strong>：</p>
+      <ul>
+        <li><strong>景观问题</strong> (landscape problem)：Calabi–Yau 紧致化与磁通量给出约 \( 10^{500} \) 种不同的真空，没有已知原理选定我们的宇宙。</li>
+        <li><strong>缺乏可检验预言</strong>：弦标度 \( M_s\sim 10^{17\text{–}18}\,\mathrm{GeV} \)，远超实验，弦论至今无直接验证。</li>
+        <li><strong>非微扰定义</strong>：完整 M-理论只有 AdS/CFT 等特殊情形有非微扰定义。</li>
+      </ul>
+      <div class="key-terms">string theory (弦论), open/closed string (开弦/闭弦), graviton (引力子), extra dimensions (额外维), Calabi–Yau manifold (Calabi–Yau 流形), Regge slope (Regge 斜率 \( \alpha' \)), string landscape (弦景观)</div>
+
+      <h3>7. 候选理论二：圈量子引力 Candidate II — Loop Quantum Gravity</h3>
+      <p>圈量子引力 (Loop Quantum Gravity, LQG; Rovelli, Smolin, Ashtekar 1980s–90s) 走另一条路：<strong>不试图统一所有力</strong>，而是直接量子化时空几何本身。<strong>核心思想</strong>：</p>
+      <ul>
+        <li><strong>Ashtekar 变量</strong>：把度规改写为 \( \mathrm{SU}(2) \) 规范联络 \( A_a^i \) 与稠密三标架 \( E^a_i \)，使 GR 类似 Yang–Mills 理论。</li>
+        <li><strong>spin network</strong> (自旋网络)：几何状态的完备基是 Penrose 1980 年代引入的、由边标记为自旋 \( j \) 的有向图。</li>
+        <li><strong>面积与体积的离散谱</strong>：面积算子 \( \hat{A}(S) \) 的本征值 \( A=8\pi\gamma\,l_P^2\sum_i\sqrt{j_i(j_i+1)} \)（\( \gamma \) 为 Barbero–Immirzi 参数），最小非零面积 \( \sim l_P^2 \)。时空在普朗克尺度<strong>离散</strong>！</li>
+        <li><strong>背景无关</strong>：不依赖任何先验背景度规。</li>
+        <li><strong>自旋泡沫</strong> (spin foam)：对历史的求和由 2-复形表示，边界面是 spin network。</li>
+      </ul>
+      <p><strong>挑战</strong>：</p>
+      <ul>
+        <li>如何从离散几何<strong>恢复经典 GR 的连续极限</strong>（低能极限）是开放问题。</li>
+        <li>是否预言可观测的 Lorentz 对称性破坏（被宇宙射线观测强烈约束）。</li>
+        <li>不解释为什么宇宙有标准模型的物质内容。</li>
+      </ul>
+      <p>LQG 与弦论代表两种互补的量子引力哲学：「先统一」vs「先量子化几何」。两者至今都未经实验验证。</p>
+      <div class="key-terms">Loop Quantum Gravity (圈量子引力 LQG), Ashtekar variables (Ashtekar 变量), spin network (自旋网络), spin foam (自旋泡沫), Barbero–Immirzi parameter (Barbero–Immirzi 参数), discrete spacetime (离散时空), background independence (背景无关)</div>
+
+      <h3>8. 全息原理与 AdS/CFT Holographic Principle &amp; AdS/CFT</h3>
+      <p>受黑洞热力学启发，'t Hooft (1993) 与 Susskind (1994) 提出<strong>全息原理</strong> (holographic principle)：一个空间区域内的全部信息（自由度）可由其边界编码，每 \( l_P^2 \) 面积大约对应一个自由度。黑洞熵给出最强的形式：</p>
+      <div class="formula">\[ S_{\mathrm{BH}}=\frac{k_B\,A}{4\,l_P^2}\quad\text{(Bekenstein–Hawking entropy)} \]</div>
+      <p>这是该区域所能容纳的<strong>最大熵</strong>。1997 年 Maldacena 提出具体的实现：<strong>AdS/CFT 对偶</strong> (AdS/CFT correspondence)， conjectures 一个 \( (d+1) \) 维反德西特 (Anti-de Sitter) 时空中的引力理论等价于其 \( d \) 维边界上的共形场论 (Conformal Field Theory, CFT)。最著名实例：</p>
+      <div class="formula">\[ \mathrm{Type\ IIB\ superstring\ on\ AdS}_5\times S^5\;\;\Longleftrightarrow\;\;\mathcal{N}=4\ \mathrm{SU}(N)\ \mathrm{Super\text{-}Yang\text{-}Mills\ on\ } \mathbb{R}^{1,3} \]</div>
+      <p>这是一个<strong>强/弱对偶</strong> (strong/weak duality)：当引力侧（强耦合弦）难处理时，边界 CFT 侧（弱耦合 \( \mathcal{N}=4 \) SYM）变得容易，反之亦然。AdS/CFT 是目前最强的全息实现，应用于：</p>
+      <ul>
+        <li><strong>QCD 强耦合物理</strong>（强子谱、夸克胶子等离子体的剪切粘度 \( \eta/s\approx \hbar/(4\pi k_B) \)）。</li>
+        <li><strong>凝聚态</strong>（高温超导、奇异金属）的「holographic superconductor」。</li>
+        <li>提供弦论的非微扰定义，间接支持全息原理作为量子引力的普遍原理。</li>
+      </ul>
+      <div class="key-terms">holographic principle (全息原理), Bekenstein–Hawking entropy (Bekenstein–Hawking 熵), AdS/CFT correspondence (AdS/CFT 对偶), Anti-de Sitter space (反德西特时空), conformal field theory (共形场论 CFT), strong/weak duality (强/弱对偶)</div>
+
+      <h3>9. 质子衰变：GUT 的关键实验检验 Proton Decay — Key Experimental Test</h3>
+      <p>SU(5) GUT 中 \( X, Y \) 玻色子的交换诱导量纲 6 (dimension-6) 算符 \( (qqql)/M_X^2 \)，使质子衰变。主要衰变模式：</p>
+      <div class="formula">\[ p\to e^++\pi^0,\qquad p\to\bar\nu+K^+,\qquad p\to\mu^++\pi^0 \]</div>
+      <p>粗估衰变宽度（树图交换 \( X \) 玻色子）：</p>
+      <div class="formula">\[ \Gamma_p\sim\frac{\alpha_{\mathrm{GUT}}^2\,m_p^5}{M_X^4}\quad\Longrightarrow\quad \tau_p=\Gamma_p^{-1}\sim\frac{M_X^4}{\alpha_{\mathrm{GUT}}^2\,m_p^5} \]</div>
+      <p>代入 \( M_X=10^{16}\,\mathrm{GeV} \)、\( \alpha_{\mathrm{GUT}}=1/25 \)、\( m_p=0.938\,\mathrm{GeV} \)，\( \tau_p\sim 10^{35}\,\mathrm{yr} \)（详见例 11.4）。<strong>Super-Kamiokande</strong>（日本，5 万吨水切伦科夫探测器，运行 20+ 年，监测约 \( 10^{34} \) 个质子）给出：</p>
+      <div class="formula">\[ \tau_p/B(p\to e^+\pi^0)>2.4\times 10^{34}\,\mathrm{yr}\quad(90\%\,\mathrm{CL}) \]</div>
+      <p>最小（非 SUSY）SU(5) 预言 \( \tau_p\sim 10^{31}\,\mathrm{yr} \)（\( M_X\sim 10^{15}\,\mathrm{GeV} \)），已被<strong>排除</strong>。SUSY SU(5) 倾向于 favored 通道 \( p\to\bar\nu K^+ \)，\( \tau_p\sim 10^{33\text{–}35}\,\mathrm{yr} \)，在边缘但未被排除。<strong>Hyper-Kamiokande</strong>（建造中，~10 倍 Super-K 体积）将把灵敏度推到 \( 10^{35}\,\mathrm{yr} \)，可能在未来 10–20 年直接检验 SUSY GUT。</p>
+      <div class="key-terms">dimension-6 operator (量纲 6 算符), proton decay (质子衰变), Super-Kamiokande (超级神冈探测器), partial lifetime (部分寿命 \( \tau_p/B \))</div>
+
+      <h3>10. 实验挑战 The Enormous Experimental Challenge</h3>
+      <p>统一物理的最大障碍是<strong>能标天文数字般地超出实验</strong>：</p>
+      <ul>
+        <li>LHC 质心能量 \( \sqrt{s}=14\,\mathrm{TeV}=1.4\times 10^4\,\mathrm{GeV} \)；GUT 标度 \( \sim 10^{16}\,\mathrm{GeV} \)（高 \( 10^{12} \) 倍）；Planck 标度 \( \sim 10^{19}\,\mathrm{GeV} \)（高 \( 10^{15} \) 倍）。</li>
+        <li>用现有磁场（\( B\sim 8\,\mathrm{T} \)）的同步加速器要达到 Planck 能量，半径 \( R=E/(0.3B)\sim 10^{18}\,\mathrm{m}\sim 100\,\mathrm{光年} \)。完全不可行。</li>
+        <li>因此物理学家依赖<strong>间接信号</strong>：质子衰变（GUT）、中微子质量（seesaw → GUT 标度）、超伙伴质量（SUSY）、宇宙微波背景 (CMB) 原初引力波（量子引力）、弦预言的低能效应（等效原理破坏）。</li>
+      </ul>
+      <p>能标「窗口」问题让统一物理同时<strong>激动人心又令人沮丧</strong>——理论可能正确但永远无法直接验证。</p>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 由量纲分析导出普朗克单位</h2>
+      <p><strong>目标：</strong>从 \( \hbar \)、\( G \)、\( c \) 三个常数唯一地构造出长度、时间、质量量纲，证明普朗克单位是<strong>引力的量子相对论理论</strong>中的特征尺度。</p>
+      <p class="step"><strong>步骤 1.</strong> 列出三个基本常数的量纲（用 \( L \)=长度，\( T \)=时间，\( M \)=质量）：</p>
+      <div class="formula">\[ [\hbar]=\frac{ML^2}{T},\qquad [G]=\frac{L^3}{MT^2},\qquad [c]=\frac{L}{T} \]</div>
+      <p class="step"><strong>步骤 2.</strong> 假设普朗克长度形如 \( l_P=\hbar^a G^b c^d \)。比较量纲：</p>
+      <div class="formula">\[ L=(ML^2/T)^a(L^3/(MT^2))^b(L/T)^d \]</div>
+      <p>合并同类项：\( L^{2a+3b+d}\,M^{a-b}\,T^{-a-2b-d} \)。要求等于 \( L^1M^0T^0 \)：</p>
+      <div class="formula">\[ \begin{cases} 2a+3b+d=1 & (L) \\\\ a-b=0 & (M) \\\\ a+2b+d=0 & (T) \end{cases} \]</div>
+      <p class="step"><strong>步骤 3.</strong> 解方程组：由 \( a=b \)，第三式减第二式（消 \( d \)）：\( (a+2b+d)-(2a+3b+d)=-1 \) → \( -a-b=-1 \) → \( a+b=1 \)，与 \( a=b \) 联立得 \( a=b=1/2 \)。然后 \( d=1-2a-3b=1-1-3/2=-3/2 \)。因此：</p>
+      <div class="formula">\[ \boxed{\;l_P=\hbar^{1/2}\,G^{1/2}\,c^{-3/2}=\sqrt{\frac{\hbar G}{c^3}}\;} \]</div>
+      <p class="step"><strong>步骤 4.</strong> 类似地，普朗克时间 \( t_P \)（用光速 \( c=l_P/t_P \) 直接得到，或独立做量纲分析）：</p>
+      <div class="formula">\[ t_P=\frac{l_P}{c}=\sqrt{\frac{\hbar G}{c^5}} \]</div>
+      <p class="step"><strong>步骤 5.</strong> 普朗克质量：要求 \( [\hbar^aG^bc^d]=M \)，量纲方程 \( M^{a-b}=M^1 \)、\( L^{2a+3b+d}=0 \)、\( T^{-a-2b-d}=0 \)。解得 \( a-b=1 \)、\( d=-2a-3b \)、\( -a-2b-d=0 \)。代入 \( d \)：\( -a-2b+2a+3b=0 \) → \( a+b=0 \) → \( b=-a \)，与 \( a-b=1 \) 联立得 \( 2a=1 \)，\( a=1/2 \)、\( b=-1/2 \)、\( d=-2(1/2)-3(-1/2)=-1+3/2=1/2 \)：</p>
+      <div class="formula">\[ \boxed{\;M_P=\hbar^{1/2}\,G^{-1/2}\,c^{1/2}=\sqrt{\frac{\hbar c}{G}}\;} \]</div>
+      <p class="step"><strong>步骤 6.</strong> 物理意义——引力的有效耦合。在能量 \( E \) 的散射中，引力振幅带因子 \( GE^2/(\hbar c^5) \)。定义无量纲引力「精细结构常数」：</p>
+      <div class="formula">\[ \alpha_G(E)\equiv\frac{G\,m^2}{\hbar c}=\frac{E^2}{E_P^2}\quad\text{(用自然单位，粒子静质量或能量 } E\text{)} \]</div>
+      <p>对质子（\( m_p=1.673\times 10^{-27}\,\mathrm{kg} \)）：\( \alpha_G=5.9\times 10^{-39} \)，比电磁 \( \alpha_{\mathrm{em}}\approx 1/137\sim 10^{-2} \) 小 36 个数量级——这就是引力「看起来弱」的本质。<strong>但是</strong>当 \( E\to E_P \)，\( \alpha_G\to 1 \)，引力变成强相互作用，量子引力效应不可避免。<strong>这就是为什么 Planck 标度是引力的量子特征能标</strong>。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 11.1 计算普朗克长度、时间、质量、能量 Compute the Planck Units</h4>
+        <p class="example-statement">用基本常数 \( \hbar=1.0546\times 10^{-34}\,\mathrm{J\,s} \)、\( G=6.674\times 10^{-11}\,\mathrm{m^3\,kg^{-1}\,s^{-2}} \)、\( c=2.998\times 10^8\,\mathrm{m/s} \) 计算 \( l_P \)、\( t_P \)、\( M_P \)、\( E_P \)（用 GeV 表示能量）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（1）<strong>普朗克长度</strong>。先算 \( \hbar G \)：</p>
+          <p>\[ \hbar G=(1.0546\times 10^{-34})(6.674\times 10^{-11})=7.040\times 10^{-45}\,\mathrm{J\,s\,m^3\,kg^{-1}\,s^{-2}} \]</p>
+          <p>\[ c^3=(2.998\times 10^8)^3=2.694\times 10^{25}\,\mathrm{m^3/s^3} \]</p>
+          <p>\[ \frac{\hbar G}{c^3}=\frac{7.040\times 10^{-45}}{2.694\times 10^{25}}=2.614\times 10^{-70}\,\mathrm{m^2} \]</p>
+          <p>\[ \boxed{\;l_P=\sqrt{2.614\times 10^{-70}}=1.617\times 10^{-35}\,\mathrm{m}\;} \]</p>
+          <p class="step">（2）<strong>普朗克时间</strong>：</p>
+          <p>\[ t_P=\frac{l_P}{c}=\frac{1.617\times 10^{-35}}{2.998\times 10^8}=5.392\times 10^{-44}\,\mathrm{s} \]</p>
+          <p class="step">（3）<strong>普朗克质量</strong>：</p>
+          <p>\[ \frac{\hbar c}{G}=\frac{(1.0546\times 10^{-34})(2.998\times 10^8)}{6.674\times 10^{-11}}=\frac{3.162\times 10^{-26}}{6.674\times 10^{-11}}=4.738\times 10^{-16}\,\mathrm{kg^2} \]</p>
+          <p>\[ \boxed{\;M_P=\sqrt{4.738\times 10^{-16}}=2.176\times 10^{-8}\,\mathrm{kg}\;} \]</p>
+          <p class="step">（4）<strong>普朗克能量</strong>：</p>
+          <p>\[ E_P=M_P c^2=(2.176\times 10^{-8})(2.998\times 10^8)^2=(2.176\times 10^{-8})(8.988\times 10^{16})=1.956\times 10^9\,\mathrm{J} \]</p>
+          <p>换算为 GeV（\( 1\,\mathrm{GeV}=1.602\times 10^{-10}\,\mathrm{J} \)）：</p>
+          <p>\[ \boxed{\;E_P=\frac{1.956\times 10^9}{1.602\times 10^{-10}}=1.221\times 10^{19}\,\mathrm{GeV}\;} \]</p>
+          <p><span class="ans">\( l_P=1.62\times 10^{-35}\,\mathrm{m} \)、\( t_P=5.39\times 10^{-44}\,\mathrm{s} \)、\( M_P=2.18\times 10^{-8}\,\mathrm{kg}=1.22\times 10^{19}\,\mathrm{GeV}/c^2 \)、\( E_P=1.22\times 10^{19}\,\mathrm{GeV} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.2 引力的无量纲耦合：为何引力「弱」 The Dimensionless Gravitational Coupling</h4>
+        <p class="example-statement">（a）计算两个质子间的引力相互作用与电磁相互作用的强度比，即 \( \alpha_G=Gm_p^2/(\hbar c) \) 与 \( \alpha_{\mathrm{em}}\approx 1/137 \)。（b）在 LHC（\( E=14\,\mathrm{TeV} \)）与 Planck 能量（\( E_P \)）下，估算引力耦合 \( \alpha_G(E)\sim(E/E_P)^2 \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（a）两个质子间的引力「精细结构常数」：</p>
+          <p>\[ \alpha_G=\frac{Gm_p^2}{\hbar c}=\frac{(6.674\times 10^{-11})(1.673\times 10^{-27})^2}{(1.0546\times 10^{-34})(2.998\times 10^8)} \]</p>
+          <p>\[ Gm_p^2=(6.674\times 10^{-11})(2.799\times 10^{-54})=1.868\times 10^{-64} \]</p>
+          <p>\[ \hbar c=3.162\times 10^{-26} \]</p>
+          <p>\[ \alpha_G=\frac{1.868\times 10^{-64}}{3.162\times 10^{-26}}=5.91\times 10^{-39} \]</p>
+          <p>EM：\( \alpha_{\mathrm{em}}=1/137.94=7.25\times 10^{-3} \)。</p>
+          <p>\[ \boxed{\;\frac{\alpha_{\mathrm{em}}}{\alpha_G}=\frac{7.25\times 10^{-3}}{5.91\times 10^{-39}}=1.23\times 10^{36}\;} \]</p>
+          <p class="step">（b）在高能散射中，引力的有效耦合为 \( \alpha_G(E)\sim(E/E_P)^2 \)。LHC 14 TeV：</p>
+          <p>\[ E_{\mathrm{LHC}}=14\,\mathrm{TeV}=1.4\times 10^4\,\mathrm{GeV},\qquad E_P=1.22\times 10^{19}\,\mathrm{GeV} \]</p>
+          <p>\[ \alpha_G(E_{\mathrm{LHC}})=\Bigl(\frac{1.4\times 10^4}{1.22\times 10^{19}}\Bigr)^2=(1.15\times 10^{-15})^2=1.32\times 10^{-30} \]</p>
+          <p>仍比 EM 小 \( 10^{28} \) 倍——所以 LHC 中引力完全可忽略。</p>
+          <p class="step">在 Planck 能量 \( E=E_P \)：</p>
+          <p>\[ \boxed{\;\alpha_G(E_P)=1\;} \]</p>
+          <p>引力变得和其它规范力一样强，量子引力效应主导。<strong>这就是「引力为什么看起来弱」的本质</strong>——它弱只是因为我们日常的能量远低于 \( E_P \)。</p>
+          <p><span class="ans">\( \alpha_G=5.9\times 10^{-39} \)（vs \( \alpha_{\mathrm{em}}=7.3\times 10^{-3} \)，弱 \( 10^{36} \) 倍）；\( \alpha_G(14\,\mathrm{TeV})\approx 10^{-30} \)；\( \alpha_G(E_P)=1 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.3 GUT 标度估计（最小 SM）GUT Unification Scale Estimate</h4>
+        <p class="example-statement">用一圈 \( \beta \) 函数 \( (b_1,b_2,b_3)_{\mathrm{SM}}=(41/10,-19/6,-7) \) 与 \( m_Z \) 处实测初值 \( \alpha_{\mathrm{em}}^{-1}=127.95 \)、\( \sin^2\theta_W=0.23122 \)、\( \alpha_s=0.1181 \)（\( m_Z=91.19\,\mathrm{GeV} \)）。（a）求 \( \alpha_2^{-1} \) 与 \( \alpha_3^{-1} \) 的交点 \( M_{23} \)；（b）在该能标检查 \( \alpha_1^{-1} \)；（c）对比 SUSY 情形（\( b_i=(33/5,1,-3) \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（1）GUT 归一化初值：</p>
+          <p>\[ \alpha_1^{-1}(m_Z)=\tfrac{3}{5}(1-\sin^2\theta_W)\alpha_{\mathrm{em}}^{-1}=0.6\times 0.76878\times 127.95=59.02 \]</p>
+          <p>\[ \alpha_2^{-1}(m_Z)=\sin^2\theta_W\cdot\alpha_{\mathrm{em}}^{-1}=0.23122\times 127.95=29.59 \]</p>
+          <p>\[ \alpha_3^{-1}(m_Z)=\frac{1}{\alpha_s}=\frac{1}{0.1181}=8.47 \]</p>
+          <p class="step">（2）求 \( \alpha_2(M)=\alpha_3(M) \)。令 \( L=\ln(M/m_Z) \)：</p>
+          <p>\[ 29.59-\frac{-19/6}{2\pi}L=8.47-\frac{-7}{2\pi}L \]</p>
+          <p>\[ 29.59+\frac{19/6}{6.283}L=8.47+\frac{7}{6.283}L \]</p>
+          <p>\[ 21.12=\Bigl(\frac{7}{6.283}-\frac{19/6}{6.283}\Bigr)L=\frac{23/6}{6.283}L=\frac{3.833}{6.283}L=0.610\,L \]</p>
+          <p>\[ L=\frac{21.12}{0.610}=34.6,\qquad \frac{M}{m_Z}=e^{34.6}=9.95\times 10^{14} \]</p>
+          <p>\[ \boxed{\;M_{23}=91.19\,\mathrm{GeV}\times 9.95\times 10^{14}=9.07\times 10^{16}\,\mathrm{GeV}\sim 10^{17}\,\mathrm{GeV}\;} \]</p>
+          <p class="step">（3）在该能标下计算 \( \alpha_1^{-1} \)：</p>
+          <p>\[ \alpha_2^{-1}(M_{23})=\alpha_3^{-1}(M_{23})=29.59+\frac{19/6}{2\pi}\times 34.6=29.59+17.4=47.0 \]</p>
+          <p>\[ \alpha_1^{-1}(M_{23})=59.02-\frac{4.1}{2\pi}\times 34.6=59.02-22.6=36.4 \]</p>
+          <p>\( \alpha_1^{-1}=36.4 \) 与 \( \alpha_2^{-1}=\alpha_3^{-1}=47.0 \) 相差约 10.6——<strong>最小 SM 下三线不严格交于一点</strong>，形成「GUT 三角形」。</p>
+          <p class="step">（4）<strong>SUSY 情形</strong>（MSSM \( b_i=(33/5,1,-3) \)）。先求 \( \alpha_2=\alpha_3 \) 交点：</p>
+          <p>\[ L=\frac{2\pi\,(29.59-8.47)}{b_2-b_3}=\frac{6.283\times 21.12}{1-(-3)}=\frac{132.7}{4}=33.18 \]</p>
+          <p>\[ M_{23}^{\mathrm{SUSY}}=91.19\times e^{33.18}=91.19\times 2.36\times 10^{14}=2.15\times 10^{16}\,\mathrm{GeV} \]</p>
+          <p>检查 \( \alpha_1 \)：</p>
+          <p>\[ \alpha_2^{-1}=\alpha_3^{-1}=29.59-\frac{1}{2\pi}\times 33.18=29.59-5.28=24.31 \]</p>
+          <p>\[ \alpha_1^{-1}=59.02-\frac{33/5}{2\pi}\times 33.18=59.02-\frac{6.6\times 33.18}{6.283}=59.02-34.84=24.18 \]</p>
+          <p>三者在 \( M\approx 2\times 10^{16}\,\mathrm{GeV} \) 处汇于 \( \alpha_{\mathrm{GUT}}^{-1}\approx 24.2 \)（即 \( \alpha_{\mathrm{GUT}}\approx 1/24 \)）——<strong>精确统一</strong>！这是 SUSY GUT 最令人信服的间接论据。</p>
+          <p><span class="ans">最小 SM：\( M_{23}\approx 9\times 10^{16}\,\mathrm{GeV} \)，\( \alpha_1^{-1}=36.4\neq 47.0=\alpha_2^{-1}=\alpha_3^{-1} \)（不严格统一）；SUSY：\( M_{\mathrm{GUT}}\approx 2\times 10^{16}\,\mathrm{GeV} \)，三线交于 \( \alpha_{\mathrm{GUT}}^{-1}\approx 24 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.4 质子衰变寿命估计 Proton Decay Lifetime Estimate</h4>
+        <p class="example-statement">GUT 预言 \( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)。取 \( M_X=10^{16}\,\mathrm{GeV} \)、\( \alpha_{\mathrm{GUT}}=1/25 \)、\( m_p=0.938\,\mathrm{GeV} \)，\( \hbar=6.582\times 10^{-25}\,\mathrm{GeV\,s} \)、\( 1\,\mathrm{yr}=3.156\times 10^7\,\mathrm{s} \)。求 \( \tau_p \)（年）并与 Super-K 下限 \( \tau_p/B(p\to e^+\pi^0)>2.4\times 10^{34}\,\mathrm{yr} \) 比较。再讨论最小 SU(5)（\( M_X\sim 10^{15}\,\mathrm{GeV} \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（1）以 GeV 为单位的 \( \tau_p \)：</p>
+          <p>\[ \tau_p\sim\frac{M_X^4}{\alpha_{\mathrm{GUT}}^2\,m_p^5}=\frac{(10^{16})^4}{(1/25)^2\times(0.938)^5}\,\mathrm{GeV}^{-1}=\frac{10^{64}}{(1.6\times 10^{-3})(0.727)}\,\mathrm{GeV}^{-1} \]</p>
+          <p>\[ =\frac{10^{64}}{1.16\times 10^{-3}}\,\mathrm{GeV}^{-1}=8.6\times 10^{66}\,\mathrm{GeV}^{-1} \]</p>
+          <p class="step">（2）换算为秒：\( \tau[\mathrm{s}]=\tau[\mathrm{GeV}^{-1}]\times\hbar[\mathrm{GeV\,s}] \)：</p>
+          <p>\[ \tau_p=(8.6\times 10^{66})(6.582\times 10^{-25})=5.66\times 10^{42}\,\mathrm{s} \]</p>
+          <p class="step">（3）换算为年：</p>
+          <p>\[ \boxed{\;\tau_p=\frac{5.66\times 10^{42}}{3.156\times 10^7}=1.79\times 10^{35}\,\mathrm{yr}\;} \]</p>
+          <p class="step">（4）<strong>与实验比较</strong>：\( \tau_p=1.79\times 10^{35}\,\mathrm{yr} \) 是 Super-K 下限 \( 2.4\times 10^{34}\,\mathrm{yr} \) 的 7.5 倍——<strong>仍在窗口内</strong>但已被推到边缘，未来 Hyper-K 灵敏度（\( \sim 10^{35}\,\mathrm{yr} \)）可触及。</p>
+          <p class="step">（5）<strong>最小 SU(5)</strong>（\( M_X\sim 10^{15}\,\mathrm{GeV} \)）：</p>
+          <p>\[ \tau_p\sim 10^{35}\,\mathrm{yr}\times\Bigl(\frac{10^{15}}{10^{16}}\Bigr)^4=10^{35}\times 10^{-4}=10^{31}\,\mathrm{yr} \]</p>
+          <p>\( 10^{31}\,\mathrm{yr}\ll 10^{34}\,\mathrm{yr} \)——<strong>明显被排除</strong>。这就是 1980 年代 IMB/Kamiokande 否决最小 SU(5) 的逻辑。</p>
+          <p><span class="ans">\( \tau_p\sim 1.8\times 10^{35}\,\mathrm{yr} \)（\( M_X=10^{16}\,\mathrm{GeV} \)）；最小 SU(5) 预言 \( \tau_p\sim 10^{31}\,\mathrm{yr} \)，已被 Super-K 排除。SUSY GUT 仍可存活。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.5 普朗克能量 vs LHC：通往 Planck 的「加速器」 Planck Energy vs LHC</h4>
+        <p class="example-statement">LHC 质心能量 \( \sqrt{s}=14\,\mathrm{TeV} \)，普朗克能量 \( E_P=1.22\times 10^{19}\,\mathrm{GeV} \)。（a）求两者之比；（b）若想建造一台同步加速器把质子加速到 \( E_P \)，使用 LHC 的偶极磁场 \( B=8.33\,\mathrm{T} \)，需要多大半径？以光年表示。（公式 \( p[\mathrm{GeV}/c]=0.30\,B[\mathrm{T}]\,R[\mathrm{m}] \)。）</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（a）能量比：</p>
+          <p>\[ \frac{E_P}{E_{\mathrm{LHC}}}=\frac{1.22\times 10^{19}\,\mathrm{GeV}}{1.4\times 10^4\,\mathrm{GeV}}=8.7\times 10^{14}\approx 10^{15} \]</p>
+          <p>\[ \boxed{\;E_P/E_{\mathrm{LHC}}\sim 10^{15}\;} \]</p>
+          <p class="step">（b）同步加速器中磁场提供向心力 \( qvB=m\gamma v^2/R \)，给出 \( p[\mathrm{GeV}/c]=0.30\,B[\mathrm{T}]\,R[\mathrm{m}] \)。解出 \( R \)：</p>
+          <p>\[ R=\frac{p}{0.30\,B}=\frac{1.22\times 10^{19}}{0.30\times 8.33}=\frac{1.22\times 10^{19}}{2.50}=4.88\times 10^{18}\,\mathrm{m} \]</p>
+          <p class="step">（c）换算为光年（\( 1\,\mathrm{ly}=9.461\times 10^{15}\,\mathrm{m} \)）：</p>
+          <p>\[ \boxed{\;R=\frac{4.88\times 10^{18}}{9.461\times 10^{15}}=516\,\mathrm{ly}\;} \]</p>
+          <p>约 500 光年的半径——比太阳到附近恒星的距离大 100 倍。<strong>完全不可行</strong>。这就是为什么我们只能依赖<strong>间接信号</strong>（质子衰变、宇宙学、原初引力波）来检验普朗克物理。</p>
+          <p class="step"><strong>校验 LHC</strong>：用 \( E=7\,\mathrm{TeV}=7\times 10^3\,\mathrm{GeV} \)、\( B=8.33\,\mathrm{T} \)：</p>
+          <p>\[ R=\frac{7000}{0.30\times 8.33}=\frac{7000}{2.50}=2800\,\mathrm{m} \]</p>
+          <p>LHC 主环半径 2807 m——公式校验无误。Planck 同步加速器比 LHC 大 \( 4.88\times 10^{18}/2800=1.74\times 10^{15} \) 倍，恰为能量比 \( 10^{15} \)。</p>
+          <p><span class="ans">\( E_P/E_{\mathrm{LHC}}\sim 10^{15} \)；以 \( B=8.33\,\mathrm{T} \) 达到 Planck 能量需 \( R\approx 500\,\mathrm{ly} \)——远超任何工程可能。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 11.6 额外维降低普朗克标度（ADD 模型） Extra Dimensions Lower the Planck Scale</h4>
+        <p class="example-statement">Arkani-Hamed–Dimopoulos–Dvali (ADD, 1998) 假设存在 \( n \) 个大的额外空间维度（半径 \( R \)），真实基本普朗克标度 \( M_D \) 可远小于 \( M_P \)。关系：</p>
+        <div class="formula">\[ M_P^2=M_D^{n+2}\,V_n,\qquad V_n=(2\pi R)^n \]</div>
+        <p>取 \( n=2 \)、\( M_D=1\,\mathrm{TeV}=10^3\,\mathrm{GeV} \)（即电弱标度）。（a）求 \( R \)（毫米）；（b）KK 模的能级间距 \( \Delta m\sim\hbar c/R \)（eV）；（c）评论可检验性。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>（a）由 \( M_P^2=M_D^{4}\,(2\pi R)^2 \)：</p>
+          <p>\[ 2\pi R=\frac{M_P}{M_D^2}=\frac{1.22\times 10^{19}\,\mathrm{GeV}}{(10^3\,\mathrm{GeV})^2}=\frac{1.22\times 10^{19}}{10^6}=1.22\times 10^{13}\,\mathrm{GeV}^{-1} \]</p>
+          <p>\[ R=\frac{1.22\times 10^{13}}{2\pi}=1.94\times 10^{12}\,\mathrm{GeV}^{-1} \]</p>
+          <p class="step">换算为米（\( \hbar c=0.1973\,\mathrm{GeV\,fm}=1.973\times 10^{-16}\,\mathrm{GeV\,m} \)）：</p>
+          <p>\[ R=(1.94\times 10^{12})(1.973\times 10^{-16})=3.83\times 10^{-4}\,\mathrm{m}=0.383\,\mathrm{mm} \]</p>
+          <p>\[ \boxed{\;R\approx 0.4\,\mathrm{mm}\;} \]</p>
+          <p class="step">（b）KK 模是动量在紧致维方向量子化 \( p_{\mathrm{extra}}=N/R \)，等效 4 维质量 \( m_N=N\hbar c/R \)（\( N=0,1,2,\ldots \)）。第一模：</p>
+          <p>\[ \Delta m=\frac{\hbar c}{R}=\frac{1.973\times 10^{-16}\,\mathrm{GeV\,m}}{3.83\times 10^{-4}\,\mathrm{m}}=5.15\times 10^{-13}\,\mathrm{GeV}=5.15\times 10^{-4}\,\mathrm{eV} \]</p>
+          <p>\[ \boxed{\;\Delta m\sim 10^{-3}\,\mathrm{eV}\;} \]</p>
+          <p class="step">（c）<strong>评论</strong>：在 LHC 能量 \( E\sim 1\,\mathrm{TeV}\sim 10^{12}\,\mathrm{eV} \)，KK 模数目 \( \sim E/\Delta m\sim 10^{15} \)——谱极密集，呈现为「连续」的引力子辐射进入额外维（表现为<strong>能量丢失</strong>事件 missing energy）。同时亚毫米引力实验直接检验牛顿反平方定律的偏离——Eöt-Wash 等实验已排除 \( R\gtrsim 0.04\,\mathrm{mm} \)（即 \( M_D\gtrsim 3\text{–}4\,\mathrm{TeV} \)）的 \( n=2 \) 情形。LHC 也未发现 missing energy 事件，把 \( M_D \) 推到几 TeV。<strong>ADD 的简单情形已被排除</strong>，但更复杂的额外维图像仍是热门方向。</p>
+          <p><span class="ans">\( R\approx 0.4\,\mathrm{mm} \)、\( \Delta m\sim 10^{-3}\,\mathrm{eV} \)；亚毫米引力实验和 LHC missing-energy 搜索已排除最简单的 \( M_D\sim 1\,\mathrm{TeV} \) 情形。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「统一是低能下能看到的现象」——错。</strong>电弱「统一」仅在 \( E\gg m_W\sim 80\,\mathrm{GeV} \) 时显现（\( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \) 的完整对称性恢复）。低能下我们看到的电磁（长程）和弱（短程）作用表现完全不同，因为 Higgs 破缺把它们的玻色子分开。<strong>统一是能量标度依赖的</strong>——在 \( m_Z \) 处，\( \alpha_1\neq\alpha_2\neq\alpha_3 \)；只有在 \( M_{\mathrm{GUT}} \) 处它们才相等。</li>
+        <li><strong>「我们已有量子引力理论」——错。</strong>目前没有任何<strong>经实验验证</strong>的量子引力理论。弦论和圈量子引力都是<strong>候选理论</strong> (candidate theories)，二者都各有内在困难（弦景观、LQG 的低能极限），且都缺乏直接的可检验预言。AdS/CFT 是数学上最强有力的工具，但它描述的是反德西特时空，不直接适用于我们的渐近平坦宇宙。在教科书或科普中常被简化的「引力子」概念只在微扰（背景上的小涨落）层次上有效，<strong>不是</strong>完整的量子引力。</li>
+        <li><strong>「Planck 标度只是一个数字，没什么特别」——错。</strong>Planck 标度是<strong>引力的量子效应变得强烈</strong>的临界点。当 \( E\to E_P \)，无量纲引力耦合 \( \alpha_G(E)\to 1 \)，微扰广义相对论完全失效，必须用量子引力理论。但 Planck 标度（\( 10^{19}\,\mathrm{GeV} \)）比 LHC（\( 10^4\,\mathrm{GeV} \)）高 <strong>15 个数量级</strong>——直接探测目前不可能，可能永远不可能。<strong>这是物理学的根本认识论限制</strong>。</li>
+        <li><strong>「SUSY 已经被发现」或「SUSY 已被排除」——都不准确。</strong>规范耦合统一强烈支持弱标度 SUSY（\( M_{\mathrm{SUSY}}\lesssim\mathrm{TeV} \)），但 LHC Run-2/HL-LHC 已排除最轻胶子 \( m_{\tilde g}\lesssim 2.3\,\mathrm{TeV} \)、最轻中性子 \( m_{\tilde\chi_1^0}\lesssim 700\,\mathrm{GeV} \)（许多模型）。SUSY 仍可能存在但被推到更高标度，这反过来会破坏「自然性」论证。真相：SUSY 是<strong>仍未被验证的假说</strong>。</li>
+        <li><strong>「质子衰变已被观测到」——错。</strong>Super-KamioKande 经过 20+ 年运行、监测 \( \sim 7.5\times 10^{33} \) 个质子（即 \( \sim 7.5\times 10^{33}\times 3=2.25\times 10^{34} \) 个质子·年的曝光），<strong>未观测到</strong>任何 \( p\to e^+\pi^0 \) 候选事件，只给出下限 \( \tau_p>2.4\times 10^{34}\,\mathrm{yr} \)。<strong>任何声称「观测到质子衰变」的消息都需要超严格的同行评审</strong>，因为这与低本底物理实验的极端难度紧密相关。</li>
+        <li><strong>「额外维已经存在」——不成熟。</strong>弦论需要额外维（数学上必要），但<strong>没有任何实验证据</strong>。额外维可能是紧致化的（小到 \( l_P \) 量级，不可观测），也可能是大的（ADD/RS 模型，被实验搜索但未发现）。把额外维当作既定事实是混淆数学框架与物理现实。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （量纲分析普朗克单位）用 \( \hbar=1.055\times 10^{-34}\,\mathrm{J\,s} \)、\( G=6.674\times 10^{-11}\,\mathrm{SI} \)、\( c=3.00\times 10^8\,\mathrm{m/s} \) 验证 \( l_P=\sqrt{\hbar G/c^3}\approx 1.6\times 10^{-35}\,\mathrm{m} \)。同时计算 Planck 密度 \( \rho_P=M_P/l_P^3 \)（\( \mathrm{kg/m^3} \))，并与中子星密度 \( \sim 10^{17}\,\mathrm{kg/m^3} \) 比较。</summary>
+        <div class="hint">\( l_P^3=(1.6\times 10^{-35})^3 \)，\( M_P=\hbar/(l_P c) \) 或 \( M_P=\sqrt{\hbar c/G} \)。</div>
+        <div class="solution">
+          <p>\( l_P=\sqrt{(1.055\times 10^{-34})(6.674\times 10^{-11})/(3\times 10^8)^3}=\sqrt{7.04\times 10^{-45}/2.7\times 10^{25}}=\sqrt{2.61\times 10^{-70}}=1.62\times 10^{-35}\,\mathrm{m} \)。</p>
+          <p>\( M_P=\hbar/(l_P c)=(1.055\times 10^{-34})/[(1.62\times 10^{-35})(3\times 10^8)]=1.055\times 10^{-34}/4.86\times 10^{-27}=2.17\times 10^{-8}\,\mathrm{kg} \)。</p>
+          <p>\( l_P^3=(1.62\times 10^{-35})^3=4.25\times 10^{-105}\,\mathrm{m^3} \)。</p>
+          <p>\( \rho_P=M_P/l_P^3=2.17\times 10^{-8}/4.25\times 10^{-105}=5.1\times 10^{96}\,\mathrm{kg/m^3} \)。</p>
+          <p>比中子星密度 \( \sim 10^{17}\,\mathrm{kg/m^3} \) 大 \( \sim 10^{79} \) 倍——大爆炸最初的普朗克时代（\( t\lesssim t_P \)）就是这种极端密度，广义相对论失效。<span class="ans">\( l_P\approx 1.6\times 10^{-35}\,\mathrm{m} \)、\( \rho_P\approx 5\times 10^{96}\,\mathrm{kg/m^3} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （引力耦合 vs 电磁耦合）两个电子相距 \( r=10^{-10}\,\mathrm{m} \)（原子尺度）。（a）求引力势能 \( U_G \) 与静电势能 \( U_E \) 之比。（b）在能量 \( E=m_ec^2=0.511\,\mathrm{MeV} \) 下，无量纲引力耦合 \( \alpha_G(E) \) 是多少？</summary>
+        <div class="hint">\( U_G=-Gm_e^2/r \)、\( U_E=-e^2/(4\pi\varepsilon_0 r) \)；比值 \( U_G/U_E=Gm_e^2\cdot 4\pi\varepsilon_0/e^2=(Gm_e^2/\hbar c)/(e^2/4\pi\varepsilon_0\hbar c)=\alpha_G/\alpha_{\mathrm{em}} \)。</div>
+        <div class="solution">
+          <p>（a）势能形式相同（\( \propto 1/r \)），比值与距离无关：</p>
+          <p>\( U_G/U_E=Gm_e^2/(e^2/4\pi\varepsilon_0)=\alpha_G/\alpha_{\mathrm{em}} \)。</p>
+          <p>\( \alpha_G=Gm_e^2/\hbar c=(6.674\times 10^{-11})(9.11\times 10^{-31})^2/(1.055\times 10^{-34}\times 3\times 10^8) \)。</p>
+          <p>\( =(6.674\times 10^{-11})(8.30\times 10^{-61})/(3.165\times 10^{-26})=5.54\times 10^{-71}/3.165\times 10^{-26}=1.75\times 10^{-45} \)。</p>
+          <p>\( \alpha_{\mathrm{em}}=1/137.94=7.25\times 10^{-3} \)。</p>
+          <p>\( U_G/U_E=1.75\times 10^{-45}/7.25\times 10^{-3}=2.4\times 10^{-43} \)。</p>
+          <p>（b）\( \alpha_G(E=m_ec^2)=(E/E_P)^2=(0.511\times 10^{-3}\,\mathrm{GeV}/1.22\times 10^{19}\,\mathrm{GeV})^2=(4.19\times 10^{-23})^2=1.76\times 10^{-45} \) ✓ 一致。</p>
+          <p><span class="ans">\( U_G/U_E\approx 2.4\times 10^{-43} \)；\( \alpha_G(m_ec^2)\approx 1.8\times 10^{-45} \)。原子物理中引力可完全忽略。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （GUT 统一标度随 \( \alpha_s \) 变化）取 \( \alpha_s(m_Z)=0.120 \)（而非 0.118）。用 SM 一圈 \( \beta \) 函数，重新计算 \( \alpha_2=\alpha_3 \) 交点 \( M_{23} \)。讨论 \( \alpha_s \) 误差如何影响 GUT 标度。</summary>
+        <div class="hint">\( \alpha_3^{-1}(m_Z)=1/\alpha_s \)；用 \( L=2\pi(\alpha_2^{-1}-\alpha_3^{-1})/(b_2-b_3) \)。</div>
+        <div class="solution">
+          <p>\( \alpha_3^{-1}(m_Z)=1/0.120=8.33 \)，\( \alpha_2^{-1}=29.59 \) 不变。</p>
+          <p>\( L=2\pi(29.59-8.33)/((-19/6)-(-7))=6.283\times 21.26/(23/6)=133.6/3.833=34.86 \)。</p>
+          <p>\( M_{23}=91.19\times e^{34.86}=91.19\times 1.36\times 10^{15}=1.24\times 10^{17}\,\mathrm{GeV} \)。</p>
+          <p>与例 11.3（\( \alpha_s=0.1181 \)、\( M_{23}=9.1\times 10^{16}\,\mathrm{GeV} \)）相比，\( \alpha_s \) 仅改变 1.6% 让 GUT 标度改变 36%。这反映了 \( \ln M \) 与 \( \alpha_s \) 的线性关系，故 GUT 标度本身指数敏感于初值——这也是为何 GUT 预言有「数量级」而非精确可信度。<span class="ans">\( M_{23}\approx 1.2\times 10^{17}\,\mathrm{GeV} \)（vs 例 11.3 的 \( 9\times 10^{16}\,\mathrm{GeV} \)）；GUT 标度对 \( \alpha_s \) 指数敏感。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （质子衰变倒推 \( M_X \)）Super-K 下限 \( \tau_p/B(p\to e^+\pi^0)>2.4\times 10^{34}\,\mathrm{yr} \)。用 \( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)、\( \alpha_{\mathrm{GUT}}=1/25 \)、\( m_p=0.938\,\mathrm{GeV} \)，求 \( M_X \) 的实验下限（GeV）。</summary>
+        <div class="hint">先 \( \tau_p=2.4\times 10^{34}\,\mathrm{yr} \) 换 GeV\(^{-1}\)，再 \( M_X=(\alpha_{\mathrm{GUT}}^2 m_p^5\tau_p)^{1/4} \)。</div>
+        <div class="solution">
+          <p>\( \tau_p=2.4\times 10^{34}\times 3.156\times 10^7=7.57\times 10^{41}\,\mathrm{s}=7.57\times 10^{41}/6.582\times 10^{-25}=1.15\times 10^{66}\,\mathrm{GeV}^{-1} \)。</p>
+          <p>\( M_X^4=\alpha_{\mathrm{GUT}}^2 m_p^5\tau_p=(1/25)^2\times(0.938)^5\times 1.15\times 10^{66}=(1.6\times 10^{-3})(0.727)(1.15\times 10^{66})=1.34\times 10^{63}\,\mathrm{GeV}^4 \)。</p>
+          <p>\( M_X=(1.34\times 10^{63})^{1/4}=(1.34)^{1/4}\times 10^{63/4}=1.076\times 10^{15.75}=1.076\times 5.62\times 10^{15}=6.04\times 10^{15}\,\mathrm{GeV} \)。</p>
+          <p>所以 \( M_X\gtrsim 6\times 10^{15}\,\mathrm{GeV} \)。这与例 11.4 的 GUT 标度（\( 10^{16}\,\mathrm{GeV} \)）一致——实验恰好处在 GUT 预言的敏感窗口。<span class="ans">\( M_X\gtrsim 6\times 10^{15}\,\mathrm{GeV} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （额外维 \( n=3 \) 情形）若 ADD 模型有 \( n=3 \) 个等大的额外维度（半径 \( R \)）、\( M_D=1\,\mathrm{TeV} \)，求 \( R \)（fm）。讨论亚毫米引力实验是否可探测。</summary>
+        <div class="hint">\( M_P^2=M_D^{n+2}\,(2\pi R)^n=M_D^5(2\pi R)^3 \)，故 \( R=M_P^{2/3}/[(2\pi)M_D^{5/3}] \)。</div>
+        <div class="solution">
+          <p>\( (2\pi R)^3=M_P^2/M_D^5=(1.22\times 10^{19})^2/(10^3)^5=1.49\times 10^{38}/10^{15}=1.49\times 10^{23}\,\mathrm{GeV}^{-3} \)。</p>
+          <p>\( 2\pi R=(1.49\times 10^{23})^{1/3}=5.30\times 10^7\,\mathrm{GeV}^{-1} \)。</p>
+          <p>\( R=5.30\times 10^7/(2\pi)=8.43\times 10^6\,\mathrm{GeV}^{-1} \)。</p>
+          <p>换算：\( R=(8.43\times 10^6)(0.1973\,\mathrm{GeV\,fm})=1.66\times 10^6\,\mathrm{fm}=1.66\times 10^{-9}\,\mathrm{m}=1.66\,\mathrm{nm} \)。</p>
+          <p>所以 \( n=3 \) 时 \( R\sim \) 几 nm，远小于亚毫米引力实验的灵敏度（\( \sim 10\,\mu\mathrm{m} \)）。LHC 仍可通过 missing energy 搜索，但 KK 模间距更大（\( \Delta m\sim 0.1\,\mathrm{MeV} \)），谱更稀疏。<span class="ans">\( R\approx 1.7\,\mathrm{nm} \)；亚毫米实验不可探测，需依赖 LHC。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>规范耦合统一 Coupling Unification.</strong> 画布绘制标准模型三个规范耦合的倒数 \( \alpha_1^{-1} \)（<span style="color:var(--sim-accent2);">绿色 U(1)</span>）、\( \alpha_2^{-1} \)（<span style="color:var(--sim-primary);">蓝色 SU(2)</span>）、\( \alpha_3^{-1} \)（<span style="color:var(--sim-accent);">红色 SU(3)</span>）随能标 \( \log_{10}(E/\mathrm{GeV}) \) 的<strong>一圈跑动</strong>。三条曲线从 \( m_Z\approx 10^2\,\mathrm{GeV} \) 处实测初值（绿点）出发：<strong>红色</strong>（QCD）上升最快（渐近自由）、<strong>蓝色</strong>（弱）缓慢上升、<strong>绿色</strong>（超荷）下降。它们在高能处（<span style="color:var(--sim-accent2);">绿色虚线</span>）\( \sim 10^{16}\,\mathrm{GeV} \) 处近似但不严格相交——形成「GUT 三角形」。切换到 <strong>SUSY</strong> \( \beta \) 函数后，三条线在 \( \sim 2\times 10^{16}\,\mathrm{GeV} \) 处精确汇于 \( \alpha_{\mathrm{GUT}}^{-1}\approx 24 \)。<span style="color:var(--sim-accent);">红色虚线</span>标出 Planck 标度 \( \sim 10^{19}\,\mathrm{GeV} \)——引力进入，量子效应不可避免。拖动 <strong>\( \alpha_s(m_Z) \)</strong> 滑块观察交点指数敏感地移动。</p>
+      <div class="sim-container">
+        <canvas id="sim-11" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-11"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-11');
+          var W = canvas.width, H = canvas.height;
+
+          var params = {
+            alpha_s_mZ: 0.1181,   // strong coupling at m_Z
+            susy: false,          // SM vs SUSY β-functions
+          };
+
+          // Fixed initial conditions at m_Z
+          var ALPHA_EM_INV = 127.95;
+          var SIN2_THETA_W = 0.23122;
+          var mZ_GeV = 91.1876;
+
+          // Plot region
+          var plotX0 = 64, plotY0 = 56, plotW = 500, plotH = 280;
+          var xmin = 0, xmax = 20;     // log10(E / GeV)
+          var ymin = 0,  ymax = 60;    // α⁻¹
+
+          function mapX(lgE) { return plotX0 + (lgE - xmin) / (xmax - xmin) * plotW; }
+          function mapY(a)   { return plotY0 + plotH - (a - ymin) / (ymax - ymin) * plotH; }
+
+          function betas() {
+            if (params.susy) return { b1: 33 / 5, b2: 1, b3: -3 };
+            return { b1: 41 / 10, b2: -19 / 6, b3: -7 };
+          }
+
+          function initial() {
+            var sin2 = SIN2_THETA_W;
+            var cos2 = 1 - sin2;
+            var a1 = (3 / 5) * cos2 * ALPHA_EM_INV;
+            var a2 = sin2 * ALPHA_EM_INV;
+            var a3 = 1 / params.alpha_s_mZ;
+            return { a1: a1, a2: a2, a3: a3 };
+          }
+
+          function alphaInv(name, lgE) {
+            var init = initial();
+            var b = betas();
+            var lnRatio = Math.log(Math.pow(10, lgE) / mZ_GeV);
+            var bb = (name === 'a1') ? b.b1 : (name === 'a2') ? b.b2 : b.b3;
+            return init[name] - (bb / (2 * Math.PI)) * lnRatio;
+          }
+
+          // Solve for E where α_2⁻¹(E) = α_3⁻¹(E)
+          function intersect23() {
+            var init = initial();
+            var b = betas();
+            var den = (b.b2 - b.b3);
+            if (Math.abs(den) < 1e-9) return Infinity;
+            var num = 2 * Math.PI * (init.a2 - init.a3);
+            var lnR = num / den;
+            return mZ_GeV * Math.exp(lnR);
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 30,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ---- title & subtitle ----
+              PS.drawText(ctx,
+                '规范耦合统一 Coupling Unification  —  αᵢ⁻¹ vs log₁₀(E / GeV)',
+                W / 2, 18,
+                { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+              var theoryLbl = params.susy
+                ? 'SUSY (MSSM) β: (33/5, 1, −3)'
+                : 'SM β: (41/10, −19/6, −7)';
+              PS.drawText(ctx,
+                theoryLbl + '     α_em⁻¹(m_Z)=127.95  sin²θ_W=0.231  α_s(m_Z)=' + params.alpha_s_mZ.toFixed(4),
+                W / 2, 38,
+                { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ---- plot frame ----
+              ctx.save();
+              ctx.fillStyle = C.bg;
+              ctx.fillRect(plotX0, plotY0, plotW, plotH);
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.strokeRect(plotX0, plotY0, plotW, plotH);
+              ctx.restore();
+
+              // ---- gridlines ----
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.45;
+              for (var lg = 0; lg <= 20; lg += 2) {
+                var xg = mapX(lg);
+                ctx.beginPath(); ctx.moveTo(xg, plotY0); ctx.lineTo(xg, plotY0 + plotH); ctx.stroke();
+              }
+              for (var av = 0; av <= 60; av += 10) {
+                var yg = mapY(av);
+                ctx.beginPath(); ctx.moveTo(plotX0, yg); ctx.lineTo(plotX0 + plotW, yg); ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- axis tick labels ----
+              for (var lg2 = 0; lg2 <= 20; lg2 += 4) {
+                PS.drawText(ctx, String(lg2), mapX(lg2), plotY0 + plotH + 14,
+                  { font: '10px system-ui', color: C.text, align: 'center' });
+              }
+              PS.drawText(ctx, 'log₁₀(E / GeV)', plotX0 + plotW / 2, plotY0 + plotH + 32,
+                { font: 'italic 11px system-ui', color: C.text, align: 'center' });
+              for (var av2 = 0; av2 <= 60; av2 += 10) {
+                PS.drawText(ctx, String(av2), plotX0 - 6, mapY(av2) + 3,
+                  { font: '10px system-ui', color: C.text, align: 'right' });
+              }
+              PS.drawText(ctx, 'αᵢ⁻¹', plotX0 - 44, plotY0 - 4,
+                { font: 'italic 11px system-ui', color: C.text });
+
+              // ---- vertical markers (m_Z, GUT, Planck) ----
+              var markers = [
+                { lg: Math.log10(mZ_GeV), color: C.text,   label: 'm_Z',    dashed: false },
+                { lg: 16,                   color: C.accent2, label: 'GUT ~10¹⁶ GeV', dashed: true },
+                { lg: 19,                   color: C.accent,  label: 'Planck ~10¹⁹ GeV', dashed: true },
+              ];
+              ctx.save();
+              markers.forEach(function (m) {
+                if (m.lg < xmin || m.lg > xmax) return;
+                var xm = mapX(m.lg);
+                if (m.dashed) ctx.setLineDash([5, 4]); else ctx.setLineDash([]);
+                ctx.strokeStyle = m.color; ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(xm, plotY0); ctx.lineTo(xm, plotY0 + plotH); ctx.stroke();
+                ctx.setLineDash([]);
+                PS.drawText(ctx, m.label, xm + 4, plotY0 + 12,
+                  { font: 'bold 10px system-ui', color: m.color });
+              });
+              ctx.restore();
+
+              // ---- three running-coupling curves (clipped) ----
+              var names = ['a1', 'a2', 'a3'];
+              var cols = [C.accent2, C.primary, C.accent];
+              var labels = ['α₁⁻¹  U(1)_Y', 'α₂⁻¹  SU(2)_L', 'α₃⁻¹  SU(3)_c'];
+              ctx.save();
+              ctx.beginPath();
+              ctx.rect(plotX0, plotY0, plotW, plotH);
+              ctx.clip();
+              var N = 200;
+              for (var k = 0; k < 3; k++) {
+                ctx.strokeStyle = cols[k];
+                ctx.lineWidth = 2.4;
+                ctx.beginPath();
+                for (var i = 0; i <= N; i++) {
+                  var lgE = xmin + (xmax - xmin) * i / N;
+                  var a = alphaInv(names[k], lgE);
+                  var px = mapX(lgE), py = mapY(a);
+                  if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- α₂ = α₃ intersection marker ----
+              var E23 = intersect23();
+              var lgE23 = Math.log10(E23);
+              var a23 = alphaInv('a2', lgE23);
+              if (lgE23 > xmin && lgE23 < xmax && a23 > ymin && a23 < ymax) {
+                var xi = mapX(lgE23), yi = mapY(a23);
+                PS.drawCircle(ctx, xi, yi, 5, { fill: C.text, stroke: '#fff', lineWidth: 1.5 });
+                var a1_at = alphaInv('a1', lgE23);
+                var unified = Math.abs(a1_at - a23) < 1.5;
+                PS.drawText(ctx,
+                  'α₂=α₃  E≈10^' + lgE23.toFixed(2) + ' GeV',
+                  xi + 8, yi - 8,
+                  { font: 'bold 10px system-ui', color: unified ? C.accent2 : C.text });
+                PS.drawText(ctx,
+                  'α₁⁻¹=' + a1_at.toFixed(1) + ',  α₂⁻¹=α₃⁻¹=' + a23.toFixed(1) +
+                  (unified ? '  (unified ✓)' : '  (Δ=' + (a23 - a1_at).toFixed(1) + ')'),
+                  xi + 8, yi + 6,
+                  { font: '10px system-ui', color: C.text });
+              }
+
+              // ---- initial-condition dot at m_Z ----
+              var x0 = mapX(Math.log10(mZ_GeV));
+              var init = initial();
+              PS.drawCircle(ctx, x0, mapY(init.a1), 3.5, { fill: C.accent2 });
+              PS.drawCircle(ctx, x0, mapY(init.a2), 3.5, { fill: C.primary });
+              PS.drawCircle(ctx, x0, mapY(init.a3), 3.5, { fill: C.accent });
+
+              // ---- legend (top-right inside plot) ----
+              ctx.save();
+              var legX = plotX0 + plotW - 140, legY = plotY0 + 60;
+              ctx.fillStyle = C.bg; ctx.globalAlpha = 0.88;
+              ctx.fillRect(legX - 8, legY - 14, 144, 70);
+              ctx.globalAlpha = 1;
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+              ctx.strokeRect(legX - 8, legY - 14, 144, 70);
+              for (var ki = 0; ki < 3; ki++) {
+                ctx.strokeStyle = cols[ki]; ctx.lineWidth = 2.4;
+                ctx.beginPath(); ctx.moveTo(legX, legY + ki * 18); ctx.lineTo(legX + 22, legY + ki * 18); ctx.stroke();
+                ctx.fillStyle = C.text; ctx.font = '10px system-ui';
+                ctx.fillText(labels[ki], legX + 28, legY + 4 + ki * 18);
+              }
+              ctx.restore();
+
+              // ---- bottom note ----
+              var note = params.susy
+                ? 'SUSY: 三线在 ~2×10¹⁶ GeV 处精确统一于 α_GUT⁻¹≈24  ✓'
+                : '最小 SM: 三线在 ~10¹⁷ GeV 处仅近似相交，形成 GUT 三角形 (α₁⁻¹ ≠ α₂⁻¹=α₃⁻¹)';
+              PS.drawText(ctx, note, W / 2, H - 10,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-11'), [
+            { type: 'slider', key: 'alpha_s_mZ', label: 'α_s(m_Z) (强耦合)', min: 0.100, max: 0.130, step: 0.001, value: 0.118 },
+            { type: 'toggle', key: 'susy', label: 'SUSY β-函数 (MSSM)', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('alpha_s_mZ', function (v) { params.alpha_s_mZ = v; });
+          ctl.on('susy', function (v) { params.susy = v; });
+          ctl.on('reset', function () {
+            params.alpha_s_mZ = 0.1181;
+            params.susy = false;
+            var sliders = document.querySelectorAll('#controls-11 input[type=range]');
+            if (sliders[0]) sliders[0].value = 0.1181;
+            var valEls = document.querySelectorAll('#controls-11 .ctrl-value');
+            if (valEls[0]) valEls[0].textContent = '0.118';
+            var cbs = document.querySelectorAll('#controls-11 input[type=checkbox]');
+            if (cbs[0]) cbs[0].checked = false;
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>统一的层次</strong>：麦克斯韦统一电与磁 → 电弱统一 (GWS, \( \mathrm{SU}(2)_L\times\mathrm{U}(1)_Y \)) → GUT 试图统一 \( \mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1) \)（如 SU(5)、SO(10)）→ TOE 包括引力。统一是<strong>能量标度依赖</strong>的现象。</li>
+        <li><strong>GUT</strong>：单一简单李群在高能下统一三个规范耦合。最小 SU(5) (Georgi–Glashow 1974) 预言 \( M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV} \)、\( \alpha_{\mathrm{GUT}}\approx 1/25 \)、电荷量子化、质子衰变。最小 SU(5) 已被质子衰变实验排除。</li>
+        <li><strong>规范耦合统一</strong>：\( \alpha_i^{-1}(\mu)=\alpha_i^{-1}(\mu_0)-(b_i/2\pi)\ln(\mu/\mu_0) \)，\( (b_1,b_2,b_3)_{\mathrm{SM}}=(41/10,-19/6,-7) \)。最小 SM 下三线近似但不严格相交；SUSY \( (33/5,1,-3) \) 给出精确统一于 \( \sim 2\times 10^{16}\,\mathrm{GeV} \)、\( \alpha_{\mathrm{GUT}}^{-1}\approx 24 \)。</li>
+        <li><strong>Planck 单位</strong>：\( l_P=\sqrt{\hbar G/c^3}\approx 1.62\times 10^{-35}\,\mathrm{m} \)、\( t_P=\sqrt{\hbar G/c^5}\approx 5.39\times 10^{-44}\,\mathrm{s} \)、\( M_P=\sqrt{\hbar c/G}\approx 2.18\times 10^{-8}\,\mathrm{kg}=1.22\times 10^{19}\,\mathrm{GeV}/c^2 \)。在此标度引力的有效耦合 \( \alpha_G(E)\sim(E/E_P)^2\to 1 \)。</li>
+        <li><strong>量子引力问题</strong>：GR（光滑几何）与 QM（量子场）在 \( E\sim E_P \) 不相容。微扰量子引力不可重整化（\( [\kappa]=-1 \)）。背景无关性、时间问题、信息悖论均未解决。<strong>没有完整的已验证量子引力理论</strong>。</li>
+        <li><strong>候选理论</strong>：弦论（弦作为基本客体，含自旋 2 引力子，需 10/11 维）与圈量子引力（spin network，离散 Planck 尺度几何）。二者均未经实验验证。</li>
+        <li><strong>全息原理 / AdS/CFT</strong>：信息可由体积编码到边界；\( S_{\mathrm{BH}}=k_BA/(4l_P^2) \) 是最大熵。Maldacena 对偶（AdS\(_{5}\times S^5\) ↔ \( \mathcal{N}=4 \) SYM）是最强实现，应用于 QCD、凝聚态。</li>
+        <li><strong>质子衰变</strong>：\( \tau_p\sim M_X^4/(\alpha_{\mathrm{GUT}}^2 m_p^5) \)。\( M_X=10^{16}\,\mathrm{GeV} \) 给出 \( \tau_p\sim 10^{35}\,\mathrm{yr} \)；Super-K 下限 \( 2.4\times 10^{34}\,\mathrm{yr} \) → \( M_X\gtrsim 6\times 10^{15}\,\mathrm{GeV} \)，排除最小 SU(5)（\( M_X\sim 10^{15}\,\mathrm{GeV} \)、\( \tau_p\sim 10^{31}\,\mathrm{yr} \)）。</li>
+        <li><strong>实验挑战</strong>：Planck 标度比 LHC 大 \( 10^{15} \) 倍。直接检验不可能；依赖间接信号（质子衰变、CMB 原初引力波、missing energy）。</li>
+      </ul>
+      <div class="formula">\[ \mathrm{SU}(5)\supset\mathrm{SU}(3)_c\times\mathrm{SU}(2)_L\times\mathrm{U}(1)_Y,\qquad M_{\mathrm{GUT}}\sim 10^{15\text{–}16}\,\mathrm{GeV},\qquad \alpha_{\mathrm{GUT}}\approx\frac{1}{25} \]</div>
+      <div class="formula">\[ \frac{\mathrm{d}\alpha_i^{-1}}{\mathrm{d}\ln\mu}=-\frac{b_i}{2\pi},\quad (b_1,b_2,b_3)_{\mathrm{SM}}=\Bigl(\tfrac{41}{10},-\tfrac{19}{6},-7\Bigr),\quad (b_1,b_2,b_3)_{\mathrm{SUSY}}=\Bigl(\tfrac{33}{5},1,-3\Bigr) \]</div>
+      <div class="formula">\[ l_P=\sqrt{\frac{\hbar G}{c^3}}\approx 1.616\times 10^{-35}\,\mathrm{m},\quad t_P=\sqrt{\frac{\hbar G}{c^5}}\approx 5.39\times 10^{-44}\,\mathrm{s},\quad E_P=\sqrt{\frac{\hbar c^5}{G}}\approx 1.22\times 10^{19}\,\mathrm{GeV} \]</div>
+      <div class="formula">\[ \alpha_G(E)\sim\Bigl(\frac{E}{E_P}\Bigr)^2,\qquad \frac{\alpha_{\mathrm{em}}}{\alpha_G(m_p)}\sim 10^{36} \]</div>
+      <div class="formula">\[ \tau_p\sim\frac{M_X^4}{\alpha_{\mathrm{GUT}}^2\,m_p^5},\qquad \tau_p\big|_{M_X=10^{16}\,\mathrm{GeV}}\sim 10^{35}\,\mathrm{yr}\;\;(\text{Super-K: }>2.4\times 10^{34}\,\mathrm{yr}) \]</div>
+      <div class="formula">\[ S_{\mathrm{BH}}=\frac{k_B\,A}{4\,l_P^2}\quad\text{(Bekenstein–Hawking)},\qquad M_P^2=M_D^{n+2}\,(2\pi R)^n\quad\text{(ADD extra dims)} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

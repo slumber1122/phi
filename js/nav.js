@@ -188,6 +188,33 @@
         ]},
       ],
     },
+    {
+      name: '第八学期 · 广义相对论·天体·量子场论·等离子体 GR · Astro · QFT · Plasma',
+      parts: [
+        { name: '广义相对论 General Relativity', items: [
+          { url: 'sem8/01-equivalence.html', title: '等效原理与时空几何', en: 'Equivalence & Spacetime Geometry' },
+          { url: 'sem8/02-einstein-bh.html', title: '爱因斯坦方程与黑洞', en: "Einstein's Eqs & Black Holes" },
+          { url: 'sem8/03-gr-waves-cosmo.html', title: '引力波与相对论宇宙学', en: 'GWs & Relativistic Cosmology' },
+        ]},
+        { name: '天体物理 Astrophysics', items: [
+          { url: 'sem8/04-stars.html', title: '恒星结构与演化', en: 'Stellar Structure & Evolution' },
+          { url: 'sem8/05-compact-objects.html', title: '致密天体与高能天体物理', en: 'Compact Objects & High-Energy Astro' },
+        ]},
+        { name: '量子场论 Quantum Field Theory', items: [
+          { url: 'sem8/06-qft-basics.html', title: '量子场论基础', en: 'QFT Foundations' },
+          { url: 'sem8/07-gauge-renorm.html', title: '规范场论与重整化', en: 'Gauge Theories & Renormalization' },
+          { url: 'sem8/08-electroweak-bsm.html', title: '电弱统一与超出标准模型', en: 'Electroweak & BSM' },
+        ]},
+        { name: '等离子体物理 Plasma Physics', items: [
+          { url: 'sem8/09-plasma-basics.html', title: '等离子体物理基础', en: 'Plasma Physics Basics' },
+          { url: 'sem8/10-plasma-fusion.html', title: '等离子体波与聚变', en: 'Plasma Waves & Fusion' },
+        ]},
+        { name: '前沿专题 Frontiers', items: [
+          { url: 'sem8/11-unification.html', title: '统一理论与量子引力', en: 'Unification & Quantum Gravity' },
+          { url: 'sem8/12-frontiers.html', title: '当代物理学前沿', en: 'Frontiers of Physics' },
+        ]},
+      ],
+    },
   ];
 
   function lastSeg(u) { return String(u).split('/').pop().split(/[?#]/)[0]; }

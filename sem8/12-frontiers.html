@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12章 · 当代物理学前沿 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="12">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第12章 · 前沿专题 Frontiers</p>
+      <h1>当代物理学前沿 <span class="en-title">Frontiers of Physics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够纵览<strong>现代物理学的九大开放问题</strong> (open problems)：量子引力、暗物质与暗能量、物质–反物质不对称、量子测量问题、时间箭头、高温超导、湍流、量子信息、复杂与生物物理，并指出每个领域中「已知」与「未知」的边界。</li>
+        <li>能够运用<strong>宇宙能量预算</strong> (cosmic energy budget) 解释为何普通物质仅占宇宙的 \( \sim 5\% \)，而暗物质 (dark matter, \( \Omega_c\approx 0.26 \)) 与暗能量 (dark energy, \( \Omega_\Lambda\approx 0.69 \)) 合计约 \( 95\% \)。</li>
+        <li>能够陈述<strong>重子生成的 Sakharov 三条件</strong> (baryogenesis, Sakharov 1967) 并估算观测到的重子–光子比 \( \eta\approx 6\times 10^{-10} \)，理解为何质子衰变实验寿命下限 \( \tau_p\gtrsim 10^{34}\,\mathrm{yr} \) 排除了最小 SU(5) 大统一模型。</li>
+        <li>能够区分量子力学的<strong>诠释</strong> (Copenhagen、many-worlds、decoherence)——它们给出相同的实验预言，是哲学/本体论差别而非物理差别；并说明量子计算<strong>利用</strong>叠加与纠缠但<strong>不违反</strong>量子力学。</li>
+        <li>能够用<strong>Bloch 球</strong>参数化单量子比特态 \( |\psi\rangle=\cos(\theta/2)|0\rangle+e^{i\varphi}\sin(\theta/2)|1\rangle \)，应用 Hadamard 门 \( H|0\rangle=(|0\rangle+|1\rangle)/\sqrt{2} \)，并解释测量塌缩 (measurement collapse) 的概率规则 \( P(0)=|\alpha|^2 \)。</li>
+        <li>能够估算<strong>Reynolds 数</strong> \( Re=vL/\nu \) 判断层流–湍流转捩（管道流 \( Re_c\sim 2300 \)），并用<strong>黑洞熵</strong> \( S_{\mathrm{BH}}=k_B A/(4\ell_P^2) \) 论证引力熵与时间箭头。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>0. 我们走到了哪里 Where We Stand</h3>
+      <p>这是本教程的最后一章。回望十二个学期走过的路：第一学期的<strong>牛顿力学</strong>给出了 \( \vec F=m\vec a \) 与守恒律；第二学期的<strong>电磁学</strong>统一为 Maxwell 方程组并预言光速 \( c \)；第三学期的<strong>热力学与统计物理</strong>从熵 \( S \) 导出时间箭头；第四学期的<strong>量子力学</strong>用波函数 \( \psi \) 与不确定原理 \( \Delta x\,\Delta p\ge \hbar/2 \) 描述微观；第五学期的<strong>分析力学</strong>给出拉氏量 \( \mathcal L=T-V \) 与最小作用量原理；第六学期的<strong>狭义相对论</strong>用 \( E=mc^2 \) 与时空四维统一；第七学期的<strong>广义相对论</strong> \( G_{\mu\nu}=8\pi G T_{\mu\nu}/c^4 \) 把引力几何化；第八学期的<strong>量子场论、标准模型、天体物理与宇宙学</strong>构建出 \( \mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1) \) 与 \( \Lambda\mathrm{CDM} \) 宇宙学。</p>
+      <p>这是一项惊人的成就：从 \( 10^{-35}\,\mathrm{m} \)（基本粒子）到 \( 10^{26}\,\mathrm{m} \)（可观测宇宙），跨越 <strong>61 个数量级</strong>，几乎一切现象都可以用两组方程——广义相对论与标准模型——来理解。然而这两组方程<strong>互相不兼容</strong>，而且它们所描述的物质只占宇宙的 \( \sim 5\% \)。物理学远未完成。本章是对剩余边疆的一次巡视。</p>
+      <div class="key-terms">Standard Model (标准模型), General Relativity (广义相对论), ΛCDM cosmology (ΛCDM 宇宙学), hierarchy problem (等级问题), fine-tuning (微调)</div>
+
+      <h3>1. 量子引力与力的统一 Quantum Gravity &amp; Unification</h3>
+      <p>广义相对论是经典几何理论；标准模型是量子场论。在<strong>Planck 标度</strong> (Planck scale)，引力变得与其他力可比：</p>
+      <div class="formula">\[ \ell_P=\sqrt{\frac{\hbar G}{c^3}}\approx 1.616\times 10^{-35}\,\mathrm{m},\quad t_P=\frac{\ell_P}{c}\approx 5.39\times 10^{-44}\,\mathrm{s},\quad E_P=\sqrt{\frac{\hbar c^5}{G}}\approx 1.22\times 10^{19}\,\mathrm{GeV} \]</div>
+      <p>当曲率半径接近 \( \ell_P \)（如大爆炸奇点或黑洞中心），量子涨落不可忽略——但我们<strong>没有</strong>一个被实验验证的量子引力理论。两条主要路线：<strong>弦论</strong> (string theory，把粒子视为一维弦的不同振动模式，自然包含自旋 2 的引力子) 与<strong>圈量子引力</strong> (loop quantum gravity，把时空本身离散化为自旋网络)。两者都尚未给出可检验的预言。理想的大统一还希望把 \( \mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1) \) 嵌入一个更大的规范群（如 SU(5) 或 SO(10)），并把<strong>所有四种力</strong>统一——这是 Einstein 毕生追寻的「统一场论」之梦。</p>
+      <div class="key-terms">Planck scale (Planck 标度), quantum gravity (量子引力), string theory (弦论), loop quantum gravity (圈量子引力), graviton (引力子), Grand Unified Theory / GUT (大统一理论)</div>
+
+      <h3>2. 暗物质与暗能量 Dark Matter &amp; Dark Energy</h3>
+      <p>来自 Planck 卫星 (2018) 的宇宙微波背景 (CMB) 各向异性测量，结合超新星与重子声学振荡，给出今天的宇宙能量密度组成：</p>
+      <div class="formula">\[ \Omega_b\approx 0.049,\quad \Omega_c\approx 0.265,\quad \Omega_\Lambda\approx 0.686,\quad \Omega_\mathrm{tot}\approx 1.000\;\;(\text{flat}) \]</div>
+      <p>即<strong>普通物质</strong> (baryons, 你我、恒星、星系、星际气体) 仅占 \( \approx 5\% \)；<strong>暗物质</strong> (cold dark matter, 不发光、不与电磁相互作用、仅通过引力表现的物质) 占 \( \approx 27\% \)；<strong>暗能量</strong> (driving the accelerated expansion, \( \Lambda \)) 占 \( \approx 69\% \)。<strong>我们直接理解的那部分宇宙只有 5%</strong>。暗物质的候选者包括<strong>WIMP</strong>（弱相互作用大质量粒子，如 \( 100\,\mathrm{GeV} \) 量级）、<strong>轴子</strong> (axion, \( \mu\mathrm{eV} \) 量级) 与<strong>原初黑洞</strong> (primordial black holes)；多个直接探测实验（XENON、LZ、PandaX）与对撞机搜索至今<strong>未观察到</strong>暗物质粒子。暗能量更神秘：它可能是真空能量密度（但量子场论预言的真空能比观测值大 \( 10^{120} \) 倍——著名的<strong>宇宙学常数问题</strong>），也可能是某种动力学标量场（quintessence）。</p>
+      <div class="key-terms">dark matter (暗物质), dark energy (暗能量), CMB anisotropy (CMB 各向异性), WIMP (弱相互作用大质量粒子), axion (轴子), cosmological constant problem (宇宙学常数问题), density parameter \( \Omega \) (密度参数)</div>
+
+      <h3>3. 物质–反物质不对称 Matter–Antimatter Asymmetry</h3>
+      <p>实验表明，对每一种粒子都有对应的反粒子（CPT 定理保证它们质量、寿命、\( |q/m| \) 严格相等）。大爆炸本应产生等量的物质与反物质——它们随后会<strong>全部湮灭为光子</strong>，留下的宇宙将只有辐射，没有质子、没有原子、没有我们。但我们存在：观测到的重子–光子比是</p>
+      <div class="formula">\[ \eta\equiv\frac{n_B-n_{\bar B}}{n_\gamma}\approx 6.1\times 10^{-10} \]</div>
+      <p>即每 \( 10^9 \) 个光子对应约 \( 6 \) 个「多余」的重子。<strong>Sakharov 三条件</strong> (Sakharov 1967) 指出产生此不对称的必要条件：(i) <strong>重子数破坏</strong> (baryon number violation, 由 GUT 规范玻色子或电弱 sphaleron 实现)；(ii) <strong>C 与 CP 破坏</strong>（让粒子与反粒子过程速率不同）；(iii) <strong>偏离热平衡</strong>（一级相变或衰变出平衡）。标准模型中的 CP 破坏（CKM 矩阵 + 退耦）只能产生 \( \eta\sim 10^{-20} \)，远远不够——我们必须寻找 BSM 的 CP 破坏源（如轻子部分 CP 破坏 → 轻子生成 leptogenesis）。</p>
+      <div class="key-terms">baryogenesis (重子生成), Sakharov conditions (Sakharov 条件), CP violation (CP 破坏), baryon number (重子数), leptogenesis (轻子生成), sphaleron (sphaleron 跃迁)</div>
+
+      <h3>4. 量子测量问题与诠释 The Measurement Problem &amp; Interpretations</h3>
+      <p>薛定谔方程 \( i\hbar\,\partial_t|\psi\rangle=\hat H|\psi\rangle \) 是<strong>线性</strong>且<strong>幺正</strong> (unitary) 的：它把叠加保持为叠加。但测量时我们<strong>只看到一个结果</strong>——「波函数塌缩」是从哪里来的？这就是<strong>测量问题</strong>。主要诠释：</p>
+      <ul>
+        <li><strong>Copenhagen (Bohr, Heisenberg)</strong>：测量仪器是「经典」的，波函数在测量时塌缩到本征态。<strong>问题</strong>：经典/量子边界在哪里？（Wigner 的朋友、Schrödinger 的猫）。</li>
+        <li><strong>Many-worlds (Everett 1957)</strong>：没有塌缩，宇宙波函数永远幺正演化；测量者自身也叠加化，「分裂」为不同分支。<strong>优点</strong>：数学最干净；<strong>难点</strong>：为何我们感受到 Born 规则 \( P=|\psi|^2 \)？</li>
+        <li><strong>Decoherence (Zurek 1981–)</strong>：与环境纠缠使干涉项在 \( \sim 10^{-23}\,\mathrm{s} \) 内指数衰减——「塌缩」是表观的、由开放系统动力学描述。<strong>贡献</strong>：解释了<strong>偏好基</strong> (pointer basis) 的产生；但<strong>不</strong>单独解决「为何一个结果」(single-outcome) 问题。</li>
+        <li><strong>Bohmian / pilot-wave (de Broglie–Bohm)</strong>：粒子有确定轨道，由波函数引导；非定域隐变量理论。与标准 QM 给出相同预言。</li>
+      </ul>
+      <p>关键认识：所有这些诠释对可观测量的预言<strong>完全一致</strong>——它们是对同一数学的不同本体论解读。目前没有实验能区分它们；但新的<strong>宏观叠加</strong>实验（大分子干涉、纳米机械振子）正在逼近 collapse model 的可检验边界。</p>
+      <div class="key-terms">measurement problem (测量问题), wave-function collapse (波函数塌缩), Copenhagen interpretation (Copenhagen 诠释), many-worlds (多世界), decoherence (退相干), Born rule (Born 规则), pointer basis (偏好基)</div>
+
+      <h3>5. 时间箭头与早期宇宙熵 Arrow of Time &amp; Early-Universe Entropy</h3>
+      <p>底层物理定律在时间反演下几乎都对称（除弱作用的 CP 破坏）。但日常生活中时间明显有方向：鸡蛋打碎不会自发还原，热量从高温流向低温。这个<strong>时间箭头</strong> (arrow of time) 来自<strong>第二定律</strong> \( \Delta S\ge 0 \)，而第二定律要求宇宙<strong>从一个低熵态开始</strong>。CMB 观测显示早期宇宙极其均匀（温度涨落 \( \Delta T/T\sim 10^{-5} \)），但均匀的<strong>气体</strong>是高熵态，均匀的<strong>引力场</strong>却是极低熵态——因为引力会让物质坍缩为黑洞，而黑洞才是引力的最高熵构形。Penrose 估计：大爆炸的引力熵 \( S_\mathrm{BB}\sim 10^{88}\,k_B \)，而一个 \( 10^{12}\,M_\odot \) 星系中心黑洞的熵 \( S\sim 10^{100}\,k_B \)；可观测宇宙中所有黑洞的总熵今天已 \( \sim 10^{104}\,k_B \)。为何大爆炸如此特别地低熵？这是<strong>宇宙学最深的问题之一</strong>。</p>
+      <div class="formula">\[ S_{\mathrm{BH}}=\frac{k_B\,A}{4\,\ell_P^2}=\frac{k_B\,c^3 A}{4G\hbar}=k_B\,\pi\Bigl(\frac{r_s}{\ell_P}\Bigr)^2,\qquad r_s=\frac{2GM}{c^2} \]</div>
+      <div class="key-terms">arrow of time (时间箭头), second law (第二定律), gravitational entropy (引力熵), Weyl curvature hypothesis (Weyl 曲率假设), Bekenstein–Hawking entropy (Bekenstein–Hawking 熵)</div>
+
+      <h3>6. 高温超导与强关联材料 High-\( T_c \) Superconductivity &amp; Strongly Correlated Materials</h3>
+      <p>常规超导由 BCS 理论描述：电子通过声子媒介形成 Cooper 对，凝聚到一个相干态，临界温度 \( T_c\lesssim 30\,\mathrm{K} \)（\( \mathrm{MgB}_2 \) 的 \( 39\,\mathrm{K} \) 是 BCS 上限附近）。1986 年 Bednorz 与 Müller 发现铜氧化物超导体（cuprates），\( T_c \) 跃升至 \( 93\,\mathrm{K} \)（YBCO）甚至 \( 133\,\mathrm{K} \)（Hg-1223 常压，加压 \( 164\,\mathrm{K} \)）——<strong>高于液氮沸点 \( 77\,\mathrm{K} \)</strong>。2008 年发现铁基超导体（pnictides，\( T_c\sim 55\,\mathrm{K} \)）。近年高压下氢化物 \( \mathrm{H}_3\mathrm{S} \)（\( 203\,\mathrm{K} \), 155 GPa）、\( \mathrm{LaH}_{10} \)（\( \sim 250\,\mathrm{K} \), 170 GPa）逼近室温——但需要百万大气压。这些材料的 \( T_c \) 远超 BCS 的弱耦合极限，配对机制（可能是反铁磁涨落而非声子）至今<strong>没有共识</strong>。它们都属于<strong>强关联电子体系</strong>：电子–电子相互作用能 \( U \) 与动能 \( t \) 可比，标准的单电子能带图像失效，需要新理论工具（Hubbard 模型、t-J 模型、量子自旋液体）。这是凝聚态物理最活跃的边疆之一。</p>
+      <div class="key-terms">BCS theory (BCS 理论), Cooper pair (Cooper 对), cuprate (铜氧化物超导体), strongly correlated electron system (强关联电子体系), Hubbard model (Hubbard 模型), Mott insulator (Mott 绝缘体)</div>
+
+      <h3>7. 湍流 Turbulence — the Last Great Classical Problem</h3>
+      <p>Navier–Stokes 方程 \( \rho(\partial_t\vec v+\vec v\cdot\nabla\vec v)=-\nabla p+\mu\nabla^2\vec v \) 写下已 200 年，但<strong>高 Reynolds 数下解的整体存在性与光滑性</strong>至今未证（Clay 数学研究所千禧年七大难题之一）。无量纲 Reynolds 数</p>
+      <div class="formula">\[ Re=\frac{\rho v L}{\mu}=\frac{vL}{\nu},\qquad \nu=\frac{\mu}{\rho}\;\;\text{(kinematic viscosity)} \]</div>
+      <p>度量惯性力与黏性力之比。\( Re\ll 1 \)：<strong>Stokes 蠕动流</strong>（线性，可逆）；\( Re\sim 1\!-\!10^3 \)：层流；\( Re\gtrsim Re_c \)（管道流 \( \sim 2300 \)）：湍流——出现跨尺度、混沌、看上去随机但能量遵循 Kolmogorov \( -5/3 \) 律的能量级联（\( E(k)\propto k^{-5/3} \)）。湍流决定飞机阻力、血管血流、恒星对流、反应堆混合、气候模型——每年影响数万亿美元经济——但我们仍<strong>不能从第一性原理预言</strong>它。<strong>大涡模拟</strong> (LES) 与<strong>直接数值模拟</strong> (DNS) 只能处理有限 \( Re \)；气候模型中「亚网格湍流」是最主要的模拟不确定度来源。</p>
+      <div class="key-terms">Navier–Stokes equation (Navier–Stokes 方程), Reynolds number (Reynolds 数), laminar flow (层流), turbulence (湍流), Kolmogorov \( -5/3 \) law (Kolmogorov \(-5/3\) 律), energy cascade (能量级联)</div>
+
+      <h3>8. 量子信息与计算 Quantum Information &amp; Computing</h3>
+      <p>量子比特 (qubit) 不像经典比特只能取 0 或 1，而是处在叠加态：</p>
+      <div class="formula">\[ |\psi\rangle=\alpha|0\rangle+\beta|1\rangle,\qquad |\alpha|^2+|\beta|^2=1,\quad \alpha,\beta\in\mathbb C \]</div>
+      <p>几何上对应 <strong>Bloch 球</strong>面上一点（除对踵点外的两参数族）。\( n \) 个 qubit 可处于 \( 2^n \) 维 Hilbert 空间的任意叠加——这是量子计算<strong>指数级并行</strong>的来源。但量子信息极脆弱：与环境纠缠产生<strong>退相干</strong> (decoherence)，在 \( \sim\mu\mathrm{s}\)–\( \mathrm{ms} \) 内把叠加变成混合态。要实现容错量子计算，必须做<strong>量子纠错</strong> (Shor 1995, Steane 1996)：用许多物理 qubit 编码一个逻辑 qubit，达到阈值定理 (threshold theorem, \( \sim 10^{-3} \)–\( 10^{-2} \) 错误率) 之下即可任意延长计算。<strong>关键算法</strong>：Shor 大数分解（指数加速，威胁 RSA 加密）、Grover 搜索（平方根加速）。除门模型外还有<strong>量子退火</strong> (D-Wave)、<strong>拓扑量子计算</strong>（基于任意子）、<strong>中性原子阵列</strong>、<strong>离子阱</strong>（Quantinuum、IonQ）、<strong>超导电路</strong>（IBM、Google Sycamore 2019 「量子霸权」演示）。这是当今物理中发展最快的边疆——量子力学从解释世界变成了<strong>工程改造</strong>世界。</p>
+      <div class="key-terms">qubit (量子比特), Bloch sphere (Bloch 球), superposition (叠加), entanglement (纠缠), decoherence (退相干), quantum error correction (量子纠错), Shor's algorithm (Shor 算法), threshold theorem (阈值定理)</div>
+
+      <h3>9. 复杂系统与生物物理 Complex &amp; Biological Physics</h3>
+      <p>还原论物理（少体、可积、线性）只是自然界的一小角。当多体、非线性、非平衡、相互作用都活跃时，涌现 (emergence) 出全新的现象：<strong>蛋白质折叠</strong>（20 种氨基酸序列 → 三维结构，Anfinsen 定理；AlphaFold 用 AI 解决了 50 年难题）；<strong>玻璃化转变</strong>（液体冷却时不结晶而成玻璃，至今无满意理论）；<strong>颗粒物质</strong>（沙堆、土壤，有静摩擦与历史依赖）；<strong>活性物质</strong>（鸟群、细菌菌落、细胞骨架，每个单元自驱消耗能量）；<strong>神经网络</strong>（大脑 \( 10^{11} \) 神经元， Hopfield 物理模型；现代深度学习与统计力学的 Ising/平均场有深刻同构）；<strong>非平衡统计力学</strong>（涨落定理、Jarzynski 等式把微观可逆与宏观不可逆定量联系起来）。2021 年 Nobel 物理学奖颁给 Hasselmann、Manabe（气候模型）与 Parisi（自旋玻璃与复杂系统），标志着复杂物理已成为主流。</p>
+      <div class="key-terms">emergence (涌现), protein folding (蛋白质折叠), glass transition (玻璃化转变), active matter (活性物质), spin glass (自旋玻璃), non-equilibrium statistical mechanics (非平衡统计力学), fluctuation theorem (涨落定理)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 单 Qubit 的 Bloch 球参数化与 Hadamard 门</h2>
+      <p>本节推导为什么任意单 qubit 态可以写成 Bloch 球上的一点，并计算 Hadamard 门把 \( |0\rangle \) 送到何处。这是量子计算（以及下方仿真）的数学骨架。</p>
+
+      <p><strong>第一步：去掉一个整体相位。</strong> 一般纯态写作 \( |\psi\rangle=\alpha|0\rangle+\beta|1\rangle \)，其中 \( \alpha,\beta\in\mathbb C \)，归一化 \( |\alpha|^2+|\beta|^2=1 \)。表面上 4 个实参数（\( \mathrm{Re}\,\alpha,\mathrm{Im}\,\alpha,\mathrm{Re}\,\beta,\mathrm{Im}\,\beta \)），减去归一化条件（1）与不可观测的整体相位（\( |\psi\rangle\sim e^{i\chi}|\psi\rangle \)，1），剩下 <strong>2 个物理自由度</strong>。设 \( \alpha=|\alpha|e^{i\gamma} \)。把整个态乘以 \( e^{-i\gamma} \)（整体相位），得</p>
+      <div class="formula">\[ |\psi\rangle=|\alpha|\,|0\rangle+|\beta|\,e^{i(\delta-\gamma)}|1\rangle,\qquad \delta=\arg\beta \]</div>
+      <p>令 \( \varphi\equiv\arg\beta-\arg\alpha \)（相对相位），并参数化 \( |\alpha|=\cos(\theta/2) \)、\( |\beta|=\sin(\theta/2) \)，范围 \( \theta\in[0,\pi] \)、\( \varphi\in[0,2\pi) \)。归一化自动满足：</p>
+      <div class="formula">\[ \boxed{\;|\psi\rangle=\cos\tfrac{\theta}{2}\,|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}\,|1\rangle\;}\qquad(\text{Bloch 参数化}) \]</div>
+
+      <p><strong>第二步：对应到 Bloch 矢量。</strong>定义密度矩阵 \( \rho=|\psi\rangle\langle\psi| \)。Pauli 矩阵 \( \hat\sigma_i \) 满足 \( \mathrm{tr}(\hat\sigma_i\hat\sigma_j)=2\delta_{ij} \)，所以 \( \rho=\tfrac12(\hat I+\vec n\cdot\vec{\hat\sigma}) \)，其中</p>
+      <div class="formula">\[ n_i=\mathrm{tr}(\rho\,\hat\sigma_i)=\langle\psi|\hat\sigma_i|\psi\rangle \]</div>
+      <p>代入 \( \hat\sigma_z=\mathrm{diag}(1,-1) \)：\( n_z=|\alpha|^2-|\beta|^2=\cos^2(\theta/2)-\sin^2(\theta/2)=\cos\theta \)。代入 \( \hat\sigma_x=\bigl(\begin{smallmatrix}0&amp;1\\1&amp;0\end{smallmatrix}\bigr) \) 与 \( \hat\sigma_y=\bigl(\begin{smallmatrix}0&amp;-i\\i&amp;0\end{smallmatrix}\bigr) \)，交叉项给出</p>
+      <div class="formula">\[ n_x=2\,\mathrm{Re}(\alpha^*\beta)=\sin\theta\cos\varphi,\qquad n_y=2\,\mathrm{Im}(\alpha^*\beta)=\sin\theta\sin\varphi \]</div>
+      <p>合起来，\( \vec n=(\sin\theta\cos\varphi,\;\sin\theta\sin\varphi,\;\cos\theta) \)——单位球面上一点。<strong>每个单 qubit 纯态 \( \leftrightarrow \) Bloch 球面上唯一点</strong>。</p>
+
+      <p><strong>第三步：Hadamard 门。</strong>定义</p>
+      <div class="formula">\[ H=\frac{1}{\sqrt 2}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix}=\frac{1}{\sqrt 2}(\hat\sigma_x+\hat\sigma_z) \]</div>
+      <p>作用在 \( |0\rangle=(1,0)^T \)（北极，\( \theta=0 \)、\( \vec n=+\hat z \)）：</p>
+      <div class="formula">\[ H|0\rangle=\frac{1}{\sqrt 2}\begin{pmatrix}1\\1\end{pmatrix}=\frac{|0\rangle+|1\rangle}{\sqrt 2}\equiv|+\rangle \]</div>
+      <p>新态满足 \( \alpha=\beta=1/\sqrt 2 \)，即 \( \theta=\pi/2 \)、\( \varphi=0 \)，对应 \( \vec n=+\hat x \)。Hadamard 把<strong>北极送到 \( +x \) 轴端点</strong>——把计算基本征态送到了等概率叠加（赤道上的 \( |+\rangle \)）。</p>
+
+      <p><strong>第四步：\( H^2=\hat I \)。</strong>直接验证 \( H^2=\tfrac12(\hat\sigma_x+\hat\sigma_z)^2=\tfrac12(\hat\sigma_x^2+\hat\sigma_z^2+\{\hat\sigma_x,\hat\sigma_z\})=\tfrac12(\hat I+\hat I+0)=\hat I \)。所以连续两次 Hadamard 回到原态：\( H(H|0\rangle)=|0\rangle \)。这正是后面仿真中按两次 H 后回到 \( |0\rangle \) 的原因。</p>
+      <div class="key-terms">Bloch sphere (Bloch 球), Bloch vector (Bloch 矢量), density matrix (密度矩阵), Pauli matrices (Pauli 矩阵), Hadamard gate (Hadamard 门), global phase (整体相位), relative phase (相对相位)</div>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 12.1 宇宙的能量预算 The Cosmic Energy Budget</h4>
+        <p class="example-statement">Planck 2018 卫星给出 \( h=0.674 \)，\( \Omega_b h^2=0.0224 \)，\( \Omega_c h^2=0.1198 \)，\( \Omega_\Lambda=0.686 \)。假设宇宙平坦（\( \Omega_\mathrm{tot}=1 \)）。计算普通物质、暗物质、暗能量所占比例，并验证「95% 是未知的」这一说法。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 把 \( \Omega h^2 \) 转换为 \( \Omega \)：\( \Omega=\Omega h^2/h^2 \)。先算 \( h^2=0.674^2=0.454 \)。</p>
+          <p>普通物质（重子）：<span class="ans">\( \Omega_b=0.0224/0.454=0.0493\approx 4.9\% \)</span>。</p>
+          <p>冷暗物质：<span class="ans">\( \Omega_c=0.1198/0.454=0.2640\approx 26.4\% \)</span>。</p>
+          <p>总物质 \( \Omega_m=\Omega_b+\Omega_c=0.0493+0.2640=0.3133\approx 31.3\% \)。</p>
+          <p>暗能量：<span class="ans">\( \Omega_\Lambda=0.686\approx 68.6\% \)</span>。</p>
+          <p>验证平坦：\( \Omega_m+\Omega_\Lambda=0.313+0.686=0.999\approx 1 \) ✓。暗物质 + 暗能量占比：\( 0.264+0.686=0.950 \)，即 <span class="ans">\( \approx 95\% \)</span> 的宇宙由我们<strong>尚未在实验室中识别</strong>的成分构成。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.2 重子不对称与质子衰变 Baryon Asymmetry &amp; Proton Decay</h4>
+        <p class="example-statement">(a) 估算今天宇宙中每立方米的重子数 \( n_B \) 与光子数 \( n_\gamma \)，验证 \( \eta\approx 6\times 10^{-10} \)。(b) 最小 SU(5) GUT 预言质子衰变寿命 \( \tau_p\sim 10^{31}\,\mathrm{yr} \)；Super-Kamiokande 用 50 kton 水在 20 年内未观测到 \( p\to e^+\pi^0 \) 事件，给出 \( \tau_p\gtrsim 1.6\times 10^{34}\,\mathrm{yr} \)。这如何排除最小 SU(5)？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 解：</strong> CMB 给出今天重子密度 \( \rho_{b,0}=\Omega_b\,\rho_{c,0} \)，临界密度</p>
+          <p>\( \rho_{c,0}=\dfrac{3H_0^2}{8\pi G}=\dfrac{3(2.18\times 10^{-18}\,\mathrm{s^{-1}})^2}{8\pi(6.674\times 10^{-11}\,\mathrm{SI})}=8.5\times 10^{-27}\,\mathrm{kg/m^3} \)（用 \( H_0=67.4\,\mathrm{km/s/Mpc}=2.18\times 10^{-18}\,\mathrm{s^{-1}} \)）。</p>
+          <p>\( \rho_{b,0}=0.0493\times 8.5\times 10^{-27}=4.2\times 10^{-28}\,\mathrm{kg/m^3} \)。除以重子质量 \( m_b\approx 1.67\times 10^{-27}\,\mathrm{kg} \)（取核子质量）：</p>
+          <p>\( n_B=4.2\times 10^{-28}/1.67\times 10^{-27}\approx \)<span class="ans">\( 0.25\,\mathrm{m^{-3}} \)</span>。</p>
+          <p>CMB 光子数密度由黑体公式 \( n_\gamma=\dfrac{2\zeta(3)}{\pi^2}\bigl(\dfrac{k_B T}{\hbar c}\bigr)^3 \)，\( T=2.725\,\mathrm{K} \) 给出 <span class="ans">\( n_\gamma\approx 4.1\times 10^8\,\mathrm{m^{-3}} \)</span>。</p>
+          <p>比值 \( \eta=n_B/n_\gamma=0.25/(4.1\times 10^8)=6.1\times 10^{-10} \) ✓ 与观测一致。</p>
+          <p class="step"><strong>(b) 解：</strong> 50 kton 水 \( =5\times 10^7\,\mathrm{kg} \)，含 \( N_p\approx 5\times 10^7/(18\,u)\times 10\approx 1.7\times 10^{34} \) 个质子（每个 \( \mathrm{H_2O} \) 分子含 10 个质子；分母用 \( 18\times 1.66\times 10^{-27}=3.0\times 10^{-26}\,\mathrm{kg} \)）。若 \( \tau_p=10^{31}\,\mathrm{yr} \)，则 \( N_p/\tau_p\approx 1.7\times 10^{34}/10^{31}\approx 1700 \) 次/yr——Super-K 应每年看到上千事件！实际 20 年零事件 → <span class="ans">\( \tau_p\gtrsim 1.6\times 10^{34}\,\mathrm{yr} \)</span>。这<strong>排除了最小 SU(5)</strong>（其预言被超过 3 个数量级）。SUSY GUT 把 \( \tau_p \) 抬到 \( 10^{34\!-\!36}\,\mathrm{yr} \)，仍在窗口内。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.3 Hadamard 门与测量 The Hadamard Gate &amp; Measurement</h4>
+        <p class="example-statement">初始 \( |\psi_0\rangle=|0\rangle \)。依次：(a) 施加 Hadamard 门 \( H \)；(b) 在计算基 \( \{|0\rangle,|1\rangle\} \) 中测量，得到「1」的概率是多少？(c) 测量后立即再施加 \( H \)，再测量，得到「0」的概率？</p>
+        <div class="example-solution">
+          <p class="step"><strong>(a) 解：</strong> \( H|0\rangle=\dfrac{1}{\sqrt 2}\begin{pmatrix}1\\1\end{pmatrix}=\dfrac{|0\rangle+|1\rangle}{\sqrt 2} \)。这是 Bloch 球 \( +x \) 轴上的 \( |+\rangle \) 态（\( \theta=\pi/2,\varphi=0 \)）。</p>
+          <p class="step"><strong>(b) 解：</strong> Born 规则给出 \( P(1)=|\langle 1|\psi\rangle|^2=|1/\sqrt 2|^2=\)<span class="ans">\( 1/2 \)</span>。同理 \( P(0)=1/2 \)。测量前不知道结果，但<strong>多次重复</strong>测得 0 与 1 各占一半。</p>
+          <p class="step"><strong>(c) 解：</strong> 假设 (b) 测量得到「1」，则态已塌缩为 \( |1\rangle \)。再施加 \( H \)：\( H|1\rangle=\dfrac{1}{\sqrt 2}\begin{pmatrix}1\\-1\end{pmatrix}=\dfrac{|0\rangle-|1\rangle}{\sqrt 2}=|-\rangle \)（\( +y? \) 否，\( -x \) 轴上）。再测：\( P(0)=|\langle 0|-\rangle|^2=|1/\sqrt 2|^2=\)<span class="ans">\( 1/2 \)</span>。所以无论第一次结果如何，第二次 0 与 1 各为 \( 1/2 \)。<strong>注意</strong>：经典随机比特不会有这种干涉结构——若用 Z 门 \( |0\rangle\to|0\rangle,\ |1\rangle\to-|1\rangle \) 改变相对相位，会改变后续干涉图样，即使概率分布不变。这就是「相对相位」是物理可观察量的体现。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.4 Reynolds 数与湍流 onset Reynolds Number &amp; the Onset of Turbulence</h4>
+        <p class="example-statement">水（\( 20^\circ\mathrm C \)，运动黏度 \( \nu=1.0\times 10^{-6}\,\mathrm{m^2/s} \)）在内径 \( D=1.0\,\mathrm{cm} \) 的光滑管道中以平均速度 \( \bar v=1.0\,\mathrm{m/s} \) 流动。判断流动是层流还是湍流。如果是蜂蜜（\( \nu\approx 1.0\times 10^{-2}\,\mathrm{m^2/s} \)）以同样速度与管径，结论又如何？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 对管道流，特征长度取内径 \( L=D \)。Reynolds 数</p>
+          <p>\( Re=\dfrac{\bar v\,D}{\nu} \)。</p>
+          <p>水：\( Re=\dfrac{1.0\times 0.010}{1.0\times 10^{-6}}=\)<span class="ans">\( 1.0\times 10^4 \)</span>。这远高于管道流转捩临界值 \( Re_c\approx 2300 \)，所以<strong>完全湍流</strong>。</p>
+          <p>蜂蜜：\( Re=\dfrac{1.0\times 0.010}{1.0\times 10^{-2}}=\)<span class="ans">\( 1.0 \)</span>。\( Re\ll 2300 \)，<strong>层流</strong>，且接近蠕动流（黏性主导，几乎可逆）。</p>
+          <p>讨论：从水到蜂蜜 \( \nu \) 增加 \( 10^4 \) 倍，\( Re \) 同比例下降——同一个管道流速可从剧烈湍流变为安静层流。这也是为何搅拌蜂蜜比搅拌水费力得多（黏性应力大）。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 12.5 黑洞熵与时间箭头 Black-Hole Entropy &amp; the Arrow of Time</h4>
+        <p class="example-statement">估算 (a) 一个太阳质量黑洞 \( M=M_\odot=1.99\times 10^{30}\,\mathrm{kg} \) 的 Bekenstein–Hawking 熵，与 (b) 今天可观测宇宙中所有重子的热熵 \( S_\mathrm{gas}\sim 10^{88}\,k_B \)、(c) 估计的星系中心超大质量黑洞总熵 \( \sim 10^{104}\,k_B \) 比较。这如何说明时间箭头来自引力熵？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> Schwarzschild 视界半径 \( r_s=2GM/c^2=\dfrac{2(6.674\times 10^{-11})(1.99\times 10^{30})}{(3.0\times 10^8)^2}=2.95\times 10^3\,\mathrm{m}=2.95\,\mathrm{km} \)。</p>
+          <p>视界面积 \( A=4\pi r_s^2=4\pi(2.95\times 10^3)^2=1.09\times 10^8\,\mathrm{m^2} \)。</p>
+          <p>Planck 长度平方 \( \ell_P^2=(1.616\times 10^{-35})^2=2.61\times 10^{-70}\,\mathrm{m^2} \)。</p>
+          <p>熵 \( S_{\mathrm{BH}}=\dfrac{k_B A}{4\ell_P^2}=\dfrac{k_B(1.09\times 10^8)}{4(2.61\times 10^{-70})}=1.04\times 10^{77}k_B \)，即 <span class="ans">\( S_{\mathrm{BH}}(M_\odot)\sim 10^{77}\,k_B \)</span>。</p>
+          <p>对比：\( 10^{77}/10^{88}\sim 10^{-11} \)，单恒星黑洞熵比宇宙所有气体熵小（因为重子数 \( \sim 10^{80} \)，每个 \( \sim 10\,k_B \)）。但超大质量黑洞（\( 10^9 M_\odot \)）熵按 \( M^2 \) 增长，\( S\sim 10^{95}\,k_B \)，宇宙中共有 \( \sim 10^{11} \) 个星系，所以总黑洞熵 <span class="ans">\( \sim 10^{104\!-\!106}\,k_B \)</span>。</p>
+          <p>结论：今天宇宙的熵几乎<strong>全部</strong>藏在黑洞里；普通物质的熵只占 \( 10^{-16} \)。而大爆炸时几乎没有黑洞（极均匀的气体 + 微小涨落），引力熵极低。Penrose 论证：宇宙的时间箭头——一切宏观不可逆过程的方向——<strong>最终来源于大爆炸的低引力熵</strong>。当所有物质最终坍入黑洞，再经 Hawking 辐射蒸发（\( \tau\sim 10^{100}\,\mathrm{yr} \) for \( M_\odot \)），宇宙达到极大熵均衡态——「热寂」(heat death)。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「暗物质就是暗能量」</strong>——错。它们是两种<strong>不同</strong>的未知：暗物质（\( \Omega_c\approx 0.26 \)）像普通物质一样成团、参与引力束缚（星系旋转曲线、子弹星团）；暗能量（\( \Omega_\Lambda\approx 0.69 \)）是均匀弥散的，<strong>排斥性</strong>引力驱动加速膨胀。一个成团，一个弥散；一个吸引，一个排斥。</li>
+        <li><strong>「量子计算违反量子力学」</strong>——恰恰相反。量子计算<strong>完全</strong>建立在标准量子力学之上：叠加、纠缠、Born 规则、幺正演化。它「只是」把这些原理工程化以做计算——并不调用任何新物理。<strong>测量仍然是 Born 规则的塌缩</strong>，并不绕过它。</li>
+        <li><strong>「Copenhagen 与多世界给出不同预言，可以实验区分」</strong>——错。所有标准诠释（Copenhagen、many-worlds、decoherence、Bohmian）对<strong>可观察量</strong>给出<strong>完全相同</strong>的统计预言。它们的差别在本体论（世界「真的」是什么样），不在现象学。在没有 collapse model 之类<strong>额外修改</strong>的情况下，目前无法实验区分。</li>
+        <li><strong>「大爆炸是高熵的因为它热而密」</strong>——直觉错误。热气体的熵确实高，但<strong>引力系统相反</strong>：均匀分布是低引力熵，黑洞是高引力熵。大爆炸的气体虽热但引力构形极度均匀（CMB 涨落仅 \( 10^{-5} \)），引力熵极低——这正是时间箭头的源头。</li>
+        <li><strong>「湍流是混沌，所以完全不可预测」</strong>——半对。湍流的<strong>细节</strong>对初始条件敏感（混沌），但<strong>统计量</strong>（平均速度剖面、能谱 \( E(k)\propto k^{-5/3} \)、通量）是可预测且普适的。工程师并不预报每一个涡旋，而是预报 Reynolds 应力与拖曳系数。</li>
+        <li><strong>把「开放问题」说得太确定</strong>——避免。弦论、暗物质身份、高温超导机制<strong>都还没有定论</strong>；不要在考卷上把它们当已知结论引用。诚实区分「实验确认的事实」（如 \( \Omega_\Lambda\approx 0.69 \)）与「主流猜想」（如 WIMP 是暗物质）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. Planck 单位制 Planck units。由 \( G,\hbar,c \) 构造长度、时间、质量、能量的 Planck 单位，并代入数值验证 \( \ell_P\approx 1.6\times 10^{-35}\,\mathrm{m} \)、\( E_P\approx 1.22\times 10^{19}\,\mathrm{GeV} \)。</summary>
+        <div class="hint">量纲分析：令 \( \ell_P=G^a\hbar^b c^d \)，解 \( [L]=[L^3\mathrm{M^{-1}T^{-2}}]^a[\mathrm{ML^2T^{-1}}]^b[\mathrm{LT^{-1}}]^d \)。</div>
+        <div class="solution">解三个方程（\( L,b \) 等）得 \( a=\tfrac12,b=\tfrac12,d=-\tfrac32 \)，故 \( \ell_P=\sqrt{\hbar G/c^3} \)；同理 \( t_P=\sqrt{\hbar G/c^5} \)、\( m_P=\sqrt{\hbar c/G} \)、\( E_P=m_P c^2=\sqrt{\hbar c^5/G} \)。代入数：\( \ell_P=\sqrt{(1.055\times 10^{-34})(6.674\times 10^{-11})/(3.0\times 10^8)^3}=\sqrt{2.61\times 10^{-70}}=\)<span class="ans">\( 1.62\times 10^{-35}\,\mathrm{m} \)</span>；\( m_P=2.18\times 10^{-8}\,\mathrm{kg}=1.22\times 10^{19}\,\mathrm{GeV}/c^2 \)，故 <span class="ans">\( E_P\approx 1.22\times 10^{19}\,\mathrm{GeV} \)</span>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 量子门序列 Quantum gate sequence。初始 \( |0\rangle \)。依次施加 \( H \)、\( Z \)、\( H \)（\( Z=\mathrm{diag}(1,-1) \)）。最终态是什么？在计算基中测量得到「1」的概率？</summary>
+        <div class="hint">用 \( H|0\rangle=|+\rangle \)，\( Z|+\rangle=? \) 思考。或直接矩阵相乘 \( HZH \)。</div>
+        <div class="solution">\( H|0\rangle=|+\rangle=(|0\rangle+|1\rangle)/\sqrt 2 \)。\( Z|+\rangle=(|0\rangle-|1\rangle)/\sqrt 2=|-\rangle \)。再 \( H|-\rangle=|1\rangle \)（因为 \( H|-\rangle=\tfrac12[(|0\rangle+|1\rangle)-(|0\rangle-|1\rangle)]=|1\rangle \)）。所以最终态 <span class="ans">\( |1\rangle \)</span>，\( P(1)=\)<span class="ans">\( 1 \)</span>。矩阵论证：\( HZH=\hat\sigma_x \)（Pauli-X 翻转），所以 \( HZH|0\rangle=|1\rangle \)。注意：只按一次或两次 H 时结果是随机的（\( P=1/2 \)），加入 Z 门改变了相对相位，使干涉完全导向「1」——这就是量子干涉的本质。</div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 血流与龙卷风 Reynolds numbers。主动脉血流：\( D\approx 2.5\,\mathrm{cm} \)，\( \bar v\approx 0.5\,\mathrm{m/s} \)，血液 \( \nu\approx 4\times 10^{-6}\,\mathrm{m^2/s} \)。龙卷风：特征尺度 \( L\sim 100\,\mathrm{m} \)，\( v\sim 100\,\mathrm{m/s} \)，空气 \( \nu\approx 1.5\times 10^{-5}\,\mathrm{m^2/s} \)。分别算 \( Re \) 并判断。</summary>
+        <div class="hint">直接代 \( Re=vL/\nu \)。</div>
+        <div class="solution">主动脉：\( Re=(0.5)(0.025)/(4\times 10^{-6})=\)<span class="ans">\( 3.1\times 10^3 \)</span>——略高于 2300，处于<strong>过渡区</strong>（健康主动脉实际多为层流，因脉搏与血管弹性抑制湍流；但心杂音与某些病变会出现局部湍流）。龙卷风：\( Re=(100)(100)/(1.5\times 10^{-5})=\)<span class="ans">\( 6.7\times 10^8 \)</span>——极高，<strong>完全湍流</strong>；这也是龙卷风为何难以精确预报。</div>
+      </details>
+
+      <details class="problem">
+        <summary>4. Sakharov 条件为何缺一不可 Why all three Sakharov conditions? 用平衡热力学与 CPT 对称论证：(i) 若没有 B 破坏；(ii) 若没有 CP 破坏；(iii) 若处于严格热平衡——分别会得到 \( \eta=0 \) 吗？</summary>
+        <div class="hint">用细致平衡 \( \Gamma(i\to f)=\Gamma(f\to i) \)（CPT 保证粒子与反粒子速率在平衡下相等）。</div>
+        <div class="solution">(i) 若重子数 \( B \) 严格守恒，从 \( B=0 \) 初态永远到达不了 \( B\ne 0 \)，\( \eta=0 \)。(ii) 即使 B 破坏，若 C 与 CP 严格守恒，则每个产生重子的过程 \( X\to q\ell \) 与对应的反过程 \( \bar X\to\bar q\bar\ell \) 速率严格相等（CPT + CP），净重子数仍为零。(iii) 即使 B 与 CP 都破坏，若系统始终处于热平衡，细致平衡 (detailed balance) 保证每个反应与逆反应严格平衡，化学势 \( \mu_B=0 \)，净 \( n_B=0 \)。只有偏离平衡（一级相变或出平衡衰变）才能「冻结」不对称。故三条<strong>缺一不可</strong>。</div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 退相干时间估算 Decoherence time。一个质量 \( m=10^{-18}\,\mathrm{kg} \) 的纳米机械振子，处在 \( T=300\,\mathrm{K} \)的环境中，特征频率 \( \omega=10^6\,\mathrm{rad/s} \)，位置不确定度 \( \Delta x=10^{-9}\,\mathrm{m} \)。退相干率近似为 \( \tau_D^{-1}\sim \dfrac{k_B T}{\hbar}\Bigl(\dfrac{\Delta x}{\lambda_\mathrm{th}}\Bigr)^2 \)，\( \lambda_\mathrm{th}=\hbar/\sqrt{2mk_BT} \)。求 \( \tau_D \) 并与振动周期比较。</summary>
+        <div class="hint">先算热德布罗意波长 \( \lambda_\mathrm{th} \)。</div>
+        <div class="solution">\( \lambda_\mathrm{th}=\hbar/\sqrt{2mk_BT}=(1.055\times 10^{-34})/\sqrt{2(10^{-18})(1.38\times 10^{-23})(300)}=(1.055\times 10^{-34})/\sqrt{8.28\times 10^{-39}}=1.16\times 10^{-17}\,\mathrm{m} \)。\( (\Delta x/\lambda_\mathrm{th})^2=(10^{-9}/1.16\times 10^{-17})^2=7.4\times 10^{15} \)。\( k_BT/\hbar=(4.14\times 10^{-21})/(1.055\times 10^{-34})=3.9\times 10^{13}\,\mathrm{s^{-1}} \)。\( \tau_D^{-1}=(3.9\times 10^{13})(7.4\times 10^{15})=2.9\times 10^{29}\,\mathrm{s^{-1}} \)，<span class="ans">\( \tau_D\approx 3\times 10^{-30}\,\mathrm{s} \)</span>。振动周期 \( T_\mathrm{vib}=2\pi/\omega=6.3\times 10^{-6}\,\mathrm{s} \)。退相干比振动快 \( \sim 10^{23} \) 倍——这就是为何宏观物体的量子叠加从未被观察到，也是量子计算必须<strong>极低温隔离</strong>的原因。</div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — Bloch 球单量子比特 Bloch-Sphere Single Qubit</h2>
+      <p class="sim-desc">单量子比特态 \( |\psi\rangle=\cos(\theta/2)|0\rangle+e^{i\varphi}\sin(\theta/2)|1\rangle \) 用 <strong>Bloch 球</strong>上一点（红箭头端点）表示。北极 \( |0\rangle \)，南极 \( |1\rangle \)，赤道为等概率叠加。点击门按钮：<strong>H</strong> (Hadamard，\( |0\rangle\to|+\rangle=(|0\rangle+|1\rangle)/\sqrt 2 \)，把北极送到 \( +x \) 轴端点)；<strong>X</strong> (Pauli-X 翻转，绕 \( x \) 轴 \( \pi \)，\( |0\rangle\leftrightarrow|1\rangle \))；<strong>Z</strong> (Pauli-Z 相位，绕 \( z \) 轴 \( \pi \)，\( |1\rangle\to-|1\rangle \))；<strong>S</strong> (相位门 \( \sqrt Z \)，\( |1\rangle\to i|1\rangle \))。开启「自动 \( R_z \)」让态绕 \( z \) 轴匀速进动（\( \theta \) 不变、\( \varphi \) 增加）——观察态在球面上沿纬线圈移动。<strong>M</strong> 按 Born 规则 \( P(0)=|\alpha|^2 \) 概率塌缩到 \( |0\rangle \) 或 \( |1\rangle \)（多次按 M 验证统计性）。画布上方实时显示振幅 \( \alpha,\beta \) 与概率。注意 H、X、Z、S 都是<strong>幺正</strong>操作（保持 \( |\alpha|^2+|\beta|^2=1 \)），只有 M（测量）是非幺正的塌缩。</p>
+      <div class="sim-container">
+        <canvas id="sim-12" width="640" height="460"></canvas>
+        <div class="sim-controls" id="controls-12"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-12');
+          var W = canvas.width, H = canvas.height;
+          var cx = W / 2 - 70, cy = H / 2 + 20;
+          var R = 145;
+
+          /* ---------- 3D projection: tilt then azimuth ---------- */
+          var EL = 0.42;   // elevation tilt (~24°)
+          var AZ = -0.55;  // azimuth (~ -31°)
+          function project(x, y, z) {
+            var cA = Math.cos(AZ), sA = Math.sin(AZ);
+            var xa = cA * x - sA * y;
+            var ya = sA * x + cA * y;
+            var cE = Math.cos(EL), sE = Math.sin(EL);
+            var xb = xa;
+            var yb = cE * ya - sE * z;  // depth (positive = closer to viewer)
+            var zb = sE * ya + cE * z;  // vertical on screen
+            return { sx: cx + R * xb, sy: cy - R * zb, depth: yb };
+          }
+
+          /* ---------- complex helpers ---------- */
+          function cAdd(a, b) { return [a[0] + b[0], a[1] + b[1]]; }
+          function cMul(a, b) { return [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]]; }
+          function cAbs2(a) { return a[0] * a[0] + a[1] * a[1]; }
+          function cArg(a) { return Math.atan2(a[1], a[0]); }
+          function cRe(a) { return a[0]; }
+          function cIm(a) { return a[1]; }
+
+          /* ---------- 2x2 complex matrix * vector ---------- */
+          function matVec(M, v) {
+            return [
+              cAdd(cMul(M[0][0], v[0]), cMul(M[0][1], v[1])),
+              cAdd(cMul(M[1][0], v[0]), cMul(M[1][1], v[1]))
+            ];
+          }
+
+          var SQ2 = 1 / Math.sqrt(2);
+          /* gates as [[a,b],[c,d]] complex */
+          var GATES = {
+            H: [[ [SQ2, 0],  [SQ2, 0] ], [ [SQ2, 0],  [-SQ2, 0] ]],
+            X: [[ [0, 0],    [1, 0] ],   [ [1, 0],    [0, 0]   ]],
+            Y: [[ [0, 0],    [0, -1] ],  [ [0, 1],    [0, 0]   ]],
+            Z: [[ [1, 0],    [0, 0] ],   [ [0, 0],    [-1, 0]  ]],
+            S: [[ [1, 0],    [0, 0] ],   [ [0, 0],    [0, 1]   ]]
+          };
+
+          var params = { auto: false };
+
+          /* ---------- draw a 3D great circle in plane (a1,a2,a3 normal) ---------- */
+          function drawCircle3D(ctx, plane, color, dashed) {
+            // plane: 'equator' (z=0), 'meridianX' (y=0), 'meridianY' (x=0)
+            var N = 80;
+            var pts = [];
+            for (var i = 0; i <= N; i++) {
+              var t = (i / N) * 2 * Math.PI;
+              var x, y, z;
+              if (plane === 'equator') { x = Math.cos(t); y = Math.sin(t); z = 0; }
+              else if (plane === 'meridianX') { x = Math.cos(t); y = 0; z = Math.sin(t); }
+              else { x = 0; y = Math.cos(t); z = Math.sin(t); }
+              pts.push(project(x, y, z));
+            }
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.4;
+            if (dashed) ctx.setLineDash([4, 5]);
+            ctx.beginPath();
+            for (var j = 0; j < pts.length; j++) {
+              if (j === 0) ctx.moveTo(pts[j].sx, pts[j].sy);
+              else ctx.lineTo(pts[j].sx, pts[j].sy);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+          }
+
+          function drawAxis(ctx, from, to, color, labelNear, labelFar, fontColor) {
+            var p1 = project(from[0], from[1], from[2]);
+            var p2 = project(to[0], to[1], to[2]);
+            // dashed if going away from viewer (depth decreases)
+            var dashed = p2.depth < p1.depth;
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            if (dashed) { ctx.globalAlpha = 0.45; ctx.setLineDash([3, 4]); }
+            ctx.beginPath();
+            ctx.moveTo(p1.sx, p1.sy);
+            ctx.lineTo(p2.sx, p2.sy);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            // arrowhead only if not dashed
+            if (!dashed) {
+              var ang = Math.atan2(p2.sy - p1.sy, p2.sx - p1.sx);
+              var h = 8;
+              ctx.fillStyle = color;
+              ctx.beginPath();
+              ctx.moveTo(p2.sx, p2.sy);
+              ctx.lineTo(p2.sx - h * Math.cos(ang - 0.4), p2.sy - h * Math.sin(ang - 0.4));
+              ctx.lineTo(p2.sx - h * Math.cos(ang + 0.4), p2.sy - h * Math.sin(ang + 0.4));
+              ctx.closePath();
+              ctx.fill();
+            }
+            // label at end
+            PS.drawText(ctx, labelNear, p2.sx + 8, p2.sy + 4,
+              { font: 'italic 13px system-ui', color: fontColor });
+            ctx.restore();
+          }
+
+          function fmtC(z, digits) {
+            digits = digits == null ? 3 : digits;
+            var re = z[0], im = z[1];
+            var reS = Math.abs(re) < 5e-4 ? '0.000' : re.toFixed(digits);
+            var sign = im >= -5e-4 ? '+' : '−';
+            var imS = Math.abs(im) < 5e-4 ? '0.000' : Math.abs(im).toFixed(digits);
+            if (Math.abs(Math.abs(re) - 1) < 5e-4 && Math.abs(im) < 5e-4) reS = (re < 0 ? '−1.000' : '1.000');
+            return reS + ' ' + sign + ' ' + imS + 'i';
+          }
+
+          /* ---------- sim ---------- */
+          var sim = PS.createSim(canvas, {
+            state: function () {
+              return {
+                alpha: [1, 0],   // |0⟩
+                beta:  [0, 0],
+                phase: 0,
+                lastOp: '|0⟩ (initial)',
+                measured: null,
+                flash: 0
+              };
+            },
+            step: function (dt, t, s) {
+              s.phase += dt;
+              if (s.flash > 0) s.flash = Math.max(0, s.flash - dt * 2.5);
+              if (params.auto && s.measured === null) {
+                var omega = 1.4;
+                var half = omega * dt / 2;
+                var e1 = [Math.cos(half), -Math.sin(half)];   // e^{-iδ/2}
+                var e2 = [Math.cos(half),  Math.sin(half)];   // e^{+iδ/2}
+                s.alpha = cMul(e1, s.alpha);
+                s.beta  = cMul(e2, s.beta);
+                if (s.flash === 0) s.lastOp = 'Rz (auto)';
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+
+              /* ---- info panel left ---- */
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 220, 132);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 220, 132);
+              ctx.restore();
+
+              PS.drawText(ctx, '态 |ψ⟩ = α|0⟩ + β|1⟩', 18, 30,
+                { font: 'bold 13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'α = ' + fmtC(s.alpha), 18, 52,
+                { font: '14px ui-monospace, Menlo, monospace', color: PS.colors.primary });
+              PS.drawText(ctx, 'β = ' + fmtC(s.beta), 18, 72,
+                { font: '14px ui-monospace, Menlo, monospace', color: PS.colors.accent });
+              var p0 = cAbs2(s.alpha), p1 = cAbs2(s.beta);
+              PS.drawText(ctx, 'P(0)=|α|² = ' + p0.toFixed(3), 18, 96,
+                { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'P(1)=|β|² = ' + p1.toFixed(3), 18, 114,
+                { font: '13px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'last: ' + s.lastOp, 18, 132,
+                { font: 'italic 12px system-ui', color: PS.colors.accent2 });
+
+              /* ---- sphere outline ---- */
+              PS.drawCircle(ctx, cx, cy, R, { stroke: PS.colors.axis, lineWidth: 1.8 });
+
+              /* ---- equator + meridians ---- */
+              drawCircle3D(ctx, 'equator', PS.colors.grid, false);
+              drawCircle3D(ctx, 'meridianX', PS.colors.grid, true);
+              drawCircle3D(ctx, 'meridianY', PS.colors.grid, true);
+
+              /* ---- axes ---- */
+              drawAxis(ctx, [-1.25, 0, 0], [1.25, 0, 0], PS.colors.primary, '|+⟩', 'x');
+              drawAxis(ctx, [0, -1.25, 0], [0, 1.25, 0], '#7c3aed', '|+i⟩', 'y');
+              drawAxis(ctx, [0, 0, -1.25], [0, 0, 1.25], PS.colors.accent, '|0⟩  z', 'z');
+
+              /* ---- |0⟩, |1⟩ pole labels ---- */
+              var top = project(0, 0, 1);
+              var bot = project(0, 0, -1);
+              PS.drawText(ctx, '|0⟩', top.sx + 10, top.sy - 2,
+                { font: 'italic bold 14px system-ui', color: PS.colors.accent });
+              PS.drawText(ctx, '|1⟩', bot.sx + 10, bot.sy + 14,
+                { font: 'italic bold 14px system-ui', color: PS.colors.accent });
+
+              /* ---- state vector tip on Bloch sphere ---- */
+              var aAbs = Math.sqrt(cAbs2(s.alpha));
+              var theta = 2 * Math.acos(Math.max(-1, Math.min(1, aAbs)));
+              var phi = (aAbs < 1e-9) ? 0 : (cArg(s.beta) - cArg(s.alpha));
+              var bx = Math.sin(theta) * Math.cos(phi);
+              var by = Math.sin(theta) * Math.sin(phi);
+              var bz = Math.cos(theta);
+              var tip = project(bx, by, bz);
+              var origin = project(0, 0, 0);
+
+              // state arrow
+              var flashAlpha = 0.55 + 0.45 * (1 - s.flash);
+              ctx.save();
+              ctx.globalAlpha = flashAlpha;
+              ctx.strokeStyle = PS.colors.accent2;
+              ctx.fillStyle = PS.colors.accent2;
+              ctx.lineWidth = 3.2;
+              ctx.beginPath();
+              ctx.moveTo(origin.sx, origin.sy);
+              ctx.lineTo(tip.sx, tip.sy);
+              ctx.stroke();
+              // arrowhead
+              var ang = Math.atan2(tip.sy - origin.sy, tip.sx - origin.sx);
+              var h = 11;
+              ctx.beginPath();
+              ctx.moveTo(tip.sx, tip.sy);
+              ctx.lineTo(tip.sx - h * Math.cos(ang - 0.35), tip.sy - h * Math.sin(ang - 0.35));
+              ctx.lineTo(tip.sx - h * Math.cos(ang + 0.35), tip.sy - h * Math.sin(ang + 0.35));
+              ctx.closePath();
+              ctx.fill();
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              // tip dot
+              PS.drawCircle(ctx, tip.sx, tip.sy, 6.5,
+                { fill: PS.colors.accent2, stroke: PS.colors.bg, lineWidth: 1.5 });
+
+              // shadow projection line to z axis (shows theta)
+              var zproj = project(0, 0, bz);
+              ctx.save();
+              ctx.strokeStyle = PS.colors.text;
+              ctx.globalAlpha = 0.25;
+              ctx.setLineDash([2, 3]);
+              ctx.beginPath();
+              ctx.moveTo(tip.sx, tip.sy);
+              ctx.lineTo(zproj.sx, zproj.sy);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.globalAlpha = 1;
+              ctx.restore();
+
+              /* ---- angle annotations ---- */
+              PS.drawText(ctx, 'θ = ' + (theta * 180 / Math.PI).toFixed(0) + '°',
+                cx + R + 18, cy - R + 14,
+                { font: '12px system-ui', color: PS.colors.text });
+              PS.drawText(ctx, 'φ = ' + ((phi * 180 / Math.PI + 360) % 360).toFixed(0) + '°',
+                cx + R + 18, cy - R + 32,
+                { font: '12px system-ui', color: PS.colors.text });
+
+              /* ---- measurement banner ---- */
+              if (s.measured !== null) {
+                ctx.save();
+                ctx.globalAlpha = 0.92;
+                ctx.fillStyle = PS.colors.bg;
+                ctx.fillRect(W / 2 - 130, 12, 260, 36);
+                ctx.strokeStyle = PS.colors.accent;
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(W / 2 - 130, 12, 260, 36);
+                ctx.restore();
+                PS.drawText(ctx, 'MEASURED  →  |' + s.measured + '⟩   (state collapsed)',
+                  W / 2, 35,
+                  { font: 'bold 14px system-ui', color: PS.colors.accent, align: 'center' });
+              } else {
+                PS.drawText(ctx, 'Bloch sphere  ·  single qubit',
+                  W / 2, 35,
+                  { font: 'italic 13px system-ui', color: PS.colors.text, align: 'center' });
+              }
+
+              /* ---- bottom legend ---- */
+              PS.drawText(ctx,
+                'north pole |0⟩  ·  south pole |1⟩  ·  H,X,Z,S = unitary gates  ·  M = measure',
+                W - 12, H - 14,
+                { font: '11px system-ui', color: PS.colors.text, align: 'right' });
+            }
+          });
+
+          /* ---------- button actions ---------- */
+          function applyGate(name) {
+            var s = sim.getState();
+            if (s.measured !== null) return;
+            var ns = matVec(GATES[name], [s.alpha, s.beta]);
+            s.alpha = ns[0]; s.beta = ns[1];
+            s.lastOp = name + ' gate';
+            s.flash = 1;
+          }
+          function doMeasure() {
+            var s = sim.getState();
+            if (s.measured !== null) return;
+            var p0 = cAbs2(s.alpha);
+            var r = Math.random();
+            if (r < p0) { s.alpha = [1, 0]; s.beta = [0, 0]; s.measured = 0; }
+            else        { s.alpha = [0, 0]; s.beta = [1, 0]; s.measured = 1; }
+            s.lastOp = 'M → |' + s.measured + '⟩';
+            s.flash = 1;
+          }
+
+          var ctl = PS.makeControls(document.getElementById('controls-12'), [
+            { type: 'button', key: 'H', label: 'H  Hadamard' },
+            { type: 'button', key: 'X', label: 'X  flip' },
+            { type: 'button', key: 'Z', label: 'Z  phase' },
+            { type: 'button', key: 'S', label: 'S  √Z' },
+            { type: 'button', key: 'M', label: 'M  measure' },
+            { type: 'toggle', key: 'auto', label: 'auto Rz (precess around z)', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('H', function () { applyGate('H'); });
+          ctl.on('X', function () { applyGate('X'); });
+          ctl.on('Z', function () { applyGate('Z'); });
+          ctl.on('S', function () { applyGate('S'); });
+          ctl.on('M', function () { doMeasure(); });
+          ctl.on('auto', function (v) { params.auto = v; });
+          ctl.on('reset', function () {
+            params.auto = false;
+            var box = document.getElementById('controls-12');
+            var cb = box.querySelector('input[type=checkbox]');
+            if (cb) cb.checked = false;
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>物理学是一项伟大的成功：从 \( 10^{-35}\,\mathrm{m} \) 到 \( 10^{26}\,\mathrm{m} \)、从大爆炸后 \( 10^{-44}\,\mathrm{s} \) 到 \( 10^{10}\,\mathrm{yr} \)，一组方程描述了几乎一切。但<strong>普通物质仅占宇宙 \( \sim 5\% \)</strong>；广义相对论与量子力学在最深层次上不兼容；生命、意识、复杂系统的物理基础仍大部分未知。这些不是「细节问题」，而是基础物理的<strong>核心</strong>问题。如果你被这些问题点燃，你正站在物理学的边疆——下一代的发现很可能就在这里。</p>
+      <ul>
+        <li><strong>九大开放问题</strong>：量子引力、暗物质 / 暗能量、物质–反物质不对称、量子测量问题、时间箭头、高温超导、湍流、量子信息、复杂 / 生物物理。</li>
+        <li><strong>Planck 标度</strong> \( \ell_P=\sqrt{\hbar G/c^3}\approx 1.6\times 10^{-35}\,\mathrm{m} \)，\( E_P\approx 1.22\times 10^{19}\,\mathrm{GeV} \)——量子引力能标。</li>
+        <li><strong>宇宙能量预算</strong>：\( \Omega_b\approx 0.05,\ \Omega_c\approx 0.26,\ \Omega_\Lambda\approx 0.69,\ \Omega_\mathrm{tot}\approx 1.00 \)。暗物质成团成块（吸引），暗能量均匀弥散（排斥）——二者是<strong>不同</strong>的未知。</li>
+        <li><strong>重子生成</strong>：观测 \( \eta=(n_B-n_{\bar B})/n_\gamma\approx 6\times 10^{-10} \)；Sakharov 三条件（B 破坏 + CP 破坏 + 出平衡）。</li>
+        <li><strong>量子测量</strong>：所有诠释（Copenhagen、多世界、退相干、Bohmian）给出相同实验预言——区别在本体论。量子计算<strong>利用</strong>而非违反 QM。</li>
+        <li><strong>Bloch 球</strong>：\( |\psi\rangle=\cos(\theta/2)|0\rangle+e^{i\varphi}\sin(\theta/2)|1\rangle \)；Bloch 矢量 \( \vec n=(\sin\theta\cos\varphi,\sin\theta\sin\varphi,\cos\theta) \)。</li>
+        <li><strong>Hadamard 门</strong>：\( H|0\rangle=(|0\rangle+|1\rangle)/\sqrt 2=|+\rangle \)（北极 → \( +x \) 端点）；\( H^2=I \)。</li>
+        <li><strong>Born 规则</strong>：\( P(i)=|\langle i|\psi\rangle|^2 \)；测量塌缩是非幺正的，而所有门操作 \( U \) 是幺正的。</li>
+        <li><strong>Reynolds 数</strong> \( Re=vL/\nu \)：管道流转捩 \( Re_c\sim 2300 \)；湍流能量谱 \( E(k)\propto k^{-5/3} \)。</li>
+        <li><strong>Bekenstein–Hawking 熵</strong> \( S_{\mathrm{BH}}=k_B A/(4\ell_P^2) \)；\( M_\odot \) 黑洞 \( S\sim 10^{77}k_B \)；宇宙熵主要在黑洞里——时间箭头源于低熵大爆炸。</li>
+        <li><strong>退相干</strong>：与环境纠缠使宏观叠加在 \( \sim 10^{-23}\,\mathrm{s} \) 内消失；量子纠错阈值定理允许容错量子计算。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\begin{aligned}
+        &\ell_P=\sqrt{\frac{\hbar G}{c^3}}\approx 1.616\times 10^{-35}\,\mathrm{m},\quad
+        E_P=\sqrt{\frac{\hbar c^5}{G}}\approx 1.22\times 10^{19}\,\mathrm{GeV},\\
+        &\Omega_b\approx 0.049,\ \Omega_c\approx 0.265,\ \Omega_\Lambda\approx 0.686,\quad
+        \eta=\frac{n_B-n_{\bar B}}{n_\gamma}\approx 6.1\times 10^{-10},\\
+        &|\psi\rangle=\cos\tfrac{\theta}{2}|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}|1\rangle,\quad
+        H=\frac{1}{\sqrt 2}\begin{pmatrix}1&amp;1\\1&amp;-1\end{pmatrix},\quad
+        P(i)=|\langle i|\psi\rangle|^2,\\
+        &Re=\frac{vL}{\nu}\;(Re_c\sim 2300\ \text{pipe}),\quad
+        E(k)\propto k^{-5/3}\ (\text{Kolmogorov}),\\
+        &S_{\mathrm{BH}}=\frac{k_B A}{4\ell_P^2}=k_B\,\pi\Bigl(\frac{r_s}{\ell_P}\Bigr)^2,\quad r_s=\frac{2GM}{c^2},\quad
+        S_{\mathrm{BH}}(M_\odot)\sim 10^{77}\,k_B.
+        \end{aligned}} \]
+      </div>
+
+      <p style="margin-top:1.5em; padding:1em 1.2em; border-left:3px solid var(--sim-accent2, #16a34a); background:rgba(0,0,0,0.02);">
+        <strong>致读者 · A Note to the Reader.</strong> 恭喜——你已读完一整部对标藤校荣誉课程的物理学教程。从牛顿的苹果到 Bloch 球，从麦克斯韦的电磁波到 CMB 的 \( 10^{-5} \) 涨落，从薛定谔的猫到霍金辐射，你现在掌握了人类描述宇宙最强大的两套框架。<br><br>
+        但本教程中每一页真正的主题不是「已知的答案」，而是<strong>如何提出下一个问题</strong>。暗物质是什么？时间为什么有方向？量子测量「真的」发生了什么？高温超导的配对机制是什么？湍流能否从第一性原理预言？宇宙为什么是低熵的？——这些问题正等待下一个世代，也就是<strong>你</strong>，去回答。<br><br>
+        正如 Wheeler 所说：<em>「We live in the middle of the universe's story.」</em> 物理学的黄金时代不是 1905 年，不是 1965 年——而是<strong>现在</strong>，因为你能用比 Einstein 更完整的工具，去问他无法问出的问题。继续好奇，继续算，继续做实验。前沿就在脚下。
+      </p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

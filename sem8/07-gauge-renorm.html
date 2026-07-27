@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7章 · 规范场论与重整化 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="7">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第7章 · 量子场论 Quantum Field Theory</p>
+      <h1>规范场论与重整化 <span class="en-title">Gauge Theories &amp; Renormalization</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够阐明<strong>规范不变性</strong> (gauge invariance) 作为相互作用的<strong>组织原则</strong>：将全局 \( U(1) \) 对称性<strong>定域化</strong> (local) 必然引入规范场 \( A_\mu \)，由此构造出 <strong>QED</strong> 并预言光子必为<strong>无质量</strong>玻色子 (massless photon)。</li>
+        <li>能够将此原则推广到<strong>非阿贝尔规范群</strong> (non-Abelian groups)：掌握 <strong>Yang–Mills</strong> 理论的场强 \( F^{a}_{\mu\nu}=\partial_\mu A^a_\nu-\partial_\nu A^a_\mu+g f^{abc}A^b_\mu A^c_\nu \) 中自相互作用项的起源；说明定域 \( SU(3) \) 色规范不变性给出 <strong>QCD</strong> 与 8 个胶子 (gluons)。</li>
+        <li>能够「读出」<strong>费曼规则</strong> (Feynman rules)：写出 QED 与 QCD 的顶点因子 (vertex factor)、传播子 (propagator)；区分 QCD 特有的三胶子、四胶子顶点。</li>
+        <li>能够解释为何需要<strong>重整化</strong> (renormalization)：圈积分的紫外发散 (UV divergences)、正规化 (regularization) 与抵消项 (counterterms)；理解重整化群 (RG) 使耦合常数<strong>随能标跑动</strong> \(\alpha=\alpha(\mu)\)。</li>
+        <li>能够应用单圈 \( \beta \) 函数计算 <strong>QED 跑动耦合</strong> \( \alpha_{\mathrm{em}}(Q) \)（缓慢增长）与 <strong>QCD 跑动耦合</strong> \( \alpha_s(Q) \)，并说明 <strong>渐近自由</strong> (asymptotic freedom, \( \alpha_s\to 0 \) at \( Q\to\infty \)) 的物理来源（胶子自相互作用贡献 \( -11 \) 项主导）。</li>
+        <li>能够对比 QCD 高能下的<strong>渐近自由</strong>（质子在硬探针下显自由）与低能下的<strong>色禁闭</strong> (confinement)，并用 \( \Lambda_{\mathrm{QCD}}\sim 200\,\mathrm{MeV} \) 估计强子尺度 \( \sim 1\,\mathrm{fm} \)。</li>
+        <li>能够简述 <strong>格点 QCD</strong> (lattice QCD) 作为非微扰 (non-perturbative) 计算强子质量的方法。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 规范不变性：组织原则 Gauge Invariance as Organizing Principle</h3>
+      <p>在经典力学中，<strong>诺特定理</strong> (Noether's theorem) 将<strong>全局对称性</strong> (global symmetry) 与守恒律联系起来：例如时空平移不变性 ⇒ 能量-动量守恒；复场 \( \psi\to e^{i\alpha}\psi \)（常数 \( \alpha \)）的<strong>全局 \( U(1) \)</strong> 对称性 ⇒ 电荷守恒。然而 20 世纪的深刻洞见是：<strong>自然界的相互作用本身可由「将全局对称性升级为定域对称性」这一要求唯一确定</strong>——这就是<strong>规范原理</strong> (gauge principle)。</p>
+      <p>考虑自由 Dirac 场（如电子）的拉氏量 (Lagrangian)：</p>
+      <div class="formula">\[ \mathcal{L}_{\text{free}}=\bar{\psi}\big(i\gamma^\mu\partial_\mu-m\big)\psi \]</div>
+      <p>它在全局相位变换 \( \psi(x)\to e^{iq\alpha}\psi(x) \)（\( \alpha \) 为常数）下不变。但若<strong>坚持在每一点 \( x \) 都可独立选择相位</strong>，即 \( \alpha\to\alpha(x) \)，则偏导数 \( \partial_\mu \) 不再协变：</p>
+      <div class="formula">\[ \partial_\mu\psi(x)\;\to\;e^{iq\alpha(x)}\big[\partial_\mu\psi+iq(\partial_\mu\alpha)\psi\big] \]</div>
+      <p>多出的 \( \partial_\mu\alpha \) 项破坏不变性。<strong>修复方法</strong>：引入一个矢量场 \( A_\mu(x) \)，定义<strong>协变导数</strong> (covariant derivative)：</p>
+      <div class="formula">\[ D_\mu\equiv\partial_\mu+iqA_\mu,\qquad A_\mu\to A_\mu-\partial_\mu\alpha \]</div>
+      <p>则 \( D_\mu\psi\to e^{iq\alpha(x)}D_\mu\psi \) 协变变换，拉氏量 \( \bar{\psi}(i\gamma^\mu D_\mu-m)\psi \) 严格不变。要让 \( A_\mu \) 成为动力学场，必须给它一个动能项；唯一的二阶规范不变项（无质量、无自相互作用）是：</p>
+      <div class="formula">\[ \mathcal{L}_{\mathrm{ Maxwell}}=-\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu},\qquad F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu \]</div>
+      <p>这正是<strong>麦克斯韦拉氏量</strong>！由此整个 QED（电磁学）由一条原则导出。注意一个深刻推论：质量项 \( \tfrac{1}{2}m_A^2 A_\mu A^\mu \) <strong>不是规范不变的</strong>（\( A_\mu\to A_\mu-\partial_\mu\alpha \) 下改变），故规范不变性<strong>禁止</strong>光子获得质量——这解释了光子为何无质量。完整 QED 拉氏量：</p>
+      <div class="formula">\[ \boxed{\;\mathcal{L}_{\mathrm{QED}}=\bar{\psi}\big(i\gamma^\mu D_\mu-m\big)\psi-\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu}\;} \]</div>
+      <p><strong>关键洞见</strong>：相互作用的<strong>形式</strong>（\( \bar{\psi}\gamma^\mu\psi\,A_\mu \)，即矢量耦合）和<strong>规范玻色子</strong>（光子）的存在、量子数（自旋 1、无质量、电荷中性），都由规范不变性这条<strong>原理</strong>唯一确定。</p>
+      <div class="key-terms">gauge invariance (规范不变性), gauge principle (规范原理), local symmetry (定域对称性), covariant derivative (协变导数), U(1) (阿贝尔规范群), massless photon (无质量光子)</div>
+
+      <h3>2. 非阿贝尔规范理论（Yang–Mills）Non-Abelian Gauge Theories</h3>
+      <p>1954 年杨振宁与 Mills 将规范原理推广到<strong>非阿贝尔群</strong> (non-Abelian group) —— 即群元不交换 \( T^aT^b\neq T^bT^a \)。考虑费米子属于某李群 \( G \)（生成元 \( T^a \)，满足 \( [T^a,T^b]=if^{abc}T^c \)，\( f^{abc} \) 为<strong>结构常数</strong>）的内部空间（如色空间）。定域变换为：</p>
+      <div class="formula">\[ \psi(x)\to U(x)\psi(x),\qquad U(x)=\exp\big(i g \alpha^a(x)T^a\big) \]</div>
+      <p>对每个生成元 \( T^a \) 引入一个规范场 \( A^a_\mu \)（共 \( \dim G \) 个），协变导数与场强为：</p>
+      <div class="formula">\[ D_\mu=\partial_\mu+igA_\mu,\quad A_\mu=A^a_\mu T^a \]</div>
+      <div class="formula">\[ \boxed{\;F^a_{\mu\nu}=\partial_\mu A^a_\nu-\partial_\nu A^a_\mu+g f^{abc}A^b_\mu A^c_\nu\;} \]</div>
+      <p>关键：场强 \( F^a_{\mu\nu} \) 中出现了<strong>非线性的 \( g f^{abc}A A \) 项</strong> —— <strong>规范玻色子之间彼此相互作用</strong>！这是非阿贝尔理论与 QED 的本质差异（电磁场 \( F_{\mu\nu} \) 中没有 \( AA \) 项，光子不自相互作用）。</p>
+      <p><strong>QCD</strong> 取 \( G=SU(3) \) 色 (color) 群（生成元为 Gell-Mann 矩阵 \( T^a=\lambda^a/2 \)，\( a=1,\dots,8 \)，结构常数 \( f^{abc} \)），相应的 8 个规范玻色子即<strong>胶子</strong> (gluons)。每种夸克 (quark) 有 3 种色 (red/green/blue)，是 \( SU(3) \) 的三维表示。胶子本身带色荷（属于伴随表示 8 维），这是渐近自由的根源。</p>
+      <p>由 Yang–Mills 场的动能项 \( -\tfrac{1}{2}\mathrm{Tr}(F_{\mu\nu}F^{\mu\nu}) \) 展开得到三个 \( AAA \) 顶点项与一个 \( AAAA \) 顶点项 —— 它们决定 QCD 微扰论的复杂性。</p>
+      <div class="key-terms">non-Abelian gauge theory (非阿贝尔规范理论), Yang–Mills, structure constant (结构常数), SU(3) color group (SU(3) 色群), gluon (胶子), quark (夸克), self-interaction (自相互作用)</div>
+
+      <h3>3. 费曼规则 Feynman Rules</h3>
+      <p>微扰量子场论中，把跃迁振幅按耦合常数幂次展开，每一项对应一张<strong>费曼图</strong> (Feynman diagram)。基本的<strong>费曼规则</strong>给出每条线、每个顶点对应的代数因子。下面列出 QED 与 QCD 的核心规则（费曼规范，忽略颜色 / 自旋指标的细节）：</p>
+      <div class="formula">\[ \begin{array}{l|l|l}
+      \textbf{元素 Element} & \textbf{QED} & \textbf{QCD}\\\hline
+      \text{费米子顶点 fermion vertex} & -ie\gamma^\mu & -ig_s\gamma^\mu T^a\\
+      \text{费米子传播子 fermion propagator} & \dfrac{i(\slashed{p}+m)}{p^2-m^2+i\varepsilon} & \dfrac{i(\slashed{p}+m)}{p^2-m^2+i\varepsilon}\;\delta_{ij}\\
+      \text{规范玻色子传播子 gauge propagator} & \dfrac{-ig_{\mu\nu}}{q^2+i\varepsilon} & \dfrac{-ig_{\mu\nu}\delta^{ab}}{q^2+i\varepsilon}\\
+      \text{3-玻色子顶点 3-gauge vertex} & \text{(无 none)} & -gf^{abc}\,[\text{动量-指标结构}]\\
+      \text{4-玻色子顶点 4-gauge vertex} & \text{(无 none)} & -ig^2 f^{abe}f^{cde}\,[\cdots]
+      \end{array} \]</div>
+      <p>关键观察：(i) 光子传播子 \( \propto 1/q^2 \) 的<strong>极点</strong>对应无质量粒子；(ii) QED 只有一个费米子-光子顶点，而 QCD 还有 <strong>3-胶子和 4-胶子顶点</strong>（源自 \( F^a_{\mu\nu} \) 的非线性项）—— 这些额外的胶子-胶子相互作用顶点是<strong>渐近自由的物理来源</strong>。(iii) 顶点中的色因子 \( T^a \) 使 QCD 振幅具有比 QED 更丰富的结构（颜色求和 / 平均）。</p>
+      <p><strong>数量级估计</strong>：单光子交换树图振幅 \( \mathcal{M}\sim e^2/q^2\sim 4\pi\alpha/q^2 \)；截面 \( \sigma\sim|\mathcal{M}|^2\sim\alpha^2/s \)。每一额外圈图引入因子 \( \alpha/(4\pi)\sim 10^{-3} \)，故微扰展开收敛良好。</p>
+      <div class="key-terms">Feynman diagram (费曼图), vertex factor (顶点因子), propagator (传播子), color factor (色因子), tree level (树图阶), loop diagram (圈图)</div>
+
+      <h3>4. 重整化 Renormalization</h3>
+      <p>对费曼图进行圈积分（loop integral）时，常遇到形如 \( \int \mathrm{d}^4 k/k^n \) 的<strong>紫外发散</strong> (ultraviolet divergence) —— 高动量 \( k\to\infty \) 时积分不收敛。例如电子自能圈图、真空极化（光子自能）圈图都发散。为赋予发散积分以数学意义，先<strong>正规化</strong> (regularize)：引入一个临时调节参数使积分有限——例如动量截断 \( \Lambda_{\mathrm{UV}} \)、维度正规化 (dimensional regularization, \( d=4-\varepsilon \))、或格点 (lattice) 截断。</p>
+      <p><strong>重整化纲领</strong> (renormalization program) 是把发散吸收进<strong>重新定义的物理参数</strong>（质量、电荷、场强）的过程：</p>
+      <ul>
+        <li>从「裸」拉氏量 \( \mathcal{L}(\psi_0,m_0,e_0) \) 出发，其中 \( m_0,e_0 \) 是不可观测的发散量；</li>
+        <li>引入<strong>抵消项</strong> (counterterms) \( \delta_m,\delta_e,\delta_\psi \)，把圈图的发散部分抵消；</li>
+        <li>剩余的有限部分定义<strong>重整化</strong>参数 \( m,e \) —— 这是我们实验测得的物理值。</li>
+      </ul>
+      <p>关键性质：<strong>可重整化</strong> (renormalizable) 的理论只需<strong>有限种</strong>抵消项即可吸收所有阶的发散。QED、Yang–Mills、标准模型都是可重整化的（'t Hooft 与 Veltman 1971 证明，获 1999 年诺贝尔奖）；广义相对论在微扰意义下<strong>不可重整化</strong>（每一阶需要新抵消项），暗示需更深层的量子引力理论。</p>
+      <div class="key-terms">ultraviolet divergence (紫外发散), regularization (正规化), counterterm (抵消项), renormalization (重整化), renormalizable (可重整化), dimensional regularization (维度正规化)</div>
+
+      <h3>5. 重整化群与跑动耦合 Renormalization Group &amp; Running Couplings</h3>
+      <p>重整化引入了一个任意能标 \( \mu \)：物理观测量（如散射截面）不应依赖 \( \mu \)，但重整化参数 \( \alpha(\mu) \)、\( m(\mu) \) 必须随 \( \mu \) 变化以补偿——这就是<strong>重整化群</strong> (renormalization group, RG)。耦合常数的<strong>跑动</strong> (running) 由 \( \beta \) 函数描述：</p>
+      <div class="formula">\[ \mu\frac{\mathrm{d}\alpha}{\mathrm{d}\mu}=\beta(\alpha)=\beta_0\frac{\alpha^2}{2\pi}+\mathcal{O}(\alpha^3) \]</div>
+      <p><strong>QED</strong>：在单圈下，\( \beta_0^{\mathrm{QED}}=-\tfrac{4}{3}\sum_f N_c q_f^2<0 \)（负号来自我们的定义约定；等价地，\( \alpha_{\mathrm{em}} \) <em>增长</em>）。所有带电费米子都贡献真空极化，使有效电荷在高能下变大。</p>
+      <p><strong>QCD</strong>：单圈下（对 \( SU(N_c) \) 规范理论、\( n_f \) 个费米子表示）：</p>
+      <div class="formula">\[ \boxed{\;\beta_0^{\mathrm{QCD}}=\frac{11}{3}N_c-\frac{2}{3}n_f\;\;} \qquad (N_c=3\text{ 对 QCD}) \]</div>
+      <p>第一项 \( +\frac{11}{3}N_c=+11 \)（来自胶子自相互作用与规范场的「真空极化」）<strong>主导</strong>；第二项 \( -\tfrac{2}{3}n_f \) 来自夸克圈（类似 QED 的屏蔽效应）。对真实世界 \( n_f\leq 6 \)，\( \beta_0>0 \)，故 \( \alpha_s \) <strong>随 \( \mu \) 减小</strong>—— <strong>渐近自由</strong>（Gross, Politzer, Wilczek 1973，获 2004 年诺贝尔奖）。积分 \( \beta \) 方程得：</p>
+      <div class="formula">\[ \boxed{\;\alpha_s(Q^2)=\frac{4\pi}{\beta_0\ln(Q^2/\Lambda_{\mathrm{QCD}}^2)}\;} \]</div>
+      <p>其中 \( \Lambda_{\mathrm{QCD}} \) 是积分常数 —— QCD 内禀的<strong>特征能标</strong>，当 \( Q\to\Lambda_{\mathrm{QCD}} \) 时 \( \alpha_s\to\infty \)，微扰论失效。<strong>实验值</strong>：由 \( \alpha_s(m_Z^2)=0.1181\pm 0.0011 \) 反推得 \( \Lambda_{\mathrm{QCD}}^{(n_f=5)}\approx 90\,\mathrm{MeV} \)（单圈）或 \( \approx 210\,\mathrm{MeV} \)（双圈 MS-bar 方案）。</p>
+      <div class="key-terms">renormalization group (重整化群), beta function (\( \beta \) 函数), running coupling (跑动耦合), asymptotic freedom (渐近自由), \(\Lambda_{\mathrm{QCD}}\), MS-bar scheme</div>
+
+      <h3>6. 渐近自由与色禁闭 Asymptotic Freedom &amp; Confinement</h3>
+      <p><strong>渐近自由</strong>意味着高能（小距离）下夸克间相互作用<strong>变弱</strong>：\( Q\to\infty \) 时 \( \alpha_s(Q)\to 0 \)。这正是 1969 年 Friedman–Kendall–Taylor 在 SLAC<strong>深度非弹性散射</strong> (deep inelastic scattering, DIS) 实验中观察到的「<strong>Bjorken 标度无关性</strong>」(scaling) —— 高能电子探测质子时，质子内部组分表现为<strong>几乎自由的点状部分子</strong> (partons)。该实验是 QCD 的关键证据。</p>
+      <p>反过来，<strong>低能下</strong>（\( Q\lesssim 1\,\mathrm{GeV} \)）\( \alpha_s \) 增长至 \( \gtrsim 0.3 \) 进入非微扰区域，最终在 \( Q\sim\Lambda_{\mathrm{QCD}} \) 发散。这里出现 <strong>色禁闭</strong> (color confinement)：夸克与胶子无法以自由粒子形式存在，永远被束缚于<strong>色单态</strong>强子（重子 \( qqq \)、介子 \( q\bar{q} \)）中。试图拉开两个夸克时，色场（弦张力 \( \sim 1\,\mathrm{GeV/fm} \)）的能量密度足以从真空中产生新夸克对，形成新强子（强子化 hadronization），而非分离出自由夸克。<strong>至今实验上从未观测到自由夸克</strong>。</p>
+      <p><strong>QED 对比</strong>：\( \alpha_{\mathrm{em}}(0)=1/137.036 \)，\( \alpha_{\mathrm{em}}(m_Z^2)=1/127.95 \) —— 增长缓慢，仅 \( \sim 6\% \)，永远保持小量，所以 QED 微扰论在所有已测能标都极为精确。</p>
+      <div class="key-terms">asymptotic freedom (渐近自由), deep inelastic scattering (深度非弹性散射), parton (部分子), Bjorken scaling (Bjorken 标度无关性), confinement (色禁闭), hadronization (强子化)</div>
+
+      <h3>7. 格点 QCD 简介 Lattice QCD</h3>
+      <p>由于 \( \alpha_s \) 在低能（\( Q\lesssim 1\,\mathrm{GeV} \)）下变大，微扰展开失效，研究强子性质（质量、衰变常数、形状因子）必须用<strong>非微扰方法</strong>。<strong>格点 QCD</strong>（Wilson 1974）把连续时空离散化为格点（间距 \( a\sim 0.05\!-\!0.1\,\mathrm{fm} \)，提供自然 UV 截断 \( \Lambda_{\mathrm{UV}}\sim\pi/a \)），用<strong>路径积分</strong>在大型计算机上蒙特卡洛抽样<strong>规范场组态</strong>。<strong>规范不变性在格点上保持精确</strong>（通过 Wilson 闭环链接变量 \( U_\mu(x)\in SU(3) \)）。当代格点 QCD 已能以 \( \lesssim 1\% \) 精度再现质子、\( \pi \)、\( K \)、\( D \)、\( B \) 介子等的质量，是标准模型精确检验的重要工具。</p>
+      <div class="key-terms">lattice QCD (格点 QCD), Wilson loop (Wilson 闭环), path integral (路径积分), non-perturbative (非微扰)</div>
+
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由定域 \( U(1) \) 不变性导出 QED 与无质量光子</h3>
+      <p class="step"><strong>设定</strong>：从自由 Dirac 场 \( \mathcal{L}_0=\bar{\psi}(i\gamma^\mu\partial_\mu-m)\psi \) 出发，要求它在<strong>定域</strong>相位变换下不变。</p>
+      <p class="step"><strong>第一步（定域变换破坏不变性）</strong>：取 \( \psi(x)\to e^{iq\alpha(x)}\psi(x) \)，则：</p>
+      <p>\[ \bar{\psi}i\gamma^\mu\partial_\mu\psi\;\to\;\bar{\psi}i\gamma^\mu\big[\partial_\mu+iq(\partial_\mu\alpha)\big]\psi=\bar{\psi}i\gamma^\mu\partial_\mu\psi-q(\partial_\mu\alpha)\bar{\psi}\gamma^\mu\psi \]</p>
+      <p>多出 \( -q(\partial_\mu\alpha)\bar{\psi}\gamma^\mu\psi \) 项，不变性破坏。</p>
+      <p class="step"><strong>第二步（引入规范场修复）</strong>：定义 \( D_\mu=\partial_\mu+iqA_\mu \)，并要求 \( A_\mu \) 同时变换为 \( A_\mu\to A_\mu-\partial_\mu\alpha \)。验证：</p>
+      <p>\[ D_\mu\psi\to(\partial_\mu+iqA_\mu-iq\partial_\mu\alpha)e^{iq\alpha}\psi=e^{iq\alpha}(\partial_\mu\psi+iq\psi+iqA_\mu\psi-iq\partial_\mu\alpha\psi)=e^{iq\alpha}D_\mu\psi \]</p>
+      <p>（用了 \( \partial_\mu e^{iq\alpha}=iq(\partial_\mu\alpha)e^{iq\alpha} \)）。故 \( \bar{\psi}i\gamma^\mu D_\mu\psi \) 严格不变。展开：</p>
+      <div class="formula">\[ \bar{\psi}i\gamma^\mu D_\mu\psi=\bar{\psi}i\gamma^\mu\partial_\mu\psi-q\,\bar{\psi}\gamma^\mu\psi\,A_\mu \]</div>
+      <p>第二项正是<strong>电流-矢量场相互作用</strong> \( -j^\mu A_\mu \)，电流 \( j^\mu=q\bar{\psi}\gamma^\mu\psi \)！电磁相互作用<strong>从规范原理涌现</strong>，不需要额外假设。</p>
+      <p class="step"><strong>第三步（光子动能项与无质量）</strong>：要让 \( A_\mu \) 自身有动力学，需加入规范不变的动能项。二阶项只能是 \( -\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu} \)，其中 \( F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu \)（在 \( A_\mu\to A_\mu-\partial_\mu\alpha \) 下不变，因 \( \partial_\mu\partial_\nu\alpha-\partial_\nu\partial_\mu\alpha=0 \)）。注意 <strong>质量项 \( \tfrac{1}{2}m^2 A_\mu A^\mu \) 不是规范不变量</strong>（\( A_\mu A^\mu \) 含 \( (\partial_\mu\alpha)^2 \) 项），故被规范不变性<strong>禁止</strong>：</p>
+      <div class="formula">\[ \boxed{\;\text{规范不变性}\;\Rightarrow\;m_\gamma=0\;} \]</div>
+      <p class="step"><strong>结论</strong>：完整 QED 拉氏量 \( \mathcal{L}_{\mathrm{QED}}=\bar{\psi}(i\gamma^\mu D_\mu-m)\psi-\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu} \) 仅由「定域 \( U(1) \) 不变性 + 二阶作用量」唯一确定，且预言光子质量严格为零（实验上限 \( m_\gamma<10^{-18}\,\mathrm{eV} \)）。</p>
+
+      <h3>B. 由 \( \beta \) 函数积分导出跑动 \( \alpha_s(Q) \) 与渐近自由</h3>
+      <p class="step"><strong>设定</strong>：QCD 单圈 \( \beta \) 函数 \( \mu\,\mathrm{d}\alpha_s/\mathrm{d}\mu=-\beta_0\alpha_s^2/(2\pi) \)，\( \beta_0=11-2n_f/3>0 \)。求 \( \alpha_s(Q) \)。</p>
+      <p class="step"><strong>第一步（分离变量）</strong>：</p>
+      <p>\[ \frac{\mathrm{d}\alpha_s}{\alpha_s^2}=-\frac{\beta_0}{2\pi}\frac{\mathrm{d}\mu}{\mu} \]</p>
+      <p class="step"><strong>第二步（两边积分）</strong>：从参考能标 \( \mu \) 到 \( Q \)：</p>
+      <p>\[ \int_{\alpha_s(\mu)}^{\alpha_s(Q)}\frac{\mathrm{d}\alpha}{\alpha^2}=-\frac{\beta_0}{2\pi}\int_\mu^Q\frac{\mathrm{d}\mu'}{\mu'}\quad\Longrightarrow\quad -\frac{1}{\alpha_s(Q)}+\frac{1}{\alpha_s(\mu)}=-\frac{\beta_0}{2\pi}\ln\frac{Q}{\mu} \]</p>
+      <p class="step"><strong>第三步（重排）</strong>：</p>
+      <p>\[ \frac{1}{\alpha_s(Q)}=\frac{1}{\alpha_s(\mu)}+\frac{\beta_0}{2\pi}\ln\frac{Q}{\mu}=\frac{\beta_0}{4\pi}\ln\frac{Q^2}{\mu^2}+\text{const} \]</p>
+      <p>定义积分常数 \( \Lambda_{\mathrm{QCD}} \)：\( 1/\alpha_s(\mu)=-(\beta_0/4\pi)\ln(\mu^2/\Lambda_{\mathrm{QCD}}^2) \)，则：</p>
+      <div class="formula">\[ \boxed{\;\alpha_s(Q^2)=\frac{4\pi}{\beta_0\,\ln(Q^2/\Lambda_{\mathrm{QCD}}^2)}\;} \]</div>
+      <p class="step"><strong>第四步（符号分析 ⇒ 渐近自由）</strong>：因 \( \beta_0>0 \)，当 \( Q^2\gg\Lambda_{\mathrm{QCD}}^2 \) 时 \( \ln\to\infty \)，故 \( \alpha_s\to 0^+ \)：耦合<strong>减小</strong>——这就是渐近自由。当 \( Q\to\Lambda_{\mathrm{QCD}}^+ \)，\( \alpha_s\to+\infty \)：微扰论失效，进入禁闭相。<strong>符号根源</strong>：\( \beta_0 \) 的 \( +11 \) 来自胶子自相互作用（仅非阿贝尔理论才有），\( -2n_f/3 \) 来自夸克屏蔽。若 \( n_f>33/2=16.5 \)（真实世界 \( n_f=6 \) 远小），将失去渐近自由。</p>
+      <p class="step"><strong>评注</strong>：将 \( \alpha_s(m_Z^2)=0.1181 \) 代入定出 \( \Lambda_{\mathrm{QCD}}^{(5)}\approx 88\,\mathrm{MeV} \)（单圈），由此预测 \( \alpha_s(1\,\mathrm{TeV}^2)\approx 0.088 \)，与大型强子对撞机 (LHC) 测量一致。这一「测量一点，预测全线」的成功是 QCD 作为正确理论的强力证据。</p>
+
+      <h3>C. 真空极化导致 QED 跑动 \( \alpha_{\mathrm{em}}(Q) \)</h3>
+      <p class="step"><strong>设定</strong>：考虑光子自能的单圈图（费米子圈），即<strong>真空极化</strong> (vacuum polarization)。它修正光子传播子 \( 1/q^2\to 1/(q^2[1-\Pi(q^2)]) \)，等价于有效电荷 \( e^2\to e^2/[1-\Pi(q^2)] \)。</p>
+      <p class="step"><strong>第一步（计算圈积分）</strong>：对单一 Dirac 费米子（质量 \( m_f \)、电荷 \( q_f e \)、色数 \( N_c \)），在 \( Q^2\gg m_f^2 \) 极限下：</p>
+      <p>\[ \Pi_f(Q^2)\approx\frac{\alpha(0)}{3\pi}N_c q_f^2\ln\frac{Q^2}{m_f^2} \]</p>
+      <p class="step"><strong>第二步（对所有低于 \( Q \) 的费米子求和）</strong>：</p>
+      <div class="formula">\[ \alpha_{\mathrm{em}}(Q^2)=\frac{\alpha(0)}{1-\Delta\alpha(Q^2)},\qquad \Delta\alpha(Q^2)=\frac{\alpha(0)}{3\pi}\sum_{m_f<Q} N_c q_f^2\ln\frac{Q^2}{m_f^2} \]</div>
+      <p class="step"><strong>第三步（在 \( Q=m_Z \) 处估算）</strong>：所有轻子 (e, \( \mu \), \( \tau \)) 与夸克 (u, d, s, c, b；顶夸克 \( m_t=173\,\mathrm{GeV}>m_Z \)，不贡献) 求和，\( \sum N_c q_f^2=3+3\cdot 3\cdot(4/9)\cdot 2+3\cdot 3\cdot(1/9)\cdot 3=3+8+3=14 \)... 更精确按各自质量阈值求和得 \( \sum\approx 96 \)，故：</p>
+      <p>\[ \Delta\alpha(m_Z^2)\approx\frac{1}{137.036\times 3\pi}\times 96\approx\frac{96}{1292}\approx 0.0743 \]</p>
+      <p>\[ \alpha_{\mathrm{em}}(m_Z^2)=\frac{\alpha(0)}{1-0.0743}=\frac{1/137.036}{0.9257}\approx\frac{1}{126.9}\approx 1/127 \]</p>
+      <p class="step"><strong>结论</strong>：从 Thomson 极限 \( \alpha(0)=1/137.036 \) 到 \( Z \) 极 \( \alpha(m_Z^2)\approx 1/127 \)，QED 耦合增长约 \( 7\% \)。LEP 精确测量 \( \alpha(m_Z^2)=1/127.950\pm 0.017 \) 与理论吻合。这印证：<strong>「精细结构常数」并非真正的常数，而是能标的函数</strong>。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 7.1 QED 跑动耦合：Thomson 极限 vs \( Z \) 极</h4>
+        <p class="example-statement">已知 Thomson 极限（低能原子物理）\( \alpha(0)=1/137.036=7.2974\times 10^{-3} \)。LEP 在 \( Z \) 玻色子质量 \( m_Zc^2=91.1876\,\mathrm{GeV} \) 处精确测得 \( \alpha(m_Z^2)=1/127.950=7.8155\times 10^{-3} \)。(a) 求耦合的相对增长百分比；(b) 用单圈真空极化公式预测 \( \alpha(m_Z^2) \) 并比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：</p>
+          <p>\[ \frac{\Delta\alpha}{\alpha(0)}=\frac{1/127.95-1/137.036}{1/137.036}=\frac{137.036}{127.95}-1=1.07098-1=0.07098 \]</p>
+          <p>故 \( \alpha \) 在能标由 \( \sim 0 \) 升到 \( 91.2\,\mathrm{GeV} \) 时增长 <strong>\( \approx 7.10\% \)</strong>。</p>
+          <p class="step"><strong>解 (b)</strong>：用推导 C 的公式，对低于 \( m_Z \) 的费米子求和。按阈值精确计算 \( \sum_f N_c q_f^2\ln(m_Z^2/m_f^2)\approx 96 \)，故：</p>
+          <p>\[ \Delta\alpha(m_Z^2)\approx\frac{\alpha(0)}{3\pi}\times 96=\frac{7.297\times 10^{-3}}{9.4248}\times 96=7.742\times 10^{-4}\times 96=0.0743 \]</p>
+          <p>\[ \alpha_{\mathrm{em}}^{\text{预测}}(m_Z^2)=\frac{\alpha(0)}{1-0.0743}=\frac{7.297\times 10^{-3}}{0.9257}=7.883\times 10^{-3}=\frac{1}{126.9} \]</p>
+          <p class="step"><strong>比较</strong>：预测 \( 1/126.9 \) vs 测量 \( 1/127.95 \)，差 \( \sim 0.8\% \)。差异源于：(i) 我们忽略了顶夸克圈（\( m_t>m_Z \)，但它通过 Weinberg 转动对低能 \( \alpha \) 有小修正）；(ii) 只算了单圈，双圈贡献约 \( -0.04\% \)；(iii) 强子圈涉及夸克质量约定。即便如此，单圈已再现 \( 99\% \) 的变化，是 QED 重整化的辉煌验证。</p>
+          <p><span class="ans">\( \alpha \) 增长 \( 7.10\% \)；单圈预测 \( \alpha(m_Z^2)\approx 1/127 \)，与测量 \( 1/127.95 \) 相符。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.2 QCD 跑动耦合：\( \alpha_s \) 在高能 vs 低能</h4>
+        <p class="example-statement">世界平均值 \( \alpha_s(m_Z^2)=0.1181 \)，\( m_Z=91.19\,\mathrm{GeV} \)，\( n_f=5 \)（\( u,d,s,c,b \) 活跃，\( t \) 太重）。取单圈 \( \beta_0=11-2n_f/3=23/3=7.667 \)。(a) 反求 \( \Lambda_{\mathrm{QCD}}^{(5)} \)；(b) 预测 \( \alpha_s(Q^2) \) 在 \( Q=2\,\mathrm{GeV} \)、\( Q=10\,\mathrm{GeV} \)、\( Q=1\,\mathrm{TeV} \) 三处的值，说明渐近自由。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：由 \( \alpha_s(m_Z^2)=4\pi/[\beta_0\ln(m_Z^2/\Lambda^2)] \)：</p>
+          <p>\[ \ln\frac{m_Z^2}{\Lambda^2}=\frac{4\pi}{\beta_0\,\alpha_s(m_Z^2)}=\frac{12.566}{7.667\times 0.1181}=\frac{12.566}{0.9054}=13.88 \]</p>
+          <p>\[ \frac{m_Z^2}{\Lambda^2}=e^{13.88}=1.075\times 10^{6}\;\Rightarrow\;\Lambda^2=\frac{(91.19)^2}{1.075\times 10^6}=\frac{8315}{1.075\times 10^6}=7.73\times 10^{-3}\,\mathrm{GeV}^2 \]</p>
+          <p>\[ \Lambda_{\mathrm{QCD}}^{(5)}=0.0879\,\mathrm{GeV}\approx 88\,\mathrm{MeV}\quad(\text{单圈；双圈 MS-bar}\, \approx 210\,\mathrm{MeV}) \]</p>
+          <p class="step"><strong>解 (b)</strong>：用 \( \alpha_s(Q^2)=4\pi/[7.667\times\ln(Q^2/0.0879^2)] \)。</p>
+          <p>\( Q=2\,\mathrm{GeV} \)：\( \ln(4/0.00773)=\ln 517=6.248 \)，\( \alpha_s=12.566/(7.667\times 6.248)=12.566/47.90=\mathbf{0.262} \)。</p>
+          <p>\( Q=10\,\mathrm{GeV} \)：\( \ln(100/0.00773)=\ln 12\,937=9.47 \)，\( \alpha_s=12.566/(7.667\times 9.47)=12.566/72.59=\mathbf{0.173} \)。</p>
+          <p>\( Q=1\,\mathrm{TeV}=10^3\,\mathrm{GeV} \)：\( \ln(10^6/0.00773)=\ln(1.293\times 10^8)=18.68 \)，\( \alpha_s=12.566/(7.667\times 18.68)=12.566/143.2=\mathbf{0.0877} \)。</p>
+          <p class="step"><strong>结论</strong>：\( \alpha_s \) 从 \( 0.262 \)（\( Q=2\,\mathrm{GeV} \)，低能）下降到 \( 0.0877 \)（\( Q=1\,\mathrm{TeV} \)，高能），<strong>减为原来的 \( 1/3 \)</strong>。这就是<strong>渐近自由</strong>：高能下夸克间相互作用变弱，质子在被高能电子「硬探」时其内部夸克表现为近自由点粒子。这些预测与 LEP、HERA、LHC 的实验值（\( \alpha_s(2\,\mathrm{GeV})\approx 0.30 \)、\( \alpha_s(10\,\mathrm{GeV})\approx 0.18 \)、\( \alpha_s(1\,\mathrm{TeV})\approx 0.09 \)）吻合。</p>
+          <p><span class="ans">\( \Lambda_{\mathrm{QCD}}^{(5)}\approx 88\,\mathrm{MeV} \)（单圈）；\( \alpha_s(2\,\mathrm{GeV})\approx 0.262 \)、\( \alpha_s(10\,\mathrm{GeV})\approx 0.173 \)、\( \alpha_s(1\,\mathrm{TeV})\approx 0.088 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.3 读出 QED 费曼规则与 \( e^+e^-\to\mu^+\mu^- \) 截面</h4>
+        <p class="example-statement">考虑 \( e^+e^-\to\mu^+\mu^- \) 通过单光子交换（树图，s 道）。QED 费曼规则给出：(i) 每个电磁顶点因子 \( -ie\gamma^\mu \)；(ii) 光子传播子（费曼规范）\( -ig_{\mu\nu}/(q^2+i\varepsilon) \)；(iii) 费米子传播子 \( i(\slashed{p}+m)/(p^2-m^2+i\varepsilon) \)。(a) 写出振幅 \( \mathcal{M} \) 的结构；(b) 在质心系 \( \sqrt{s}=E_{\mathrm{cm}}=10\,\mathrm{GeV} \)（远低于 \( Z \)，可忽略弱贡献），用 \( \alpha(0)=1/137.036 \) 求总截面 \( \sigma \)。已知 \( 1\,\mathrm{GeV}^{-2}=0.3894\,\mathrm{mb}=3.894\times 10^{5}\,\mathrm{nb} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：图中有 2 个顶点（\( e^+e^-\gamma \) 与 \( \mu^+\mu^-\gamma \)）、1 个光子传播子。振幅：</p>
+          <p>\[ \mathcal{M}=(-ie)\,\bar{v}(e^+)\gamma^\mu u(e^-)\,\frac{-ig_{\mu\nu}}{s}\,(-ie)\,\bar{u}(\mu^-)\gamma^\nu v(\mu^+)=\frac{-ie^2}{s}\,j^\mu_{e^+e^-}j_{\mu,\,\mu^+\mu^-} \]</p>
+          <p>（\( s=q^2=E_{\mathrm{cm}}^2 \)，光子接近质壳）。</p>
+          <p class="step"><strong>解 (b)</strong>：对自旋初态求平均、末态求和，用求迹公式 \( \mathrm{Tr}(\slashed{p}\gamma^\mu\slashed{p}'\gamma_\mu)=-8p\cdot p'+4m^2\to 8p\cdot p' \)（高能极限 \( m\to 0 \)），得到：</p>
+          <div class="formula">\[ \overline{|\mathcal{M}|^2}=\frac{8e^4}{s}\big(1+\cos^2\theta\big)\quad\Rightarrow\quad \sigma=\int\!\mathrm{d}\Omega\,\frac{\overline{|\mathcal{M}|^2}}{64\pi^2 s}=\frac{4\pi\alpha^2}{3s} \]</div>
+          <p class="step"><strong>代入数据</strong>：</p>
+          <p>\[ \sigma=\frac{4\pi(1/137.036)^2}{3\times(10\,\mathrm{GeV})^2}=\frac{4\pi\times 5.325\times 10^{-5}}{300\,\mathrm{GeV}^2}=\frac{6.694\times 10^{-4}}{300}\,\mathrm{GeV}^{-2}=2.231\times 10^{-6}\,\mathrm{GeV}^{-2} \]</p>
+          <p>\[ \sigma=2.231\times 10^{-6}\times 3.894\times 10^{5}\,\mathrm{nb}=\mathbf{0.869\,\mathrm{nb}} \]</p>
+          <p class="step"><strong>评注</strong>：(i) 该结果与 PETRA / TRISTAN 在 \( 10\!-\!60\,\mathrm{GeV} \) 测得的连续谱截面一致；(ii) 比值 \( R\equiv\sigma(e^+e^-\to\text{强子})/\sigma(e^+e^-\to\mu^+\mu^-)\approx 3\sum_q e_q^2(1+\alpha_s/\pi)=3\times[(2/3)^2+(1/3)^2]\times 5\div 3\times 1.05\approx 4.7 \)（\( u,d,s,c,b \)），即强子截面是 \( \mu^+\mu^- \) 截面的 \( \sim 4.7 \) 倍，由此实验上首次精确测量 \( R \) 验证夸克色数 \( N_c=3 \)；(iii) 在 \( \sqrt{s}=m_Z=91.2\,\mathrm{GeV} \) 时，纯光子贡献仅 \( \sigma_0\approx 10\,\mathrm{pb} \)，但 \( Z \) 共振使峰值跃升至 \( \sim 30\,\mathrm{nb} \)（强子）—— 增 \( \sim 10^3 \) 倍，对应 \( Z\to\mu^+\mu^- \) 分支比 \( \sim 3.4\% \)。</p>
+          <p><span class="ans">\( \sigma(e^+e^-\to\mu^+\mu^-;\sqrt{s}=10\,\mathrm{GeV})\approx 0.87\,\mathrm{nb} \)；\( R\approx 4.7 \)（5 种夸克）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.4 RG 流的速率对比：QED vs QCD 谁跑得快？</h4>
+        <p class="example-statement">考虑能标由 \( Q_1=m_Z=91.19\,\mathrm{GeV} \) 升到 \( Q_2=1\,\mathrm{TeV}=1000\,\mathrm{GeV} \)（一个数量级）。已知 \( \alpha_{\mathrm{em}}(m_Z^2)=1/127.95=7.8155\times 10^{-3} \)、\( \alpha_s(m_Z^2)=0.1181 \)。(a) 用单圈真空极化公式（含全部 9 种费米子，包括顶夸克 \( m_t=173\,\mathrm{GeV}<1\,\mathrm{TeV} \)）求 \( \alpha_{\mathrm{em}}(1\,\mathrm{TeV}^2) \)；(b) 用单圈 \( \beta_0=23/3 \)、\( \Lambda=0.088\,\mathrm{GeV} \) 求 \( \alpha_s(1\,\mathrm{TeV}^2) \)；(c) 比较两者的<strong>相对变化</strong> \( \Delta\alpha/\alpha \)，说明哪个耦合「跑得快」。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) QED</strong>：用推导 C 公式 \( \Delta\alpha(Q^2)=\frac{\alpha(0)}{3\pi}\sum_{m_f<Q}N_c q_f^2\ln(Q^2/m_f^2) \)。在 \( Q=1\,\mathrm{TeV} \)，全部 9 种费米子都活跃。按各阈值求和得 \( \sum_f N_c q_f^2\ln(Q^2/m_f^2)\approx 135 \)，故：</p>
+          <p>\[ \Delta\alpha(1\,\mathrm{TeV}^2)=\frac{1}{137.036\times 3\pi}\times 135=7.742\times 10^{-4}\times 135=0.1047 \]</p>
+          <p>\[ \alpha_{\mathrm{em}}(1\,\mathrm{TeV}^2)=\frac{\alpha(0)}{1-0.1047}=\frac{1/137.036}{0.8953}=\frac{1}{\mathbf{122.7}} \]</p>
+          <p class="step"><strong>解 (b) QCD</strong>：</p>
+          <p>\[ \alpha_s(1\,\mathrm{TeV}^2)=\frac{4\pi}{\beta_0\ln(Q^2/\Lambda^2)}=\frac{12.566}{7.667\times\ln(10^6/0.088^2)}=\frac{12.566}{7.667\times\underbrace{\ln(1.29\times 10^8)}_{18.68}}=\frac{12.566}{143.2}=\mathbf{0.0877} \]</p>
+          <p class="step"><strong>解 (c) 相对变化</strong>：</p>
+          <p>\[ \frac{\Delta\alpha_{\mathrm{em}}}{\alpha_{\mathrm{em}}}=\frac{1/122.7-1/127.95}{1/127.95}=\frac{127.95}{122.7}-1=+4.28\%\quad(\text{增长}) \]</p>
+          <p>\[ \frac{\Delta\alpha_s}{\alpha_s}=\frac{0.0877-0.1181}{0.1181}=\frac{-0.0304}{0.1181}=-25.7\%\quad(\text{减小}) \]</p>
+          <p>—— QCD 耦合<strong>变化幅度（绝对值）是 QED 的约 6 倍</strong>。原因有二：(i) QCD 的 \( \beta_0\approx 7.7 \) 比有效 QED 系数（\( \sum N_c q^2/(3\pi)\sim 0.28 \)）大一个数量级，源于胶子自相互作用的 \( +11 \) 主导项；(ii) \( \alpha_s \) 本身比 \( \alpha_{\mathrm{em}} \) 大约 15 倍，而跑动率 \( \mathrm{d}\alpha/\mathrm{d}\ln\mu\propto\alpha^2 \)，故 QCD 跑动率 \( \propto 0.1^2\sim 10^{-2} \)，QED 仅 \( \propto(10^{-2})^2\sim 10^{-4} \)。</p>
+          <p class="step"><strong>评注（RG 流的物理图像）</strong>：把 \( \alpha_{\mathrm{em}}(Q) \) 与 \( \alpha_s(Q) \) 同时画在 \( \log\alpha\!-\!\log Q \) 平面上（见互动仿真），可见两条「流线」：<strong>QED 缓慢上扬，QCD 明显下降</strong>。若进一步外推到 \( Q\sim 10^{15}\,\mathrm{GeV} \)（大统一标度），\( \alpha_s\approx 0.025 \)、\( \alpha_{\mathrm{em}}\approx 0.013 \)，两条线逐渐靠拢 —— 这正是 <strong>大统一理论</strong> (Grand Unification, Georgi–Glashow 1974) 的物理动机：在极高能下三种相互作用可能合为一个规范群（如 \( SU(5) \)、\( SO(10) \)）。</p>
+          <p><span class="ans">\( \alpha_{\mathrm{em}}(1\,\mathrm{TeV})\approx 1/122.7 \)（增 4.3%）；\( \alpha_s(1\,\mathrm{TeV})\approx 0.0877 \)（减 25.7%）；QCD 跑动比 QED 快约 6 倍。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 7.5 由 \( \Lambda_{\mathrm{QCD}} \) 估计强子尺度</h4>
+        <p class="example-statement">实验测得质子电荷半径 \( r_p\approx 0.841\,\mathrm{fm} \)；\( \pi \) 介子康普顿波长 \( \sim 1.4\,\mathrm{fm} \)。QCD 内禀能标 \( \Lambda_{\mathrm{QCD}}\approx 200\,\mathrm{MeV} \)（双圈 MS-bar）。用量纲分析 \( R\sim\hbar c/\Lambda_{\mathrm{QCD}} \) 估计典型强子尺度，与实验比较。已知 \( \hbar c=197.327\,\mathrm{MeV\cdot fm} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：唯一可由 \( \Lambda_{\mathrm{QCD}} \) 与 \( \hbar c \) 构造的长度量纲：</p>
+          <p>\[ R_{\mathrm{had}}\sim\frac{\hbar c}{\Lambda_{\mathrm{QCD}}}=\frac{197.327\,\mathrm{MeV\cdot fm}}{200\,\mathrm{MeV}}=\mathbf{0.987\,\mathrm{fm}\approx 1\,\mathrm{fm}} \]</p>
+          <p class="step"><strong>对比</strong>：质子半径 \( r_p=0.84\,\mathrm{fm}\sim R_{\mathrm{had}} \)；\( \pi \) 介子康普顿波长 \( \hbar/(m_\pi c)=197.3/139.6=1.41\,\mathrm{fm}\sim R_{\mathrm{had}} \)；典型介子尺寸（\( q\bar{q} \) 间距）\( \sim 1\,\mathrm{fm} \)。所有强子尺度都在 \( \sim 1\,\mathrm{fm} \) 量级 —— 与 \( \Lambda_{\mathrm{QCD}} \) 给出的特征长度吻合。</p>
+          <p class="step"><strong>物理意义</strong>：\( \Lambda_{\mathrm{QCD}} \) 是<strong>QCD 由渐近自由相转入禁闭相的相变能标</strong>。当探针动量 \( Q\lesssim\Lambda_{\mathrm{QCD}} \)，\( \alpha_s \) 趋于发散，微扰论失效；色场被「挤压」在 \( \sim R_{\mathrm{had}} \) 的尺度内，形成色单态强子。<strong>强子的尺寸并非「碰巧」是 fm，而是由 \( \Lambda_{\mathrm{QCD}} \) 这一内禀参数唯一决定</strong>。</p>
+          <p class="step"><strong>评注</strong>：可类比氢原子尺度 —— 玻尔半径 \( a_0=\hbar/(\alpha m_e c)=0.529\,\text{Å} \) 由 \( \alpha \) 与 \( m_e \) 决定。QED 中 \( \alpha\ll 1 \) 使原子「大而松」；QCD 中 \( \alpha_s(\Lambda_{\mathrm{QCD}})\sim 1 \) 使强子「紧凑」。这是两类理论尺度悬殊（\( \text{Å}\ vs\ \mathrm{fm} \)，差 \( 10^5 \) 倍）的根本原因。</p>
+          <p><span class="ans">\( R_{\mathrm{had}}\approx 1\,\mathrm{fm} \)；与 \( r_p=0.84\,\mathrm{fm} \)、\( \pi \) 波长 \( 1.4\,\mathrm{fm} \) 一致。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「规范对称性是一种力」—— 错，它是一个<strong>原理</strong>。</strong>规范不变性 (gauge invariance) 是<strong>约束拉氏量形式的对称性要求</strong>，不是「场」或「粒子」本身。它<strong>导出</strong>相互作用（光子、胶子、\( W/Z \)）的存在与形式，但本身不是力。把它与「电磁力」「强力」混为一谈，会误解整个标准模型的逻辑结构。</li>
+        <li><strong>「耦合常数是常数」—— 错，它们<strong>跑动</strong>。</strong>\( \alpha\approx 1/137 \) 仅在低能（Thomson 极限）成立；在 LEP 能标 \( \alpha(m_Z^2)\approx 1/128 \)。\( \alpha_s \) 变化更剧烈：从 \( \sim 0.09 \)（\( 1\,\mathrm{TeV} \)）到 \( \sim 0.30 \)（\( 2\,\mathrm{GeV} \)）。把任意能标下测得的耦合当作普适常数使用，会导致定量错误。<em>正确做法：所有「精细结构常数」「强耦合」都应标注测量能标 \( \alpha(\mu) \)。</em></li>
+        <li><strong>「QCD 总是禁闭夸克，所以夸克永远不自由」—— 不完全对。</strong>低能（\( Q\lesssim 1\,\mathrm{GeV} \)）下确实禁闭，无法分离出自由夸克。但<strong>高能（\( Q\gg\Lambda_{\mathrm{QCD}} \)）下夸克在强子内是渐近自由的</strong>——它们之间相互作用变弱，表现为近自由点状部分子 (partons)。这是 1969 年 SLAC 深度非弹性散射实验观察到的现象（Friedman–Kendall–Taylor，1990 年诺贝尔奖）。<em>「禁闭」与「渐近自由」是同一理论在不同能标下的两面，并非矛盾。</em></li>
+        <li><strong>「重整化只是把发散扫到地毯下」—— 旧式误解。</strong>历史上确实如此看待（Dirac 等反对），但 Ken Wilson（1970s）的<strong>重整化群</strong>视角改变了一切：重整化是<strong>物理随观测尺度变化的描述</strong>，<em>即使没有紫外发散，RG 流仍然非平凡</strong>。耦合跑动、临界现象、有效场论都依赖 RG 思想。Wilson 与 Kadanoff 因 RG 应用（特别是临界现象）获 1982 年诺贝尔奖。<em>重整化不是「数学把戏」，而是揭示物理的多尺度结构的深刻工具。</em></li>
+        <li><strong>「规范玻色子必须无质量」—— 仅在规范对称性未破时。</strong>纯 QED 和 QCD 中确实如此（光子、胶子无质量）。但<strong>电弱理论</strong>中 \( SU(2)_L\times U(1)_Y \) 通过 <strong>Higgs 机制</strong>（自发对称破缺）使 \( W^\pm \)、\( Z^0 \) 获得质量（\( m_W\approx 80.4\,\mathrm{GeV} \)、\( m_Z\approx 91.2\,\mathrm{GeV} \)），同时保留 \( U(1)_{\mathrm{em}} \) 不破，使光子保持无质量。把规范不变性绝对等同于「规范玻色子无质量」会错过电弱对称破缺。<em>更深层的拉氏量仍然规范不变；对称性只是「隐藏」。</em></li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （QED 跑动）已知 \( \alpha(0)=1/137.036 \)。考虑仅电子圈贡献，求 (a) \( \alpha(Q) \) 在 \( Q=m_e \)（电子质量）处的值；(b) 在 \( Q=1\,\mathrm{GeV} \) 处的值。提示：单费米子真空极化 \( \Delta\alpha(Q^2)=\frac{\alpha(0)}{3\pi}\ln(Q^2/m_e^2) \)。</summary>
+        <div class="hint">\( Q=m_e \) 时 \( \ln 1=0 \)。</div>
+        <div class="solution">
+          <p>(a) \( \Delta\alpha=0\Rightarrow\alpha(m_e^2)=\alpha(0)=1/137.036 \)。</p>
+          <p>(b) \( \ln(1/0.000511^2)=\ln(3.83\times 10^6)=15.16 \)。</p>
+          <p>\( \Delta\alpha=\frac{1}{137.036\times 3\pi}\times 15.16=7.742\times 10^{-4}\times 15.16=0.01174 \)。</p>
+          <p>\( \alpha(1\,\mathrm{GeV}^2)=\frac{1/137.036}{1-0.01174}=\frac{7.297\times 10^{-3}}{0.9883}=7.384\times 10^{-3}=1/135.4 \)。</p>
+          <p>—— 仅考虑电子圈，\( 1\,\mathrm{GeV} \) 处 \( \alpha \) 增大约 \( 1.2\% \)。若加进所有活跃费米子（\( \mu,u,d,s,c \)），实际增大约 \( 3\% \)。<span class="ans">(a) \( 1/137.036 \)；(b) \( \approx 1/135 \)（仅电子圈）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （QCD 跑动预测）取 \( \alpha_s(m_Z^2)=0.1181 \)、\( \beta_0=23/3 \)、\( \Lambda_{\mathrm{QCD}}=0.088\,\mathrm{GeV} \)（单圈）。求 \( \alpha_s(Q) \) 在 (a) \( Q=5\,\mathrm{GeV} \)（\( \Upsilon \) 物理能区）、(b) \( Q=100\,\mathrm{GeV} \)（LEP II 能区）的值，并验证 \( Q\to\infty \) 时 \( \alpha_s\to 0 \)。</summary>
+        <div class="hint">\( \alpha_s=4\pi/[\beta_0\ln(Q^2/\Lambda^2)] \)。</div>
+        <div class="solution">
+          <p>(a) \( \ln(25/0.088^2)=\ln(3229)=8.08 \)。\( \alpha_s=12.566/(7.667\times 8.08)=12.566/61.95=\mathbf{0.203} \)。</p>
+          <p>(b) \( \ln(10^4/0.00774)=\ln(1.293\times 10^6)=14.08 \)。\( \alpha_s=12.566/(7.667\times 14.08)=12.566/107.9=\mathbf{0.116} \)。</p>
+          <p>\( Q\to\infty \)：\( \ln\to\infty \)，\( \alpha_s\to 0^+ \) ✓（渐近自由）。</p>
+          <p>实测：\( \alpha_s(5\,\mathrm{GeV})\approx 0.21 \)、\( \alpha_s(100\,\mathrm{GeV})\approx 0.116 \)，与单圈预测吻合到 \( \sim 5\% \)。<span class="ans">(a) \( 0.203 \)；(b) \( 0.116 \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （费曼规则数量级）\( e^+e^-\to e^+e^- \)（Bhabha 散射）在树图阶有两类图：单光子 s 道和 t 道交换。每个电磁顶点贡献因子 \( -ie\gamma^\mu \)，每条光子传播子 \( -ig_{\mu\nu}/q^2 \)。(a) 振幅 \( \mathcal{M} \) 在树图阶正比于 \( \alpha \) 还是 \( \alpha^2 \)？(b) 截面 \( \sigma \) 正比于 \( \alpha \)、\( \alpha^2 \)、还是 \( \alpha^4 \)？(c) 若加上一圈图（如真空极化），相对树图的修正因子量级是多少？</summary>
+        <div class="hint">\( \mathcal{M}\propto \) 顶点数 \( \times \) 传播子数；\( \sigma\propto|\mathcal{M}|^2 \)。</div>
+        <div class="solution">
+          <p>(a) 每顶点带因子 \( e \)，每传播子 \( 1/e^2 \) 量级（因为光子 propagator \( \propto 1/q^2 \)，但 \( q^2 \) 不引入耦合；用 \( \alpha=e^2/4\pi \) 算）。每个树图有 2 个顶点（\( \propto e^2 \)）+ 1 条光子传播子（不含 \( e \)）。故 \( \mathcal{M}\propto e^2\propto\alpha \)。</p>
+          <p>(b) \( \sigma\propto|\mathcal{M}|^2\propto\alpha^2 \)。</p>
+          <p>(c) 一圈图比树图多两个顶点（\( \propto e^2 \propto\alpha \)），相对修正 \( \alpha/(4\pi)\sim 10^{-3} \)（约 0.1%）。这正是 QED 微扰论高精度的根源。</p>
+          <p><span class="ans">(a) \( \mathcal{M}\propto\alpha \)；(b) \( \sigma\propto\alpha^2 \)；(c) \( \sim\alpha/(4\pi)\sim 10^{-3} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （QCD 与 QED 跑动方向对比）单圈 \( \beta \) 函数：\( \beta_0^{\mathrm{QED}}=-\tfrac{4}{3}\sum_f N_c q_f^2 \)，\( \beta_0^{\mathrm{QCD}}=\tfrac{11}{3}N_c-\tfrac{2}{3}n_f \)（\( N_c=3 \)）。(a) 仅电子圈时 \( \beta_0^{\mathrm{QED}}=? \)；(b) \( n_f=6 \) 时 \( \beta_0^{\mathrm{QCD}}=? \)，符号含义是什么？(c) 求临界 \( n_f \) 使 QCD 失去渐近自由。这能在真实世界发生吗？</summary>
+        <div class="hint">仅电子：\( N_c=1,q=-1 \)。\( \beta_0^{\mathrm{QCD}}>0\Rightarrow \) 渐近自由。</div>
+        <div class="solution">
+          <p>(a) \( \beta_0^{\mathrm{QED}}=-\tfrac{4}{3}\times 1\times 1^2=-\tfrac{4}{3} \)。</p>
+          <p>(b) \( \beta_0^{\mathrm{QCD}}=\tfrac{11}{3}\times 3-\tfrac{2}{3}\times 6=11-4=7>0 \)，故 \( \alpha_s \) 随 \( \mu \) 减小 → <strong>渐近自由</strong>。</p>
+          <p>(c) \( \beta_0^{\mathrm{QCD}}=0\Rightarrow 11=2n_f/3\Rightarrow n_f=16.5 \)。需要 \( n_f\geq 17 \) 才会失去渐近自由。真实世界仅 6 种夸克，远未达到；QCD 必然渐近自由。</p>
+          <p>—— 这一「巧合」并非偶然：标准模型设计上要求 \( n_f \) 足够小以保持 QCD 渐近自由，否则微扰 QCD 与深度非弹性散射解释都不成立。<span class="ans">(a) \( -4/3 \)；(b) \( +7 \)（渐近自由）；(c) \( n_f=17 \)，真实世界不可能。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （强子尺度）由 \( \Lambda_{\mathrm{QCD}}\approx 200\,\mathrm{MeV} \) 估计 (a) 典型强子尺度 \( R \)；(b) 强相互作用「弦张力」\( \kappa\sim\Lambda_{\mathrm{QCD}}^2/( \hbar c) \)（即夸克间分开单位距离所需能量线密度，单位 \( \mathrm{GeV/fm} \)）；(c) 把两夸克分开 \( 1\,\mathrm{fm} \) 所需能量，与 \( \pi \) 介子对产生阈值 \( 2m_\pi c^2\approx 280\,\mathrm{MeV} \) 比较，说明色禁闭。</summary>
+        <div class="hint">\( \hbar c=0.1973\,\mathrm{GeV\cdot fm} \)。</div>
+        <div class="solution">
+          <p>(a) \( R\sim\hbar c/\Lambda_{\mathrm{QCD}}=0.1973/0.200=\mathbf{0.987\,\mathrm{fm}}\approx 1\,\mathrm{fm} \)。</p>
+          <p>(b) \( \kappa\sim\Lambda_{\mathrm{QCD}}^2/(\hbar c)=(0.200)^2/0.1973=0.0400/0.1973=\mathbf{0.203\,\mathrm{GeV/fm}}\approx 1\,\mathrm{GeV/fm} \)（量纲正确；经验值约 \( 0.9\!-\!1.0\,\mathrm{GeV/fm} \)）。</p>
+          <p>(c) \( E\sim\kappa\times 1\,\mathrm{fm}\approx 0.2\,\mathrm{GeV}=200\,\mathrm{MeV}\approx 2m_\pi c^2 \)（\( 280\,\mathrm{MeV} \)）。量级相当：把夸克拉开到 \( \sim 1\,\mathrm{fm} \) 时色场能量已足以从真空中产生新夸克对，形成新强子，<em>而非继续分离</em>。这就是色禁闭的物理图像。</p>
+          <p><span class="ans">(a) \( \sim 1\,\mathrm{fm} \)；(b) \( \sim 0.2\!-\!1\,\mathrm{GeV/fm} \)；(c) \( \sim 200\,\mathrm{MeV} \)，与 \( 2m_\pi c^2 \) 同量级，禁闭。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真绘制两类跑动耦合常数 \(\alpha(Q)\) 随能动量标 \(Q\) 的变化（对数横轴，\(Q\) 从 \(0.5\,\mathrm{GeV}\) 到 \(10^3\,\mathrm{GeV}\)，跨越 4 个数量级；对数纵轴显示 \(\alpha\)）：<span style="color:var(--sim-primary);">蓝色曲线 = QED 耦合 \(\alpha_{\mathrm{em}}(Q)\)</span>，由单圈真空极化（含全部活跃费米子圈）决定，<strong>随 \(Q\) 缓慢上升</strong>（由 \(1/137\) 升到 \(1/127\)）；<span style="color:var(--sim-accent);">红色曲线 = QCD 耦合 \(\alpha_s(Q)\)</span>，由单圈 \( \beta \) 函数 \( \beta_0=11-2n_f/3 \) 决定，<strong>随 \(Q\) 下降</strong>（高能渐近自由）。<span style="color:rgba(220,38,38,0.18);background:rgba(220,38,38,0.10);">红色阴影</span>标出 \(Q<1\,\mathrm{GeV}\) 的<strong>非微扰 / 禁闭区</strong>，微扰论失效。垂直虚线为标度参考：质子质量 \(m_p\approx 0.94\,\mathrm{GeV}\)、底夸克阈值 \(m_b=4.18\,\mathrm{GeV}\)、\(Z\) 玻色子质量 \(m_Z=91.2\,\mathrm{GeV}\)、\(1\,\mathrm{TeV}\)（LHC 能区）。<strong>拖动滑块</strong> 改变 \(\log_{10} Q\)，金色竖线与十字标出当前 \(Q\)，下方实时显示 \(\alpha_{\mathrm{em}}(Q)\)、\(\alpha_s(Q)\) 与 \(1/\alpha\) 数值。点击 <strong>↺ 重置</strong> 回到 \(Q=m_Z\)。</p>
+      <div class="sim-container">
+        <canvas id="sim-7" width="640" height="400"></canvas>
+        <div class="sim-controls" id="controls-7"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-7');
+          var W = canvas.width, H = canvas.height;
+
+          // ---------- physics: running couplings ----------
+          var a0 = 1 / 137.035999084;       // Thomson-limit α(0)
+          var LambdaQCD = 0.088;             // 1-loop Λ_QCD (n_f=5), GeV
+
+          // fermion list (mass GeV, color count N_c, charge^2 q^2 in units of e^2)
+          var fermions = [
+            { m: 0.000511, Nc: 1, q2: 1     }, // e
+            { m: 0.10566,  Nc: 1, q2: 1     }, // μ
+            { m: 1.77686,  Nc: 1, q2: 1     }, // τ
+            { m: 0.0022,   Nc: 3, q2: 4 / 9 }, // u
+            { m: 0.0047,   Nc: 3, q2: 1 / 9 }, // d
+            { m: 0.095,    Nc: 3, q2: 1 / 9 }, // s
+            { m: 1.27,     Nc: 3, q2: 4 / 9 }, // c
+            { m: 4.18,     Nc: 3, q2: 1 / 9 }, // b
+            { m: 173.0,    Nc: 3, q2: 4 / 9 }  // t
+          ];
+
+          function alphaEm(Q) {
+            // 1/α(Q²) = 1/α(0) − (1/3π) Σ_active N_c q_f² ln(Q²/m_f²)
+            var sum = 0;
+            for (var i = 0; i < fermions.length; i++) {
+              var f = fermions[i];
+              if (Q > f.m) sum += f.Nc * f.q2 * Math.log((Q * Q) / (f.m * f.m));
+            }
+            var inva = 1 / a0 - sum / (3 * Math.PI);
+            return 1 / Math.max(inva, 1);     // guard against pathologies
+          }
+
+          function alphaS(Q) {
+            // α_s(Q²) = 4π / [β₀ ln(Q²/Λ²)], β₀ = 11 − 2n_f/3
+            // 1-loop with n_f=5 throughout (calibrated to α_s(m_Z²)=0.1181)
+            // (threshold matching for n_f=4,6 changes Λ by O(few×); not pedagogically essential)
+            var nf = 5, Lambda = LambdaQCD;    // Λ^(5) = 88 MeV
+            var b0 = 11 - 2 * nf / 3;          // 23/3
+            var arg = (Q * Q) / (Lambda * Lambda);
+            if (arg <= 1) return 1.0;          // saturation below Λ
+            return 4 * Math.PI / (b0 * Math.log(arg));
+          }
+
+          // ---------- plot geometry ----------
+          var plotX0 = 70, plotY0 = 56, plotW = 540, plotH = 286;
+          var logQmin = -0.3, logQmax = 3.0;     // Q ∈ [0.5, 1000] GeV
+          var logAmin = -2.5, logAmax = 0.0;     // α ∈ [0.003, 1.0]
+
+          function xOfLogQ(lq) { return plotX0 + (lq - logQmin) / (logQmax - logQmin) * plotW; }
+          function yOfLogA(la) { return plotY0 + plotH * (1 - (la - logAmin) / (logAmax - logAmin)); }
+          function clampY(y)   { return Math.max(plotY0 - 2, Math.min(plotY0 + plotH + 2, y)); }
+
+          function fmtSup(e) {
+            var sup = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻' };
+            return '10' + String(e).split('').map(function (d) { return sup[d] || d; }).join('');
+          }
+
+          function curvePts(fnAlpha) {
+            var pts = [];
+            for (var lq = logQmin; lq <= logQmax + 1e-9; lq += 0.02) {
+              var Q = Math.pow(10, lq);
+              var a = fnAlpha(Q);
+              var la = Math.log10(Math.max(a, 1e-9));
+              pts.push([xOfLogQ(lq), clampY(yOfLogA(la))]);
+            }
+            return pts;
+          }
+
+          function drawCurve(ctx, pts, color, lw) {
+            ctx.save();
+            ctx.strokeStyle = color; ctx.lineWidth = lw || 2.4;
+            ctx.beginPath();
+            for (var i = 0; i < pts.length; i++) {
+              if (i === 0) ctx.moveTo(pts[i][0], pts[i][1]);
+              else ctx.lineTo(pts[i][0], pts[i][1]);
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // pre-compute curves once (physics is Q-static)
+          var qedPts = curvePts(alphaEm);
+          var qcdPts = curvePts(alphaS);
+
+          // ---------- scale markers ----------
+          var scales = [
+            { Q: 0.938, label: 'm_p'   },
+            { Q: 4.18,  label: 'm_b'   },
+            { Q: 91.19, label: 'm_Z'   },
+            { Q: 1000,  label: '1 TeV' }
+          ];
+
+          var params = { logQ: Math.log10(91.19) };  // default Q = m_Z
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ----- title -----
+              PS.drawText(ctx, '跑动耦合常数 Running Couplings  α(Q) vs Q',
+                W / 2, 18, { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, '蓝: QED α_em (↑ slowly)   红: QCD α_s (↓ → 渐近自由 asymptotic freedom)',
+                W / 2, 36, { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ----- confinement shading (Q < 1 GeV) -----
+              var xConf = xOfLogQ(0); // log10(1) = 0
+              ctx.save();
+              ctx.fillStyle = C.accent;
+              ctx.globalAlpha = 0.09;
+              ctx.fillRect(plotX0, plotY0, xConf - plotX0, plotH);
+              ctx.restore();
+              PS.drawText(ctx, '非微扰 / 禁闭', (plotX0 + xConf) / 2, plotY0 + 16,
+                { font: 'bold 10px system-ui', color: C.accent, align: 'center' });
+              PS.drawText(ctx, 'non-perturbative', (plotX0 + xConf) / 2, plotY0 + 30,
+                { font: '9px system-ui', color: C.accent, align: 'center' });
+
+              // ----- horizontal grid (log α) -----
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.55; ctx.lineWidth = 1;
+              var leTicks = [-2, -1, 0];
+              for (var i = 0; i < leTicks.length; i++) {
+                var yy = yOfLogA(leTicks[i]);
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+                PS.drawText(ctx, fmtSup(leTicks[i]), plotX0 - 8, yy + 4,
+                  { font: '10px system-ui', color: C.text, align: 'right' });
+              }
+              // minor ticks at log = -2.5, -1.5, -0.5
+              for (var le = -2.5; le <= -0.5; le += 0.5) {
+                if (Math.abs(le - Math.round(le)) < 0.01) continue;
+                var yy = yOfLogA(le);
+                ctx.globalAlpha = 0.25;
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+              }
+              ctx.restore();
+
+              // ----- vertical grid + x ticks (log Q) -----
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.globalAlpha = 0.55; ctx.lineWidth = 1;
+              for (var lq = 0; lq <= 3; lq += 1) {
+                var xx = xOfLogQ(lq);
+                ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+                PS.drawText(ctx, fmtSup(lq), xx, plotY0 + plotH + 14,
+                  { font: '10px system-ui', color: C.text, align: 'center' });
+              }
+              // minor decades
+              for (var lq2 = -0.3; lq2 <= 3; lq2 += 0.1) {
+                if (Math.abs(lq2 - Math.round(lq2)) < 0.01) continue;
+                var xx = xOfLogQ(lq2);
+                ctx.globalAlpha = 0.20;
+                ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+              }
+              ctx.restore();
+
+              // ----- axes -----
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0); ctx.lineTo(plotX0, plotY0 + plotH); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0 + plotH); ctx.lineTo(plotX0 + plotW, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+
+              // ----- axis labels -----
+              PS.drawText(ctx, '能动量标 Q (GeV, 对数)', plotX0 + plotW / 2, plotY0 + plotH + 34,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              ctx.save();
+              ctx.translate(18, plotY0 + plotH / 2); ctx.rotate(-Math.PI / 2);
+              PS.drawText(ctx, '耦合常数 α (对数)', 0, 0,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              ctx.restore();
+
+              // ----- notable scale markers -----
+              for (var i = 0; i < scales.length; i++) {
+                var sc = scales[i];
+                var lqs = Math.log10(sc.Q);
+                if (lqs < logQmin || lqs > logQmax) continue;
+                var xx = xOfLogQ(lqs);
+                ctx.save();
+                ctx.strokeStyle = C.axis; ctx.globalAlpha = 0.45; ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+                ctx.restore();
+                PS.drawText(ctx, sc.label, xx, plotY0 - 6,
+                  { font: 'bold 10px system-ui', color: C.text, align: 'center' });
+                PS.drawText(ctx, sc.Q.toFixed(sc.Q >= 100 ? 0 : 2) + ' GeV', xx, plotY0 + plotH + 26,
+                  { font: '9px system-ui', color: C.text, align: 'center' });
+              }
+
+              // ----- the two coupling curves -----
+              drawCurve(ctx, qcdPts, C.accent, 2.6);
+              drawCurve(ctx, qedPts, C.primary, 2.6);
+
+              // series labels at right edge
+              var aSright = alphaS(Math.pow(10, logQmax));
+              var aEright = alphaEm(Math.pow(10, logQmax));
+              PS.drawText(ctx, 'α_s(QCD)', plotX0 + plotW - 6, clampY(yOfLogA(Math.log10(aSright))) - 8,
+                { font: 'bold 11px system-ui', color: C.accent, align: 'right' });
+              PS.drawText(ctx, 'α_em(QED)', plotX0 + plotW - 6, clampY(yOfLogA(Math.log10(aEright))) + 14,
+                { font: 'bold 11px system-ui', color: C.primary, align: 'right' });
+
+              // ----- current Q cursor -----
+              var lq = params.logQ;
+              var Q = Math.pow(10, lq);
+              var xx = xOfLogQ(lq);
+              ctx.save();
+              ctx.strokeStyle = '#FFD700'; ctx.lineWidth = 1.6; ctx.globalAlpha = 0.85;
+              ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+
+              // crosshair markers on each curve
+              var aE = alphaEm(Q), aS = alphaS(Q);
+              var yE = clampY(yOfLogA(Math.log10(aE)));
+              var yS = clampY(yOfLogA(Math.log10(aS)));
+              PS.drawCircle(ctx, xx, yE, 5, { fill: C.primary, stroke: '#fff', lineWidth: 1.5 });
+              PS.drawCircle(ctx, xx, yS, 5, { fill: C.accent,  stroke: '#fff', lineWidth: 1.5 });
+
+              // ----- readout text -----
+              var qStr = Q >= 100 ? Q.toFixed(0) : (Q >= 10 ? Q.toFixed(1) : Q.toFixed(2));
+              PS.drawText(ctx,
+                'Q = ' + qStr + ' GeV   |   ' +
+                'α_em = ' + aE.toExponential(3) + '  (1/α = ' + (1 / aE).toFixed(2) + ')   |   ' +
+                'α_s = ' + aS.toFixed(4) + '  (1/α = ' + (1 / aS).toFixed(2) + ')',
+                W / 2, H - 14,
+                { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          // ----- controls -----
+          var ctl = PS.makeControls(document.getElementById('controls-7'), [
+            { type: 'slider', key: 'logQ',  label: 'log₁₀ Q  (Q in GeV)', min: -0.3, max: 3.0, step: 0.05, value: Math.log10(91.19) },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('logQ', function (v) { params.logQ = v; });
+          ctl.on('reset', function () {
+            params.logQ = Math.log10(91.19);
+            var inputs = document.getElementById('controls-7').querySelectorAll('input');
+            if (inputs[0] && inputs[0].type === 'range') inputs[0].value = String(Math.log10(91.19));
+            var vSpan = document.getElementById('controls-7').querySelector('.ctrl-slider .ctrl-value');
+            if (vSpan) vSpan.textContent = (Math.log10(91.19)).toFixed(2);
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>规范不变性是组织原则</strong>：把全局 \( U(1) \) 升级为定域对称性，必须引入规范场 \( A_\mu \)，由此唯一确定 QED 拉氏量；并<strong>禁止光子质量项</strong>，故 \( m_\gamma=0 \)。</li>
+        <li><strong>非阿贝尔推广</strong>（Yang–Mills 1954）：场强 \( F^a_{\mu\nu} \) 含 \( gf^{abc}A^b_\mu A^c_\nu \) 自相互作用项，规范玻色子彼此耦合。定域 \( SU(3) \) 色 ⇒ QCD 与 8 个胶子。</li>
+        <li><strong>费曼规则</strong>：QED 顶点 \( -ie\gamma^\mu \)、光子传播子 \( -ig_{\mu\nu}/q^2 \)；QCD 还有 3-胶子与 4-胶子顶点（来自场强非线性项），是渐近自由的物理来源。</li>
+        <li><strong>重整化</strong>：圈积分紫外发散经正规化后，由有限种抵消项吸收到重整化参数中。QED、Yang–Mills、标准模型均可重整（'t Hooft–Veltman 1971）。</li>
+        <li><strong>重整化群</strong>使耦合<strong>跑动</strong>：\( \alpha=\alpha(\mu) \)。单圈 \( \beta \) 函数 \( \beta_0^{\mathrm{QCD}}=\tfrac{11}{3}N_c-\tfrac{2}{3}n_f \)。QED 耦合 \( \alpha_{\mathrm{em}} \) 缓慢增长；QCD 耦合 \( \alpha_s \) <strong>随 \( Q \) 减小</strong> —— <strong>渐近自由</strong>。</li>
+        <li><strong>跑动公式</strong>：\( \alpha_s(Q^2)=4\pi/[\beta_0\ln(Q^2/\Lambda_{\mathrm{QCD}}^2)] \)。由 \( \alpha_s(m_Z^2)=0.1181 \) 定出 \( \Lambda_{\mathrm{QCD}}\approx 90\,\mathrm{MeV} \)（单圈）或 \( \approx 210\,\mathrm{MeV} \)（双圈 MS-bar）。</li>
+        <li><strong>渐近自由 vs 禁闭</strong>：高能（\( Q\gg\Lambda_{\mathrm{QCD}} \)）下夸克近自由（DIS 中看到的部分子模型）；低能下 \( \alpha_s\to\infty \)，色禁闭夸克于强子内（\( \sim 1\,\mathrm{fm} \)）。</li>
+        <li><strong>格点 QCD</strong>（Wilson 1974）：离散化时空、蒙特卡洛抽样规范场组态，是非微扰计算强子性质的标准方法。</li>
+      </ul>
+      <div class="formula">\[ \mathcal{L}_{\mathrm{QED}}=\bar{\psi}(i\gamma^\mu D_\mu-m)\psi-\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu},\quad D_\mu=\partial_\mu+iqA_\mu,\quad F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu \]</div>
+      <div class="formula">\[ F^a_{\mu\nu}=\partial_\mu A^a_\nu-\partial_\nu A^a_\mu+g f^{abc}A^b_\mu A^c_\nu\;\;(\text{Yang--Mills}),\qquad [T^a,T^b]=if^{abc}T^c \]</div>
+      <div class="formula">\[ \alpha_s(Q^2)=\frac{4\pi}{\beta_0\ln(Q^2/\Lambda_{\mathrm{QCD}}^2)},\qquad \beta_0=\frac{11}{3}N_c-\frac{2}{3}n_f=11-\frac{2n_f}{3}\;\;(N_c=3) \]</div>
+      <div class="formula">\[ \alpha_{\mathrm{em}}(Q^2)=\frac{\alpha(0)}{1-\Delta\alpha(Q^2)},\qquad \Delta\alpha(Q^2)=\frac{\alpha(0)}{3\pi}\sum_{m_f<Q}N_c q_f^2\ln\frac{Q^2}{m_f^2} \]</div>
+      <div class="formula">\[ \alpha(0)=1/137.036,\quad \alpha(m_Z^2)=1/127.95;\qquad \alpha_s(m_Z^2)=0.1181,\quad \Lambda_{\mathrm{QCD}}\approx 90\!-\!210\,\mathrm{MeV},\quad R_{\mathrm{had}}\sim\hbar c/\Lambda_{\mathrm{QCD}}\approx 1\,\mathrm{fm} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

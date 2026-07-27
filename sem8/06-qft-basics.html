@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6章 · 量子场论基础 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="6">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第6章 · 量子场论 Quantum Field Theory</p>
+      <h1>量子场论基础 <span class="en-title">Foundations of Quantum Field Theory</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>论证为什么把<strong>狭义相对论 (special relativity)</strong> 与<strong>量子力学 (quantum mechanics)</strong> 结合起来，就<strong>必然</strong>要求粒子数可变，从而出现<strong>粒子产生/湮灭 (creation / annihilation)</strong> 与<strong>反粒子 (antiparticle)</strong>——QFT 不是一种"推广"，而是 SR+QM 的唯一自洽产物。</li>
+        <li>解释<strong>场作为算子值分布 (field as an operator-valued distribution)</strong> 与<strong>二次量子化 (second quantization)</strong> 的含义，区分"粒子为先"与"场为先"两种图像，并指出粒子其实是场的<strong>量子 (quanta / excitations)</strong>。</li>
+        <li>写出实标量 <strong>Klein–Gordon 场</strong> 与旋量 <strong>Dirac 场</strong> 的拉格朗日密度，由欧拉-拉格朗日方程导出 KG 方程与 Dirac 方程，验证平面波解。</li>
+        <li>对自由场实施<strong>正则量子化 (canonical quantization)</strong>：用<strong>产生/湮灭算子</strong> \(a_{\vec p},a_{\vec p}^{\dagger}\)（玻色子）与 \(b_{\vec p},d_{\vec p}\) 等（费米子）做模式展开，把哈密顿量写成 \(H=\int\!\mathrm{d}^{3}p\,\omega_{p}\bigl(a_{\vec p}^{\dagger}a_{\vec p}+\tfrac12\bigr)\)（谐振子类比）。</li>
+        <li>运用谐振子代数 \([a,a^{\dagger}]=1\) 计算粒子数算子 \(N=a^{\dagger}a\) 的本征值与跃迁矩阵元；说明<strong>零点能 (zero-point energy)</strong> 与<strong>真空涨落 (vacuum fluctuation)</strong>。</li>
+        <li>陈述并应用<strong>自旋-统计定理 (spin-statistics theorem)</strong>：整数自旋↔玻色子（交换对称）、半整数自旋↔费米子（交换反对称，泡利不相容原理）；理解这是相对论+正能量+微因果律的<strong>定理</strong>而非约定。</li>
+        <li>读取简单的<strong>费曼图 (Feynman diagram)</strong>：识别外线、顶点、内线（传播子），写出 QED 顶点因子 \(-ie\gamma^{\mu}\) 与光子/费米子<strong>费曼传播子 (Feynman propagator)</strong>，并用 \(S=\langle f|T\exp(-i\int H_{I})|i\rangle\) 解释<strong>S-矩阵</strong>与散射振幅。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么必须用量子场论 — 把 SR 与 QM 拼在一起的代价 Why QFT is Unavoidable</h3>
+      <p>非相对论量子力学（薛定谔方程）描述<strong>固定数量</strong>粒子：\(\psi(\vec x_{1},\dots,\vec x_{N};t)\)。粒子既不会凭空产生，也不会消失。但只要把<strong>狭义相对论</strong>拉进来，两件事同时爆炸：</p>
+      <ul>
+        <li><strong>能量-质量等价</strong> \(E=mc^{2}\)：足够大的能量可以转化为新粒子（例如对撞中 \(e^{+}e^{-}\to\mu^{+}\mu^{-}\)）。粒子数根本不是守恒量。</li>
+        <li><strong>色散关系</strong> \(E^{2}=p^{2}c^{2}+m^{2}c^{4}\) 允许 \(E=\pm\sqrt{p^{2}c^{2}+m^{2}c^{4}}\)——负能解无法回避。在单粒子图像中，电子会"掉进"负能态而崩溃。</li>
+      </ul>
+      <p>历史上，把 KG 方程 \(\bigl(\Box+m^{2}\bigr)\phi=0\) 或 Dirac 方程当单粒子波函数用，都碰到致命问题：<strong>Klein 悖论</strong>（势阶 \(V_{0}&gt;2mc^{2}\) 时单粒子诠释给出反常透射）、<strong>负能海</strong>的不稳定。出路是放弃"先有粒子"的图像，改用<strong>场 (field)</strong>作为基本对象：场是充满时空的动力学量，可被任意激发；粒子是场的量子化激发。这就像把"弦上的波"取代"小球"作为基本对象——一根弦上可以有任意数目的声子，场也可以承载任意数目的粒子。</p>
+      <div class="formula">\[ \boxed{\;\text{QFT}=\text{Special Relativity}\otimes\text{Quantum Mechanics, applied to fields.}\;} \]</div>
+      <p>历史上最早的两块里程碑：(i) <strong>Dirac (1928)</strong> 用旋量方程预言了<strong>正电子 (positron)</strong>，<strong>Anderson (1932)</strong> 在宇宙射线中发现；(ii) <strong>Tomonaga, Schwinger, Feynman, Dyson (1948–49)</strong> 完成了量子电动力学 (QED) 的协变形式化，给出电子反常磁矩 \(g-2\) 的精确预言——至今仍是物理学中最精确的理论。</p>
+
+      <h3>2. 反粒子的必然性 Antiparticles are Forced</h3>
+      <p>把相对论性方程（KG 或 Dirac）量子化之后，必然出现两套解：正能量 \(E=+\omega_{p}\) 与负能量 \(E=-\omega_{p}\)。若简单地把负能解当成"另一种粒子"，能量将无下界、真空不稳定。<strong>Feynman–Stueckelberg 诠释</strong>把负能解 reinterpret 为<strong>沿时间反向传播的正能量反粒子</strong>：</p>
+      <div class="formula">\[ e^{-i(-E)t+i\vec p\cdot\vec x}\;\;\Longleftrightarrow\;\;e^{+iEt+i\vec p\cdot\vec x}=e^{-iE(-t)+i\vec p\cdot\vec x} \]</div>
+      <p>即一个能量 \(-E\)、动量 \(\vec p\) 沿时间正向传播的"负能粒子" ≡ 一个能量 \(+E\)、动量 \(-\vec p\) 沿时间反向传播的正能反粒子。<strong>反粒子的存在不是设计选项，而是相对论不变性 + 量子线性叠加的强制结果。</strong>对带电粒子，反粒子电荷反号（\(e^{-}\leftrightarrow e^{+}\)）；对中性粒子（如光子、中性 π 介子），粒子可以就是自己的反粒子，也可能不是（\(K^{0}\neq\bar K^{0}\)）。<strong>CPT 定理</strong>进一步保证：任何 Lorentz 不变的局域厄米 QFT 中，粒子与反粒子质量、寿命、磁矩严格相等（实验已对到 \(10^{-19}\)）。</p>
+
+      <h3>3. 场作为算子值分布：二次量子化 Fields as Operator-Valued Distributions</h3>
+      <p>在"一次量子化"中，坐标 \(\vec x\) 与动量 \(\vec p\) 被提升为算子，波函数 \(\psi(\vec x)\) 是态矢在坐标基下的分量。在<strong>二次量子化</strong>中，被提升为算子的是<strong>场本身</strong>：\(\phi(\vec x,t)\) 不再是经典函数，而是作用于<strong>Fock 空间</strong> \(\mathcal{F}=\bigoplus_{n=0}^{\infty}\mathcal{H}_{n}\) 的算子（这里 \(\mathcal{H}_{n}\) 是 \(n\) 粒子 Hilbert 空间）。</p>
+      <p>严格来说，\(\phi(x)\) 在一个几何点取值并非有界算子——只有经过<strong>试探函数</strong>涂抹的</p>
+      <div class="formula">\[ \phi(f)\;=\;\int\!\mathrm{d}^{4}x\,\phi(x)\,f(x) \]</div>
+      <p>才是良定义算子。这是物理学家口中的"算子值分布 (operator-valued distribution)"。日常计算中我们仍写 \(\phi(x)\)，但所有结果都要理解为适当涂抹后的极限。Fock 空间的基矢由<strong>产生算子</strong>作用在真空上构造：</p>
+      <div class="formula">\[ |\vec p_{1},\dots,\vec p_{n}\rangle\;=\;a_{\vec p_{1}}^{\dagger}\cdots a_{\vec p_{n}}^{\dagger}\,|0\rangle,\qquad a_{\vec p}\,|0\rangle=0 \]</div>
+
+      <h3>4. 自由实标量场：Klein–Gordon The Free Real Scalar (Klein–Gordon) Field</h3>
+      <p>取自然单位 \(\hbar=c=1\)。实标量场 \(\phi(x)\in\mathbb{R}\) 的<strong>拉格朗日密度</strong>：</p>
+      <div class="formula">\[ \boxed{\;\mathcal{L}_{\mathrm{KG}}\;=\;\tfrac12(\partial_{\mu}\phi)(\partial^{\mu}\phi)-\tfrac12m^{2}\phi^{2}\;} \]</div>
+      <p>度规符号 \((+,-,-,-)\)，故 \(\partial_{\mu}\phi\,\partial^{\mu}\phi=(\partial_{t}\phi)^{2}-(\nabla\phi)^{2}\)。代入欧拉-拉格朗日方程 \(\partial_{\mu}\!\dfrac{\partial\mathcal{L}}{\partial(\partial_{\mu}\phi)}=\dfrac{\partial\mathcal{L}}{\partial\phi}\)：</p>
+      <div class="formula">\[ \partial_{\mu}\partial^{\mu}\phi+m^{2}\phi=0\quad\Longleftrightarrow\quad \boxed{\;(\Box+m^{2})\phi=0,\qquad \Box\equiv\partial_{t}^{2}-\nabla^{2}\;} \]</div>
+      <p><strong>平面波解</strong>：\(\phi(x)=e^{-ip\cdot x}\)，代入得 \((-p^{2}+m^{2})e^{-ip\cdot x}=0\)，即<strong>质壳条件</strong> \(p^{2}=m^{2}\) 或 \(E^{2}=\vec p^{2}+m^{2}\)。能量 \(E=\pm\omega_{\vec p}=\pm\sqrt{\vec p^{2}+m^{2}}\)——这正是第 1、2 节强调的"负能解"。</p>
+      <p><strong>共轭动量</strong> \(\pi=\dfrac{\partial\mathcal{L}}{\partial(\partial_{t}\phi)}=\partial_{t}\phi\)。<strong>正则量子化</strong>用对易关系</p>
+      <div class="formula">\[ [\phi(\vec x,t),\,\pi(\vec y,t)]=i\,\delta^{(3)}(\vec x-\vec y),\qquad [\phi(\vec x,t),\,\phi(\vec y,t)]=[\pi(\vec x,t),\,\pi(\vec y,t)]=0 \]</div>
+      <p>把场提升为算子。<strong>模式展开</strong>（推导见推导 C）：</p>
+      <div class="formula">\[ \boxed{\;\phi(x)=\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\,\dfrac{1}{\sqrt{2\omega_{\vec p}}}\Bigl(a_{\vec p}\,e^{-ip\cdot x}+a_{\vec p}^{\dagger}\,e^{+ip\cdot x}\Bigr),\quad \omega_{\vec p}=\sqrt{\vec p^{2}+m^{2}}\;} \]</div>
+      <p>其中 \(p^{0}=\omega_{\vec p}&gt;0\)。第一项消灭一个动量为 \(\vec p\) 的粒子（含因子 \(e^{-i\omega t}\)），第二项产生一个（含因子 \(e^{+i\omega t}\)，对应"负能解"被 reinterpret 为正能反粒子——对实标量场，粒子=反粒子）。算子满足</p>
+      <div class="formula">\[ [a_{\vec p},\,a_{\vec p'}^{\dagger}]=(2\pi)^{3}\delta^{(3)}(\vec p-\vec p'),\qquad [a_{\vec p},\,a_{\vec p'}]=[a_{\vec p}^{\dagger},\,a_{\vec p'}^{\dagger}]=0 \]</div>
+
+      <h3>5. 自由旋量场：Dirac The Free Spinor (Dirac) Field</h3>
+      <p>Dirac 场 \(\psi_{\alpha}(x)\)（\(\alpha=1,\dots,4\) 是旋量指标）的拉氏量：</p>
+      <div class="formula">\[ \boxed{\;\mathcal{L}_{\mathrm{D}}\;=\;\bar\psi\,(i\gamma^{\mu}\partial_{\mu}-m)\,\psi,\qquad \bar\psi\equiv\psi^{\dagger}\gamma^{0}\;} \]</div>
+      <p>\(\gamma^{\mu}\) 是 \(4\times4\) Dirac 矩阵，满足 <strong>Clifford 代数</strong> \(\{\gamma^{\mu},\gamma^{\nu}\}=2g^{\mu\nu}\)。把 \(\psi\) 与 \(\bar\psi\) 视作独立变量，欧拉-拉格朗日方程给出：</p>
+      <div class="formula">\[ \boxed{\;(i\gamma^{\mu}\partial_{\mu}-m)\psi=0\quad\text{(Dirac 方程)}\;} \]</div>
+      <p>对共轭 \(\bar\psi\)：\(\bar\psi\,(i\overleftarrow{\partial}_{\mu}\gamma^{\mu}+m)=0\)。<strong>平方得 KG</strong>：用 \((+i\gamma^{\mu}\partial_{\mu}+m)\) 左乘 Dirac 方程，得 \((\gamma^{\mu}\gamma^{\nu}\partial_{\mu}\partial_{\nu}+m^{2})\psi=0\)。对称化 \(\gamma^{\mu}\gamma^{\nu}=\tfrac12\{\gamma^{\mu},\gamma^{\nu}\}+\tfrac12[\gamma^{\mu},\gamma^{\nu}]=g^{\mu\nu}+\tfrac12[\gamma^{\mu},\gamma^{\nu}]\)，反对称部分被对称的 \(\partial_{\mu}\partial_{\nu}\) 杀掉，剩下 \((\Box+m^{2})\psi=0\)——每个旋量分量都满足 KG。这说明 Dirac 的旋量结构是"叠在 KG 之上的自旋包装"。</p>
+      <p><strong>平面波解</strong>：\(\psi(x)=u^{s}(p)\,e^{-ip\cdot x}\)（粒子，\(E=+\omega_{\vec p}\)）与 \(\psi(x)=v^{s}(p)\,e^{+ip\cdot x}\)（反粒子），\(s=\pm\tfrac12\) 是自旋投影。旋量 \(u,v\) 满足 \((\slashed p-m)u=0\) 与 \((\slashed p+m)v=0\)，其中 \(\slashed p\equiv\gamma^{\mu}p_{\mu}\)。模式展开：</p>
+      <div class="formula">\[ \psi(x)=\sum_{s=\pm1/2}\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\dfrac{1}{\sqrt{2\omega_{\vec p}}}\Bigl(b_{\vec p}^{s}\,u^{s}(p)\,e^{-ip\cdot x}+d_{\vec p}^{s\,\dagger}\,v^{s}(p)\,e^{+ip\cdot x}\Bigr) \]</div>
+      <p>这里 \(b_{\vec p}^{s}\) 消灭一个粒子（如电子 \(e^{-}\)），\(d_{\vec p}^{s\,\dagger}\) 产生一个反粒子（正电子 \(e^{+}\)）。</p>
+
+      <h3>6. 正则量子化与谐振子类比 Canonical Quantization &amp; the Harmonic Oscillator Analogy</h3>
+      <p>把每个动量模式的实部与虚部组合，你会发现<strong>每一个独立的 \(\vec p\) 模式就是一个独立的量子谐振子</strong>。这是 QFT 最深的直觉之一：</p>
+      <div class="formula">\[ \text{自由 QFT}\;\equiv\;\text{无穷多个相互独立的量子谐振子（每 } \vec p \text{ 一个）} \]</div>
+      <p>谐振子代数：</p>
+      <div class="formula">\[ [a,a^{\dagger}]=1,\qquad H_{\mathrm{HO}}=\omega\bigl(a^{\dagger}a+\tfrac12\bigr),\qquad N=a^{\dagger}a \]</div>
+      <div class="formula">\[ a^{\dagger}|n\rangle=\sqrt{n+1}\,|n+1\rangle,\quad a|n\rangle=\sqrt{n}\,|n-1\rangle,\quad N|n\rangle=n|n\rangle,\quad E_{n}=\omega\bigl(n+\tfrac12\bigr) \]</div>
+      <p>把 \(\omega\to\omega_{\vec p}\) 并对所有模式积分，KG 场的哈密顿量为：</p>
+      <div class="formula">\[ \boxed{\;H_{\mathrm{KG}}=\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\,\omega_{\vec p}\Bigl(a_{\vec p}^{\dagger}a_{\vec p}+\tfrac12[2\pi]^{3}\delta^{(3)}(0)\Bigr)\;} \]</div>
+      <p>第一项 \(a^{\dagger}a\) 是粒子数（每个动量为 \(\vec p\) 的粒子贡献能量 \(\omega_{\vec p}\)）。第二项 \(\tfrac12\) 是<strong>零点能 (zero-point energy)</strong>：即使真空也有无穷大的能量——这是<strong>真空涨落</strong>的体现，需要正规化 (regularization) 与重整化 (renormalization) 处理；在宇宙学中它对应<strong>宇宙学常数问题</strong>（理论与观测差 \(10^{120}\) 量级，物理学最大的未解之谜之一）。</p>
+      <p>Dirac 场的量子化<strong>必须</strong>用<strong>反对易关系</strong>（见推导 D）：</p>
+      <div class="formula">\[ \{b_{\vec p}^{r},\,b_{\vec p'}^{s\,\dagger}\}=\{d_{\vec p}^{r},\,d_{\vec p'}^{s\,\dagger}\}=(2\pi)^{3}\delta^{rs}\delta^{(3)}(\vec p-\vec p') \]</div>
+      <p>所有其它反对易子为零。这给出<strong>泡利不相容原理</strong>：\((b_{\vec p}^{s\,\dagger})^{2}=0\)，同一模式不能有两个同种费米子。</p>
+
+      <h3>7. Fock 空间、真空、真空涨落 Fock Space, Vacuum &amp; Fluctuations</h3>
+      <p>真空 \(|0\rangle\) 由 \(a_{\vec p}|0\rangle=0\)（对所有 \(\vec p\)）定义。它是<strong>哈密顿量的基态</strong>，但<strong>不是场的"零"态</strong>：场的真空期待值 \(\langle0|\phi(x)|0\rangle=0\)，但 \(\langle0|\phi(x)^{2}|0\rangle\) 发散。这意味着<strong>真空是沸腾的</strong>：虚粒子对不断产生又湮灭。可观察的后果：</p>
+      <ul>
+        <li><strong>Casimir 力</strong>（1948）：两块中性导体板间距 \(a\)，真空涨落被边界修改，产生吸力 \(F/A=-\pi^{2}\hbar c/(240a^{4})\)。\(a=1\,\mu\mathrm{m}\) 时压强约 \(1.3\,\mathrm{mPa}\)——已实验测准到 \(1\%\)。</li>
+        <li><strong>Lamb 移位</strong>（1947）：氢原子 \(2S_{1/2}\) 与 \(2P_{1/2}\) 的能差（Dirac 方程预言精确相等），实际相差 \(1057.84\,\mathrm{MHz}\)，由真空涨落（电子自能与真空极化）解释。</li>
+        <li><strong>电子反常磁矩</strong>：\(a_{e}\equiv(g-2)/2=\alpha/(2\pi)+\cdots=0.001159652180285\)，理论与实验符合到 \(10^{-13}\) 量级，是物理学最精确的预言。</li>
+      </ul>
+
+      <h3>8. 自旋-统计定理 The Spin-Statistics Theorem</h3>
+      <p>把自旋为 \(0\) 的 KG 场用<strong>反对易子</strong>量子化，或把自旋为 \(1/2\) 的 Dirac 场用<strong>对易子</strong>量子化，都会导致灾难（哈密顿量无下界或微因果律被破坏）。只有以下组合自洽：</p>
+      <div class="formula">\[ \boxed{\;\text{整数自旋 (0,1,2,\dots)}\Rightarrow\text{玻色子，对易子，交换对称}\;}\;\;\quad \boxed{\;\text{半整数自旋 (1/2,3/2,\dots)}\Rightarrow\text{费米子，反对易子，交换反对称}\;} \]</div>
+      <p>这是 <strong>Pauli (1940)</strong> 在 Lorentz 不变性 + 正能量 + 局域性 (微因果律：类空间隔的可观测量必须对易) 三条前提下证明的<strong>定理</strong>，不是经验规律。物质（电子、质子、中子都是费米子）之所以稳定、不坍缩，正是因为此定理与泡利不相容原理；而光（光子自旋 1）与玻色-爱因斯坦凝聚（如超流 He-4）则因交换对称而允许多粒子同居一态。</p>
+
+      <h3>9. 费曼传播子 The Feynman Propagator</h3>
+      <p>自由 KG 场的<strong>编时两态函数 (time-ordered two-point function)</strong>：</p>
+      <div class="formula">\[ \boxed{\;\Delta_{F}(x-y)\equiv\langle0|T\phi(x)\phi(y)|0\rangle=\int\!\dfrac{\mathrm{d}^{4}p}{(2\pi)^{4}}\,\dfrac{i\,e^{-ip\cdot(x-y)}}{p^{2}-m^{2}+i\varepsilon}\;} \]</div>
+      <p>\(T\) 表示编时积（早时刻的算子放右边）。分母 \(p^{2}-m^{2}+i\varepsilon\) 把极点从实轴稍稍推到下方（\(\varepsilon\to0^{+}\)），选择<strong>正能粒子向前传播、负能解 reinterpret 为正能反粒子也向前传播</strong>——这正是 Feynman–Stueckelberg 诠释在传播子里的体现。<strong>Dirac 传播子</strong>：</p>
+      <div class="formula">\[ S_{F}(x-y)=\langle0|T\psi(x)\bar\psi(y)|0\rangle=\int\!\dfrac{\mathrm{d}^{4}p}{(2\pi)^{4}}\,\dfrac{i(\slashed p+m)\,e^{-ip\cdot(x-y)}}{p^{2}-m^{2}+i\varepsilon} \]</div>
+      <p><strong>光子传播子</strong>（Feynman 规范 / 协变规范）：</p>
+      <div class="formula">\[ D_{F}^{\mu\nu}(x-y)=\int\!\dfrac{\mathrm{d}^{4}k}{(2\pi)^{4}}\,\dfrac{-i\,g^{\mu\nu}\,e^{-ik\cdot(x-y)}}{k^{2}+i\varepsilon} \]</div>
+
+      <h3>10. 费曼图与 S-矩阵 Feynman Diagrams &amp; the S-Matrix</h3>
+      <p>相互作用用<strong>相互作用绘景</strong>处理。S-矩阵（散射矩阵）：</p>
+      <div class="formula">\[ \boxed{\;S_{fi}=\langle f|\,T\exp\!\Bigl(-i\int\!\mathrm{d}^{4}x\,H_{I}(x)\Bigr)\,|i\rangle\;} \]</div>
+      <p>把指数展开（<strong>Dyson 展开</strong>），每一阶对应若干<strong>费曼图</strong>。每张图就是<strong>微扰级数的一项</strong>——顶点是相互作用的发生点，内线是虚粒子传播子，外线是真实粒子。<strong>费曼规则 (Feynman rules)</strong>把图翻译成振幅：</p>
+      <ul>
+        <li><strong>QED 顶点</strong>（一个电子线 + 一个光子线交汇）：因子 \(-ie\gamma^{\mu}\)（\(e=\sqrt{4\pi\alpha}\) 为电荷，\(\alpha\approx1/137.036\)）。</li>
+        <li><strong>光子内线</strong>：\(\dfrac{-ig^{\mu\nu}}{k^{2}+i\varepsilon}\)。</li>
+        <li><strong>费米子内线</strong>：\(\dfrac{i(\slashed p+m)}{p^{2}-m^{2}+i\varepsilon}\)。</li>
+        <li><strong>外线</strong>：入射粒子 \(u(p)\)，出射 \(\bar u(p)\)，正电子 \(\bar v(p),v(p)\)，光子极化 \(\epsilon^{\mu}(k)\)。</li>
+        <li><strong>动量守恒</strong>：每个顶点处四动量求和为零。</li>
+        <li><strong>对每个内线动量积分</strong> \(\int\!\mathrm{d}^{4}p/(2\pi)^{4}\)。</li>
+        <li><strong>对称因子</strong>：除以把图变成自身的置换数。</li>
+      </ul>
+      <p><strong>散射截面</strong>：</p>
+      <div class="formula">\[ \mathrm{d}\sigma=\dfrac{1}{4E_{1}E_{2}|\vec v_{1}-\vec v_{2}|}\,|\mathcal{M}|^{2}\,(2\pi)^{4}\delta^{(4)}(P_{i}-P_{f})\,\dfrac{\mathrm{d}^{3}p_{1}}{(2\pi)^{3}2E_{1}}\cdots \]</div>
+      <p>其中 \(\mathcal{M}\) 是<strong>不变振幅</strong>，由费曼规则算出。在最低阶（树图），\(e^{+}e^{-}\to\mu^{+}\mu^{-}\) 的非极化截面为（例 6.4）：</p>
+      <div class="formula">\[ \sigma(e^{+}e^{-}\to\mu^{+}\mu^{-})=\dfrac{4\pi\alpha^{2}}{3s}\quad(s\gg m_{\mu}^{2}) \]</div>
+
+      <div class="key-terms">operator-valued distribution (算子值分布), second quantization (二次量子化), Fock space (Fock 空间), Klein–Gordon field (克莱因-戈尔登场), Dirac field (狄拉克场), Lagrangian density \(\mathcal{L}\) (拉格朗日密度), Euler–Lagrange equation (欧拉-拉格朗日方程), Clifford algebra \(\{\gamma^{\mu},\gamma^{\nu}\}=2g^{\mu\nu}\) (克利福德代数), creation / annihilation operators \(a^{\dagger},a\) (产生/湮灭算子), number operator \(N=a^{\dagger}a\) (粒子数算子), zero-point energy (零点能), vacuum fluctuation (真空涨落), Casimir effect (卡西米尔效应), Lamb shift (兰姆移位), spin-statistics theorem (自旋-统计定理), Pauli exclusion principle (泡利不相容原理), boson (玻色子), fermion (费米子), antiparticle (反粒子), Feynman–Stueckelberg interpretation (费曼-斯图克伯格诠释), CPT theorem (CPT 定理), on-shell condition \(p^{2}=m^{2}\) (质壳条件), Feynman propagator \(\Delta_{F},S_{F},D_{F}^{\mu\nu}\) (费曼传播子), S-matrix (S-矩阵), Dyson series (戴森级数), Feynman diagram (费曼图), Feynman rules (费曼规则), QED vertex \(-ie\gamma^{\mu}\) (QED 顶点), invariant amplitude \(\mathcal{M}\) (不变振幅)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>推导 A：从拉氏量到运动方程 — KG &amp; Dirac</h3>
+      <p><strong>(i) Klein–Gordon</strong>。拉氏量 \(\mathcal{L}=\tfrac12\partial_{\mu}\phi\,\partial^{\mu}\phi-\tfrac12m^{2}\phi^{2}\)。欧拉-拉格朗日方程：\(\partial_{\mu}\!\dfrac{\partial\mathcal{L}}{\partial(\partial_{\mu}\phi)}=\dfrac{\partial\mathcal{L}}{\partial\phi}\)。</p>
+      <div class="formula">\[ \dfrac{\partial\mathcal{L}}{\partial(\partial_{\mu}\phi)}=\partial^{\mu}\phi,\qquad \dfrac{\partial\mathcal{L}}{\partial\phi}=-m^{2}\phi \]</div>
+      <p>所以 \(\partial_{\mu}\partial^{\mu}\phi=-m^{2}\phi\)，即 \((\Box+m^{2})\phi=0\)。</p>
+      <p><strong>(ii) Dirac</strong>。把 \(\psi\) 与 \(\bar\psi\) 当独立场处理。\(\mathcal{L}=\bar\psi i\gamma^{\mu}\partial_{\mu}\psi-m\bar\psi\psi\)。对 \(\bar\psi\) 变分：</p>
+      <div class="formula">\[ \dfrac{\partial\mathcal{L}}{\partial\bar\psi}=i\gamma^{\mu}\partial_{\mu}\psi-m\psi,\qquad \dfrac{\partial\mathcal{L}}{\partial(\partial_{\mu}\bar\psi)}=0 \]</div>
+      <p>欧拉-拉格朗日方程立即给出 \((i\gamma^{\mu}\partial_{\mu}-m)\psi=0\)。对 \(\psi\) 变分，注意 \(\partial_{\mu}\psi\) 在 \(\bar\psi i\gamma^{\mu}\partial_{\mu}\psi\) 中：\(\dfrac{\partial\mathcal{L}}{\partial(\partial_{\mu}\psi)}=\bar\psi i\gamma^{\mu}\)，故 \(\partial_{\mu}(\bar\psi i\gamma^{\mu})=-m\bar\psi\)，即 \(\bar\psi(i\overleftarrow{\partial}_{\mu}\gamma^{\mu}+m)=0\)——共轭 Dirac 方程。</p>
+
+      <h3>推导 B：Dirac 方程"平方"得 KG</h3>
+      <p>用算子 \((i\gamma^{\nu}\partial_{\nu}+m)\) 左乘 Dirac 方程 \((i\gamma^{\mu}\partial_{\mu}-m)\psi=0\)：</p>
+      <div class="formula">\[ (i\gamma^{\nu}\partial_{\nu}+m)(i\gamma^{\mu}\partial_{\mu}-m)\psi=-(\gamma^{\mu}\gamma^{\nu}\partial_{\mu}\partial_{\nu}-m^{2})\psi=0 \]</div>
+      <p>对称化 \(\gamma^{\mu}\gamma^{\nu}=\tfrac12\{\gamma^{\mu},\gamma^{\nu}\}+\tfrac12[\gamma^{\mu},\gamma^{\nu}]=g^{\mu\nu}+\tfrac12[\gamma^{\mu},\gamma^{\nu}]\)。第二项被对称导数 \(\partial_{\mu}\partial_{\nu}\) 杀掉：</p>
+      <div class="formula">\[ \gamma^{\mu}\gamma^{\nu}\partial_{\mu}\partial_{\nu}=g^{\mu\nu}\partial_{\mu}\partial_{\nu}=\partial_{\mu}\partial^{\mu}=\Box \]</div>
+      <p>故 \((\Box+m^{2})\psi=0\)。每个旋量分量都满足 KG——这是 Dirac 方程"叠在 KG 之上"的精确含义。由此立刻得到质壳条件 \(p^{2}=m^{2}\)，即 \(E^{2}=\vec p^{2}+m^{2}\)，故 \(E=\pm\omega_{\vec p}\)。</p>
+
+      <h3>推导 C：模式展开 → 哈密顿量 → 谐振子代数</h3>
+      <p>KG 模式展开（推导要点）：用平面波基展开 \(\phi(\vec x,t)\)，再要求正则对易关系 \([\phi(\vec x,t),\pi(\vec y,t)]=i\delta^{(3)}(\vec x-\vec y)\) 成立，唯一确定展开系数为算子 \(a_{\vec p},a_{\vec p}^{\dagger}\)，且归一化使 \([a_{\vec p},a_{\vec p'}^{\dagger}]=(2\pi)^{3}\delta^{(3)}(\vec p-\vec p')\)。</p>
+      <p>把展开代入 \(H=\tfrac12\!\int\!\mathrm{d}^{3}x\bigl[\pi^{2}+(\nabla\phi)^{2}+m^{2}\phi^{2}\bigr]\)，利用 \(\int\!\mathrm{d}^{3}x\,e^{i(\vec p\pm\vec p')\cdot\vec x}=(2\pi)^{3}\delta^{(3)}(\vec p\pm\vec p')\) 化简（交叉项相消，正则对易子给出剩下的对角项），得</p>
+      <div class="formula">\[ H=\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\,\omega_{\vec p}\Bigl(a_{\vec p}^{\dagger}a_{\vec p}+\tfrac12(2\pi)^{3}\delta^{(3)}(0)\Bigr) \]</div>
+      <p>对每个 \(\vec p\)，被积式正是谐振子 \(H_{\vec p}=\omega_{\vec p}(N_{\vec p}+\tfrac12)\)，本征态 \(|n_{\vec p}\rangle\) 的能量 \(\omega_{\vec p}(n_{\vec p}+\tfrac12)\)。多模式直积给出 Fock 态 \(|n_{\vec p_{1}},n_{\vec p_{2}},\dots\rangle\)，能量 \(\sum_{\vec p}\omega_{\vec p}(n_{\vec p}+\tfrac12)\)。零点能 \(\tfrac12\!\sum_{\vec p}\omega_{\vec p}\) 发散——这是真空能问题（见第 7 节）。</p>
+
+      <h3>推导 D：为何 Dirac 场必须用反对易子（自旋-统计的一个微缩证明）</h3>
+      <p>尝试用<strong>对易子</strong> \([b_{\vec p},b_{\vec p'}^{\dagger}]\) 量子化 Dirac 场。计算哈密顿量，得</p>
+      <div class="formula">\[ H=\sum_{s}\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\omega_{\vec p}\Bigl(b_{\vec p}^{s\,\dagger}b_{\vec p}^{s}-d_{\vec p}^{s\,\dagger}d_{\vec p}^{s}\Bigr)+\text{(无穷零点项)} \]</div>
+      <p>注意反粒子项前的<strong>负号</strong>：\(d^{\dagger}d\) 系数为 \(-\omega\)。这意味着可以不断产生反粒子 \(d_{\vec p}^{s\,\dagger}|0\rangle,d_{\vec p}^{s\,\dagger}d_{\vec p'}^{s\,\dagger}|0\rangle,\dots\) 让能量任意减小——真空不稳定。<strong>换用反对易子</strong>：\(\{d_{\vec p}^{r},d_{\vec p'}^{s\,\dagger}\}=(2\pi)^{3}\delta^{rs}\delta^{(3)}(\vec p-\vec p')\)，重排时出现额外 \(-1\)：</p>
+      <div class="formula">\[ H=\sum_{s}\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\omega_{\vec p}\Bigl(b_{\vec p}^{s\,\dagger}b_{\vec p}^{s}+d_{\vec p}^{s\,\dagger}d_{\vec p}^{s}\Bigr)+\text{(零点项)} \]</div>
+      <p>两项系数都是 \(+\omega\)——真空 \(|0\rangle\)（\(b|0\rangle=d|0\rangle=0\)）是真正的基态，能量有限（重整化后）。同时反对易子给出 \((d_{\vec p}^{s\,\dagger})^{2}=0\)，即<strong>泡利不相容原理</strong>。<strong>正定性 + 自洽性 → 半整数自旋必须用反对易子。</strong>对 KG 场做同样的论证给出对易子；这两者结合即自旋-统计定理。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 6.1 谐振子代数应用于单一场模</h4>
+        <p class="example-statement">把一个 \(500\,\mathrm{nm}\) 波长的可见光模式当作一个量子谐振子（自然单位 \(\hbar=c=1\) 仅在最后一节换回 SI）。取对易关系 \([a,a^{\dagger}]=1\)，数算子 \(N=a^{\dagger}a\)。求：(a) \(\langle3|N|3\rangle\) 与该态能量 \(E_{3}\)；(b) \(\langle0|a(a^{\dagger})^{2}a^{\dagger}|0\rangle\)；(c) 用 \(a^{\dagger}\) 反复作用从 \(|0\rangle\) 构造 \(|3\rangle\) 并核对归一化。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先算光子能量：\(\omega=2\pi c/\lambda=2\pi(2.998\times10^{8}\,\mathrm{m/s})/(500\times10^{-9}\,\mathrm{m})=3.757\times10^{15}\,\mathrm{rad/s}\)。</p>
+          <div class="formula">\[ \hbar\omega=(1.0546\times10^{-34}\,\mathrm{J\,s})(3.757\times10^{15}\,\mathrm{s^{-1}})=3.965\times10^{-19}\,\mathrm{J}=2.476\,\mathrm{eV} \]</div>
+          <p class="step"><strong>(a)</strong> 由 \(N|n\rangle=n|n\rangle\)，\(\langle3|N|3\rangle=3\)。能量 \(E_{3}=\hbar\omega(3+\tfrac12)=2.476\times3.5=8.666\,\mathrm{eV}=1.388\times10^{-18}\,\mathrm{J}\)。注意即使把所有粒子都拿走（\(n=0\)），零点能 \(E_{0}=\tfrac12\hbar\omega=1.238\,\mathrm{eV}\) 仍存在——这就是<strong>真空涨落</strong>。</p>
+          <p class="step"><strong>(b)</strong> 利用 \([a,a^{\dagger}]=1\Rightarrow aa^{\dagger}=a^{\dagger}a+1=N+1\)：</p>
+          <div class="formula">\[ a(a^{\dagger})^{2}a^{\dagger}|0\rangle=a(a^{\dagger})^{3}|0\rangle \]</div>
+          <p>用 \(a(a^{\dagger})^{n}|0\rangle=n(a^{\dagger})^{n-1}|0\rangle\)（对 \(n=1,2,\dots\)，由 \([a,(a^{\dagger})^{n}]=n(a^{\dagger})^{n-1}\)）：\(a(a^{\dagger})^{3}|0\rangle=3(a^{\dagger})^{2}|0\rangle\)。再左乘 \(\langle0|a\)：\(\langle0|a\cdot 3(a^{\dagger})^{2}|0\rangle=3\cdot\langle0|a(a^{\dagger})^{2}|0\rangle=3\cdot2\langle0|a^{\dagger}|0\rangle=6\cdot0=0\)。所以</p>
+          <div class="formula">\[ \langle0|a(a^{\dagger})^{2}a^{\dagger}|0\rangle=0 \]</div>
+          <p>物理上这是显然的：\(a|0\rangle=0\)，左矢 \(\langle0|a\) 作用到任何含有 \(a^{\dagger}\) 偶数次的态上都为零。</p>
+          <p class="step"><strong>(c)</strong> 归一化：\(|n\rangle=\dfrac{(a^{\dagger})^{n}}{\sqrt{n!}}|0\rangle\)（由 \(a^{\dagger}|n\rangle=\sqrt{n+1}|n+1\rangle\) 反复应用）。</p>
+          <div class="formula">\[ |3\rangle=\dfrac{(a^{\dagger})^{3}}{\sqrt{3!}}|0\rangle=\dfrac{1}{\sqrt{6}}(a^{\dagger})^{3}|0\rangle \]</div>
+          <p>核对：\(N|3\rangle=3|3\rangle\)，\(\langle3|3\rangle=\dfrac{1}{6}\langle0|a^{3}(a^{\dagger})^{3}|0\rangle=\dfrac{1}{6}\cdot3!=1\)。</p>
+          <p><span class="ans">(a) \(\langle3|N|3\rangle=3\)，\(E_{3}=8.666\,\mathrm{eV}=1.388\times10^{-18}\,\mathrm{J}\)；(b) \(0\)；(c) \(|3\rangle=(a^{\dagger})^{3}|0\rangle/\sqrt{6}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.2 Klein–Gordon 与 Dirac 平面波解</h4>
+        <p class="example-statement">(a) 验证 \(\phi(x)=A\,e^{-ip\cdot x}\)（\(p\cdot x=Et-\vec p\cdot\vec x\)）满足 KG 方程 \((\Box+m^{2})\phi=0\) 当且仅当 \(p^{2}=m^{2}\)。(b) 对静止电子 \(\vec p=0\)，写出 \(u^{s}(p)\) 的显示形式（Dirac 表示）并验证 Dirac 方程。(c) 计算电子的<strong>约化康普顿波长</strong> \(\bar\lambda_{C}=\hbar/(m_{e}c)\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：对 \(\phi=Ae^{-ip\cdot x}\)，\(\partial_{\mu}\phi=-ip_{\mu}\phi\)，\(\partial^{\mu}\partial_{\mu}\phi=(-ip^{\mu})(-ip_{\mu})\phi=-p^{2}\phi\)。代入 KG 方程：</p>
+          <div class="formula">\[ (\Box+m^{2})\phi=(-p^{2}+m^{2})\phi=0 \]</div>
+          <p>非零解要求 \(p^{2}=m^{2}\)，即 \(E^{2}-\vec p^{2}=m^{2}\)（自然单位），\(E=\pm\sqrt{\vec p^{2}+m^{2}}\)。这就是<strong>质壳条件</strong>。</p>
+          <p class="step"><strong>(b)</strong> Dirac 表示下 \(\gamma^{0}=\begin{pmatrix}I&0\\\\0&-I\end{pmatrix}\)，\(\gamma^{i}=\begin{pmatrix}0&\sigma^{i}\\\\-\sigma^{i}&0\end{pmatrix}\)。静止电子 \(\vec p=0\)，\(E=m\)，Dirac 方程 \((\gamma^{0}E-m)u=0\) 即 \((m\gamma^{0}-m)u=0\)，亦即 \((\gamma^{0}-1)u=0\)。设 \(u=\begin{pmatrix}\xi\\\\\eta\end{pmatrix}\)（\(\xi,\eta\) 是二分量旋量），则 \(\gamma^{0}u=\begin{pmatrix}\xi\\\\-\eta\end{pmatrix}\)，要求 \(\begin{pmatrix}\xi\\\\-\eta\end{pmatrix}=\begin{pmatrix}\xi\\\\\eta\end{pmatrix}\)，故 \(\eta=0\)。两个独立解（自旋向上、向下）：</p>
+          <div class="formula">\[ u^{1/2}(p_{\mathrm{rest}})=\sqrt{m}\begin{pmatrix}1\\\\0\\\\0\\\\0\end{pmatrix},\qquad u^{-1/2}(p_{\mathrm{rest}})=\sqrt{m}\begin{pmatrix}0\\\\1\\\\0\\\\0\end{pmatrix} \]</div>
+          <p>（\(\sqrt{m}\) 是按 \(\bar u u=2m\) 归一化的惯例。）反粒子旋量 \(v^{s}\) 在静止系是 \(\sqrt{m}\) 乘后两分量为 1 的形式：\(v^{1/2}=\sqrt{m}(0,0,1,0)^{T}\) 等。</p>
+          <p class="step"><strong>(c)</strong> 电子静质量 \(m_{e}=9.109\times10^{-31}\,\mathrm{kg}\)，\(\hbar=1.0546\times10^{-34}\,\mathrm{J\,s}\)，\(c=2.998\times10^{8}\,\mathrm{m/s}\)：</p>
+          <div class="formula">\[ \bar\lambda_{C}=\dfrac{\hbar}{m_{e}c}=\dfrac{1.0546\times10^{-34}}{(9.109\times10^{-31})(2.998\times10^{8})}=\dfrac{1.0546\times10^{-34}}{2.731\times10^{-22}}=3.862\times10^{-13}\,\mathrm{m} \]</div>
+          <p>即约 \(0.386\,\mathrm{pm}\)（皮米）。对应的电子静能 \(m_{e}c^{2}=0.5110\,\mathrm{MeV}\)，所以 \(\bar\lambda_{C}=\hbar c/(m_{e}c^{2})=197.3\,\mathrm{MeV\,fm}/0.511\,\mathrm{MeV}=386\,\mathrm{fm}\)，与上面一致。\(\bar\lambda_{C}\) 是"在哪个尺度上单粒子相对论量子力学必然失效、必须用 QFT"的特征长度——比此尺度精细的实验（高能散射）就直接产生粒子对。</p>
+          <p><span class="ans">(a) \(\phi=Ae^{-ip\cdot x}\) 是 KG 解 \(\Leftrightarrow p^{2}=m^{2}\)；(b) \(u^{1/2}(p_{\mathrm{rest}})=\sqrt{m}(1,0,0,0)^{T}\)，\(u^{-1/2}=\sqrt{m}(0,1,0,0)^{T}\)；(c) \(\bar\lambda_{C}=3.862\times10^{-13}\,\mathrm{m}=386\,\mathrm{fm}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.3 粒子-反粒子对产生的能量阈值</h4>
+        <p class="example-statement">求以下过程的能量阈值（质心系不变量 \(\sqrt{s_{\min}}\)），并讨论单光子在真空中能否产生 \(e^{+}e^{-}\) 对：(a) 双光子对撞 \(\gamma\gamma\to e^{+}e^{-}\)；(b) \(e^{+}e^{-}\to\mu^{+}\mu^{-}\)；(c) 质子-质子固定靶产生 \(pp\to pp\,p\bar p\) 的<strong>实验室系</strong>束流动能阈值。已知 \(m_{e}c^{2}=0.511\,\mathrm{MeV}\)、\(m_{\mu}c^{2}=105.66\,\mathrm{MeV}\)、\(m_{p}c^{2}=938.27\,\mathrm{MeV}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：阈值判据</strong>。末态在<strong>质心系</strong>全部静止时所需能量最小，即 \(\sqrt{s_{\min}}=\sum_{f}m_{f}c^{2}\)。</p>
+          <p class="step"><strong>(a) \(\gamma\gamma\to e^{+}e^{-}\)</strong>。两个无质量光子对头碰撞，质心能量 \(\sqrt{s}=\sqrt{2E_{1}E_{2}(1-\cos\theta)}\)。对头碰 \(\theta=\pi\)，得 \(\sqrt{s}=2\sqrt{E_{1}E_{2}}\)。要求 \(\sqrt{s}\geq2m_{e}c^{2}\)：</p>
+          <div class="formula">\[ \sqrt{s_{\min}}=2m_{e}c^{2}=2(0.511)=1.022\,\mathrm{MeV} \]</div>
+          <p>若两光子能量相等 \(E_{1}=E_{2}=E\)，则 \(2E\geq1.022\,\mathrm{MeV}\Rightarrow E\geq0.511\,\mathrm{MeV}\)。这对应伽马射线波段（可见光 \(E\sim2\,\mathrm{eV}\) 远不够）。</p>
+          <p class="step"><strong>单光子在真空中不能产生 \(e^{+}e^{-}\)</strong>。证明：光子四动量 \(k^{\mu}=(E/c,\vec k)\)，\(k^{2}=0\)（光子无质量）。若 \(\gamma\to e^{+}e^{-}\) 守恒，则末态不变质量平方 \(s=(p_{+}+p_{-})^{2}\geq(2m_{e}c^{2})^{2}/c^{2}=4m_{e}^{2}c^{2}&gt;0\)。但初态 \(k^{2}=0\)。故 \(s=0&lt;4m_{e}^{2}c^{2}\)——<strong>不可能</strong>。物理上：光子永远以光速运动，没有静止系；而对在质心系中有静质量。所以光子需要<strong>额外的参与者</strong>（另一光子、或核子、或原子核）来分担动量。在原子核库仑场中的<strong>Bethe–Heitler</strong>过程 \(\gamma+Z\to e^{+}e^{-}+\gamma'+Z'\) 阈值约为 \(2m_{e}c^{2}\)（核子几乎不带走能量，但必须存在）。</p>
+          <p class="step"><strong>(b) \(e^{+}e^{-}\to\mu^{+}\mu^{-}\)</strong>：</p>
+          <div class="formula">\[ \sqrt{s_{\min}}=2m_{\mu}c^{2}=2(105.66)=211.3\,\mathrm{MeV} \]</div>
+          <p>对头撞 \(e^{+}\) 与 \(e^{-}\) 束流能量相等时，每束至少 \(105.66\,\mathrm{MeV}\)。北京的 BEPC（北京正负电子对撞机）运行在 \(\sqrt{s}=2\text{–}4.95\,\mathrm{GeV}\)，远高于此阈值，能产生 \(\mu\) 对（也可产生 \(\tau^{+}\tau^{-}\)，阈值 \(2m_{\tau}=3.55\,\mathrm{GeV}\)）。</p>
+          <p class="step"><strong>(c) \(pp\to pp\,p\bar p\)</strong>。末态 4 个核子（2 个 \(p\)+1 个 \(p\)+1 个 \(\bar p\)），最小质心能量 \(4m_{p}c^{2}\)（全静止）：</p>
+          <div class="formula">\[ \sqrt{s_{\min}}=4m_{p}c^{2}=4(938.27)=3753\,\mathrm{MeV} \]</div>
+          <p>实验室系：束流质子撞击静止靶质子，不变量 \(s=2m_{p}^{2}c^{4}+2m_{p}c^{2}E_{\mathrm{beam}}\)（\(E_{\mathrm{beam}}\) 是束流总能量，含静能）。令 \(s=s_{\min}\)：</p>
+          <div class="formula">\[ s_{\min}=16m_{p}^{2}c^{4}=2m_{p}^{2}c^{4}+2m_{p}c^{2}E_{\mathrm{beam}}\Rightarrow E_{\mathrm{beam}}=\dfrac{14m_{p}^{2}c^{4}}{2m_{p}c^{2}}=7m_{p}c^{2} \]</div>
+          <div class="formula">\[ E_{\mathrm{beam}}=7(938.27)=6568\,\mathrm{MeV} \]</div>
+          <p>对应的<strong>动能</strong> \(T_{\mathrm{beam}}=E_{\mathrm{beam}}-m_{p}c^{2}=6m_{p}c^{2}=5630\,\mathrm{MeV}=5.63\,\mathrm{GeV}\)。Berkeley 的 Bevatron（1954 年建造，专为发现反质子）束流动能 \(6.2\,\mathrm{GeV}\)，刚好超过此阈值；<strong>Chamberlain, Segrè, Wiegand, Ypsilantis (1955)</strong> 据此发现反质子。<strong>注意：对撞机比固定靶高效得多</strong>——同一 \(\sqrt{s}\)，对撞机每束只需 \(2m_{p}c^{2}=1.88\,\mathrm{GeV}\)，固定靶却需 \(7m_{p}c^{2}\)。这就是 LHC 用对撞机的设计动机。</p>
+          <p><span class="ans">(a) \(\sqrt{s_{\min}}=1.022\,\mathrm{MeV}\)，等能双光子各 \(0.511\,\mathrm{MeV}\)；单光子在真空不能产生 \(e^{+}e^{-}\)（\(s=0&lt;4m_{e}^{2}c^{2}\)）；(b) \(\sqrt{s_{\min}}=211.3\,\mathrm{MeV}\)；(c) \(\sqrt{s_{\min}}=3753\,\mathrm{MeV}\)，固定靶束流动能阈值 \(T_{\mathrm{beam}}=5.63\,\mathrm{GeV}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.4 \(e^{+}e^{-}\to\mu^{+}\mu^{-}\) 的费曼图与最低阶截面</h4>
+        <p class="example-statement">(a) 画出该过程的最低阶（树图）费曼图，标出外线、顶点、内线传播子；写出对应的不变振幅 \(\mathcal{M}\) 的结构（不必算迹）。(b) 在 \(\sqrt{s}=10\,\mathrm{GeV}\)（远大于 \(m_{\mu}\)）的非极化截面是多少？把它换算成等效<br/>相互作用长度。取 \(\alpha=1/137.036\)、\(1\,\mathrm{GeV}^{-2}=0.3894\,\mathrm{mb}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：最低阶是<strong>s-道单光子湮灭图</strong>（见仿真过程 1）。\(e^{-}(p_{1})\) 与 \(e^{+}(p_{2})\) 在顶点 1 湮灭成虚光子 \(\gamma^{*}(q)\)，虚光子在顶点 2 产生 \(\mu^{-}(k_{1})\) 与 \(\mu^{+}(k_{2})\)。四动量守恒：\(q=p_{1}+p_{2}=k_{1}+k_{2}\)，\(q^{2}=s\)。</p>
+          <p>按费曼规则（QED）：每个顶点 \(-ie\gamma^{\mu}\)；光子传播子 \(\dfrac{-ig_{\mu\nu}}{q^{2}+i\varepsilon}=\dfrac{-ig_{\mu\nu}}{s}\)；外线 \(u(p_{1}),\bar v(p_{2}),\bar u(k_{1}),v(k_{2})\)。沿费米子流向组合（电子线从 \(e^{-}\) 入射到 \(\mu^{-}\) 出射），得</p>
+          <div class="formula">\[ i\mathcal{M}=\bar v(p_{2})(-ie\gamma^{\mu})u(p_{1})\cdot\dfrac{-ig_{\mu\nu}}{s}\cdot\bar u(k_{1})(-ie\gamma^{\nu})v(k_{2}) \]</div>
+          <div class="formula">\[ \Rightarrow\quad i\mathcal{M}=\dfrac{-ie^{2}}{s}\bigl[\bar v(p_{2})\gamma^{\mu}u(p_{1})\bigr]\bigl[\bar u(k_{1})\gamma_{\mu}v(k_{2})\bigr] \]</div>
+          <p>对自旋求平均（初态 4 个自旋组合，除以 4）、对末态求和，需算两个迹：\(\tfrac14\sum|\mathcal{M}|^{2}=\dfrac{e^{4}}{4s^{2}}\cdot\mathrm{Tr}[\dots]\cdot\mathrm{Tr}[\dots]\)。在高能极限 \(s\gg m_{\mu}^{2},m_{e}^{2}\)，迹的求值给出 \(2(t^{2}+u^{2})\)，故</p>
+          <div class="formula">\[ \overline{|\mathcal{M}|^{2}}=\dfrac{2e^{4}}{s^{2}}(t^{2}+u^{2})\quad\xrightarrow{m\to0}\quad\dfrac{8e^{4}}{s^{2}}\cdot\dfrac{s^{2}}{4}\cdot(1+\cos^{2}\theta)\cdot\dfrac{1}{4} \]</div>
+          <p>（详细处理见 Peskin §5.1 或 Srednicki §48；典型结果是 \(\overline{|\mathcal{M}|^{2}}=e^{4}(1+\cos^{2}\theta)\)。）对 \(\cos\theta\) 积分并代入两体相空间，给出</p>
+          <div class="formula">\[ \boxed{\;\sigma(e^{+}e^{-}\to\mu^{+}\mu^{-})=\dfrac{4\pi\alpha^{2}}{3s}\quad(s\gg m_{\mu}^{2})\;} \]</div>
+          <p class="step"><strong>(b)</strong> \(\sqrt{s}=10\,\mathrm{GeV}\Rightarrow s=100\,\mathrm{GeV^{2}}\)。</p>
+          <div class="formula">\[ \sigma=\dfrac{4\pi\alpha^{2}}{3s}=\dfrac{4\pi}{3\cdot100}\cdot\dfrac{1}{(137.036)^{2}}\,\mathrm{GeV}^{-2} \]</div>
+          <div class="formula">\[ =\dfrac{4\pi}{300}\cdot5.325\times10^{-5}\,\mathrm{GeV}^{-2}=4.189\times10^{-2}\times5.325\times10^{-5}=2.231\times10^{-6}\,\mathrm{GeV}^{-2} \]</div>
+          <p>换算：\(2.231\times10^{-6}\times0.3894=8.69\times10^{-7}\,\mathrm{mb}=0.869\,\mathrm{nb}\)（纳靶）。</p>
+          <p>对照 B 工厂（KEKB / SuperKEKB，\(\sqrt{s}\approx10.58\,\mathrm{GeV}\)）实测约 \(1.1\,\mathrm{nb}\)，与高能极限公式相差 \(15\%\)（主要来自 \(m_{\mu}^{2}/s\) 修正与辐射修正）——吻合良好。</p>
+          <p class="step"><strong>等效相互作用长度</strong>：若正负电子束在储存环中均匀分布，亮度 \(L\sim10^{34}\,\mathrm{cm^{-2}s^{-1}}\)（SuperKEKB），事件率 \(R=L\sigma=10^{34}\times0.869\times10^{-33}=8.7\,\mathrm{s^{-1}}\)——每秒约 9 个 \(\mu\mu\) 事件。这告诉我们 \(e^{+}e^{-}\) 之间的电磁相互作用"截面"小到 \(10^{-33}\,\mathrm{cm^{2}}\)，远小于几何截面 \(\sim10^{-16}\,\mathrm{cm^{2}}\)——电磁力很弱（耦合 \(\alpha\approx1/137\)）。</p>
+          <p><span class="ans">\(i\mathcal{M}=\dfrac{ie^{2}}{s}[\bar v\gamma^{\mu}u][\bar u\gamma_{\mu}v]\)（结构）；\(\sigma(10\,\mathrm{GeV})=0.869\,\mathrm{nb}=8.69\times10^{-7}\,\mathrm{mb}\)</span>。</p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 6.5 读取传播子与顶点因子 — 费曼规则的练习</h4>
+        <p class="example-statement">把例 6.4 的费曼图按 QED 费曼规则"读"出来：(a) 写出每个因子；(b) 验证量纲 \([\sigma]=\mathrm{GeV}^{-2}\)；(c) 如果在质心系两束流能量相等，求虚光子四动量平方 \(q^{2}\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong> 按<strong>"沿费米子流反向，逆外线进入、顺外线离开"</strong>读：</p>
+          <ul>
+            <li>入射电子外线 \(u(p_{1})\)（4 分量旋量）。</li>
+            <li>顶点 1：\(-ie\gamma^{\mu}\)（矩阵）。</li>
+            <li>入射正电子外线：\(\bar v(p_{2})\)（注意正电子用 \(v\)，并放在最左边形成 \(\bar v(\dots)u\) 的形式）。</li>
+            <li>光子传播子：\(\dfrac{-ig^{\mu\nu}}{q^{2}+i\varepsilon}\)，其中 \(q=p_{1}+p_{2}\)，\(q^{2}=s\)。</li>
+            <li>顶点 2：\(-ie\gamma^{\nu}\)。</li>
+            <li>出射 \(\mu^{-}\) 外线 \(\bar u(k_{1})\)；出射 \(\mu^{+}\) 外线 \(v(k_{2})\)。</li>
+          </ul>
+          <p>组合（顶点 1 的指标 \(\mu\) 与传播子指标 \(\mu\) 收缩；顶点 2 的 \(\nu\) 与传播子 \(\nu\) 收缩）：</p>
+          <div class="formula">\[ i\mathcal{M}=\underbrace{\bar v(p_{2})}_{\mu^{+}\text{ 外线}}\underbrace{(-ie\gamma^{\mu})}_{\text{顶点}1}\underbrace{u(p_{1})}_{e^{-}\text{ 外线}}\;\underbrace{\dfrac{-ig_{\mu\nu}}{s}}_{\gamma\text{ 传播子}}\;\underbrace{\bar u(k_{1})}_{\mu^{-}\text{ 外线}}\underbrace{(-ie\gamma^{\nu})}_{\text{顶点}2}\underbrace{v(k_{2})}_{\mu^{+}\text{ 外线}} \]</div>
+          <p>化简（含 \(g_{\mu\nu}\gamma^{\mu}\gamma^{\nu}=\gamma_{\nu}\gamma^{\nu}=4\)，但这里两次 \(\gamma\) 不相邻，所以保留张量形式）就是例 6.4 的结果。</p>
+          <p class="step"><strong>(b) 量纲核对</strong>（自然单位 \([\hbar]=[c]=1\)）。在 4 维时空中，作用量 \(S=\int\!\mathrm{d}^{4}x\,\mathcal{L}\) 无量纲，故 \([\mathcal{L}]=\mathrm{GeV}^{4}\)。拉氏量含 \(\bar\psi\gamma^{\mu}\partial_{\mu}\psi\sim[\psi]^{2}\cdot\mathrm{GeV}\)，故 \([\psi]=\mathrm{GeV}^{3/2}\)。作用量 \(e\int\!\mathrm{d}^{4}x\,\bar\psi\gamma^{\mu}A_{\mu}\psi\) 无量纲要求 \([e]=\mathrm{GeV}^{0}\)（在 Heaviside-Lorentz 单位下 \(\alpha=e^{2}/(4\pi)\) 无量纲）。传播子 \([1/q^{2}]=\mathrm{GeV}^{-2}\)。外线旋量 \([u]=\mathrm{GeV}^{1/2}\)（按 \(\bar u u=2m\) 归一）。</p>
+          <div class="formula">\[ [\mathcal{M}]\sim[\bar v][u]\cdot[1]\cdot[1/s]\cdot[\bar u][v]\cdot[1]=\mathrm{GeV}^{1/2}\cdot\mathrm{GeV}^{1/2}\cdot\mathrm{GeV}^{-2}\cdot\mathrm{GeV}^{1/2}\cdot\mathrm{GeV}^{1/2}=\mathrm{GeV}^{0} \]</div>
+          <p>对 \(2\to2\) 过程，\(\mathrm{d}\sigma\sim|\mathcal{M}|^{2}\cdot\mathrm{d}\Phi_{2}\)，两体相空间 \([\mathrm{d}\Phi_{2}]=\mathrm{GeV}^{-2}\)，故 \([\sigma]=\mathrm{GeV}^{-2}\)。一致。换算：\(1\,\mathrm{GeV}^{-2}=0.3894\,\mathrm{mb}=3.894\times10^{-28}\,\mathrm{cm^{2}}\)（用 \((\hbar c)^{2}=0.03894\,\mathrm{GeV^{2}\,fm^{2}}\)）。</p>
+          <p class="step"><strong>(c) 虚光子四动量平方</strong>。质心系 \(p_{1}=(E_{\mathrm{beam}},0,0,E_{\mathrm{beam}})\)，\(p_{2}=(E_{\mathrm{beam}},0,0,-E_{\mathrm{beam}})\)（对头撞）。则</p>
+          <div class="formula">\[ q=p_{1}+p_{2}=(2E_{\mathrm{beam}},0,0,0)\Rightarrow q^{2}=(2E_{\mathrm{beam}})^{2}=s \]</div>
+          <p>对 \(\sqrt{s}=10\,\mathrm{GeV}\)：\(q^{2}=s=100\,\mathrm{GeV^{2}}\)（类时）。虚光子的"有效质量"是 \(\sqrt{s}=10\,\mathrm{GeV}\)，远超实光子（\(m_{\gamma}=0\)）——它<strong>不在质壳上</strong>（virtual / off-shell），只能存在于相互作用内部，这正是它叫"虚粒子"的原因。它能在很短时间内"违反"能量守恒（不确定关系 \(\Delta E\Delta t\sim\hbar\)），传播距离 \(\sim\hbar c/\sqrt{s}\approx20\,\mathrm{fm}\)（对 \(10\,\mathrm{GeV}\) 虚光子）。</p>
+          <p><span class="ans">传播子 \(-ig_{\mu\nu}/s\)，顶点 \(-ie\gamma^{\mu}\)；\([\sigma]=\mathrm{GeV}^{-2}\)（自洽）；虚光子 \(q^{2}=s=100\,\mathrm{GeV^{2}}\)，off-shell</span>。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>粒子不是"小球"，是场的量子（激发）。</strong>误以为 QFT 中仍然有"小球在飞"的图像。准确表述：基本对象是<strong>充满时空的场</strong> \(\phi(x)\)；粒子是场的某个模式的能量本征激发（量子）。两个电子"不可区分"不是巧合，而是因为它们都是同一个电子场的两个激发。这就像两份声子不可区分——它们都是同一根弦上的两个振动模式。</li>
+        <li><strong>反粒子是相对论+量子力学的强制产物，不是"凑出来"的。</strong>历史 Dirac 用"负能海"解释正电子是过渡性的。准确观点：相对论色散 \(E^{2}=p^{2}+m^{2}\) 给出负能解，结合量子力学+因果律（正能量+Lorentz 不变性）<strong>必然</strong>要求把它们 reinterpret 为正能反粒子。CPT 定理进一步保证反粒子与粒子严格镜像。反质子（\(p\bar p\)）、反氢原子都已在实验中合成，性质符合预言到极高精度。</li>
+        <li><strong>费曼图是微扰级数的项，不是"粒子真实走过的路径"。</strong>费曼图是一种<strong>记账 (bookkeeping) 符号</strong>，把 Dyson 展开的某一项翻译成图形再翻译成振幅。一个过程在某阶的所有可能图之和才是该阶的物理振幅；单张图本身没有可观测意义。"虚粒子交换"也是计算中间步骤，<strong>虚粒子不能被直接观测</strong>——能观测的只有末态真实粒子的截面、寿命、角分布等。<strong>树图</strong>（无圈）是最低阶近似；<strong>圈图</strong>是高阶量子修正。</li>
+        <li><strong>真空"沸腾"≠ 真空中真的有粒子在凭空冒出。</strong>真空涨落是场的零点涨落 \(\langle0|\phi^{2}|0\rangle&gt;0\)，可观察效应（Casimir 力、Lamb 移位）真实存在。但<strong>虚粒子对</strong>"凭空产生又湮灭"是图像化描述，<strong>不是</strong>可观测事件——否则就违反能量守恒。只有在<strong>提供能量</strong>（外界场、对撞动能）时虚粒子对才能"上钩"变成真实粒子对（Schwinger 机制、对撞机产生）。</li>
+        <li><strong>自旋-统计是定理，不是经验规律。</strong>初学者常把"玻色子整数自旋、费米子半整数自旋"当成"实验归纳"。错——这是 Pauli 1940 年在 Lorentz 不变性 + 正能量 + 微因果律前提下证明的<strong>数学定理</strong>。任何放弃其中一条前提的理论（如非相对论 QM）可以违反它（如任意子 anyon 在 2+1 维中出现），但相对论性局域 QFT 中它不可动摇。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 数算子的代数：对玻色子 \([a,a^{\dagger}]=1\)、\(N=a^{\dagger}a\)，证明 (a) \([N,a^{\dagger}]=a^{\dagger}\)、\([N,a]=-a\)；(b) \(N|n\rangle=n|n\rangle\) 时，\(a^{\dagger}|n\rangle\) 也是 \(N\) 的本征态，本征值是多少？(c) 求 \(\langle n|a^{2}(a^{\dagger})^{2}|n\rangle\)。</summary>
+        <div class="hint">用 \([XY,Z]=X[Y,Z]+[X,Z]Y\)。对 (c)，先用 \([a,(a^{\dagger})^{2}]=2a^{\dagger}\)（推广 \([a,(a^{\dagger})^{n}]=n(a^{\dagger})^{n-1}\)）。</div>
+        <div class="solution">
+          <p><strong>(a)</strong> \([N,a^{\dagger}]=[a^{\dagger}a,a^{\dagger}]=a^{\dagger}[a,a^{\dagger}]+[a^{\dagger},a^{\dagger}]a=a^{\dagger}\cdot1+0=a^{\dagger}\)。类似 \([N,a]=[a^{\dagger}a,a]=a^{\dagger}[a,a]+[a^{\dagger},a]a=0+(-1)a=-a\)。</p>
+          <p><strong>(b)</strong> \(N(a^{\dagger}|n\rangle)=([N,a^{\dagger}]+a^{\dagger}N)|n\rangle=(a^{\dagger}+a^{\dagger}n)|n\rangle=(n+1)(a^{\dagger}|n\rangle)\)。故 \(a^{\dagger}|n\rangle\) 是 \(N\) 的本征态，本征值 \(n+1\)。同理 \(a|n\rangle\) 本征值 \(n-1\)。归一化：\(a^{\dagger}|n\rangle=\sqrt{n+1}|n+1\rangle\)。</p>
+          <p><strong>(c)</strong> 利用 \(a(a^{\dagger})^{2}=(a^{\dagger})^{2}a+2a^{\dagger}\)（即 \([a,(a^{\dagger})^{2}]=2a^{\dagger}\)）：</p>
+          <p>\(a^{2}(a^{\dagger})^{2}|n\rangle=a\bigl[(a^{\dagger})^{2}a+2a^{\dagger}\bigr]|n\rangle=a(a^{\dagger})^{2}\sqrt n|n-1\rangle+2a a^{\dagger}|n\rangle\)。</p>
+          <p>反复用 \(aa^{\dagger}=a^{\dagger}a+1=N+1\)：\(aa^{\dagger}|n\rangle=(n+1)|n\rangle\)。\((a^{\dagger})^{2}|n-1\rangle\) 应用两次：\((a^{\dagger})^{2}|n-1\rangle=\sqrt n\sqrt{n+1}|n+1\rangle\)。再 \(a|n+1\rangle=\sqrt{n+1}|n\rangle\)。最终：\(a(a^{\dagger})^{2}|n-1\rangle=\sqrt n\sqrt{n+1}\cdot a|n+1\rangle=\sqrt n(n+1)|n\rangle\)。乘以 \(\sqrt n\)（前面那个）：\(n(n+1)|n\rangle\)。再加 \(2(n+1)|n\rangle\)。共 \(n(n+1)+2(n+1)=(n+1)(n+2)|n\rangle\)。与 \(\langle n|\) 内积得 \((n+1)(n+2)\)。可核验 \(n=0\)：\(\langle0|a^{2}(a^{\dagger})^{2}|0\rangle=\langle0|a^{2}\cdot2|0\rangle\)（用 \((a^{\dagger})^{2}|0\rangle=\sqrt2|2\rangle\)，\(a^{2}|2\rangle=\sqrt2|0\rangle\)，故为 \(2\)）；公式给 \((0+1)(0+2)=2\) ✓。</p>
+          <p><span class="ans">(a) \([N,a^{\dagger}]=a^{\dagger}\), \([N,a]=-a\)；(b) \(a^{\dagger}|n\rangle\) 本征值 \(n+1\)；(c) \((n+1)(n+2)\)</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 单光子在真空中不能产生 \(e^{+}e^{-}\)：用四动量守恒证明这一点（不必引入质壳不等式，直接用动量分量）。</summary>
+        <div class="hint">光子 \(k^{\mu}=(E/c,\vec k)\)，\(|\vec k|=E/c\)。末态两粒子总动量 \(\vec P=\vec p_{+}+\vec p_{-}\) 总满足 \(|\vec P|\leq|\vec p_{+}|+|\vec p_{-}|\)，且对每个有质量粒子 \(|\vec p_{i}|\leq E_{i}/c\)。</div>
+        <div class="solution">
+          <p>设光子能量 \(E\)、动量 \(\vec k\)，\(|\vec k|=E/c\)（光子无质量）。能量守恒：\(E=E_{+}+E_{-}\)。动量守恒：\(\vec k=\vec p_{+}+\vec p_{-}\)，故 \(|\vec k|\leq|\vec p_{+}|+|\vec p_{-}|\)。对有质量粒子 \(E_{i}^{2}=p_{i}^{2}c^{2}+m_{e}^{2}c^{4}&gt;p_{i}^{2}c^{2}\)，故 \(|\vec p_{i}|&lt;E_{i}/c\)。</p>
+          <p>于是 \(|\vec k|&lt;(E_{+}+E_{-})/c=E/c\)。但光子本身 \(|\vec k|=E/c\)——<strong>矛盾</strong>。故 \(e^{+}e^{-}\) 不能凭空从单个光子产生。</p>
+          <p>物理上：单光子的不变质量平方为 \(0\)；\(e^{+}e^{-}\) 末态最小不变质量为 \((2m_{e})^{2}c^{4}&gt;0\)。要凑出正的不变质量必须有第二个参与者（另一光子、核子、原子核…）来"借"动量。这正是为什么伽马射线探测器中观察到的<strong>电子对效应</strong>总是发生在原子核附近——核子几乎不带走能量，但提供必要的动量库。</p>
+          <p><span class="ans">单光子 \(|\vec k|=E/c\) 与末态 \(|\vec p_{+}|+|\vec p_{-}|&lt;(E_{+}+E_{-})/c=E/c\) 矛盾 → 不可能</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. 阈值与对撞机设计：LHC 质子-质子对撞产生希格斯玻色子 \(H^{0}\)（\(m_{H}=125.1\,\mathrm{GeV}/c^{2}\)），主要过程是 \(gg\to H^{0}\)（两个胶子融合）。LHC 设计质心能量 \(\sqrt{s}=14\,\mathrm{TeV}\)。求每个质子的束流能量。对比：若改用固定靶（束流质子撞静止氢靶），要达到同样的质心能量 \(\sqrt{s}=14\,\mathrm{TeV}\)，束流总能量需要多少？</summary>
+        <div class="hint">对撞机：\(\sqrt{s}=2E_{\mathrm{beam}}\)。固定靶：\(s=2m_{p}^{2}c^{4}+2m_{p}c^{2}E_{\mathrm{beam}}\)。</div>
+        <div class="solution">
+          <p><strong>对撞机</strong>：两个等能质子对头撞，\(\sqrt{s}=2E_{\mathrm{beam}}\)。故 \(E_{\mathrm{beam}}=7\,\mathrm{TeV}=7000\,\mathrm{GeV}\)（动能 \(T=7\,\mathrm{TeV}-0.938\,\mathrm{GeV}\approx6.999\,\mathrm{TeV}\)，几乎等于总能量——超相对论性）。</p>
+          <p><strong>固定靶</strong>：质子撞静止质子，\(s=2m_{p}^{2}c^{4}+2m_{p}c^{2}E_{\mathrm{beam}}\)。要求 \(\sqrt{s}=14\,\mathrm{TeV}\)，即 \(s=196\times10^{6}\,\mathrm{GeV^{2}}\)。解出 \(E_{\mathrm{beam}}\)：</p>
+          <p>\(E_{\mathrm{beam}}=\dfrac{s-2m_{p}^{2}c^{4}}{2m_{p}c^{2}}=\dfrac{1.96\times10^{8}-2\cdot(0.938)^{2}}{2\cdot0.938}\,\mathrm{GeV}\approx\dfrac{1.96\times10^{8}}{1.876}=1.045\times10^{8}\,\mathrm{GeV}=1.045\times10^{5}\,\mathrm{TeV}\)。</p>
+          <p>约 \(10^{5}\,\mathrm{TeV}\)，比对撞机的 \(7\,\mathrm{TeV}\) 大 4 个数量级。这是为什么 LHC 用对撞机而不固定靶——同样质心能量，固定靶要难上万倍。宇宙线中确有此种高能质子（\(10^{8}\,\mathrm{GeV}\) 量级），但流强低、不可控，所以高能物理<strong>必须</strong>用对撞机。</p>
+          <p><span class="ans">对撞机每束 \(7\,\mathrm{TeV}\)；固定靶需 \(E_{\mathrm{beam}}\approx10^{5}\,\mathrm{TeV}\)（差 4 个数量级）</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. 玻色-爱因斯坦平均占据数：温度 \(T\) 下玻色子模式的平均粒子数 \(\bar n(\omega)=1/(e^{\hbar\omega/k_{B}T}-1)\)（化学势为零，例如黑体辐射中的光子）。求 (a) \(T=300\,\mathrm{K}\)（室温）下，频率 \(\omega=3\times10^{15}\,\mathrm{rad/s}\)（可见光）模式的平均光子数；(b) \(T=5800\,\mathrm{K}\)（太阳表面）下同一模式的平均光子数；(c) 用零点能论证为何黑体辐射能量密度在高频趋于零（紫外灾难已被 QFT 解决）。</summary>
+        <div class="hint">\(k_{B}=1.381\times10^{-23}\,\mathrm{J/K}\)，\(\hbar=1.055\times10^{-34}\,\mathrm{J\,s}\)。\(\bar n\ll1\) 时 \(\bar n\approx e^{-\hbar\omega/k_{B}T}\)。</div>
+        <div class="solution">
+          <p>\(\hbar\omega=(1.055\times10^{-34})(3\times10^{15})=3.165\times10^{-19}\,\mathrm{J}=1.976\,\mathrm{eV}\)。</p>
+          <p><strong>(a)</strong> \(k_{B}T=1.381\times10^{-23}\times300=4.143\times10^{-21}\,\mathrm{J}=0.02585\,\mathrm{eV}\)。比 \(\hbar\omega/\left(k_{B}T\right)=1.976/0.02585=76.5\)，\(\bar n=1/(e^{76.5}-1)\approx e^{-76.5}=4.5\times10^{-34}\)。<strong>室温下可见光模式几乎空</strong>——这就是为什么室温物体不发光。</p>
+          <p><strong>(b)</strong> \(k_{B}T=1.381\times10^{-23}\times5800=8.010\times10^{-20}\,\mathrm{J}=0.500\,\mathrm{eV}\)。比值 \(\hbar\omega/(k_{B}T)=1.976/0.500=3.95\)，\(\bar n=1/(e^{3.95}-1)=1/(51.9-1)=0.0197\)。约 2%——可见光模式在太阳表面平均被 0.02 个光子占据（峰值在 \(\hbar\omega\sim2.8\,k_{B}T\approx1.4\,\mathrm{eV}\)，即近红外，对应维恩位移定律）。</p>
+          <p><strong>(c)</strong> 当 \(\hbar\omega\gg k_{B}T\)，\(\bar n\sim e^{-\hbar\omega/k_{B}T}\to0\)（指数截断）。普朗克黑体谱 \(\rho(\omega)\propto\omega^{3}/(e^{\hbar\omega/k_{B}T}-1)\) 在高频指数衰减而非趋于无穷——这是普朗克 1900 年引入能量量子化（即 QFT 思想的萌芽）解决的"紫外灾难"。零点能 \(\tfrac12\hbar\omega\) 虽发散，但不参与热交换（不能被吸收/发射单个零点量子），故不影响黑体谱——它只在 Casimir、Lamb 移位等真空效应中显现。</p>
+          <p><span class="ans">(a) \(\bar n\approx4.5\times10^{-34}\)；(b) \(\bar n\approx0.0197\)；(c) 高频指数截断，零点能不影响热辐射谱</span>。</p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. QED 截面标度：树图过程中，每个顶点贡献一个因子 \(e\)，故 \(\mathcal{M}\propto e^{2}\)，\(\sigma\propto e^{4}\propto\alpha^{2}\)。若 \(\alpha\)（精细结构常数）增大为现在的 2 倍，\(e^{+}e^{-}\to\mu^{+}\mu^{-}\) 的截面变为原来的多少倍？对应在 \(\sqrt{s}=10\,\mathrm{GeV}\) 时，新截面是多少？</summary>
+        <div class="hint">\(\sigma=4\pi\alpha^{2}/(3s)\)，故 \(\sigma\propto\alpha^{2}\)。</div>
+        <div class="solution">
+          <p>\(\sigma'\propto(2\alpha)^{2}=4\alpha^{2}\)，故 \(\sigma'=4\sigma\)。</p>
+          <p>原 \(\sigma=0.869\,\mathrm{nb}\)（例 6.4），新 \(\sigma'=4\times0.869=3.48\,\mathrm{nb}\)。</p>
+          <p>但要注意：\(\alpha\) 是跑动耦合 (running coupling)，在高能下会增大（真空极化屏蔽减弱）。在 \(M_{Z}=91\,\mathrm{GeV}\) 处 \(\alpha(M_{Z})\approx1/128\)，比低能 \(\alpha(0)\approx1/137\) 大约 7%。所以"加倍"是不现实的（要达到 \(\alpha\sim2/137\) 需要远超普朗克尺度的能量）。本题只是强调<strong>电磁过程截面强烈依赖耦合强度</strong>——这也是为什么强相互作用（\(\alpha_{s}\sim1\)）的截面比电磁大几个数量级，弱相互作用（低能等效 \(G_{F}\)）则小几个数量级。</p>
+          <p><span class="ans">\(\sigma'=4\sigma=3.48\,\mathrm{nb}\)</span>。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 费曼图查看器 Feynman Diagram Viewer</h2>
+      <p class="sim-desc">选择一个 QED 过程，查看其<strong>最低阶（树图）费曼图</strong>。实线 = 费米子（电子 \(e^{\mp}\)、缪子 \(\mu^{\mp}\)），箭头指示费米子流（粒子方向；<strong>反粒子</strong>的箭头反向）；波浪线 = 光子 \(\gamma\)（虚光子为传播子）；绿点 = 相互作用<strong>顶点</strong>。每个顶点对应 QED 顶点因子 \(-ie\gamma^{\mu}\)，光子内线对应传播子 \(-ig_{\mu\nu}/q^{2}\)。可选择的过程：(0) <strong>Møller 散射</strong> \(e^{-}e^{-}\to e^{-}e^{-}\)（t-道光子交换）；(1) <strong>湮灭</strong> \(e^{+}e^{-}\to\mu^{+}\mu^{-}\)（s-道虚光子）；(2) <strong>Compton 散射</strong> \(\gamma e^{-}\to\gamma e^{-}\)（s-道虚电子）。沿外线流动的小圆点示意粒子流的物理方向；调节<strong>动画速率</strong>滑块可放慢观察。注意：所有图都是微扰级数的<strong>单一项</strong>——完整物理过程是该阶所有可能图之和（再加更高阶圈图修正）。</p>
+      <div class="sim-container">
+        <canvas id="sim-6" width="640" height="420"></canvas>
+        <div class="sim-controls" id="controls-6"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-6');
+          var W = canvas.width, H = canvas.height;
+
+          var DEFAULT = { proc: 0, speed: 1.0 };
+          var params = { proc: DEFAULT.proc, speed: DEFAULT.speed };
+
+          /* ---- wavy photon line (tapered at endpoints) ---- */
+          function drawPhoton(ctx, x1, y1, x2, y2, color, label, labelAbove) {
+            var dx = x2 - x1, dy = y2 - y1;
+            var L = Math.hypot(dx, dy);
+            if (L < 1) return;
+            var ux = dx / L, uy = dy / L;
+            var nx = -uy, ny = ux;
+            var amp = 5, wl = 13;
+            var N = Math.max(30, Math.floor(L / 2));
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            for (var i = 0; i <= N; i++) {
+              var t = i / N;
+              var s = t * L;
+              var taper = Math.sin(Math.PI * t);
+              var off = amp * Math.sin(2 * Math.PI * s / wl) * taper;
+              var px = x1 + ux * s + nx * off;
+              var py = y1 + uy * s + ny * off;
+              if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+            if (label) {
+              var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+              var off = (labelAbove == null || labelAbove) ? 14 : -10;
+              PS.drawText(ctx, label, mx + off * nx, my + off * ny,
+                { font: 'italic 14px system-ui', color: color, align: 'center' });
+            }
+            ctx.restore();
+          }
+
+          /* ---- straight fermion line with arrowhead at parameter t along (x1,y1)->(x2,y2) ---- */
+          function drawFermion(ctx, x1, y1, x2, y2, color, arrowT) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+            ctx.stroke();
+            var t = (arrowT != null) ? arrowT : 0.62;
+            var px = x1 + t * (x2 - x1), py = y1 + t * (y2 - y1);
+            var ang = Math.atan2(y2 - y1, x2 - x1);
+            var h = 9;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(px - h * Math.cos(ang - 0.5), py - h * Math.sin(ang - 0.5));
+            ctx.lineTo(px - h * Math.cos(ang + 0.5), py - h * Math.sin(ang + 0.5));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          /* ---- vertex dot with subtle pulse ---- */
+          function drawVertex(ctx, x, y, pulse) {
+            var r = 5 + 1.6 * (pulse || 0);
+            PS.drawCircle(ctx, x, y, r, { fill: PS.colors.accent2, stroke: '#000', lineWidth: 1.2 });
+          }
+
+          /* ---- animated "current" marker along an external leg (physical direction) ---- */
+          function drawCurrent(ctx, x1, y1, x2, y2, phase, color) {
+            var t = ((phase % 1) + 1) % 1;
+            var px = x1 + t * (x2 - x1), py = y1 + t * (y2 - y1);
+            PS.drawCircle(ctx, px, py, 3.2, { fill: color });
+          }
+
+          /* ---- time arrow at the top ---- */
+          function drawTimeArrow(ctx) {
+            var y = 26;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.fillStyle = PS.colors.text;
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.moveTo(W / 2 - 40, y); ctx.lineTo(W / 2 + 34, y);
+            ctx.stroke();
+            var h = 7;
+            ctx.beginPath();
+            ctx.moveTo(W / 2 + 40, y);
+            ctx.lineTo(W / 2 + 40 - h, y - h * 0.7);
+            ctx.lineTo(W / 2 + 40 - h, y + h * 0.7);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            PS.drawText(ctx, 'time  时间', W / 2, y - 8,
+              { font: 'italic 11px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          /* ===== process 0: Møller  e-e- -> e-e-  (t-channel) ===== */
+          function drawMoller(ctx, s) {
+            var XL = 60, XR = W - 60, XV = W / 2, YT = 130, YB = 310;
+            var e = PS.colors.primary, g = PS.colors.accent;
+            // top e- leg (left external -> vertex -> right external); arrow points right (fermion flow)
+            drawFermion(ctx, XL, YT, XR, YT, e, 0.30);
+            drawCurrent(ctx, XL, YT, XR, YT, s.phase, e);
+            // bottom e- leg
+            drawFermion(ctx, XL, YB, XR, YB, e, 0.30);
+            drawCurrent(ctx, XL, YB, XR, YB, s.phase + 0.5, e);
+            // photon (t-channel, vertical between two vertices)
+            drawPhoton(ctx, XV, YT, XV, YB, g, 'γ  (q)', true);
+            // vertices
+            drawVertex(ctx, XV, YT, s.pulse);
+            drawVertex(ctx, XV, YB, s.pulse);
+            // external labels
+            PS.drawText(ctx, 'e⁻(p₁)', XL - 8, YT + 5,
+              { font: 'italic 13px system-ui', color: e, align: 'right' });
+            PS.drawText(ctx, "e⁻(p₃)", XR + 8, YT + 5,
+              { font: 'italic 13px system-ui', color: e, align: 'left' });
+            PS.drawText(ctx, 'e⁻(p₂)', XL - 8, YB + 5,
+              { font: 'italic 13px system-ui', color: e, align: 'right' });
+            PS.drawText(ctx, "e⁻(p₄)", XR + 8, YB + 5,
+              { font: 'italic 13px system-ui', color: e, align: 'left' });
+            // vertex labels
+            PS.drawText(ctx, 'vertex 1', XV + 12, YT - 12,
+              { font: '11px system-ui', color: PS.colors.accent2 });
+            PS.drawText(ctx, 'vertex 2', XV + 12, YB + 18,
+              { font: '11px system-ui', color: PS.colors.accent2 });
+            // propagator annotation
+            PS.drawText(ctx, 't-channel photon propagator  Dμν(q) = −igμν / q²',
+              W / 2, H - 30,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+            PS.drawText(ctx, 'Møller scattering  e⁻e⁻ → e⁻e⁻   (lowest order: O(e²) in amplitude, O(α²) in |M|²)',
+              W / 2, H - 12,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          /* ===== process 1: e+e- -> μ+μ-  (s-channel) ===== */
+          function drawAnnihilation(ctx, s) {
+            var XL = 60, XR = W - 60, XV1 = W / 2 - 50, XV2 = W / 2 + 50;
+            var Ytop = 120, Ymid = 220, Ybot = 320;
+            var e = PS.colors.primary, mu = '#7c3aed', g = PS.colors.accent;
+            // e- incoming (bottom-left -> vertex 1): fermion flow along momentum (right & up)
+            drawFermion(ctx, XL, Ybot, XV1, Ymid, e, 0.6);
+            drawCurrent(ctx, XL, Ybot, XV1, Ymid, s.phase, e);
+            // e+ incoming (top-left -> vertex 1): momentum goes right&down, but fermion arrow reversed
+            // Draw line top-left -> vertex; arrow at small t (near external end) pointing inward is wrong;
+            // to make arrow point back along the line, draw the line in the order (vertex -> external):
+            drawFermion(ctx, XV1, Ymid, XL, Ytop, e, 0.62);  // arrow points toward external (back-flow)
+            drawCurrent(ctx, XL, Ytop, XV1, Ymid, s.phase + 0.3, e); // physical motion: external -> vertex
+            // photon propagator (s-channel, horizontal between vertices)
+            drawPhoton(ctx, XV1, Ymid, XV2, Ymid, g, 'γ*  (√s)', true);
+            // μ- outgoing (vertex 2 -> bottom-right)
+            drawFermion(ctx, XV2, Ymid, XR, Ybot, mu, 0.6);
+            drawCurrent(ctx, XV2, Ymid, XR, Ybot, s.phase + 0.6, mu);
+            // μ+ outgoing: fermion arrow reversed -> draw line (external -> vertex) so arrow points back
+            drawFermion(ctx, XR, Ytop, XV2, Ymid, mu, 0.62);
+            drawCurrent(ctx, XV2, Ymid, XR, Ytop, s.phase + 0.9, mu);
+            // vertices
+            drawVertex(ctx, XV1, Ymid, s.pulse);
+            drawVertex(ctx, XV2, Ymid, s.pulse);
+            // labels
+            PS.drawText(ctx, 'e⁻(p₁)', XL - 8, Ybot + 6,
+              { font: 'italic 13px system-ui', color: e, align: 'right' });
+            PS.drawText(ctx, 'e⁺(p₂)', XL - 8, Ytop - 6,
+              { font: 'italic 13px system-ui', color: e, align: 'right' });
+            PS.drawText(ctx, 'μ⁻(k₁)', XR + 8, Ybot + 6,
+              { font: 'italic 13px system-ui', color: mu, align: 'left' });
+            PS.drawText(ctx, 'μ⁺(k₂)', XR + 8, Ytop - 6,
+              { font: 'italic 13px system-ui', color: mu, align: 'left' });
+            PS.drawText(ctx, 'vertex 1', XV1 - 8, Ymid - 14,
+              { font: '11px system-ui', color: PS.colors.accent2, align: 'right' });
+            PS.drawText(ctx, 'vertex 2', XV2 + 8, Ymid - 14,
+              { font: '11px system-ui', color: PS.colors.accent2, align: 'left' });
+            PS.drawText(ctx, 's-channel:  q² = (p₁+p₂)² = s   (off-shell virtual photon)',
+              W / 2, H - 30,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+            PS.drawText(ctx, 'e⁺e⁻ annihilation  →  γ*  →  μ⁺μ⁻    threshold √s ≥ 2mμ = 211.3 MeV',
+              W / 2, H - 12,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          /* ===== process 2: Compton  γ e- -> γ e-  (s-channel) ===== */
+          function drawCompton(ctx, s) {
+            var XL = 60, XR = W - 60, XV1 = W / 2 - 60, XV2 = W / 2 + 60, Ymid = 220;
+            var Ytop = 110, Ybot = 320;
+            var e = PS.colors.primary, g = PS.colors.accent;
+            // e- external in (bottom-left -> vertex 1)
+            drawFermion(ctx, XL, Ybot, XV1, Ymid, e, 0.6);
+            drawCurrent(ctx, XL, Ybot, XV1, Ymid, s.phase, e);
+            // photon in (top-left -> vertex 1) — wavy
+            drawPhoton(ctx, XL, Ytop, XV1, Ymid, g, null);
+            drawCurrent(ctx, XL, Ytop, XV1, Ymid, s.phase + 0.3, g);
+            // internal (virtual) e- propagator between the two vertices
+            drawFermion(ctx, XV1, Ymid, XV2, Ymid, e, 0.5);
+            PS.drawText(ctx, 'e⁻ (virtual)',
+              (XV1 + XV2) / 2, Ymid - 12,
+              { font: 'italic 11px system-ui', color: PS.colors.primary, align: 'center' });
+            // photon out (vertex 2 -> top-right) — wavy
+            drawPhoton(ctx, XV2, Ymid, XR, Ytop, g, null);
+            drawCurrent(ctx, XV2, Ymid, XR, Ytop, s.phase + 0.7, g);
+            // e- external out (vertex 2 -> bottom-right)
+            drawFermion(ctx, XV2, Ymid, XR, Ybot, e, 0.6);
+            drawCurrent(ctx, XV2, Ymid, XR, Ybot, s.phase + 0.5, e);
+            // vertices
+            drawVertex(ctx, XV1, Ymid, s.pulse);
+            drawVertex(ctx, XV2, Ymid, s.pulse);
+            // labels
+            PS.drawText(ctx, 'e⁻(p)', XL - 8, Ybot + 6,
+              { font: 'italic 13px system-ui', color: e, align: 'right' });
+            PS.drawText(ctx, "γ(k)", XL - 8, Ytop - 4,
+              { font: 'italic 13px system-ui', color: g, align: 'right' });
+            PS.drawText(ctx, "γ(k')", XR + 8, Ytop - 4,
+              { font: 'italic 13px system-ui', color: g, align: 'left' });
+            PS.drawText(ctx, "e⁻(p')", XR + 8, Ybot + 6,
+              { font: 'italic 13px system-ui', color: e, align: 'left' });
+            PS.drawText(ctx, 'vertex 1', XV1, Ymid + 22,
+              { font: '11px system-ui', color: PS.colors.accent2, align: 'center' });
+            PS.drawText(ctx, 'vertex 2', XV2, Ymid + 22,
+              { font: '11px system-ui', color: PS.colors.accent2, align: 'center' });
+            PS.drawText(ctx, 's-channel Compton:  intermediate fermion propagator  S(p+k) = i(⧹p+⧹k+m)/((p+k)²−m²)',
+              W / 2, H - 30,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+            PS.drawText(ctx, 'Compton scattering  γe⁻ → γe⁻   (also has u-channel — not shown)',
+              W / 2, H - 12,
+              { font: 'italic 12px system-ui', color: PS.colors.text, align: 'center' });
+          }
+
+          var PROCESSES = [
+            { name: 'Møller e⁻e⁻→e⁻e⁻', draw: drawMoller },
+            { name: 'e⁺e⁻→μ⁺μ⁻ (s)',     draw: drawAnnihilation },
+            { name: 'Compton γe⁻→γe⁻',    draw: drawCompton },
+          ];
+
+          /* ---- sim ---- */
+          var sim = PS.createSim(canvas, {
+            state: function () { return { phase: 0, pulse: 0 }; },
+            step: function (dt, t, st) {
+              st.phase += dt * 0.45 * params.speed;
+              st.pulse = 0.5 + 0.5 * Math.sin(t * 4.0);
+            },
+            draw: function (ctx, st, env) {
+              PS.clear(ctx);
+              drawTimeArrow(ctx);
+              var idx = Math.max(0, Math.min(PROCESSES.length - 1, Math.round(params.proc)));
+              PROCESSES[idx].draw(ctx, st);
+
+              // process indicator box
+              ctx.save();
+              ctx.globalAlpha = 0.92;
+              ctx.fillStyle = PS.colors.bg;
+              ctx.fillRect(8, 8, 200, 32);
+              ctx.strokeStyle = PS.colors.axis;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(8, 8, 200, 32);
+              ctx.restore();
+              PS.drawText(ctx, 'process ' + idx + ':  ' + PROCESSES[idx].name, 16, 28,
+                { font: 'bold 12px system-ui', color: PS.colors.text });
+
+              // legend bottom-right
+              PS.drawText(ctx,
+                '—— fermion (e⁻/μ⁻)   ⤳ arrow = particle flow   ～ photon γ   ● vertex',
+                W - 12, H - 32,
+                { font: '10px system-ui', color: PS.colors.text, align: 'right' });
+            },
+          });
+
+          /* ---- controls ---- */
+          var ctl = PS.makeControls(document.getElementById('controls-6'), [
+            { type: 'slider', key: 'proc',  label: '过程 process (0=Møller, 1=e⁺e⁻→μμ, 2=Compton)', min: 0, max: PROCESSES.length - 1, step: 1, value: DEFAULT.proc },
+            { type: 'slider', key: 'speed', label: '动画速率 speed', min: 0, max: 2.5, step: 0.1, value: DEFAULT.speed },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('proc',  function (v) { params.proc = v; });
+          ctl.on('speed', function (v) { params.speed = v; });
+          ctl.on('reset', function () {
+            params.proc = DEFAULT.proc; params.speed = DEFAULT.speed;
+            var box = document.getElementById('controls-6');
+            var inputs = box.querySelectorAll('input[type=range]');
+            var spans  = box.querySelectorAll('.ctrl-value');
+            var vals = [DEFAULT.proc, DEFAULT.speed];
+            for (var i = 0; i < inputs.length; i++) {
+              inputs[i].value = vals[i];
+              if (spans[i]) spans[i].textContent = (i === 0) ? String(vals[i]) : vals[i].toFixed(1);
+            }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>QFT 是 SR+QM 的唯一自洽结合</strong>。SR 给出 \(E=mc^{2}\)（粒子数可变）与 \(E^{2}=p^{2}+m^{2}\)（负能解），两者共同强制<strong>粒子产生/湮灭</strong>与<strong>反粒子</strong>的存在。</li>
+        <li><strong>场是基本对象</strong>，粒子是场的量子（激发）。"二次量子化"把场 \(\phi(x)\) 提升为<strong>算子值分布</strong>，作用在 Fock 空间 \(\mathcal{F}=\bigoplus_{n}\mathcal{H}_{n}\) 上。</li>
+        <li>Klein–Gordon 拉氏量 \(\mathcal{L}_{\mathrm{KG}}=\tfrac12(\partial_{\mu}\phi)^{2}-\tfrac12m^{2}\phi^{2}\) → \((\Box+m^{2})\phi=0\)。Dirac 拉氏量 \(\mathcal{L}_{\mathrm{D}}=\bar\psi(i\gamma^{\mu}\partial_{\mu}-m)\psi\) → \((i\slashed\partial-m)\psi=0\)。Dirac 平方自动给出 KG。</li>
+        <li><strong>正则量子化</strong>：用 \(a_{\vec p},a_{\vec p}^{\dagger}\)（玻色子，\([\,a,a^{\dagger}\,]=1\)）或 \(b_{\vec p},d_{\vec p}\)（费米子，\(\{b,b^{\dagger}\}=1\)）做模式展开。每个 \(\vec p\) 模式 = 一个独立的谐振子。</li>
+        <li>谐振子代数：\(a^{\dagger}|n\rangle=\sqrt{n+1}|n+1\rangle\)，\(N|n\rangle=n|n\rangle\)，\(E_{n}=\omega(n+\tfrac12)\)。<strong>零点能 \(\tfrac12\omega\)</strong> 是真空涨落的来源。</li>
+        <li><strong>自旋-统计定理</strong>：整数自旋 → 玻色子（交换对称，对易子）；半整数 → 费米子（交换反对称，反对易子，泡利不相容）。是 Lorentz 不变性 + 正能量 + 微因果律的<strong>定理</strong>。</li>
+        <li><strong>费曼传播子</strong> \(\Delta_{F}(x-y)=\int\!\dfrac{\mathrm{d}^{4}p}{(2\pi)^{4}}\dfrac{i\,e^{-ip(x-y)}}{p^{2}-m^{2}+i\varepsilon}\)：编时两态函数，\(i\varepsilon\) 编码 Feynman–Stueckelberg 诠释。</li>
+        <li><strong>S-矩阵</strong> \(S_{fi}=\langle f|T\exp(-i\int H_{I})|i\rangle\)；Dyson 展开给出微扰级数，每项 ↔ <strong>费曼图</strong>。QED 顶点 \(-ie\gamma^{\mu}\)，光子传播子 \(-ig_{\mu\nu}/k^{2}\)，费米子传播子 \(i(\slashed p+m)/(p^{2}-m^{2})\)。</li>
+        <li><strong>反粒子</strong>是 SR+QM 强制的；CPT 定理保证粒子-反粒子严格镜像。</li>
+        <li><strong>真空涨落</strong>可观察：Casimir 力、Lamb 移位、电子反常磁矩（QED 精确到 \(10^{-13}\)）。</li>
+      </ul>
+      <div class="formula">
+        \[ \boxed{\begin{aligned}
+        &\mathcal{L}_{\mathrm{KG}}=\tfrac12(\partial_{\mu}\phi)^{2}-\tfrac12m^{2}\phi^{2},\quad (\Box+m^{2})\phi=0,\\
+        &\mathcal{L}_{\mathrm{D}}=\bar\psi(i\gamma^{\mu}\partial_{\mu}-m)\psi,\quad (i\slashed\partial-m)\psi=0,\quad \{\gamma^{\mu},\gamma^{\nu}\}=2g^{\mu\nu},\\
+        &[a_{\vec p},a_{\vec p'}^{\dagger}]=(2\pi)^{3}\delta^{(3)}(\vec p-\vec p'),\quad H=\int\!\dfrac{\mathrm{d}^{3}p}{(2\pi)^{3}}\omega_{\vec p}\Bigl(a_{\vec p}^{\dagger}a_{\vec p}+\tfrac12\Bigr),\\
+        &\Delta_{F}(x-y)=\int\!\dfrac{\mathrm{d}^{4}p}{(2\pi)^{4}}\dfrac{i\,e^{-ip(x-y)}}{p^{2}-m^{2}+i\varepsilon},\quad S_{fi}=\langle f|T e^{-i\int H_{I}}|i\rangle,\\
+        &\text{QED vertex: }-ie\gamma^{\mu},\quad \text{photon propagator: }\dfrac{-ig_{\mu\nu}}{k^{2}+i\varepsilon},\\
+        &\sigma(e^{+}e^{-}\to\mu^{+}\mu^{-})=\dfrac{4\pi\alpha^{2}}{3s},\quad \bar\lambda_{C}=\dfrac{\hbar}{mc}=386\,\mathrm{fm}\;\;(e^{-}).
+        \end{aligned}} \]
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

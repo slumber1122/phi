@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第10章 · 等离子体波与聚变 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="10">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第10章 · 等离子体物理 Plasma Physics</p>
+      <h1>等离子体波与聚变 <span class="en-title">Plasma Waves &amp; Fusion</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够由荷电粒子的集体运动导出<strong>电子等离子体频率</strong> (electron plasma frequency) \(\omega_{pe}=\sqrt{n_e e^2/(\epsilon_0 m_e)}\)，估算电离层 \(f_p\sim 3\text{–}9\,\mathrm{MHz}\) 与金属 \(f_p\sim 10^{15\text{–}16}\,\mathrm{Hz}\)，并解释<strong>截止现象</strong> (cutoff)：电磁波频率 \(\omega&lt;\omega_p\) 时被等离子体<strong>反射</strong>而非吸收（AM 广播经电离层反射实现远距离传播）。</li>
+        <li>能够写出无碰撞等离子体中三类典型<strong>等离子体波</strong> (plasma waves) 的色散关系：<strong>Langmuir 波</strong>（Bohm–Gross \(\omega^2=\omega_{pe}^2+3k^2v_{Te}^2\)）、<strong>离子声波</strong> (ion-acoustic，\(c_s=\sqrt{Zk_BT_e/m_i}\))、<strong>Alfvén 波</strong>（磁化等离子体中 \(\omega=kv_A\)，\(v_A=B/\sqrt{\mu_0\rho}\)），并用真实数值估算日地环境与托卡马克中的 Alfvén 速度。</li>
+        <li>能够阐明<strong>等离子体不稳定性</strong> (plasma instabilities) 的物理机制——<strong>双流不稳定性</strong> (two-stream)、<strong>Rayleigh–Taylor 不稳定性</strong>（磁约束中的等效交换不稳定性）——并理解磁约束聚变中等离子体为何常处于「集体动力学的湍流状态」。</li>
+        <li>能够运用 <strong>Lawson 判据</strong> (Lawson criterion) \(n\tau_E\geq 12k_BT/(\langle\sigma v\rangle E_\alpha)\) 与<strong>聚变三乘积</strong> (fusion triple product) \(nT\tau_E\gtrsim 3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\) 判断 D–T 反应是否达到<strong>点火</strong> (ignition) 或<strong>能量增益</strong> (Q&gt;1)，并在 (T, nτ) 平面上定位 JET、JT-60U、ITER、NIF 等装置。</li>
+        <li>能够论述<strong>磁约束</strong> (magnetic confinement) 与<strong>惯性约束</strong> (inertial confinement) 两条主流聚变路线的物理原理：<strong>托卡马克</strong> (tokamak) 的环向 + 极向磁场组态、安全因子 \(q\) 与 <strong>磁镜</strong> (magnetic mirror) 的损失锥；激光压缩内爆的等容/等压点火与 \(\rho R\) 判据。</li>
+        <li>能够用真实数值计算 D–T 反应（\(D+T\to\alpha\,(3.5\,\mathrm{MeV})+n\,(14.1\,\mathrm{MeV})\)）在 \(T\approx 10\text{–}25\,\mathrm{keV}\) 所需的 \(n\)、\(\tau_E\)、装置尺寸，并能对比 ITER 目标（\(Q=10\)，\(P_\mathrm{fus}=500\,\mathrm{MW}\)）与已有实验记录（JET 2023：69 MJ；NIF 2022：点火）。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 第四种物态：等离子体 The Fourth State of Matter</h3>
+      <p>当气体被加热到 \(k_BT\) 可比拟原子电离能（\(\sim 13.6\,\mathrm{eV}\) 即 \(\sim 1.6\times 10^5\,\mathrm{K}\)）时，原子解离为自由电子与离子——这种<strong>电离气体</strong> (ionized gas) 即<strong>等离子体</strong> (plasma)。它区别于普通气体的关键性质有三：</p>
+      <ul>
+        <li><strong>准中性</strong> (quasi-neutrality)：宏观上 \(n_e\approx Zn_i\)，但在德拜长度 \(\lambda_D=\sqrt{\epsilon_0 k_BT/(n_e e^2)}\) 尺度上电荷可分离。</li>
+        <li><strong>集体行为</strong> (collective behavior)：粒子不是两两碰撞，而是通过<strong>自洽电磁场</strong>远程相互作用——其特征尺度 \(\lambda_D\) 远小于碰撞平均自由程。</li>
+        <li><strong>对外场响应</strong>：在磁场中带电粒子绕磁力线做回旋运动 (Larmor 运动)，回旋频率 \(\omega_c=|q|B/m\)，回旋半径 \(r_L=v_\perp/\omega_c\)。</li>
+      </ul>
+      <p>等离子体判据：\(\lambda_D\ll L\)（德拜长度远小于系统尺寸）、\(N_D=n(4\pi\lambda_D^3/3)\gg 1\)（德拜球内粒子数远大于 1）、\(\omega\tau_c\gg 1\)（集体振荡频率高于中性碰撞频率）。宇宙可见物质中约 99% 处于等离子体态——恒星内部、星际气体、电离层、霓虹灯、火焰（弱电离）皆属此态。</p>
+      <div class="formula">\[\lambda_D=\sqrt{\frac{\epsilon_0 k_BT_e}{n_e e^2}}\approx 743\,\sqrt{\tfrac{T_e[\mathrm{eV}]}{n_e[\mathrm{m^{-3}}]}}\;\mathrm{m},\qquad \omega_{pe}=\sqrt{\frac{n_e e^2}{\epsilon_0 m_e}},\qquad \omega_{ce}=\frac{eB}{m_e}\]</div>
+      <div class="key-terms">quasi-neutrality (准中性), Debye length (德拜长度 \(\lambda_D\)), collective behavior (集体行为), Larmor radius (回旋半径 \(r_L\)), cyclotron frequency (回旋频率 \(\omega_c\)), magnetized plasma (磁化等离子体)</div>
+
+      <h3>2. 等离子体频率与电磁波截止 Plasma Frequency &amp; EM Cutoff</h3>
+      <p>考虑电子相对离子集体位移 \(x\)：电荷分离建立的恢复电场 \(E=nexe/\epsilon_0\)，电子运动方程 \(m_e\ddot{x}=-n_ee^2x/\epsilon_0\)，给出简谐振荡：</p>
+      <div class="formula">\[\boxed{\;\omega_{pe}=\sqrt{\frac{n_e e^2}{\epsilon_0 m_e}}\approx 56.4\,\sqrt{n_e[\mathrm{m^{-3}}]}\;\mathrm{rad/s},\qquad f_p=\frac{\omega_{pe}}{2\pi}\approx 8.98\,\sqrt{n_e[\mathrm{m^{-3}}]}\;\mathrm{Hz}\;}\]</div>
+      <p>在频率坐标系上，<strong>电磁波在等离子体中的色散关系</strong>是：</p>
+      <div class="formula">\[\omega^2=\omega_{pe}^2+k^2c^2\quad\Longrightarrow\quad k^2=\frac{\omega^2-\omega_{pe}^2}{c^2}\]</div>
+      <p>当 \(\omega&gt;\omega_p\)：\(k\) 为实数，波传播（如可见光穿透电离层、X 射线穿透金属箔）。当 \(\omega&lt;\omega_p\)：\(k\) 为虚数，波在等离子体内<strong>指数衰减</strong> (evanescent)，对于厚等离子体几乎完全<strong>反射</strong>——这是 <strong>截止</strong> (cutoff)。注意：截止时能量并非被粒子吸收转化为热，而是因相位关系被反射回去（类似全反射）。</p>
+      <p><strong>电离层</strong> (ionosphere) F 层典型 \(n_e\sim 10^{12}\,\mathrm{m^{-3}}\)，对应 \(f_p\approx 9\,\mathrm{MHz}\)：AM 中波广播（540–1600 kHz）远低于 \(f_p\)，被反射回地面从而实现数百至千公里的越洋传播；FM 广播（88–108 MHz）与电视信号高于 \(f_p\)，可穿透电离层进行卫星通信。短波（3–30 MHz）处于临界附近，传播强烈依赖昼夜与太阳活动。<strong>金属</strong> (metal) 的传导电子密度 \(n_e\sim 10^{28\text{–}29}\,\mathrm{m^{-3}}\)，\(f_p\sim 10^{15\text{–}16}\,\mathrm{Hz}\)（紫外/远紫外），所以金属反射所有可见光与红外——这就是金属光泽与镜面反射的微观起源。</p>
+      <div class="key-terms">plasma frequency (等离子体频率 \(\omega_{pe}\)), cutoff (截止), evanescent wave (倏逝波), ionosphere (电离层), reflection coefficient (反射系数)</div>
+
+      <h3>3. 等离子体波的家族 Plasma Wave Zoo</h3>
+      <p>等离子体支持多得惊人的<strong>本征模式</strong> (eigenmodes)。以下三类最具代表性：</p>
+      <p><strong>(a) Langmuir 波（电子等离子体波）</strong> — 高频静电振荡，电子受恢复力振荡而离子近似不动。Bohm–Gross 色散关系：</p>
+      <div class="formula">\[\omega^2=\omega_{pe}^2+3\,k^2 v_{Te}^2,\qquad v_{Te}=\sqrt{\frac{k_BT_e}{m_e}}\]</div>
+      <p>波长很长（\(k\to 0\)）时 \(\omega\to\omega_{pe}\)，即集体振荡；波长短时呈现电子热压强贡献（声子式色散）。Langmuir 波是<strong>静电</strong>的（无磁场扰动），其量子化激发称为 <strong>等离激元</strong> (plasmon)，能量 \(\hbar\omega_p\) 在金属中约 10–20 eV。</p>
+      <p><strong>(b) 离子声波</strong> — 低频纵向静电波：电子提供等温玻尔兹曼分布的「弹簧」，离子提供惯性。在 \(T_e\gg T_i\) 极限：</p>
+      <div class="formula">\[\omega^2=\frac{k^2 c_s^2}{1+k^2\lambda_{De}^2},\qquad c_s=\sqrt{\frac{Z\,k_BT_e}{m_i}}\;\;(\text{或 } c_s=\sqrt{\frac{\gamma_e Z k_BT_e+\gamma_i k_BT_i}{m_i}})\]</div>
+      <p>对长波 \(k\lambda_D\ll 1\)：\(\omega/k=c_s\)（普通声波式色散）。离子声波在太阳风、磁层、激光等离子体膨胀中均重要。</p>
+      <p><strong>(c) Alfvén 波</strong> — 磁化等离子体中沿磁力线传播的<strong>剪切磁张力波</strong>。磁力线像弹性弦，「磁张力」\(B^2/\mu_0\) 提供恢复力，离子质量提供惯性：</p>
+      <div class="formula">\[\boxed{\;v_A=\frac{B}{\sqrt{\mu_0\rho}}\;},\qquad \omega=kv_A\;\;(\text{剪切 Alfvén 波}),\qquad \omega^2=k^2(v_A^2+c_s^2)\;\;(\text{压缩 Alfvén 波 / 磁声波})\]</div>
+      <p>\(\rho\approx n_i m_i\)（忽略电子质量）。Alfvén 波是日冕加热、磁层能量传输、磁约束聚变中 MHD 不稳定性的核心角色。在日地空间 \(v_A\sim 50\,\mathrm{km/s}\)（太阳风）至 \(\sim 10^3\,\mathrm{km/s}\)（日冕）；在托卡马克（\(B\sim 5\,\mathrm{T}\), \(n\sim 10^{20}\,\mathrm{m^{-3}}\)）可达 \(v_A\sim 7\times 10^6\,\mathrm{m/s}\)。</p>
+      <div class="key-terms">Langmuir wave (Langmuir 波/电子等离子体波), Bohm–Gross dispersion (Bohm–Gross 色散), ion-acoustic wave (离子声波), Alfvén wave (Alfvén 波), Alfvén speed (Alfvén 速度 \(v_A\)), MHD (磁流体力学 magnetohydrodynamics), plasmon (等离激元)</div>
+
+      <h3>4. 等离子体不稳定性 Plasma Instabilities</h3>
+      <p>等离子体的自由能（束流、密度梯度、磁场曲率、各向异性）常常驱动多种<strong>不稳定性</strong> (instabilities)，把有序能量转化为湍流与热。这是磁约束聚变等离子体<strong>反常输运</strong> (anomalous transport) 的元凶。</p>
+      <ul>
+        <li><strong>双流不稳定性</strong> (two-stream instability)：两束以相对速度 \(v_0\) 穿行的电子族群发生耦合，色散 \(\omega^2=\omega_{pe}^2/2\pm\sqrt{(\omega_{pe}^2/2)^2+\omega_{pe}^2 k^2 v_0^2}\) 的一个分支有虚部（增长率 \(\gamma&gt;0\)）当 \(kv_0\lesssim \omega_{pe}\)。结果：束流动能转化为 Langmuir 波，最终通过波-粒相互作用热化。在快电子束、离子束注入、相对论性喷流中均存在。</li>
+        <li><strong>Rayleigh–Taylor 不稳定性</strong> (RT)：重流体被轻流体支撑于重力场时，界面扰动指数增长 \(\gamma=\sqrt{gk}\)。在磁化等离子体中，「重流体」=高密度等离子体，「轻流体」=磁场（提供支撑），等效重力可来自磁场曲率（离心力）。RT 不稳定是激光内爆压缩、太阳大气结构、磁层中的重要过程，限制惯性约束的压缩对称性。</li>
+        <li><strong>漂移不稳定性、扭结 (kink) 与撕裂 (tearing) 模</strong>：托卡马克中等离子体电流的磁流体扭曲不稳定，需靠极向磁场（安全因子 \(q=m r B_t/(R B_p)\geq 2\)）稳定。</li>
+      </ul>
+      <div class="key-terms">two-stream instability (双流不稳定性), Rayleigh–Taylor instability (RT 不稳定性), kink mode (扭结模), tearing mode (撕裂模), anomalous transport (反常输运), growth rate (增长率 \(\gamma\))</div>
+
+      <h3>5. 磁约束：托卡马克与磁镜 Magnetic Confinement — Tokamak &amp; Mirror</h3>
+      <p>聚变需要 \(T\gtrsim 10^8\,\mathrm{K}\)（\(10\,\mathrm{keV}\)），任何固体容器都会熔毁。利用带电粒子绕磁力线的回旋运动，<strong>磁场</strong>把粒子约束在横向（\(r_L\ll\) 系统尺寸），从而把高温等离子体与器壁隔离。</p>
+      <p><strong>托卡马克</strong> (tokamak, 苏联词头 «тороидальная камера в магнитных катушках») 是主流方案：环向磁场 \(B_t\) 由外部线圈产生，极向磁场 \(B_p\) 由等离子体内部电流 \(I_p\) 产生，合成磁场为螺旋形，沿大环缠绕。<strong>安全因子</strong> (safety factor)：</p>
+      <div class="formula">\[q=\frac{m\,r\,B_t}{R\,B_p}\approx \frac{2\pi r^2 B_t}{\mu_0 R I_p}\quad(\text{磁力线绕大环 }q\text{ 圈才绕小环 }1\text{ 圈})\]</div>
+      <p>典型 \(q\sim 3\text{–}5\) 保证 MHD 稳定。<strong> ITER</strong>（International Thermonuclear Experimental Reactor，建设中于法国 Cadarache）设计参数：大半径 \(R=6.2\,\mathrm{m}\)，小半径 \(a=2.0\,\mathrm{m}\)，\(B_t=5.3\,\mathrm{T}\)，\(I_p=15\,\mathrm{MA}\)，目标 \(P_\mathrm{fus}=500\,\mathrm{MW}\)，\(Q=P_\mathrm{fus}/P_\mathrm{heat}\geq 10\)，预计 2035 年前后实现 D–T 实验。</p>
+      <p><strong>磁镜</strong> (magnetic mirror)：两端强、中部弱的轴向磁场构型。带电粒子速度向量与磁力线夹角 \(\theta\)（投掷角）较小时，会在强场区被反转；只有「损失锥」(loss cone) 内的粒子逃逸：</p>
+      <div class="formula">\[\sin^2\theta_c=\frac{B_\min}{B_\max}=\frac{1}{R_m},\qquad R_m=\frac{B_\max}{B_\min}\;\text{（镜比）}\]</div>
+      <p>磁镜机简单但终端损失严重；现代改进如<strong>串级磁镜</strong> (tandem mirror) 已较少作为聚变主流，但其物理（速度空间扩散、α 粒子约束）对所有磁约束装置都重要。</p>
+      <div class="key-terms">tokamak (托卡马克), toroidal field (环向磁场), poloidal field (极向磁场), safety factor (安全因子 \(q\)), ITER (国际热核实验反应堆), magnetic mirror (磁镜), mirror ratio (镜比 \(R_m\)), loss cone (损失锥), pitch angle (投掷角)</div>
+
+      <h3>6. Lawson 判据与聚变三乘积 The Lawson Criterion &amp; Triple Product</h3>
+      <p>对 D–T 反应 \(D+T\to\alpha+n\)，释放 \(E_\mathrm{fus}=17.6\,\mathrm{MeV}\)，其中 \(\alpha\) 粒子带电（\(E_\alpha=3.5\,\mathrm{MeV}\)）会留在磁约束等离子体中沉积为<strong>自加热</strong>，中子（\(14.1\,\mathrm{MeV}\)）逃逸出磁约束（被包层吸收产热）。能量平衡（忽略轫致辐射）：</p>
+      <ul>
+        <li>聚变功率密度 \(P_\mathrm{fus}=(n^2/4)\langle\sigma v\rangle E_\mathrm{fus}\)（50/50 D–T，准中性 \(n_e=n_D+n_T=n\)）。</li>
+        <li>\(\alpha\) 自加热功率 \(P_\alpha=(n^2/4)\langle\sigma v\rangle E_\alpha=P_\mathrm{fus}\cdot E_\alpha/E_\mathrm{fus}\approx 0.20\,P_\mathrm{fus}\)。</li>
+        <li>热损失功率 \(P_\mathrm{loss}=W/\tau_E\)，热能密度 \(W=3nk_BT\)（电子+离子各 \(\tfrac{3}{2}nk_BT\)）。</li>
+      </ul>
+      <p>定义<strong>能量增益</strong> \(Q\equiv P_\mathrm{fus}/P_\mathrm{ext}\)（\(P_\mathrm{ext}\) 为外部加热功率）。能量平衡 \(P_\mathrm{ext}+P_\alpha=P_\mathrm{loss}\) 给出 Lawson 判据：</p>
+      <div class="formula">\[\boxed{\;n\tau_E=\frac{12\,k_BT}{\langle\sigma v\rangle\,E_\mathrm{fus}\,\bigl(1/Q+E_\alpha/E_\mathrm{fus}\bigr)}\;}\]</div>
+      <p>两个关键阈值：</p>
+      <ul>
+        <li><strong>科学得失相当</strong> \(Q=1\)：\(P_\mathrm{fus}=P_\mathrm{ext}\)，聚变释放等于外部加热输入。</li>
+        <li><strong>点火</strong> \(Q\to\infty\)：\(P_\alpha=P_\mathrm{loss}\)，\(\alpha\) 自加热独立维持反应，无需外部加热。此时：</li>
+      </ul>
+      <div class="formula">\[\boxed{\;\bigl(n\tau_E\bigr)_\mathrm{ign}=\frac{12\,k_BT}{\langle\sigma v\rangle\,E_\alpha},\qquad \bigl(nT\tau_E\bigr)_\mathrm{ign}\gtrsim 3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\;(\text{极小在 }T\approx 25\,\mathrm{keV})\;}\]</div>
+      <p>三乘积 \(nT\tau_E\) 在 \(T\approx 25\,\mathrm{keV}\) 取极小（因 \(\langle\sigma v\rangle\) 随 \(T\) 先升后缓），是工程上最容易达到的窗口。在 \(T=10\,\mathrm{keV}\)：\(\langle\sigma v\rangle\approx 1.1\times 10^{-22}\,\mathrm{m^3/s}\)，所需 \(n\tau_E\approx 5\times 10^{19}\,\mathrm{m^{-3}\cdot s}\)（点火）；在 \(T=25\,\mathrm{keV}\)：\(\langle\sigma v\rangle\approx 5\times 10^{-22}\,\mathrm{m^3/s}\)，所需 \(n\tau_E\approx 1.7\times 10^{20}\,\mathrm{m^{-3}\cdot s}\)。</p>
+      <div class="key-terms">Lawson criterion (Lawson 判据), fusion triple product (聚变三乘积 \(nT\tau_E\)), energy confinement time (能量约束时间 \(\tau_E\)), breakeven (得失相当 \(Q=1\)), ignition (点火 \(Q\to\infty\)), reactivity (反应率 \(\langle\sigma v\rangle\)), D–T fuel (D–T 燃料)</div>
+
+      <h3>7. 惯性约束与反应堆展望 Inertial Confinement &amp; Reactor Concepts</h3>
+      <p><strong>惯性约束聚变</strong> (ICF, Inertial Confinement Fusion) 用高功率激光（或 X 光）对称压缩毫米级 D–T 靶丸至 \(\rho\sim 100\text{–}1000\,\mathrm{g/cm^3}\)（固体密度数千倍），离子在飞散之前（\(\tau\sim 100\,\mathrm{ps}\)）依靠惯性完成聚变。等容（hot-spot）点火要求：</p>
+      <div class="formula">\[\rho R\gtrsim 0.3\,\mathrm{g/cm^2}\quad(\alpha\ \text{粒子射程}),\qquad T_\mathrm{hot}\gtrsim 5\,\mathrm{keV}\]</div>
+      <p>美国 NIF（National Ignition Facility，192 束激光、1.9 MJ）于 2022 年 12 月首次实现「科学点火」：聚变释放 \(3.1\,\mathrm{MJ}\) &gt; 激光能量 \(2.05\,\mathrm{MJ}\)，对应 \(Q\approx 1.5\)（按激光输入计）。</p>
+      <p><strong>聚变反应堆展望</strong>：D–T 是最容易点火的反应（截面在 \(64\,\mathrm{keV}\) 峰值约 \(5\,\mathrm{barn}\)），但中子产额高，要求第一壁中子学包层 + 氚增殖（\(^6\mathrm{Li}+n\to T+^4\mathrm{He}\)）。未来 D–D 或 D–\(^3\mathrm{He}\) 反应中子更少但要求 \(nT\tau\) 高 1–2 个量级。<strong>等离子体加热</strong>：中性束注入 (NBI, ~1 MeV)、离子/电子回旋共振 (ICRH/ECRH)、α 粒子自加热。<strong>诊断</strong>：Thomson 散射（电子温度/密度）、电荷交换光谱（离子温度）、中子能谱（燃料离子温度与聚变功率）、电子回旋发射 (ECE)。</p>
+      <div class="key-terms">inertial confinement fusion (惯性约束聚变 ICF), hot-spot ignition (热斑点火), \(\rho R\) criterion (\(\rho R\) 判据), NIF (国家点火装置), bremsstrahlung (轫致辐射), tritium breeding (氚增殖), Thomson scattering (Thomson 散射), neutral beam injection (中性束注入 NBI)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 由能量平衡导出 Lawson 判据</h2>
+      <p><strong>目标：</strong>从 D–T 聚变的功率平衡 \(P_\mathrm{ext}+P_\alpha=P_\mathrm{loss}\) 出发，严格导出 \(n\tau_E=f(T,Q)\) 的 Lawson 公式与点火阈值。</p>
+      <p class="step"><strong>步骤 1. 聚变功率密度。</strong> D–T 准中性等离子体，\(n_e=n_D+n_T\)，按化学计量 50/50，\(n_D=n_T=n/2\)（取 \(n\equiv n_e\)）。单位体积、单位时间的反应数为 \(R_f=n_D n_T\langle\sigma v\rangle=(n^2/4)\langle\sigma v\rangle\)，故：</p>
+      <div class="formula">\[P_\mathrm{fus}=\frac{n^2}{4}\,\langle\sigma v\rangle\,E_\mathrm{fus},\qquad P_\alpha=\frac{n^2}{4}\,\langle\sigma v\rangle\,E_\alpha=\frac{E_\alpha}{E_\mathrm{fus}}\,P_\mathrm{fus}\approx 0.199\,P_\mathrm{fus}\]</div>
+      <p class="step"><strong>步骤 2. 热能密度。</strong> 电子和离子（\(T_e=T_i=T\)）各自贡献 \(\tfrac{3}{2}nk_BT\)，总热能密度：</p>
+      <div class="formula">\[W=\tfrac{3}{2}n_e k_BT_e+\tfrac{3}{2}n_i k_BT_i=3nk_BT\quad(\because n_e=n_i=n,\ T_e=T_i=T)\]</div>
+      <p>能量约束时间 \(\tau_E\) 定义为 \(P_\mathrm{loss}=W/\tau_E=3nk_BT/\tau_E\)。</p>
+      <p class="step"><strong>步骤 3. 增益 \(Q\) 与能量平衡。</strong> 由定义 \(Q=P_\mathrm{fus}/P_\mathrm{ext}\)，外部加热 \(P_\mathrm{ext}=P_\mathrm{fus}/Q\)。代入平衡方程：</p>
+      <div class="formula">\[\frac{P_\mathrm{fus}}{Q}+P_\alpha=P_\mathrm{loss}\quad\Longrightarrow\quad P_\mathrm{fus}\!\left(\frac{1}{Q}+\frac{E_\alpha}{E_\mathrm{fus}}\right)=\frac{3nk_BT}{\tau_E}\]</div>
+      <p class="step"><strong>步骤 4. 代入并整理。</strong> 把 \(P_\mathrm{fus}=(n^2/4)\langle\sigma v\rangle E_\mathrm{fus}\) 代入，约去 \(n\) 与一个 \(E_\mathrm{fus}\)：</p>
+      <div class="formula">\[\frac{n}{4}\langle\sigma v\rangle E_\mathrm{fus}\!\left(\frac{1}{Q}+\frac{E_\alpha}{E_\mathrm{fus}}\right)=\frac{3k_BT}{\tau_E}\quad\Longrightarrow\quad \boxed{\;n\tau_E=\frac{12\,k_BT}{\langle\sigma v\rangle\,E_\mathrm{fus}\bigl(1/Q+E_\alpha/E_\mathrm{fus}\bigr)}\;}\]</div>
+      <p class="step"><strong>步骤 5. 极限与三乘积。</strong> 点火极限（\(Q\to\infty\)）：分母只剩 \(E_\alpha\)，\(n\tau_E=12k_BT/(\langle\sigma v\rangle E_\alpha)\)。乘以 \(T\) 得三乘积：</p>
+      <div class="formula">\[\bigl(nT\tau_E\bigr)_\mathrm{ign}=\frac{12\,T\cdot k_BT}{\langle\sigma v\rangle\,E_\alpha}=\frac{12\,T_\mathrm{keV}\cdot(1.602\times 10^{-16}\,\mathrm{J})}{\langle\sigma v\rangle\,(3.5\times 1.602\times 10^{-13}\,\mathrm{J})}\cdot T_\mathrm{keV}\]</div>
+      <p>代入 \(T=25\,\mathrm{keV},\ \langle\sigma v\rangle\approx 5\times 10^{-22}\,\mathrm{m^3/s}\) 得 \(n\tau_E\approx 1.7\times 10^{20}\,\mathrm{m^{-3}\cdot s}\)，三乘积 \(\approx 4.3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)。计入轫致辐射 \(P_\mathrm{brem}\propto n^2\sqrt{T}\) 后，最小值上移到 \(\sim 3\times 10^{21}\) 附近，仍位于 \(T\approx 25\text{–}30\,\mathrm{keV}\)。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 10.1 电离层与金属的等离子体频率</h4>
+        <p class="example-statement">取电离层 F 层峰值电子密度 \(n_e=1.0\times 10^{12}\,\mathrm{m^{-3}}\)，金属铜的传导电子密度 \(n_e=8.5\times 10^{28}\,\mathrm{m^{-3}}\)。求两者的电子等离子体频率 \(f_p\) 与对应波长 \(\lambda_p=c/f_p\)，并判断 AM 广播（\(f=1\,\mathrm{MHz}\)）与可见光（\(\lambda=550\,\mathrm{nm}\), 即 \(f\approx 5.45\times 10^{14}\,\mathrm{Hz}\)）分别能否穿透。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 用 \(f_p=(1/2\pi)\sqrt{n_e e^2/(\epsilon_0 m_e)}\)。先算常数因子：</p>
+          <div class="formula">\[\frac{e^2}{\epsilon_0 m_e}=\frac{(1.602\times 10^{-19})^2}{8.854\times 10^{-12}\times 9.109\times 10^{-31}}=\frac{2.566\times 10^{-38}}{8.066\times 10^{-42}}=3.181\times 10^{3}\,\mathrm{(SI)}\]</div>
+          <p>故 \(f_p=(1/2\pi)\sqrt{3.181\times 10^{3}\,n_e}=8.98\sqrt{n_e}\,\mathrm{Hz}\)（\(n_e\) 以 \(\mathrm{m^{-3}}\) 为单位）。</p>
+          <p class="step"><strong>电离层：</strong> \(f_p=8.98\sqrt{10^{12}}=8.98\times 10^{6}\,\mathrm{Hz}\approx 9.0\,\mathrm{MHz}\)；\(\lambda_p=c/f_p=3.0\times 10^8/8.98\times 10^6\approx 33\,\mathrm{m}\)。AM 广播 \(1\,\mathrm{MHz}\ll f_p\)，故 \(k\) 为虚数，电离波强烈反射回地面——这正是 AM 信号越洋传播的机制。</p>
+          <p class="step"><strong>铜：</strong> \(f_p=8.98\sqrt{8.5\times 10^{28}}=8.98\times 9.22\times 10^{14}\approx 8.3\times 10^{15}\,\mathrm{Hz}\)；\(\lambda_p=3.0\times 10^8/8.3\times 10^{15}\approx 3.6\times 10^{-8}\,\mathrm{m}=36\,\mathrm{nm}\)（远紫外）。可见光 \(5.45\times 10^{14}\,\mathrm{Hz}\ll f_p\)，故几乎完全反射——铜的金属光泽起源。</p>
+          <p><span class="ans">\(f_p(\text{电离层})\approx 9.0\,\mathrm{MHz},\ \lambda_p\approx 33\,\mathrm{m}\)（AM 反射）；\(f_p(\text{Cu})\approx 8.3\times 10^{15}\,\mathrm{Hz},\ \lambda_p\approx 36\,\mathrm{nm}\)（可见光反射）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.2 太阳风与托卡马克中的 Alfvén 速度</h4>
+        <p class="example-statement">(a) 太阳风：质子数密度 \(n=5\times 10^6\,\mathrm{m^{-3}}\)，磁场 \(B=5\,\mathrm{nT}\)。(b) ITER 设计：D–T 等离子体 \(n=10^{20}\,\mathrm{m^{-3}}\)，平均离子质量 \(\bar{m}_i\approx 2.5\,m_p\)（D 与 T 平均），磁场 \(B=5.3\,\mathrm{T}\)。分别求 Alfvén 速度。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 公式 \(v_A=B/\sqrt{\mu_0\rho}\)，其中 \(\rho\approx n_i m_i\)。</p>
+          <p class="step"><strong>(a) 太阳风</strong>：\(\rho=5\times 10^6\times 1.673\times 10^{-27}=8.36\times 10^{-21}\,\mathrm{kg/m^3}\)。</p>
+          <div class="formula">\[v_A=\frac{5\times 10^{-9}}{\sqrt{4\pi\times 10^{-7}\times 8.36\times 10^{-21}}}=\frac{5\times 10^{-9}}{\sqrt{1.051\times 10^{-26}}}=\frac{5\times 10^{-9}}{1.025\times 10^{-13}}\approx 4.88\times 10^{4}\,\mathrm{m/s}\]</div>
+          <p>\(\approx 49\,\mathrm{km/s}\)（与太阳风本体速度 \(\sim 400\text{–}800\,\mathrm{km/s}\) 同量级或更小，故太阳风中常出现 Alfvén 共振结构）。</p>
+          <p class="step"><strong>(b) ITER</strong>：\(\bar{m}_i=2.5\times 1.673\times 10^{-27}=4.18\times 10^{-27}\,\mathrm{kg}\)；\(\rho=10^{20}\times 4.18\times 10^{-27}=4.18\times 10^{-7}\,\mathrm{kg/m^3}\)。</p>
+          <div class="formula">\[v_A=\frac{5.3}{\sqrt{4\pi\times 10^{-7}\times 4.18\times 10^{-7}}}=\frac{5.3}{\sqrt{5.256\times 10^{-13}}}=\frac{5.3}{7.25\times 10^{-7}}\approx 7.31\times 10^{6}\,\mathrm{m/s}\]</div>
+          <p>\(\approx 7300\,\mathrm{km/s}\approx 0.024\,c\)，远快于热速度——这正是托卡马克中磁扰动可在 ms 内传遍整个环的物理原因。</p>
+          <p><span class="ans">\(v_A(\text{太阳风})\approx 49\,\mathrm{km/s}\)；\(v_A(\text{ITER})\approx 7.3\times 10^6\,\mathrm{m/s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.3 Lawson 判据与三乘积（D–T 点火）</h4>
+        <p class="example-statement">在 \(T=25\,\mathrm{keV}\)（D–T 截面接近峰值），取 \(\langle\sigma v\rangle=5.0\times 10^{-22}\,\mathrm{m^3/s}\)、\(E_\alpha=3.5\,\mathrm{MeV}\)。求：(a) 点火所需 \(n\tau_E\)；(b) 若取 \(n=1.0\times 10^{20}\,\mathrm{m^{-3}}\)（典型托卡马克），所需 \(\tau_E\)；(c) 三乘积 \(nT\tau_E\)；(d) 同样温度下 \(Q=1\)（得失相当）的 \(n\tau_E\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 点火 (\(Q\to\infty\))：\(n\tau_E=12k_BT/(\langle\sigma v\rangle E_\alpha)\)。先把单位换好：\(k_BT=25\,\mathrm{keV}=25\times 1.602\times 10^{-16}\,\mathrm{J}=4.005\times 10^{-15}\,\mathrm{J}\)；\(E_\alpha=3.5\times 10^6\times 1.602\times 10^{-19}=5.607\times 10^{-13}\,\mathrm{J}\)。</p>
+          <p class="step"><strong>(a)</strong> </p>
+          <div class="formula">\[n\tau_E=\frac{12\times 4.005\times 10^{-15}}{5.0\times 10^{-22}\times 5.607\times 10^{-13}}=\frac{4.806\times 10^{-14}}{2.803\times 10^{-34}}=1.72\times 10^{20}\,\mathrm{m^{-3}\cdot s}\]</div>
+          <p class="step"><strong>(b)</strong> \(\tau_E=(n\tau_E)/n=1.72\times 10^{20}/10^{20}=1.72\,\mathrm{s}\)。</p>
+          <p class="step"><strong>(c)</strong> 三乘积 \(nT\tau_E=1.72\times 10^{20}\times 25=4.3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)。与教材给出的「含轫致辐射修正后约 \(3\times 10^{21}\)」相比偏高，原因在于我们忽略辐射损失；精确数值仍在 \(T\approx 25\,\mathrm{keV}\) 处取极小。</p>
+          <p class="step"><strong>(d)</strong> \(Q=1\) 时：\(1/Q+E_\alpha/E_\mathrm{fus}=1+0.199=1.199\)，比点火多一个因子 \(1.199/(0.199)\approx 6.03\)：</p>
+          <div class="formula">\[\bigl(n\tau_E\bigr)_{Q=1}=\frac{12k_BT}{\langle\sigma v\rangle(E_\mathrm{fus}+E_\alpha)}=\frac{4.806\times 10^{-14}}{5.0\times 10^{-22}\times 17.6\times 1.602\times 10^{-13}\times 1.199}\approx 2.85\times 10^{19}\,\mathrm{m^{-3}\cdot s}\]</div>
+          <p>即点火所需 \(n\tau_E\) 约为得失相当的 6 倍——所以工程上把得失相当视为「门槛」，把点火视为「圣杯」。</p>
+          <p><span class="ans">(a) \(n\tau_E\approx 1.7\times 10^{20}\,\mathrm{m^{-3}\cdot s}\)；(b) \(\tau_E\approx 1.7\,\mathrm{s}\)；(c) \(nT\tau_E\approx 4.3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)；(d) \((n\tau_E)_{Q=1}\approx 2.9\times 10^{19}\,\mathrm{m^{-3}\cdot s}\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.4 托卡马克密度、约束时间与 ITER 参数估算</h4>
+        <p class="example-statement">ITER 设计目标 \(Q=10\)，\(P_\mathrm{fus}=500\,\mathrm{MW}\)，平均温度 \(T=10\,\mathrm{keV}\)，\(n=1.0\times 10^{20}\,\mathrm{m^{-3}}\)，等离子体体积 \(V\approx 840\,\mathrm{m^3}\)。取 \(\langle\sigma v\rangle_{10\mathrm{keV}}\approx 1.1\times 10^{-22}\,\mathrm{m^3/s}\)。(a) 由 \(P_\mathrm{fus}\) 反推所需密度；(b) 估算所需 \(\tau_E\)；(c) 验证 Lawson 判据（\(Q=10\)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(P_\mathrm{fus}=(n^2/4)\langle\sigma v\rangle E_\mathrm{fus}\cdot V\)，每聚变释放 \(E_\mathrm{fus}=17.6\,\mathrm{MeV}=2.82\times 10^{-12}\,\mathrm{J}\)。反推 \(n\)：</p>
+          <div class="formula">\[n=2\,\sqrt{\frac{P_\mathrm{fus}}{V\,\langle\sigma v\rangle\,E_\mathrm{fus}}}=2\,\sqrt{\frac{5.0\times 10^8}{840\times 1.1\times 10^{-22}\times 2.82\times 10^{-12}}}=2\,\sqrt{\frac{5.0\times 10^8}{2.61\times 10^{-31}}}\]</div>
+          <p>\(=2\sqrt{1.92\times 10^{39}}=2\times 4.38\times 10^{19}=8.8\times 10^{19}\,\mathrm{m^{-3}}\)。与设计 \(n\sim 10^{20}\) 量级吻合（差异源于温度剖面、\(\langle\sigma v\rangle\) 取值等）。</p>
+          <p class="step"><strong>(b) \(Q=10\) Lawson 判据：</strong> \(1/Q+E_\alpha/E_\mathrm{fus}=0.1+0.199=0.299\)。在 \(T=10\,\mathrm{keV}\)：\(k_BT=1.602\times 10^{-15}\,\mathrm{J}\)，</p>
+          <div class="formula">\[(n\tau_E)_{Q=10}=\frac{12\times 1.602\times 10^{-15}}{1.1\times 10^{-22}\times 2.82\times 10^{-12}\times 0.299}=\frac{1.92\times 10^{-14}}{9.28\times 10^{-35}}=2.07\times 10^{20}\,\mathrm{m^{-3}\cdot s}\]</div>
+          <p>\(\tau_E=2.07\times 10^{20}/10^{20}\approx 2.1\,\mathrm{s}\)。ITER 设计 \(\tau_E\approx 3.7\,\mathrm{s}\)（H 模定标律），优于上值，留有冗余。</p>
+          <p class="step"><strong>(c)</strong> 三乘积 \(nT\tau_E=10^{20}\times 10\times 2.1=2.1\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)，落在 \(Q=10\) 区间但尚未到点火阈值 \(\sim 3\times 10^{21}\)——这正是 ITER 设计为 \(Q=10\) 而非点火的原因。</p>
+          <p><span class="ans">(a) \(n\approx 9\times 10^{19}\,\mathrm{m^{-3}}\)；(b) \(\tau_E\approx 2.1\,\mathrm{s}\)；(c) \(nT\tau_E\approx 2.1\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)（\(Q=10\) 区间）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 10.5 磁镜的损失锥 Loss Cone of a Magnetic Mirror</h4>
+        <p class="example-statement">简单磁镜：中心 \(B_\min=0.5\,\mathrm{T}\)，两端 \(B_\max=4.0\,\mathrm{T}\)。(a) 求镜比 \(R_m\) 与损失锥半角 \(\theta_c\)；(b) 若等离子体各向同性，问有多大比例的电子初速度落在损失锥内（即被两端逃逸）？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> (a) \(R_m=B_\max/B_\min=4.0/0.5=8\)。损失锥条件 \(\sin^2\theta_c=1/R_m=1/8\)，故 \(\sin\theta_c=0.354\)，\(\theta_c=\arcsin(0.354)\approx 20.7^{\circ}\)。</p>
+          <p class="step"><strong>(b)</strong> 各向同性速度分布，速度方向均匀分布于单位球面。在锥内（\(\theta&lt;\theta_c\) 与 \(\theta&gt;\pi-\theta_c\)，两端各一）的比例等于两个球冠面积与球面面积之比：</p>
+          <div class="formula">\[\text{loss fraction}=2\times\frac{1}{2}(1-\cos\theta_c)=1-\cos\theta_c=1-\sqrt{1-1/8}=1-\sqrt{7/8}\]</div>
+          <p>\(\sqrt{7/8}=\sqrt{0.875}=0.935\)，故损失比例 \(\approx 0.065\approx 6.5\%\)。注意粒子一旦逃逸，剩余粒子的速度分布因碰撞再填充锥内，故实际终端损失流仍很显著——这正是简单磁镜机的致命弱点，现代设计用「串级」与「电势堵漏」缓解。</p>
+          <p><span class="ans">(a) \(R_m=8\)，\(\theta_c\approx 21^{\circ}\)；(b) 各向同性下损失比例 \(\approx 6.5\%\)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>截止 ≠ 吸收。</strong> 电磁波 \(\omega&lt;\omega_p\) 入射等离子体时，能量并非被粒子吸收转化为热，而是因 \(k\) 虚部在表层<strong>反射</strong>回去（类似光密介质中的全反射）。在很薄的等离子体中可能存在「隧道穿透」（倏逝波透射）。金属反射可见光、电离层反射 AM 信号，皆同源——非耗散型屏蔽。</li>
+        <li><strong>Lawson 判据只是「必要条件」。</strong> \(nT\tau_E\geq 3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\) 不保证反应堆工作——它假定 \(T_e=T_i\)、无杂质辐射、无湍流反常输运、稳定 MHD。实际工程需大量冗余：杂质辐射、α 粒子损失、边缘局域模 (ELM) 等都会进一步抬高门槛。</li>
+        <li><strong>磁约束 ≠ 把粒子「锁住」。</strong> 磁场只让粒子绕磁力线做回旋（横向约束），沿磁力线方向仍可自由运动。要实现整体约束，必须把磁力线闭合（托卡马克的螺旋绕环），否则粒子沿磁力线打到器壁。横越磁场的漂移（梯度、曲率）也会带来<strong>反常输运</strong>——实际 \(\tau_E\) 远短于经典碰撞预计。</li>
+        <li><strong>截面峰值温度 ≠ 热等离子体最优温度。</strong> D–T 反应截面在实验室能量 \(\sim 64\,\mathrm{keV}\) 处达峰，但 Maxwell 分布平均的 \(\langle\sigma v\rangle\) 在 \(T\sim 25\,\mathrm{keV}\) 时使三乘积最小——两者不同。许多入门错误地用截面峰判断最优温度。</li>
+        <li><strong>聚变 Q 与工程 Q 不同。</strong> 物理增益 \(Q_\mathrm{phys}=P_\mathrm{fus}/P_\mathrm{heat}\) 与电厂工程增益 \(Q_\mathrm{eng}=P_\mathrm{elec,out}/P_\mathrm{elec,in}\) 相差：激光/中性束效率（\(\sim 10\text{–}40\%\)）、热-电转换（\(\sim 35\text{–}50\%\)）。NIF 2022「点火」\(Q_\mathrm{phys}\sim 1.5\) 但工程增益仍远小于 1（激光效率 \(\sim 1\%\)）。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. 电离层临界频率与短波通信。某地电离层 F 层最大电子密度 \(n_e=5\times 10^{11}\,\mathrm{m^{-3}}\)。求最大反射频率 \(f_p\)。若用 21 MHz 国际短波广播，问能否被该电离层反射？</summary>
+        <div class="hint">\(f_p[\mathrm{Hz}]=8.98\sqrt{n_e[\mathrm{m^{-3}}]}\)。</div>
+        <div class="solution">\(f_p=8.98\sqrt{5\times 10^{11}}=8.98\times 7.07\times 10^5=6.35\,\mathrm{MHz}\)。21 MHz &gt; 6.35 MHz，所以 \(\omega&gt;\omega_p\)，波<strong>穿透</strong>电离层进入太空——这正是短波远距离通信需要选择较低工作频率或夜间 F 层密度较低时的原因。 <span class="ans">\(f_p\approx 6.4\,\mathrm{MHz}\)；21 MHz 穿透。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>2. 德拜长度与等离子体判据。取托卡马克典型参数 \(T_e=10\,\mathrm{keV}\)、\(n_e=10^{20}\,\mathrm{m^{-3}}\)，求德拜长度 \(\lambda_D\)，并估算德拜球内粒子数 \(N_D=(4\pi/3)n_e\lambda_D^3\)。</summary>
+        <div class="hint">\(\lambda_D=\sqrt{\epsilon_0 k_BT_e/(n_e e^2)}=743\sqrt{T_e[\mathrm{eV}]/n_e[\mathrm{m^{-3}}]}\,\mathrm{m}\)。</div>
+        <div class="solution">\(\lambda_D=743\sqrt{10^4/10^{20}}=743\times 10^{-8}=7.43\times 10^{-6}\,\mathrm{m}=7.4\,\mu\mathrm{m}\)。\(N_D=(4\pi/3)\cdot 10^{20}\cdot(7.4\times 10^{-6})^3=(4.19)\cdot 10^{20}\cdot 4.05\times 10^{-16}=1.7\times 10^{5}\)。\(N_D\gg 1\) 满足等离子体判据。 <span class="ans">\(\lambda_D\approx 7.4\,\mu\mathrm{m}\)；\(N_D\approx 1.7\times 10^{5}\)。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>3. Langmuir 波色散。某等离子体 \(n_e=10^{18}\,\mathrm{m^{-3}}\)、\(T_e=100\,\mathrm{eV}\)。求 (a) 等离子体频率 \(f_p\)；(b) 长波极限下 Langmuir 波频率；(c) 当 \(k=10^2\,\mathrm{m^{-1}}\) 时，Bohm–Gross 修正下的频率偏移 \(\Delta\omega/\omega_p\)。</summary>
+        <div class="hint">\(v_{Te}=\sqrt{k_BT_e/m_e}\)；\(\omega^2=\omega_p^2+3k^2 v_{Te}^2\)。</div>
+        <div class="solution">(a) \(f_p=8.98\sqrt{10^{18}}=8.98\times 10^{9}\,\mathrm{Hz}=8.98\,\mathrm{GHz}\)；\(\omega_p=5.64\times 10^{10}\,\mathrm{rad/s}\)。(b) \(k\to 0\)：\(\omega\to\omega_p=5.64\times 10^{10}\,\mathrm{rad/s}\)。(c) \(v_{Te}=\sqrt{100\times 1.602\times 10^{-19}/9.11\times 10^{-31}}=\sqrt{1.758\times 10^{13}}=4.19\times 10^{6}\,\mathrm{m/s}\)。\(3k^2 v_{Te}^2=3\times 10^4\times(4.19\times 10^6)^2=5.27\times 10^{17}\,\mathrm{s^{-2}}\)；\(\omega_p^2=(5.64\times 10^{10})^2=3.18\times 10^{21}\)。比值 \(=1.66\times 10^{-4}\)；\(\Delta\omega/\omega_p\approx 0.5\cdot 1.66\times 10^{-4}=8.3\times 10^{-5}\)。 <span class="ans">\(f_p\approx 9\,\mathrm{GHz}\)；\(\Delta\omega/\omega_p\approx 8\times 10^{-5}\)（修正极小）。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>4. D–T 三乘积对比。已知 JT-60U 1998 年记录 \(n T\tau_E\approx 1.77\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\)（等效 Q≈1.25），NIF 2022 年点火靶丸 \(T\sim 5\,\mathrm{keV}\)、\(n\sim 10^{31}\,\mathrm{m^{-3}}\)、\(\tau\sim 100\,\mathrm{ps}\)。分别把它们放在 (T, nτ) 平面上，相对点火曲线 (\(\sim 3\times 10^{21}\)) 评估。</summary>
+        <div class="hint">换算 \(n\tau\) 与 \(nT\tau\)：\((nT\tau)/T=n\tau\)。</div>
+        <div class="solution">JT-60U: \(n\tau=nT\tau/T\)，若 \(T=10\,\mathrm{keV}\)，\(n\tau=1.77\times 10^{20}\,\mathrm{m^{-3}\cdot s}\)，三乘积/点火阈值 \(\approx 0.59\)——处于 \(Q\approx 1\) 区间。NIF: \(n\tau=10^{31}\times 10^{-10}=10^{21}\,\mathrm{m^{-3}\cdot s}\)，\(nT\tau=5\times 10^{21}\)——已超过点火阈值 \(\sim 3\times 10^{21}\)，与「实现点火」一致。注意两者 (T, nτ) 落点完全不同区域：磁约束「低密度、长约束」，惯性约束「极高密度、超短约束」。 <span class="ans">JT-60U：\(n\tau\approx 1.8\times 10^{20}\)，接近 Q=1；NIF：\(n\tau\sim 10^{21}\)，越过点火阈值。</span></div>
+      </details>
+
+      <details class="problem">
+        <summary>5. 磁镜比与损失锥。设计一个磁镜 \(B_\min=0.3\,\mathrm{T}\)、\(B_\max=3.0\,\mathrm{T}\)。求损失锥半角与各向同性粒子初始损失比例。</summary>
+        <div class="hint">\(\sin^2\theta_c=1/R_m\)，损失比例 \(=1-\cos\theta_c=1-\sqrt{1-1/R_m}\)。</div>
+        <div class="solution">\(R_m=10\)；\(\sin^2\theta_c=0.1\)，\(\sin\theta_c=0.316\)，\(\theta_c\approx 18.4^{\circ}\)。损失比例 \(=1-\sqrt{1-0.1}=1-\sqrt{0.9}=1-0.949=0.051\approx 5.1\%\)。 <span class="ans">\(R_m=10\)，\(\theta_c\approx 18^{\circ}\)，损失 \(\approx 5\%\)。</span></div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — Lawson 判据与聚变三乘积 Lawson Criterion &amp; Fusion Triple Product</h2>
+      <p class="sim-desc">本仿真在 (T, nτ) 双对数平面上绘制 D–T 聚变的<strong> Lawson 等值线</strong>：红色实线 = <strong>点火</strong> (ignition，\(Q\to\infty\))；蓝色虚线 = <strong>得失相当</strong> (\(Q=1\))；绿色加粗曲线 = 由滑块选定 Q 的等值线。点火线上方（红色阴影）= <strong>自持燃烧等离子体</strong>区。同时标出主要装置：JET (1997, Q≈0.6–0.9 的最高 Fusion 功率记录)、JT-60U (1998, 等效 Q≈1.25)、TFTR (1994, DT 实验)、ITER 设计点 (\(Q=10\))、NIF (2022, 点火)。D–T 反应率 \(\langle\sigma v\rangle\) 由 Bosch–Hale (1992) 全公式实时计算。<strong>拖动「标记温度 T」滑块</strong>，画布顶端的横向虚线会读出对应 T 下点火的 nτ；<strong>调节 Q</strong> 滑块，可观察「增益等值线」从 Q=1 向点火线靠拢的过程。</p>
+      <div class="sim-container">
+        <canvas id="sim-10" width="680" height="460"></canvas>
+        <div class="sim-controls" id="controls-10"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-10');
+          var W = canvas.width, H = canvas.height;
+
+          var DEFAULT = { Q: 10, Tmark: 15, showDevices: true };
+          var params = { Q: DEFAULT.Q, Tmark: DEFAULT.Tmark, showDevices: DEFAULT.showDevices };
+
+          /* constants */
+          var E_FUS_MeV = 17.6;
+          var E_ALPHA_MeV = 3.5;
+          var KB_T_keV_to_J = 1.602e-16;
+          var MeV_to_J = 1.602e-13;
+
+          /* Bosch-Hale D-T reactivity: T in keV -> m^3/s. Accurate across 0.5-500 keV. */
+          function svDT(TkeV) {
+            if (TkeV <= 0.2) return 0;
+            var BG = 34.3827;
+            var mrc2 = 1124656; // keV
+            var C1 = 1.17302e-9, C2 = 1.51361e-2, C3 = 7.51886e-2;
+            var C4 = 4.60643e-3, C5 = 1.35000e-2, C6 = -1.06750e-2, C7 = 1.36600e-5;
+            var T = TkeV;
+            var numer = T * (C2 + T * C4 + T * T * C6);
+            var denom = 1 + T * (C3 + T * C5 + T * T * C7);
+            var theta = T / (1 - numer / denom);
+            var xi = Math.pow(BG * BG / (4 * theta), 1 / 3);
+            var sv_cgs = C1 * theta * Math.sqrt(xi / (mrc2 * T * T * T)) * Math.exp(-xi); // cm^3/s
+            return sv_cgs * 1e-6; // m^3/s
+          }
+
+          /* required n*tau for given T (keV) and Q (Infinity = ignition) */
+          function lawsonNTau(TkeV, Q) {
+            var sv = svDT(TkeV);
+            if (sv <= 0 || TkeV <= 0) return Infinity;
+            var kBT = TkeV * KB_T_keV_to_J;
+            var Efus = E_FUS_MeV * MeV_to_J;
+            var Ealpha = E_ALPHA_MeV * MeV_to_J;
+            var invQ = (Q === Infinity || Q <= 0) ? 0 : 1 / Q;
+            var denom = sv * Efus * (invQ + Ealpha / Efus);
+            return (12 * kBT) / denom;
+          }
+
+          /* log-log plot ranges */
+          var TMIN = 1, TMAX = 100;          // keV
+          var NTMIN = 18, NTMAX = 23;        // log10(m^-3 s)
+          var PlotX0 = 70, PlotY0 = 40;
+          var PlotW = W - 110;
+          var PlotH = H - 100;
+          var PlotY1 = PlotY0 + PlotH;
+
+          function xFromT(T) {
+            var lt = Math.log10(T);
+            return PlotX0 + (lt - Math.log10(TMIN)) / (Math.log10(TMAX) - Math.log10(TMIN)) * PlotW;
+          }
+          function yFromNTau(nt) {
+            if (!isFinite(nt) || nt <= 0) return -1e6;
+            var lnt = Math.log10(nt);
+            return PlotY1 - (lnt - NTMIN) / (NTMAX - NTMIN) * PlotH;
+          }
+
+          /* sample a curve y = lawsonNTau(T, Q) */
+          function curvePoints(Q) {
+            var pts = [];
+            for (var lt = Math.log10(TMIN); lt <= Math.log10(TMAX) + 1e-9; lt += 0.04) {
+              var T = Math.pow(10, lt);
+              var nt = lawsonNTau(T, Q);
+              pts.push({ T: T, nt: nt });
+            }
+            return pts;
+          }
+
+          function drawCurve(ctx, pts, color, lw, dash) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lw || 2;
+            if (dash) ctx.setLineDash(dash);
+            ctx.beginPath();
+            var started = false;
+            for (var i = 0; i < pts.length; i++) {
+              var x = xFromT(pts[i].T);
+              var y = yFromNTau(pts[i].nt);
+              if (y < PlotY0 - 4 || y > PlotY1 + 4 || !isFinite(y)) { started = false; continue; }
+              if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+          }
+
+          /* fill the ignition region above the ignition curve */
+          function fillIgnitionRegion(ctx) {
+            var pts = curvePoints(Infinity);
+            ctx.save();
+            ctx.fillStyle = 'rgba(220,38,38,0.10)';
+            ctx.beginPath();
+            var firstX = xFromT(pts[0].T);
+            ctx.moveTo(firstX, PlotY0);
+            for (var i = 0; i < pts.length; i++) {
+              var x = xFromT(pts[i].T);
+              var y = yFromNTau(pts[i].nt);
+              if (isFinite(y) && y >= PlotY0 - 2 && y <= PlotY1 + 2) ctx.lineTo(x, y);
+            }
+            ctx.lineTo(xFromT(pts[pts.length - 1].T), PlotY0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          }
+
+          function drawAxes(ctx) {
+            ctx.save();
+            /* frame */
+            ctx.strokeStyle = PS.colors.axis;
+            ctx.lineWidth = 1.4;
+            ctx.strokeRect(PlotX0, PlotY0, PlotW, PlotH);
+            /* x grid lines (1, 3, 10, 30, 100 keV) */
+            var xticks = [1, 3, 10, 30, 100];
+            ctx.fillStyle = PS.colors.text;
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            xticks.forEach(function (T) {
+              var x = xFromT(T);
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = 0.5;
+              ctx.beginPath(); ctx.moveTo(x, PlotY0); ctx.lineTo(x, PlotY1); ctx.stroke();
+              ctx.globalAlpha = 1;
+              ctx.fillText(T.toString(), x, PlotY1 + 6);
+            });
+            /* minor decade ticks */
+            for (var lt = Math.log10(TMIN); lt <= Math.log10(TMAX); lt += 1) {
+              for (var m = 2; m <= 9; m++) {
+                var T = m * Math.pow(10, lt);
+                if (T < TMIN || T > TMAX) continue;
+                var x = xFromT(T);
+                ctx.strokeStyle = PS.colors.grid;
+                ctx.globalAlpha = 0.18;
+                ctx.beginPath(); ctx.moveTo(x, PlotY0); ctx.lineTo(x, PlotY1); ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+            }
+            /* y grid lines */
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (var n = NTMIN; n <= NTMAX; n++) {
+              var y = PlotY1 - (n - NTMIN) / (NTMAX - NTMIN) * PlotH;
+              ctx.strokeStyle = PS.colors.grid;
+              ctx.globalAlpha = (n === NTMIN || n === NTMAX) ? 1 : 0.45;
+              ctx.beginPath(); ctx.moveTo(PlotX0, y); ctx.lineTo(PlotX0 + PlotW, y); ctx.stroke();
+              ctx.globalAlpha = 1;
+              var lbl = '10^' + n;
+              PS.drawText(ctx, lbl, PlotX0 - 6, y, { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'right', baseline: 'middle' });
+            }
+            /* axis labels */
+            ctx.fillStyle = PS.colors.text;
+            PS.drawText(ctx, '离子温度  T  (keV)', PlotX0 + PlotW / 2, PlotY1 + 32,
+              { font: 'italic 13px system-ui, sans-serif', color: PS.colors.text, align: 'center' });
+            ctx.save();
+            ctx.translate(16, PlotY0 + PlotH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = PS.colors.text;
+            ctx.font = 'italic 13px system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('n · τ_E   (m⁻³ · s)', 0, 0);
+            ctx.restore();
+            ctx.restore();
+          }
+
+          /* device markers */
+          var DEVICES = [
+            { name: 'TFTR 1994',   T: 10,   nt: 4.1e19, col: '#7c3aed' },
+            { name: 'JET 1997',    T: 10,   nt: 8.8e19, col: '#0891b2' },
+            { name: 'JT-60U 1998', T: 8.5,  nt: 1.77e20, col: '#ea580c' },
+            { name: 'ITER (goal)', T: 10,   nt: 3.0e20, col: '#2563eb' },
+            { name: 'NIF 2022',    T: 5,    nt: 1.0e21, col: '#16a34a' }
+          ];
+
+          function drawDevices(ctx, phase) {
+            DEVICES.forEach(function (d, i) {
+              var x = xFromT(d.T);
+              var y = yFromNTau(d.nt);
+              if (x < PlotX0 || x > PlotX0 + PlotW || y < PlotY0 || y > PlotY1) return;
+              var pulse = 0.5 + 0.5 * Math.sin(phase * 1.6 + i * 1.1);
+              PS.drawCircle(ctx, x, y, 6 + 1.2 * pulse, { fill: d.col, stroke: '#000', lineWidth: 1.0 });
+              PS.drawText(ctx, d.name, x + 9, y - 9,
+                { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'bottom' });
+            });
+          }
+
+          function drawLegend(ctx) {
+            var lx = PlotX0 + 12, ly = PlotY0 + 12;
+            ctx.save();
+            ctx.font = '12px system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            var lines = [
+              { c: PS.colors.accent, dash: null, lw: 2.4, t: '点火 Ignition (Q→∞)' },
+              { c: PS.colors.primary, dash: [5, 4], lw: 1.8, t: '得失相当 Breakeven (Q=1)' },
+              { c: PS.colors.accent2, dash: null, lw: 2.6, t: '当前 Q = ' + params.Q }
+            ];
+            lines.forEach(function (ln, i) {
+              var y = ly + i * 18;
+              ctx.strokeStyle = ln.c; ctx.lineWidth = ln.lw;
+              if (ln.dash) ctx.setLineDash(ln.dash); else ctx.setLineDash([]);
+              ctx.beginPath(); ctx.moveTo(lx, y); ctx.lineTo(lx + 26, y); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.fillStyle = PS.colors.text;
+              ctx.fillText(ln.t, lx + 32, y);
+            });
+            ctx.restore();
+          }
+
+          function drawReadout(ctx, phase) {
+            /* vertical T cursor */
+            var T = params.Tmark;
+            var x = xFromT(T);
+            if (x < PlotX0 || x > PlotX0 + PlotW) return;
+            ctx.save();
+            ctx.strokeStyle = PS.colors.text;
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 1.0;
+            ctx.setLineDash([3, 4]);
+            ctx.beginPath(); ctx.moveTo(x, PlotY0); ctx.lineTo(x, PlotY1); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+            /* markers where cursor crosses ignition & breakeven & current Q */
+            function markAt(Q, color, label) {
+              var nt = lawsonNTau(T, Q);
+              var y = yFromNTau(nt);
+              if (y < PlotY0 || y > PlotY1 || !isFinite(y)) return;
+              PS.drawCircle(ctx, x, y, 5, { fill: color, stroke: '#000', lineWidth: 0.8 });
+              /* readout box */
+              var boxX = (x + 110 > PlotX0 + PlotW) ? x - 116 : x + 8;
+              var boxY = (y - 26 < PlotY0) ? y + 8 : y - 26;
+              ctx.fillStyle = 'rgba(255,255,255,0.92)';
+              ctx.strokeStyle = color; ctx.lineWidth = 1;
+              ctx.fillRect(boxX, boxY, 108, 20);
+              ctx.strokeRect(boxX, boxY, 108, 20);
+              var txt = label + ': nτ=' + formatExp(nt);
+              PS.drawText(ctx, txt, boxX + 4, boxY + 10,
+                { font: '11px system-ui, sans-serif', color: PS.colors.text, align: 'left', baseline: 'middle' });
+            }
+            markAt(1, PS.colors.primary, 'Q=1');
+            markAt(params.Q, PS.colors.accent2, 'Q=' + params.Q);
+            markAt(Infinity, PS.colors.accent, 'ign');
+            /* top label */
+            PS.drawText(ctx, 'T = ' + T.toFixed(1) + ' keV', x, PlotY0 - 8,
+              { font: 'bold 12px system-ui, sans-serif', color: PS.colors.text, align: 'center', baseline: 'bottom' });
+            ctx.restore();
+          }
+
+          function formatExp(v) {
+            if (!isFinite(v)) return '∞';
+            var e = Math.floor(Math.log10(v));
+            var m = v / Math.pow(10, e);
+            return m.toFixed(1) + 'e' + e;
+          }
+
+          var sim = PS.createSim(canvas, {
+            state: function () { return { phase: 0 }; },
+            step: function (dt, t, s) { s.phase = (s.phase + dt) % 1000; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              /* title */
+              PS.drawText(ctx, 'Lawson 判据 — D–T 聚变 (T, n·τ) 平面', W / 2, 16,
+                { font: 'bold 14px system-ui, sans-serif', color: PS.colors.text, align: 'center', baseline: 'top' });
+              drawAxes(ctx);
+              fillIgnitionRegion(ctx);
+              /* ignition label */
+              PS.drawText(ctx, '燃烧等离子体 Burning Plasma', PlotX0 + PlotW - 8, PlotY0 + 8,
+                { font: 'italic 12px system-ui, sans-serif', color: PS.colors.accent, align: 'right', baseline: 'top' });
+              /* curves: breakeven, ignition, user Q */
+              drawCurve(ctx, curvePoints(1), PS.colors.primary, 1.8, [5, 4]);
+              drawCurve(ctx, curvePoints(Infinity), PS.colors.accent, 2.4, null);
+              drawCurve(ctx, curvePoints(params.Q), PS.colors.accent2, 2.6, null);
+              drawLegend(ctx);
+              if (params.showDevices) drawDevices(ctx, s.phase);
+              drawReadout(ctx, s.phase);
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-10'), [
+            { type: 'slider', key: 'Q', label: '增益 Q (1=得失相当, ∞=点火)', min: 1, max: 50, step: 1, value: DEFAULT.Q },
+            { type: 'slider', key: 'Tmark', label: '标记温度 T (keV)', min: 1, max: 100, step: 0.5, value: DEFAULT.Tmark },
+            { type: 'toggle', key: 'showDevices', label: '显示实验装置标记', value: DEFAULT.showDevices },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('Q', function (v) { params.Q = v; });
+          ctl.on('Tmark', function (v) { params.Tmark = v; });
+          ctl.on('showDevices', function (v) { params.showDevices = v; });
+          ctl.on('reset', function () {
+            params.Q = DEFAULT.Q;
+            params.Tmark = DEFAULT.Tmark;
+            params.showDevices = DEFAULT.showDevices;
+            var ctrls = document.getElementById('controls-10');
+            var sliders = ctrls.querySelectorAll('input[type=range]');
+            var valDisp = ctrls.querySelectorAll('.ctrl-value');
+            if (sliders[0]) { sliders[0].value = DEFAULT.Q; }
+            if (sliders[1]) { sliders[1].value = DEFAULT.Tmark; }
+            if (valDisp[0]) { valDisp[0].textContent = DEFAULT.Q; }
+            if (valDisp[1]) { valDisp[1].textContent = DEFAULT.Tmark.toFixed(1); }
+            var cb = ctrls.querySelector('input[type=checkbox]');
+            if (cb) { cb.checked = DEFAULT.showDevices; }
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <p>等离子体是电离气体的第四物态，其集体行为由自洽电磁场主导。电子的集体振荡定义了<strong>等离子体频率</strong> \(\omega_{pe}\)，它决定了电磁波在等离子体中的截止：\(\omega&lt;\omega_p\) 的波被反射（电离层与金属光泽的共同起源）。磁化等离子体支持三类典型波：高频 Langmuir 波、低频离子声波、沿磁力线传播的 Alfvén 波（速度 \(v_A=B/\sqrt{\mu_0\rho}\)）。等离子体富含自由能，因此多发不稳定性（双流、Rayleigh–Taylor、kink/tearing），这是磁约束反常输运的物理根源。</p>
+      <p>受控核聚变的两条主流路线——<strong>磁约束</strong>（托卡马克，ITER 为代表）与<strong>惯性约束</strong>（激光压缩，NIF 为代表）——都把目标指向 D–T 反应的点火。<strong>Lawson 判据</strong> \(n\tau_E=12k_BT/(\langle\sigma v\rangle E_\mathrm{fus}(1/Q+E_\alpha/E_\mathrm{fus}))\) 给出净能量增益的必要条件；点火对应 \(Q\to\infty\)，三乘积 \(nT\tau_E\gtrsim 3\times 10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\) 在 \(T\approx 25\,\mathrm{keV}\) 取极小。ITER 目标 \(Q=10\)，NIF 已实现 \(Q_\mathrm{phys}\sim 1.5\) 的实验点火。商业聚变电站仍需解决：长脉冲稳态运行、第一壁材料与中子学包层、氚自持增殖、α 粒子约束与不稳定性控制。</p>
+      <div class="formula">\[ \begin{aligned}
+        &\omega_{pe}=\sqrt{\frac{n_e e^2}{\epsilon_0 m_e}},\quad f_p\approx 8.98\sqrt{n_e\,[\mathrm{m^{-3}}]}\,\mathrm{Hz},\quad \lambda_D=\sqrt{\frac{\epsilon_0 k_BT_e}{n_e e^2}}\\[4pt]
+        &\text{EM cutoff: }\omega^2=\omega_{pe}^2+k^2c^2\;\;(\omega&lt;\omega_p\Rightarrow\text{reflection})\\[4pt]
+        &\text{Bohm–Gross: }\omega^2=\omega_{pe}^2+3k^2v_{Te}^2,\quad v_{Te}=\sqrt{k_BT_e/m_e}\\[4pt]
+        &\text{Ion-acoustic: }c_s=\sqrt{Zk_BT_e/m_i};\qquad\text{Alfvén: }v_A=\frac{B}{\sqrt{\mu_0\rho}},\;\omega=kv_A\\[4pt]
+        &\text{Tokamak } q=\frac{rB_t}{RB_p};\qquad\text{mirror loss cone: }\sin^2\theta_c=\frac{B_\min}{B_\max}\\[4pt]
+        &\text{Lawson: }n\tau_E=\frac{12k_BT}{\langle\sigma v\rangle E_\mathrm{fus}(1/Q+E_\alpha/E_\mathrm{fus})}\\[4pt]
+        &\text{Ignition }(Q\to\infty):\ (nT\tau_E)_\mathrm{ign}\gtrsim 3\times10^{21}\,\mathrm{keV\cdot s\cdot m^{-3}}\;\text{at }T\approx 25\,\mathrm{keV}\\[4pt]
+        &D+T\to\alpha\,(3.5\,\mathrm{MeV})+n\,(14.1\,\mathrm{MeV}),\quad E_\mathrm{fus}=17.6\,\mathrm{MeV}
+      \end{aligned} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

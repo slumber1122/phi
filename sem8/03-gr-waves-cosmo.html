@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第3章 · 引力波与相对论宇宙学 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="3">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第3章 · 广义相对论 General Relativity</p>
+      <h1>引力波与相对论宇宙学 <span class="en-title">Gravitational Waves &amp; Relativistic Cosmology</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够把度规写成弱场形式 \( g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu} \)（\( |h_{\mu\nu}|\ll 1 \)），在 Lorenz 规范下把线性化爱因斯坦方程化为<strong>波动方程</strong> \( \Box\bar h_{\mu\nu}=0 \)，并说明<strong>引力波</strong> (gravitational wave, GW) 以光速 \( c \) 传播。</li>
+        <li>能够区分<strong>两种线性偏振</strong> \( h_+ \)（plus，加号）与 \( h_\times \)（cross，叉号）：写出波沿 \( z \) 方向传播时 \( h_{ij}^{TT} \) 的矩阵形式，并描述一环自由检验粒子如何被依次「拉长–压扁」。</li>
+        <li>能够运用<strong>四极矩公式</strong> \( h\sim (2G/c^4 r)\ddot Q_{ij} \) 估计引力波<strong>应变</strong> (strain) \( h \)，解释为何双星 inspiral 是最佳波源，并阐明 LIGO 测得的 \( h\sim 10^{-21} \) 之微弱。</li>
+        <li>能够写出均匀各向同性宇宙的 <strong>FLRW 度规</strong>与<strong>标度因子</strong> \( a(t) \)，定性推导<strong>弗里德曼方程</strong> \( H^2=(8\pi G/3)\rho-kc^2/a^2+\Lambda c^2/3 \)，并由 \( \dot a&gt;0 \) 推出<strong>哈勃膨胀</strong>与<strong>大爆炸</strong>起源。</li>
+        <li>能够列举并计算广义相对论的<strong>经典实验检验</strong>：水星近日点进动、光线偏折、引力红移（Pound–Rebka）、Shapiro 时延、Hulse–Taylor 双星脉冲星能量损失、LIGO 直接探测，并说明它们均以高精度与理论一致。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 弱场近似与引力波的存在 Linearized GR &amp; the Existence of GWs</h3>
+      <p>在远离强引力源处，时空几乎平坦，可把度规写成<strong>闵可夫斯基背景</strong> \( \eta_{\mu\nu}=\mathrm{diag}(-1,+1,+1,+1) \) 加小扰动 \( h_{\mu\nu} \)：</p>
+      <div class="formula">\[ g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu},\qquad |h_{\mu\nu}|\ll 1 \]</div>
+      <p>定义<strong>迹反转扰动</strong> \( \bar h_{\mu\nu}=h_{\mu\nu}-\tfrac{1}{2}\eta_{\mu\nu}h \)（\( h=\eta^{\mu\nu}h_{\mu\nu} \)），选取 <strong>Lorenz 规范</strong> \( \partial^\mu\bar h_{\mu\nu}=0 \) 后，线性化的爱因斯坦方程化为线性波动方程：</p>
+      <div class="formula">\[ \Box\,\bar h_{\mu\nu}\equiv\Bigl(-\frac{1}{c^2}\pdv{^2}{t^2}+\nabla^2\Bigr)\bar h_{\mu\nu}=-\frac{16\pi G}{c^4}\,T_{\mu\nu} \]</div>
+      <p>真空中 \( T_{\mu\nu}=0 \)，得到 \( \Box\bar h_{\mu\nu}=0 \)，其通解为以光速 \( c \) 传播的平面波 \( \bar h_{\mu\nu}(t,\vec x)=\mathrm{Re}\!\left[A_{\mu\nu}\,e^{i(\vec k\cdot\vec x-\omega t)}\right] \)，\( \omega=c|\vec k| \)。这是<strong>引力波</strong> (gravitational wave) 的数学定义——度规扰动本身的传播。爱因斯坦 1916 年即得到此结果。</p>
+
+      <h3>2. 两种偏振：\( h_+ \) 与 \( h_\times \) Plus &amp; Cross Polarizations</h3>
+      <p>张量性引力波是<strong>自旋 2</strong>（螺旋度 ±2）场，有<strong>两个独立偏振</strong>。在 <strong>TT 规范</strong>（transverse-traceless，横向无迹）下，沿 \( z \) 轴传播的波只有 \( xx \)、\( yy \)、\( xy \) 分量：</p>
+      <div class="formula">\[ h_{ij}^{TT}=\begin{pmatrix} h_+ &amp; h_\times &amp; 0 \\ h_\times &amp; -h_+ &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix},\qquad h_+(t)=h_+\cos(\omega t),\quad h_\times(t)=h_\times\cos(\omega t+\delta) \]</div>
+      <p>两个偏振对一环自由检验粒子（如本页仿真所示）的作用完全不同：</p>
+      <ul>
+        <li><strong>\( + \) 偏振</strong>：在 \( x \) 轴方向拉伸同时在 \( y \) 轴方向压缩，半个周期后反过来。粒子坐标 \( (x,y)\to(x(1+h_+/2),\,y(1-h_+/2)) \)。</li>
+        <li><strong>\( \times \) 偏振</strong>：拉伸–压缩轴旋转 \( 45^\circ \)，等价于把 \( + \) 模式旋转 \( 45^\circ \)。<br>粒子坐标 \( (x,y)\to(x+h_\times y/2,\,y+h_\times x/2) \)。</li>
+      </ul>
+      <p>注意两点：（i）波是<strong>横向</strong>的——传播方向 \( z \) 上没有形变；（ii）面积在第一阶近似下<strong>守恒</strong>（拉伸等于压缩）。引力波本质是<strong>潮汐场</strong>的传播。</p>
+      <div class="key-terms">strain (应变 \( h \)), TT gauge (横向无迹规范), plus polarization (\( h_+ \) 加号偏振), cross polarization (\( h_\times \) 叉号偏振), helicity (螺旋度)</div>
+
+      <h3>3. 引力波的产生——四极矩公式 Generation: The Quadrupole Formula</h3>
+      <p>质量分布的<strong>加速运动</strong>产生引力波。最低阶（也是引力波必须的）是<strong>质量四极矩</strong> \( Q_{ij}=\int\rho(\vec x)(x_ix_j-\tfrac{1}{3}r^2\delta_{ij})\,d^3x \)。远场（\( r\gg \) 源尺寸）的<strong>四极矩公式</strong>：</p>
+      <div class="formula">\[ \boxed{\;h_{ij}^{TT}(t,\vec x)=\frac{2G}{c^4\,r}\,\ddot{Q}_{ij}^{TT}\!\Bigl(t-\frac{r}{c}\Bigr)\;} \]</div>
+      <p>几个关键点：（1）\( 1/r \) 衰减——非常缓慢，所以远距波源仍可探测；（2）系数 \( G/c^4\approx 8.26\times 10^{-45}\,\mathrm{s^2/(kg\,m)} \) 极小，故人造波源完全不可探测；（3）单极（总质量）与偶极（质心运动）由能量动量守恒保证<strong>不辐射</strong>——必须有时间变化的四极矩。<strong>最佳天然波源</strong>是<strong>致密双星 inspiral</strong>（中子星–中子星、黑洞–黑洞），因为质量大、尺寸小、加速度极高。</p>
+      <p>一个辐射功率的量级估计——<strong>引力波光度</strong>：</p>
+      <div class="formula">\[ P_{\mathrm{GW}}=\frac{G}{5c^5}\langle \dddot{Q}_{ij}\dddot{Q}^{ij}\rangle\sim\frac{G}{c^5}\,(M v^2)^2\,\omega^2 \]</div>
+      <p>注意 \( c^5/G\approx 3.63\times 10^{52}\,\mathrm{W} \) 是惊人的「普朗克功率」上限。双黑洞合并峰值可达 \( \sim 10^{49}\,\mathrm{W} \)，瞬时超过可观测宇宙所有恒星的总光度。</p>
+      <div class="key-terms">quadrupole moment (四极矩), quadrupole formula (四极矩公式), inspiral (旋近), chirp (啁啾), Planck power (普朗克功率)</div>
+
+      <h3>4. 能量损失与 Hulse–Taylor 双星脉冲星 Energy Loss &amp; the Hulse–Taylor Binary</h3>
+      <p>引力波带走能量，故轨道会<strong>收缩</strong>。圆轨道双星的轨道能流（Peter–Mathews 1963）：</p>
+      <div class="formula">\[ \dv{E_{\mathrm{orb}}}{t}=-\frac{32}{5}\frac{G^4}{c^5}\frac{M_1^2 M_2^2(M_1+M_2)}{a^5} \]</div>
+      <p>由此可推出轨道周期变化率 \( \dot P_b \)。1974 年 Hulse 与 Taylor 发现脉冲星 PSR B1913+16（双中子星，\( P_b=7.75 \) 小时），随后 30 余年观测到的轨道衰减与广义相对论预言值之比为 \( 1.00\pm 0.01 \)。这是引力波存在的<strong>间接证据</strong>（1993 年 Nobel 物理学奖）。</p>
+
+      <h3>5. 引力波的探测——LIGO 与干涉术 Detection: LIGO &amp; Interferometry</h3>
+      <p>应变 \( h=\Delta L/L\sim 10^{-21} \)。LIGO 用 4 km 臂长 Michelson 干涉仪：两臂长度差 \( \Delta L\sim hL\sim 4\times 10^{-18}\,\mathrm{m} \)，约 proton 半径的 \( 10^{-3} \)。要测这样小的位移需要：（i）<strong>激光功率</strong> ~ 100 kW（用 Fabry–Perot 腔积累光）；（ii）<strong>隔振</strong>（多级悬挂摆，超真空）；（iii）<strong>量子压缩光</strong>（shot noise 与 radiation pressure noise 的折中）。</p>
+      <p><strong>2015 年 9 月 14 日</strong>，Advanced LIGO 首次直接探测到 GW150914——两个 \( \sim 30\,M_\odot \) 黑洞在 \( \sim 400\,\mathrm{Mpc} \) 处合并，峰值 \( h\sim 10^{-21} \)，频率从 35 Hz「啁啾」上升到 150 Hz（2017 Nobel）。至 2024 年 LIGO/Virgo/KAGRA 已确认 &gt; 90 个并合事件。多信使天文学的里程碑：<strong>GW170817</strong>（双中子星）的 GW 信号与伽马射线、光学、X 射线、射电观测同时到达，证实了大部分重元素（金、铂）的<strong>千新星</strong> (kilonova) 起源，并独立测得引力波速度 \( |v_{\mathrm{GW}}-c|/c\lesssim 10^{-15} \)。</p>
+      <div class="key-terms">strain (应变), Michelson interferometer (迈克尔逊干涉仪), shot noise (散粒噪声), squeezed light (压缩光), chirp (啁啾), multi-messenger astronomy (多信使天文学)</div>
+
+      <h3>6. 宇宙学原理与 FLRW 度规 The Cosmological Principle &amp; FLRW Metric</h3>
+      <p>把 GR 应用到整个宇宙需要<strong>宇宙学原理</strong>：在大尺度（\( \gtrsim 100\,\mathrm{Mpc} \)）上，宇宙是<strong>均匀</strong> (homogeneous) 且<strong>各向同性</strong> (isotropic) 的。具有这种对称性的最一般度规是 <strong>FLRW 度规</strong> (Friedmann–Lemaître–Robertson–Walker)：</p>
+      <div class="formula">\[ \boxed{\;ds^2=-c^2dt^2+a^2(t)\Bigl[\frac{dr^2}{1-kr^2}+r^2(d\theta^2+\sin^2\theta\,d\phi^2)\Bigr]\;} \]</div>
+      <p>其中 \( a(t) \) 是无量纲<strong>标度因子</strong> (scale factor)，描述宇宙「网格」的拉伸；\( k\in\{+1,0,-1\} \) 是<strong>空间曲率</strong>（球面 / 平坦 / 双曲）。共动观察者（坐标 \( (r,\theta,\phi) \) 固定）的世界线就是测地线。星系的<strong>宇宙学红移</strong>正是 \( a(t) \) 增大、波长被「拉长」的结果：</p>
+      <div class="formula">\[ 1+z=\frac{\lambda_{\mathrm{obs}}}{\lambda_{\mathrm{em}}}=\frac{a(t_0)}{a(t_{\mathrm{em}})} \]</div>
+      <div class="key-terms">cosmological principle (宇宙学原理), homogeneous (均匀), isotropic (各向同性), FLRW metric (FLRW 度规), scale factor (标度因子), comoving (共动)</div>
+
+      <h3>7. 弗里德曼方程与宇宙的膨胀 Friedmann Equations &amp; Cosmic Expansion</h3>
+      <p>把 FLRW 度规代入爱因斯坦方程 \( G_{\mu\nu}+\Lambda g_{\mu\nu}=(8\pi G/c^4)T_{\mu\nu} \)，取理想流体 \( T_{\mu\nu}=(\rho+p/c^2)u_\mu u_\nu+pg_{\mu\nu} \)，得<strong>弗里德曼方程</strong>：</p>
+      <div class="formula">\[ \boxed{\;H^2\equiv\Bigl(\frac{\dot a}{a}\Bigr)^2=\frac{8\pi G}{3}\rho-\frac{kc^2}{a^2}+\frac{\Lambda c^2}{3}\;} \]</div>
+      <div class="formula">\[ \frac{\ddot a}{a}=-\frac{4\pi G}{3}\Bigl(\rho+\frac{3p}{c^2}\Bigr)+\frac{\Lambda c^2}{3}\quad\text{(加速方程)} \]</div>
+      <p>加上能量守恒 \( \dot\rho+3H(\rho+p/c^2)=0 \)（可由 Bianchi 恒等式自动得到）。由第一式：（i）当 \( \Lambda=0 \)、\( \rho&gt;0 \)，对任意曲率 \( k \)，倒推时间必有 \( a\to 0 \) 在有限时间内——即<strong>大爆炸</strong> (Big Bang)；（ii）今日实测 \( H_0\approx 70\,\mathrm{km/s/Mpc} \)，故遥远星系退行速度 \( v_{\mathrm{rec}}=H_0 d \)——<strong>哈勃定律</strong>（1929, Hubble）；（iii）对应<strong>临界密度</strong> \( \rho_c=3H_0^2/(8\pi G)\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3} \)（约 5.5 个质子/m³），宇宙总密度参数 \( \Omega_{\mathrm{tot}}=\rho/\rho_c \) 决定曲率。</p>
+      <p>三个简化特例（<strong>物质</strong> \( p=0 \)、<strong>辐射</strong> \( p=\rho c^2/3 \)、<strong>真空能</strong> \( p=-\rho c^2 \)）的平坦宇宙解：</p>
+      <div class="formula">\[ \text{物质: }a(t)\propto t^{2/3};\quad \text{辐射: }a(t)\propto t^{1/2};\quad \text{真空能 (de Sitter): }a(t)\propto e^{Ht} \]</div>
+      <div class="key-terms">Friedmann equations (弗里德曼方程), Hubble parameter (哈勃参数 \( H=\dot a/a \)), critical density (临界密度), density parameter (密度参数 \( \Omega \)), Big Bang (大爆炸), cosmological constant (宇宙学常数 \( \Lambda \))</div>
+
+      <h3>8. 广义相对论的经典检验 Classic Tests of General Relativity</h3>
+      <p>爱因斯坦 1915 年提出三种「经典检验」，加上现代三种共<strong>六大检验</strong>：</p>
+      <div class="formula">\[ \begin{array}{c|l|l} \text{检验 Test} &amp; \text{预言 Prediction} &amp; \text{实验结果 Experiment} \\\\ \hline \text{水星近日点进动} &amp; 43^{\prime\prime}/\text{century} &amp; 42.98^{\prime\prime}\pm 0.04 \\\\ \text{光线偏折 (Sun limb)} &amp; 1.75^{\prime\prime} &amp; 1.66^{\prime\prime}\text{–}1.78^{\prime\prime}\,(1919\!-\!\text{now}) \\\\ \text{引力红移} &amp; \Delta\nu/\nu=gh/c^2 &amp; \text{Pound–Rebka 1960, }10^{-12} \\\\ \text{Shapiro 时延} &amp; \sim 120\,\mu\mathrm{s}\text{ (one-way)} &amp; \text{Cassini 2003, }10^{-5}\text{ 精度} \\\\ \text{Hulse–Taylor 衰减} &amp; \dot P_b=-2.4\times 10^{-12} &amp; 1.00\pm 0.01 \\\\ \text{GW 直接探测} &amp; h\sim 10^{-21} &amp; \text{LIGO 2015, GW150914} \end{array} \]</div>
+      <p>所有检验均与广义相对论吻合，多数精度达 \( 10^{-3} \) 或更高。至今<strong>没有任何可信实验偏离 GR</strong>——尽管在强场、量子尺度与宇宙学（暗物质、暗能量、哈勃张力）仍存悬疑。下面通过 5 道数值例题具体量化。</p>
+
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation — 由线性化爱因斯坦方程到引力波方程</h2>
+      <p><strong>目标：</strong>从 \( g_{\mu\nu}=\eta_{\mu\nu}+h_{\mu\nu} \) 出发，证明真空中的度规扰动满足以光速传播的波动方程。</p>
+      <p class="step"><strong>步骤 1.</strong> 把 Christoffel 记号与 Ricci 张量展开到 \( h \) 一阶。计算可得（\( \partial_\alpha\equiv\partial/\partial x^\alpha \)，希腊指标用 \( \eta \) 升降）：</p>
+      <div class="formula">\[ \Gamma^{\alpha}_{\mu\nu}=\tfrac{1}{2}\eta^{\alpha\beta}(\partial_\mu h_{\nu\beta}+\partial_\nu h_{\mu\beta}-\partial_\beta h_{\mu\nu}),\qquad R_{\mu\nu}=\tfrac{1}{2}(\partial_\alpha\partial_\mu h^\alpha_{\ \nu}+\partial_\alpha\partial_\nu h^\alpha_{\ \mu}-\Box h_{\mu\nu}-\partial_\mu\partial_\nu h) \]</div>
+      <p class="step"><strong>步骤 2.</strong> 真空爱因斯坦方程 \( R_{\mu\nu}=0 \) 在线性近似下为 \( R_{\mu\nu}=0 \)。直接处理会得到不可解耦合的方程组。技巧：定义<strong>迹反转扰动</strong></p>
+      <div class="formula">\[ \bar h_{\mu\nu}\equiv h_{\mu\nu}-\tfrac{1}{2}\eta_{\mu\nu}h,\qquad h\equiv\eta^{\mu\nu}h_{\mu\nu} \]</div>
+      <p>注意 \( h=-\bar h \)（取迹）。代入 Ricci 表达式，线性化场方程变为</p>
+      <div class="formula">\[ -\tfrac{1}{2}\Box\bar h_{\mu\nu}+\tfrac{1}{2}\bigl(\partial_\mu\partial^\alpha\bar h_{\alpha\nu}+\partial_\nu\partial^\alpha\bar h_{\alpha\mu}-\tfrac{1}{2}\eta_{\mu\nu}\partial^\alpha\partial^\beta\bar h_{\alpha\beta}\bigr)=0 \]</div>
+      <p class="step"><strong>步骤 3.</strong> 利用规范自由度 \( x^\mu\to x^\mu+\xi^\mu(x) \)（无穷小微分同胚），可以施加 <strong>Lorenz（谐和）规范</strong></p>
+      <div class="formula">\[ \partial^\mu\bar h_{\mu\nu}=0 \]</div>
+      <p>此时括号内三项全为零，剩下的就是<strong>无源波动方程</strong>：</p>
+      <div class="formula">\[ \Box\bar h_{\mu\nu}=0,\qquad \Box\equiv-\frac{1}{c^2}\pdv{^2}{t^2}+\nabla^2 \]</div>
+      <p>每个分量都以波速 \( c \) 传播。<strong>结论</strong>：广义相对论预言时空本身可以「涟漪」——引力波。</p>
+      <p class="step"><strong>步骤 4.</strong> 平面波解 \( \bar h_{\mu\nu}=A_{\mu\nu}e^{i(k_\alpha x^\alpha)} \)，代入规范条件得 \( k^\mu A_{\mu\nu}=0 \)（横向），取迹为零 \( A^\mu_{\ \mu}=0 \)（无迹）。再利用剩余规范自由度（绕 \( z \) 轴的 TT 投影），得到非零分量只有 \( A_{xx}=-A_{yy}=h_+ \)、\( A_{xy}=A_{yx}=h_\times \)，正是第 2 节的 TT 矩阵。<strong>两个独立偏振</strong>对应自旋 2 的两个螺旋度态。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 3.1 光线被太阳偏折 Light Deflection at the Sun's Limb</h4>
+        <p class="example-statement">求一束遥远星光从太阳边缘（impact 参量 \( b=R_\odot \)）掠过时被偏折的总角度 \( \theta \)。取 \( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( R_\odot=6.96\times 10^8\,\mathrm{m} \)、\( G=6.674\times 10^{-11} \)、\( c=2.998\times 10^8\,\mathrm{m/s} \)。与牛顿（Soldner 1801）预言 \( 2GM/(c^2 b) \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 广义相对论给出的偏折角是牛顿值的两倍：</p>
+          <p>\[ \theta_{\mathrm{GR}}=\frac{4GM}{c^2 b} \]</p>
+          <p>代入（先算<strong>太阳引力半径</strong> \( r_g\equiv 2GM_\odot/c^2 \)）：</p>
+          <p>\[ r_g=\frac{2(6.674\times 10^{-11})(1.989\times 10^{30})}{(2.998\times 10^8)^2}=\frac{2.654\times 10^{20}}{8.988\times 10^{16}}=2.953\times 10^{3}\,\mathrm{m} \]</p>
+          <p>故 \( 4GM/c^2=2r_g=5.906\times 10^3\,\mathrm{m} \)。偏折角</p>
+          <p>\[ \theta=\frac{5.906\times 10^3}{6.96\times 10^8}=8.49\times 10^{-6}\,\mathrm{rad} \]</p>
+          <p>换算为角秒（\( 1\,\mathrm{rad}=206\,265^{\prime\prime} \)）：</p>
+          <p>\[ \theta=8.49\times 10^{-6}\times 206\,265=1.75^{\prime\prime} \]</p>
+          <p>牛顿值是此值的一半，\( \theta_{\mathrm{N}}=0.875^{\prime\prime} \)。1919 年 Eddington 日全食考察给出 \( \sim 1.6^{\prime\prime} \)（误差大但支持 GR）；现代射电 VLBI 测得 \( 1.7^{\prime\prime} \) 在 \( 10^{-4} \) 精度上与理论吻合。</p>
+          <p><span class="ans">\( \theta_{\mathrm{GR}}=1.75^{\prime\prime} \)（Newton: \( 0.875^{\prime\prime} \)；GR 是其两倍）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.2 水星近日点的进动 Mercury's Perihelion Precession</h4>
+        <p class="example-statement">求广义相对论预言的水星近日点每世纪进动 \( \Delta\phi \)。已知水星半长轴 \( a=5.791\times 10^{10}\,\mathrm{m} \)、偏心率 \( e=0.2056 \)、公转周期 \( T=87.97 \) 天。行星总观测进动约 \( 574^{\prime\prime}/\mathrm{century} \)，其中 \( \sim 531^{\prime\prime} \) 可由其他行星的牛顿引力解释。剩余不可解释的 \( 43^{\prime\prime}/\mathrm{century} \) 是 GR 的成就。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 一圈轨道的近日点进动为</p>
+          <p>\[ \Delta\phi_{\mathrm{orb}}=\frac{6\pi GM_\odot}{c^2\,a(1-e^2)} \]</p>
+          <p>先算几何因子：\( 1-e^2=1-(0.2056)^2=1-0.04227=0.9577 \)，故 \( a(1-e^2)=5.791\times 10^{10}\times 0.9577=5.546\times 10^{10}\,\mathrm{m} \)。</p>
+          <p>分子 \( 6\pi GM/c^2=3\pi r_g=3\pi(2.953\times 10^3)=2.783\times 10^4\,\mathrm{m} \)。</p>
+          <p>\[ \Delta\phi_{\mathrm{orb}}=\frac{2.783\times 10^4}{5.546\times 10^{10}}=5.018\times 10^{-7}\,\mathrm{rad}=5.018\times 10^{-7}\times 206\,265^{\prime\prime}=0.1035^{\prime\prime} \]</p>
+          <p>每世纪轨道数：\( N=36525\,\mathrm{d}/87.97\,\mathrm{d}=415.2 \)。</p>
+          <p>\[ \Delta\phi=N\,\Delta\phi_{\mathrm{orb}}=415.2\times 0.1035^{\prime\prime}=42.98^{\prime\prime}/\mathrm{century} \]</p>
+          <p><span class="ans">\( \Delta\phi_{\mathrm{GR}}\approx 43^{\prime\prime}/\mathrm{century} \)，与剩余观测值 \( 43^{\prime\prime}\pm 0.5^{\prime\prime} \) 完美吻合。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.3 双黑洞并合的引力波应变 GW Strain from a Binary Merger</h4>
+        <p class="example-statement">考虑两个质量 \( M_1=M_2=30\,M_\odot \) 的黑洞组成的圆轨道双星，轨道半径 \( R=10^3\,\mathrm{km} \)，距地球 \( D=400\,\mathrm{Mpc} \)。用四极矩公式估算应变 \( h \) 的量级。已知 \( 1\,\mathrm{pc}=3.086\times 10^{16}\,\mathrm{m} \)、\( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 取量纲化的四极矩公式</p>
+          <p>\[ h\sim\frac{2G}{c^4 D}\,\ddot Q \]</p>
+          <p>四极矩 \( Q\sim M R^2 \)，二阶时间导数 \( \ddot Q\sim M R^2\,\Omega^2 \)，其中轨道角速度由开普勒第三定律 \( \Omega^2=G(M_1+M_2)/R^3 \)。代入：</p>
+          <p>\[ h\sim\frac{2G}{c^4 D}\cdot M R^2\cdot\frac{2G(M_1+M_2)}{R^3}=\frac{4G^2 M_1 M_2(M_1+M_2)}{c^4 D\,R^3}\cdot\frac{1}{4}\cdot 4 \quad\Rightarrow\quad h\sim\frac{4G^2\mu M_{\mathrm{tot}}}{c^4 D R} \]</p>
+          <p>其中 \( \mu=M_1M_2/(M_1+M_2)=15\,M_\odot \)、\( M_{\mathrm{tot}}=60\,M_\odot \)。代入数值（用约化质量方便）：</p>
+          <p>\[ h\sim\frac{4G^2(15\,M_\odot)(60\,M_\odot)}{c^4\,(400\,\mathrm{Mpc})\,(10^6\,\mathrm{m})} \]</p>
+          <p>计算各因子：\( G^2=4.454\times 10^{-21} \)；\( 15\times 60\,M_\odot^2=900\times (1.989\times 10^{30})^2=3.56\times 10^{63}\,\mathrm{kg^2} \)；\( c^4=(2.998\times 10^8)^4=8.07\times 10^{33}\,\mathrm{m^4/s^4} \)；\( D=400\times 10^6\times 3.086\times 10^{16}=1.234\times 10^{25}\,\mathrm{m} \)；\( R=10^6\,\mathrm{m} \)。</p>
+          <p>\[ h\sim\frac{4(4.454\times 10^{-21})(3.56\times 10^{63})}{(8.07\times 10^{33})(1.234\times 10^{25})(10^6)}=\frac{6.34\times 10^{43}}{9.96\times 10^{64}}=6.4\times 10^{-22} \]</p>
+          <p>考虑波形的因子 2（两个偏振）与轨道相位因子，峰值约 \( h\sim 10^{-21} \)。这正是 LIGO 探测 GW150914 时记录到的应变峰值。</p>
+          <p><span class="ans">\( h\sim 10^{-21} \)——相对长度变化约 \( 10^{-21} \)，对应 4 km 干涉仪臂上 \( \Delta L\sim 4\times 10^{-18}\,\mathrm{m} \)（约 \( 10^{-3} \) 个质子半径）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.4 掠过太阳的 Shapiro 时延 Shapiro Delay Grazing the Sun</h4>
+        <p class="example-statement">一束雷达信号从地球（\( r_E=1\,\mathrm{AU}=1.496\times 10^{11}\,\mathrm{m} \)）发往火星（上合时 \( r_M=1.524\,\mathrm{AU}=2.279\times 10^{11}\,\mathrm{m} \)），刚好掠过太阳边缘（impact 参量 \( b=R_\odot=6.96\times 10^8\,\mathrm{m} \)）。求 Shapiro 时延 \( \Delta t \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> Shapiro 时延公式（一阶后牛顿近似）：</p>
+          <p>\[ \Delta t=\frac{2GM_\odot}{c^3}\,\ln\!\Bigl(\frac{4\,r_E\,r_M}{b^2}\Bigr) \]</p>
+          <p>先算时间引力单位 \( 2GM_\odot/c^3 \)：</p>
+          <p>\[ \frac{2GM_\odot}{c^3}=\frac{2(6.674\times 10^{-11})(1.989\times 10^{30})}{(2.998\times 10^8)^3}=\frac{2.654\times 10^{20}}{2.694\times 10^{25}}=9.85\times 10^{-6}\,\mathrm{s}\approx 9.85\,\mu\mathrm{s} \]</p>
+          <p>对数宗量：\( 4r_E r_M/b^2=4(1.496\times 10^{11})(2.279\times 10^{11})/(6.96\times 10^8)^2 \)。</p>
+          <p>分子：\( 4\times 1.496\times 2.279\times 10^{22}=1.364\times 10^{23}\,\mathrm{m^2} \)。分母：\( (6.96\times 10^8)^2=4.844\times 10^{17}\,\mathrm{m^2} \)。</p>
+          <p>\[ \frac{4r_E r_M}{b^2}=\frac{1.364\times 10^{23}}{4.844\times 10^{17}}=2.82\times 10^{5},\qquad \ln(2.82\times 10^{5})=12.55 \]</p>
+          <p>\[ \Delta t=(9.85\,\mu\mathrm{s})\times 12.55=124\,\mu\mathrm{s} \]</p>
+          <p>往返（双程）约 \( 240\,\mu\mathrm{s} \)。Cassini 飞船 2003 年实验以 \( \sim 10^{-5} \) 精度验证了 GR 的 Shapiro 时延（至今最强的太阳系检验）。注意此「时延」并非信号减速，而是<strong>路径附近的时空被引力势拉长</strong>，沿零测地线的固有时积分增加。</p>
+          <p><span class="ans">单程 \( \Delta t\approx 124\,\mu\mathrm{s} \)（往返 \( \sim 240\,\mu\mathrm{s} \)）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3.5 由弗里德曼方程导出哈勃膨胀 Hubble Expansion from Friedmann</h4>
+        <p class="example-statement">对一个平坦（\( k=0 \)）无 \( \Lambda \) 的物质主导宇宙：（a）证明 \( a(t)\propto t^{2/3} \)；（b）取今日 \( H_0=70\,\mathrm{km/s/Mpc} \)，求临界密度 \( \rho_c \) 与哈勃时间 \( t_H=1/H_0 \)；（c）估算宇宙年龄 \( t_0 \)。已知 \( 1\,\mathrm{Mpc}=3.086\times 10^{22}\,\mathrm{m} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong> 物质主导时 \( p=0 \)，能量守恒 \( \dot\rho+3H\rho=0 \) 给出 \( \rho\propto a^{-3} \)（体积 \( \propto a^3 \) 膨胀，质量守恒）。</p>
+          <p class="step">（a）弗里德曼方程 \( \dot a^2=(8\pi G/3)\rho_0 a^{-1}\cdot a^2=C/a \)，其中 \( C=(8\pi G/3)\rho_0 \)。故 \( \dot a=\sqrt{C/a} \)，分离变量积分：</p>
+          <p>\[ \int a^{1/2}\,da=\int\sqrt C\,dt\;\Rightarrow\;\tfrac{2}{3}a^{3/2}=\sqrt C\,t\;\Rightarrow\;\boxed{\;a(t)=\Bigl(\tfrac{3}{2}\sqrt C\,t\Bigr)^{2/3}\propto t^{2/3}\;} \]</p>
+          <p class="step">（b）\( H_0=70\,\mathrm{km/s/Mpc}=70\times 10^3/(3.086\times 10^{22})=2.268\times 10^{-18}\,\mathrm{s^{-1}} \)。</p>
+          <p>\[ \rho_c=\frac{3H_0^2}{8\pi G}=\frac{3(2.268\times 10^{-18})^2}{8\pi(6.674\times 10^{-11})}=\frac{1.543\times 10^{-35}}{1.677\times 10^{-9}}=9.20\times 10^{-27}\,\mathrm{kg/m^3} \]</p>
+          <p>约每立方米 5.5 个质子（极稀薄）。</p>
+          <p class="step">（c）哈勃时间 \( t_H=1/H_0=1/(2.268\times 10^{-18})=4.41\times 10^{17}\,\mathrm{s}=1.40\times 10^{10}\,\mathrm{yr}=14.0\,\mathrm{Gyr} \)。</p>
+          <p>由 \( a\propto t^{2/3} \) 知 \( H=\dot a/a=2/(3t) \)，故物质主导宇宙年龄</p>
+          <p>\[ t_0=\frac{2}{3H_0}=\frac{2}{3}\times 14.0\,\mathrm{Gyr}=9.33\,\mathrm{Gyr} \]</p>
+          <p>实际宇宙年龄 \( 13.8\,\mathrm{Gyr} &gt; 9.33\,\mathrm{Gyr} \)，正是因为暗能量（\( \Lambda&gt;0 \)）使膨胀近期加速，把 \( a(t) \) 从纯 \( t^{2/3} \) 抬高。这本身就是 \( \Lambda \) 存在的一个动力学论证。</p>
+          <p><span class="ans">\( a\propto t^{2/3} \)；\( \rho_c=9.20\times 10^{-27}\,\mathrm{kg/m^3} \)；\( t_H=14.0\,\mathrm{Gyr} \)；物质主导年龄 \( t_0=9.33\,\mathrm{Gyr} \)（实际 \( 13.8\,\mathrm{Gyr} \) 由暗能量延长）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「引力波就是普通的纵波，会压缩/拉伸传播方向上的物体」——错。</strong>引力波是<strong>横向、自旋 2 的张量波</strong>，传播方向上<strong>没有</strong>形变（TT 矩阵的 \( zz \) 分量为 0）。它只在垂直于传播方向的平面内交替地「拉伸一个轴 + 压缩另一个轴」。因此一个<strong>孤立的</strong>小物体感受不到引力波——只有<strong>有一定空间尺度</strong>的两个或更多检验质量之间的<strong>相对</strong>距离才会振荡变化，这正是 LIGO 用 4 km 长基线的原理。</li>
+        <li><strong>「\( + \) 与 \( \times \) 偏振是同一东西只是数学表达不同」——错。</strong>两者是物理上独立的偏振态：\( + \) 的拉伸–压缩轴沿坐标轴 \( x,y \)；\( \times \) 的轴旋转了 \( 45^\circ \)。一个任意方向的双星波源一般同时发射两种偏振（且可能相位差 \( \pi/2 \)，形成椭圆偏振）。LIGO 三个（或更多）探测器在不同方向上响应不同，正是用来<strong>分解偏振并定位波源</strong>的关键。</li>
+        <li><strong>「引力波应变 \( h\sim 10^{-21} \) 很小，所以能量也微不足道」——并非如此。</strong>引力波能流密度 \( F=(c^3/16\pi G)\langle\dot h_+^2+\dot h_\times^2\rangle \)。GW150914 峰值 \( h\sim 10^{-21} \)、频率 \( \sim 100\,\mathrm{Hz} \)，对应能流 \( \sim 1\,\mathrm{mW/m^2} \)——与月光相当！只是引力波与物质的耦合极弱（横截面 \( \sim 10^{-50}\,\mathrm{m^2} \)），所以地球、LIGO、人体几乎完全「透明」。双黑洞并合瞬时总功率可达 \( 10^{49}\,\mathrm{W} \)，超过可观测宇宙所有恒星之和。</li>
+        <li><strong>「宇宙学红移就是普通多普勒效应」——错。</strong>红移 \( 1+z=1/a(t_{\mathrm{em}}) \) 来自<strong>空间本身在膨胀</strong>拉伸光子波长，<em>不是</em>星系在某个「外部静止空间」中运动。对于 \( z\gtrsim 0.1 \) 的遥远星系，「退行速度」可超过 \( c \)，但这并不违反相对论——因为没有信息或物质在空间中超光速传递，只是空间在膨胀。</li>
+        <li><strong>「广义相对论已被实验证明完全正确」——夸大。</strong>GR 在已做过的所有检验中（弱场：太阳系；强场：双星脉冲星、GW；宇宙学：CMB）以 \( 10^{-3} \) 或更高精度与理论一致，<strong>没有任何可信偏离</strong>。但它<strong>仍不能与量子力学统一</strong>（量子引力）、不能解释<strong>暗物质</strong>与<strong>暗能量</strong>的本质，也面临<strong>哈勃张力</strong>（\( H_0=67 \) vs \( 73\,\mathrm{km/s/Mpc} \)）。这些悬疑正是 21 世纪物理学新物理的可能窗口。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （光线偏折）求星光掠过木星边缘时的偏折角。取 \( M_J=1.90\times 10^{27}\,\mathrm{kg} \)、\( R_J=7.15\times 10^7\,\mathrm{m} \)。为什么木星偏折比太阳小那么多？</summary>
+        <div class="hint">公式 \( \theta=4GM/(c^2 b) \)，与 \( M/b \) 成正比。</div>
+        <div class="solution">
+          <p>\( 2GM_J/c^2=2(6.674\times 10^{-11})(1.90\times 10^{27})/(2.998\times 10^8)^2=2.814\times 10^{0}\,\mathrm{m}=2.81\,\mathrm{m} \)。</p>
+          <p>\( \theta=4GM_J/(c^2 R_J)=2(2.81)/(7.15\times 10^7)=7.87\times 10^{-8}\,\mathrm{rad}=7.87\times 10^{-8}\times 206\,265=0.0162^{\prime\prime} \)。</p>
+          <p>太阳偏折 \( 1.75^{\prime\prime} \)，木星仅为 \( \theta_J/\theta_\odot=(M_J/R_J)/(M_\odot/R_\odot)=(1.90\times 10^{27}/7.15\times 10^7)/(1.989\times 10^{30}/6.96\times 10^8)=2.66\times 10^{19}/2.86\times 10^{21}=9.3\times 10^{-3} \) 即约百分之一。因为偏折正比于<strong>致密度</strong> \( M/R \)，木星比太阳稀薄、引力势浅得多。<span class="ans">\( \theta_J\approx 0.016^{\prime\prime} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （ISCO 啁啾）GW150914 在合并前最后一刻的 GW 频率约 \( f_{\mathrm{GW}}\approx 150\,\mathrm{Hz} \)。对总质量 \( M=60\,M_\odot \) 的双黑洞，最内稳定圆轨道（ISCO）\( r_{\mathrm{ISCO}}=6GM/c^2 \) 对应的轨道角频率 \( \Omega \) 是多少？\( f_{\mathrm{GW}}=2f_{\mathrm{orb}}=\Omega/\pi \) 是否与 150 Hz 一致？</summary>
+        <div class="hint">ISCO 半径 \( r=6GM/c^2 \)，开普勒 \( \Omega^2=GM/r^3 \)。</div>
+        <div class="solution">
+          <p>\( r_{\mathrm{ISCO}}=6GM/c^2=3r_g=3(2.95\times 10^3\,\mathrm{m})\times(M/M_\odot)=8.86\times 10^3\times 60=5.31\times 10^5\,\mathrm{m} \)。</p>
+          <p>\( \Omega=\sqrt{GM/r^3}=\sqrt{(6.674\times 10^{-11})(1.193\times 10^{32})/(5.31\times 10^5)^3} \)。</p>
+          <p>分子 \( GM=7.96\times 10^{21}\,\mathrm{m^3/s^2} \)，分母 \( r^3=1.50\times 10^{17}\,\mathrm{m^3} \)，故 \( \Omega^2=5.31\times 10^4\,\mathrm{s^{-2}} \)，\( \Omega=230\,\mathrm{rad/s} \)。</p>
+          <p>\( f_{\mathrm{orb}}=\Omega/(2\pi)=36.6\,\mathrm{Hz} \)，\( f_{\mathrm{GW}}=2f_{\mathrm{orb}}=73\,\mathrm{Hz} \)。</p>
+          <p>低于实测峰值 150 Hz——因为两个视界在并合前<strong>已超过</strong> ISCO，进入「plunge」与合并阶段，瞬时频率继续上升到接近 150 Hz 才衰减。<span class="ans">ISCO 处 \( f_{\mathrm{GW}}\approx 73\,\mathrm{Hz} \)；峰值 150 Hz 来自合并瞬间。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （Hulse–Taylor 能损）Hulse–Taylor 双星轨道周期 \( P_b=7.75\,\mathrm{h}=27\,900\,\mathrm{s} \)、偏心率 \( e=0.617 \)、两个中子星各 \( \sim 1.4\,M_\odot \)。GR 预言的周期变化率 \( \dot P_b=-2.40\times 10^{-12} \)。求每年周期减小多少秒，及双星每周辐射多少能量。</summary>
+        <div class="hint">\( \Delta P=\dot P_b\times\Delta t \)；轨道能 \( E=-GM_1M_2/(2a) \)，\( \dot E/E=\tfrac{2}{3}\dot P/P \)。</div>
+        <div class="solution">
+          <p>每年（\( 3.156\times 10^7\,\mathrm{s} \)）周期变化：\( \Delta P=(-2.40\times 10^{-12})(3.156\times 10^7)=-7.57\times 10^{-5}\,\mathrm{s/yr}=-75.7\,\mu\mathrm{s/yr} \)。</p>
+          <p>40 年累计 \( -3.0\,\mathrm{ms} \)——已被精确测量并绘出轨道衰减「螺旋」曲线，与 GR 预言在 \( 1\% \) 内一致。</p>
+          <p>每周辐射能：先算轨道半长轴 \( a \)。开普勒 \( P_b^2=4\pi^2 a^3/(G(M_1+M_2)) \)：</p>
+          <p>\( a^3=G(M_1+M_2)P_b^2/(4\pi^2)=(6.674\times 10^{-11})(2\times 1.4\times 1.989\times 10^{30})(2.79\times 10^4)^2/(39.48)=2.06\times 10^{27}\,\mathrm{m^3} \)，故 \( a=1.27\times 10^9\,\mathrm{m} \)。</p>
+          <p>轨道能 \( E=-G(1.4M_\odot)^2/(2a)=-(6.674\times 10^{-11})(7.78\times 10^{60})/(2.54\times 10^9)=-2.04\times 10^{41}\,\mathrm{J} \)。</p>
+          <p>每周 \( \Delta E=E\cdot(\dot P/P)\cdot P/3\cdot 1\approx E\times(\Delta P_{\mathrm{orb}}/P_b) \)，详细给出 \( \Delta E_{\mathrm{orb}}\approx -6\times 10^{34}\,\mathrm{J} \)每周，约太阳光度 \( 3.8\times 10^{26}\,\mathrm{W} \) 的 \( 10^5 \) 倍集中在 GW 中。<span class="ans">\( \dot P_b\approx -76\,\mu\mathrm{s/yr} \)；每周辐射 \( \sim 10^{35}\,\mathrm{J} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （Pound–Rebka 引力红移）哈佛塔高 \( h=22.5\,\mathrm{m} \)。\( \gamma \) 光子从塔底上升到塔顶时，频率相对变化 \( \Delta\nu/\nu \) 是多少？需要多高精度才能测出？（\( g=9.8\,\mathrm{m/s^2} \)、\( c=3.0\times 10^8\,\mathrm{m/s} \)）</summary>
+        <div class="hint">弱场引力红移 \( \Delta\nu/\nu=-gh/c^2 \)（上升时光子损失能量）。</div>
+        <div class="solution">
+          <p>\( \Delta\nu/\nu=-gh/c^2=-(9.8)(22.5)/(3.0\times 10^8)^2=-220.5/9.0\times 10^{16}=-2.45\times 10^{-15} \)。</p>
+          <p>幅度约 \( 10^{-15} \)——需要 Mössbauer 效应（\( ^{57}\mathrm{Fe} \) 14.4 keV 跃迁自然线宽 \( \Gamma/\nu\sim 10^{-13} \)）才能分辨。Pound 与 Rebka（1959/1960）首次测得 \( \Delta\nu/\nu=(2.57\pm 0.26)\times 10^{-15} \)（与理论 \( 2.45\times 10^{-15} \) 在 \( 10\% \) 内），后改进到 \( 1\% \)。现代（Gravity Probe A 1976，火箭搭载氢激射器到 \( 10^4\,\mathrm{km} \)）达到 \( 70\,\mathrm{ppm} \)。<span class="ans">\( \Delta\nu/\nu\approx -2.5\times 10^{-15} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （临界密度与平坦性）取 \( H_0=70\,\mathrm{km/s/Mpc} \)，临界密度 \( \rho_c\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3} \)。若观测到的重子密度 \( \Omega_b\approx 0.049 \)、暗物质 \( \Omega_c\approx 0.265 \)、暗能量 \( \Omega_\Lambda\approx 0.686 \)，求 \( \Omega_{\mathrm{tot}} \) 与曲率参数 \( \Omega_k \)。宇宙是开放、平坦还是闭合？</summary>
+        <div class="hint">\( \Omega_{\mathrm{tot}}=\sum_i\Omega_i \)；\( \Omega_k=1-\Omega_{\mathrm{tot}} \)。</div>
+        <div class="solution">
+          <p>\( \Omega_{\mathrm{tot}}=\Omega_b+\Omega_c+\Omega_\Lambda=0.049+0.265+0.686=1.000 \)。</p>
+          <p>\( \Omega_k=1-\Omega_{\mathrm{tot}}\approx 0 \)。Planck 卫星实测 \( |\Omega_k|&lt;0.001 \)，宇宙<strong>极其接近平坦</strong>（这是暴胀理论的关键预言——早期暴胀把曲率指数式拉平）。</p>
+          <p>注意重子仅占 \( \sim 5\% \)——其余 \( 95\% \) 是我们尚不了解的暗物质与暗能量。<span class="ans">\( \Omega_{\mathrm{tot}}\approx 1.000 \)，\( \Omega_k\approx 0 \)：宇宙（近似）平坦。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc"><strong>引力波偏振可视化 Gravitational-Wave Polarization.</strong> 一环 24 个自由检验粒子（<span style="color:var(--sim-accent2);">绿色</span>）被引力波周期性形变：<strong>\( + \)</strong> 偏振（<span style="color:var(--sim-primary);">蓝色</span>）在水平 / 垂直方向交替拉伸压缩；<strong>\( \times \)</strong> 偏振（<span style="color:var(--sim-accent);">红色</span>）的主轴旋转了 \( 45^\circ \)。<span style="color:var(--sim-grid);">灰色虚线</span>是参考圆。注意：传播方向（垂直屏幕）上无形变；粒子环的面积在一阶近似下守恒（拉伸量 = 压缩量）。<strong>调整振幅</strong>（教学用，已放大；真实 \( h\sim 10^{-21} \)）与<strong>频率</strong>；点击 <strong>+/× 切换</strong> 与 <strong>↺ 重置</strong>。</p>
+      <div class="sim-container">
+        <canvas id="sim-3" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-3"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-3');
+          var W = canvas.width, H = canvas.height;
+
+          // Center of the ring in canvas coords
+          var CX = W / 2, CY = H / 2;
+          var R0 = 110;                // reference ring radius (px)
+          var N = 24;                   // number of test particles
+
+          // Slider/toggle parameters
+          var params = {
+            amplitude: 0.35,   // dimensionless h (exaggerated for visibility; real GWs h~1e-21)
+            frequency: 0.8,    // GW frequency (Hz, scaled for viewing)
+            mode: 'plus',      // 'plus' or 'cross'
+          };
+
+          // Build the ring of test particle rest positions (unit circle, angle theta_k)
+          function ringPositions() {
+            var pts = [];
+            for (var k = 0; k < N; k++) {
+              var th = (2 * Math.PI * k) / N;
+              pts.push({ x: Math.cos(th), y: Math.sin(th), th: th });
+            }
+            return pts;
+          }
+
+          // Apply + or × strain h to a unit-circle point (x,y). Returns deformed (x,y) in unit radii.
+          //   plus :  x -> x(1 + h/2),  y -> y(1 - h/2)
+          //   cross:  x -> x + (h/2) y,  y -> y + (h/2) x   (axes rotated 45°)
+          function deform(p, h, mode) {
+            if (mode === 'plus') {
+              return { x: p.x * (1 + h / 2), y: p.y * (1 - h / 2) };
+            }
+            return { x: p.x + (h / 2) * p.y, y: p.y + (h / 2) * p.x };
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0, paused: false }; },
+            step: function (dt, t, s) {
+              if (s.paused) return;
+              s.t += dt;
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // instantaneous strain h(t) = A * cos(2π f t)
+              var phase = 2 * Math.PI * params.frequency * s.t;
+              var h = params.amplitude * Math.cos(phase);
+
+              // ---- title & readout ----
+              PS.drawText(ctx,
+                '引力波偏振 · GW Polarization   ' +
+                  (params.mode === 'plus' ? 'h₊ (plus)' : 'hₓ (cross)'),
+                W / 2, 18,
+                { font: 'bold 14px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx,
+                'A = ' + params.amplitude.toFixed(2) +
+                  '    f = ' + params.frequency.toFixed(2) + ' Hz' +
+                  '    h(t) = ' + h.toFixed(3) +
+                  '    (真实 real ~10⁻²¹)',
+                W / 2, 38,
+                { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ---- reference circle (undeformed, dashed gray) ----
+              ctx.save();
+              ctx.strokeStyle = C.grid;
+              ctx.setLineDash([5, 5]);
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.arc(CX, CY, R0, 0, 2 * Math.PI);
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- polarization axes (color-coded, showing instantaneous stretch direction) ----
+              // Stretch axis sign = sign(h): when h>0 along primary axis particles move outward.
+              var stretchSign = h >= 0 ? 1 : -1;
+              var axisCol = params.mode === 'plus' ? C.primary : C.accent;
+              ctx.save();
+              ctx.strokeStyle = axisCol;
+              ctx.globalAlpha = 0.35 + 0.5 * Math.abs(h) / Math.max(0.01, params.amplitude);
+              ctx.lineWidth = 1.4;
+              if (params.mode === 'plus') {
+                // x axis (horizontal) and y axis (vertical)
+                ctx.beginPath();
+                ctx.moveTo(CX - R0 * 1.3, CY);
+                ctx.lineTo(CX + R0 * 1.3, CY);
+                ctx.moveTo(CX, CY - R0 * 1.3);
+                ctx.lineTo(CX, CY + R0 * 1.3);
+                ctx.stroke();
+              } else {
+                // rotated 45° axes (diagonals)
+                var d = R0 * 1.3 / Math.SQRT2;
+                ctx.beginPath();
+                ctx.moveTo(CX - d, CY - d);
+                ctx.lineTo(CX + d, CY + d);
+                ctx.moveTo(CX - d, CY + d);
+                ctx.lineTo(CX + d, CY - d);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              // ---- draw the deformed ring outline ----
+              var ring = ringPositions();
+              ctx.save();
+              ctx.strokeStyle = axisCol;
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              for (var k = 0; k < N; k++) {
+                var d = deform(ring[k], h, params.mode);
+                var px = CX + d.x * R0;
+                var py = CY + d.y * R0;
+                if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.closePath();
+              ctx.stroke();
+              ctx.restore();
+
+              // ---- test particles ----
+              for (var i = 0; i < N; i++) {
+                var dp = deform(ring[i], h, params.mode);
+                var x = CX + dp.x * R0;
+                var y = CY + dp.y * R0;
+                PS.drawCircle(ctx, x, y, 5, { fill: C.accent2, stroke: '#ffffff', lineWidth: 1.5 });
+              }
+
+              // ---- central "source" or origin marker ----
+              PS.drawCircle(ctx, CX, CY, 3, { fill: C.text });
+
+              // ---- small legend (lower-left) ----
+              ctx.save();
+              ctx.font = '11px system-ui';
+              ctx.fillStyle = C.text;
+              var legY = H - 24;
+              ctx.fillStyle = C.accent2;
+              ctx.fillText('●', 16, legY);
+              ctx.fillStyle = C.text;
+              ctx.fillText('检验粒子 test particles', 28, legY);
+              ctx.strokeStyle = axisCol;
+              ctx.beginPath(); ctx.moveTo(180, legY - 4); ctx.lineTo(208, legY - 4); ctx.stroke();
+              ctx.fillText('形变环 deformed ring', 214, legY);
+              ctx.restore();
+
+              // ---- phase clock (upper-right) ----
+              var pcx = W - 50, pcy = 60, pr = 22;
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.arc(pcx, pcy, pr, 0, 2 * Math.PI); ctx.stroke();
+              // clock hand at angle (phase)
+              var ha = -phase + Math.PI / 2;   // math angle, cos starts at 1 -> up
+              ctx.strokeStyle = C.accent;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(pcx, pcy);
+              ctx.lineTo(pcx + pr * Math.cos(ha), pcy - pr * Math.sin(ha));
+              ctx.stroke();
+              ctx.fillStyle = C.text;
+              ctx.font = '10px system-ui';
+              ctx.textAlign = 'center';
+              ctx.fillText('相位', pcx, pcy + pr + 12);
+              ctx.fillText('phase', pcx, pcy + pr + 22);
+              ctx.restore();
+            },
+          });
+
+          // ---- controls ----
+          var ctl = PS.makeControls(document.getElementById('controls-3'), [
+            { type: 'slider', key: 'amplitude', label: '振幅 Amplitude h', min: 0.05, max: 0.80, step: 0.01, value: 0.35 },
+            { type: 'slider', key: 'frequency', label: '频率 Frequency f (Hz)', min: 0.10, max: 3.00, step: 0.05, value: 0.80 },
+            { type: 'button', key: 'mode', label: '+ / × 切换偏振' },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('amplitude', function (v) { params.amplitude = v; });
+          ctl.on('frequency', function (v) { params.frequency = v; });
+          ctl.on('mode', function () {
+            params.mode = params.mode === 'plus' ? 'cross' : 'plus';
+          });
+          ctl.on('reset', function () {
+            params.amplitude = 0.35;
+            params.frequency = 0.80;
+            params.mode = 'plus';
+            // reflect defaults in the control values (visual sync)
+            ctl.set('amplitude', 0.35);
+            ctl.set('frequency', 0.80);
+            // rebuild the slider DOM values
+            var sliders = document.querySelectorAll('#controls-3 input[type=range]');
+            if (sliders[0]) { sliders[0].value = 0.35; }
+            if (sliders[1]) { sliders[1].value = 0.80; }
+            var valSpans = document.querySelectorAll('#controls-3 .ctrl-value');
+            if (valSpans[0]) valSpans[0].textContent = '0.35';
+            if (valSpans[1]) valSpans[1].textContent = '0.80';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>引力波</strong>是度规扰动 \( h_{\mu\nu} \) 以光速 \( c \) 传播的涟漪，源自质量四极矩的加速变化。线性化爱因斯坦方程 \( \Box\bar h_{\mu\nu}=-(16\pi G/c^4)T_{\mu\nu} \) 在真空中化为波动方程。</li>
+        <li>两个独立偏振 \( h_+ \)、\( h_\times \)，分别沿坐标轴 / 45° 旋转轴拉伸–压缩一环检验粒子。<strong>横向、自旋 2</strong>。</li>
+        <li><strong>四极矩公式</strong> \( h_{ij}^{TT}=(2G/c^4 r)\ddot Q_{ij}^{TT}(t-r/c) \)；系数 \( G/c^4\sim 10^{-44} \) 极小，故人造波源不可探测，最佳波源是致密双星 inspiral。</li>
+        <li>LIGO（4 km Michelson 干涉仪）测得 \( h\sim 10^{-21} \)，对应 \( \Delta L\sim 4\times 10^{-18}\,\mathrm{m} \)。GW150914 (2015) 首次直接探测；GW170817 多信使观测测定 \( v_{\mathrm{GW}}=c \) 到 \( 10^{-15} \)。</li>
+        <li>Hulse–Taylor 双星脉冲星轨道衰减率与 GR 预言吻合到 \( 1\% \)，是引力波存在的间接证据（1993 Nobel）。</li>
+        <li><strong>FLRW 度规</strong>描述均匀各向同性宇宙，\( ds^2=-c^2dt^2+a^2(t)[\cdots] \)；标度因子 \( a(t) \) 给出膨胀。<strong>宇宙学红移</strong> \( 1+z=1/a(t_{\mathrm{em}}) \)（非多普勒）。</li>
+        <li><strong>弗里德曼方程</strong> \( H^2=(8\pi G/3)\rho-kc^2/a^2+\Lambda c^2/3 \) 决定宇宙动力学。物质主导平坦宇宙 \( a\propto t^{2/3} \)；倒推必有 \( a\to 0 \) 的<strong>大爆炸</strong>。</li>
+        <li>哈勃定律 \( v=H_0d \)，\( H_0\approx 70\,\mathrm{km/s/Mpc} \)（存在 \( 67 \) vs \( 73 \) 的<strong>哈勃张力</strong>）；临界密度 \( \rho_c\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3} \)。</li>
+        <li>广义相对论的<strong>六大检验</strong>——水星近日点（\( 43^{\prime\prime}/\mathrm{cy} \)）、光线偏折（\( 1.75^{\prime\prime} \)）、引力红移（Pound–Rebka）、Shapiro 时延（\( \sim 120\,\mu\mathrm{s} \)）、Hulse–Taylor 衰减、LIGO GW 探测——全部以高精度与理论一致。</li>
+      </ul>
+      <div class="formula">\[ \Box\,\bar h_{\mu\nu}=-\frac{16\pi G}{c^4}T_{\mu\nu}\;\xrightarrow{\text{真空}}\;\Box\bar h_{\mu\nu}=0,\qquad h_{ij}^{TT}=\frac{2G}{c^4 r}\ddot Q_{ij}^{TT}\!\Bigl(t-\frac{r}{c}\Bigr) \]</div>
+      <div class="formula">\[ h_{ij}^{TT}=\begin{pmatrix} h_+ &amp; h_\times &amp; 0 \\ h_\times &amp; -h_+ &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix},\qquad \begin{aligned} +:\ &(x,y)\to(x(1+h/2),\,y(1-h/2)) \\ \times:\ &(x,y)\to(x+h y/2,\,y+h x/2) \end{aligned} \]</div>
+      <div class="formula">\[ ds^2=-c^2dt^2+a^2(t)\Bigl[\frac{dr^2}{1-kr^2}+r^2d\Omega^2\Bigr],\qquad 1+z=\frac{1}{a(t_{\mathrm{em}})} \]</div>
+      <div class="formula">\[ H^2=\frac{8\pi G}{3}\rho-\frac{kc^2}{a^2}+\frac{\Lambda c^2}{3},\qquad \rho_c=\frac{3H^2}{8\pi G}\approx 9.2\times 10^{-27}\,\mathrm{kg/m^3} \]</div>
+      <div class="formula">\[ \theta_{\mathrm{defl}}=\frac{4GM}{c^2 b},\quad \Delta\phi_{\mathrm{Merc}}=\frac{6\pi GM_\odot}{c^2 a(1-e^2)},\quad \Delta t_{\mathrm{Shapiro}}=\frac{2GM}{c^3}\ln\!\frac{4r_1r_2}{b^2} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

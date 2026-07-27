@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4章 · 恒星结构与演化 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="4">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第4章 · 天体物理 Astrophysics</p>
+      <h1>恒星结构与演化 <span class="en-title">Stellar Structure &amp; Evolution</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>能够由<strong>流体静力学平衡</strong> (hydrostatic equilibrium) \( \mathrm{d}P/\mathrm{d}r=-Gm(r)\rho(r)/r^{2} \) 出发，估计恒星中心压强量级 \( P_c\sim GM^{2}/R^{4} \)，并解释为何恒星不会因自身引力迅速坍缩 (collapse)。</li>
+        <li>能够阅读 <strong>赫罗图</strong> (Hertzsprung–Russell diagram, HR diagram)：以 \( \log L \) 为纵轴、有效温度 \( T_{\mathrm{eff}} \)（<em>反向</em>）为横轴定位恒星；指出太阳的位置以及红巨星 (red giants)、白矮星 (white dwarfs)、超巨星 (supergiants) 所在区域。</li>
+        <li>能够应用<strong>主序</strong> (main sequence) 的<strong>质光关系</strong> \( L\propto M^{\alpha} \)（\( \alpha\approx 3.5 \)）由质量求光度，并由此导出主序寿命标度 \( t_{\mathrm{MS}}\propto M/L\propto M^{-2.5} \)，说明为何大质量恒星反而寿命<strong>更短</strong>。</li>
+        <li>能够比较恒星核内的两条产能途径 —— <strong>pp 链</strong> (pp-chain, \( T_c\gtrsim 4\,\mathrm{MK} \)) 与 <strong>CNO 循环</strong> (CNO cycle, \( T_c\gtrsim 17\,\mathrm{MK} \)) —— 写出净反应 \( 4\,^{1}\mathrm{H}\to{}^{4}\mathrm{He}+2e^{+}+2\nu_e \) 与释放的 \( \sim 26.7\,\mathrm{MeV} \)。</li>
+        <li>能够列出恒星结构方程 (mass continuity, hydrostatic equilibrium, energy generation, energy transport) 的物理意义（定性），并说明边界条件 \( m(0)=L(0)=0 \)、\( m(R)=M,\;P(R)=0 \)。</li>
+        <li>能够依据初始质量判定恒星<strong>演化终点</strong> (endpoint) —— \( M\lesssim 8\,M_\odot \)→白矮星；\( 8\!-\!25\,M_\odot \)→中子星；\( \gtrsim 25\,M_\odot \)→黑洞 —— 并解释 <strong>Chandrasekhar 极限</strong> \( \approx 1.4\,M_\odot \) 与中子星的 <strong>TOV 极限</strong> \( \sim 2\!-\!3\,M_\odot \)。</li>
+        <li>能够叙述宇宙中元素的来源 (nucleosynthesis)：太初核合成产出 H/He；恒星内部由 H→He→C/O→…→Fe；超出 Fe 的重元素由 s-过程 (AGB) 与 r-过程 (中子星合并、核塌缩超新星) 经中子捕获生成。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 分子云与恒星形成 Molecular Clouds &amp; Star Formation</h3>
+      <p>恒星形成于<strong>分子云</strong> (molecular clouds) —— 主要成分为 \( \mathrm{H_2} \) 的冷气体（\( T\sim 10\!-\!50\,\mathrm{K} \)），数密度 \( n\sim 10^{2}\!-\!10^{6}\,\mathrm{cm^{-3}} \)，并混有约 1% 的星际尘埃 (dust grains)。这些云是银河系中最冷、最致密的相，且通常受附近大质量恒星辐射、超新星冲击波或旋臂密度波的扰动而被压缩，触发引力坍缩。</p>
+      <p>决定一团气体云能否坍缩的关键尺度是 <strong>Jeans 质量</strong> (Jeans mass)。考虑一团温度 \( T \)、数密度 \( n \)、平均分子量 \( \mu \) 的理想气体云。声速 \( c_s=\sqrt{kT/(\mu m_p)} \)，半径 \( R_J \) 的云总质量 \( M\sim (4\pi/3)\mu m_p n\,R_J^{3} \)。当引力势能 \( |U|\sim GM^{2}/R_J \) 超过热能 \( \sim Mc_s^{2} \) 时，云不稳定：</p>
+      <div class="formula">\[ M_J\sim\Big(\frac{5kT}{G\mu m_p}\Big)^{3/2}\Big(\frac{3}{4\pi\rho}\Big)^{1/2}\;\propto\;T^{3/2}\rho^{-1/2} \]</div>
+      <p>典型巨分子云 (GMC) 中 \( M_J\sim 1\,M_\odot \)，但质量可达 \( 10^{4}\!-\!10^{6}\,M_\odot \)，故远超 Jeans 阈值 → 必然碎裂、坍缩。坍缩释放的引力能最初以红外辐射由尘埃带走；中心密度升高、变得不透明后，热量被陷住，温度剧升——<strong>原恒星</strong> (protostar) 形成。当中心 \( T \) 达到 \( \sim 10^{7}\,\mathrm{K} \)，氢聚变点火，恒星加入主序，达到稳定。</p>
+
+      <h3>2. 流体静力学平衡 Hydrostatic Equilibrium</h3>
+      <p>稳定恒星之所以不会坍缩也不会爆炸，是因为每一层都处于<strong>引力</strong> (gravity, 指向中心) 与<strong>压强梯度</strong> (pressure gradient, 向外) 的严格平衡。考虑半径 \( r \)、厚度 \( \mathrm{d}r \)、密度 \( \rho(r) \) 的薄壳，单位面积受向内引力 \( Gm(r)\rho/r^{2} \)（\( m(r) \) 是半径以内总质量），向外推力为 \( \mathrm{d}P \)。平衡要求：</p>
+      <div class="formula">\[ \boxed{\;\frac{\mathrm{d}P}{\mathrm{d}r}=-\frac{G\,m(r)\,\rho(r)}{r^{2}}\;} \]</div>
+      <p>\( \mathrm{d}P/\mathrm{d}r<0 \)：压强向中心递增。太阳中心压强 \( P_c\approx 2.5\times 10^{16}\,\mathrm{Pa} \)（约地球大气压的 \( 2.5\times 10^{11} \) 倍），中心温度 \( T_c\approx 15.7\,\mathrm{MK} \)，中心密度 \( \rho_c\approx 150\,\mathrm{g/cm^3} \)。简单的量纲估计（推导 A）给出 \( P_c\sim GM^{2}/R^{4}\sim 10^{15}\,\mathrm{Pa} \)，量级正确，但因密度向中心高度集中而低估约 1–2 个数量级。</p>
+
+      <h3>3. 赫罗图 The Hertzsprung–Russell Diagram</h3>
+      <p>把大量恒星按<strong>光度</strong> \( L \)（纵轴，对数）与<strong>有效温度</strong> \( T_{\mathrm{eff}} \)（横轴，<em>反向</em>，左热右冷）作图，便得到 <strong>HR 图</strong>。约 \( \sim 90\% \) 的恒星密集地落在一条由左上（热、亮）到右下（冷、暗）的对角带上——<strong>主序</strong> (main sequence, MS)。其余位于右上方的<strong>巨星</strong> (giants) 与<strong>超巨星</strong> (supergiants) 区域（冷而极亮 → 体积巨大），以及左下方的<strong>白矮星</strong> (white dwarfs) 区域（热而很暗 → 体积小如地球）。</p>
+      <p>由 Stefan–Boltzmann 律 \( L=4\pi R^{2}\sigma T_{\mathrm{eff}}^{4} \)，等半径线在 HR 图上是斜率 \( -4 \) 的直线，故在图上可直接「读出」恒星半径：右上 = 巨星（\( R\sim 10\!-\!10^{3}\,R_\odot \)），左下 = 紧致天体（白矮星 \( R\sim 10^{-2}\,R_\odot \approx R_{\oplus} \)）。</p>
+      <p>恒星光谱按温度由高到低划分为 <strong>O B A F G K M</strong> 七型（记忆口诀 "Oh Be A Fine Girl/Guy, Kiss Me"），对应温度范围 O (\( >30\,000\,\mathrm{K} \))、B (\( 10\,000\!-\!30\,000 \))、A (\( 7\,500\!-\!10\,000 \))、F (\( 6\,000\!-\!7\,500 \))、G (\( 5\,200\!-\!6\,000 \)，太阳为 G2)、K (\( 3\,700\!-\!5\,200 \))、M (\( 2\,400\!-\!3\,700 \))。</p>
+
+      <h3>4. 主序与质光关系 Main Sequence &amp; Mass–Luminosity Relation</h3>
+      <p>主序的核心物理：恒星在核心进行氢聚变为氦，由辐射平衡向外输运能量。主序质量范围 \( \sim 0.08\,M_\odot \) 到 \( \sim 150\,M_\odot \)。质量 \( <0.08\,M_\odot \) 的「<strong>褐矮星</strong>」(brown dwarfs) 中心温度不足以点燃氢；质量 \( >150\,M_\odot \) 时辐射压过强，会把外层吹散。</p>
+      <p>对主序恒星，<strong>质光关系</strong> (mass–luminosity relation) 经验给出：</p>
+      <div class="formula">\[ \boxed{\;\frac{L}{L_\odot}\approx\Big(\frac{M}{M_\odot}\Big)^{\alpha}\;}\qquad \alpha\approx 3.5\;\;(0.5\lesssim M/M_\odot\lesssim 20) \]</div>
+      <p>低质量端 \( \alpha\approx 2.3 \)（pp 链主导、对流较弱），高质量端 \( \alpha\approx 4.0 \)（CNO 主导、辐射压显著），\( \alpha=3.5 \) 是教学常用折衷值。这一陡峭关系意味着：5 倍质量的恒星其光度约 \( 5^{3.5}\approx 280 \) 倍——燃料多 5 倍但消耗快 280 倍，故寿命仅 \( 5/280\approx 1/56 \)（例 4.1）。</p>
+
+      <h3>5. 核聚变：pp 链与 CNO 循环 Nuclear Fusion</h3>
+      <p>主序恒星的能量来自将 4 个氢核聚合为 1 个氦核。其净反应（不论机制）为：</p>
+      <div class="formula">\[ 4\,^{1}\mathrm{H}\;\longrightarrow\;{}^{4}\mathrm{He}+2e^{+}+2\nu_e+\gamma,\qquad Q\approx 26.7\,\mathrm{MeV} \]</div>
+      <p>由原子质量精确计算：\( 4m(^{1}\mathrm{H})-m(^{4}\mathrm{He})=4(1.007825\,\mathrm{u})-4.002602\,\mathrm{u}=0.02870\,\mathrm{u} \)，乘 \( 931.5\,\mathrm{MeV}/c^{2} \) 得 \( 26.73\,\mathrm{MeV} \)。其中约 \( 2\% \) 被中微子带走（不可逆损失），其余 \( \sim 26.2\,\mathrm{MeV} \) 最终化为辐射。</p>
+      <p><strong>(i) 质子–质子链 (pp-chain)</strong>，主导 \( M\lesssim 1.3\,M_\odot \) 的恒星（含太阳，贡献 \( \sim 99\% \) 能量）：</p>
+      <div class="formula">\[ \begin{aligned} p+p&\to{}^{2}\mathrm{H}+e^{+}+\nu_e\quad(\text{慢步, }\tau\sim 10^{9}\,\mathrm{yr})\\ {}^{2}\mathrm{H}+p&\to{}^{3}\mathrm{He}+\gamma\\ {}^{3}\mathrm{He}+{}^{3}\mathrm{He}&\to{}^{4}\mathrm{He}+2p \end{aligned} \]</div>
+      <p>第一步涉及弱作用（质子→中子），故极慢，是整个太阳光度的「瓶颈」。产能率 \( \varepsilon_{pp}\propto\rho T^{4} \)。</p>
+      <p><strong>(ii) CNO 循环 (CNO cycle)</strong>，主导 \( M\gtrsim 1.3\,M_\odot \) 的恒星（中心温度 \( T_c\gtrsim 17\,\mathrm{MK} \)）。以 \( ^{12}\mathrm{C} \) 为催化剂：</p>
+      <div class="formula">\[ ^{12}\mathrm{C}\to{}^{13}\mathrm{N}\to{}^{13}\mathrm{C}\to{}^{14}\mathrm{N}\to{}^{15}\mathrm{O}\to{}^{15}\mathrm{N}\to{}^{12}\mathrm{C}+{}^{4}\mathrm{He} \]</div>
+      <p>净反应与 pp 链相同。CNO 产能率 \( \varepsilon_{\mathrm{CNO}}\propto\rho T^{17} \) —— 强烈依赖温度，故高温下迅速压倒 pp 链。</p>
+      <p><strong>为何需要 \( T\sim 10^{7}\,\mathrm{K} \)？</strong> 两质子之间的库仑势垒 \( E_C\sim e^{2}/(4\pi\varepsilon_0\,r)\sim 1.4\,\mathrm{MeV} \)（在核力作用距离 \( r\sim 1\,\mathrm{fm} \)），而 \( T=15\,\mathrm{MK} \) 时 \( kT\sim 1.3\,\mathrm{keV} \) —— 相差千倍！经典上不可能聚变。<strong>量子隧穿</strong> (quantum tunneling) + 麦克斯韦速度分布的高能尾部共同给出狭窄的「<strong>Gamow 峰</strong>」\( E_0\sim (bkT)^{2/3}\sim 5\,kT \)，在 \( T\sim 10^{7}\,\mathrm{K} \) 时聚变率才足够维持恒星辐射（pitfall 4）。</p>
+
+      <h3>6. 恒星结构方程 Equations of Stellar Structure</h3>
+      <p>一颗稳定的球对称恒星由四个一阶常微分方程描述（外加状态方程 \( P=P(\rho,T,\text{组成}) \)、不透明度 \( \kappa \) 与产能率 \( \varepsilon \) 三个本构关系）：</p>
+      <div class="formula">\[ \begin{aligned}
+      \text{(i) 质量连续性 mass continuity:}\quad &\frac{\mathrm{d}m}{\mathrm{d}r}=4\pi r^{2}\rho\\
+      \text{(ii) 流体静力学平衡 hydrostatic eq.:}\quad &\frac{\mathrm{d}P}{\mathrm{d}r}=-\frac{Gm\rho}{r^{2}}\\
+      \text{(iii) 能量产生 energy generation:}\quad &\frac{\mathrm{d}L}{\mathrm{d}r}=4\pi r^{2}\rho\,\varepsilon\\
+      \text{(iv) 能量传输 energy transport (辐射):}\quad &\frac{\mathrm{d}T}{\mathrm{d}r}=-\frac{3\kappa L\rho}{16\pi acT^{3}r^{2}}
+      \end{aligned} \]</div>
+      <p>边界条件：中心 \( m(0)=0,\;L(0)=0 \)；表面 \( m(R)=M,\;P(R)=0,\;T(R)=T_{\mathrm{eff}} \)。这是一组两点边值问题，需数值求解（如 <strong>MESA</strong>、<strong>STARS</strong> 等恒星演化代码）。若辐射温度梯度 \( \mathrm{d}T/\mathrm{d}r \) 超过绝热梯度，流体变为不稳定，发生对流 (convection)，方程 (iv) 改为绝热关系（<strong>Schwarzschild 判据</strong>）。恒星内部何处辐射、何处对流，主要由质量决定：低质量星 (\( \lesssim 0.3\,M_\odot \)) <em>全对流</em>；太阳辐射区延伸至 \( \sim 0.71\,R_\odot \)，外层对流；大质量星中心对流、外层辐射。</p>
+
+      <h3>7. 恒星演化 Stellar Evolution</h3>
+      <p><strong>主序阶段</strong>：核心氢燃烧。质光关系决定寿命 \( t_{\mathrm{MS}}\approx 10^{10}(M/M_\odot)^{-2.5}\,\mathrm{yr} \)（太阳约 100 亿年，目前已度过 45.6 亿年）。</p>
+      <p><strong>离开主序</strong>：核心氢耗尽 → 由简并电子气体支撑的氦核 (helium core) 不再产热，但壳层氢继续燃烧使核质量增长。当核温达 \( \sim 10^{8}\,\mathrm{K} \)，氦点火（<strong>三 α 过程</strong> triple-alpha）：\( 3\,^{4}\mathrm{He}\to{}^{12}\mathrm{C}+\gamma \)（经由不稳定的 \( ^{8}\mathrm{Be} \) 中间态与著名的 <strong>Hoyle 共振态</strong>）。外层膨胀冷却 → 在 HR 图上向右上移，进入<strong>红巨星分支</strong> (RGB)。</p>
+      <p>后续核燃烧阶段（仅大质量恒星可达）：碳燃烧 \( \to{}^{20}\mathrm{Ne},{}^{23}\mathrm{Na},{}^{24}\mathrm{Mg} \)；氧燃烧；硅燃烧 \( \to{}^{56}\mathrm{Ni}\to{}^{56}\mathrm{Fe} \)。元素越重，聚变温度要求越高，每一阶段更短。到铁峰核素 (\( ^{56}\mathrm{Fe} \)，每核子结合能 \( \sim 8.8\,\mathrm{MeV} \) 最高) 为止——再聚变吸热而非放热，恒星核燃料耗尽。</p>
+
+      <h3>8. 演化终点：白矮星、中子星、黑洞 Endpoints</h3>
+      <p>恒星演化的终点由<strong>核反应停止后留下的简并核心质量</strong>决定（非初始质量，受星风与超新星抛射影响）：</p>
+      <ul>
+        <li><strong>白矮星 (white dwarf, WD)</strong>：初始 \( M\lesssim 8\,M_\odot \) 的恒星，外层形成行星状星云抛射，留下由碳氧组成的简并核心。电子简并压支撑其抵抗引力。半径 \( \sim 0.01\,R_\odot\approx R_{\oplus} \)，质量上限为 <strong>Chandrasekhar 极限</strong>：</li>
+      </ul>
+      <div class="formula">\[ M_{\mathrm{Ch}}=\frac{\omega_3^{0}\sqrt{3\pi}}{2}\Big(\frac{\hbar c}{G}\Big)^{3/2}\frac{1}{(\mu_e m_p)^{2}}\approx 1.44\,M_\odot\quad(\mu_e=2\text{, C/O 核}) \]</div>
+      <p>超过此值电子简并压失撑 → 进一步坍缩。</p>
+      <ul>
+        <li><strong>中子星 (neutron star, NS)</strong>：初始 \( \sim 8\!-\!25\,M_\odot \) 的恒星，铁芯超过 \( M_{\mathrm{Ch}} \) 后核心引力坍缩 → 反向 β 衰变 \( e^{-}+p\to n+\nu_e \) → 形成由中子简并压支撑的极致密天体（\( R\sim 10\!-\!12\,\mathrm{km} \)，\( \rho\sim\rho_{\text{核}}=2.8\times 10^{17}\,\mathrm{kg/m^3} \)）。坍缩释放的引力结合能 \( \sim GM^{2}/R\sim 3\times 10^{46}\,\mathrm{J} \)，绝大部分以中微子形式带走（\( \sim 99\% \)），少量转化为 II 型超新星 (type II supernova) 的爆炸性光学显示。中子星质量受 <strong>TOV 极限</strong> (Tolman–Oppenheimer–Volkoff) 约束：</li>
+      </ul>
+      <div class="formula">\[ M_{\mathrm{TOV}}\approx 2.0\!-\!2.5\,M_\odot\quad(\text{状态方程依赖, 观测下限 }\sim 2.08\,M_\odot\text{, PSR J0740+6620}) \]</div>
+      <ul>
+        <li><strong>黑洞 (black hole)</strong>：初始 \( M\gtrsim 25\!-\!40\,M_\odot \) 的恒星，残骸质量超过 TOV → 没有任何已知物理力能阻止引力坍缩 → 形成恒星质量黑洞。临界由广义相对论的 Schwarzschild 半径 \( R_s=2GM/c^{2} \) 标志（\( 1\,M_\odot\Rightarrow R_s\approx 2.95\,\mathrm{km} \)）。</li>
+      </ul>
+
+      <h3>9. 元素的核合成 Nucleosynthesis</h3>
+      <p>宇宙中元素的来源可由<strong>核合成</strong> (nucleosynthesis) 的几个渠道解释：</p>
+      <ul>
+        <li><strong>太初核合成 (BBN)</strong>：大爆炸后 1–1000 s，\( T\sim 0.1\,\mathrm{MeV} \)，产生 \( ^{1}\mathrm{H} \)（约 75%）、\( ^{4}\mathrm{He} \)（约 25%，按质量）、微量 \( ^{2}\mathrm{H} \)、\( ^{3}\mathrm{He} \)、\( ^{7}\mathrm{Li} \)。</li>
+        <li><strong>恒星内氢燃烧</strong> (pp 链, CNO)：增加 \( ^{4}\mathrm{He} \)，并经 CNO 循环产生少量 \( ^{13}\mathrm{C},{}^{14}\mathrm{N} \)。</li>
+        <li><strong>氦燃烧</strong> (三 α)：\( ^{12}\mathrm{C},{}^{16}\mathrm{O} \)。</li>
+        <li><strong>重核燃烧</strong>（仅大质量恒星）：\( \alpha \) capture → \( ^{20}\mathrm{Ne},{}^{24}\mathrm{Mg},{}^{28}\mathrm{Si},\dots \)；碳氧燃烧至铁峰 \( ^{56}\mathrm{Fe} \)。注意：合成到 \( ^{56}\mathrm{Fe} \) 戛然而止，因再聚变吸热。</li>
+        <li><strong>s-过程</strong> (slow neutron capture, AGB 星氦壳层)：以已存在的 Fe 峰为种子，逐个捕获中子加 β 衰变，生成 \( ^{88}\mathrm{Sr},{}^{138}\mathrm{Ba},{}^{208}\mathrm{Pb} \) 等，可达 \( ^{209}\mathrm{Bi} \)。</li>
+        <li><strong>r-过程</strong> (rapid neutron capture, 中子星合并如 GW170817、核塌缩超新星)：极高中子通量下种子核在秒内捕获大量中子，远超 β 衰变时间，合成 \( ^{197}\mathrm{Au},{}^{195}\mathrm{Pt},{}^{232}\mathrm{Th},{}^{238}\mathrm{U} \) 等重元素以及半数以上的 \( ^{47}\mathrm{Ag},{}^{53}\mathrm{I},{}^{63}\mathrm{Eu} \)。</li>
+        <li><strong>宇宙线散裂</strong> (cosmic-ray spallation)：星际介质被宇宙线撞击，产生稀有的 \( ^{6}\mathrm{Li},{}^{9}\mathrm{Be},{}^{10}\mathrm{B},{}^{11}\mathrm{B} \)。</li>
+      </ul>
+      <p>由此得到宇宙元素丰度的「七峰」结构：H、He 主导；C、O、Ne、Mg、Si、Fe 局部峰（偶偶核更稳定，故偶 Z 元素丰度高于相邻奇 Z）；以及重元素 r/s 双峰。这是 Burbidge、Burbidge、Fowler、Hoyle (B²FH, 1957) 论文奠定的图景。</p>
+
+      <div class="key-terms">molecular cloud (分子云), Jeans mass \( M_J\propto T^{3/2}\rho^{-1/2} \) (Jeans 质量), protostar (原恒星), hydrostatic equilibrium \( \mathrm{d}P/\mathrm{d}r=-Gm\rho/r^{2} \) (流体静力学平衡), HR diagram (赫罗图), main sequence (主序), mass–luminosity relation \( L\propto M^{3.5} \) (质光关系), spectral type O B A F G K M (光谱型), pp-chain (质子–质子链), CNO cycle (CNO 循环), Gamow peak (Gamow 峰), triple-alpha process (三 α 过程), Hoyle resonance (Hoyle 共振), equations of stellar structure (恒星结构方程), Schwarzschild criterion (Schwarzschild 判据), Chandrasekhar limit \( \approx 1.4\,M_\odot \) (Chandrasekhar 极限), white dwarf (白矮星), electron degeneracy pressure (电子简并压), neutron star (中子星), TOV limit \( \sim 2\!-\!3\,M_\odot \) (TOV 极限), type II supernova (II 型超新星), black hole (黑洞), Schwarzschild radius \( R_s=2GM/c^{2} \) (Schwarzschild 半径), nucleosynthesis (核合成), s-process (慢中子捕获), r-process (快中子捕获)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 由流体静力学平衡估计中心压强 \( P_c\sim GM^{2}/R^{4} \)</h3>
+      <p class="step"><strong>设定</strong>：考虑一颗质量 \( M \)、半径 \( R \) 的恒星，处于流体静力学平衡 \( \mathrm{d}P/\mathrm{d}r=-Gm(r)\rho(r)/r^{2} \)。我们做量纲估计：压强从中心 \( P_c \) 降到表面 \( P(R)\approx 0 \)，跨越距离 \( \sim R \)；密度与质量取典型量级 \( \rho\sim\rho_{\text{avg}}=3M/(4\pi R^{3}) \)、\( m(r)\sim M \)。</p>
+      <p class="step"><strong>第一步（数量级替换）</strong>：</p>
+      <p>\[ \frac{P_c}{R}\sim\frac{GM\cdot\rho_{\text{avg}}}{R^{2}}=\frac{GM}{R^{2}}\cdot\frac{3M}{4\pi R^{3}}=\frac{3GM^{2}}{4\pi R^{5}} \]</p>
+      <p class="step"><strong>第二步（解出 \( P_c \)）</strong>：</p>
+      <div class="formula">\[ \boxed{\;P_c\sim\frac{3}{4\pi}\,\frac{GM^{2}}{R^{4}}\;} \]</div>
+      <p class="step"><strong>第三步（代入太阳）</strong>：\( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( R_\odot=6.96\times 10^{8}\,\mathrm{m} \)、\( G=6.674\times 10^{-11} \)。</p>
+      <p>\[ \frac{GM_\odot^{2}}{R_\odot^{4}}=\frac{(6.674\times 10^{-11})(1.989\times 10^{30})^{2}}{(6.96\times 10^{8})^{4}}=\frac{2.640\times 10^{50}}{2.346\times 10^{35}}=1.13\times 10^{15}\,\mathrm{Pa} \]</p>
+      <p>\[ P_c\sim\frac{3}{4\pi}\times 1.13\times 10^{15}=2.7\times 10^{14}\,\mathrm{Pa} \]</p>
+      <p class="step"><strong>评注</strong>：详细太阳模型给出 \( P_c\approx 2.5\times 10^{16}\,\mathrm{Pa} \)，比简单估计大约 \( 90 \) 倍。原因是太阳密度向中心高度集中（\( \rho_c\approx 150\,\mathrm{g/cm^3} \) vs 平均 \( 1.41\,\mathrm{g/cm^3} \)），而我们用平均密度做估计，自然低估。但量级 \( 10^{14}\!-\!10^{16}\,\mathrm{Pa} \) 已足以说明恒星内部压强之巨大——这正是抵抗引力坍缩所需的支撑。</p>
+
+      <h3>B. 主序寿命标度 \( t_{\mathrm{MS}}\propto M^{-2.5} \)</h3>
+      <p class="step"><strong>设定</strong>：恒星可用的核燃料 \( \sim \) 氢质量 \( \sim M \)（核心部分），单位时间燃烧率 \( \sim L \)（光度即能量损失率）。主序寿命量级为：</p>
+      <p>\[ t_{\mathrm{MS}}\sim\frac{\text{可用燃料}}{\text{燃烧率}}\sim\frac{M}{L} \]</p>
+      <p class="step"><strong>第一步（用质光关系）</strong>：\( L/L_\odot=(M/M_\odot)^{\alpha} \)，\( \alpha\approx 3.5 \)：</p>
+      <p>\[ \frac{t_{\mathrm{MS}}}{t_\odot}=\frac{M/L}{M_\odot/L_\odot}=\frac{M/M_\odot}{L/L_\odot}=\Big(\frac{M}{M_\odot}\Big)^{1-\alpha}=\Big(\frac{M}{M_\odot}\Big)^{-2.5} \]</p>
+      <div class="formula">\[ \boxed{\;t_{\mathrm{MS}}\approx 10^{10}\,\mathrm{yr}\times\Big(\frac{M}{M_\odot}\Big)^{-2.5}\;} \]</p>
+      <p class="step"><strong>第二步（验证）</strong>：太阳 \( t_{\mathrm{MS}}\approx 10^{10}\,\mathrm{yr} \)（标准恒星模型给 \( \sim 10.9\,\mathrm{Gyr} \)，与目前的 \( 4.56\,\mathrm{Gyr} \) 年龄相符，处于主序中期）。最短命的大质量恒星 \( M=100\,M_\odot \)：<strong>\( t\approx 10^{10}\times 100^{-2.5}=10^{10}/10^{5}=10^{5}\,\mathrm{yr} \)</strong>？实际约几 Myr——量级吻合。最长命的红矮星 \( M=0.1\,M_\odot \)：\( t\approx 10^{10}\times 0.1^{-2.5}=10^{10}\times 316=3\times 10^{12}\,\mathrm{yr} \)，远超宇宙年龄 \( 1.38\times 10^{10}\,\mathrm{yr} \) → 至今无一耗尽。</p>
+      <p class="step"><strong>评注</strong>：「大质量恒星寿命更短」是反直觉的——质量大的「燃料多」但「燃烧速率远更快」，后者胜出。这正是 pitfall 1 的根源。</p>
+
+      <h3>C. 三 α 过程与 Hoyle 共振（共振反应的妙用）</h3>
+      <p class="step"><strong>设定</strong>：氦燃烧看似简单——两个 \( ^{4}\mathrm{He} \) 聚变 → \( ^{8}\mathrm{Be} \)。但 \( ^{8}\mathrm{Be} \) 极不稳定，半衰期仅 \( \tau\sim 10^{-16}\,\mathrm{s} \)，几乎立刻衰回两个 α。如何继续？</p>
+      <p class="step"><strong>第一步（稳态 \( ^{8}\mathrm{Be} \) 浓度）</strong>：在致密氦核（\( T\sim 10^{8}\,\mathrm{K} \)、\( \rho\sim 10^{5}\,\mathrm{kg/m^3} \)）中，\( ^{8}\mathrm{Be} \) 的产生率与衰变率平衡，维持微小但非零的稳态丰度 \( n_{^8\mathrm{Be}}/n_\alpha\sim 10^{-9} \)。</p>
+      <p class="step"><strong>第二步（\( ^{12}\mathrm{C} \) 第二步）</strong>：\( ^{8}\mathrm{Be}+\alpha\to{}^{12}\mathrm{C}+\gamma \)。这一反应的截面极小（约 \( 10^{-26}\,\mathrm{cm^{2}} \)）——除非它正好共振！1954 年 Fred Hoyle 预言：\( ^{12}\mathrm{C} \) 必存在能量恰为 \( \sim 7.65\,\mathrm{MeV} \) 的激发态（\( 0^{+} \)），与 \( ^{8}\mathrm{Be}+\alpha \) 在恒星氦燃烧温度下的能量匹配。这一预言很快被实验确认（<strong>Hoyle 态</strong>），是天文预言驱动核物理实验的经典范例。</p>
+      <p class="step"><strong>结论</strong>：因共振，\( ^{12}\mathrm{C} \) 生成率被放大约 \( 10^{8} \) 倍，足以解释观测到的碳丰度。同样地，\( ^{12}\mathrm{C}+\alpha\to{}^{16}\mathrm{O} \) 的反应率决定碳氧比——若没有这些精细共振，宇宙中将几乎没有碳基生命所需的碳与氧。<em>这一推导同时展示了 anthropic 思考在物理预言中的启发作用。</em></p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 4.1 主序寿命：5 倍与 0.5 倍太阳质量恒星</h4>
+        <p class="example-statement">取 \( t_\odot=10^{10}\,\mathrm{yr} \)、质光关系指数 \( \alpha=3.5 \)。求：(a) \( M=5\,M_\odot \) 恒星的主序寿命；(b) \( M=0.5\,M_\odot \) 红矮星的主序寿命；(c) 把 \( 5\,M_\odot \) 恒星与太阳的寿命比与宇宙年龄 \( 1.38\times 10^{10}\,\mathrm{yr} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a)</strong>：先算光度：\( L/L_\odot=(5)^{3.5}=5^{3}\cdot 5^{0.5}=125\times 2.236=279.5 \)。寿命：</p>
+          <p>\[ t_{\mathrm{MS}}(5\,M_\odot)=t_\odot\cdot\frac{5}{L/L_\odot}=10^{10}\cdot\frac{5}{279.5}=1.79\times 10^{8}\,\mathrm{yr}\approx 180\,\mathrm{Myr} \]</p>
+          <p class="step"><strong>解 (b)</strong>：\( L/L_\odot=(0.5)^{3.5}=0.5^{3}\cdot 0.5^{0.5}=0.125\times 0.7071=0.0884 \)。寿命：</p>
+          <p>\[ t_{\mathrm{MS}}(0.5\,M_\odot)=10^{10}\cdot\frac{0.5}{0.0884}=5.66\times 10^{10}\,\mathrm{yr}\approx 56.6\,\mathrm{Gyr} \]</p>
+          <p class="step"><strong>解 (c)</strong>：\( t(5\,M_\odot)/t_\odot=5^{-2.5}=1/55.9\approx 1/56 \)；\( 180\,\mathrm{Myr}\ll 13.8\,\mathrm{Gyr} \)，故宇宙诞生后形成的所有 \( 5\,M_\odot \) 恒星均已离开主序（实际早已死亡）。而 \( t(0.5\,M_\odot)=56.6\,\mathrm{Gyr}>\) 宇宙年龄——红矮星寿命远超宇宙年龄，<em>至今无一耗尽</em>。</p>
+          <p class="step"><strong>评注</strong>：天文学家观测到的「主序缺乏低光度端老星」并非演化结果，而是宇宙还太年轻。同时，由于大质量恒星短命，重元素（碳、氧、铁）的「污染」星际介质只能在第一代大质量恒星死亡后才大规模开始——这是银河系化学演化的起点。</p>
+          <p><span class="ans">\( t(5\,M_\odot)\approx 180\,\mathrm{Myr} \)；\( t(0.5\,M_\odot)\approx 56.6\,\mathrm{Gyr} \)；\( t_{5}/t_\odot\approx 1/56 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.2 太阳中心压强的简单估计</h4>
+        <p class="example-statement">用流体静力学平衡 \( \mathrm{d}P/\mathrm{d}r=-Gm\rho/r^{2} \) 与平均密度 \( \rho_{\text{avg}}=3M/(4\pi R^{3}) \)，对太阳估计中心压强 \( P_c\sim(3/4\pi)GM^{2}/R^{4} \)（数量级）。已知 \( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( R_\odot=6.96\times 10^{8}\,\mathrm{m} \)、\( G=6.674\times 10^{-11}\,\mathrm{N\,m^{2}/kg^{2}} \)。与详细模型 \( P_c^{\text{真实}}\approx 2.5\times 10^{16}\,\mathrm{Pa} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解</strong>：先算 \( GM^{2}/R^{4} \)：</p>
+          <p>\[ M^{2}=(1.989\times 10^{30})^{2}=3.956\times 10^{60}\,\mathrm{kg^{2}} \]</p>
+          <p>\[ R^{4}=(6.96\times 10^{8})^{4}=(6.96^{2})^{2}\times 10^{32}=(48.44)^{2}\times 10^{32}=2.346\times 10^{35}\,\mathrm{m^{4}} \]</p>
+          <p>\[ \frac{GM^{2}}{R^{4}}=\frac{(6.674\times 10^{-11})(3.956\times 10^{60})}{2.346\times 10^{35}}=\frac{2.640\times 10^{50}}{2.346\times 10^{35}}=1.13\times 10^{15}\,\mathrm{Pa} \]</p>
+          <p>\[ P_c\sim\frac{3}{4\pi}\times 1.13\times 10^{15}=\frac{3.387\times 10^{15}}{12.566}=2.69\times 10^{14}\,\mathrm{Pa} \]</p>
+          <p class="step"><strong>比较</strong>：\( P_c^{\text{真实}}/P_c^{\text{估}}\approx 2.5\times 10^{16}/2.7\times 10^{14}\approx 93 \)。即简单估计比真实值低约两个数量级，原因如推导 A 所述：太阳密度高度集中，平均密度（\( 1.41\,\mathrm{g/cm^3} \)）远低于中心密度（\( 150\,\mathrm{g/cm^3} \)），而简单估计用平均密度。</p>
+          <p class="step"><strong>评注</strong>：尽管如此，\( P_c\sim 10^{14}\!-\!10^{16}\,\mathrm{Pa} \) 的量级已正确给出恒星内部压强的<strong>巨大尺度</strong>——是地球中心压强（\( \sim 3.6\times 10^{11}\,\mathrm{Pa} \)）的数百到数千倍，是大气压的 \( 10^{11}\!-\!10^{13} \) 倍。这正是抵抗自身引力坍缩所需的支撑强度。</p>
+          <p><span class="ans">\( P_c\sim 2.7\times 10^{14}\,\mathrm{Pa} \)；与真实 \( 2.5\times 10^{16}\,\mathrm{Pa} \) 差约 \( 90 \) 倍，密度集中所致。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.3 阅读 HR 图：定位太阳与典型恒星</h4>
+        <p class="example-statement">下表给出 6 颗代表性恒星的光度（以 \( L_\odot \) 计）与有效温度。请在 HR 图（\( \log L \) 纵轴、\( T_{\mathrm{eff}} \) 反向横轴）上定位它们，并判断所属演化阶段（主序/巨星/超巨星/白矮星）。再用 Stefan–Boltzmann 律 \( L=4\pi R^{2}\sigma T^{4} \) 估计 \( R/R_\odot \)。</p>
+        <div class="formula">\[ \begin{array}{l|c|c|l}
+        \text{恒星 Star} & T_{\mathrm{eff}}\,(\mathrm{K}) & L/L_\odot & \text{类型 Type}\\\hline
+        \text{Sun (太阳)} & 5\,778 & 1 & \text{G2V} \\
+        \text{Vega (织女)} & 9\,602 & 40 & \text{A0V} \\
+        \text{Pollux (北河三)} & 4\,586 & 43 & \text{K0III} \\
+        \text{Betelgeuse (参宿四)} & 3\,590 & 1.26\times 10^{5} & \text{M1Ia} \\
+        \text{Sirius B (天狼 B)} & 25\,000 & 0.025 & \text{DA2 (WD)} \\
+        \text{Proxima (比邻)} & 3\,042 & 1.7\times 10^{-3} & \text{M5.5V}
+        \end{array} \]</div>
+        <div class="example-solution">
+          <p class="step"><strong>定位（演化阶段）</strong>：</p>
+          <ul>
+            <li><strong>Sun</strong>：\( \log L=0 \)、\( T=5\,778\,\mathrm{K} \) → 主序中部（G 型）。</li>
+            <li><strong>Vega</strong>：\( \log L=1.60 \)、\( T=9\,602\,\mathrm{K} \) → 主序上部（A 型）。</li>
+            <li><strong>Pollux</strong>：\( \log L=1.63 \)、\( T=4\,586\,\mathrm{K} \) → <em>右上方</em>，温度比太阳低但光度更高 → <strong>红巨星</strong>。</li>
+            <li><strong>Betelgeuse</strong>：\( \log L=5.10 \)、\( T=3\,590\,\mathrm{K} \) → HR 图最右上 → <strong>红超巨星</strong>。</li>
+            <li><strong>Sirius B</strong>：\( \log L=-1.60 \)、\( T=25\,000\,\mathrm{K} \) → <em>左下方</em>，温度高但光度低 → <strong>白矮星</strong>。</li>
+            <li><strong>Proxima</strong>：\( \log L=-2.77 \)、\( T=3\,042\,\mathrm{K} \) → 主序最右下端（M 型红矮星）。</li>
+          </ul>
+          <p class="step"><strong>半径估计</strong>：由 \( R/R_\odot=(L/L_\odot)^{1/2}(T_\odot/T_{\mathrm{eff}})^{2} \)，\( T_\odot=5\,778\,\mathrm{K} \)。以 Pollux 为例：</p>
+          <p>\[ \frac{R}{R_\odot}=\sqrt{43}\times\Big(\frac{5\,778}{4\,586}\Big)^{2}=6.56\times(1.260)^{2}=6.56\times 1.588=10.4 \]</p>
+          <p>类似地：Betelgeuse \( R\approx \sqrt{1.26\times 10^{5}}\times(5778/3590)^{2}=355\times 2.59=919\approx 10^{3}\,R_\odot \)（约太阳系木星轨道大小！）；Sirius B \( R\approx\sqrt{0.025}\times(5778/25000)^{2}=0.158\times 0.0534=0.0084\,R_\odot\approx 0.92\,R_{\oplus} \)（地球大小，但质量 \( \approx 1.02\,M_\odot \)！）。</p>
+          <p class="step"><strong>评注</strong>：HR 图上「右上 = 大、左下 = 小」直接来自 Stefan–Boltzmann 律。半径跨度极大：从超巨星的 \( \sim 10^{3}\,R_\odot \)（\( \sim \) AU）到白矮星的 \( \sim 10^{-2}\,R_\odot \)（地球大小），相差 \( 10^{5} \) 倍。</p>
+          <p><span class="ans">见上表定位；\( R_{\text{Pollux}}\approx 10\,R_\odot \)、\( R_{\text{Betelgeuse}}\approx 920\,R_\odot \)、\( R_{\text{Sirius B}}\approx 0.0084\,R_\odot\approx 0.92\,R_{\oplus} \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.4 质光关系：由质量求光度与表面温度</h4>
+        <p class="example-statement">两颗主序恒星：(a) \( M=2\,M_\odot \)；(b) \( M=10\,M_\odot \)。取 \( \alpha=3.5 \) 与经验关系 \( T_{\mathrm{eff}}\approx 5\,778\,\mathrm{K}\times(M/M_\odot)^{0.555} \)。求各自 \( L \)（\( L_\odot \)）、\( T_{\mathrm{eff}} \) 与半径 \( R/R_\odot \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) \( M=2\,M_\odot \)</strong>：</p>
+          <p>\[ L/L_\odot=2^{3.5}=2^{3}\cdot 2^{0.5}=8\times 1.414=11.31 \]</p>
+          <p>\[ T_{\mathrm{eff}}=5\,778\times 2^{0.555}=5\,778\times 1.470=8\,494\,\mathrm{K}\quad(\text{A 型, 介于 F0--A0}) \]</p>
+          <p>\[ R/R_\odot=\sqrt{11.31}\times(5\,778/8\,494)^{2}=3.363\times(0.6805)^{2}=3.363\times 0.463=1.56 \]</p>
+          <p class="step"><strong>解 (b) \( M=10\,M_\odot \)</strong>：</p>
+          <p>\[ L/L_\odot=10^{3.5}=3\,162 \]</p>
+          <p>\[ T_{\mathrm{eff}}=5\,778\times 10^{0.555}=5\,778\times 3.591=20\,750\,\mathrm{K}\quad(\text{B 型蓝白}) \]</p>
+          <p>\[ R/R_\odot=\sqrt{3\,162}\times(5\,778/20\,750)^{2}=56.23\times(0.2785)^{2}=56.23\times 0.0776=4.36 \]</p>
+          <p class="step"><strong>评注</strong>：\( 10\,M_\odot \) 恒星光度 \( \sim 3\,000 \) 倍于太阳，温度 \( \sim 3.6 \) 倍 → 半径仅 \( \sim 4 \) 倍——这正是它在 HR 图上沿主序「左上」方向移动，而非向右上方漂移到巨星区。主序在 HR 图上的斜率由 \( R \) 随 \( M \) 缓慢增加（\( R\propto M^{0.8} \) 经验）决定，与质光关系 \( L\propto M^{3.5} \) 自洽。</p>
+          <p><span class="ans">\( M=2\,M_\odot \)：\( L=11.3\,L_\odot \)、\( T=8\,494\,\mathrm{K} \)、\( R=1.56\,R_\odot \)；\( M=10\,M_\odot \)：\( L=3\,162\,L_\odot \)、\( T=20\,750\,\mathrm{K} \)、\( R=4.36\,R_\odot \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 4.5 由初始质量判定演化终点</h4>
+        <p class="example-statement">下表给出 5 颗零龄主序 (ZAMS) 恒星的初始质量。请判定各自最终演化产物（白矮星/中子星/黑洞）及所留残骸的近似质量。已知关键阈值：\( M_{\mathrm{Ch}}=1.4\,M_\odot \)、\( M_{\mathrm{TOV}}\approx 2.0\!-\!2.5\,M_\odot \)；初始—终态质量映射的经验关系（受星风损失强烈影响）大致为：\( M_{\mathrm{ZAMS}}\lesssim 8 \)→CO 白矮星（\( \lesssim 1.1\,M_\odot \)）；\( 8\!-\!25 \)→中子星（\( 1.3\!-\!2.0\,M_\odot \)）；\( \gtrsim 25 \)→黑洞（\( \gtrsim 3\,M_\odot \)）。</p>
+        <div class="formula">\[ \begin{array}{c|c|c}
+        M_{\mathrm{ZAMS}}/M_\odot & \text{预期产物 Product} & M_{\text{残骸}}/M_\odot\\\hline
+        0.5 & \text{He 白矮星 (慢, }t>\text{宇宙年龄)} & \sim 0.5\\
+        2 & \text{CO 白矮星} & \sim 0.6\\
+        8 & \text{O-Ne-Mg 白矮星 或 临界核塌缩} & \sim 1.3\\
+        15 & \text{核塌缩 SN II → 中子星} & \sim 1.4\\
+        30 & \text{核塌缩 SN II → 黑洞} & \sim 5\!-\!10
+        \end{array} \]</div>
+        <div class="example-solution">
+          <p class="step"><strong>解 (a) \( 0.5\,M_\odot \)</strong>：低于 \( 8\,M_\odot \)，最终形成白矮星，但 \( t_{\mathrm{MS}}\approx 5.66\times 10^{10}\,\mathrm{yr} \)（例 4.1）远超宇宙年龄——<em>至今未演化</em>，宇宙中尚无此种残骸。理论预测为 He 白矮星（核心未达氦燃烧温度）。</p>
+          <p class="step"><strong>解 (b) \( 2\,M_\odot \)</strong>：经历红巨星、水平分支、AGB 阶段，外壳以星风和行星状星云方式抛射，留下 CO 简并核心，\( M_{\mathrm{WD}}\sim 0.55\!-\!0.65\,M_\odot \)，远低于 Chandrasekhar 极限。</p>
+          <p class="step"><strong>解 (c) \( 8\,M_\odot \)</strong>：处于分界线附近。核心可演化至 O-Ne-Mg；若核心增长超过 \( M_{\mathrm{Ch}} \)，发生<strong>电子捕获超新星</strong> (electron-capture SN, 如 Crab pulsar 1054 AD 的前身) → 留下质量较低的中子星（\( \sim 1.3\,M_\odot \)）。结局对初始质量与星风损失非常敏感。</p>
+          <p class="step"><strong>解 (d) \( 15\,M_\odot \)</strong>：核心逐级燃烧至铁，铁芯超过 \( M_{\mathrm{Ch}} \)，引力坍缩 → 反向 β 衰变 → 中子星（\( 1.3\!-\!1.6\,M_\odot \)）。释放 \( \sim 10^{46}\,\mathrm{J} \) 引力势能，\( \sim 99\% \) 由中微子带走，\( \sim 1\% \) 驱动爆炸性外抛（II 型超新星可见光 \( \sim 10^{44}\,\mathrm{J} \)）。</p>
+          <p class="step"><strong>解 (e) \( 30\,M_\odot \)</strong>：铁芯质量预计 \( \sim 2\!-\!3\,M_\odot \) 超过 \( M_{\mathrm{TOV}} \)，无中子简并压可阻止坍缩 → 形成黑洞，残余质量 \( \gtrsim 3\!-\!5\,M_\odot \)。部分物质在吸积盘上以 γ 暴 (long-soft GRB) 形式喷射——大质量恒星死亡与 γ 暴成协已被观测确认（如 GRB 030329–SN 2003dh）。</p>
+          <p class="step"><strong>评注</strong>：<em>演化终点取决于残骸质量，而非初始质量</em>（pitfall 3）。\( 25\,M_\odot \) 的恒星若星风极强，可能丢失 \( \sim 2/3 \) 质量，最终留中子星而非黑洞；反之 \( 20\,M_\odot \) 恒星若金属丰度低（星风弱）、保留更多质量，也可能直接塌缩为黑洞。观测到的「质量间隙」(mass gap, \( 2.5\!-\!5\,M_\odot \)) 至今仍是活跃研究领域。</p>
+          <p><span class="ans">见上表；阈值 \( 8\,M_\odot \) 与 \( 25\,M_\odot \) 划分 WD / NS / BH 三类产物。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>「质量越大寿命越长」——错，正好相反。</strong>主序寿命 \( t_{\mathrm{MS}}\propto M/L\propto M^{-2.5} \)。质量增加 5 倍 → 光度增加 \( 5^{3.5}\approx 280 \) 倍，寿命反缩短约 56 倍。一颗 \( 25\,M_\odot \) 的 O 型星只活 \( \sim 7\,\mathrm{Myr} \)；而 \( 0.1\,M_\odot \) 红矮星可活 \( \sim 10^{12}\,\mathrm{yr} \)，远超宇宙年龄。<em>核燃料 \( \propto M \) 但燃烧速率 \( \propto L\propto M^{3.5} \)，后者主导。</em></li>
+        <li><strong>「主序是一条恒星演化轨迹」——严重错误。</strong>主序是<strong>所有正在进行氢燃烧的恒星</strong>在 HR 图上的位置集合，不是某颗恒星随时间的运动轨迹。一颗类太阳恒星在其整个 100 亿年主序生涯中，在 HR 图上几乎「钉」在同一位置（仅缓慢亮化 \( \sim 30\% \)）。<em>当核心氢耗尽、恒星进入红巨星阶段，它才离开主序</em>，向右上方的巨星区移动——这才是「演化轨迹」。</li>
+        <li><strong>「演化终点取决于初始质量」——不完全对。</strong>真正的判据是<strong>核反应停止时的残骸质量</strong>（即简并核心的质量），而非零龄主序质量。大质量恒星通过星风 (stellar winds) 与超新星抛射可丢失 \( \sim 50\!-\!90\% \) 的初始质量。例如金属丰度高的 \( 25\,M_\odot \) 恒星可能只留下 \( 1.4\,M_\odot \) 中子星；而金属丰度极低的 \( 20\,M_\odot \) 恒星保留更多质量，可能直接塌缩为黑洞。<strong>关键阈值是 \( M_{\mathrm{Ch}}=1.4\,M_\odot \)（电子简并压极限）与 \( M_{\mathrm{TOV}}\sim 2\!-\!3\,M_\odot \)（中子简并压极限）</strong>。</li>
+        <li><strong>「氢聚变很容易发生」——错。</strong>两质子之间的库仑势垒 \( \sim 1.4\,\mathrm{MeV} \)，而太阳核心 \( kT_c\sim 1.3\,\mathrm{keV} \)，相差千倍。经典上不可能聚变。事实上仅因 <strong>(a) 麦克斯韦分布的高能尾部</strong> 与 <strong>(b) 量子隧穿</strong> 的双重修正，在 Gamow 峰 \( E_0\sim 5\,kT \) 附近才有可观反应率。这就是为何恒星核心需要 \( T\gtrsim 10^{7}\,\mathrm{K} \)，以及为何 \( M<0.08\,M_\odot \) 的褐矮星点不着火。</li>
+        <li><strong>「白矮星仍在燃烧、缓慢变暗」——错。</strong>白矮星没有核反应（燃料已耗尽），只是<strong>冷却</strong>——靠残留热能辐射，温度从 \( \sim 10^{5}\,\mathrm{K} \) 缓慢降到红外，最终变为不可见的黑矮星（宇宙年龄不足，尚无黑矮星存在）。它之所以不坍缩，是因<strong>电子简并压</strong>（Pauli 不相容原理所致的量子效应），与温度无关。增加其质量反而会<strong>减小</strong>其半径（\( R\propto M^{-1/3} \)），直到达到 \( M_{\mathrm{Ch}} \) 时坍缩——这是 Ia 型超新星「标准烛光」的物理基础。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （主序寿命）一颗 \( M=10\,M_\odot \) 的 B 型主序恒星。取 \( \alpha=3.5 \)、\( t_\odot=10^{10}\,\mathrm{yr} \)。求它的光度、主序寿命（Myr）。已知宇宙年龄 \( 13.8\,\mathrm{Gyr} \)：第一批 \( 10\,M_\odot \) 恒星（红移 \( z\sim 20 \)，约 \( t=180\,\mathrm{Myr} \) 后）今天还存在吗？</summary>
+        <div class="hint">\( L\propto M^{3.5} \)、\( t\propto M/L \)。</div>
+        <div class="solution">
+          <p>\( L=10^{3.5}=3\,162\,L_\odot \)。</p>
+          <p>\( t=10^{10}\times 10/3\,162=3.16\times 10^{7}\,\mathrm{yr}=31.6\,\mathrm{Myr} \)。</p>
+          <p>宇宙诞生 1.8 亿年时形成的 \( 10\,M_\odot \) 恒星早已（在 \( \sim 32\,\mathrm{Myr} \) 内）结束主序、爆炸为超新星或坍缩为残骸，今天绝不可能仍在主序上。<span class="ans">\( L\approx 3\,160\,L_\odot \)、\( t\approx 32\,\mathrm{Myr} \)；不存在。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （中心压强估计）对一颗 \( M=5\,M_\odot \)、\( R=3.5\,R_\odot \) 的主序恒星，用 \( P_c\sim(3/4\pi)GM^{2}/R^{4} \) 估计中心压强（Pa）。与太阳的估计值 \( 2.7\times 10^{14}\,\mathrm{Pa} \) 比较，比值与 \( (M/M_\odot)^{2}(R/R_\odot)^{-4} \) 一致吗？</summary>
+        <div class="hint">\( P_c\propto M^{2}/R^{4} \)；用太阳的 \( GM_\odot^{2}/R_\odot^{4}=1.13\times 10^{15}\,\mathrm{Pa} \)。</div>
+        <div class="solution">
+          <p>比值 \( =(5)^{2}/(3.5)^{4}=25/150.1=0.1666 \)。</p>
+          <p>\( P_c=0.1666\times(3/4\pi)\times 1.13\times 10^{15}=0.1666\times 2.69\times 10^{14}=4.48\times 10^{13}\,\mathrm{Pa} \)。</p>
+          <p>——比太阳<strong>低</strong>，因为半径增大（\( R^{4} \)）的影响超过质量增大（\( M^{2} \)）的影响：主序大质量恒星中心压强其实低于太阳（但温度更高，因其产能机制不同）。<span class="ans">\( P_c\sim 4.5\times 10^{13}\,\mathrm{Pa} \)；比值 \( \approx 0.17 \)，与公式一致。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （HR 图定位）两颗恒星：A 星 \( L=10^{4}\,L_\odot \)、\( T_{\mathrm{eff}}=3\,200\,\mathrm{K} \)；B 星 \( L=0.01\,L_\odot \)、\( T_{\mathrm{eff}}=2\,0000\,\mathrm{K} \)。判断各自所属区域（主序 / 巨星 / 超巨星 / 白矮星），并估计半径 \( R/R_\odot \)。</summary>
+        <div class="hint">\( R/R_\odot=(L/L_\odot)^{1/2}(T_\odot/T_{\mathrm{eff}})^{2} \)，\( T_\odot=5\,778\,\mathrm{K} \)。</div>
+        <div class="solution">
+          <p><strong>A 星</strong>：\( \log L=4 \)、\( T=3\,200\,\mathrm{K} \)，位于 HR 图最右上 → <strong>红超巨星</strong>。\( R=\sqrt{10^{4}}\times(5\,778/3\,200)^{2}=100\times 3.265=326\,R_\odot\approx 1.5\,\mathrm{AU} \)（接近火星轨道大小！）。</p>
+          <p><strong>B 星</strong>：\( \log L=-2 \)、\( T=2\,0000\,\mathrm{K} \)，位于 HR 图左下 → <strong>白矮星</strong>。\( R=\sqrt{0.01}\times(5\,778/2\,0000)^{2}=0.1\times 0.0835=0.0084\,R_\odot\approx 0.59\,R_{\oplus} \)。</p>
+          <p>两颗星半径相差 \( \sim 4\times 10^{4} \) 倍——这正是 HR 图对角线两端代表截然不同演化阶段的最直观展示。<span class="ans">A：红超巨星，\( R\approx 330\,R_\odot \)；B：白矮星，\( R\approx 0.0084\,R_\odot\approx 0.6\,R_{\oplus} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （质光关系反解）观测到一颗主序恒星 \( L=80\,L_\odot \)。用 \( L\propto M^{3.5} \) 求其质量 \( M/M_\odot \)。若实际指数 \( \alpha \) 在此质量段为 \( 4.0 \)（CNO 主导），修正后的质量是多少？两结果相差百分之几？</summary>
+        <div class="hint">\( M\propto L^{1/\alpha} \)。</div>
+        <div class="solution">
+          <p>\( \alpha=3.5 \)：\( M=80^{1/3.5}=80^{0.2857}=\exp(0.2857\ln 80)=\exp(0.2857\times 4.382)=\exp(1.252)=3.50\,M_\odot \)。</p>
+          <p>\( \alpha=4.0 \)：\( M=80^{1/4}=80^{0.25}=2.99\,M_\odot \)。</p>
+          <p>差 \( (3.50-2.99)/2.99=17\% \)。可见质光关系的指数对质量反演很敏感——精确恒星测光需校准 \( \alpha(M) \)。<span class="ans">\( 3.50\,M_\odot \)；\( 2.99\,M_\odot \)；相差约 \( 17\% \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （演化终点判定）5 颗零龄主序恒星 \( M=0.3,\,1,\,6,\,12,\,40\,M_\odot \)。判定各自：(i) 主序寿命量级（用 \( t\propto M^{-2.5} \)）；(ii) 最终残骸类型（白矮星/中子星/黑洞）；(iii) 残骸质量近似上限（参考 \( M_{\mathrm{Ch}}=1.4\,M_\odot \)、\( M_{\mathrm{TOV}}\approx 2.5\,M_\odot \)）。</summary>
+        <div class="hint">阈值 \( 0.08 \)、\( 8 \)、\( 25\,M_\odot \)。</div>
+        <div class="solution">
+          <p>\( \mathbf{0.3\,M_\odot} \)：\( t=10^{10}\times 0.3^{-2.5}=10^{10}\times 6.08=6.08\times 10^{10}\,\mathrm{yr} \) → 仍存活（>宇宙年龄）。理论：He WD，\( \sim 0.3\,M_\odot \)。</p>
+          <p>\( \mathbf{1\,M_\odot} \)：\( t=10^{10}\,\mathrm{yr} \)（类太阳）→ CO WD，\( \sim 0.55\,M_\odot \)。</p>
+          <p>\( \mathbf{6\,M_\odot} \)：\( t=10^{10}\times 6^{-2.5}=10^{10}/88.2=1.13\times 10^{8}\,\mathrm{yr}=113\,\mathrm{Myr} \) → CO/ONe WD，\( \sim 1.0\,M_\odot \)。</p>
+          <p>\( \mathbf{12\,M_\odot} \)：\( t=10^{10}\times 12^{-2.5}=10^{10}/498.8=2.0\times 10^{7}\,\mathrm{yr}=20\,\mathrm{Myr} \) → SN II → NS，\( \sim 1.4\,M_\odot \)。</p>
+          <p>\( \mathbf{40\,M_\odot} \)：\( t=10^{10}\times 40^{-2.5}=10^{10}/10\,119\approx 10^{6}\,\mathrm{yr}=1\,\mathrm{Myr} \) → SN II/GRB → BH，\( \sim 5\!-\!15\,M_\odot \)。</p>
+          <p><span class="ans">见上表；阈值 \( 8\,M_\odot \)（WD↔NS）、\( 25\,M_\odot \)（NS↔BH）。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">本仿真绘制 <strong>赫罗图</strong> (Hertzsprung–Russell diagram)：横轴为有效温度 \( T_{\mathrm{eff}} \)（<em>左热右冷</em>，对数刻度，标出 O B A F G K M 光谱型），纵轴为光度 \( L/L_\odot \)（对数，跨 10 个数量级）。<span style="color:var(--sim-primary);">蓝色带</span>是<strong>主序</strong>（氢燃烧带，<em>非演化轨迹</em>）；<span style="color:var(--sim-accent);">红色阴影</span>是<strong>巨星</strong>区；<span style="color:var(--sim-accent2);">绿色阴影</span>是<strong>超巨星</strong>区；<span style="color:#0891b2;">青色阴影</span>是<strong>白矮星</strong>区。10 颗具名恒星按真实数据绘出（含太阳、织女、参宿四、天狼 B 等）。<strong>拖动质量滑块</strong>，金色高亮点的位置由质光关系 \( L=M^{3.5} \) 与经验 \( T_{\mathrm{eff}}\propto M^{0.555} \) 实时更新，并在画布底部显示该质量的演化终点判读。勾选 <strong>「显示 1 M☉ 演化轨迹」</strong> 可叠加一条 1 倍太阳质量恒星的示意演化路径（原恒星 → 主序 → 红巨星 → 行星状星云 → 白矮星）。点击 <strong>↺ 重置</strong> 恢复默认。</p>
+      <div class="sim-container">
+        <canvas id="sim-4" width="600" height="400"></canvas>
+        <div class="sim-controls" id="controls-4"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-4');
+          var W = canvas.width, H = canvas.height;
+
+          var Tsun = 5778; // K
+
+          // mass -> effective temperature (empirical, clamped)
+          function TofM(M) {
+            var T = Tsun * Math.pow(M, 0.555);
+            return Math.min(40000, Math.max(2400, T));
+          }
+          // mass -> luminosity (mass-luminosity relation, alpha=3.5)
+          function LofM(M) { return Math.pow(M, 3.5); }
+
+          // ----- plot geometry -----
+          var plotX0 = 70, plotY0 = 50, plotW = 510, plotH = 290;
+          var logTmin = Math.log10(2500), logTmax = Math.log10(40000);
+          var logLmin = -4, logLmax = 6;
+          function xT(T) { return plotX0 + (logTmax - Math.log10(T)) / (logTmax - logTmin) * plotW; }
+          function yL(logL) { return plotY0 + plotH * (1 - (logL - logLmin) / (logLmax - logLmin)); }
+          function clampY(y) { return Math.max(plotY0 - 4, Math.min(plotY0 + plotH + 4, y)); }
+
+          // ----- named stars (real data) -----
+          var stars = [
+            { name: 'Sun 太阳',        T: 5778, L: 1,         type: 'G2V'   },
+            { name: 'Vega 织女',       T: 9602, L: 40,        type: 'A0V'   },
+            { name: 'Sirius A 天狼A',  T: 9940, L: 25,        type: 'A1V'   },
+            { name: 'Proxima 比邻',    T: 3042, L: 0.0017,    type: 'M5.5V' },
+            { name: 'Pollux 北河三',   T: 4586, L: 43,        type: 'K0III' },
+            { name: 'Arcturus 大角',   T: 4286, L: 170,       type: 'K0III' },
+            { name: 'Aldebaran 毕宿五',T: 3910, L: 439,       type: 'K5III' },
+            { name: 'Betelgeuse 参宿四',T: 3590, L: 126000,   type: 'M1Ia'  },
+            { name: 'Rigel 参宿七',    T: 12100,L: 120000,    type: 'B8Ia'  },
+            { name: 'Sirius B 天狼B',  T: 25000,L: 0.025,     type: 'DA2'   }
+          ];
+
+          // ----- 1 Msun evolutionary track (schematic) -----
+          var evoTrack = [
+            { T: 3500,  L: 8,     lbl: '原恒星 Protostar' },
+            { T: 5000,  L: 1.5,   lbl: '接近主序 to MS' },
+            { T: 5778,  L: 1,     lbl: '主序 MS' },
+            { T: 4800,  L: 30,    lbl: '亚巨星 Subgiant' },
+            { T: 4000,  L: 300,   lbl: '红巨星 RGB' },
+            { T: 3200,  L: 3000,  lbl: 'AGB' },
+            { T: 8000,  L: 80,    lbl: '行星状星云 PN' },
+            { T: 18000, L: 0.1,   lbl: '白矮星 WD' },
+            { T: 5000,  L: 0.005, lbl: '冷白矮星 cool WD' }
+          ];
+
+          var params = { M: 1.0, showTrack: false };
+
+          function fmtPow(e) {
+            var sup = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻' };
+            return '10' + String(e).split('').map(function (d) { return sup[d] || d; }).join('');
+          }
+
+          function endpointLabel(M) {
+            if (M < 0.08) return '褐矮星 brown dwarf (不点火 H)';
+            if (M < 0.5)  return '红矮星 → He 白矮星, 寿命 > 宇宙年龄';
+            if (M < 8)    return 'MS → RGB → AGB → 行星状星云 → 白矮星 (M_WD < 1.4 M☉)';
+            if (M < 25)   return 'MS → II 型超新星 → 中子星 (M_NS < 2–3 M☉)';
+            return 'MS → II 型超新星 / γ 暴 → 黑洞';
+          }
+
+          function drawCurve(ctx, fnT, fnL, color, dash, lw, Mlo, Mhi) {
+            ctx.save();
+            ctx.strokeStyle = color; ctx.lineWidth = lw || 2.0;
+            if (dash) ctx.setLineDash(dash);
+            ctx.beginPath();
+            var first = true;
+            for (var M = Mlo; M <= Mhi; M *= 1.10) {
+              var xx = xT(fnT(M)), yy = clampY(yL(Math.log10(fnL(M))));
+              if (first) { ctx.moveTo(xx, yy); first = false; } else ctx.lineTo(xx, yy);
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return { t: 0 }; },
+            step: function (dt, t, s) { s.t += dt; },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              // ----- title -----
+              PS.drawText(ctx, 'HR 图 · Hertzsprung–Russell Diagram',
+                W / 2, 16, { font: 'bold 13px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, '横轴: T_eff (左热右冷, 对数) · 纵轴: L/L☉ (对数) · 主序 = 氢燃烧带, 非演化轨迹',
+                W / 2, 34, { font: '11px system-ui', color: C.text, align: 'center' });
+
+              // ----- region shading -----
+              ctx.save();
+              ctx.globalAlpha = 0.08;
+              // giants (T 3000-6000, L 30-1000)
+              ctx.fillStyle = C.accent;
+              ctx.beginPath();
+              ctx.moveTo(xT(6000), yL(Math.log10(30)));
+              ctx.lineTo(xT(3000), yL(Math.log10(30)));
+              ctx.lineTo(xT(3000), yL(3));
+              ctx.lineTo(xT(6000), yL(3));
+              ctx.closePath(); ctx.fill();
+              // supergiants (top strip L 10^4-10^6 across)
+              ctx.fillStyle = C.accent2;
+              ctx.fillRect(plotX0, yL(6), plotW, yL(4) - yL(6));
+              // white dwarfs (T 8000-40000, L 1e-3 to 0.1)
+              ctx.fillStyle = '#0891b2';
+              ctx.beginPath();
+              ctx.moveTo(xT(40000), yL(Math.log10(0.001)));
+              ctx.lineTo(xT(8000),  yL(Math.log10(0.001)));
+              ctx.lineTo(xT(8000),  yL(Math.log10(0.1)));
+              ctx.lineTo(xT(40000), yL(Math.log10(0.1)));
+              ctx.closePath(); ctx.fill();
+              ctx.restore();
+
+              // ----- grid + ticks -----
+              ctx.save();
+              ctx.strokeStyle = C.grid; ctx.lineWidth = 1; ctx.globalAlpha = 0.55;
+              var Tticks = [40000, 20000, 10000, 5000, 3000];
+              for (var i = 0; i < Tticks.length; i++) {
+                var xx = xT(Tticks[i]);
+                ctx.beginPath(); ctx.moveTo(xx, plotY0); ctx.lineTo(xx, plotY0 + plotH); ctx.stroke();
+                PS.drawText(ctx, (Tticks[i] / 1000) + 'k', xx, plotY0 + plotH + 14,
+                  { font: '10px system-ui', color: C.text, align: 'center' });
+              }
+              for (var le = -4; le <= 6; le += 2) {
+                var yy = yL(le);
+                ctx.beginPath(); ctx.moveTo(plotX0, yy); ctx.lineTo(plotX0 + plotW, yy); ctx.stroke();
+                PS.drawText(ctx, fmtPow(le), plotX0 - 6, yy + 4,
+                  { font: '10px system-ui', color: C.text, align: 'right' });
+              }
+              ctx.restore();
+
+              // ----- axes -----
+              ctx.save();
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0); ctx.lineTo(plotX0, plotY0 + plotH); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(plotX0, plotY0 + plotH); ctx.lineTo(plotX0 + plotW, plotY0 + plotH); ctx.stroke();
+              ctx.restore();
+
+              // axis labels
+              PS.drawText(ctx, '有效温度 T_eff (K)  ← 热 | 冷 →', plotX0 + plotW / 2, plotY0 + plotH + 34,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              var classes = [['O', 35000], ['B', 18000], ['A', 8500], ['F', 6500], ['G', 5600], ['K', 4400], ['M', 3000]];
+              for (var c = 0; c < classes.length; c++) {
+                PS.drawText(ctx, classes[c][0], xT(classes[c][1]), plotY0 - 8,
+                  { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+              }
+              ctx.save();
+              ctx.translate(16, plotY0 + plotH / 2); ctx.rotate(-Math.PI / 2);
+              PS.drawText(ctx, '光度 L / L☉ (对数)', 0, 0,
+                { font: '12px system-ui', color: C.text, align: 'center' });
+              ctx.restore();
+
+              // ----- main sequence: thick band + thin centerline -----
+              drawCurve(ctx, TofM, LofM, C.primary, null, 14, 0.15, 50);
+              ctx.save(); ctx.globalAlpha = 0.30;
+              drawCurve(ctx, TofM, LofM, C.primary, null, 14, 0.15, 50);
+              ctx.restore();
+              drawCurve(ctx, TofM, LofM, C.primary, null, 2.0, 0.15, 50);
+
+              // ----- region text labels -----
+              PS.drawText(ctx, '主序 Main Sequence', xT(9500) - 28, yL(0.4) + 14,
+                { font: 'bold 11px system-ui', color: C.primary });
+              PS.drawText(ctx, ' Giants 巨星', xT(4200), yL(2.3),
+                { font: 'bold 11px system-ui', color: C.accent });
+              PS.drawText(ctx, 'Supergiants 超巨星', xT(9000), yL(5.5),
+                { font: 'bold 11px system-ui', color: C.accent2, align: 'center' });
+              PS.drawText(ctx, 'White Dwarfs 白矮星', xT(20000), yL(-1.6),
+                { font: 'bold 11px system-ui', color: '#0891b2', align: 'center' });
+
+              // ----- optional evolutionary track -----
+              if (params.showTrack) {
+                ctx.save();
+                ctx.strokeStyle = C.trace; ctx.lineWidth = 1.8; ctx.setLineDash([6, 4]);
+                ctx.beginPath();
+                for (var i = 0; i < evoTrack.length; i++) {
+                  var pt = evoTrack[i];
+                  var xx = xT(pt.T), yy = clampY(yL(Math.log10(pt.L)));
+                  if (i === 0) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy);
+                }
+                ctx.stroke();
+                ctx.restore();
+                for (var i = 0; i < evoTrack.length; i++) {
+                  var pt = evoTrack[i];
+                  PS.drawCircle(ctx, xT(pt.T), clampY(yL(Math.log10(pt.L))), 2.6, { fill: C.trace });
+                }
+                PS.drawText(ctx, '1 M☉ 演化轨迹 (示意) Evolutionary track', xT(3000) + 6, yL(3.7),
+                  { font: '11px system-ui', color: C.trace });
+              }
+
+              // ----- named stars -----
+              for (var i = 0; i < stars.length; i++) {
+                var st = stars[i];
+                var x = xT(st.T), y = clampY(yL(Math.log10(st.L)));
+                var col;
+                if (st.type.indexOf('III') >= 0) col = C.accent;        // giant
+                else if (st.type.indexOf('Ia') >= 0) col = C.accent2;    // supergiant
+                else if (st.type.indexOf('V') >= 0) col = C.primary;    // MS
+                else col = '#0891b2';                                   // WD
+                PS.drawCircle(ctx, x, y, 4.2, { fill: col, stroke: C.text, lineWidth: 1 });
+                PS.drawText(ctx, st.name, x + 7, y + 3, { font: '10px system-ui', color: C.text });
+              }
+
+              // ----- selected mass star (movable) -----
+              var M = params.M;
+              var selT = TofM(M), selL = LofM(M);
+              var sx = xT(selT), sy = clampY(yL(Math.log10(selL)));
+              PS.drawCircle(ctx, sx, sy, 9, { fill: 'rgba(255,215,0,0.30)' });
+              PS.drawCircle(ctx, sx, sy, 5.2, { fill: '#FFD700', stroke: C.text, lineWidth: 1.5 });
+              PS.drawText(ctx,
+                'M = ' + M.toFixed(2) + ' M☉  →  L = ' + (selL >= 0.01 ? selL.toFixed(2) : selL.toExponential(1)) +
+                ' L☉,  T_eff = ' + Math.round(selT) + ' K',
+                W / 2, H - 26, { font: 'bold 11px system-ui', color: C.text, align: 'center' });
+              PS.drawText(ctx, '演化终点 Endpoint: ' + endpointLabel(M),
+                W / 2, H - 9, { font: '11px system-ui', color: C.text, align: 'center' });
+            },
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-4'), [
+            { type: 'slider', key: 'M',         label: '恒星质量 M (M☉)',   min: 0.05, max: 30, step: 0.05, value: 1.0 },
+            { type: 'toggle', key: 'showTrack', label: '显示 1 M☉ 演化轨迹', value: false },
+            { type: 'button', key: 'reset',     label: '↺ 重置 Reset' },
+          ]);
+          ctl.on('M', function (v) { params.M = v; });
+          ctl.on('showTrack', function (v) { params.showTrack = v; });
+          ctl.on('reset', function () {
+            params.M = 1.0; params.showTrack = false;
+            // sync DOM so slider/checkbox visually reset
+            var inputs = document.getElementById('controls-4').querySelectorAll('input');
+            if (inputs[0] && inputs[0].type === 'range')   inputs[0].value = '1';
+            if (inputs[1] && inputs[1].type === 'checkbox') inputs[1].checked = false;
+            var vSpan = document.getElementById('controls-4').querySelector('.ctrl-slider .ctrl-value');
+            if (vSpan) vSpan.textContent = '1.00';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li>恒星形成于分子云的引力坍缩，关键阈值是 Jeans 质量 \( M_J\propto T^{3/2}\rho^{-1/2} \)；坍缩中心温度达 \( 10^{7}\,\mathrm{K} \) 时氢聚变点火，恒星加入主序。</li>
+        <li>稳定恒星处于<strong>流体静力学平衡</strong>：\( \mathrm{d}P/\mathrm{d}r=-Gm\rho/r^{2} \)。简单估计给中心压强 \( P_c\sim GM^{2}/R^{4} \sim 10^{14}\!-\!10^{16}\,\mathrm{Pa} \)（太阳实测 \( 2.5\times 10^{16}\,\mathrm{Pa} \)）。</li>
+        <li>HR 图：以 \( \log L \) vs \( T_{\mathrm{eff}} \)（反向）作图。主序（\( \sim 90\% \) 恒星）由左上到右下；右上为巨星 / 超巨星，左下为白矮星。</li>
+        <li>主序质光关系 \( L\propto M^{3.5} \)；主序寿命 \( t_{\mathrm{MS}}\propto M/L\propto M^{-2.5} \)。大质量恒星寿命极短（\( 25\,M_\odot\sim 7\,\mathrm{Myr} \)），低质量红矮星寿命远超宇宙年龄。</li>
+        <li>核聚变：pp 链（\( \varepsilon_{pp}\propto\rho T^{4} \)，主导 \( M\lesssim 1.3\,M_\odot \)）与 CNO 循环（\( \varepsilon_{\mathrm{CNO}}\propto\rho T^{17} \)，主导 \( M\gtrsim 1.3\,M_\odot \)）。净反应 \( 4\,^{1}\mathrm{H}\to{}^{4}\mathrm{He}+2e^{+}+2\nu_e \)，释放 \( \sim 26.7\,\mathrm{MeV} \)。</li>
+        <li>恒星结构四方程：质量连续性、流体静力学平衡、能量产生、能量传输（辐射或对流，Schwarzschild 判据）；外加状态方程与不透明度，构成本构关系。</li>
+        <li>演化终点由<strong>残骸质量</strong>决定：\( M_{\mathrm{ZAMS}}\lesssim 8\,M_\odot \)→白矮星（\( <M_{\mathrm{Ch}}=1.4\,M_\odot \)）；\( 8\!-\!25 \)→中子星（\( <M_{\mathrm{TOV}}\sim 2\!-\!3\,M_\odot \)）；\( \gtrsim 25 \)→黑洞（\( R_s=2GM/c^{2} \)）。</li>
+        <li>核合成：BBN（H、He）+ 恒星内逐级燃烧（→ Fe 峰）+ s 过程（AGB，至 Bi）+ r 过程（中子星合并、核塌缩 SN，Au、Pt、U、Th）+ 宇宙线散裂（Li、Be、B）共同解释宇宙元素丰度。</li>
+      </ul>
+      <div class="formula">\[ M_J\sim\Big(\frac{5kT}{G\mu m_p}\Big)^{3/2}\Big(\frac{3}{4\pi\rho}\Big)^{1/2},\qquad \frac{\mathrm{d}P}{\mathrm{d}r}=-\frac{Gm\rho}{r^{2}},\qquad P_c\sim\frac{3}{4\pi}\frac{GM^{2}}{R^{4}} \]</div>
+      <div class="formula">\[ L=4\pi R^{2}\sigma T_{\mathrm{eff}}^{4},\qquad \frac{L}{L_\odot}\approx\Big(\frac{M}{M_\odot}\Big)^{3.5},\qquad t_{\mathrm{MS}}\approx 10^{10}\,\mathrm{yr}\Big(\frac{M}{M_\odot}\Big)^{-2.5} \]</div>
+      <div class="formula">\[ 4\,^{1}\mathrm{H}\to{}^{4}\mathrm{He}+2e^{+}+2\nu_e+\gamma,\qquad Q\approx 26.7\,\mathrm{MeV};\qquad 3\,^{4}\mathrm{He}\to{}^{12}\mathrm{C}+\gamma\;\;(3\alpha) \]</div>
+      <div class="formula">\[ M_{\mathrm{Ch}}\approx 1.44\,M_\odot\;\;(\text{电子简并压}),\qquad M_{\mathrm{TOV}}\approx 2\!-\!3\,M_\odot\;\;(\text{中子简并压}),\qquad R_s=\frac{2GM}{c^{2}} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5章 · 致密天体与高能天体物理 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-chapter="5">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">第八学期 · 第5章 · 天体物理 Astrophysics</p>
+      <h1>致密天体与高能天体物理 <span class="en-title">Compact Objects &amp; High-Energy Astrophysics</span></h1>
+    </header>
+
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <p>学完本章后，你应当能够：</p>
+      <ul>
+        <li>解释<strong>白矮星</strong> (white dwarf) 由<strong>电子简并压</strong> (electron degeneracy pressure) 支撑抵抗引力，并从泡利不相容原理出发定性推导简并压标度 \( P_{\deg}\propto n^{5/3} \)（非相对论）与 \( P_{\deg}\propto n^{4/3} \)（极端相对论）。</li>
+        <li>写出<strong>钱德拉塞卡极限</strong> (Chandrasekhar limit) \( M_{\mathrm{Ch}}\approx 1.44\,M_\odot \) 的物理来源与公式，说明它划定了白矮星与中子星的<strong>质量边界</strong>。</li>
+        <li>说明<strong>中子星</strong> (neutron star) 由<strong>中子简并压</strong>与核力支撑，半径仅 \( R\sim 10\!-\!12\,\mathrm{km} \)，密度 \( \sim 10^{17}\,\mathrm{kg/m^3} \) 达核物质密度；并认识 <strong>TOV 极限</strong> \( \sim 2\!-\!3\,M_\odot \)。</li>
+        <li>计算<strong>脉冲星</strong> (pulsar) 的<strong>自转减损光度</strong> \( L_{\mathrm{spin}}=4\pi^{2}I\dot P/P^{3} \) 与<strong>特征年龄</strong> \( \tau=P/(2\dot P) \)，并解释磁星 (magnetar) 与正常脉冲星的差别。</li>
+        <li>对<strong>吸积盘</strong> (accretion disk) 写出辐射效率 \( L=\eta\dot M c^{2} \)（黑洞 \( \eta\approx 0.1 \)、中子星 \( \eta\approx 0.2 \)），并计算<strong>爱丁顿光度</strong> \( L_{\mathrm{Edd}}=1.26\times 10^{31}(M/M_\odot)\,\mathrm{W} \)。</li>
+        <li>区分<strong> Ia 型超新星</strong>（白矮星的热核爆炸，标准烛光）与<strong> II 型核塌缩超新星</strong>（大质量恒星铁芯坍缩，产生中子星 / 黑洞），并把它们与致密天体的形成链起来。</li>
+        <li>描述<strong>活动星系核</strong> (AGN/quasar)、<strong>伽马射线暴</strong> (GRB) 与<strong>引力波源</strong>（并合致密双星，如 GW150914、GW170817）的高能物理图景，与第八学期第 2 章（广义相对论）和第 4 章（恒星演化）相衔接。</li>
+      </ul>
+    </section>
+
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 致密天体谱系 The Compact-Object Family</h3>
+      <p>当恒星核燃料耗尽、热压不足以抵抗自引力时，恒星残骸的命运由其<strong>剩余质量</strong>决定（详见第八学期第 4 章）。三种稳定（或准稳定）的<strong>致密天体</strong> (compact objects) 对应三种不同的支撑机制：</p>
+      <ul>
+        <li><strong>白矮星 (WD)</strong>：质量 \( \lesssim 1.4\,M_\odot \)，由<strong>电子简并压</strong>支撑，\( R\sim 10^{4}\,\mathrm{km}\approx R_{\oplus} \)，\( \bar\rho\sim 10^{9}\,\mathrm{kg/m^3} \)。</li>
+        <li><strong>中子星 (NS)</strong>：质量 \( \sim 1.4\!-\!2.3\,M_\odot \)，由<strong>中子简并压 + 核力</strong>支撑，\( R\sim 10\!-\!12\,\mathrm{km} \)，\( \bar\rho\sim 10^{17}\,\mathrm{kg/m^3} \)（核物质密度）。</li>
+        <li><strong>黑洞 (BH)</strong>：超过 TOV 极限，无任何已知物理力能阻止坍缩到 \( r=0 \) 的奇点；外部由事件视界 \( R_s=2GM/c^{2} \) 包围。</li>
+      </ul>
+      <p>它们的共同特征是<strong>极小的半径、极大的密度、极强的引力场</strong>。表面逃逸速度：白矮星 \( \sim 5\times 10^{3}\,\mathrm{km/s} \)（\( \sim 0.02c \)），中子星 \( \sim 1.5\!-\!2\times 10^{5}\,\mathrm{km/s} \)（\( \sim 0.6c \)），黑洞 \( =c \)。中子星与黑洞的物理必须用广义相对论（第 2 章）处理。</p>
+
+      <h3>2. 白矮星与电子简并压 White Dwarfs &amp; Electron Degeneracy Pressure</h3>
+      <p>白矮星是低中质量恒星（\( M_{\text{ZAMS}}\lesssim 8\,M_\odot \)）演化终点的简并核心，典型成分为碳氧。其内部温度虽高（\( \sim 10^{7}\,\mathrm{K} \)），但<strong>几乎与支撑无关</strong>——支撑由<strong>量子力学</strong>提供。考虑密度极高、温度远低于<strong>费米温度</strong> \( T_F=E_F/k \) 的电子气体：所有低能态被填满至<strong>费米动量</strong> \( p_F \)，由泡利不相容原理 (Pauli exclusion principle) 强制占据高动量态，于是即便 \( T\to 0 \) 仍存在 nonzero 压强——<strong>简并压</strong>。</p>
+      <p>对非相对论电子 (\( p_F\ll m_e c \))，把电子禁锢在数密度 \( n_e \) 内意味着 \( p_F\sim \hbar n_e^{1/3} \)，每个电子动能 \( \sim p_F^{2}/(2m_e) \)，压强 \( P\sim n_e\cdot p_F^{2}/(2m_e)\propto n_e^{5/3} \)。精确推导（推导 A）给出：</p>
+      <div class="formula">\[ \boxed{\;P_{e,\deg}=\frac{(3\pi^{2})^{2/3}\hbar^{2}}{5m_e}\,n_e^{5/3}\;}\qquad(\text{非相对论, NR}) \]</div>
+      <p>密度更高时费米动量进入相对论区域 (\( p_F\gtrsim m_e c \))：每个电子能量 \( \sim p_F c \)，压强变为：</p>
+      <div class="formula">\[ P_{e,\deg}=\frac{hc}{4}\Big(\frac{3}{8\pi}\Big)^{1/3}\,n_e^{4/3}\qquad(\text{极端相对论, ER}) \]</div>
+      <p>关键点：极端相对论下 \( P\propto n^{4/3} \) —— 软于引力收缩所需。这正是钱德拉塞卡极限的根源。</p>
+      <p><strong>典型白矮星</strong> Sirius B：\( M=1.02\,M_\odot \)，\( R=5.84\times 10^{6}\,\mathrm{m}=0.0084\,R_\odot\approx 0.92\,R_{\oplus} \)，平均密度 \( \bar\rho\approx 2.4\times 10^{9}\,\mathrm{kg/m^3} \)，表面引力 \( g\approx 4\times 10^{6}\,\mathrm{m/s^2} \)（太阳的 350 倍）。</p>
+
+      <h3>3. 钱德拉塞卡极限 The Chandrasekhar Limit</h3>
+      <p>把极端相对论电子简并压的物态方程 \( P\propto \rho^{4/3} \) 代入流体静力学平衡方程（第 4 章），S. Chandrasekhar (1930) 求得稳定白矮星的最大质量：</p>
+      <div class="formula">\[ \boxed{\;M_{\mathrm{Ch}}=\frac{\omega_3^{0}\sqrt{3\pi}}{2}\Big(\frac{\hbar c}{G}\Big)^{3/2}\frac{1}{(\mu_e m_p)^{2}}\approx 1.44\,M_\odot\quad(\mu_e=2)\;} \]</div>
+      <p>其中 \( \mu_e=A/Z \) 是每个电子对应的核子数（C/O 核 \( \mu_e\approx 2 \)），\( \omega_3^{0}\approx 2.018 \) 是 Lane–Emden \( n=3 \) 多方球的常数。<strong>当白矮星核质量超过此值，电子简并压再也无法抵抗引力 → 进一步坍缩</strong>，通常触发 Ia 型超新星（如果是在双星中吸积越过极限）或直接坍缩为中子星。这条极限是连接第 4 章恒星演化与本章致密天体物理的<strong>关键阈值</strong>。</p>
+
+      <h3>4. 中子星与 TOV 极限 Neutron Stars &amp; the TOV Limit</h3>
+      <p>当电子被引力压缩到能量 \( \sim 0.78\,\mathrm{MeV} \)（\( m_n-m_p+m_e \)）以上时，反向 β 衰变 \( e^{-}+p\to n+\nu_e \) 把质子电子变为中子。<strong>中子化</strong> (neutronization) 使恒星核心几乎完全由中子构成——中子星。中子同样服从泡利原理，但中子质量 \( m_n\approx 1840\,m_e \)，故中子简并压远强于电子（在相同数密度下）。更复杂的是：在中子星核心密度 \( \rho\sim 5\rho_{\text{核}} \)，强相互作用（核力）的状态方程极不确定，必须用广义相对论的 <strong>TOV 方程</strong> (Tolman–Oppenheimer–Volkoff)：</p>
+      <div class="formula">\[ \frac{\mathrm{d}P}{\mathrm{d}r}=-\frac{G\,[m(r)+4\pi r^{3}P/c^{2}]\,(\rho+P/c^{2})}{r^{2}\,(1-2Gm(r)/rc^{2})} \]</div>
+      <p>这是牛顿流体静力学平衡 \( \mathrm{d}P/\mathrm{d}r=-Gm\rho/r^{2} \) 的 GR 修正版，多了三个相对论修正项（压力对引力源的贡献、能量密度包含静止质量能与内能、时空曲率）。求解 TOV + 物态方程给出<strong>中子星的最大质量</strong>：</p>
+      <div class="formula">\[ M_{\mathrm{TOV}}\approx 2.0\!-\!2.5\,M_\odot\quad(\text{状态方程依赖}) \]</div>
+      <p>目前最精确观测：PSR J0740+6620 质量 \( 2.08\pm 0.07\,M_\odot \)（由 NICER X 射线脉冲轮廓测得），是状态方程的<strong>最强约束</strong>。任何理论状态方程必须支撑至少 \( 2\,M_\odot \)，这排除了许多软核力模型。</p>
+      <p><strong>中子星结构</strong>：固体的离子晶格外壳（\( \rho\lesssim 4\times 10^{17}\,\mathrm{kg/m^3} \)，电子海简并）；过渡到内壳中子滴出；外核超流中子 + 质子电子流体；内核可能是更奇异的相（超子物质、夸克物质）。表面磁场 \( B\sim 10^{8}\!-\!10^{15}\,\mathrm{G} \)，温度 \( \sim 10^{6}\,\mathrm{K} \)（X 射线波段黑体辐射）。</p>
+
+      <h3>5. 脉冲星与磁星 Pulsars &amp; Magnetars</h3>
+      <p>1967 年 Bell–Burnell 发现周期为 \( 1.337\,\mathrm{s} \) 的射电脉冲源——第一颗<strong>脉冲星</strong> PSR B1919+21。Gold (1968) 与 Pacini 正确解释为<strong>快速旋转的强磁化中子星</strong>：磁轴与自转轴不重合时，磁极附近相对论性电子沿弯曲磁力线辐射（曲率辐射），形成<strong>灯塔光束</strong>扫过地球，每自转一周我们接收一个脉冲。脉冲极其稳定，周期变化 \( \dot P\sim 10^{-15}\!-\!10^{-13} \)。</p>
+      <p>旋转的磁偶极辐射功率（真空中的拉莫尔公式类比）：</p>
+      <div class="formula">\[ \boxed{\;L_{\mathrm{spin}}=\frac{B^{2}R^{6}\Omega^{4}\sin^{2}\alpha}{6c^{3}\mu_0}=4\pi^{2}I\,\frac{\dot P}{P^{3}}\;} \]</div>
+      <p>其中 \( \Omega=2\pi/P \)、\( I\approx 10^{38}\,\mathrm{kg\,m^{2}} \)（中子星转动惯量）、\( \alpha \) 是磁倾角。能量来自中子星<strong>自转动能</strong> \( E_{\mathrm{rot}}=\tfrac{1}{2}I\Omega^{2} \)，故旋转减慢（\( \dot P>0 \)）。特征年龄 \( \tau=P/(2\dot P) \)（假设制动指数 \( n=3 \)、初始周期 \( P_0\ll P \)）。最年轻的 Crab 脉冲星 \( P=33.4\,\mathrm{ms} \)、\( \dot P=4.21\times 10^{-13} \)、\( \tau\approx 1258\,\mathrm{yr} \)（实际超新星 AD 1054，距今约 970 yr，差异来自早期制动指数 \( n\neq 3 \)）。</p>
+      <p><strong>磁星</strong> (magnetar)：表面磁场 \( B\sim 10^{14}\!-\!10^{15}\,\mathrm{G} \) 的中子星，能量储存主要由磁场而非自转提供。表现形态为<strong>反常 X 射线脉冲星</strong> (AXP) 与<strong>软伽马重复暴</strong> (SGR)。SGR 1806–20 在 2004 年 12 月 27 日的巨耀斑 (giant flare) 在 0.2 s 内释放 \( \sim 10^{39}\,\mathrm{J} \)（太阳 50 万年辐射总量），是银河系外可探测的瞬变事件。</p>
+
+      <h3>6. 黑洞：恒星质量与超大质量 Black Holes — Stellar &amp; Supermassive</h3>
+      <p>残骸质量超过 TOV 极限时，没有任何已知物理机制阻止坍缩。结果为<strong>黑洞</strong>（详见第 2 章）：时空中的一个事件视界 \( R_s=2GM/c^{2} \)，内部信息不可逃出。两种主要形成通道：</p>
+      <ul>
+        <li><strong>恒星质量黑洞</strong> (stellar-mass BH)：\( M\sim 3\!-\!100\,M_\odot \)，由大质量恒星 (\( M_{\text{ZAMS}}\gtrsim 25\!-\!40\,M_\odot \)) 核塌缩直接形成，或由双星内中子星-中子星、中子星-黑洞并合产生。代表：Cygnus X-1（\( M\approx 21\,M_\odot \)），GW150914 并合产物（\( 62\,M_\odot \)）。</li>
+        <li><strong>超大质量黑洞</strong> (supermassive BH, SMBH)：\( M\sim 10^{6}\!-\!10^{10}\,M_\odot \)，存在于几乎所有大星系中心。Sgr A*（银河系中心，\( 4.14\times 10^{6}\,M_\odot \)）；M87*（\( 6.5\times 10^{9}\,M_\odot \)，事件视界望远镜 2019 年成像）；TON 618（\( \sim 6.6\times 10^{10}\,M_\odot \)，已知最大）。形成机制（种子黑洞 + 吸积增长 vs. 气体直接坍缩）仍是开放问题。</li>
+      </ul>
+      <p><strong>关键半径</strong>（施瓦茨希尔德 / Schwarzschild）：</p>
+      <div class="formula">\[ R_s=\frac{2GM}{c^{2}}\approx 2.95\,\mathrm{km}\times\frac{M}{M_\odot};\qquad r_{\mathrm{ISCO}}=3R_s=\frac{6GM}{c^{2}};\qquad r_{\mathrm{ph}}=1.5\,R_s\;(\text{光子球}) \]</div>
+      <p>ISCO（最内稳定圆轨道）是吸积盘内边缘的位置；物质越过 ISCO 后迅速落入视界，几乎不再辐射。旋转的 Kerr 黑洞 ISCO 更小（顺旋可至 \( R_s/2 \)），辐射效率可达 \( \eta\approx 0.42 \)。</p>
+
+      <h3>7. 吸积盘与 X 射线双星 Accretion Disks &amp; X-ray Binaries</h3>
+      <p>致密天体附近强大的潮汐力会撕裂伴星物质，形成绕中心旋转的<strong>吸积盘</strong> (accretion disk)。物质沿螺旋轨道缓慢内流，原因是气体环之间的<strong>磁旋转不稳定性</strong> (magnetorotational instability, MRI, Balbus–Hawley 1991) 提供有效粘滞，将角动量向外转移。</p>
+      <p>开普勒旋转速度 \( v_\phi=\sqrt{GM/r} \) 在小 \( r \) 处极快：中子星表面 \( \sim 1.5\times 10^{8}\,\mathrm{m/s}=0.5c \)，10 \( M_\odot \) 黑洞的 ISCO 处 \( \sim 1.1\times 10^{8}\,\mathrm{m/s} \)。气体粘滞耗散把引力势能转化为热，温度由外向内升高，盘内边缘 \( T\sim 10^{7}\,\mathrm{K} \) → 主要发射 X 射线。释放的总能量（单位质量）：</p>
+      <div class="formula">\[ \frac{L}{\dot M}=\eta c^{2},\qquad \eta=\begin{cases}GM/(R_\ast c^{2}) & \text{中子星表面吸积}\approx 0.20\\ 1/6\approx 0.17 & \text{施瓦茨希尔德黑洞 ISCO}\\ 0.057\!-\!0.42 & \text{Kerr 黑洞 (取决于自旋)}\end{cases} \]</div>
+      <p>相比之下，氢核聚变仅释放 \( 0.007\,c^{2}\)、效率 \( \eta_{\mathrm{pp}}=0.007 \)。<strong>吸积是宇宙中最高效的产能机制之一</strong>，比核聚变高一个量级以上。</p>
+      <p><strong>X 射线双星</strong> (X-ray binary, XRB)：含一颗致密天体（中子星或黑洞）与一颗普通伴星的双星系统，吸积来自伴星风或洛希瓣溢出 (Roche-lobe overflow)。代表：Cygnus X-1（黑洞 + O 型超巨星）；Sco X-1（中子星，第一颗发现的 X 射线源，1962 年）；Her X-1（中子星，2.0 \( M_\odot \)，强磁场）。XRB 是研究强引力、强磁场的重要实验室。</p>
+
+      <h3>8. 爱丁顿光度 The Eddington Luminosity</h3>
+      <p>吸积辐射向外作用于周围电离气体，存在一个上限：当向外的辐射压 \( =\) 向内引力时，进一步吸积会被自身辐射「吹散」。考虑纯氢气体、电子汤姆孙散射截面 \( \sigma_T \)：每个质子-电子对上，向外辐射力 \( f_{\mathrm{rad}}=\sigma_T L/(4\pi r^{2}c) \)，向内引力 \( f_g=GMm_p/r^{2} \)（电子质量忽略）。令二者相等：</p>
+      <div class="formula">\[ \boxed{\;L_{\mathrm{Edd}}=\frac{4\pi G M m_p c}{\sigma_T}=1.26\times 10^{31}\,\mathrm{W}\times\frac{M}{M_\odot}\approx 3.3\times 10^{4}\,L_\odot\times\frac{M}{M_\odot}\;} \]</div>
+      <p>\( L_{\mathrm{Edd}} \) 是质量 \( M \) 的天体可维持稳定球对称吸积的最大光度。观测到的「爱丁顿比」 \( \lambda=L/L_{\mathrm{Edd}} \) 通常 \( 0.01\!-\!1 \)。当 \( \lambda\gtrsim 1 \)，辐射压驱动强外流 (outflow)，可能解释某些超爱丁顿源（如 ULX）的观测。</p>
+
+      <h3>9. 超新星：Ia 型与 II 型 Supernovae: Type Ia vs. Type II</h3>
+      <p><strong>超新星</strong> (supernova, SN) 是恒星生命终结时的剧烈爆发现象，释放动能 \( \sim 10^{44}\,\mathrm{J} \)，峰值光度 \( \sim 10^{36}\,\mathrm{W} \approx 10^{9}\,L_\odot \)，可与整个宿主星系匹敌。两条截然不同的物理通道：</p>
+      <ul>
+        <li><strong>热核通道 (Ia 型)</strong>：双星中的 C/O 白矮星吸积伴星物质，质量逼近 \( M_{\mathrm{Ch}}\approx 1.44\,M_\odot \) 时，中心碳点火引发<strong>失控核聚变</strong> (thermonuclear runaway)，将整个白矮星 \( \sim 10^{30}\,\mathrm{kg} \) 在数秒内烧成 \( ^{56}\mathrm{Ni} \)、\( ^{56}\mathrm{Co} \)、\( ^{56}\mathrm{Fe} \)。释放 \( \sim 10^{44}\,\mathrm{J} \)，\( ^{56}\mathrm{Ni} \) 衰变 \( \to{}^{56}\mathrm{Co}\to{}^{56}\mathrm{Fe} \)（半衰期 6.1 d、77 d）驱动光变曲线。<strong>不留残骸</strong>。<strong>由于质量都接近 \( M_{\mathrm{Ch}} \)，峰值光度极均匀</strong> → Phillips 关系 \( M_{\max}\) vs. 光变曲线衰减率，使 Ia 型成为<strong>标准烛光</strong>，用于测量宇宙膨胀（Perlmutter、Riess、Schmidt 因此获 2011 年诺奖）。光谱特征：无氢线、有 Si II 6150 Å。</li>
+        <li><strong>核塌缩通道 (II 型 / Ib / Ic)</strong>：大质量恒星 (\( M_{\text{ZAMS}}\gtrsim 8\,M_\odot \)) 演化到铁芯，铁峰核素聚变吸热 → 核心失撑，在毫秒尺度内坍缩到中子星密度。坍缩释放的引力束缚能 \( E_b\sim GM^{2}/R\sim 3\times 10^{46}\,\mathrm{J} \)，其中约 99% 由 \( \nu_e,\bar\nu_e \) 中微子带走（\( \sim 6\times 10^{58} \) 个中微子），约 1% 转化为爆炸性光学显示，约 0.01% 加速到宇宙线。SN 1987A（大麦哲伦云，1987 年）的中微子在爆发光到达前 \( \sim 3\,\mathrm{h} \) 被神冈、IMB 等探测器探测到，验证了核塌缩图景。光谱特征：有氢线（II 型）或无氢线（Ib/Ic，大质量恒星已去氢包层）。<strong>留下中子星或黑洞</strong>。</li>
+      </ul>
+      <p>两条通道的产能、残骸、光度曲线、光谱都不同，但峰值光度都极高，使超新星成为<strong>宇宙学距离探针</strong>。</p>
+
+      <h3>10. 活动星系核与类星体 AGN &amp; Quasars</h3>
+      <p>约 1% 的大星系中心存在正在剧烈吸积的超大质量黑洞，输出光度 \( 10^{38}\!-\!10^{41}\,\mathrm{W} \)，称为<strong>活动星系核</strong> (active galactic nucleus, AGN)。统一模型 (Blandford &amp; Rees, Antonucci &amp; Miller)：中心 SMBH + 吸积盘 + 宽线区 (BLR, 几百光日) + 尘埃环面 (torus) + 窄线区 (NLR, 几百光年) + 相对论性喷流 (jet)。<strong>观察角度</strong>决定分类：</p>
+      <ul>
+        <li><strong>类星体</strong> (quasar, QSO)：光度极高，宿主星系难以察觉，最远达 \( z\approx 7.6 \)（J0313–1806，宇宙仅 6.7 亿岁）。</li>
+        <li><strong>赛弗特星系</strong> (Seyfert)：低光度 AGN，分为 I 型（视线接近极轴，可见 BLR）与 II 型（视线被尘埃环面遮挡，仅见 NLR）。</li>
+        <li><strong>射电星系 / 蝎虎座 BL 型天体 / 光变 OVV</strong>：喷流指向地球的极端情形，视超光速运动 (apparent superluminal motion)。</li>
+      </ul>
+      <p>能量来源：SMBH 吸积，效率 \( \eta\sim 0.1 \)，要维持 \( L\sim 10^{39}\,\mathrm{W} \) 需要 \( \dot M=L/(\eta c^{2})\sim 0.2\,M_\odot/\mathrm{yr} \)。喷流的形成与 Blandford–Znajek 机制（旋转黑洞提取视界电磁能）有关。AGN 反馈 (feedback) 调节宿主星系恒星形成，是<strong>黑洞–星系共同演化</strong>的关键环节（\( M_{\mathrm{BH}}\!-\!\sigma \) 关系）。</p>
+
+      <h3>11. 伽马射线暴 Gamma-Ray Bursts</h3>
+      <p><strong>伽马射线暴</strong> (gamma-ray burst, GRB) 是宇宙中最明亮的电磁爆发，\( 0.1\!-\!100\,\mathrm{s} \) 内释放 \( \sim 10^{45}\!-\!10^{47}\,\mathrm{J} \) 的 γ 辐射。1997 年 Beppo-SAX 卫星精确定位发现 GRB 来自河外星系，确立其宇宙学距离。两大类：</p>
+      <ul>
+        <li><strong>长暴</strong> (\( T_{90}>2\,\mathrm{s} \), 平均 \( \sim 30\,\mathrm{s} \))：<strong>坍缩星模型</strong> (collapsar, Woosley 1993)——大质量恒星（\( \gtrsim 25\,M_\odot \)）核塌缩为黑洞 + 吸积盘 + 相对论性喷流，伴随 Ib/c 型超新星（如 GRB 980425 + SN 1998bw）。占约 70%。</li>
+        <li><strong>短暴</strong> (\( T_{90}<2\,\mathrm{s} \), 平均 \( \sim 0.3\,\mathrm{s} \))：<strong>双中子星并合</strong>（或 NS–BH 并合）——kilanova 红光学余辉由 r 过程重元素合成提供。GRB 170817A 与引力波事件 GW170817 巧合成对，开启<strong>多信使天文学</strong>。</li>
+      </ul>
+      <p>极端相对论性喷流（洛伦兹因子 \( \Gamma\sim 100\!-\!1000 \)）的<strong>相对论性激波</strong>产生同步辐射与逆康普顿散射，形成观测到的 γ 光谱和余辉 (afterglow)。</p>
+
+      <h3>12. 引力波源：致密双星并合 Gravitational-Wave Sources</h3>
+      <p>广义相对论预言，加速的质量分布会产生<strong>引力波</strong> (GW, 详见第 3 章)。最强的源是致密双星 (NS–NS、NS–BH、BH–BH) 在并合最后阶段的剧烈加速。<strong>2015 年 9 月 14 日，LIGO 首次直接探测</strong> GW150914——两个 \( 36\,M_\odot \) 与 \( 29\,M_\odot \) 黑洞并合为 \( 62\,M_\odot \) 黑洞，\( 3\,M_\odot \) 以引力波形式释放（\( E_{\mathrm{GW}}\sim 5\times 10^{47}\,\mathrm{J} \)，瞬时峰值 \( \sim 10^{49}\,\mathrm{W} \)，超过可观测宇宙所有恒星的光度总和）。随后探测的关键事件：</p>
+      <ul>
+        <li><strong>GW170817</strong>（NS+NS 并合）：与 GRB 170817A、光学 kilanova 成协，<strong>首次多信使观测致密天体并合</strong>，证实 r 过程合成金、铂、铀等重元素，限定中子星状态方程，独立测量哈勃常数。</li>
+        <li><strong>GW190521</strong>（BH+BH 并合产物 \( 142\,M_\odot \)）：首次探测到<strong>中等质量黑洞</strong> (IMBH, \( 100\!-\!10^{5}\,M_\odot \))，填补恒星质量与超大质量黑洞之间的质量缺口。</li>
+      </ul>
+      <p>引力波天文学打开了致密天体物理的全新窗口：直接测量黑洞质量与自旋、约束核物质状态方程、检验广义相对论在强引力场区的有效性。</p>
+
+      <div class="key-terms">compact object (致密天体), white dwarf (白矮星), electron degeneracy pressure \( P_{\deg}\propto n^{5/3} \) (电子简并压), Pauli exclusion principle (泡利不相容原理), Fermi momentum \( p_F \) (费米动量), Chandrasekhar limit \( \approx 1.4\,M_\odot \) (钱德拉塞卡极限), neutron star (中子星), TOV equation (TOV 方程), TOV limit \( \sim 2\!-\!3\,M_\odot \) (TOV 极限), nuclear density \( \rho_{\text{nuc}}\approx 2.8\times 10^{17}\,\mathrm{kg/m^3} \) (核物质密度), pulsar (脉冲星), spin-down luminosity \( L=4\pi^{2}I\dot P/P^{3} \) (自转减损光度), characteristic age \( \tau=P/(2\dot P) \) (特征年龄), magnetar (磁星), Schwarzschild radius \( R_s=2GM/c^{2} \) (施瓦茨希尔德半径), ISCO \( =6GM/c^{2} \) (最内稳定圆轨道), accretion disk (吸积盘), radiative efficiency \( \eta \) (辐射效率), Eddington luminosity \( 1.26\times 10^{31}(M/M_\odot)\,\mathrm{W} \) (爱丁顿光度), Thomson cross-section \( \sigma_T \) (汤姆孙截面), X-ray binary (X 射线双星), Type Ia supernova (Ia 型超新星, 标准烛光), Type II supernova (II 型超新星, 核塌缩), AGN (活动星系核), quasar (类星体), gamma-ray burst (伽马射线暴), gravitational wave (引力波)</div>
+    </section>
+
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+
+      <h3>A. 钱德拉塞卡极限的量纲推导 Chandrasekhar Limit — Dimensional Derivation</h3>
+      <p>考虑一颗由极端相对论电子简并气体支撑的白矮星。极端相对论下电子动能 \( E\sim p_F c \)、压强 \( P\sim n_e p_F c \)。中子化气体电中性，每个电子对应 \( \mu_e m_p \) 重子质量，故 \( n_e=\rho/(\mu_e m_p) \)。电子被压缩到平均间距 \( d\sim n_e^{-1/3} \)，由不确定性原理 \( p_F\sim \hbar/d\sim \hbar n_e^{1/3} \)。所以：</p>
+      <div class="formula">\[ P\sim n_e\cdot p_F c\sim \hbar c\,n_e^{4/3}=\frac{\hbar c}{(\mu_e m_p)^{4/3}}\,\rho^{4/3} \]</div>
+      <p>这是多方指数 \( n=3 \)（\( P\propto\rho^{1+1/n}=\rho^{4/3} \)）的多方球。流体静力学平衡要求总能量 \( E=U+\Omega \) 取极小，\( U\sim PV\sim (\hbar c/(\mu_e m_p)^{4/3})\rho^{4/3}\cdot M/\rho\sim \hbar c\,M^{4/3}/[R(\mu_e m_p)^{4/3}] R^{3\cdot 4/3\cdot (-1)} \)... 直接做量纲：</p>
+      <div class="formula">\[ U\sim \frac{\hbar c}{R}\,\frac{M^{4/3}}{(\mu_e m_p)^{4/3}},\qquad \Omega\sim -\frac{GM^{2}}{R} \]</div>
+      <p>两者都 \( \propto 1/R \)，故总能量：</p>
+      <div class="formula">\[ E(R)=\frac{1}{R}\Big[\underbrace{\frac{\hbar c}{(\mu_e m_p)^{4/3}}M^{4/3}}_{\text{简并能 } a\,M^{4/3}}\;-\;\underbrace{GM^{2}}_{\text{引力 } b\,M^{2}}\Big] \]</div>
+      <p>括号内的符号决定稳定性：</p>
+      <ul>
+        <li>\( M \) 小：\( aM^{4/3}>bM^{2} \)，\( E>0 \)，恒星可膨胀到任意大半径（实际有限，因变成非相对论）。</li>
+        <li>\( M \) 大：\( aM^{4/3}<bM^{2} \)，\( E<0 \) 且 \( |E| \) 随 \( R\to 0 \) 发散 → <strong>坍缩无止境</strong>。</li>
+        <li>临界 \( aM^{4/3}=bM^{2} \)：\( M_{\max}=(a/b)^{3/2} \)。</li>
+      </ul>
+      <p>代入数值（精确求解 Lane–Emden 方程给出系数 \( \omega_3^0\sqrt{3\pi}/2\approx 0.77\,\mathrm{SI} \)）：</p>
+      <div class="formula">\[ M_{\mathrm{Ch}}=0.77\,\frac{(\hbar c/G)^{3/2}}{(\mu_e m_p)^{2}} \]</div>
+      <p>取 \( \mu_e=2 \)（C/O 核）、\( m_p=1.673\times 10^{-27}\,\mathrm{kg} \)、\( \hbar=1.055\times 10^{-34}\,\mathrm{J\,s} \)、\( c=3.0\times 10^{8}\,\mathrm{m/s} \)、\( G=6.674\times 10^{-11} \)：</p>
+      <div class="formula">\[ \frac{\hbar c}{G}=\frac{(1.055\times 10^{-34})(3.0\times 10^{8})}{6.674\times 10^{-11}}=4.74\times 10^{-16}\,\mathrm{kg^2\,m^{-1}} \]</div>
+      <div class="formula">\[ M_{\mathrm{Ch}}=0.77\times\frac{(4.74\times 10^{-16})^{3/2}}{(2\times 1.673\times 10^{-27})^{2}}=0.77\times\frac{1.03\times 10^{-23}}{1.12\times 10^{-53}}=7.1\times 10^{29}\,\mathrm{kg}=0.36\,M_\odot \]</div>
+      <p>我们简单的均匀密度模型低估了实际值（系数错），但物理本质正确：极端相对论下电子简并气体多方指数 \( n=3 \) 对应<strong>唯一临界质量</strong>，与半径无关。完整求解给出 \( 1.44\,M_\odot \)。</p>
+
+      <h3>B. 旋转磁偶极辐射：脉冲星的能量损耗 Spin-Down of a Pulsar</h3>
+      <p>考虑一颗中子星，磁矩 \( \vec m \) 与自转轴 \( \hat\Omega \) 夹角 \( \alpha \)，以角速度 \( \Omega=2\pi/P \) 旋转。在远处，磁偶极场：</p>
+      <div class="formula">\[ \vec B(r,t)=\frac{\mu_0}{4\pi r^{3}}\Big[3\hat r(\vec m(t)\cdot\hat r)-\vec m(t)\Big],\qquad \vec m(t)=m\,\hat m(t) \]</div>
+      <p>其中 \( \hat m(t) \) 以角速度 \( \Omega \) 旋转。远场推迟势给出辐射功率（拉莫尔公式对周期性磁偶极的应用）：</p>
+      <div class="formula">\[ L_{\mathrm{spin}}=\frac{\mu_0\,m^{2}\Omega^{4}\sin^{2}\alpha}{6\pi c^{3}}=\frac{B_p^{2}R^{6}\Omega^{4}\sin^{2}\alpha}{6c^{3}\mu_0} \]</div>
+      <p>（\( B_p=\mu_0 m/(2\pi R^{3}) \) 是极区磁场。）能量守恒：\( \mathrm{d}E_{\mathrm{rot}}/\mathrm{d}t=-L_{\mathrm{spin}} \)，而 \( E_{\mathrm{rot}}=\tfrac{1}{2}I\Omega^{2} \)，故：</p>
+      <div class="formula">\[ I\Omega\dot\Omega=-L_{\mathrm{spin}}=-K\Omega^{4}\quad\Longrightarrow\quad \dot\Omega=-\frac{K}{I}\Omega^{3} \]</div>
+      <p>由 \( \Omega=2\pi/P \)，\( \dot\Omega=-2\pi\dot P/P^{2} \)，代入整理：</p>
+      <div class="formula">\[ \boxed{\;L_{\mathrm{spin}}=4\pi^{2}I\,\frac{\dot P}{P^{3}}\;} \]</div>
+      <p>制动指数 \( n \) 由 \( \dot\Omega=-K\Omega^{n} \) 定义，纯磁偶极辐射 \( n=3 \)。积分 \( \dot\Omega=-K\Omega^{n} \) 给出年龄 \( \tau=\Omega/[(n-1)\dot\Omega]=P/[(n-1)\dot P] \)，取 \( n=3 \) 即 \( \tau=P/(2\dot P) \)。这是脉冲星<strong>特征年龄</strong>，假设初始 \( P_0\ll P \) 且制动指数恒为 3。</p>
+    </section>
+
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 5.1 白矮星 Sirius B 的平均密度</h4>
+        <p class="example-statement">Sirius B 是天空中第一颗被发现的白矮星，其参数为 \( M=1.02\,M_\odot \)，\( R=5.84\times 10^{6}\,\mathrm{m} \)（\( 0.0084\,R_\odot \approx 0.92\,R_{\oplus} \)）。求其平均密度 \( \bar\rho \)、表面引力 \( g \)、表面逃逸速度 \( v_{\mathrm{esc}} \)。已知 \( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( G=6.674\times 10^{-11}\,\mathrm{N\,m^{2}/kg^{2}} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(1) 体积 \( V=\frac{4}{3}\pi R^{3}=\frac{4}{3}\pi(5.84\times 10^{6})^{3}=8.34\times 10^{20}\,\mathrm{m^{3}} \)。</p>
+          <p>(2) 质量 \( M=1.02\times 1.989\times 10^{30}=2.03\times 10^{30}\,\mathrm{kg} \)。</p>
+          <p>(3) 平均密度：</p>
+          <p>\[ \bar\rho=\frac{M}{V}=\frac{2.03\times 10^{30}}{8.34\times 10^{20}}=2.43\times 10^{9}\,\mathrm{kg/m^{3}}=2.4\times 10^{6}\,\mathrm{g/cm^{3}} \]</p>
+          <p>即水的密度的 \( 2.4\times 10^{6} \) 倍，一茶匙白矮星物质 \( \sim 5\,\mathrm{cm^{3}} \) 重约 12 吨。</p>
+          <p>(4) 表面引力 \( g=GM/R^{2}=\dfrac{(6.674\times 10^{-11})(2.03\times 10^{30})}{(5.84\times 10^{6})^{2}}=3.97\times 10^{6}\,\mathrm{m/s^{2}} \)，约为地球表面引力 (\( 9.8\,\mathrm{m/s^{2}} \)) 的 \( 4.0\times 10^{5} \) 倍。</p>
+          <p>(5) 逃逸速度 \( v_{\mathrm{esc}}=\sqrt{2GM/R}=\sqrt{2\times(6.674\times 10^{-11})(2.03\times 10^{30})/5.84\times 10^{6}} \)：</p>
+          <p>\[ v_{\mathrm{esc}}=\sqrt{4.64\times 10^{13}}=6.8\times 10^{6}\,\mathrm{m/s}=6\,800\,\mathrm{km/s}\approx 0.023\,c \]</p>
+          <p>仍远小于光速，故牛顿近似合适；这与中子星 \( v_{\mathrm{esc}}\sim 0.6c \) 形成对比，后者必须用广义相对论。</p>
+          <p><span class="ans">\( \bar\rho\approx 2.4\times 10^{9}\,\mathrm{kg/m^{3}} \)，\( g\approx 4.0\times 10^{6}\,\mathrm{m/s^{2}} \)，\( v_{\mathrm{esc}}\approx 6.8\times 10^{6}\,\mathrm{m/s}\approx 0.023c \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.2 中子星的密度、逃逸速度与相对论修正</h4>
+        <p class="example-statement">典型中子星：\( M=1.4\,M_\odot \)、\( R=10\,\mathrm{km}=10^{4}\,\mathrm{m} \)。求：(a) 平均密度 \( \bar\rho \)（与核物质密度 \( \rho_{\text{nuc}}=2.8\times 10^{17}\,\mathrm{kg/m^3} \) 比较）；(b) 表面逃逸速度 \( v_{\mathrm{esc}} \) 与光速比；(c) 时空曲率参数 \( R_s/R \)（即引力红移因子 \( \sqrt{1-R_s/R} \)）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \( M=1.4\times 1.989\times 10^{30}=2.78\times 10^{30}\,\mathrm{kg} \)。体积 \( V=\frac{4}{3}\pi(10^{4})^{3}=4.19\times 10^{12}\,\mathrm{m^{3}} \)。</p>
+          <p>\[ \bar\rho=\frac{2.78\times 10^{30}}{4.19\times 10^{12}}=6.6\times 10^{17}\,\mathrm{kg/m^{3}}\approx 2.4\,\rho_{\text{nuc}} \]</p>
+          <p>故中子星的平均密度已达核物质密度的量级；中心密度更高（\( \sim 5\!-\!10\rho_{\text{nuc}} \)）。</p>
+          <p>(b) \( v_{\mathrm{esc}}=\sqrt{2GM/R}=\sqrt{2\times 6.674\times 10^{-11}\times 2.78\times 10^{30}/10^{4}}=\sqrt{3.71\times 10^{16}}=1.93\times 10^{8}\,\mathrm{m/s} \)。</p>
+          <p>\[ \frac{v_{\mathrm{esc}}}{c}=\frac{1.93\times 10^{8}}{3.0\times 10^{8}}=0.64 \]</p>
+          <p>\( v_{\mathrm{esc}}\sim 0.64c \) 远非牛顿区域 —— 必须用广义相对论。施瓦茨希尔德半径：</p>
+          <p>\[ R_s=\frac{2GM}{c^{2}}=\frac{2\times 6.674\times 10^{-11}\times 2.78\times 10^{30}}{(3.0\times 10^{8})^{2}}=\frac{3.71\times 10^{20}}{9.0\times 10^{16}}=4.12\times 10^{3}\,\mathrm{m}=4.1\,\mathrm{km} \]</p>
+          <p>(c) 比值 \( R_s/R=4.12/10=0.41 \)。表面引力红移因子：</p>
+          <p>\[ z=\frac{1}{\sqrt{1-R_s/R}}-1=\frac{1}{\sqrt{1-0.41}}-1=\frac{1}{\sqrt{0.59}}-1=1.30-1=0.30 \]</p>
+          <p>从中子星表面发射的光子到达无穷远时频率红移 30%、能量降低 23%。如果继续压缩使 \( R\to R_s \)，红移发散 → 即为黑洞。中子星已极度接近这个阈值。</p>
+          <p><span class="ans">\( \bar\rho\approx 6.6\times 10^{17}\,\mathrm{kg/m^{3}}\approx 2.4\rho_{\text{nuc}} \)；\( v_{\mathrm{esc}}\approx 1.9\times 10^{8}\,\mathrm{m/s}\approx 0.64c \)；\( R_s/R\approx 0.41 \)、\( z\approx 0.30 \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.3 Crab 脉冲星的自转减损光度与特征年龄</h4>
+        <p class="example-statement">Crab 脉冲星 (PSR B0531+21) 由公元 1054 年中国天文学家记录的超新星遗迹形成。观测周期 \( P=33.40\,\mathrm{ms} \)、\( \dot P=4.21\times 10^{-13} \)。取中子星转动惯量 \( I=1.0\times 10^{38}\,\mathrm{kg\,m^{2}} \)。求：(a) 自转减损光度 \( L_{\mathrm{spin}} \)（以 \( L_\odot \) 表示）；(b) 特征年龄 \( \tau \)；(c) 估计极区磁场 \( B_p \)（取 \( \sin\alpha=1 \)、\( R=10\,\mathrm{km} \)）；(d) 与实际年龄 \( \sim 970\,\mathrm{yr} \) 比较。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) 由 \( L_{\mathrm{spin}}=4\pi^{2}I\dot P/P^{3} \)：</p>
+          <p>\[ P^{3}=(3.340\times 10^{-2})^{3}=3.73\times 10^{-5}\,\mathrm{s^{3}} \]</p>
+          <p>\[ L_{\mathrm{spin}}=\frac{4\pi^{2}(1.0\times 10^{38})(4.21\times 10^{-13})}{3.73\times 10^{-5}}=\frac{1.66\times 10^{26}}{3.73\times 10^{-5}}=4.45\times 10^{30}\,\mathrm{W} \]</p>
+          <p>\[ L_{\mathrm{spin}}/L_\odot=4.45\times 10^{30}/3.83\times 10^{26}=1.16\times 10^{4} \]</p>
+          <p>这颗直径 20 km 的中子星辐射相当于 11 600 个太阳——能量来自自转动能 \( \tfrac{1}{2}I\Omega^{2}=\tfrac{1}{2}(10^{38})(2\pi/0.0334)^{2}=1.77\times 10^{42}\,\mathrm{J} \)，按目前损失率可维持 \( \sim 1.3\times 10^{4}\,\mathrm{yr} \)。</p>
+          <p>(b) 特征年龄：</p>
+          <p>\[ \tau=\frac{P}{2\dot P}=\frac{3.340\times 10^{-2}}{2\times 4.21\times 10^{-13}}=3.97\times 10^{10}\,\mathrm{s}=\frac{3.97\times 10^{10}}{3.156\times 10^{7}}=1\,257\,\mathrm{yr} \]</p>
+          <p>(c) 由 \( L_{\mathrm{spin}}=B_p^{2}R^{6}\Omega^{4}/(6c^{3}\mu_0) \)（取 \( \sin\alpha=1 \)，国际单位制），解出：</p>
+          <p>\[ B_p=\Big(\frac{6\mu_0 c^{3}L}{R^{6}\Omega^{4}}\Big)^{1/2} \]</p>
+          <p>代入 \( \Omega=2\pi/P=188\,\mathrm{rad/s} \)、\( \Omega^{4}=1.25\times 10^{9} \)、\( R=10^{4}\,\mathrm{m} \)、\( R^{6}=10^{24} \)、\( c^{3}=2.7\times 10^{25} \)、\( \mu_0=4\pi\times 10^{-7} \)：</p>
+          <p>\[ B_p=\Big(\frac{6\times 4\pi\times 10^{-7}\times 2.7\times 10^{25}\times 4.45\times 10^{30}}{10^{24}\times 1.25\times 10^{9}}\Big)^{1/2}=\Big(\frac{9.0\times 10^{30}}{1.25\times 10^{33}}\Big)^{1/2} \]</p>
+          <p>\[ B_p\approx(7.2\times 10^{-3})^{1/2}\,\mathrm{T}\cdot(\text{单位换算})\approx 8\times 10^{8}\,\mathrm{T}=8\times 10^{12}\,\mathrm{G} \]</p>
+          <p>（注：常见教学公式用 cgs 单位制 \( B_p=3.2\times 10^{19}\sqrt{P\dot P}\,\mathrm{G} \)，代入 \( P=0.0334 \)、\( \dot P=4.21\times 10^{-13} \) 得 \( B_p=3.8\times 10^{12}\,\mathrm{G} \)，量级一致。）</p>
+          <p>(d) 特征年龄 \( \tau\approx 1\,257\,\mathrm{yr} \) 比实际年龄 \( 2026-1054=972\,\mathrm{yr} \) 长约 30%。差异来源：实际制动指数 \( n\approx 2.5\neq 3 \)（早期星云阻尼、磁场衰减、粒子风），且初始周期 \( P_0\approx 19\,\mathrm{ms}\neq 0 \)。即便如此，特征年龄仍是一个极有用的量级估计。</p>
+          <p><span class="ans">\( L_{\mathrm{spin}}\approx 4.5\times 10^{30}\,\mathrm{W}\approx 1.2\times 10^{4}L_\odot \)；\( \tau\approx 1\,260\,\mathrm{yr} \)；\( B_p\sim 4\!-\!8\times 10^{12}\,\mathrm{G} \)；与实际 \( \sim 970\,\mathrm{yr} \) 相符到 30%。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.4 黑洞的爱丁顿光度与吸积效率</h4>
+        <p class="example-statement">考虑一颗 \( M=10\,M_\odot \) 的恒星级黑洞，从伴星吸积。(a) 计算爱丁顿光度 \( L_{\mathrm{Edd}} \)；(b) 若吸积率 \( \dot M=10^{-8}\,M_\odot/\mathrm{yr} \)、辐射效率 \( \eta=0.10 \)，求光度 \( L \) 与爱丁顿比 \( \lambda=L/L_{\mathrm{Edd}} \)；(c) 把光度与太阳比较。已知 \( \sigma_T=6.652\times 10^{-29}\,\mathrm{m^{2}} \)、\( m_p=1.673\times 10^{-27}\,\mathrm{kg} \)、\( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( 1\,\mathrm{yr}=3.156\times 10^{7}\,\mathrm{s} \)、\( L_\odot=3.83\times 10^{26}\,\mathrm{W} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>(a) \( L_{\mathrm{Edd}}=\dfrac{4\pi G M m_p c}{\sigma_T} \)。</p>
+          <p>\[ 4\pi G M m_p c=4\pi\times 6.674\times 10^{-11}\times 10\times 1.989\times 10^{30}\times 1.673\times 10^{-27}\times 3.0\times 10^{8} \]</p>
+          <p>\[ =4\pi\times 6.674\times 10\times 1.989\times 1.673\times 3.0\times 10^{(-11+30-27+8)}=4\pi\times 666\,\mathrm{kg^{2}\,m^{-1}\,s^{-1}}\cdot 1 \]</p>
+          <p>分子（除以 \( \sigma_T \)）：\( 4\pi\times 666=8\,365 \)、\( 8\,365/6.652\times 10^{-29}=1.26\times 10^{32}\,\mathrm{W} \)。</p>
+          <p>\[ L_{\mathrm{Edd}}=1.26\times 10^{32}\,\mathrm{W}\approx 3.3\times 10^{5}\,L_\odot \]</p>
+          <p>（验证：\( 1.26\times 10^{31}\,\mathrm{W}\times 10=1.26\times 10^{32}\,\mathrm{W} \)，符合公式 \( L_{\mathrm{Edd}}=1.26\times 10^{31}(M/M_\odot) \)。）</p>
+          <p>(b) \( \dot M=10^{-8}\times 1.989\times 10^{30}/3.156\times 10^{7}=6.30\times 10^{14}\,\mathrm{kg/s} \)。</p>
+          <p>\[ L=\eta\dot M c^{2}=0.10\times 6.30\times 10^{14}\times(3.0\times 10^{8})^{2}=0.10\times 6.30\times 10^{14}\times 9.0\times 10^{16}=5.67\times 10^{30}\,\mathrm{W} \]</p>
+          <p>\[ \lambda=\frac{L}{L_{\mathrm{Edd}}}=\frac{5.67\times 10^{30}}{1.26\times 10^{32}}=0.045\approx 4.5\% \]</p>
+          <p>这远低于爱丁顿极限，符合 Cygnus X-1 类恒星级黑洞 X 射线双星的典型观测（\( \lambda\sim 0.01\!-\!0.1 \)）。</p>
+          <p>(c) 与太阳比较：</p>
+          <p>\[ L/L_\odot=5.67\times 10^{30}/3.83\times 10^{26}=1.48\times 10^{4} \]</p>
+          <p>即该黑洞吸积的光度是太阳的 14 800 倍，主要在 X 射线波段。注意效率对比：吸积 \( \eta=0.10 \)、氢聚变 \( \eta_{\mathrm{pp}}=0.007 \)——吸积比核聚变高效 14 倍以上，是宇宙最高效的能源之一。</p>
+          <p><span class="ans">\( L_{\mathrm{Edd}}\approx 1.26\times 10^{32}\,\mathrm{W} \)；\( L\approx 5.7\times 10^{30}\,\mathrm{W} \)；\( \lambda\approx 0.045 \)；\( L\approx 1.5\times 10^{4}L_\odot \)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 5.5 超大质量黑洞的施瓦茨希尔德半径</h4>
+        <p class="example-statement">事件视界望远镜对 M87* 的成像给出 \( M_{\mathrm{M87}}=6.5\times 10^{9}\,M_\odot \)；银河系中心 Sgr A* 的 \( M_{\mathrm{SgrA}}=4.14\times 10^{6}\,M_\odot \)。求两者的施瓦茨希尔德半径 \( R_s \)、ISCO \( r_{\mathrm{ISCO}}=3R_s \)、ISCO 处的开普勒周期，并与太阳系尺度比较。已知 \( M_\odot=1.989\times 10^{30}\,\mathrm{kg} \)、\( 1\,\mathrm{AU}=1.496\times 10^{11}\,\mathrm{m} \)、\( R_\odot=6.96\times 10^{8}\,\mathrm{m} \)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>对 M87*：</p>
+          <p>\[ R_s=\frac{2GM}{c^{2}}=\frac{2\times 6.674\times 10^{-11}\times 6.5\times 10^{9}\times 1.989\times 10^{30}}{(3.0\times 10^{8})^{2}} \]</p>
+          <p>\[ =\frac{2\times 6.674\times 6.5\times 1.989\times 10^{28}}{9.0\times 10^{16}}=\frac{1.725\times 10^{29}}{9.0\times 10^{16}}=1.92\times 10^{12}\,\mathrm{m} \]</p>
+          <p>\[ R_s=1.92\times 10^{12}\,\mathrm{m}=12.8\,\mathrm{AU}=2\,760\,R_\odot=1.27\times 10^{-4}\,\mathrm{ly} \]</p>
+          <p>\[ r_{\mathrm{ISCO}}=3R_s=5.75\times 10^{12}\,\mathrm{m}=38.5\,\mathrm{AU} \]</p>
+          <p>ISCO 处的开普勒角速度 \( \Omega=\sqrt{GM/r^{3}} \)、周期 \( T=2\pi/\Omega \)：</p>
+          <p>\[ T=\frac{2\pi r^{3/2}}{\sqrt{GM}}=\frac{2\pi(5.75\times 10^{12})^{3/2}}{\sqrt{6.674\times 10^{-11}\times 6.5\times 10^{9}\times 1.989\times 10^{30}}} \]</p>
+          <p>\[ =\frac{2\pi\times 4.37\times 10^{19}}{\sqrt{8.62\times 10^{29}}}=\frac{2.75\times 10^{20}}{9.29\times 10^{14}}=2.96\times 10^{5}\,\mathrm{s}\approx 3.4\,\mathrm{d} \]</p>
+          <p>对 Sgr A*：</p>
+          <p>\[ R_s=\frac{2GM}{c^{2}}=2.95\,\mathrm{km}\times\frac{M}{M_\odot}=2.95\times 10^{3}\times 4.14\times 10^{6}=1.22\times 10^{10}\,\mathrm{m}=0.081\,\mathrm{AU}=17.5\,R_\odot \]</p>
+          <p>\[ r_{\mathrm{ISCO}}=3R_s=3.66\times 10^{10}\,\mathrm{m}=0.245\,\mathrm{AU};\qquad T=\frac{2\pi r^{3/2}}{\sqrt{GM}}\approx 4.3\times 10^{3}\,\mathrm{s}\approx 72\,\mathrm{min} \]</p>
+          <p>对比：</p>
+          <ul>
+            <li>Sgr A* 的 \( R_s=17.5\,R_\odot \)，仅太阳半径的 17 倍——质量是太阳的 414 万倍，却压缩到比土星轨道小得多的体积。</li>
+            <li>M87* 的 \( R_s=12.8\,\mathrm{AU} \)，已超过土星轨道半径 (\( 9.5\,\mathrm{AU} \))，事件视界内可容下整个太阳系至土星。</li>
+            <li>Sgr A* 在 ISCO 处周期仅 \( \sim 72\,\mathrm{min} \)，这就是为什么 S 星（如 S2）近距离绕转可探测 GR 效应（轨道近日点进动、引力红移，Genzel、Ghez、Gravity Collaboration）。</li>
+          </ul>
+          <p><span class="ans">M87*：\( R_s\approx 1.9\times 10^{12}\,\mathrm{m}\approx 13\,\mathrm{AU} \)、\( r_{\mathrm{ISCO}}\approx 38\,\mathrm{AU} \)、\( T_{\mathrm{ISCO}}\approx 3.4\,\mathrm{d} \)。Sgr A*：\( R_s\approx 1.2\times 10^{10}\,\mathrm{m}\approx 0.08\,\mathrm{AU}\approx 17\,R_\odot \)、\( r_{\mathrm{ISCO}}\approx 0.24\,\mathrm{AU} \)、\( T_{\mathrm{ISCO}}\approx 72\,\mathrm{min} \)。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>把简并压当成熟压 / 热运动压</strong>：简并压 \( P_{\deg}\propto n^{5/3} \) 来自<strong>量子力学</strong>（泡利不相容原理），<em>不</em>依赖温度。冷却的白矮星半径几乎不变（\( R\propto T^{0} \)）；温度只是粒子的少量额外动能，不参与支撑。这是为什么白矮星可以冷却到几乎不可见但仍保持稳定——只要质量低于钱德拉塞卡极限。</li>
+        <li><strong>误用钱德拉塞卡极限的范围</strong>：\( M_{\mathrm{Ch}}\approx 1.44\,M_\odot \) 是<strong>电子简并气体</strong>（C/O 或 O/Ne/Mg 核）的上限，<em>不是</em>「恒星的最大质量」，也<em>不是</em>中子星的上限。中子星可以质量 \( >1.44\,M_\odot \)（如 PSR J0740+6620 的 \( 2.08\,M_\odot \)），因为它由<strong>中子</strong>简并 + 核力支撑。两个极限对应不同的支撑机制，不要混淆。</li>
+        <li><strong>误以为吸积 = 燃烧</strong>：吸积释放的不是核反应能，而是<strong>引力势能</strong>。物质从无穷远落到中子星表面，每千克释放 \( GM/R\approx 2\times 10^{16}\,\mathrm{J/kg}\approx 0.2c^{2} \)，比氢聚变（\( 0.007c^{2} \)）高效得多。黑洞在 ISCO 处的引力能释放约 \( 0.06\!-\!0.42c^{2} \)。这是为什么吸积盘是宇宙中最高效的能量来源。</li>
+        <li><strong>把脉冲星周期当作「中子星自转 = 看到的星表」</strong>：脉冲是<strong>磁极的灯塔光束扫过地球</strong>，不是中子星本体在视野里旋转。脉冲星每秒可转几百次（毫秒脉冲星），但表面线速度 \( v=\Omega R=2\pi R/P \) 不能超过光速：\( P_{\min}\gtrsim 2\pi R/c\approx 0.2\,\mathrm{ms} \)（实际更受离心破裂限制，\( \sim 0.3\!-\!1\,\mathrm{ms} \)）。脉冲星周期极稳定，可与原子钟媲美。</li>
+        <li><strong>把 Ia 型超新星当作核塌缩</strong>：Ia 型是<strong>白矮星的热核爆炸</strong>（碳点火失控，整星烧成 Ni/Fe），<em>不留残骸</em>；II 型是<strong>大质量恒星铁芯坍缩</strong>，<em>留下中子星或黑洞</em>。两者的光谱（有无氢线）、光变曲线（Phillips 关系）、产能（Ia \( \sim 10^{44}\,\mathrm{J} \)、II \( \sim 3\times 10^{46}\,\mathrm{J} \) 大部分为中微子）都不同。混用会导致宇宙学距离尺度的严重错误。</li>
+        <li><strong>把爱丁顿光度当作实际光度</strong>：\( L_{\mathrm{Edd}} \) 是<strong>理论上限</strong>，假定球对称、纯氢、汤姆孙散射。实际源通常 \( L\ll L_{\mathrm{Edd}} \)（如 \( \lambda\sim 0.01\!-\!0.1 \)）；某些 ULX 可能 \( \lambda>1 \)，但通常通过几何各向异性（锥形外流）实现而非真正超爱丁顿。<strong>不要</strong>用 \( L_{\mathrm{Edd}} \) 直接当作「该天体的光度」。</li>
+      </ul>
+    </section>
+
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+
+      <details class="problem">
+        <summary>1. （白矮星半径）由非相对论简并压 \( P=K\rho^{5/3} \)、\( K=(3\pi^{2})^{2/3}\hbar^{2}/(5m_e(\mu_e m_p)^{5/3}) \)，求多方指数 \( n=1.5 \) 的多方球给出 \( R\propto M^{-1/3} \)，并估计 \( 0.6\,M_\odot \) 白矮星的半径。</summary>
+        <div class="hint">对多方球 \( P=K\rho^{1+1/n} \)，半径 \( R\propto K^{n/(3-n)}M^{(1-n)/(3-n)} \)。代入 \( n=1.5 \)。</div>
+        <div class="solution">
+          <p>\( n=1.5 \) 给出 \( R\propto K\,M^{-1/3} \)。先求 \( R \) 对 \( 1\,M_\odot \) 的标度：精确解给 \( R\approx 7\,800\,\mathrm{km}\times(M/M_\odot)^{-1/3} \)。故 \( 0.6\,M_\odot \) 白矮星：</p>
+          <p>\[ R\approx 7\,800\times(0.6)^{-1/3}=7\,800\times 1.19=9\,300\,\mathrm{km}\approx 1.46\,R_{\oplus} \]</p>
+          <p>低质量白矮星更大，因简并压随密度上升较慢、需更大体积维持平衡。这解释了观测到的<strong>质量-半径反比关系</strong>。</p>
+          <p><span class="ans">\( R(0.6\,M_\odot)\approx 9\,300\,\mathrm{km}\approx 1.5\,R_{\oplus} \)。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>2. （钱德拉塞卡极限的依赖）公式 \( M_{\mathrm{Ch}}\propto(\hbar c/G)^{3/2}/(\mu_e m_p)^{2} \)。若把宇宙改成电子质量是真实值的 10 倍（其他不变），简并压如何变？\( M_{\mathrm{Ch}} \) 会变吗？</summary>
+        <div class="hint">极端相对论下 \( P\propto n^{4/3} \) 与 \( m_e \)<strong>无关</strong>！</div>
+        <div class="solution">
+          <p>关键洞察：在<strong>极端相对论</strong>极限下，电子能量 \( E\approx p c \) 与 \( m_e \) 无关，所以 \( P\propto n^{4/3} \) 与 \( m_e \) 无关，进而 \( M_{\mathrm{Ch}}\propto m_e^{0} \)<strong>不依赖电子质量</strong>！</p>
+          <p>这是钱德拉塞卡极限的深刻意义：它<strong>不</strong>来自电子质量，而来自 \( \hbar, c, G, m_p \) 这几个基本常数。在非相对论区域，\( R\propto m_e^{-5/3} \)（重电子 → 更小的白矮星），但极限质量不变。</p>
+          <p>数值：\( M_{\mathrm{Ch}}=0.77(\hbar c/G)^{3/2}/(\mu_e m_p)^{2} \)，\( m_e \) 不出现。 <span class="ans">\( M_{\mathrm{Ch}} \) 不变；但白矮星半径会改变。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>3. （脉冲星的最小周期）中子星离心破裂极限：表面物质（\( R=10\,\mathrm{km} \)）所受离心加速度 \( \Omega^{2}R \) 不能超过引力 \( GM/R^{2} \)。求破裂极限周期 \( P_{\min} \)（取 \( M=1.4\,M_\odot \)），并说明为何目前最快脉冲星 PSR J1748–2446ad（\( P=1.40\,\mathrm{ms} \)）仍稳定。</summary>
+        <div class="hint">\( \Omega^{2}R=GM/R^{2}\Rightarrow\Omega=\sqrt{GM/R^{3}} \)，\( P=2\pi/\Omega \)。注意这就是表面轨道开普勒周期。</div>
+        <div class="solution">
+          <p>\( \Omega_{\mathrm{break}}=\sqrt{GM/R^{3}}=\sqrt{6.674\times 10^{-11}\times 2.78\times 10^{30}/(10^{4})^{3}}=\sqrt{1.85\times 10^{3}}=4.3\times 10^{4}\,\mathrm{rad/s} \)。</p>
+          <p>\[ P_{\min}=\frac{2\pi}{\Omega_{\mathrm{break}}}=\frac{6.283}{4.3\times 10^{4}}=1.46\times 10^{-4}\,\mathrm{s}=0.146\,\mathrm{ms} \]</p>
+          <p>这是<strong>质量-体积破裂极限</strong>，比光速极限 \( P_{\min}=2\pi R/c=0.21\,\mathrm{ms} \) 还小。但实际<strong>物质强度</strong>限制更严：考虑中子星壳的弹性极限，理论下限约 \( 0.3\!-\!1\,\mathrm{ms} \)。</p>
+          <p>PSR J1748–2446ad 的 \( P=1.40\,\mathrm{ms} \) 仍高于此极限，故稳定。该脉冲星每秒自转 716 次，赤道线速度 \( v=2\pi R/P=4.5\times 10^{7}\,\mathrm{m/s}=0.15c \)，已接近相对论区域。</p>
+          <p><span class="ans">\( P_{\min}\approx 0.15\,\mathrm{ms} \)（离心破裂）；实际物质强度极限 \( \sim 0.3\!-\!1\,\mathrm{ms} \)。\( P=1.40\,\mathrm{ms} \) 安全。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>4. （GW150914 能量预算）GW150914 由两个黑洞 \( m_1=36\,M_\odot \)、\( m_2=29\,M_\odot \) 并合为 \( M_f=62\,M_\odot \)。(a) 有多少质量以引力波形式释放？(b) 释放总能量 \( E_{\mathrm{GW}} \)（焦耳）；(c) 与可观测宇宙所有恒星的光度总和（\( \sim 10^{49}\,\mathrm{W}\cdot 0.2\,\mathrm{s} \)）比较。\( M_\odot c^{2}=1.79\times 10^{47}\,\mathrm{J} \)。</summary>
+        <div class="hint">\( \Delta M=m_1+m_2-M_f \)；\( E=\Delta M c^{2} \)。</div>
+        <div class="solution">
+          <p>(a) \( \Delta M=36+29-62=3\,M_\odot \)。约 \( 4.5\% \) 的总质量能转化为引力波。</p>
+          <p>(b) \( E_{\mathrm{GW}}=3\,M_\odot c^{2}=3\times 1.79\times 10^{47}=5.4\times 10^{47}\,\mathrm{J} \)。</p>
+          <p>(c) 峰值光度 \( L_{\mathrm{peak}}\sim E_{\mathrm{GW}}/\Delta t\sim 5.4\times 10^{47}/0.2=2.7\times 10^{48}\,\mathrm{W} \)。这与可观测宇宙所有恒星总光度（\( \sim 10^{49}\,\mathrm{W} \)）相当——一个 100 km 尺度的源在 0.2 s 内输出了整个宇宙的光。</p>
+          <p>太阳一生总辐射 \( \sim 10^{44}\,\mathrm{J} \)，故这次并合释放的能量等于 \( 5\times 10^{3} \) 个太阳一生的总和。</p>
+          <p><span class="ans">\( \Delta M=3\,M_\odot \)；\( E_{\mathrm{GW}}\approx 5\times 10^{47}\,\mathrm{J} \)；峰值光度与可观测宇宙全部恒星总和相当。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>5. （宇宙学标准烛光）Ia 型超新星的峰值绝对星等 \( M_V\approx -19.3 \)。某超新星测得视星等 \( m_V=22.0 \)。忽略消光，求其距离（pc、Mpc）与红移 \( z \)（在 \( H_0=70\,\mathrm{km\,s^{-1}\,Mpc^{-1}} \)、\( z\ll 1 \) 极限）。</summary>
+        <div class="hint">距离模数 \( m-M=5\log_{10}(d/10\,\mathrm{pc}) \)；哈勃律 \( v=cz=H_0 d \)。</div>
+        <div class="solution">
+          <p>\( m-M=22.0-(-19.3)=41.3=5\log_{10}(d/10\,\mathrm{pc}) \)。</p>
+          <p>\[ \log_{10}(d/10\,\mathrm{pc})=8.26\Rightarrow d/10\,\mathrm{pc}=10^{8.26}=1.82\times 10^{8} \]</p>
+          <p>\[ d=1.82\times 10^{9}\,\mathrm{pc}=1\,820\,\mathrm{Mpc} \]</p>
+          <p>红移 \( z=v/c=H_0 d/c=(70\,\mathrm{km\,s^{-1}\,Mpc^{-1}})(1\,820\,\mathrm{Mpc})/(3.0\times 10^{5}\,\mathrm{km/s})=0.42 \)。</p>
+          <p>注意：\( z=0.42 \) 已不算「小」，更精确的宇宙学距离要用 \( \Lambda \)CDM 模型。但 Ia 超新星正是这样在 \( z\sim 0.5\!-\!1 \) 范围内测量出宇宙加速膨胀（Perlmutter、Riess、Schmidt 2011 诺奖）。</p>
+          <p><span class="ans">\( d\approx 1\,820\,\mathrm{Mpc} \)、\( z\approx 0.42 \)（粗略）。</span></p>
+        </div>
+      </details>
+
+      <details class="problem">
+        <summary>6. （概念题）解释为何中子星表面比白矮星表面更适合检验广义相对论，并给出一个具体可观测的 GR 效应。</summary>
+        <div class="hint">比较 \( R_s/R \)（红移因子）；考虑 \( v_{\mathrm{esc}}/c \)。</div>
+        <div class="solution">
+          <p>白矮星 \( R_s/R\sim 10^{-3} \)、\( v_{\mathrm{esc}}/c\sim 0.02 \)：GR 修正仅 \( \sim 10^{-3} \)，几乎测不到。中子星 \( R_s/R\sim 0.4 \)、\( v_{\mathrm{esc}}/c\sim 0.6 \)：GR 修正 \( \sim 1 \)，主导物理。</p>
+          <p>可观测的 GR 效应包括：(a) <strong>引力红移</strong>：中子星表面谱线红移 \( z=0.1\!-\!0.3 \)，可在 X 射线谱线测量；(b) <strong>脉冲星双星轨道衰变</strong>（PSR B1913+16，Hulse–Taylor，1993 诺奖）：轨道周期变化率 \( \dot P_b \) 与 GR 预言的引力波辐射能量损失一致到 0.2%；(c) <strong>Sgr A* 周围 S2 星近日点进动</strong>：每轨道 12 角分，已由 Gravity Collaboration 直接测得。</p>
+          <p><span class="ans">中子星 \( R_s/R\sim 0.4 \)，GR 修正远大于白矮星；可观测效应如脉冲星轨道衰变、X 射线谱线引力红移。</span></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation — 吸积盘 Accretion Disk</h2>
+      <p class="sim-desc">物质从外缘螺旋落入中心致密天体（黑洞或中子星）。蓝色粒子表示吸积盘气体，越过最内稳定圆轨道 (ISCO) 时被吞噬并辐射 X 射线闪光。调节中央天体质量与吸积率，观察引力能 \( \to \) 辐射的转换效率，并与爱丁顿光度比较。</p>
+      <div class="sim-container">
+        <canvas id="sim-5" width="640" height="440"></canvas>
+        <div class="sim-controls" id="controls-5"></div>
+      </div>
+      <script>
+        window.addEventListener('DOMContentLoaded', function () {
+          var PS = window.PhysicsSim;
+          var canvas = document.getElementById('sim-5');
+          var W = canvas.width, H = canvas.height;
+          var CX = W / 2, CY = H / 2 + 8;
+
+          /* physical constants (SI) */
+          var G  = 6.674e-11;
+          var c  = 3.0e8;
+          var Msun = 1.989e30;
+          var yr = 3.156e7;
+          var Lsun = 3.828e26;
+          var sigmaT = 6.652e-29;
+          var mp = 1.673e-27;
+
+          /* display geometry: r in units of R_ISCO */
+          var iscoPix  = 30;    // inner edge of disk (pixels)
+          var routR    = 9.0;   // outer edge of disk in units of ISCO
+          var inclSin  = 0.32;  // inclination: y-axis squashing for tilted view
+
+          /* slider state */
+          var params = {
+            M: 10,             // mass (solar masses)
+            Mdot: 1.0,         // accretion rate (1e-9 M_sun/yr)
+            isNS: false        // false = BH, true = NS
+          };
+
+          /* star field (deterministic positions) */
+          var starField = [];
+          for (var i = 0; i < 110; i++) {
+            starField.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              b: 0.25 + 0.75 * Math.random(),
+              tw: Math.random() * 6.283
+            });
+          }
+
+          function newState() {
+            var parts = [];
+            var N = 260;
+            for (var i = 0; i < N; i++) {
+              var u = Math.random();
+              var r = 1.3 + (routR - 1.3) * u;       // in units of R_ISCO
+              var phi = Math.random() * 6.2832;
+              parts.push({
+                r: r, phi: phi,
+                wob: 0.6 + 0.8 * Math.random(),       // vertical thickness
+                seed: Math.random()
+              });
+            }
+            return { parts: parts, flashes: [], accreted: 0, t: 0 };
+          }
+
+          /* helper: temperature-based color along the disk */
+          function diskColor(rR) {
+            // rR = r / R_ISCO; 1.0 inner -> ~9 outer; hotter inner = whiter/bluer
+            var frac = Math.max(0, Math.min(1, (rR - 1.0) / (routR - 1.0))); // 0 hot .. 1 cold
+            // hot: white-blue; cool: orange-red
+            var r = Math.round(255 * (1 - 0.55 * frac));
+            var g = Math.round(255 * (1 - 0.75 * frac));
+            var b = Math.round(255 * (1 - 0.30 * frac));
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+          }
+
+          var sim = PS.createSim(canvas, {
+            fps: 60,
+            state: function () { return newState(); },
+            step: function (dt, t, s) {
+              s.t += dt;
+              // speed up time so inspiral is visible
+              var DT = dt * 0.55;
+              // inflow rate scales weakly with accretion rate (visualization)
+              var inflow = 0.18 + 0.55 * Math.sqrt(params.Mdot);
+              for (var i = 0; i < s.parts.length; i++) {
+                var p = s.parts[i];
+                // Keplerian angular velocity: Omega = 1 / r^1.5  in units where GM=1, R_ISCO=1
+                var omega = Math.pow(p.r, -1.5);
+                p.phi += omega * DT * 1.4;
+                // inspiral: dr/dt = -k / r   (inner moves faster, mimics MRI viscous drift)
+                p.r -= (inflow / p.r) * DT * 0.9;
+                if (p.r < 1.0) {
+                  // particle crosses ISCO -> consumed, emits a flash
+                  s.flashes.push({
+                    phi: p.phi,
+                    life: 1.0,
+                    col: diskColor(1.0)
+                  });
+                  s.accreted += 1;
+                  // respawn at outer edge (accretion supplies new material)
+                  p.r = routR - 0.3 * Math.random();
+                  p.phi = Math.random() * 6.2832;
+                }
+              }
+              // fade flashes
+              for (var j = s.flashes.length - 1; j >= 0; j--) {
+                s.flashes[j].life -= DT * 2.4;
+                if (s.flashes[j].life <= 0) s.flashes.splice(j, 1);
+              }
+            },
+            draw: function (ctx, s, env) {
+              PS.clear(ctx);
+              var C = PS.colors;
+
+              /* ---- deep-space background ---- */
+              ctx.fillStyle = (C.bg === '#ffffff') ? '#04060f' : '#04060f';
+              ctx.fillRect(0, 0, W, H);
+              // subtle nebula glow
+              var grd = ctx.createRadialGradient(CX, CY, 20, CX, CY, 280);
+              grd.addColorStop(0, 'rgba(70,40,120,0.45)');
+              grd.addColorStop(0.5, 'rgba(20,20,60,0.20)');
+              grd.addColorStop(1, 'rgba(0,0,0,0)');
+              ctx.fillStyle = grd;
+              ctx.fillRect(0, 0, W, H);
+
+              /* ---- star field ---- */
+              for (var k = 0; k < starField.length; k++) {
+                var sf = starField[k];
+                var tw = 0.7 + 0.3 * Math.sin(s.t * 2.0 + sf.tw);
+                ctx.fillStyle = 'rgba(220,225,255,' + (sf.b * tw * 0.85).toFixed(3) + ')';
+                ctx.fillRect(sf.x, sf.y, 1.4, 1.4);
+              }
+
+              /* ---- faint disk guide rings (concentric ellipses) ---- */
+              ctx.save();
+              ctx.strokeStyle = 'rgba(120,150,220,0.10)';
+              ctx.lineWidth = 1;
+              for (var rr = 2; rr <= routR; rr += 1.0) {
+                ctx.beginPath();
+                ctx.ellipse(CX, CY, iscoPix * rr, iscoPix * rr * inclSin, 0, 0, 6.2832);
+                ctx.stroke();
+              }
+              ctx.restore();
+
+              /* ---- ISCO ring (highlighted) ---- */
+              ctx.save();
+              ctx.strokeStyle = 'rgba(255,210,90,0.55)';
+              ctx.setLineDash([5, 4]);
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.ellipse(CX, CY, iscoPix, iscoPix * inclSin, 0, 0, 6.2832);
+              ctx.stroke();
+              ctx.restore();
+
+              /* ---- disk particles ---- */
+              for (var i = 0; i < s.parts.length; i++) {
+                var p = s.parts[i];
+                var rp = iscoPix * p.r;
+                var x = CX + rp * Math.cos(p.phi);
+                var y = CY + rp * Math.sin(p.phi) * inclSin;
+                // hotter (inner) particles brighter and bigger
+                var col = diskColor(p.r);
+                var sz = 1.2 + 1.6 * Math.max(0, (3.0 - p.r) / 3.0);
+                ctx.fillStyle = col;
+                ctx.globalAlpha = 0.85;
+                ctx.beginPath();
+                ctx.arc(x, y, sz, 0, 6.2832);
+                ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+
+              /* ---- X-ray flashes at ISCO ---- */
+              for (var f = 0; f < s.flashes.length; f++) {
+                var fl = s.flashes[f];
+                var fr = iscoPix;
+                var fx = CX + fr * Math.cos(fl.phi);
+                var fy = CY + fr * Math.sin(fl.phi) * inclSin;
+                var a = fl.life * fl.life;
+                ctx.save();
+                // bright spike pointing radially outward
+                ctx.strokeStyle = 'rgba(255,255,240,' + (0.7 * a).toFixed(3) + ')';
+                ctx.lineWidth = 1.4 + 1.5 * a;
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                ctx.lineTo(fx + 14 * Math.cos(fl.phi), fy + 14 * Math.sin(fl.phi) * inclSin);
+                ctx.stroke();
+                // bright halo
+                var grd2 = ctx.createRadialGradient(fx, fy, 0, fx, fy, 8 + 10 * a);
+                grd2.addColorStop(0, 'rgba(255,255,255,' + (0.9 * a).toFixed(3) + ')');
+                grd2.addColorStop(0.5, 'rgba(180,210,255,' + (0.4 * a).toFixed(3) + ')');
+                grd2.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = grd2;
+                ctx.beginPath();
+                ctx.arc(fx, fy, 8 + 10 * a, 0, 6.2832);
+                ctx.fill();
+                ctx.restore();
+              }
+
+              /* ---- central compact object ---- */
+              var objR = params.isNS ? 7 : 11;
+              if (params.isNS) {
+                // neutron star: bright glowing sphere with hot spots
+                var nsGrd = ctx.createRadialGradient(CX, CY, 0, CX, CY, objR + 6);
+                nsGrd.addColorStop(0, 'rgba(255,255,255,1)');
+                nsGrd.addColorStop(0.4, 'rgba(180,210,255,0.9)');
+                nsGrd.addColorStop(1, 'rgba(60,90,180,0)');
+                ctx.fillStyle = nsGrd;
+                ctx.beginPath();
+                ctx.arc(CX, CY, objR + 6, 0, 6.2832);
+                ctx.fill();
+                ctx.fillStyle = '#f0f6ff';
+                ctx.beginPath();
+                ctx.arc(CX, CY, objR, 0, 6.2832);
+                ctx.fill();
+              } else {
+                // black hole: photon ring + black event horizon
+                var rsPix = objR;
+                // photon sphere glow
+                var psGrd = ctx.createRadialGradient(CX, CY, rsPix, CX, CY, rsPix + 14);
+                psGrd.addColorStop(0, 'rgba(255,200,90,0.65)');
+                psGrd.addColorStop(1, 'rgba(255,150,40,0)');
+                ctx.fillStyle = psGrd;
+                ctx.beginPath();
+                ctx.arc(CX, CY, rsPix + 14, 0, 6.2832);
+                ctx.fill();
+                // event horizon
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(CX, CY, rsPix, 0, 6.2832);
+                ctx.fill();
+                // photon ring
+                ctx.strokeStyle = 'rgba(255,210,90,0.85)';
+                ctx.lineWidth = 1.6;
+                ctx.beginPath();
+                ctx.arc(CX, CY, rsPix + 1.5, 0, 6.2832);
+                ctx.stroke();
+              }
+
+              /* ---- physics readouts ---- */
+              var Mkg = params.M * Msun;
+              var MdotSI = params.Mdot * 1e-9 * Msun / yr;        // kg/s
+              var eta = params.isNS ? 0.20 : 0.10;                // radiative efficiency
+              var L = eta * MdotSI * c * c;                       // accretion luminosity (W)
+              var Ledd = 4 * Math.PI * G * Mkg * mp * c / sigmaT; // Eddington (W)
+              var ratio = L / Ledd;
+              var Rs_m = 2 * G * Mkg / (c * c);                   // Schwarzschild radius (m)
+              var Tdisk = 1.0e7 * Math.pow(params.M / 10, 0.25) * Math.pow(params.Mdot, 0.25); // characteristic T (K), approximate
+
+              /* ---- text panel ---- */
+              ctx.save();
+              ctx.fillStyle = 'rgba(8,12,28,0.78)';
+              ctx.fillRect(10, 10, 270, 138);
+              ctx.strokeStyle = 'rgba(120,160,230,0.35)';
+              ctx.lineWidth = 1;
+              ctx.strokeRect(10, 10, 270, 138);
+
+              ctx.fillStyle = '#e8ecff';
+              ctx.font = 'bold 13px system-ui, sans-serif';
+              ctx.fillText(params.isNS ? '中子星 Neutron Star' : '黑洞 Black Hole', 20, 30);
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.fillStyle = '#cfd6f5';
+              var lines = [
+                'M = ' + params.M.toFixed(1) + ' M☉',
+                'Ṁ = ' + params.Mdot.toFixed(2) + ' × 10⁻⁹ M☉/yr',
+                'η = ' + eta.toFixed(2) + '   (辐射效率)',
+                'L = ' + L.toExponential(2) + ' W',
+                '  = ' + (L / Lsun).toExponential(2) + ' L☉',
+                'L_Edd = ' + Ledd.toExponential(2) + ' W',
+                'λ = L/L_Edd = ' + (ratio * 100).toFixed(2) + ' %',
+                'R_s = ' + Rs_m.toExponential(2) + ' m'
+              ];
+              for (var li = 0; li < lines.length; li++) {
+                ctx.fillText(lines[li], 20, 50 + li * 13);
+              }
+              ctx.restore();
+
+              /* ---- legend at bottom ---- */
+              ctx.save();
+              ctx.fillStyle = '#cfd6f5';
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('黄色虚线 = ISCO（最内稳定圆轨道）；内缘粒子越过 ISCO 时被吞噬并发出 X 射线闪光', W / 2, H - 22);
+              ctx.fillText('引力势能 → 辐射：η Ṁ c² （吸积是宇宙最高效的能源之一，比核聚变高 ~14 倍）', W / 2, H - 7);
+              ctx.restore();
+
+              /* ---- accreted counter (top-right) ---- */
+              ctx.save();
+              ctx.fillStyle = '#cfd6f5';
+              ctx.font = '11px system-ui, sans-serif';
+              ctx.textAlign = 'right';
+              ctx.fillText('已吞噬粒子 particles accreted: ' + s.accreted, W - 14, 24);
+              ctx.restore();
+            }
+          });
+
+          var ctl = PS.makeControls(document.getElementById('controls-5'), [
+            { type: 'slider', key: 'M',    label: '中央质量 M (M☉)',   min: 1,  max: 20, step: 0.5, value: 10 },
+            { type: 'slider', key: 'Mdot', label: '吸积率 Ṁ (10⁻⁹ M☉/yr)', min: 0.1, max: 5, step: 0.1, value: 1.0 },
+            { type: 'toggle', key: 'isNS', label: '中子星 (否则黑洞) Neutron star', value: false },
+            { type: 'button', key: 'reset', label: '↺ 重置 Reset' }
+          ]);
+          ctl.on('M',    function (v) { params.M = v; });
+          ctl.on('Mdot', function (v) { params.Mdot = v; });
+          ctl.on('isNS', function (v) { params.isNS = v; });
+          ctl.on('reset', function () {
+            params.M = 10; params.Mdot = 1.0; params.isNS = false;
+            var ctr = document.getElementById('controls-5');
+            var inputs = ctr.querySelectorAll('input');
+            if (inputs[0] && inputs[0].type === 'range')   inputs[0].value = '10';
+            if (inputs[1] && inputs[1].type === 'range')   inputs[1].value = '1';
+            if (inputs[2] && inputs[2].type === 'checkbox') inputs[2].checked = false;
+            var spans = ctr.querySelectorAll('.ctrl-slider .ctrl-value');
+            if (spans[0]) spans[0].textContent = '10.0';
+            if (spans[1]) spans[1].textContent = '1.0';
+            sim.reset();
+          });
+        });
+      </script>
+    </section>
+
+    <section class="summary">
+      <h2>📝 本章小结 Summary &amp; Key Formulas</h2>
+      <ul>
+        <li><strong>致密天体三谱系</strong>：白矮星（电子简并压，\( M\lesssim 1.4\,M_\odot \)）、中子星（中子简并 + 核力，\( M\lesssim 2\!-\!3\,M_\odot \)）、黑洞（无支撑，奇点 + 视界）。质量越大，半径越小，密度与引力越极端。</li>
+        <li><strong>简并压是量子的</strong>，与温度无关：\( P_{e,\deg}\propto n^{5/3} \)（NR）或 \( \propto n^{4/3} \)（ER）。冷却不会让白矮星坍缩。<strong>钱德拉塞卡极限</strong> \( M_{\mathrm{Ch}}\approx 1.44\,M_\odot \) 来自 ER 极限下 \( P\propto\rho^{4/3} \) 不足以抵抗引力，划定 WD/NS 边界。</li>
+        <li><strong>中子星</strong> \( R\sim 10\,\mathrm{km} \)、\( \bar\rho\sim 10^{17}\,\mathrm{kg/m^{3}} \)、\( v_{\mathrm{esc}}\sim 0.6c \)；必须用 TOV 方程（GR 流体静力学）。TOV 极限 \( \sim 2\!-\!3\,M_\odot \)，观测下限 \( 2.08\,M_\odot \)。</li>
+        <li><strong>脉冲星</strong> = 旋转磁化中子星；灯塔辐射。自转减损光度 \( L_{\mathrm{spin}}=4\pi^{2}I\dot P/P^{3} \)，特征年龄 \( \tau=P/(2\dot P) \)。磁星 \( B\sim 10^{14\!-\!15}\,\mathrm{G} \)，能量来自磁场衰变。</li>
+        <li><strong>黑洞</strong>：\( R_s=2GM/c^{2}\approx 2.95\,\mathrm{km}\,(M/M_\odot) \)，ISCO \( =3R_s \)。Sgr A* (\( 4\times 10^{6}\,M_\odot \)) \( R_s=0.08\,\mathrm{AU} \)；M87* (\( 6.5\times 10^{9}\,M_\odot \)) \( R_s=13\,\mathrm{AU} \)。</li>
+        <li><strong>吸积</strong>是宇宙最高效能源：\( L=\eta\dot M c^{2} \)，\( \eta_{\mathrm{BH}}\approx 0.1 \)、\( \eta_{\mathrm{NS}}\approx 0.2 \)，远超核聚变 \( \eta_{\mathrm{pp}}=0.007 \)。<strong>爱丁顿光度</strong> \( L_{\mathrm{Edd}}=1.26\times 10^{31}(M/M_\odot)\,\mathrm{W} \) 是球对称吸积上限。</li>
+        <li><strong>超新星</strong>两通道：Ia 型（白矮星热核爆炸，标准烛光，无残骸）vs II 型（大质量恒星核塌缩，留中子星 / 黑洞，99% 能量由中微子携带）。</li>
+        <li><strong>高能现象</strong>：AGN/quasar（SMBH 吸积 + 喷流）、GRB（长暴 = 坍缩星，短暴 = NS 并合）、引力波（致密双星并合，GW150914 / GW170817）共同构成多信使高能天体物理图景，连接第 2 章（GR）与第 4 章（恒星演化）。</li>
+      </ul>
+      <div class="formula">\[ P_{e,\deg}=\frac{(3\pi^{2})^{2/3}\hbar^{2}}{5m_e}\,n_e^{5/3};\qquad M_{\mathrm{Ch}}\approx 0.77\,\frac{(\hbar c/G)^{3/2}}{(\mu_e m_p)^{2}}\approx 1.44\,M_\odot \]</div>
+      <div class="formula">\[ R_s=\frac{2GM}{c^{2}};\qquad r_{\mathrm{ISCO}}=\frac{6GM}{c^{2}};\qquad v_{\mathrm{esc}}=\sqrt{\frac{2GM}{R}} \]</div>
+      <div class="formula">\[ L_{\mathrm{spin}}=4\pi^{2}I\,\frac{\dot P}{P^{3}},\qquad \tau=\frac{P}{2\dot P};\qquad L_{\mathrm{Edd}}=\frac{4\pi G M m_p c}{\sigma_T}=1.26\times 10^{31}\,\frac{M}{M_\odot}\,\mathrm{W} \]</div>
+      <div class="formula">\[ L=\eta\,\dot M\,c^{2}\;\;(\eta\approx 0.1\,\text{BH},\,0.2\,\text{NS},\,0.007\,\text{pp 链});\qquad E_{\mathrm{bind}}\sim\frac{GM^{2}}{R} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a class="prev" href="#"></a>
+      <a href="../index.html">目录 Index</a>
+      <a class="next" href="#"></a>
+    </nav>
+  </main>
+</body>
+</html>
