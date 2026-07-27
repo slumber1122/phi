@@ -290,7 +290,7 @@
     }
 
     var foot = document.createElement('div'); foot.className = 'sidebar-foot';
-    foot.textContent = '大一物理 · 八学期';
+    foot.textContent = '大学物理 · 八学期';
     sb.appendChild(foot);
   }
 
