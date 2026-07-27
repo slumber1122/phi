@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 E · 双缝干涉的历史 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 E · Appendix E · 量子标志实验 An Iconic Experiment</p>
+      <h1>双缝干涉的历史 <span class="en-title">The Double-Slit: A History</span></h1>
+    </header>
+
+    <p class="lead">双缝实验 (double-slit experiment) 是物理学两百年里被反复重做的一个实验，但每重做一次，它揭示的物理就深一层。它先证明<strong>光是波</strong>（杨，1801），再证明<strong>光以量子存在、而每个量子自己和自己干涉</strong>（泰勒与现代单光子），又证明<strong>电子、甚至大分子都是波</strong>，最后逼出量子力学最反直觉的结论：<strong>"走了哪条缝"的信息与干涉条纹不能共存</strong>（互补性、量子擦除、延迟选择、退相干）。本附录按时间顺序讲清每个版本<strong>具体是怎么做的</strong>，以及它背后的逻辑。The double-slit experiment has been repeated for two centuries, each version probing deeper — from the wave nature of light, to single-quantum self-interference, to matter waves, to the complementarity of which-path information and interference.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>用两条相干路径的叠加 \( \psi=\psi_1+\psi_2 \) 导出双缝条纹 \(I\propto\cos^{2}(\varphi/2)\) 与条纹间距。</li>
+        <li>讲清杨（1801）、泰勒（1909）、单电子（1961/1989）三个里程碑<strong>各自的实验装置与做法</strong>。</li>
+        <li>说明"怎么得到一个光子/电子"在不同年代的真正含义：衰减估算法 vs 现 heralded 单光子源（SPDC/原子级联）。</li>
+        <li>解释 which-path 信息为何<strong>消除</strong>干涉，并用 duality 关系 \(V^{2}+D^{2}\le 1\) 量化。</li>
+        <li>理解量子擦除、延迟选择、退相干如何说明"是信息、而非物理扰动"决定条纹的有无。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心物理 Core Physics</h2>
+      <p>设两条等宽狭缝相距 \(d\)，屏在距离 \(L\) 处（\(L\gg d\)）。屏上离中心 \(y\) 处到两缝的路程差为 \(\Delta=d\sin\theta\approx d\,y/L\)，对应相位差</p>
+      <div class="formula">\[ \varphi=\frac{2\pi}{\lambda}\,\Delta=\frac{2\pi\,d\,y}{\lambda L} \]</div>
+      <p>两路振幅叠加（相干）给出光强：</p>
+      <div class="formula">\[ \psi=\psi_1+\psi_2,\qquad I=|\psi|^{2}=4I_0\cos^{2}\!\left(\frac{\varphi}{2}\right)=2I_0\bigl[1+\cos\varphi\bigr] \]</div>
+      <p>亮纹（相长）出现在 \(\Delta=m\lambda\)（\(m=0,\pm1,\pm2,\dots\)），暗纹（相消）在 \(\Delta=(m+\tfrac12)\lambda\)。相邻亮纹间距</p>
+      <div class="formula">\[ \Delta y=\frac{\lambda L}{d} \]</div>
+      <p>这就是<strong>经典波动</strong>的全部。但量子版本的关键，是下面这条<strong>叠加振幅</strong>：即使每次只有一个量子到达，它的<strong>概率振幅</strong>仍同时走过两条缝，\(|\psi_1+\psi_2|^{2}\) 决定它在屏上某点被探测到的概率——条纹是<strong>统计地</strong>、一个一个累积出来的（Born 规则）。</p>
+      <div class="note"><strong>关于"怎么得到一个量子"</strong>（贯穿全篇的关键问题）：物理学上"一个一个的量子"有两类很不相同的实现。<strong>(a) 衰减估算法</strong>（泰勒 1909）：把普通热光/弧光用吸收滤光片极度减弱，再由光源功率与光子能量 \(hf\) 估算光子流，使<strong>装置里同时平均不到一个光子</strong>；但热光是<strong>相干态混杂光 (chaotic light)</strong>，并非真正的单光子源。<strong>(b) 真·单光子源</strong>（现代）：用原子级联或自发参量下转换 (SPDC)，靠<strong>探测到"伴随光子"</strong>来"宣告 (herald)"目标光子的存在，并可测二阶相关 \(g^{(2)}(0)<\tfrac12\) 严格证明反聚束（一次只发一个）。两者结论一致（条纹照常出现），但只有 (b) 才算实验上"干净"的单光子。</div>
+      <div class="key-terms">double-slit (双缝), coherence (相干性), path difference (程差 \(\Delta\)), fringe spacing (条纹间距 \(\Delta y\)), superposition (叠加), probability amplitude (概率幅), wave-particle duality (波粒二象性), complementarity (互补原理)</div>
+    </section>
+
+    <!-- ============================================================= HISTORY -->
+    <section class="core-concepts">
+      <h2>🕰️ 各历史版本 The Historical Versions</h2>
+
+      <h3>① 杨氏实验 (Young, 1801) —— 证明光是波</h3>
+      <p><strong>怎么做：</strong>让<strong>阳光先穿过一个针孔</strong>（得到一个近似点光源，保证<strong>空间相干</strong>），再照射一张刻有<strong>两条平行狭缝</strong>的卡片；在远处屏（或直接用眼）上看到明暗相间的条纹。杨还用一面镜子把一束光劈成两束再会合。<strong>探测器</strong>就是肉眼/屏。<strong>逻辑：</strong>条纹 = 两束相干光的程差叠加，这是<strong>波</strong>的指纹，颗粒（牛顿的微粒说）无法解释。这奠定了光的波动说。</p>
+
+      <h3>② 菲涅尔与"泊松亮点" (Fresnel 1818 / Arago) —— 波动说的巩固</h3>
+      <p><strong>怎么做：</strong>点光源照射一个<strong>小圆盘（遮挡物）</strong>，在几何阴影正中央竟然出现一个<strong>亮斑</strong>（泊松为反驳波动说而由理论预言、阿拉果实验证实，故称 Arago spot / 泊松亮点）。虽不是双缝，但它和双缝同属"波在边缘绕射、相干叠加"的证据，巩固了波动说。<strong>逻辑：</strong>惠更斯–菲涅耳原理——波前上每一点都是子波源。</p>
+
+      <h3>③ 泰勒的"弱光"实验 (Taylor, 1909) —— 单光子也能干涉吗？</h3>
+      <p><strong>怎么做（重点）：</strong>泰勒把<strong>弧光灯</strong>的光用一层层<strong>吸收滤光片（深色玻璃）极度衰减</strong>，通过双缝/衍射装置，投射到<strong>照相底片</strong>上长时间曝光（最暗的一组曝光<strong>长达数月</strong>）。<strong>怎么"得到一个光子"：</strong>他并未制造单光子源——而是由光源的发光强度、滤光片透过率与光子能量 \(hf\) 估算光子流，确认<strong>光子之间平均距离远大于装置尺寸</strong>，即"装置内同一时刻至多一个光子"。<strong>结果：</strong>无论光多弱，<strong>条纹位置与衬度不变</strong>。<strong>逻辑：</strong>如果一个光子（在装置里独行时）仍产生干涉，它就只能"<strong>和自己干涉</strong>"——光的波动性属于单个量子，不是光子之间相互作用的结果。</p>
+      <div class="note"><strong>诚实的现代注记：</strong>泰勒用的是热光，无法真正保证"一个一个"（混杂光里光子仍可能成团到达）。严格意义下的单光子干涉，要到 1980 年代用<strong> heralded 单光子源</strong> + 单光子计数 + 反聚束测量 \(g^{(2)}(0)<\tfrac12\) 才算干净证实。但泰勒的<strong>思路</strong>——"弱化到一次一个，看条纹是否依旧"——是整个论证的起点。</div>
+
+      <h3>④ 现代单光子版 (Aspect 1986；后续) —— 真正一次一个</h3>
+      <p><strong>怎么得到一个光子：</strong>用<strong>原子级联辐射</strong>（钙原子先后发两个光子，探测第一个即"宣告"第二个存在）或<strong>自发参量下转换 SPDC</strong>（非线性晶体把一个泵浦光子劈成两个能量较低、动量守恒的纠缠光子；探测其中之一 herald 另一个）。<strong>探测：</strong>雪崩光电二极管/光电倍增管作单光子计数，逐点扫描缝后强度并做<strong>符合计数</strong>。<strong>结果：</strong>条纹随探测计数<strong>一个一个累积</strong>而显现；\(g^{(2)}(0)<\tfrac12\) 证明确为单光子。<strong>逻辑：</strong>把泰勒的推断变成可严格检验的实验事实。</p>
+
+      <h3>⑤ 电子双缝 (Möllenstedt &amp; Jönsson 1961；外村彰 1989) —— 物质也是波</h3>
+      <p><strong>怎么得到电子并"开缝"：</strong>电子枪（热/场发射阴极）发射电子并加速到约 \(50\,\unit{keV}\)，由 de Broglie 关系其波长仅 \(\lambda=h/p\sim 5\,\unit{pm}\)——<strong>无法用物理刀片刻出 pm 级的双缝</strong>。解决办法是<strong>电子双棱镜 (electron biprism)</strong>：一根带正电的极细（\(\mu\unit{m}\) 级）导线置于两接地极板之间，把电子波<strong>劈成两路再重叠</strong>，等效于双缝。<strong>探测：</strong>电子敏胶片，或荧光屏+CCD（外村彰用荧光屏+摄像机<strong>逐帧累积</strong>约一小时）。<strong>结果：</strong>每个电子打出一个点，条纹<strong>统计地浮现</strong>。<strong>逻辑：</strong>波粒二象性不只属于光，<strong>实物粒子也有波性</strong>。</p>
+
+      <h3>⑥ which-path 与互补性 (Einstein 1927 可动缝；Bohr；Feynman；Scully 1991) —— 信息杀死条纹</h3>
+      <p><strong>思想实验（爱因斯坦 1927）：</strong>把一条缝装在<strong>可动的轻质座</strong>上；电子若从该缝穿过会使其<strong>反冲</strong>，由动量守恒即可知道走了哪条缝。<strong>玻尔的反诘：</strong>要让缝座能"看清"反冲，缝的位置就必须确定得足够好（\(\Delta x\) 小），由不确定关系 \(\Delta x\,\Delta p\ge\hbar/2\)，动量不确定便足以<strong>抹平条纹</strong>——互补性 (complementarity) 自洽。<strong>Feynman</strong> 在讲义里把"测了哪条缝→条纹消失"当作量子力学最核心的现象。<strong>真正实现（Scully 等 1991）：</strong>在每条缝处放一个<strong>微波腔</strong>，原子穿过时留一个光子作标记，<strong>几乎没有动量扰动</strong>，条纹照样消失。<strong>逻辑：</strong>消除干涉的是<strong>"走了哪条缝"的可得信息</strong>，而不是测量带来的物理踢动。可用 duality 关系量化：</p>
+      <div class="formula">\[ V^{2}+D^{2}\le 1,\qquad V=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}\;(\text{条纹衬度}),\quad D=\text{路径可区分度} \]</div>
+      <p>条纹衬度 \(V\) 与路径可区分度 \(D\) 此消彼长（Englert, 1996）：完全不区分（\(D=0\)）则条纹最清（\(V=1\)）；完全区分（\(D=1\)）则条纹消失（\(V=0\)）。</p>
+
+      <h3>⑦ 量子擦除与延迟选择 (Walborn 2002；Wheeler 1978 / Jacques 2007) —— 擦掉信息，条纹回来</h3>
+      <p><strong>量子擦除 (Walborn 等 2002)：</strong>用 SPDC 产生<strong>纠缠光子对</strong>，用一个偏振片给路径"做记号"（which-path）→条纹消失；再插入一个"擦除"偏振片把记号抹掉，<strong>在符合计数中条纹又回来了</strong>。<strong>延迟选择 (Wheeler 1978，Jacques 等 2007 实现)：</strong>在光子<strong>已经过了缝之后</strong>才随机决定"测波动（看条纹）"还是"测粒子（记路径）"。<strong>结果：</strong>测量方式决定看到的现象，没有"光子当初实际走了一条缝"这种朴素实在。<strong>逻辑：</strong>把"信息决定现象"推到极致，但并不需要超距/逆果（一切自洽于标准量子力学）。</p>
+
+      <h3>⑧ 大分子干涉与退相干 (Arndt &amp; Zeilinger 1999 C₆₀；其后) —— 量子–经典边界</h3>
+      <p><strong>怎么做：</strong>把 C₆₀ 富勒烯（720 amu）在约 \(900\,\unit{K}\) 烤炉中蒸发成分子束，准直后穿过<strong>纳米加工的衍射光栅</strong>（SiN，缝宽约 \(50\,\unit{nm}\)），用<strong>激光电离+质谱</strong>逐个计数分子落点。其 de Broglie 波长约几个 pm。<strong>结果：</strong>大分子照样形成衍射/干涉条纹。<strong>更关键的退相干实验（Hackermüller 2004 等）：</strong>把 C₆₀ 加热到会<strong>自发辐射热光子</strong>，这些光子带走路径信息→<strong>条纹逐渐变淡消失</strong>。<strong>逻辑：</strong>量子性消失不是因为"物体太大"，而是因为它<strong>与环境纠缠</strong>、which-path 信息泄漏到环境（退相干 decoherence）。这把"为什么日常物体不显量子性"落到了机制上。</p>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation</h2>
+      <p class="step"><strong>条纹间距。</strong>亮纹条件 \(d\sin\theta=m\lambda\)，小角下 \(\sin\theta\approx\tan\theta=y/L\)，故 \(y_m=m\lambda L/d\)，相邻亮纹间距 \(\Delta y=\lambda L/d\)。可见：缝越近（\(d\downarrow\)）条纹越宽；波长越长条纹越宽。</p>
+      <p class="step"><strong>叠加产生交叉项。</strong>\(|\psi_1+\psi_2|^{2}=|\psi_1|^{2}+|\psi_2|^{2}+2\,\mathrm{Re}(\psi_1^{*}\psi_2)\)。最后一项 \(2\,\mathrm{Re}(\psi_1^{*}\psi_2)=2I_0\cos\varphi\) 正是<strong>干涉项</strong>。which-path 测量使两路振幅不再相干（密度矩阵非对角元 \(\rho_{12}\to0\)），交叉项消失，强度退化为 \(|\psi_1|^{2}+|\psi_2|^{2}\)——条纹被洗掉。</p>
+      <p class="step"><strong>duality 关系（轮廓）。</strong>把密度矩阵非对角元的模 \(|\rho_{12}|\) 与条纹衬度 \(V=2|\rho_{12}|/(\rho_{11}+\rho_{22})\) 联系，而路径可区分度 \(D\) 由对角化偏置给出，可得 \(V^{2}+D^{2}\le1\)。它把"波性"与"粒子性（路径）"放在同一把尺子上：知道路径（\(D\to1\)）就必然牺牲条纹（\(V\to0\)）。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1　估算"装置里同时至多一个光子"需要多弱的光</h4>
+        <p class="example-statement">绿光 \(\lambda=500\,\unit{nm}\)，双缝到屏距离 \(L=1.0\,\unit{m}\)，装置尺度 \(\sim1\,\unit{m}\)。若要光子之间平均距离 \(\gtrsim1\,\unit{m}\)（保证同时至多一个），光子流通量上限是多少？</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>光子能量 \(E_\gamma=hf=hc/\lambda=(6.626\times10^{-34})(3.0\times10^{8})/(5.0\times10^{-7})=3.98\times10^{-19}\,\unit{J}\)。</p>
+          <p class="step">"平均距离 1 m"即光子每秒到达数 \(\Phi\) 满足 \(\Phi\times(1\,\unit{s})\) 间隔 1 m：光子通量 \(\Phi\le c/1\,\unit{m}=3.0\times10^{8}\,\unit{s^{-1}}\)？不对——平均间距 1 m 指相邻光子在路径上相隔 1 m，即每秒通过 \(\Phi=c/(1\,\unit{m})\) 个？应满足光子数密度 \(n\) 使 \(n\cdot(1\,\unit{m})\) 截面内 \(\le1\)。简单估：通量 \(\Phi\)（光子/秒）对应平均时间间隔 \(1/\Phi\)，飞行 1 m 用时 \(1/c\approx3.3\times10^{-9}\,\unit{s}\)。要求"同时只有一个"即间隔 \(\gtrsim\) 飞行时间：\(1/\Phi\gtrsim3.3\times10^{-9}\,\unit{s}\Rightarrow\Phi\lesssim3\times10^{8}\,\unit{s^{-1}}\)。</p>
+          <p class="step">对应功率 \(P=\Phi E_\gamma\lesssim(3\times10^{8})(3.98\times10^{-19})\approx1.2\times10^{-10}\,\unit{W}\)，即<strong>百皮瓦量级</strong>。</p>
+          <p><span class="ans">通量上限 \(\Phi\lesssim3\times10^{8}\) 光子/秒（功率 \(\sim10^{-10}\,\unit{W}\)）即可保证装置内同时至多一个光子——泰勒的弱光已远弱于此。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2　50 keV 电子的 de Broglie 波长</h4>
+        <p class="example-statement">外村彰实验用 \(V=50\,\unit{kV}\) 加速的电子。求其波长 \(\lambda\)（相对论修正）。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>电子动能为 \(K=eV=50\,\unit{keV}\)，与静能 \(m_ec^{2}=511\,\unit{keV}\) 相比不可忽略，需相对论：\(p=\frac{1}{c}\sqrt{K^{2}+2Km_ec^{2}}\)。</p>
+          <p class="step">\(K^{2}+2Km_ec^{2}=(50)^{2}+2(50)(511)=2500+51100=53600\,\unit{(keV)^{2}}\)；\(\sqrt{}=231.5\,\unit{keV}\)。</p>
+          <p class="step">\(\lambda=hc/(pc)=1240\,\unit{eV\,nm}/(2.315\times10^{5}\,\unit{eV})=5.36\times10^{-3}\,\unit{nm}=5.36\,\unit{pm}\)。</p>
+          <p><span class="ans">\(\lambda\approx5.4\,\unit{pm}\)。波长如此之短，正是必须用电子双棱镜而非物理双缝的原因。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3　which-path 可靠度与条纹衬度</h4>
+        <p class="example-statement">若路径探测的可靠度使可区分度 \(D=0.60\)，求条纹衬度 \(V\) 的上限。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>由 \(V^{2}+D^{2}\le1\) 取等号得上限：\(V\le\sqrt{1-D^{2}}=\sqrt{1-0.36}=\sqrt{0.64}=0.80\)。</p>
+          <p class="step">即条纹最大衬度只能到 \(80\%\)；若 \(D=1\)（完全知道路径），\(V=0\)，条纹全无。</p>
+          <p><span class="ans">\(V\le0.80\)（路径信息越确定，条纹越淡）。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"电子其实只走了一条缝，只是我们不知道哪条。"<br>纠正：在显示干涉的实验里，电子的概率振幅<strong>同时走过两条缝</strong>（\(\psi_1+\psi_2\)）；它不是"走了某一条而我们不知"，否则就不会有干涉项。</li>
+        <li><strong>误区：</strong>"测量干扰了电子轨迹，所以条纹没了。"<br>纠正：Scully 的腔实验<strong>几乎无动量扰动</strong>仍消除条纹；消除干涉的是<strong>which-path 信息的可得性</strong>，不是物理踢动。</li>
+        <li><strong>误区：</strong>"泰勒做出了单光子源。"<br>纠正：泰勒只是<strong>把热光衰减</strong>并估算"一次一个"；真正的单光子源（heralded、反聚束）是 1980 年代以后的事。</li>
+        <li><strong>误区：</strong>"延迟选择意味着现在的测量改变了过去。"<br>纠正：无需逆因果；量子力学只预言<strong>测量结果的整体统计</strong>，"光子走了一条具体路径"本身就是被否定 的经典图像。</li>
+        <li><strong>误区：</strong>"物体一大就一定没有量子性。"<br>纠正：大分子实验显示量子性可延续到数千甚至上万 amu；消失的真正原因是<strong>退相干（与环境纠缠、信息泄漏）</strong>，不是尺寸本身。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 钠光 \(\lambda=589\,\unit{nm}\) 双缝，\(d=0.40\,\unit{mm}\)，屏距 \(L=1.5\,\unit{m}\)。求条纹间距。</summary>
+        <div class="hint">\(\Delta y=\lambda L/d\)。</div>
+        <div class="solution">\(\Delta y=(5.89\times10^{-7})(1.5)/(4.0\times10^{-4})=2.21\times10^{-3}\,\unit{m}\)。<span class="ans">\(\Delta y\approx2.2\,\unit{mm}\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 欲使电子双缝条纹间距达 \(1\,\mu\unit{m}\)（屏距 \(L=0.5\,\unit{m}\)），需多大加速电压？（用经典近似估级）</summary>
+        <div class="hint">\(\lambda=h/\sqrt{2m_e eV}\)，\(\Delta y=\lambda L/d\)，取缝距 \(d=1\,\mu\unit{m}\)。</div>
+        <div class="solution">由 \(\Delta y=\lambda L/d\Rightarrow\lambda=\Delta y\,d/L=(10^{-6})(10^{-6})/0.5=2\times10^{-12}\,\unit{m}=2\,\unit{pm}\)。\(\lambda=h/\sqrt{2m_e eV}\Rightarrow V=h^{2}/(2m_e e\lambda^{2})\)。\(h^{2}=4.39\times10^{-67}\)；\(2m_e e\lambda^{2}=2(9.11\times10^{-31})(1.602\times10^{-19})(4\times10^{-24})=1.17\times10^{-72}\)；\(V=4.39\times10^{-67}/1.17\times10^{-72}\approx3.75\times10^{5}\,\unit{V}\)。<span class="ans">约 \(4\times10^{5}\,\unit{V}\)（数百 kV，与高分辨率电镜同量级）。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. 若把 which-path 可区分度从 \(D=0\) 缓慢调到 \(D=1\)，画 \(V(D)\) 并解释条纹如何变淡。</summary>
+        <div class="solution">\(V=\sqrt{1-D^{2}}\)：\(D=0\to V=1\)（最清）；\(D=0.6\to V=0.8\)；\(D\to1\to V\to0\)（条纹消失）。条纹衬度按 \(\sqrt{1-D^{2}}\) 下降，正如下方仿真拖动 D 滑块所见。<span class="ans">\(V(D)=\sqrt{1-D^{2}}\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>4. （概念）为什么用电子双棱镜而非刻物理双缝？为什么 C₆₀ 干涉要用光栅而不是"两条缝"的卡片？</summary>
+        <div class="solution">电子/分子的 de Broglie 波长为 pm 级，无法用机械方法刻出 pm 级、且能让实物粒子穿过的双缝；故用等效装置：电子用电场（双棱镜细丝）劈波，分子用纳米加工的光栅（多缝，多缝也是干涉，主极大间距由光栅方程决定）。<span class="ans">波长太短，须用电场/纳米光栅等效实现"双缝"。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">单量子双缝：粒子<strong>一个一个</strong>到达（琥珀点），逐渐累积出条纹（靛蓝曲线为理论 \(I\propto[1+V\cos\varphi]/2\)）。拖动 <strong>D（which-path 可靠度）</strong>：\(V=\sqrt{1-D^{2}}\)，条纹随之被"信息"洗淡——\(D=0\) 时条纹最清，\(D=1\) 时只剩一片均匀（无干涉）。<strong>缝距 d</strong> 改条纹密度，<strong>波长 λ</strong> 改条纹宽窄。</p>
+      <div class="sim-container">
+        <canvas id="sim-ds" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-ds"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-ds');
+        var W = canvas.width, H = canvas.height, AXIS = H / 2;
+        var SRC = 34, SLIT = 168, SCR = 588;     // source / slit plane / screen (x)
+        var L = SCR - SLIT;                       // slit-to-screen distance (px)
+        var YMAX = 150;                           // screen half-range sampled (px)
+
+        var params = { d: 86, lambda: 6, D: 0, speed: 8 };
+
+        // P(y) = 0.5 * (1 + V cos(2π d y / (λ L))),  V = sqrt(1 - D^2)
+        function visibility() { return Math.sqrt(Math.max(0, 1 - params.D * params.D)); }
+        function phase(y) { return 2 * Math.PI * params.d * y / (params.lambda * L); }
+        function P(y) { return 0.5 * (1 + visibility() * Math.cos(phase(y))); }
+
+        // rejection-sample a screen y from P(y)
+        function sampleY() {
+          for (var k = 0; k < 40; k++) {
+            var y = (Math.random() * 2 - 1) * YMAX;
+            if (Math.random() < P(y)) return y;
+          }
+          return (Math.random() * 2 - 1) * YMAX;
+        }
+
+        var dots = [];          // {y}
+        var MAXDOTS = 2600;
+
+        function addDots(n) {
+          for (var i = 0; i < n; i++) {
+            dots.push({ y: sampleY() });
+            if (dots.length > MAXDOTS) dots.shift();
+          }
+        }
+
+        function fringeSpacing() { return params.lambda * L / params.d; }
+
+        var sim = PS.createSim(canvas, {
+          state: function () { dots = []; return {}; },
+          step: function (dt) { addDots(Math.max(1, Math.round(params.speed))); },
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+
+            // theoretical curve (hangs left of the screen)
+            var scale = 200, v = visibility();
+            ctx.strokeStyle = C.trace; ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            for (var y = -YMAX; y <= YMAX; y += 2) {
+              var x = SCR - scale * 0.5 * (1 + v * Math.cos(phase(y)));
+              if (y === -YMAX) ctx.moveTo(x, AXIS + y); else ctx.lineTo(x, AXIS + y);
+            }
+            ctx.stroke();
+
+            // accumulated detection dots
+            ctx.fillStyle = C.accent;
+            for (var i = 0; i < dots.length; i++) {
+              ctx.globalAlpha = 0.85;
+              ctx.fillRect(SCR - 1 + (Math.random() - 0.5) * 0, AXIS + dots[i].y - 1, 2, 2);
+            }
+            ctx.globalAlpha = 1;
+
+            // source
+            ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 10;
+            PS.drawCircle(ctx, SRC, AXIS, 5, { fill: C.accent }); ctx.restore();
+            PS.drawText(ctx, '源 source', SRC, AXIS + 22, { font: '10px monospace', color: C.text, align: 'center' });
+
+            // slit plane with two slits
+            ctx.fillStyle = C.text;
+            var half = params.d / 2, w = 3, gap = 7;
+            ctx.fillRect(SLIT - w / 2, 0, w, AXIS - half - gap);                 // top bar
+            ctx.fillRect(SLIT - w / 2, AXIS - half + gap, w, 2 * (half - gap));  // middle bar
+            ctx.fillRect(SLIT - w / 2, AXIS + half + gap, w, H - (AXIS + half + gap)); // bottom bar
+            PS.drawText(ctx, '缝 slits', SLIT, H - 8, { font: '10px monospace', color: C.text, align: 'center' });
+
+            // screen
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(SCR, 12); ctx.lineTo(SCR, H - 16); ctx.stroke();
+            PS.drawText(ctx, '屏 screen', SCR, H - 8, { font: '10px monospace', color: C.text, align: 'center' });
+
+            // readouts
+            var V = visibility();
+            var info = 'D = ' + params.D.toFixed(2) + '   V = ' + V.toFixed(2) +
+                       '   |   V² + D² = ' + (V * V + params.D * params.D).toFixed(2) +
+                       '   |   条纹间距 Δy ≈ ' + Math.round(fringeSpacing()) + ' px   |   ' +
+                       dots.length + ' 个粒子';
+            PS.drawText(ctx, info, 6, 14, { font: '11px monospace', color: C.text });
+          },
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-ds'), [
+          { type: 'slider', key: 'D',      label: 'which-path 可靠度 D', min: 0, max: 1, step: 0.02, value: 0 },
+          { type: 'slider', key: 'd',      label: '缝距 d (px)', min: 40, max: 140, step: 2, value: 86 },
+          { type: 'slider', key: 'lambda', label: '波长 λ (px)', min: 3, max: 12, step: 0.5, value: 6 },
+          { type: 'slider', key: 'speed',  label: '发射速度 rate', min: 1, max: 30, step: 1, value: 8 },
+          { type: 'button', key: 'reset',  label: '↺ 清屏 Reset' },
+        ]);
+        ctl.on('D',      function (v) { params.D = v; });
+        ctl.on('d',      function (v) { params.d = v; });
+        ctl.on('lambda', function (v) { params.lambda = v; });
+        ctl.on('speed',  function (v) { params.speed = v; });
+        ctl.on('reset',  function () { dots = []; sim.reset(); });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>双缝是<strong>同一实验、逐层加深</strong>的系列：波（杨）→ 量子自干涉（泰勒/现代单光子）→ 物质波（电子/分子）→ 信息与条纹的互斥（which-path/互补性）→ 擦除与延迟选择 → 退相干。</li>
+        <li>"一次一个"有两类实现：<strong>衰减估算</strong>（泰勒）与<strong> heralded 单量子源</strong>（SPDC/原子级联 + 反聚束）。</li>
+        <li>电子/分子波长为 pm 级，须用<strong>双棱镜/纳米光栅</strong>等效实现双缝。</li>
+        <li>消除干涉的是 <strong>which-path 信息</strong>（\(V^{2}+D^{2}\le1\)），不是物理扰动；擦除信息可恢复条纹。</li>
+        <li>量子–经典边界由<strong>退相干</strong>（与环境纠缠、信息泄漏）决定，而非尺寸本身。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;I\propto\cos^{2}\!\left(\frac{\pi d y}{\lambda L}\right),\quad \Delta y=\frac{\lambda L}{d},\quad V^{2}+D^{2}\le1\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

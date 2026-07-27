@@ -50,6 +50,7 @@
           { url: 'appendix/math-review.html', title: '数学回顾', en: 'Math Review', ref: true },
           { url: 'appendix/constants.html', title: '物理常数与单位', en: 'Constants & Units', ref: true },
           { url: 'appendix/electron-gun.html', title: '电子枪（实验装置）', en: 'The Electron Gun', ref: true },
+          { url: 'appendix/double-slit.html', title: '双缝干涉的历史', en: 'The Double-Slit: A History', ref: true },
         ]},
       ],
     },
