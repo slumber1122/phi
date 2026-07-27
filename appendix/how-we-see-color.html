@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 I · 我们如何看到颜色 — 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 I · Appendix I · 从光子到色觉 From Photons to Color</p>
+      <h1>我们如何看到颜色 <span class="en-title">How We See Color</span></h1>
+    </header>
+
+    <p class="lead">"看到绿色的草"是一条从太阳到大脑的因果链，每一步都是<strong>光子与分子经量子化能级相互作用</strong>：太阳发光子 → 草的叶绿素<strong>选择性吸收</strong>蓝/红、反射绿 → 绿光子进眼睛 → 视网膜三种<strong>视锥</strong>各自取样 → 大脑把三路信号<strong>诠释成"绿"</strong>。本附录讲清这条链，并用一个仿真把"光源谱 × 物体反射率 → 视锥响应 → 感知色"整条流水线可视化。Seeing color is a chain of photon–molecule interactions from the source, through selective reflection, to the cones and the brain.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>讲清"看到颜色"的五步链：发射 → 选择性吸收/反射 → 入眼光谱 → 视锥探测 → 大脑诠释。</li>
+        <li>解释草为什么是绿的：叶绿素吸收蓝(\(\sim430\,\unit{nm}\))与红(\(\sim660\,\unit{nm}\))、反射绿。</li>
+        <li>说明三色视觉 (trichromacy)：L/M/S 三种视锥在不同波长有不同敏感度。</li>
+        <li>理解<strong>颜色是大脑的感知</strong>，不是光或物体固有的属性；同一光谱在不同眼睛(如鸟有 4 种视锥)下颜色不同。</li>
+        <li>用仿真验证：物体反射率与照明光源共同决定入眼光谱，从而决定看到的颜色。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 五步因果链 The Causal Chain</h2>
+
+      <h3>① 光源发射光子</h3>
+      <p>太阳是 \(\sim5800\,\unit{K}\) 黑体，发出全谱可见光（附录 H 机制①）；白炽灯(\(\sim3000\,\unit{K}\))偏红；白光 LED 近似白色。光源的光谱功率分布 \(S(\lambda)\) 决定各波长光子的多寡。</p>
+
+      <h3>② 物体选择性吸收 / 反射</h3>
+      <p>物体的颜色不在它"发出"什么，而在它<strong>留下（吸收）什么、放走（反射）什么</strong>。草里的<strong>叶绿素 (chlorophyll)</strong> 分子有特定能级，强烈吸收：</p>
+      <div class="formula">\[ \text{蓝光 }\sim430\,\unit{nm}\;(\text{Soret 带}),\qquad \text{红光 }\sim660\,\unit{nm}\;(\text{Q 带}) \]</div>
+      <p>这两段能量恰好激发叶绿素电子、驱动光合作用；而对<strong>绿光 \(\sim500\!\sim\!570\,\unit{nm}\) 几乎不吸收</strong>，于是反射出来。用反射率 \(R(\lambda)\) 描述：进入眼睛的光谱</p>
+      <div class="formula">\[ E(\lambda)=S(\lambda)\cdot R(\lambda) \]</div>
+      <p>番茄的番茄红素吸收蓝绿、反射红；蓝天的瑞利散射 \(\propto1/\lambda^{4}\) 偏蓝；白纸几乎全反射。</p>
+
+      <h3>③ 视锥探测（三色视觉）</h3>
+      <p>视网膜有三种<strong>视锥 (cones)</strong>，感光色素不同、峰值波长各异：</p>
+      <div class="formula">\[ S\sim442\,\unit{nm}\;(\text{蓝}),\quad M\sim545\,\unit{nm}\;(\text{绿}),\quad L\sim565\,\unit{nm}\;(\text{红}) \]</div>
+      <p>每种视锥的响应是入眼光谱与自身灵敏度曲线的乘积之和：</p>
+      <div class="formula">\[ L_{\text{resp}}=\int E(\lambda)\,\ell(\lambda)\,d\lambda,\quad M_{\text{resp}}=\int E(\lambda)\,m(\lambda)\,d\lambda,\quad S_{\text{resp}}=\int E(\lambda)\,s(\lambda)\,d\lambda \]</div>
+      <p>光子被色素（视蛋白 + 视黄醛）吸收后，发生 <strong>11-顺式 → 全反式视黄醛</strong> 的<strong>构型异构化</strong>（一个由 \(h\nu\) 触发的分子形变），启动光转导级联产生电信号——这仍是 \(\Delta E=h\nu\)。</p>
+
+      <h3>④ 大脑构建颜色（对立处理）</h3>
+      <p>L/M/S 三路信号被神经节细胞重编码为<strong>对立通道</strong>：红↔绿、蓝↔黄、明↔暗。"绿"是大脑对"<strong>M 响应强于 L、S 偏弱</strong>"这一模式的标签。<strong>颜色是感知，不在光里</strong>——单个光子只有能量 \(h\nu\)，"绿"是大脑对光谱组成的诠释（鸟有 4 种视锥，能看到紫外，世界就不是我们这般颜色）。</p>
+      <div class="key-terms">reflectance (反射率 \(R\)), illuminant (光源), chlorophyll (叶绿素), cones (视锥), trichromacy (三色视觉), photopigment (感光色素), opponent process (对立处理), perception (感知)</div>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation：颜色是三个积分的函数</h2>
+      <p>整个色觉可概括为：物体的颜色 = 入眼光谱 \(E(\lambda)\) 在三种视锥灵敏度上的投影。给定光源 \(S(\lambda)\) 与物体反射率 \(R(\lambda)\)，三个数 \(L_{\text{resp}},M_{\text{resp}},S_{\text{resp}}\) 唯一确定大脑看到的色觉。由此可推出两条重要结论：</p>
+      <p class="step"><strong>结论 1：换光源，颜色会变。</strong>同一草，在偏红的白炽灯下，绿光子本来就少（\(S(\lambda)\) 在绿段弱）→ 草显得暗淡发黄；在纯蓝光下，草几乎不反射蓝 → 看起来发黑。这就是<strong>照明色温</strong>影响物体外观的根源。</p>
+      <p class="step"><strong>结论 2：同色异谱 (metamerism)。</strong>两个<strong>光谱完全不同</strong>的光，只要在 L/M/S 三个积分上给出相同的三个数，大脑就判为<strong>同一种颜色</strong>。显示器正是靠此：用红绿蓝三色像素骗过三视锥，合成出"看起来"和自然光谱一样的颜色。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+      <article class="example">
+        <h4>例 1　为什么草反射的是绿、而不是最强的那一段？</h4>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>太阳光谱在可见区较平（峰值近 \(\sim500\,\unit{nm}\)）。叶绿素在蓝(\(\sim430\))和红(\(\sim660\))有强吸收带用于光合作用，恰好"漏掉"中间的绿段不吸收，于是绿被反射。<strong>草的绿 = 叶绿素不吸收的那一段</strong>，而非草"偏爱"绿。</p>
+          <p><span class="ans">绿是被"剩下来"反射的；蓝红被吸收去做了光合作用。</span></p>
+        </div>
+      </article>
+      <article class="example">
+        <h4>例 2　纯蓝光下，番茄为什么看起来发黑？</h4>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>番茄红素反射红(\(>620\,\unit{nm}\))、吸收蓝绿。纯蓝光(\(\sim450\,\unit{nm}\))几乎全被吸收 → \(E(\lambda)\approx0\) → 三视锥都几乎不响应 → 大脑判为<strong>暗/黑</strong>。</p>
+          <p><span class="ans">番茄不反射蓝光，故在蓝光下几无光进入眼睛 → 发黑。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"草本身是绿色的。"<br>纠正：草<strong>反射</strong>绿光；"绿"是进入你眼睛的光谱与你的视锥/大脑共同决定的。<strong>没有观察者就没有"绿"</strong>。</li>
+        <li><strong>误区：</strong>"颜色是光的客观属性。"<br>纠正：光只有波长/能量；颜色是大脑对三视锥响应的诠释。同色异谱证明不同光谱可显同色。</li>
+        <li><strong>误区：</strong>"物体在什么光下颜色都不变。"<br>纠正：颜色随光源 \(S(\lambda)\) 变（白炽灯偏黄、钠灯下几乎所有色都失真）。</li>
+        <li><strong>误区：</strong>"人有三原色，所有动物都一样。"<br>纠正：很多鸟/爬行动物有 4 种视锥（含紫外），昆虫复眼又是另一套；色觉因物种而异。</li>
+        <li><strong>误区：</strong>"视锥直接'看到'颜色。"<br>纠正：视锥只输出三个数字；颜色是大脑<strong>对立处理</strong>后构造的。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. 把草放到钠灯（几乎只有 \(589\,\unit{nm}\) 黄光）下，会看到什么颜色？为什么？</summary>
+        <div class="solution">草在 \(589\,\unit{nm}\)（黄绿）有中等反射，且光源只有这一条线 → 入眼几乎单色黄绿，三视锥给出一组特定响应 → 看到<strong>暗黄绿</strong>（且所有物体都偏这一色，故钠灯下世界失真）。<span class="ans">暗黄绿色；单色光源使所有物体同色化。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. （概念）为什么显示器只需红绿蓝三色像素就能合成几乎所有颜色？</summary>
+        <div class="solution">人只有三种视锥；任何光谱只要在这三视锥上积分出相同的三数 \(L,M,S\)，大脑就判为同色（同色异谱）。RGB 像素就是精心选三条谱线去"匹配"目标光谱的三视锥响应。<span class="ans">利用同色异谱，三色足以匹配三视锥。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. 红绿色盲者缺少哪种视锥？为什么红绿信号灯对他们仍可区分（靠亮度/位置）？</summary>
+        <div class="solution">多为缺少或异常 M（或 L）视锥 → 红绿通道退化。但红绿光的<strong>亮度</strong>不同、且信号灯靠<strong>位置（上红下绿）</strong>编码，故仍可分辨。<span class="ans">缺 M/L 视锥；靠亮度与位置区分。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation：颜色流水线</h2>
+      <p class="sim-desc">上：彩虹背景标出各波长位置；三条曲线为 <strong>光源谱 \(S(\lambda)\)</strong>（灰虚线）、<strong>物体反射率 \(R(\lambda)\)</strong>（靛蓝）、<strong>入眼光谱 \(E(\lambda)=S\!\cdot\!R</strong>（粗，按感知色着色）。左下：L/M/S 三视锥对此入眼光谱的<strong>响应</strong>（条形）。右下：大脑据此判定的<strong>感知色</strong>色块（由光谱经"波长→RGB"积分得出）。换<strong>物体</strong>与<strong>光源</strong>，看整条流水线如何变化。</p>
+      <div class="sim-container">
+        <canvas id="sim-color" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-color"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-color');
+        var W = canvas.width, H = canvas.height;
+        var L0 = 380, L1 = 720, DL = 4;
+        var LAMS = []; for (var w = L0; w <= L1; w += DL) LAMS.push(w);
+        var N = LAMS.length;
+        // plot region
+        var x0 = 44, x1 = 624, y0 = 30, y1 = 196;
+
+        function gauss(c, s, x) { var d = (x - c) / s; return Math.exp(-d * d); }
+        function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+        function xOf(lam) { return x0 + (lam - L0) / (L1 - L0) * (x1 - x0); }
+        function yOf(v) { return y1 - clamp(v, 0, 1) * (y1 - y0); }
+
+        function wavToRGB(w) {
+          var R = 0, G = 0, B = 0;
+          if (w >= 380 && w < 440) { R = -(w - 440) / 60; B = 1; }
+          else if (w < 490) { G = (w - 440) / 50; B = 1; }
+          else if (w < 510) { G = 1; B = -(w - 510) / 20; }
+          else if (w < 580) { R = (w - 510) / 70; G = 1; }
+          else if (w < 645) { R = 1; G = -(w - 645) / 65; }
+          else if (w <= 720) { R = 1; }
+          var f = 1;
+          if (w < 420) f = 0.3 + 0.7 * (w - 380) / 40;
+          else if (w > 700) f = 0.3 + 0.7 * (720 - w) / 20;
+          return [R * f, G * f, B * f];
+        }
+        function reflectance(obj, w) {
+          if (obj === 1) return clamp(0.12 + 0.50 * gauss(545, 35, w) - 0.40 * gauss(430, 25, w) - 0.55 * gauss(665, 30, w), 0.04, 0.72); // grass
+          if (obj === 2) return clamp(0.05 + 0.85 * gauss(650, 40, w), 0.04, 0.90); // tomato
+          if (obj === 3) return clamp(0.90 * Math.pow(400 / w, 3.5), 0.05, 0.90); // sky (Rayleigh-ish)
+          return 0.88; // paper
+        }
+        function illumRaw(src, w) {
+          if (src === 3) return 0.85;                       // white LED (flat)
+          var T = (src === 1) ? 5800 : 3000;                // sun / incandescent
+          var lm = w * 1e-9, c2 = 1.438777e-2;
+          return 1 / (Math.pow(lm, 5) * (Math.exp(c2 / (lm * T)) - 1));
+        }
+        function illumNorm(src) { var mx = 0; for (var i = 0; i < N; i++) { var v = illumRaw(src, LAMS[i]); if (v > mx) mx = v; } return mx || 1; }
+        function coneL(w) { return gauss(565, 30, w); }
+        function coneM(w) { return gauss(545, 28, w); }
+        function coneS(w) { return gauss(442, 22, w); }
+
+        // reference brightness: white paper under sun
+        var nSun = illumNorm(1), SCALE = [0, 0, 0];
+        (function () {
+          for (var i = 0; i < N; i++) { var rgb = wavToRGB(LAMS[i]); var s = illumRaw(1, LAMS[i]) / nSun; for (var k = 0; k < 3; k++) SCALE[k] += s * rgb[k]; }
+          var m = Math.max(SCALE[0], SCALE[1], SCALE[2]) || 1;
+          for (var k = 0; k < 3; k++) SCALE[k] = m;
+        })();
+
+        var params = { obj: 1, src: 1 };
+        var ON = ['太阳 sun (5800 K)', '白炽灯 incandescent (3000 K)', '白光 LED'];
+        var OB = ['草 grass (叶绿素)', '番茄 tomato (番茄红素)', '蓝天 sky (瑞利散射)', '白纸 paper'];
+
+        var sim = PS.createSim(canvas, {
+          state: function () { return {}; },
+          step: function () {},
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            var nS = illumNorm(params.src);
+            // arrays
+            var S = [], R = [], E = [];
+            for (var i = 0; i < N; i++) {
+              S.push(illumRaw(params.src, LAMS[i]) / nS);
+              R.push(reflectance(params.obj, LAMS[i]));
+              E.push(S[i] * R[i]);
+            }
+            // perceived color: sum E*wavToRGB / SCALE
+            var rgb = [0, 0, 0];
+            for (var i2 = 0; i2 < N; i2++) { var c = wavToRGB(LAMS[i2]); for (var k = 0; k < 3; k++) rgb[k] += E[i2] * c[k]; }
+            var col = [clamp(rgb[0] / SCALE[0], 0, 1), clamp(rgb[1] / SCALE[1], 0, 1), clamp(rgb[2] / SCALE[2], 0, 1)];
+            var swatch = 'rgb(' + Math.round(col[0] * 255) + ',' + Math.round(col[1] * 255) + ',' + Math.round(col[2] * 255) + ')';
+            // cone responses
+            var Lr = 0, Mr = 0, Sr = 0;
+            for (var i3 = 0; i3 < N; i3++) { Lr += E[i3] * coneL(LAMS[i3]); Mr += E[i3] * coneM(LAMS[i3]); Sr += E[i3] * coneS(LAMS[i3]); }
+            var cmax = Math.max(Lr, Mr, Sr) || 1;
+            // ---- rainbow background band ----
+            for (var i4 = 0; i4 < N - 1; i4++) {
+              var cc = wavToRGB((LAMS[i4] + LAMS[i4 + 1]) / 2);
+              ctx.fillStyle = 'rgba(' + Math.round(cc[0] * 255) + ',' + Math.round(cc[1] * 255) + ',' + Math.round(cc[2] * 255) + ',0.16)';
+              ctx.fillRect(xOf(LAMS[i4]), y0, xOf(LAMS[i4 + 1]) - xOf(LAMS[i4]) + 1, y1 - y0);
+            }
+            // axes
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+            ctx.fillStyle = C.text; ctx.font = '9px monospace'; ctx.textAlign = 'center';
+            [400, 500, 600, 700].forEach(function (lam) { ctx.fillText(lam + ' nm', xOf(lam), y1 + 12); });
+            ctx.textAlign = 'left';
+            // curves: illuminant (gray dashed), reflectance (indigo), entering-eye (swatch color, bold)
+            drawCurve(ctx, S, '#8c8498', 1, true);
+            drawCurve(ctx, R, C.trace, 1.4, false);
+            ctx.lineWidth = 2.4; ctx.strokeStyle = swatch; drawCurve(ctx, E, null, 0, false, true);
+            PS.drawText(ctx, '— S(λ) 光源 / —— R(λ) 反射率 / █ E(λ) 入眼', x0, y0 - 8, { font: '10px monospace', color: C.text });
+
+            // ---- cone response bars (lower-left) ----
+            var bx = [80, 150, 220], by = 330, bh = 86, bw = 38;
+            var labels = ['L (红)', 'M (绿)', 'S (蓝)'], vals = [Lr / cmax, Mr / cmax, Sr / cmax];
+            ctx.fillStyle = C.text; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+            for (var b = 0; b < 3; b++) {
+              ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+              ctx.strokeRect(bx[b], by - bh, bw, bh);
+              ctx.fillStyle = C.accent; ctx.fillRect(bx[b] + 2, by - vals[b] * (bh - 4), bw - 4, vals[b] * (bh - 4) - 2);
+              ctx.fillStyle = C.text; ctx.fillText(labels[b], bx[b] + bw / 2, by + 12);
+              ctx.fillText((vals[b] * 100).toFixed(0) + '%', bx[b] + bw / 2, by - bh - 4);
+            }
+            ctx.textAlign = 'left';
+            PS.drawText(ctx, '视锥响应 cone response', 60, by - bh - 20, { font: '10px monospace', color: C.text });
+
+            // ---- perceived color swatch (lower-right) ----
+            ctx.fillStyle = swatch; ctx.fillRect(330, 214, 290, 116);
+            ctx.strokeStyle = C.text; ctx.lineWidth = 1.5; ctx.strokeRect(330, 214, 290, 116);
+            var bright = Math.round(Math.max(col[0], col[1], col[2]) * 100);
+            // text contrast
+            var lum = 0.3 * col[0] + 0.59 * col[1] + 0.11 * col[2];
+            var tc = lum > 0.55 ? '#1f1d24' : '#f6f1e7';
+            ctx.fillStyle = tc; ctx.font = '600 12px monospace'; ctx.textAlign = 'center';
+            ctx.fillText('感知色 perceived color', 475, 234);
+            ctx.fillText('亮度 brightness ' + bright + '%', 475, 320);
+            ctx.textAlign = 'left';
+
+            function drawCurve(c2, arr, color, lw, dash, useStroke) {
+              c2.save(); if (dash) c2.setLineDash([4, 4]); c2.lineWidth = lw; if (color) c2.strokeStyle = color;
+              c2.beginPath();
+              for (var i = 0; i < N; i++) { var x = xOf(LAMS[i]), y = yOf(arr[i]); if (i === 0) c2.moveTo(x, y); else c2.lineTo(x, y); }
+              if (useStroke) c2.stroke(); else { c2.strokeStyle = color || c2.strokeStyle; c2.stroke(); }
+              c2.restore();
+            }
+
+            // readout
+            PS.drawText(ctx, OB[params.obj - 1] + '   ×   ' + ON[params.src - 1], x0, H - 6, { font: '600 11px monospace', color: C.text });
+          }
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-color'), [
+          { type: 'slider', key: 'obj', label: '物体 object (1草 2番茄 3蓝天 4白纸)', min: 1, max: 4, step: 1, value: 1 },
+          { type: 'slider', key: 'src', label: '光源 source (1太阳 2白炽灯 3LED)', min: 1, max: 3, step: 1, value: 1 },
+        ]);
+        ctl.on('obj', function (v) { params.obj = v; });
+        ctl.on('src', function (v) { params.src = v; });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>看到颜色 = 发射 → 选择性吸收/反射 → 入眼光谱 → 三视锥探测 → 大脑诠释，五步全由光子–分子相互作用 \(\Delta E=h\nu\) 支配。</li>
+        <li>草绿 = 叶绿素吸收蓝(\(\sim430\,\unit{nm}\))红(\(\sim660\,\unit{nm}\))、反射剩的绿。</li>
+        <li>颜色 = \(E(\lambda)=S(\lambda)R(\lambda)\) 在 L/M/S 灵敏度上的三个积分 → 大脑构造；<strong>颜色是感知，不在光里</strong>。</li>
+        <li>同色异谱：不同光谱只要三视锥响应相同即同色（显示器原理）；换光源颜色会变。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;E(\lambda)=S(\lambda)\,R(\lambda),\quad L_{\text{resp}}=\!\int\!E\,\ell\,d\lambda,\;\;M=\!\int\!E\,m\,d\lambda,\;\;S=\!\int\!E\,s\,d\lambda\;\to\;\text{大脑→颜色}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>
