@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附录 D · 电子枪（实验装置）— 物理学教程</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/math-config.js" defer></script>
+  <script src="../js/sims/physics-sims.js" defer></script>
+  <script src="../js/nav.js" defer></script>
+</head>
+<body data-appendix="1">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="目录">☰</button>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content">
+    <header class="chapter-header">
+      <p class="chapter-number">附录 D · Appendix D · 常用实验装置 Instruments</p>
+      <h1>电子枪 <span class="en-title">The Electron Gun</span></h1>
+    </header>
+
+    <p class="lead">电子枪 (electron gun) 的任务只有一句话：在真空中把电子从阴极"拔"出来，用高压把它们加速到给定的动能，再用电场或磁场聚成一束细而准的电子束 (electron beam)。它是示波管 (CRT)、电子显微镜 (SEM/TEM)、电子束光刻、X 射线管与粒子加速器注入器的共同心脏。本附录讲清它靠什么物理、典型结构如何、以及怎么造出来。An electron gun extracts electrons from a cathode in vacuum, accelerates them through a chosen potential, and focuses them into a narrow beam — the heart of CRTs, electron microscopes, X-ray tubes and accelerator injectors.</p>
+
+    <!-- ============================================================= OBJECTIVES -->
+    <section class="objectives">
+      <h2>🎯 学习目标 Learning Objectives</h2>
+      <ul>
+        <li>说清电子枪的三大功能：发射 (emission)、加速 (acceleration)、聚焦 (focusing)。</li>
+        <li>区分三种电子发射机制：热电子发射 (thermionic)、场致发射 (field emission)、光电发射 (photoemission)，并写出各自的特征公式。</li>
+        <li>用 \(K=eV\) 与相对论动能 \(K=(\gamma-1)m_ec^2\) 算出加速后的电子速度与能量。</li>
+        <li>画出三极电子枪 (triode gun) 的阴极–栅极–阳极结构，解释韦内尔特栅极为何"既控流又聚焦"。</li>
+        <li>了解一只电子枪管的实际制造流程：阴极工艺、对中、排气封离、老炼。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= CORE -->
+    <section class="core-concepts">
+      <h2>📖 核心概念 Core Concepts</h2>
+
+      <h3>1. 为什么必须高真空</h3>
+      <p>电子在气体中走不了多远——与气体分子碰撞而散射 (scattering)、损失能量。因此整个枪封装在抽至高真空 (high vacuum, \(10^{-5}\!\sim\!10^{-9}\,\unit{Torr}\)) 的管壳内；场发射枪与电子显微镜更需超高真空 (UHV, \(\sim\!10^{-10}\,\unit{Torr}\))，以防残余气体氧化阴极尖端并维持稳定发射。真空是电子枪一切性能的前提。</p>
+
+      <h3>2. 电子怎么从阴极出来——三种发射机制</h3>
+      <p>把电子从固体里"拔"出来，必须克服 <strong>功函数 (work function) \(\varphi\)</strong>——电子在表面的势垒高度。三种工程上常用的机制，区别在于靠什么能量翻越或穿透这个势垒：</p>
+
+      <div class="formula">\[ \text{热电子发射 (Richardson–Dushman):}\qquad J = A_R\,T^{2}\,e^{-\varphi/k_BT},\quad A_R\approx 120\,\mathrm{A\,cm^{-2}\,K^{-2}} \]</div>
+      <p>热电子发射 (thermionic emission) 把阴极加热到高温，让电子像"蒸发"一样越过 \(\varphi\)。电流密度 \(J\) 对温度 \(T\) 与功函数 \(\varphi\) 极其敏感（指数项）。典型阴极：</p>
+      <ul>
+        <li>纯钨 W：\(\varphi\approx 4.5\,\unit{eV}\)，工作 \(\sim 2500\,\unit{K}\)，简单可靠，电子显微镜早期灯丝用。</li>
+        <li>钍化钨 (thoriated W, W+ThO\(_2\))：\(\varphi\approx 2.6\,\unit{eV}\)，\(\sim 1900\,\unit{K}\)，寿命长。</li>
+        <li>氧化物阴极 (oxide cathode, BaO/SrO/CaO)：\(\varphi\approx 1.1\,\unit{eV}\)，\(\sim 1000\,\unit{K}\) 即有强发射，示波管 (CRT)、收讯放大管的主流。</li>
+        <li>储备式阴极 (dispenser cathode)：多孔烧结钨浸渍 BaO·CaO·Al\(_2\)O\(_3\)，运行中 Ba 持续扩散补膜，微波管高流长寿命用。</li>
+      </ul>
+
+      <div class="formula">\[ \text{场致发射 (Fowler–Nordheim):}\qquad J \;\propto\; \frac{E^{2}}{\varphi}\,\exp\!\left(-\,B\,\frac{\varphi^{3/2}}{E}\right) \]</div>
+      <p>场致发射 (field emission) 不加热：在阴极表面加极强的外电场 \(E\sim 10^{9}\,\unit{V/m}\)，把表面势垒"削"得很薄，电子靠 <strong>量子隧穿 (quantum tunneling)</strong> 穿出。把阴极做成曲率半径 \(\sim 100\,\unit{nm}\) 的尖锥 (tip)，可在尖端获得如此之强的场。它给出极高的亮度 (brightness) 与极小的源尺寸、很窄的能量展宽，是高分辨率冷场发射电镜 (cold FEG) 的基础。Schottky 场发射（ZrO/W 尖、稍加热、热助场发射）更稳定，是现代扫描电镜的主流。</p>
+
+      <div class="formula">\[ \text{光电发射 (photoemission / Einstein):}\qquad K_{\max}=h\nu-\varphi \]</div>
+      <p>光电发射 (photoemission) 用光子能量 \(h\nu>\varphi\) 的光照射阴极打出电子（光电效应）。采用 GaAs 或多碱光电阴极 (multi-alkali photocathode)，配以脉冲激光，可产生极短、极亮、发射度极低的电子束团——自由电子激光 (FEL) 与对撞机射频光电注入器 (RF photoinjector) 的关键。</p>
+
+      <div class="key-terms">electron gun (电子枪), cathode (阴极), anode (阳极), work function (功函数 \(\varphi\)), thermionic emission (热电子发射), field emission (场致发射), photoemission (光电发射), vacuum (真空), brightness (亮度)</div>
+
+      <h3>3. 加速——能量从何而来</h3>
+      <p>电子离开阴极后，穿过阴极与阳极之间的电势差 \(V\)（阳极接高正电位）。电场对电子做功，电子获得动能：</p>
+      <div class="formula">\[ K = eV \qquad\text{(非相对论 / non-relativistic)} \]</div>
+      <p>当 \(V\) 很高（如 TEM 的 \(80\!\sim\!300\,\unit{kV}\)）时必须用相对论 (relativistic) 表达：</p>
+      <div class="formula">\[ K=(\gamma-1)m_ec^2,\qquad \gamma=\frac{1}{\sqrt{1-v^{2}/c^{2}}},\qquad \Rightarrow\quad v=c\sqrt{1-\frac{1}{\left(1+K/m_ec^{2}\right)^{2}}} \]</div>
+      <p>阳极通常是一块中央开小孔 (aperture) 的金属板——电子从孔中飞出，孔径界定了束的初始直径。</p>
+
+      <h3>4. 聚焦——把束会聚成一点</h3>
+      <p>聚焦有两类：<strong>静电透镜 (electrostatic lens)</strong> 与 <strong>磁透镜 (magnetic lens)</strong>。</p>
+      <ul>
+        <li>紧贴阴极的<strong>韦内尔特栅极 / 韦内尔特圆筒 (Wehnelt cylinder)</strong> 接相对阴极的负偏压，其等势面在阴极前方形成一个会聚透镜，把电子会聚到一个<strong>交叉点 (crossover)</strong>。它同时调节束流（亮度）：偏压越负，发射越被压低，到某一"截止 (cutoff)"偏压时束流为零。</li>
+        <li>下游的<strong>单透镜 (einzel lens)</strong> 由三电极组成，靠改变中间电极电位调焦。</li>
+        <li>电子显微镜主要用<strong>磁透镜</strong>：通电螺线管的轴向磁场 \(B_z\) 经洛伦兹力 \(\vec{F}=-e\,\vec{v}\times\vec{B}\) 把电子绕轴旋转并会聚，像差小、易精密调控。</li>
+      </ul>
+      <p>近轴电子射线在轴对称静电场中遵循<strong>抛物轴射线方程 (paraxial ray equation)</strong>：</p>
+      <div class="formula">\[ r''+\frac{V'(z)}{2V(z)}\,r' + \frac{V''(z)}{4V(z)}\,r = 0 \]</div>
+      <p>其中 \(V(z)\) 是轴上电势分布，\(r(z)\) 是电子离轴距离。下方的互动仿真正是数值求解这条方程，让你看到栅极"井"（\(V''>0\)）如何把电子聚焦、阳极电压如何改变能量、偏压过大如何截止电流。</p>
+    </section>
+
+    <!-- ============================================================= ANATOMY -->
+    <section class="core-concepts">
+      <h2>🔧 结构与制造 Anatomy &amp; Fabrication</h2>
+      <h3>典型三极电子枪的结构</h3>
+      <ol>
+        <li><strong>阴极 K (cathode)</strong>——发射电子。直热式（灯丝即阴极）或间热式（加热丝烤一个外套阴极，CRT 多用间热式氧化物阴极，与灯丝电隔离、电位更稳）。</li>
+        <li><strong>控制栅极 G1 / 韦内尔特圆筒 (Wehnelt cylinder)</strong>——相对阴极接负偏压（\(-\)几十到\(-\)几百伏）。一物两用：控束流（亮度）、兼作会聚电子的第一片静电透镜。</li>
+        <li><strong>阳极 A / G2 (anode)</strong>——高正电位（\(+\)几百伏到\(+\)几百千伏），加速电子；中央小孔让束穿过、限定束径。</li>
+        <li><strong>聚焦与偏转 (focus &amp; deflection)</strong>——单透镜调焦；偏转板（静电）或偏转线圈（磁）扫描束（CRT 扫描、SEM 扫描成像）。</li>
+      </ol>
+
+      <h3>怎么制造出来</h3>
+      <ul>
+        <li><strong>阴极工艺</strong>：钨灯丝为拉拔 W 丝绕成螺旋、点焊到支架、真空闪烧清洁；钍化钨需表面<strong>碳化 (carburize)</strong>；氧化物阴极在镍套上喷涂 (Ba,Sr,Ca)CO\(_3\) 浆料，排气加热时<strong>分解</strong>成 (Ba,Sr,Ca)O 才是真正的发射体；储备式阴极用多孔烧结钨浸渍熔融 BaO·CaO·Al\(_2\)O\(_3\)（"532"配比）。</li>
+        <li><strong>栅极 / 阳极</strong>：钼、钨或不锈钢冲压/机加工件，小孔用<strong>激光打孔或光化学蚀刻</strong>，靠陶瓷绝缘子或玻璃芯柱支撑，引线用 <strong>Kovar–玻璃气密封接 (metal-to-glass seal)</strong> 穿出管壳。</li>
+        <li><strong>对中 (alignment)</strong>：阴极–栅极–阳极必须同轴到微米级，装配时光学+机械对准——这是良率的关键。</li>
+        <li><strong>排气与封离 (exhaust &amp; tip-off)</strong>：整管接涡轮分子泵 + 离子泵抽真空；<strong>烘烤除气 (bakeout)</strong> 于 \(\sim 300\!\sim\!400\,\unit{^\circ C}\) 驱走各表面吸附气体；达标后把排气管<strong>火焰熔封（封离）</strong>。</li>
+        <li><strong>吸气剂 (getter)</strong>：封离前/中蒸钡吸气剂，运行中持续俘获残余气体，维持真空寿命。</li>
+        <li><strong>老炼 / 激活 (aging / activation)</strong>：氧化物阴极"激活"、储备阴极加热驱 Ba，并按工作状态跑一段时间以稳定发射、烧掉污染。</li>
+      </ul>
+      <div class="note">一句话总结：选一种"拔电子"的机制做阴极 → 高压加速 → 静电/磁透镜聚焦 → 全程封在高真空里。难点全在真空获得、阴极发射体的材料工艺、以及微米级同轴对中。</div>
+    </section>
+
+    <!-- ============================================================= DERIVATION -->
+    <section class="derivation">
+      <h2>🔭 推导 Derivation：从加速电压到电子速度</h2>
+      <p>设电子从静止出发，被阳极电压 \(V\) 加速。能量守恒给出动能 \(K=eV\)。要求速度，分两步：</p>
+      <p class="step"><strong>步骤 1.</strong> 写出总能与 \(\gamma\) 的关系：\(K=(\gamma-1)m_ec^{2}\)，所以</p>
+      <div class="formula">\[ \gamma = 1 + \frac{eV}{m_ec^{2}} \]</div>
+      <p class="step"><strong>步骤 2.</strong> 由 \(\gamma=(1-\beta^{2})^{-1/2}\)（\(\beta=v/c\)）反解：</p>
+      <div class="formula">\[ \beta = \sqrt{1-\frac{1}{\gamma^{2}}},\qquad v = c\sqrt{1-\frac{1}{\left(1+\dfrac{eV}{m_ec^{2}}\right)^{2}}} \]</div>
+      <p>注意 \(m_ec^{2}=511\,\unit{keV}\)。当 \(eV\ll m_ec^{2}\)（低能极限），上式退化为经典 \(v=\sqrt{2eV/m_e}\)。当 \(eV\) 可与 \(m_ec^{2}\) 相比时（如 \(V=100\,\unit{kV}\)，\(eV/m_ec^{2}\approx 0.196\)），相对论修正不可忽略。</p>
+      <p class="step"><strong>步骤 3（热电子发射的来由，定性）.</strong> 把金属中的传导电子近似为 \(T=0\) 填至费米能 \(E_F\) 的自由电子气；有限温下费米分布尾部有电子占据 \(E>E_F\)。能越过表面势垒 \(\varphi\)（即 \(E>E_F+\varphi\)）的那部分电子所占比例 \(\propto e^{-\varphi/k_BT}\)，乘以单位时间撞击表面的电子流（\(\propto T^{2}\)），即得 Richardson–Dushman 定律 \(J=A_R T^{2}e^{-\varphi/k_BT}\)。指数项解释了为何功函数每降 \(0.5\,\unit{eV}\)、发射能力可上升数个量级——这正是氧化物/储备式阴极的意义。</p>
+    </section>
+
+    <!-- ============================================================= EXAMPLES -->
+    <section class="examples">
+      <h2>✏️ 典型例题 Worked Examples</h2>
+
+      <article class="example">
+        <h4>例 1　示波管电子的速率（相对论）</h4>
+        <p class="example-statement">一只 CRT 的阳极电压 \(V=30.0\,\unit{kV}\)。求被加速电子的动能（以 eV 与 J 表示）与速率 \(v\)，并给出 \(\beta=v/c\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>动能 \(K=eV=30.0\,\unit{keV}=3.00\times10^{4}\,\unit{eV}\)。换算为焦耳：\(K=3.00\times10^{4}\times 1.602\times10^{-19}=4.81\times10^{-15}\,\unit{J}\)。</p>
+          <p class="step">\(\gamma=1+\dfrac{K}{m_ec^{2}}=1+\dfrac{30.0}{511}=1+0.0587=1.0587\)。</p>
+          <p class="step">\(\beta=\sqrt{1-\dfrac{1}{\gamma^{2}}}=\sqrt{1-\dfrac{1}{1.0587^{2}}}=\sqrt{1-0.8926}=\sqrt{0.1074}=0.328\)。</p>
+          <p class="step">故 \(v=\beta c=0.328\times(2.998\times10^{8})=9.83\times10^{7}\,\unit{m/s}\)。</p>
+          <p><span class="ans">\(K=30.0\,\unit{keV}\;(4.81\times10^{-15}\,\unit{J})\)，\(v\approx 9.8\times10^{7}\,\unit{m/s}\approx 0.33\,c\)。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 2　钨丝的热电子发射电流密度</h4>
+        <p class="example-statement">纯钨阴极 \(\varphi=4.50\,\unit{eV}\)，加热至 \(T=2500\,\unit{K}\)。用 Richardson–Dushman 公式（取 \(A_R=120\,\mathrm{A\,cm^{-2}\,K^{-2}}\)）估算发射电流密度 \(J\)。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>先算 \(k_BT\)（以 eV 计）：\(k_BT=(8.617\times10^{-5}\,\unit{eV/K})(2500\,\unit{K})=0.2154\,\unit{eV}\)。</p>
+          <p class="step">指数项：\(\varphi/k_BT=4.50/0.2154=20.89\)，\(e^{-20.89}=8.62\times10^{-10}\)。</p>
+          <p class="step">\(J=A_R T^{2}e^{-\varphi/k_BT}=120\times(2500)^{2}\times 8.62\times10^{-10}\)。</p>
+          <p class="step">\((2500)^{2}=6.25\times10^{6}\)；\(120\times6.25\times10^{6}=7.50\times10^{8}\)；\(J=7.50\times10^{8}\times8.62\times10^{-10}=0.646\,\mathrm{A/cm^{2}}\)。</p>
+          <p><span class="ans">\(J\approx 0.65\,\mathrm{A/cm^{2}}\)（实测约 \(0.3\!\sim\!0.7\,\mathrm{A/cm^{2}}\)，因实际 \(A_R\) 小于理论值）。</span></p>
+        </div>
+      </article>
+
+      <article class="example">
+        <h4>例 3　截止偏压下的"无电流"条件</h4>
+        <p class="example-statement">三极枪中，韦内尔特栅极负偏压会在阴极前方形成一个"势垒"。定性说明：为何偏压足够负时束流会被完全截止 (cutoff)？若阴极发射的电子最大初始动能 \(\sim k_BT\approx 0.2\,\unit{eV}\)，估算能完全截止发射所需的最小栅偏压量级。</p>
+        <div class="example-solution">
+          <p class="step"><strong>解：</strong>栅极负偏压在阴极表面产生的电场削弱（甚至反向）了阳极的加速场。当阴极前的轴上电势因栅极而出现一个相对阴极为正的"势垒"（电子需先爬过一个势能高坡才能进入加速区）时，只有能量高于该势垒的电子能逸出。</p>
+          <p class="step">由于热电子的能量尾部仅 \(k_BT\sim 0.2\,\unit{eV}\)，只要栅偏压在阴极前方形成的等效势垒达到 \(\gtrsim \text{零点几 eV}\)，发射的指数尾 \(e^{-\varphi_\text{eff}/k_BT}\) 即被压到几乎为零。</p>
+          <p><span class="ans">截止只需栅极在阴极前沿产生约 \(0.5\!\sim\!1\,\unit{V}\) 量级的等效势垒（对应几十伏栅偏压），束流便指数性趋零——这正是 CRT 用栅偏压做"亮度/对比度"甚至关断的原理。</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================= PITFALLS -->
+    <section class="pitfalls">
+      <h2>⚠️ 常见误区 Common Pitfalls</h2>
+      <ul>
+        <li><strong>误区：</strong>"电子枪靠放射性把电子射出来。"<br>纠正：电子来自阴极的发射（热/场/光），与放射性 (radioactivity) 无关；它是普通的自由电子，不带电离辐射危险（但被高压加速后打在金属上会产生 X 射线韧致辐射，需屏蔽）。</li>
+        <li><strong>误区：</strong>"阳极电压越高，束越细。"<br>纠正：束的粗细主要由<strong>透镜聚焦</strong>决定；提高阳极电压增大的是电子<strong>能量</strong>与<strong>亮度</strong>，且高能电子在同一透镜中偏折更弱（相对论 \(\gamma\) 增大），往往需要重新调焦。</li>
+        <li><strong>误区：</strong>"栅极偏压只控亮度，不影响聚焦。"<br>纠正：韦内尔特栅极既是控流电极、又是第一片会聚透镜——改偏压会同时移动交叉点位置、改变束径。</li>
+        <li><strong>误区：</strong>"电子枪可以在空气里工作。"<br>纠正：必须高真空。空气分子的散射会瞬间破坏束，并使热阴极烧毁氧化。</li>
+        <li><strong>误区：</strong>"电压越高电子越快，所以总用相对论。"<br>纠正：低能（\(\ll 511\,\unit{keV}\)，如几 kV）用经典 \(v=\sqrt{2eV/m_e}\) 已足够；超过约 \(10\,\unit{kV}\) 才需考虑相对论修正。</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================= PRACTICE -->
+    <section class="practice">
+      <h2>🧮 练习题 Practice Problems</h2>
+      <details class="problem">
+        <summary>1. TEM 用 \(200\,\unit{kV}\) 加速电子，求 \(\gamma\)、\(\beta\) 与 \(v\)。</summary>
+        <div class="hint">用 \(\gamma=1+eV/m_ec^{2}\)，\(m_ec^{2}=511\,\unit{keV}\)。</div>
+        <div class="solution">\(\gamma=1+200/511=1.391\)；\(\beta=\sqrt{1-1/\gamma^{2}}=0.695\)；\(v\approx 0.70\,c\approx 2.08\times10^{8}\,\unit{m/s}\)。<span class="ans">\(\gamma\approx1.39\)，\(v\approx 0.70\,c\)。</span></div>
+      </details>
+      <details class="problem">
+        <summary>2. 氧化物阴极 \(\varphi=1.10\,\unit{eV}\) 在 \(T=1000\,\unit{K}\) 的发射电流密度，相对纯钨（\(\varphi=4.50\,\unit{eV}\), \(T=2500\,\unit{K}\)）高几个量级？（取相同 \(A_R\)）</summary>
+        <div class="hint">比较 \(T^{2}e^{-\varphi/k_BT}\)。</div>
+        <div class="solution">氧化物：\(k_BT=0.0862\,\unit{eV}\)，\(\varphi/k_BT=12.8\)，\(e^{-12.8}=2.8\times10^{-6}\)，\(T^{2}=10^{6}\)，乘积 \(\approx 2.8\)。钨（例 2）乘积 \(\approx 0.0054\)（归一到同 \(A_R\)：\(120\times6.25\times10^{6}\times8.6\times10^{-10}\) 中去掉 \(A_R\) 即 \(6.25\times10^{6}\times8.6\times10^{-10}\approx5.4\times10^{-3}\)）。比值 \(\approx 2.8/0.0054\approx 520\)。<span class="ans">约 \(5\times10^{2}\) 倍，即低功函数阴极可在更低温度下获得强得多的发射。</span></div>
+      </details>
+      <details class="problem">
+        <summary>3. 为什么场发射阴极要做成曲率半径 \(\sim 100\,\unit{nm}\) 的尖锥？估算尖端表面要达到 \(E\sim 10^{9}\,\unit{V/m}\) 所需的电压量级。</summary>
+        <div class="hint">导体尖端表面场 \(E\sim V/r\)。</div>
+        <div class="solution">尖端把电场集中：\(E\approx V/r\)。要 \(E=10^{9}\,\unit{V/m}\)、\(r=10^{-7}\,\unit{m}\)，需 \(V\approx E\,r=10^{9}\times10^{-7}=10^{2}\,\unit{V}\)。<span class="ans">约 \(100\!\sim\!1000\,\unit{V}\) 的抽取电压即可在纳米尖上达到 GV/m 量级场强——这正是场发射枪低电压、高亮度的由来。</span></div>
+      </details>
+      <details class="problem">
+        <summary>4. （概念）把韦内尔特栅极的偏压从 \(-20\,\unit{V}\) 调到 \(-80\,\unit{V}\)，束的<strong>亮度</strong>与<strong>聚焦</strong>各如何变化？到某偏压时束为何消失？</summary>
+        <div class="solution">偏压越负：束流（亮度）下降，因为阴极前势垒升高、发射被指数性压低；同时会聚作用增强、交叉点移近阴极、束径变细。当偏压使阴极前沿势垒超过电子热能尾部（\(\sim k_BT\)），发射被完全截止，束消失（cutoff）。<span class="ans">亮度↓、聚焦变强，至截止偏压时无束。</span></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= SIMULATION -->
+    <section class="simulation">
+      <h2>🎛️ 互动仿真 Interactive Simulation</h2>
+      <p class="sim-desc">三极电子枪（抛物轴射线模型）：拖动 <strong>阳极电压 \(V_a\)</strong> 改变电子能量与束速；拖动 <strong>栅极偏压 \(V_g\)</strong>（更负→聚焦更强、电流更小，过负则截止）；拖动 <strong>阴极温度 \(T\)</strong> 改变发射量（亮度）。琥珀色为穿过阳极小孔的电子射线，玫红色为被截止/拦截的射线。</p>
+      <div class="sim-container">
+        <canvas id="sim-egun" width="640" height="360"></canvas>
+        <div class="sim-controls" id="controls-egun"></div>
+      </div>
+      <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var PS = window.PhysicsSim;
+        var canvas = document.getElementById('sim-egun');
+        var W = canvas.width, H = canvas.height, AXIS = H / 2;
+
+        // ---- gun geometry (in canvas px) ----
+        var zC = 64, zG = 150, zA = 268, zEnd = 600;   // cathode / grid / anode / screen
+        var APERTURE = 26;                              // anode aperture half-width (px)
+        var SIGMA = 26;                                 // grid "well" width
+        var VFLOOR = 0.6;                               // contact-potential floor (avoids 1/V blowup)
+
+        var params = { Va: 30, Vg: -40, T: 1900 };
+
+        // axial potential V(z) = base ramp (cathode→anode) minus a Gaussian grid "well"
+        function Vof(z) {
+          var base = z < zC ? 0 : z < zA ? params.Va * (z - zC) / (zA - zC) : params.Va;
+          var depth = Math.abs(params.Vg);
+          var g = depth * Math.exp(-((z - zG) * (z - zG)) / (2 * SIGMA * SIGMA));
+          return Math.max(VFLOOR, base - g);
+        }
+        // derivatives (analytic) for the paraxial ray equation
+        function dVof(z) {
+          var ramp = (z > zC && z < zA) ? params.Va / (zA - zC) : 0;
+          var depth = Math.abs(params.Vg);
+          var g = depth * Math.exp(-((z - zG) * (z - zG)) / (2 * SIGMA * SIGMA));
+          return ramp + g * (z - zG) / (SIGMA * SIGMA);     // d/dz of (base - g) = ramp - g'; g' = g*(-(z-zG)/σ²)
+        }
+        function ddVof(z) {
+          var depth = Math.abs(params.Vg);
+          var g = depth * Math.exp(-((z - zG) * (z - zG)) / (2 * SIGMA * SIGMA));
+          return -g * (((z - zG) * (z - zG)) / (SIGMA * SIGMA * SIGMA * SIGMA) - 1 / (SIGMA * SIGMA));
+        }
+
+        // integrate the paraxial ray equation r'' + (V'/2V) r' + (V''/4V) r = 0
+        // returns a polyline (canvas coords) + blocked flag
+        function traceRay(r0, rp0) {
+          var z = zC, r = r0, rp = rp0, dz = 2.5, pts = [], blocked = false, crossed = false;
+          while (z < zEnd) {
+            pts.push({ x: z, y: AXIS + r });
+            var V = Vof(z), Vp = dVof(z), Vpp = ddVof(z);
+            // potential barrier (cutoff): well dips below floor → electrons reflected
+            if (V <= VFLOOR * 1.02) { blocked = true; break; }
+            // RK4 on (r, rp) with z as independent variable
+            var f = function (zz, rr, rrp) {
+              var Vv = Vof(zz), Va_ = dVof(zz), Vb = ddVof(zz);
+              return [rrp, -(Va_ / (2 * Vv)) * rrp - (Vb / (4 * Vv)) * rr];
+            };
+            var k1 = f(z, r, rp);
+            var k2 = f(z + dz / 2, r + dz / 2 * k1[0], rp + dz / 2 * k1[1]);
+            var k3 = f(z + dz / 2, r + dz / 2 * k2[0], rp + dz / 2 * k2[1]);
+            var k4 = f(z + dz, r + dz * k3[0], rp + dz * k3[1]);
+            r  += dz / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+            rp += dz / 6 * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
+            z  += dz;
+            // anode aperture check
+            if (!crossed && z >= zA) {
+              crossed = true;
+              if (Math.abs(r) > APERTURE) { blocked = true; pts.push({ x: zA, y: AXIS + r }); break; }
+            }
+            if (Math.abs(r) > H / 2 - 6) { blocked = true; break; } // hit tube wall
+          }
+          if (!blocked) pts.push({ x: z, y: AXIS + r });
+          return { pts: pts, blocked: blocked };
+        }
+
+        var rays = [];
+        function computeRays() {
+          rays = [];
+          // emission count & cone grow with temperature (Richardson-flavoured)
+          var n = Math.max(5, Math.min(20, Math.round((params.T - 700) / 110)));
+          var cone = 0.010 + (params.T - 700) / 1900 * 0.020; // initial slope spread
+          var emit = 3.5; // cathode emission half-height (px)
+          for (var i = 0; i < n; i++) {
+            var frac = n === 1 ? 0 : (i / (n - 1) - 0.5);
+            var r0 = frac * 2 * emit;
+            var rp0 = frac * cone + (Math.abs(params.Vg) > 0 ? 0 : 0);
+            rays.push(traceRay(r0, rp0));
+          }
+        }
+        computeRays();
+
+        function transmittedFraction() {
+          var ok = 0; for (var i = 0; i < rays.length; i++) if (!rays[i].blocked) ok++;
+          return rays.length ? ok / rays.length : 0;
+        }
+        // crossover = min-|r| point among passing rays, beyond the grid
+        function crossoverZ() {
+          var best = null, bestR = 1e9;
+          for (var i = 0; i < rays.length; i++) {
+            if (rays[i].blocked) continue;
+            var p = rays[i].pts;
+            for (var j = 0; j < p.length; j++) {
+              if (p[j].x < zG) continue;
+              var rr = Math.abs(p[j].y - AXIS);
+              if (rr < bestR) { bestR = rr; best = p[j].x; }
+            }
+          }
+          return best;
+        }
+
+        // ---- drawing helpers for electrodes ----
+        function electrode(ctx, x, w, h, fill, stroke) {
+          ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = 2;
+          ctx.fillRect(x - w / 2, AXIS - h / 2, w, h);
+          ctx.strokeRect(x - w / 2, AXIS - h / 2, w, h);
+        }
+
+        var flow = 0;
+        var sim = PS.createSim(canvas, {
+          state: function () { flow = 0; return {}; },
+          step: function (dt) {
+            // flow speed scales with sqrt(Va) ~ electron speed
+            flow = (flow + dt * (0.5 + 0.06 * Math.sqrt(params.Va))) % 1;
+          },
+          draw: function (ctx) {
+            PS.clear(ctx);
+            var C = PS.colors;
+            // axis
+            ctx.strokeStyle = C.axis; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+            ctx.beginPath(); ctx.moveTo(0, AXIS); ctx.lineTo(W, AXIS); ctx.stroke(); ctx.setLineDash([]);
+
+            // faint potential profile (top strip) — visualizes the grid "well"
+            ctx.strokeStyle = C.grid; ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            for (var z = 0; z <= W; z += 4) {
+              var Vp = Vof(z) / params.Va;
+              var yy = 26 + (1 - Vp) * 26;
+              if (z === 0) ctx.moveTo(z, yy); else ctx.lineTo(z, yy);
+            }
+            ctx.stroke();
+            PS.drawText(ctx, '轴上电势 V(z)  axial potential', 6, 14, { font: '11px ' + 'monospace', color: C.text });
+
+            // rays
+            ctx.lineWidth = 1.6;
+            for (var i = 0; i < rays.length; i++) {
+              var p = rays[i].pts;
+              if (p.length < 2) continue;
+              ctx.strokeStyle = rays[i].blocked ? C.accent2 : C.trace; // accent2 (sage) blocked, trace (violet) passing
+              ctx.globalAlpha = rays[i].blocked ? 0.55 : 0.85;
+              ctx.beginPath(); ctx.moveTo(p[0].x, p[0].y);
+              for (var j = 1; j < p.length; j++) ctx.lineTo(p[j].x, p[j].y);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+
+            // animated electrons along the first few passing rays
+            var shown = 0;
+            for (var k = 0; k < rays.length && shown < 5; k++) {
+              if (rays[k].blocked) continue;
+              var pp = rays[k].pts;
+              if (pp.length < 2) continue;
+              var idx = Math.floor(flow * (pp.length - 1));
+              var pt = pp[idx];
+              PS.drawCircle(ctx, pt.x, pt.y, 3, { fill: C.accent });
+              shown++;
+            }
+
+            // electrodes (drawn on top)
+            // cathode (heated emitter): a small bar with warm glow
+            ctx.save();
+            ctx.shadowColor = C.accent; ctx.shadowBlur = 12;
+            electrode(ctx, zC, 6, 46, C.accent, C.text);
+            ctx.restore();
+            PS.drawText(ctx, 'K', zC, AXIS + 36, { font: '600 12px sans-serif', color: C.text, align: 'center' });
+            // Wehnelt grid: a "cup" — two blocks leaving a gap (the aperture faces the cathode)
+            ctx.fillStyle = C.text; ctx.strokeStyle = C.text; ctx.lineWidth = 2;
+            ctx.fillRect(zG - 4, AXIS - 40, 8, 14);   // top jaw
+            ctx.fillRect(zG - 4, AXIS + 26, 8, 14);   // bottom jaw
+            PS.drawText(ctx, 'G', zG, AXIS + 56, { font: '600 12px sans-serif', color: C.text, align: 'center' });
+            // anode plate with aperture
+            ctx.fillStyle = C.text;
+            ctx.fillRect(zA - 4, AXIS - 50, 8, 50 - APERTURE);              // top half
+            ctx.fillRect(zA - 4, AXIS + APERTURE, 8, 50 - APERTURE);        // bottom half
+            PS.drawText(ctx, 'A', zA, AXIS + 56, { font: '600 12px sans-serif', color: C.text, align: 'center' });
+            // screen (phosphor) with glow sized by transmitted current & focus
+            var tf = transmittedFraction();
+            var xover = crossoverZ();
+            var spotR = Math.max(2, 18 - tf * 10) * (params.Va < 10 ? 1.4 : 1);
+            ctx.save();
+            ctx.shadowColor = C.accent; ctx.shadowBlur = 18 * tf;
+            ctx.fillStyle = 'rgba(184,119,42,' + (0.25 + 0.6 * tf) + ')';
+            ctx.fillRect(zEnd + 6, AXIS - spotR, 8, 2 * spotR);
+            ctx.restore();
+            PS.drawText(ctx, 'screen', zEnd + 2, AXIS - 40, { font: '11px monospace', color: C.text, align: 'center' });
+
+            // readouts
+            var KE = params.Va;                                   // keV
+            var gamma = 1 + KE / 511, beta = Math.sqrt(1 - 1 / (gamma * gamma));
+            var info = 'E = ' + KE.toFixed(0) + ' keV   v ≈ ' + (beta).toFixed(2) + ' c   |   ' +
+                       '透过率 transmission ≈ ' + Math.round(tf * 100) + '%   |   ' +
+                       '交叉点 crossover z ≈ ' + (xover ? Math.round(xover) : '—') + ' px';
+            PS.drawText(ctx, info, 6, H - 8, { font: '12px monospace', color: C.text });
+          },
+        });
+
+        var ctl = PS.makeControls(document.getElementById('controls-egun'), [
+          { type: 'slider', key: 'Va', label: '阳极电压 V_a (kV)', min: 2, max: 50, step: 1, value: 30 },
+          { type: 'slider', key: 'Vg', label: '栅极偏压 V_g (V，负值)', min: -160, max: 0, step: 5, value: -40 },
+          { type: 'slider', key: 'T',  label: '阴极温度 T (K)', min: 800, max: 2600, step: 50, value: 1900 },
+          { type: 'button', key: 'reset', label: '↺ 重置 Reset' },
+        ]);
+        ctl.on('Va', function (v) { params.Va = v; computeRays(); });
+        ctl.on('Vg', function (v) { params.Vg = v; computeRays(); });
+        ctl.on('T',  function (v) { params.T = v;  computeRays(); });
+        ctl.on('reset', function () { params = { Va: 30, Vg: -40, T: 1900 }; ctl.set({ Va: 30, Vg: -40, T: 1900 }); computeRays(); sim.reset(); });
+      });
+      </script>
+    </section>
+
+    <!-- ============================================================= SUMMARY -->
+    <section class="summary">
+      <h2>📝 本附录小结 Summary</h2>
+      <ul>
+        <li>电子枪 = 发射 + 加速 + 聚焦，全程在高真空中进行。</li>
+        <li>三种发射：热电子（Richardson \(J=A_RT^{2}e^{-\varphi/k_BT}\)）、场致（Fowler–Nordheim，隧穿）、光电（\(K_{\max}=h\nu-\varphi\)）。</li>
+        <li>加速给能 \(K=eV\)；高压时用相对论 \(K=(\gamma-1)m_ec^{2}\)。</li>
+        <li>韦内尔特栅极一物两用：控流 + 第一片会聚透镜；过负则截止。</li>
+        <li>制造关键：阴极发射体材料工艺、微米级同轴对中、排气封离 + 吸气剂维持真空、老炼稳定发射。</li>
+      </ul>
+      <div class="formula">\[ \boxed{\;K=eV,\quad v=c\sqrt{1-\frac{1}{\left(1+eV/m_ec^{2}\right)^{2}}},\quad J=A_RT^{2}e^{-\varphi/k_BT}\;} \]</div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html">← 目录 Index</a>
+    </nav>
+  </main>
+</body>
+</html>

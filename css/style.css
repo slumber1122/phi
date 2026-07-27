@@ -53,6 +53,20 @@
   --content-max: 1040px;
   --radius: 7px;
   --radius-sm: 4px;
+
+  /* Backward-compat aliases — older page-scoped <style> blocks and legacy
+     markup still reference these pre-redesign token names. They resolve to
+     the new tokens, so they follow light/dark automatically (custom
+     properties are resolved lazily against the cascade). */
+  --primary:      var(--indigo);
+  --primary-soft: var(--indigo-soft);
+  --heading:      var(--ink);
+  --text-soft:    var(--ink-soft);
+  --text-mute:    var(--ink-mute);
+  --bg-elev:      var(--paper-elev);
+  --code-bg:      var(--paper-sunk);
+  --sidebar-bg:   var(--paper-sunk);
+  --font-head:    var(--font-display);
 }
 
 [data-theme="dark"] {
@@ -187,6 +201,34 @@ li { margin: 0.3em 0; }
   transition: background .15s, color .15s;
 }
 .dark-toggle:hover { background: var(--amber-soft); color: var(--amber-deep); border-color: var(--amber); }
+
+/* full-text search (in sidebar) */
+.search { margin-bottom: 16px; }
+.search input {
+  width: 100%; box-sizing: border-box; padding: 8px 11px;
+  font-family: var(--font-body); font-size: 0.9rem;
+  background: var(--paper-elev); color: var(--ink);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  transition: border-color .15s, box-shadow .15s;
+}
+.search input:focus {
+  outline: none; border-color: var(--indigo);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--indigo) 18%, transparent);
+}
+.search input::placeholder { color: var(--ink-mute); }
+.search-results { margin-top: 8px; max-height: 56vh; overflow-y: auto; }
+.search-results .sr-empty { padding: 6px 2px; color: var(--ink-mute); font-size: 0.82rem; }
+.search-results .sr-item {
+  display: block; padding: 7px 9px; text-decoration: none; color: var(--ink);
+  border-left: 2px solid transparent; border-radius: var(--radius-sm);
+}
+.search-results .sr-item + .sr-item { margin-top: 1px; }
+.search-results .sr-item:hover { background: var(--paper-sunk); border-left-color: var(--amber); }
+.search-results .sr-title { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; color: var(--indigo-deep); }
+[data-theme="dark"] .search-results .sr-title { color: var(--indigo); }
+.search-results .sr-snip { display: block; font-size: 0.77rem; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
+.search-results mark { background: var(--amber-soft); color: var(--amber-deep); padding: 0 1px; border-radius: 2px; }
+[data-theme="dark"] .search-results mark { background: color-mix(in srgb, var(--amber) 40%, transparent); color: var(--paper-elev); }
 .sem-group { margin-bottom: 4px; }
 .sem-group > .sem-summary {
   list-style: none; cursor: pointer; user-select: none;

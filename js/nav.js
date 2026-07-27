@@ -49,6 +49,7 @@
           { url: 'appendix/formulas.html', title: '公式速查表', en: 'Formula Sheets', ref: true },
           { url: 'appendix/math-review.html', title: '数学回顾', en: 'Math Review', ref: true },
           { url: 'appendix/constants.html', title: '物理常数与单位', en: 'Constants & Units', ref: true },
+          { url: 'appendix/electron-gun.html', title: '电子枪（实验装置）', en: 'The Electron Gun', ref: true },
         ]},
       ],
     },
@@ -259,6 +260,8 @@
     dt.addEventListener('click', toggleDark);
     sb.appendChild(dt);
 
+    mountSearch(sb);
+
     SEMESTERS.forEach(function (sem) {
       var group = document.createElement('details');
       group.className = 'sem-group';
@@ -292,6 +295,98 @@
     var foot = document.createElement('div'); foot.className = 'sidebar-foot';
     foot.textContent = '大学物理 · 八学期';
     sb.appendChild(foot);
+  }
+
+  // ============================================================ full-text search
+  // Client-side substring search over js/search-index.json (built by
+  // tools/build-search-index.py). Substring matching needs no tokenizer, so it
+  // matches Chinese terms and English phrases equally well. The index is
+  // fetched lazily on first keystroke and cached.
+  function jsBase() {
+    var s = document.querySelector('script[src$="nav.js"]');
+    return s ? s.src.replace(/[^/]*$/, '') : '';
+  }
+  var _IDX = null, _IDX_BUSY = false, _IDX_WAIT = [];
+  function loadIndex(cb) {
+    if (_IDX) { cb(_IDX); return; }
+    _IDX_WAIT.push(cb);
+    if (_IDX_BUSY) return;
+    _IDX_BUSY = true;
+    fetch(jsBase() + 'search-index.json', { cache: 'force-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('index'); return r.json(); })
+      .then(function (d) { _IDX = d; _IDX_WAIT.forEach(function (w) { w(d); }); _IDX_WAIT = []; })
+      .catch(function () { _IDX_BUSY = false; _IDX_WAIT = []; });
+  }
+  function escHtml(s) {
+    return String(s).replace(/[&<>]/g, function (c) { return c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;'; });
+  }
+  function escReg(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function runSearch(q) {
+    q = q.trim().toLowerCase();
+    if (!q) return [];
+    var out = [];
+    for (var i = 0; i < _IDX.length; i++) {
+      var e = _IDX[i], t = e.t.toLowerCase(), c = e.c.toLowerCase();
+      var ti = t.indexOf(q), ci = c.indexOf(q);
+      if (ti < 0 && ci < 0) continue;
+      var occ = 0, from = 0, p;
+      while ((p = c.indexOf(q, from)) >= 0) { occ++; from = p + q.length; if (occ > 200) break; }
+      var score = (ti >= 0 ? 120 : 0) + (ti === 0 ? 60 : 0) +
+                  (ci >= 0 ? Math.max(0, 30 - ci / 300) : 0) + Math.min(occ, 40);
+      out.push({ e: e, ci: ci, score: score });
+    }
+    out.sort(function (a, b) { return b.score - a.score; });
+    return out.slice(0, 12);
+  }
+  function snippet(c, q, ci) {
+    var start = ci >= 0 ? Math.max(0, ci - 36) : 0;
+    var end = Math.min(c.length, start + 110);
+    var s = (start > 0 ? '…' : '') + c.slice(start, end) + (end < c.length ? '…' : '');
+    return escHtml(s).replace(new RegExp(escReg(escHtml(q)), 'gi'), '<mark>$&</mark>');
+  }
+  function mountSearch(sb) {
+    var box = document.createElement('div'); box.className = 'search';
+    box.innerHTML =
+      '<input id="siteSearch" type="search" placeholder="🔎 搜索全站内容…" autocomplete="off" aria-label="搜索 Search">' +
+      '<div id="searchResults" class="search-results" hidden></div>';
+    sb.appendChild(box);
+    var input = box.querySelector('#siteSearch');
+    var res = box.querySelector('#searchResults');
+    var timer = null;
+    function render(q) {
+      if (!q.trim()) { res.hidden = true; res.innerHTML = ''; return; }
+      var hits = runSearch(q);
+      if (!hits.length) {
+        res.hidden = false;
+        res.innerHTML = '<div class="sr-empty">未找到匹配 No matches for “' + escHtml(q) + '”</div>';
+        return;
+      }
+      var pfx = P();
+      res.hidden = false;
+      res.innerHTML = hits.map(function (h) {
+        var snip = h.ci >= 0 ? snippet(h.e.c, q, h.ci) : '';
+        return '<a class="sr-item" href="' + pfx + h.e.u + '">' +
+          '<span class="sr-title">' + escHtml(h.e.t) + '</span>' +
+          (snip ? '<span class="sr-snip">' + snip + '</span>' : '') +
+          '</a>';
+      }).join('');
+    }
+    input.addEventListener('input', function () {
+      var v = input.value;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        if (!_IDX) loadIndex(function () { render(input.value); });
+        else render(v);
+      }, 120);
+    });
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') { input.value = ''; res.hidden = true; input.blur(); }
+    });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/i.test(document.activeElement.tagName)) {
+        ev.preventDefault(); input.focus();
+      }
+    });
   }
 
   function wireChapterNav() {
