@@ -385,12 +385,18 @@
           '</a>';
       }).join('');
     }
+    loadIndex(function () {});   // preload the (cacheable) index on mount so the first search is instant
     input.addEventListener('input', function () {
       var v = input.value;
       clearTimeout(timer);
       timer = setTimeout(function () {
-        if (!_IDX) loadIndex(function () { render(input.value); });
-        else render(v);
+        if (!_IDX) {
+          res.hidden = false;
+          res.innerHTML = '<div class="sr-loading">🔎 正在加载全站索引… loading index</div>';
+          loadIndex(function () { render(input.value); });
+        } else {
+          render(v);
+        }
       }, 120);
     });
     input.addEventListener('keydown', function (ev) {

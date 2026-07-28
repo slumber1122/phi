@@ -218,6 +218,7 @@ li { margin: 0.3em 0; }
 .search input::placeholder { color: var(--ink-mute); }
 .search-results { margin-top: 8px; max-height: 56vh; overflow-y: auto; }
 .search-results .sr-empty { padding: 6px 2px; color: var(--ink-mute); font-size: 0.82rem; }
+.search-results .sr-loading { padding: 6px 2px; color: var(--ink-mute); font-size: 0.82rem; }
 .search-results .sr-item {
   display: block; padding: 7px 9px; text-decoration: none; color: var(--ink);
   border-left: 2px solid transparent; border-radius: var(--radius-sm);
