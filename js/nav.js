@@ -11,6 +11,14 @@
 (function () {
   'use strict';
 
+  /* Microsoft Clarity analytics — site-wide beacon (project xu2k1p4u6v).
+   * Runs once per page load (nav.js is defer-loaded on every page). */
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, 'clarity', 'script', 'xu2k1p4u6v');
+
   var SEMESTERS = [
     {
       name: '第一学期 · 力学与现代物理 Mechanics',
